@@ -54,8 +54,8 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  statusCheck(providerId: string, body: any){
-    const requestUrl = `/providers/${providerId}/statues/checkstatues`;
+  statusCheck(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/checkstatus`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }

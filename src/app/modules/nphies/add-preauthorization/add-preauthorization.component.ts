@@ -806,7 +806,8 @@ export class AddPreauthorizationComponent implements OnInit {
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
       if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
-        preAuthorizationModel.payeeId = this.sharedServices.cchiId;
+        // tslint:disable-next-line:max-line-length
+        preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
       } else {
         preAuthorizationModel.payeeId = this.FormPreAuthorization.controls.payee.value;
       }
@@ -815,7 +816,8 @@ export class AddPreauthorizationComponent implements OnInit {
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
 
-      preAuthorizationModel.eligibilityOfflineDate = this.FormPreAuthorization.controls.eligibilityOfflineDate.value;
+      // tslint:disable-next-line:max-line-length
+      preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
       preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
 
 
@@ -907,7 +909,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
-          model.display = x.display;
+          model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
@@ -933,7 +935,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.itemCode = x.itemCode.toString();
             dmodel.itemDescription = x.itemDescription;
             dmodel.nonStandardCode = x.nonStandardCode;
-            dmodel.display = x.display;
+            dmodel.nonStandardDesc = x.display;
             return dmodel;
           });
 
@@ -945,7 +947,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
-          model.display = x.display;
+          model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
@@ -971,7 +973,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.itemCode = x.itemCode.toString();
             dmodel.itemDescription = x.itemDescription;
             dmodel.nonStandardCode = x.nonStandardCode;
-            dmodel.display = x.display;
+            dmodel.nonStandardDesc = x.display;
             return dmodel;
           });
 

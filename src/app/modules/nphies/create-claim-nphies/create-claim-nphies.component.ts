@@ -92,6 +92,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   uploadId: number;
   pageMode = 'CREATE';
   currentOpenItem: number = null;
+  beneficiaryModel: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -849,7 +850,12 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
-      preAuthorizationModel.payee = this.FormNphiesClaim.controls.payee.value;
+      if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
+        // tslint:disable-next-line:max-line-length
+        preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
+      } else {
+        preAuthorizationModel.payeeId = this.FormNphiesClaim.controls.payee.value;
+      }
       preAuthorizationModel.payeeType = this.FormNphiesClaim.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
       preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
@@ -940,7 +946,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
-          model.display = x.display;
+          model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
@@ -966,7 +972,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.itemCode = x.itemCode.toString();
             dmodel.itemDescription = x.itemDescription;
             dmodel.nonStandardCode = x.nonStandardCode;
-            dmodel.display = x.display;
+            dmodel.nonStandardDesc = x.display;
             return dmodel;
           });
 
@@ -978,7 +984,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
-          model.display = x.display;
+          model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
@@ -1004,7 +1010,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.itemCode = x.itemCode.toString();
             dmodel.itemDescription = x.itemDescription;
             dmodel.nonStandardCode = x.nonStandardCode;
-            dmodel.display = x.display;
+            dmodel.nonStandardDesc = x.display;
             return dmodel;
           });
 
@@ -1212,8 +1218,16 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   setData(response) {
 
+    this.beneficiaryModel = response.beneficiary;
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
+
+    if (response.preAuthorizationInfo.payeeType) {
+      this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === response.preAuthorizationInfo.payeeType));
+      if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value !== 'provider') {
+        this.FormNphiesClaim.controls.payee.setValue(this.FormNphiesClaim.controls.payee.value);
+      }
+    }
 
     // tslint:disable-next-line:max-line-length
     this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0]);
@@ -1397,7 +1411,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   setBeneficiary(res) {
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.beneficiaryName).subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, 'Priya Dalal').subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
