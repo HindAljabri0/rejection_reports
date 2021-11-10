@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let req of communicationRequests">
-          <td>
+          <td class="align-middle">
             <span class="alert-marker bg-danger" *ngIf="req.notificationStatus !== 'read'"></span>
           </td>
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.communicationId}}</td>
