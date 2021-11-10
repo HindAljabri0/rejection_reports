@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let transaction of processedTransactions">
-          <td>
+          <td class="align-middle">
             <span class="alert-marker bg-danger" *ngIf="transaction.notificationStatus !== 'read'"></span>
           </td>
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.memberCardId}}</td>
