@@ -54,47 +54,47 @@
                 </div>
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW' && beneficiaryModel">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.beneficiary">
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Name</div>
-                    <p class="form-control-static">{{beneficiaryModel.beneficiaryName}}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.beneficiaryName}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Document</div>
-                    <p class="form-control-static">{{beneficiaryModel.documentType}} ({{beneficiaryModel.documentId}})</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.documentType}} ({{otherDataModel.beneficiary.documentId}})</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Gender</div>
-                    <p class="form-control-static">{{beneficiaryModel.gender}}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.gender}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Date of Birth</div>
-                    <p class="form-control-static">{{beneficiaryModel.dob | date: 'dd-MM-yyyy'}}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Contact No.</div>
-                    <p class="form-control-static">{{beneficiaryModel.contactNumber}}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.contactNumber}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Email</div>
-                    <p class="form-control-static">{{beneficiaryModel.email}}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.email}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Insurance Plan</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.insurancePlan}}</p>
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
                     <label class="control-label">Payee Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select formControlName="payeeType">
+                      <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange($event)">
                         <mat-option value="">Select Payee Type</mat-option>
                         <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
                         </mat-option>
@@ -530,7 +530,7 @@
               </app-empty-state>
             </mat-tab>
             <mat-tab [label]="'Accident'">
-              <div class="row small-gutter">
+              <div *ngIf="pageMode !== 'VIEW'" class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
@@ -603,41 +603,41 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div *ngIf="pageMode === 'VIEW'" class="row">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Accident Type</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.accidentType.value.name}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Street Name</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.streetName.value}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">City</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.city.value}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">State/Province</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.state.value}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Country</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.country.value}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Date</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.date.value | date: 'dd-MM-yyyy'}}</p>
                   </div>
                 </div>
               </div>

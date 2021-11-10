@@ -145,27 +145,36 @@ export class AddPreauthorizationComponent implements OnInit {
     );
   }
 
-  onTypeChange($event) {
-    switch ($event.value && $event.value.value) {
-      case 'institutional':
-        this.subTypeList = [
-          { value: 'ip', name: 'InPatient' },
-          { value: 'emr', name: 'Emergency' },
-        ];
-        break;
-      case 'professional':
-      case 'vision':
-      case 'pharmacy':
-      case 'oral':
-        this.subTypeList = [
-          { value: 'op', name: 'OutPatient' },
-        ];
-        break;
+  onPayeeTypeChange($event) {
+    if ($event.value && $event.value.value === 'provider') {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
+  }
 
-    this.VisionSpecifications = [];
-    this.Items = [];
-    this.Diagnosises = [];
+  onTypeChange($event) {
+    if ($event.value) {
+      switch ($event.value.value) {
+        case 'institutional':
+          this.subTypeList = [
+            { value: 'ip', name: 'InPatient' },
+            { value: 'emr', name: 'Emergency' },
+          ];
+          break;
+        case 'professional':
+        case 'vision':
+        case 'pharmacy':
+        case 'oral':
+          this.subTypeList = [
+            { value: 'op', name: 'OutPatient' },
+          ];
+          break;
+      }
+
+      this.VisionSpecifications = [];
+      this.Items = [];
+      this.Diagnosises = [];
+    }
   }
 
   searchBeneficiaries() {

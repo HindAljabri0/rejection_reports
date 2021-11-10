@@ -75,7 +75,7 @@
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
               <label class="control-label">Payee Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="payeeType">
+                <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange($event)">
                   <mat-option value="">Select Payee Type</mat-option>
                   <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
                   </mat-option>
@@ -143,7 +143,7 @@
           </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
-              <label class="control-label">Offline Eligibility Date<span class="asterisk">*</span></label>
+              <label class="control-label">Offline Eligibility Date</label>
               <div class="date-picker">
                 <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today" formControlName="eligibilityOfflineDate">
                 <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
