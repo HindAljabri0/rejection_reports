@@ -13,6 +13,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ApiErrorsDialogComponent } from '../api-errors-dialog/api-errors-dialog.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-eligibility',
@@ -47,6 +48,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   showDetails = false;
   constructor(
     private dialog: MatDialog,
+    private dialogService: DialogService,
     private beneficiaryService: ProvidersBeneficiariesService,
     private nphiesSearchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices,
@@ -220,10 +222,11 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-        this.dialog.open(ApiErrorsDialogComponent, {
-          panelClass: ['primary-dialog', 'dialog-lg'],
-          data: errorEvent.error
-        });
+        this.dialogService.showMessage(errorEvent.error.message, 'Transaction Id: ' + errorEvent.error.transactionId, 'alert', true, 'OK', errorEvent.error.errors);
+        // this.dialog.open(ApiErrorsDialogComponent, {
+        //   panelClass: ['primary-dialog', 'dialog-lg'],
+        //   data: errorEvent.error
+        // });
       }
     });
   }
