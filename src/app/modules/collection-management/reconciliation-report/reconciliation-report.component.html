@@ -49,13 +49,17 @@
                         <th rowspan="2">Payer</th>
                         <th rowspan="2">Total Submitted</th>
                         <th colspan="2" class="text-center">Total Received</th>
-                        <th rowspan="2">Amount Outstanding</th>
+                        <th rowspan="2">Total Outstanding</th>
                         <th colspan="2" class="text-center">Prompt Payment Discount</th>
                         <th colspan="2" class="text-center">Volume Discount</th>
                         <th rowspan="2">Reconciliation Amount</th>
+                        <th colspan="2">Final Rejection Amount</th>
+                        <th rowspan="2"></th>
                     </tr>
                     <tr>
                         <th class="not-first-child">SR</th>
+                        <th>%</th>
+                        <th>SR</th>
                         <th>%</th>
                         <th>SR</th>
                         <th>%</th>
@@ -76,6 +80,13 @@
                         <td>332</td>
                         <td>25.96%</td>
                         <td>385</td>
+                        <td>332</td>
+                        <td>25.96%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Mar 2021 - Sep 2021</td>
@@ -89,6 +100,13 @@
                         <td>388</td>
                         <td>23.80%</td>
                         <td>150</td>
+                        <td>388</td>
+                        <td>23.80%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Jan 2021 - Apr 2021</td>
@@ -102,6 +120,13 @@
                         <td>335</td>
                         <td>28.46%</td>
                         <td>316</td>
+                        <td>335</td>
+                        <td>28.46%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Apr 2021 - Aug 2021</td>
@@ -115,6 +140,13 @@
                         <td>234</td>
                         <td>19.52%</td>
                         <td>227</td>
+                        <td>234</td>
+                        <td>19.52%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Dec 2020 - Jul 2021</td>
@@ -128,6 +160,13 @@
                         <td>466</td>
                         <td>28.42%</td>
                         <td>374</td>
+                        <td>466</td>
+                        <td>28.42%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Oct 2020 - Jan 2021</td>
@@ -141,6 +180,13 @@
                         <td>357</td>
                         <td>20.87%</td>
                         <td>367</td>
+                        <td>357</td>
+                        <td>20.87%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Jul 2020 - Feb 2021</td>
@@ -154,6 +200,13 @@
                         <td>341</td>
                         <td>28.40%</td>
                         <td>427</td>
+                        <td>341</td>
+                        <td>28.40%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Jan 2021 - Oct 2021</td>
@@ -167,6 +220,13 @@
                         <td>168</td>
                         <td>21.40%</td>
                         <td>244</td>
+                        <td>168</td>
+                        <td>21.40%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Apr 2021 - Oct 2021</td>
@@ -180,6 +240,13 @@
                         <td>380</td>
                         <td>25.33%</td>
                         <td>414</td>
+                        <td>380</td>
+                        <td>25.33%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Jul 2021 - Aug 2021</td>
@@ -193,6 +260,13 @@
                         <td>161</td>
                         <td>10.78%</td>
                         <td>247</td>
+                        <td>161</td>
+                        <td>10.78%</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -217,7 +291,13 @@
             </button>
         </div>
     </div>
-    <button mat-fab color="primary" class="page-fab">
+    <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
         <mat-icon>add</mat-icon>
     </button>
 </div>
+<mat-menu #actionsMenu xPosition="before">
+    <ng-template matMenuContent>
+        <button mat-menu-item>Add Payment</button>
+        <button mat-menu-item (click)="openFinalRejectionDialog()">Add Final Rejection</button>
+    </ng-template>
+</mat-menu>

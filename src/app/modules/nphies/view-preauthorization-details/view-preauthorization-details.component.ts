@@ -23,9 +23,24 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
   }
 
   openAddCommunicationDialog() {
+
     this.dialog.open(AddCommunicationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg']
     });
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      claimResponseId: this.data.detailsModel.approvalResponseId
+    };
+
+    const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+      }
+    }, error => { });
   }
 
 }

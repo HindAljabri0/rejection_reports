@@ -417,7 +417,8 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         model.byteArray = this.fileByteArray;
         model.attachmentName = this.FormSupportingInfo.controls.attachmentName.value;
         model.attachmentType = this.FormSupportingInfo.controls.attachmentType.value;
-        model.attachmentDate = this.datePipe.transform(this.FormSupportingInfo.controls.attachmentDate.value, 'dd-MM-yyyy');
+        model.attachmentDate = this.datePipe.transform(this.FormSupportingInfo.controls.attachmentDate.value, 'yyyy-MM-dd');
+        model.attachmentDateStr = this.datePipe.transform(this.FormSupportingInfo.controls.attachmentDate.value, 'dd-MM-yyyy');
       } else {
         model.attachment = null;
         model.byteArray = null;

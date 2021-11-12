@@ -19,7 +19,7 @@ import { AddBatchDialogComponent } from './add-batch-dialog/add-batch-dialog.com
 import { AddEditPaymentDialogComponent } from './add-edit-payment-dialog/add-edit-payment-dialog.component';
 import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accounts-dialog/add-statement-of-accounts-dialog.component';
 import { AddIntialRejectionDialogComponent } from './add-intial-rejection-dialog/add-intial-rejection-dialog.component';
-import { ReconciliationComponent } from './reconciliation/reconciliation.component';
+import { AddReconciliationDialogComponent } from './add-reconciliation-dialog/add-reconciliation-dialog.component';
 import { ReconciliationReportComponent } from './reconciliation-report/reconciliation-report.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 import {
@@ -28,6 +28,7 @@ import {
 import {
   AccountReceivableBreakdownReportComponent
 } from './account-receivable-breakdown-report/account-receivable-breakdown-report.component';
+import { AddFinalRejectionDialogComponent } from './add-final-rejection-dialog/add-final-rejection-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,9 +46,10 @@ import {
     AccountReceivableDetailsPayerComponent,
     AccountReceivableBreakdownReportComponent,
     AddIntialRejectionDialogComponent,
-    ReconciliationComponent,
+    AddReconciliationDialogComponent,
     ReconciliationReportComponent,
     AccountReceivableTrackingReportComponent,
+    AddFinalRejectionDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -67,7 +69,8 @@ import {
     AddBatchDialogComponent,
     AddEditPaymentDialogComponent,
     AddStatementOfAccountsDialogComponent,
-    AddIntialRejectionDialogComponent
+    AddIntialRejectionDialogComponent,
+    AddFinalRejectionDialogComponent
   ]
 })
 export class CollectionManagementModule { }

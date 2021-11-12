@@ -162,7 +162,7 @@
 
         <div [ngClass]="{'text-danger': IsCareTeamRequired}">
           <h5 class="form-title">
-            <span>Care Team<span class="asterisk">*</span></span>
+            <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
             <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
               <mat-icon>add</mat-icon>
             </button>

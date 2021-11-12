@@ -607,6 +607,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.attachmentName = result.attachmentName;
               x.attachmentType = result.attachmentType;
               x.attachmentDate = result.attachmentDate;
+              x.attachmentDateStr = result.attachmentDateStr;
               x.codeName = result.codeName;
               x.reasonName = result.reasonName;
               x.fromDateStr = result.fromDateStr;

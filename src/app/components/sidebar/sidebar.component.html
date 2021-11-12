@@ -106,7 +106,7 @@
                         </li>
                         <li i18n="@@gssreport" *ngIf='hasGSSPrivilege'>
                             <a routerLink="/{{providerId}}/reports/general-summary-statement-report" #GSSReport="routerLinkActive" routerLinkActive="is-active">
-                                <span class="text">General Summary Statement  Report</span>
+                                <span class="text">General Summary Statement Report</span>
                             </a>
                         </li>
                     </ul>
@@ -154,7 +154,7 @@
                                 <span class="text">Rejection Tracking Report</span>
                             </a>
                         </li>
-                         <li i18n="@@rejectionBreakDownReport">
+                        <li i18n="@@rejectionBreakDownReport">
                             <a routerLink="/reports/rejection-breakdown-report" routerLinkActive="is-active">
 
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
@@ -210,11 +210,6 @@
                             </a>
                             <a routerLink="/collection-management/statement-of-accounts-details" class="d-none" routerLinkActive="is-active"
                                 #statementAccountDetails="routerLinkActive"></a>
-                        </li>
-                        <li *ngIf="!envStaging && !envProd">
-                            <a routerLink="/collection-management/reconciliation" routerLinkActive="is-active">
-                                <span class="text">Reconciliation</span>
-                            </a>
                         </li>
                         <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/reconciliation-report" routerLinkActive="is-active">
