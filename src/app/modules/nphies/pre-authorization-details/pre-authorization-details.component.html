@@ -62,6 +62,24 @@
       <p class="text-primary">{{data.disposition}}</p>
     </div>
   </div>
+  <div class="col-9">
+    <div class="inline-label-table">
+      <label>Offline Eligibility ID</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityOfflineId}}</p>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="inline-label-table">
+      <label>Offline Eligibility Date</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityOfflineDate | date: 'dd-MM-yyyy'}}</p>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="inline-label-table">
+      <label>Eligibility Response ID</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityResponseId}}</p>
+    </div>
+  </div>
 </div>
 
 <!-- payment info start -->
@@ -226,6 +244,7 @@
         <th>Status</th>
         <th>Reason</th>
         <th>Note No.</th>
+        <th>Display</th>
       </tr>
     </thead>
     <tbody>
@@ -242,9 +261,10 @@
           <td class="row-click" (click)="toggleItem(i)">-</td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
+          <td class="row-click" (click)="toggleItem(i)">{{item.nonStandardDesc}}</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
-          <td colspan="8">
+          <td colspan="9">
             <div class="box mb-2" *ngIf="item.itemDecision">
               <h5 class="align-self-center medium pb-2">Adjudication</h5>
               <div class="row">
@@ -299,33 +319,37 @@
               </div>
             </div>
             <div class="box">
-              <h5 class="align-self-center medium pb-2">Details</h5>
+              <h5 class="align-self-center medium pb-2">Information</h5>
               <div class="row">
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
-                      <tr>
-                        <td class="label">Quantity</td>
-                        <td>{{item.quantity}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Discount</td>
-                        <td>{{item.discount}} %</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Tax(%)</td>
-                        <td>{{item.taxPercent}} %</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Patient Share(%)</td>
-                        <td>{{item.patientShare}} %</td>
-                      </tr>
                       <tr>
                         <td class="label">Is Package?</td>
                         <td>
                           <span *ngIf="item.isPackage === 1">Yes</span>
                           <span *ngIf="item.isPackage === 2">No</span>
                         </td>
+                      </tr>
+                      <tr>
+                        <td class="label">Body Site</td>
+                        <td>{{item.bodySiteName}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Sub Site</td>
+                        <td>{{item.subSiteName}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Discount(%)</td>
+                        <td>{{item.discount}} %</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Factor</td>
+                        <td>{{item.factor}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Quantity</td>
+                        <td>{{item.quantity}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -334,16 +358,16 @@
                   <table class="inline-label-table">
                     <tbody>
                       <tr>
-                        <td class="label">Unit Price</td>
-                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">Factor</td>
-                        <td>{{item.factor}}</td>
+                        <td class="label">Tax(%)</td>
+                        <td>{{item.taxPercent}} %</td>
                       </tr>
                       <tr>
                         <td class="label">Tax</td>
                         <td>{{item.tax}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Patient Share(%)</td>
+                        <td>{{item.patientShare}} %</td>
                       </tr>
                       <tr>
                         <td class="label">Patient Share</td>
@@ -352,6 +376,10 @@
                       <tr>
                         <td class="label">Payer Share</td>
                         <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Unit Price</td>
+                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -383,6 +411,29 @@
                   </table>
                 </div>
               </div>
+            </div>
+            <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+              <h5 class="align-self-center medium pb-2">Details</h5>
+              <table class="primary-grid manual-row-color claim-view-table no-borders">
+                <thead>
+                  <tr>
+                    <th>Seq.</th>
+                    <th>Type</th>
+                    <th>Code - Description</th>
+                    <th>Non Standard Code</th>
+                    <th>Display</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of item.itemDetails; let di = index">
+                    <td class="row-click">{{d.sequence}}</td>
+                    <td class="row-click">{{d.typeName}}</td>
+                    <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
+                    <td class="row-click">{{d.nonStandardCode}}</td>
+                    <td class="row-click">{{d.nonStandardDesc}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </td>
         </tr>
