@@ -1,0 +1,28 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add Final Rejection</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="form-group">
+        <label class="control-label">Final Rejection Amount / Percentage</label>
+        <div class="row extra-small-gutter">
+            <div class="col">
+                <input class="form-control" type="number" placeholder="Enter final rejection amount / percentage">
+            </div>
+            <div class="col-auto">
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="SAR">
+                        <mat-option value="PERCENT">%</mat-option>
+                        <mat-option value="SAR">SR</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button type="button" mat-button (click)="closeDialog()">Cancel</button>
+        <button type="submit" mat-flat-button color="primary">Add</button>
+    </div>
+</div>

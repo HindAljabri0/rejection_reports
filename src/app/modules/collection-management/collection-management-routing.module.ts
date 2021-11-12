@@ -7,7 +7,7 @@ import { StatementOfAccountsComponent } from './statement-of-accounts/statement-
 import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-details/statement-of-accounts-details.component';
 import { CreateBatchComponent } from './create-batch/create-batch.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
-import { ReconciliationComponent } from './reconciliation/reconciliation.component';
+import { AddReconciliationDialogComponent } from './add-reconciliation-dialog/add-reconciliation-dialog.component';
 import { ReconciliationReportComponent } from './reconciliation-report/reconciliation-report.component';
 import {
   AccountReceivableTrackingReportComponent
@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'create-batch', component: CreateBatchComponent },
   { path: 'accounts-receivable-breakdown-report', component: AccountReceivableBreakdownReportComponent },
   { path: 'accounts-receivable-tracking-report', component: AccountReceivableTrackingReportComponent },
-  { path: 'reconciliation', component: ReconciliationComponent },
+  { path: 'reconciliation', component: AddReconciliationDialogComponent },
   { path: 'reconciliation-report', component: ReconciliationReportComponent }
 ];
 

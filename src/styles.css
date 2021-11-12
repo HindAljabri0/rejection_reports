@@ -184,8 +184,11 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .px-14{padding-right: 14px !important;padding-left: 14px !important;}
 .mt-14{margin-top: 14px !important;}
 .mb-14{margin-bottom: 14px !important;}
+.mb-16{margin-bottom: 16px !important;}
 .ml-n14{margin-left: -14px !important;}
 .mr-n14{margin-right: -14px !important;}
+.ml-n16{margin-left: -16px !important;}
+.mr-n16{margin-right: -16px !important;}
 .minw145{min-width: 145px;}
 .vertical-bottom{vertical-align: bottom!important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
@@ -1277,6 +1280,12 @@ table.inline-label-table{width: 100%;}
 .inline-attachments>li .close:hover,.inline-attachments>li .close:focus,.inline-attachments>li .close:active{background-color: #dadada;opacity: 0.8;}
 .inline-attachments.no-space{margin-bottom: -8px;}
 .pre-auth-info-wrapper{padding: 14px;overflow: auto;max-height: calc(100vh - 177px);}
+
+/* reconciliation summary
+--------------------------------------------------------------------------------------------------------*/
+.reconciliation-summary-wrapper{background: rgba(48, 96, 170, 0.1);border-radius: 6px;padding: 14px 14px 8px;color: #3060AA;margin-bottom: 16px;}
+.reconciliation-summary{display: flex;align-items: center;padding-bottom: 6px;}
+.reconciliation-summary p{font-weight: 600;font-size: 16px;line-height: 24px;text-align: right;margin-left: auto;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
