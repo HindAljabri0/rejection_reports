@@ -230,6 +230,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
+  typeChange(){
+    this.FormItem.controls.item.setValue('');
+    this.getItemList();
+  }
+
   getItemList() {
     this.IsItemLoading = true;
     this.FormItem.controls.item.disable();

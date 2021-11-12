@@ -57,6 +57,7 @@ export class AddPreauthorizationComponent implements OnInit {
     prescriber: [''],
     eligibilityOfflineDate: [''],
     eligibilityOfflineId: [''],
+    eligibilityResponseId: ['']
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -116,6 +117,9 @@ export class AddPreauthorizationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
         if (event.body != null && event.body instanceof Array) {
           this.payeeList = event.body;
+          // tslint:disable-next-line:max-line-length
+          this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+          this.onPayeeTypeChange();
         }
       }
     }, err => {
@@ -145,11 +149,13 @@ export class AddPreauthorizationComponent implements OnInit {
     );
   }
 
-  onPayeeTypeChange($event) {
-    if ($event.value && $event.value.value === 'provider') {
+  onPayeeTypeChange() {
+    if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
+    this.FormPreAuthorization.controls.payeeType.disable();
+    this.FormPreAuthorization.controls.payee.disable();
   }
 
   onTypeChange($event) {
@@ -301,7 +307,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   deleteCareTeam(sequence: number, index: number) {
 
-    if (this.Items.find(x => x.careTeamSequence.find(y => y === sequence))) {
+    if (this.Items.find(x => x.careTeamSequence && x.careTeamSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
@@ -368,7 +374,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   deleteDiagnosis(sequence: number, index: number) {
 
-    if (this.Items.find(x => x.diagnosisSequence.find(y => y === sequence))) {
+    if (this.Items.find(x => x.diagnosisSequence && x.diagnosisSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
@@ -618,7 +624,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   deleteSupportingInfo(sequence: number, index: number) {
 
-    if (this.Items.find(x => x.supportingInfoSequence.find(y => y === sequence))) {
+    if (this.Items.find(x => x.supportingInfoSequence && x.supportingInfoSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
@@ -828,7 +834,7 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
       preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
-
+      preAuthorizationModel.eligibilityResponseId = this.FormPreAuthorization.controls.eligibilityResponseId.value;
 
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
@@ -841,7 +847,7 @@ export class AddPreauthorizationComponent implements OnInit {
         model.toDate = x.toDate;
         model.value = x.value;
         model.reason = x.reason;
-        model.attachment = x.byteArray;
+        model.attachment = this.sharedServices._base64ToArrayBuffer(x.byteArray);
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
         model.attachmentDate = x.attachmentDate;
@@ -937,14 +943,14 @@ export class AddPreauthorizationComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
 
-          model.Details = x.Details.map(x => {
+          model.itemDetails = x.Details.map(y => {
             const dmodel: any = {};
-            dmodel.sequence = x.sequence;
-            dmodel.type = x.type;
-            dmodel.itemCode = x.itemCode.toString();
-            dmodel.itemDescription = x.itemDescription;
-            dmodel.nonStandardCode = x.nonStandardCode;
-            dmodel.nonStandardDesc = x.display;
+            dmodel.sequence = y.sequence;
+            dmodel.type = y.type;
+            dmodel.itemCode = y.itemCode.toString();
+            dmodel.itemDescription = y.itemDescription;
+            dmodel.nonStandardCode = y.nonStandardCode;
+            dmodel.nonStandardDesc = y.display;
             return dmodel;
           });
 
@@ -975,14 +981,14 @@ export class AddPreauthorizationComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
 
-          model.Details = x.Details.map(x => {
+          model.itemDetails = x.Details.map(y => {
             const dmodel: any = {};
-            dmodel.sequence = x.sequence;
-            dmodel.type = x.type;
-            dmodel.itemCode = x.itemCode.toString();
-            dmodel.itemDescription = x.itemDescription;
-            dmodel.nonStandardCode = x.nonStandardCode;
-            dmodel.nonStandardDesc = x.display;
+            dmodel.sequence = y.sequence;
+            dmodel.type = y.type;
+            dmodel.itemCode = y.itemCode.toString();
+            dmodel.itemDescription = y.itemDescription;
+            dmodel.nonStandardCode = y.nonStandardCode;
+            dmodel.nonStandardDesc = y.display;
             return dmodel;
           });
 

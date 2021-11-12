@@ -75,7 +75,7 @@
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
               <label class="control-label">Payee Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange($event)">
+                <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
                   <mat-option value="">Select Payee Type</mat-option>
                   <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
                   </mat-option>
@@ -148,7 +148,13 @@
                 <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today" formControlName="eligibilityOfflineDate">
                 <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
-              </div>              
+              </div>
+            </div>
+          </div>
+          <div class="col-4 col-lg-3">
+            <div class="form-group">
+              <label class="control-label">Eligibility Response ID</label>
+              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityResponseId">
             </div>
           </div>
         </div>
@@ -549,7 +555,7 @@
                                 <tr>
                                   <td class="label">Factor</td>
                                   <td>{{item.factor}}</td>
-                                </tr>                               
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -567,7 +573,7 @@
                                 <tr>
                                   <td class="label">Patient Share(%)</td>
                                   <td>{{item.patientShare}} %</td>
-                                </tr>                               
+                                </tr>
                                 <tr>
                                   <td class="label">Patient Share</td>
                                   <td>{{item.patientShare}} <span class="currency">SR</span></td>
@@ -608,7 +614,7 @@
                         <h5 class="align-self-center medium pb-2">Details</h5>
                         <table class="primary-grid manual-row-color claim-view-table no-borders">
                           <thead>
-                            <tr>                              
+                            <tr>
                               <th>Seq.</th>
                               <th>Type</th>
                               <th>Code - Description</th>
@@ -618,7 +624,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let d of item.Details; let di = index">                           
+                            <tr *ngFor="let d of item.Details; let di = index">
                               <td class="row-click">{{d.sequence}}</td>
                               <td class="row-click">{{d.typeName}}</td>
                               <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>

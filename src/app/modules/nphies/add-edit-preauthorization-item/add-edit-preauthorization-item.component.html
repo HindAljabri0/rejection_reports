@@ -8,22 +8,22 @@
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
+          [ngClass]="{'has-error' : (isSubmitted && FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
           <label class="control-label">Type<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="type" (selectionChange)="getItemList()">
+            <mat-select formControlName="type" (selectionChange)="typeChange()">
               <mat-option value="">Select Type</mat-option>
               <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
+          <div *ngIf="(isSubmitted && FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
             <span class="error-text">Please select a Type</span>
           </div>
         </div>
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+          [ngClass]="{'has-error' : (isSubmitted && FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect>
@@ -44,7 +44,7 @@
 
             </mat-select>
           </mat-form-field>
-          <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
+          <div *ngIf="(isSubmitted && FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
             <span class="error-text">Please select a Code - Description</span>
           </div>
         </div>
@@ -97,24 +97,24 @@
 
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')}">
+          [ngClass]="{'has-error' : (isSubmitted && FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')}">
           <label class="control-label">Quantity<span class="asterisk">*</span></label>
           <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity"
             (blur)="Calculate('Other')">
           <div
-            *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
+            *ngIf="(isSubmitted && FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
             <span class="error-text">Please enter Quantity</span>
           </div>
         </div>
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
+          [ngClass]="{'has-error' : (isSubmitted && FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
           <label class="control-label">Unit Price<span class="asterisk">*</span></label>
           <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice"
             (blur)="Calculate('Other')">
           <div
-            *ngIf="(isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')">
+            *ngIf="(isSubmitted && FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')">
             <span class="error-text">Please enter Unit Price</span>
           </div>
         </div>
@@ -172,7 +172,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')}">
+          [ngClass]="{'has-error' : (isSubmitted && FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')}">
           <label class="control-label">Start Date<span class="asterisk">*</span></label>
           <div class="date-picker">
             <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
@@ -181,7 +181,7 @@
             <mat-datepicker #startDate></mat-datepicker>
           </div>
           <div
-            *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')">
+            *ngIf="(isSubmitted && FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')">
             <span class="error-text">Please enter Unit Price</span>
           </div>
         </div>
