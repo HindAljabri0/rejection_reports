@@ -16,15 +16,6 @@
           <tr>
             <td>
               <div class="row small-gutter align-items-center">
-                <div class="col">
-                  <div class="form-group mb-0">
-                    <input type="text" class="form-control" placeholder="Enter comment here..." />
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <button mat-flat-button color="primary" type="button" (click)="add()">Add</button>
-                </div>
-                <div class="col-auto">or</div>
                 <div class="col-auto">
                   <div class="file-upload-wrapper inline">
                     <div class="content">
@@ -36,44 +27,61 @@
                       (change)="selectFile($event)" />
                   </div>
                 </div>
+                <div class="col-auto">or</div>
+                <div class="col">
+                  <div class="form-group mb-0" [ngClass]="{'has-error' : (isSubmitted || FormCommunication.get('payloadValue').touched) && FormCommunication.get('payloadValue').hasError('required')}">
+                    <input type="text" class="form-control" placeholder="Enter comment here..." formControlName="payloadValue"/>
+                    <div *ngIf="(isSubmitted || FormCommunication.get('payloadValue').touched) && FormCommunication.get('payloadValue').hasError('required')">
+                      <span class="error-text">Please select a Payload Value</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <button mat-flat-button color="primary" type="button" (click)="add()">Add</button>
+                </div>
               </div>
             </td>
           </tr>
-          <tr>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum
-              eum officia quo esse deserunt eos quasi pariatur earum
-              vitae voluptas harum.</td>
-          </tr>
-          <tr>
-            <td>
-              <ul class="inline-attachments no-space">
-                <li>
-                  <button type="button">
-                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                    <span>img_0005.jpg</span>
-                  </button>
-                  <button type="button" title="Close" class="close">
-                    <mat-icon class="size-16">close</mat-icon>
-                  </button>
-                </li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <ul class="inline-attachments no-space">
-                <li>
-                  <button type="button">
-                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                    <span>report_054578.pdf</span>
-                  </button>
-                  <button type="button" title="Close" class="close">
-                    <mat-icon class="size-16">close</mat-icon>
-                  </button>
-                </li>
-              </ul>
-            </td>
-          </tr>
+          <ng-container *ngFor="let pay of payLoads; let i = index">
+            <tr *ngIf="pay.payloadValue">
+              <td>{{pay.payloadValue}}</td>
+            </tr>
+
+            <tr *ngIf="pay.payloadAttachment && pay.attachmentType && getFilename(pay.attachmentType) === 'image'">
+              <td>
+                <ul class="inline-attachments no-space">
+                  <li>
+                    <button type="button">
+                      <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                      <span>{{pay.attachmentName}}</span>
+                    </button>
+                    <button type="button" title="Close" class="close" (click)="removePayload(i)">
+                      <mat-icon class="size-16">close</mat-icon>
+                    </button>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr *ngIf="pay.payloadAttachment && pay.attachmentType && getFilename(pay.attachmentType) === 'pdf'">
+              <td>
+                <ul class="inline-attachments no-space">
+                  <li>
+                    <button type="button">
+                      <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                      <span>{{pay.attachmentName}}</span>
+                    </button>
+                    <button type="button" title="Close" class="close" (click)="removePayload(i)">
+                      <mat-icon class="size-16">close</mat-icon>
+                    </button>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+
+
+
         </tbody>
       </table>
     </div>
