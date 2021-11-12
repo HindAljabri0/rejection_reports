@@ -140,6 +140,8 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
     if (this.data && this.data.items) {
       this.data.items.forEach(x => {
+        // tslint:disable-next-line:max-line-length
+        x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
         this.paymentAmount += x.net;
         x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
 
