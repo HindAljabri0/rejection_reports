@@ -112,6 +112,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       });
     }
 
+    if (this.data.visionPrescription && this.data.visionPrescription.prescriber) {
+      // tslint:disable-next-line:max-line-length
+      this.data.visionPrescription.prescriberName = this.data.careTeam.filter(x => x.sequence === this.data.visionPrescription.prescriber)[0] ? this.data.careTeam.filter(x => x.sequence === this.data.visionPrescription.prescriber)[0].practitionerName : '';
+    }
+
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications
       && this.data.visionPrescription.lensSpecifications.length > 0) {
       this.data.visionPrescription.lensSpecifications.forEach(i => {
@@ -140,6 +145,16 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
     if (this.data && this.data.items) {
       this.data.items.forEach(x => {
+
+        if (x.itemDetails && x.itemDetails.length > 0) {
+          x.itemDetails.forEach(y => {
+            y.typeName = this.sharedDataService.claimTypeList.filter(
+              z => z.value === y.type)[0]
+              ? this.sharedDataService.claimTypeList.filter(z => z.value === y.type)[0].name
+              : '';
+          });
+        }
+
         // tslint:disable-next-line:max-line-length
         x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
         this.paymentAmount += x.net;
