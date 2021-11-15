@@ -949,8 +949,8 @@ export class AddPreauthorizationComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.itemCode = y.itemCode.toString();
-            dmodel.itemDescription = y.itemDescription;
+            dmodel.code = y.itemCode.toString();
+            dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
             return dmodel;
@@ -987,8 +987,8 @@ export class AddPreauthorizationComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.itemCode = y.itemCode.toString();
-            dmodel.itemDescription = y.itemDescription;
+            dmodel.code = y.itemCode.toString();
+            dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
             return dmodel;

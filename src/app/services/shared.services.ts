@@ -276,7 +276,7 @@ export class SharedServices {
 
   getProcessedCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCount(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
@@ -296,7 +296,7 @@ export class SharedServices {
 
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCount(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
