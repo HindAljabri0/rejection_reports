@@ -76,7 +76,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.data.type) {
       this.setTypes(this.data.type);
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
@@ -89,8 +88,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.type)[0],
-        subSite: this.subSiteList.filter(x => x.value === this.data.item.type)[0],
+        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
+        subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
