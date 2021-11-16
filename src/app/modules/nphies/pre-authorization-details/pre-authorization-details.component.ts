@@ -146,6 +146,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     if (this.data && this.data.items) {
       this.data.items.forEach(x => {
 
+        // tslint:disable-next-line:max-line-length
+        x.bodySiteName = this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        x.subSiteName = this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
+
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
             y.typeName = this.sharedDataService.claimTypeList.filter(
