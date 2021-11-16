@@ -943,7 +943,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.lensDurationUnit = x.lensDurationUnit;
           model.lensColor = x.lensColor;
           model.lensBrand = x.lensBrand;
-          model.lensNote = x.model;
+          model.lensNote = x.lensNote;
           return model;
         });
       }
