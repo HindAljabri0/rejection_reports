@@ -890,31 +890,33 @@ export class AddPreauthorizationComponent implements OnInit {
       });
 
       if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-        this.model.visionPrescription = {};
-        // tslint:disable-next-line:max-line-length
-        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
-        this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
-        this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.product = x.product;
-          model.eye = x.eye;
-          model.sphere = x.sphere;
-          model.cylinder = x.cylinder;
-          model.axis = x.axis;
-          model.prismAmount = x.prismAmount;
-          model.prismBase = x.prismBase;
-          model.multifocalPower = x.multifocalPower;
-          model.lensPower = x.lensPower;
-          model.lensBackCurve = x.lensBackCurve;
-          model.lensDiameter = x.lensDiameter;
-          model.lensDuration = x.lensDuration;
-          model.lensDurationUnit = x.lensDurationUnit;
-          model.lensColor = x.lensColor;
-          model.lensBrand = x.lensBrand;
-          model.lensNote = x.lensNote;
-          return model;
-        });
+        if(!this.FormPreAuthorization.controls.prescriber.value){
+          this.model.visionPrescription = {};
+          // tslint:disable-next-line:max-line-length
+          this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
+          this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+          this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
+            const model: any = {};
+            model.sequence = x.sequence;
+            model.product = x.product;
+            model.eye = x.eye;
+            model.sphere = x.sphere;
+            model.cylinder = x.cylinder;
+            model.axis = x.axis;
+            model.prismAmount = x.prismAmount;
+            model.prismBase = x.prismBase;
+            model.multifocalPower = x.multifocalPower;
+            model.lensPower = x.lensPower;
+            model.lensBackCurve = x.lensBackCurve;
+            model.lensDiameter = x.lensDiameter;
+            model.lensDuration = x.lensDuration;
+            model.lensDurationUnit = x.lensDurationUnit;
+            model.lensColor = x.lensColor;
+            model.lensBrand = x.lensBrand;
+            model.lensNote = x.lensNote;
+            return model;
+          });
+        }
       }
 
       this.model.items = this.Items.map(x => {
