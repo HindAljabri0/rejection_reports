@@ -1,6 +1,6 @@
 <div class="primary-dialog-header has-border">
-  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Item Details</h5>
-  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Item Details</h5>
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Item Detail</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Item Detail</h5>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
