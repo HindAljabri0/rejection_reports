@@ -244,7 +244,6 @@
         <th>Status</th>
         <th>Reason</th>
         <th>Note No.</th>
-        <th>Display</th>
       </tr>
     </thead>
     <tbody>
@@ -261,7 +260,6 @@
           <td class="row-click" (click)="toggleItem(i)">-</td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.nonStandardDesc}}</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
           <td colspan="9">
@@ -318,12 +316,28 @@
                 </div>
               </div>
             </div>
-            <div class="box">
+            <div class="box mb-2">
               <h5 class="align-self-center medium pb-2">Information</h5>
               <div class="row">
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
+                      <tr>
+                        <td class="label">Quantity</td>
+                        <td>{{item.quantity}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Discount(%)</td>
+                        <td>{{item.discount}} %</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Tax(%)</td>
+                        <td>{{item.taxPercent}} %</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Patient Share(%)</td>
+                        <td>{{item.patientShare}} %</td>
+                      </tr>
                       <tr>
                         <td class="label">Is Package?</td>
                         <td>
@@ -335,22 +349,6 @@
                         <td class="label">Body Site</td>
                         <td>{{item.bodySiteName}}</td>
                       </tr>
-                      <tr>
-                        <td class="label">Sub Site</td>
-                        <td>{{item.subSiteName}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Discount(%)</td>
-                        <td>{{item.discount}} %</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Factor</td>
-                        <td>{{item.factor}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Quantity</td>
-                        <td>{{item.quantity}}</td>
-                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -358,16 +356,16 @@
                   <table class="inline-label-table">
                     <tbody>
                       <tr>
-                        <td class="label">Tax(%)</td>
-                        <td>{{item.taxPercent}} %</td>
+                        <td class="label">Unit Price</td>
+                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Factor</td>
+                        <td>{{item.factor}}</td>
                       </tr>
                       <tr>
                         <td class="label">Tax</td>
                         <td>{{item.tax}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">Patient Share(%)</td>
-                        <td>{{item.patientShare}} %</td>
                       </tr>
                       <tr>
                         <td class="label">Patient Share</td>
@@ -378,8 +376,8 @@
                         <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       </tr>
                       <tr>
-                        <td class="label">Unit Price</td>
-                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                        <td class="label">Sub Site</td>
+                        <td>{{item.subSiteName}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -394,6 +392,10 @@
                       <tr>
                         <td class="label">Non Standard Code</td>
                         <td>{{item.nonStandardCode}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Display</td>
+                        <td>{{item.nonStandardDesc}}</td>
                       </tr>
                       <tr>
                         <td class="label">Supporting Info</td>

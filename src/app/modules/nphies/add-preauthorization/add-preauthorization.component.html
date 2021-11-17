@@ -72,7 +72,8 @@
             </div>
           </div>
           <div class="col-4 col-xxl-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
               <label class="control-label">Payee Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
@@ -87,7 +88,8 @@
             </div>
           </div>
           <div class="col-4 col-xxl-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
               <label class="control-label">Payee<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="payee">
@@ -145,7 +147,8 @@
             <div class="form-group">
               <label class="control-label">Offline Eligibility Date</label>
               <div class="date-picker">
-                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today" formControlName="eligibilityOfflineDate">
+                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
+                  formControlName="eligibilityOfflineDate">
                 <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
               </div>
@@ -477,7 +480,8 @@
         <div [ngClass]="{'text-danger': IsItemRequired}">
           <h5 class="form-title">
             <span>Items<span class="asterisk">*</span></span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
+            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
+              [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
               <mat-icon>add</mat-icon>
             </button>
           </h5>
@@ -492,7 +496,6 @@
                   <th>Unit Price</th>
                   <th>Net</th>
                   <th>Non Standard Code</th>
-                  <th>Display</th>
                   <th width="10"></th>
                 </tr>
               </thead>
@@ -503,24 +506,21 @@
                       <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
                       <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                     </td>
-                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}</td>
-                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">>{{item.itemCode}} - {{item.itemDescription}}</td>
-                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}</td>
-                    <td class="text-nowrap row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.unitPrice}} <span class="currency">SR</span></td>
-                    <td class="text-nowrap row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.net}} <span class="currency">SR</span></td>
-                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.nonStandardCode}}</td>
-                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.display}}</td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}</td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">>{{item.itemCode}} - {{item.itemDescription}}</td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}</td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.unitPrice}} <span class="currency">SR</span></td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.net}} <span class="currency">SR</span></td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.nonStandardCode}}</td>
                     <td class="actions text-nowrap">
                       <button mat-icon-button *ngIf="item.isPackage === 1" type="button" matTooltip="Add Details" class="text-primary"
                         (click)="openAddEditItemDetailsDialog(item.sequence)">
                         <mat-icon>add</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                        (click)="openAddEditItemDialog(item)">
+                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
-                        (click)="deleteItem(i)">
+                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
                     </td>
@@ -534,6 +534,22 @@
                             <table class="inline-label-table">
                               <tbody>
                                 <tr>
+                                  <td class="label">Quantity</td>
+                                  <td>{{item.quantity}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Discount(%)</td>
+                                  <td>{{item.discount}} %</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Tax(%)</td>
+                                  <td>{{item.taxPercent}} %</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Patient Share(%)</td>
+                                  <td>{{item.patientShare}} %</td>
+                                </tr>
+                                <tr>
                                   <td class="label">Is Package?</td>
                                   <td>
                                     <span *ngIf="item.isPackage === 1">Yes</span>
@@ -544,18 +560,6 @@
                                   <td class="label">Body Site</td>
                                   <td>{{item.bodySiteName}}</td>
                                 </tr>
-                                <tr>
-                                  <td class="label">Sub Site</td>
-                                  <td>{{item.subSiteName}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Discount(%)</td>
-                                  <td>{{item.discount}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Factor</td>
-                                  <td>{{item.factor}}</td>
-                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -563,16 +567,16 @@
                             <table class="inline-label-table">
                               <tbody>
                                 <tr>
-                                  <td class="label">Tax(%)</td>
-                                  <td>{{item.taxPercent}} %</td>
+                                  <td class="label">Unit Price</td>
+                                  <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Factor</td>
+                                  <td>{{item.factor}}</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Tax</td>
                                   <td>{{item.tax}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Patient Share(%)</td>
-                                  <td>{{item.patientShare}} %</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Patient Share</td>
@@ -581,6 +585,10 @@
                                 <tr>
                                   <td class="label">Payer Share</td>
                                   <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Sub Site</td>
+                                  <td>{{item.subSiteName}}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -591,6 +599,14 @@
                                 <tr>
                                   <td class="label">Start Date</td>
                                   <td>{{item.startDateStr}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Non Standard Code</td>
+                                  <td>{{item.nonStandardCode}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Display</td>
+                                  <td>{{item.display}}</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Supporting Info</td>
@@ -631,12 +647,10 @@
                               <td class="row-click">{{d.nonStandardCode}}</td>
                               <td class="row-click">{{d.display}}</td>
                               <td class="actions text-nowrap">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                                  (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                   <mat-icon>create</mat-icon>
                                 </button>
-                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
-                                  (click)="deleteItemDetails(item.sequence, di)">
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
                                   <mat-icon>delete_outline</mat-icon>
                                 </button>
                               </td>
