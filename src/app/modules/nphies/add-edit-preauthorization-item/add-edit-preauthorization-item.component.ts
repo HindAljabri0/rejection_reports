@@ -229,7 +229,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  typeChange(){
+  typeChange() {
     this.FormItem.controls.item.setValue('');
     this.getItemList();
   }
