@@ -60,7 +60,8 @@
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Document</div>
-                    <p class="form-control-static">{{otherDataModel.beneficiary.documentType}} ({{otherDataModel.beneficiary.documentId}})</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.documentType}}
+                      ({{otherDataModel.beneficiary.documentId}})</p>
                   </div>
                 </div>
                 <div class="col-4">
@@ -138,7 +139,7 @@
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
                     <label class="control-label">Payee Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange($event)">
+                      <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
                         <mat-option value="">Select Payee Type</mat-option>
                         <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
                         </mat-option>
@@ -199,13 +200,57 @@
                     </mat-form-field>
                   </div>
                 </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Offline Eligibility ID</label>
+                    <input class="form-control" placeholder="Enter Offline Eligibility ID"
+                      formControlName="eligibilityOfflineId">
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group">
+                    <label class="control-label">Offline Eligibility Date</label>
+                    <div class="date-picker">
+                      <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
+                        placeholder="Select Offline Eligibility Date" [max]="today"
+                        formControlName="eligibilityOfflineDate">
+                      <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                      <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Eligibility Response ID</label>
+                    <input class="form-control" placeholder="Eligibility Response ID"
+                      formControlName="eligibilityResponseId">
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group">
+                    <label class="control-label">Offline Approval Date</label>
+                    <div class="date-picker">
+                      <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control"
+                        placeholder="Select Offline Approval Date" [max]="today" formControlName="preAuthOfflineDate">
+                      <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                      <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Approval Response IDs</label>
+                    <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId">
+                  </div>
+                </div>
               </div>
 
-              <div *ngIf="pageMode === 'VIEW'" class="row">
+              <div *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.payeeName" class="row">
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Date Ordered</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy'}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy'}}
+                    </p>
                   </div>
                 </div>
                 <div class="col-4">
@@ -217,7 +262,7 @@
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Payee</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.payee.value}}</p>
+                    <p class="form-control-static">{{otherDataModel.payeeName}}</p>
                   </div>
                 </div>
                 <div class="col-4">
@@ -232,8 +277,39 @@
                     <p class="form-control-static">{{FormNphiesClaim.controls.subType.value.name}}</p>
                   </div>
                 </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Offline Eligibility ID</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineId.value}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Offline Eligibility Date</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineDate.value | date:
+                      'dd-MM-yyyy'}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Eligibility Response ID</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Offline Approval Date</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value | date:
+                      'dd-MM-yyyy'}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Approval Response IDs</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value}}</p>
+                  </div>
+                </div>
               </div>
-
 
             </mat-tab>
             <mat-tab [label]="'Care Team'">
@@ -811,22 +887,15 @@
 
             </mat-tab>
             <mat-tab [label]="'Encounter'">
-              <div class="row small-gutter">
+              <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
                     <label class="control-label">Status</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="status">
                         <mat-option value="">Select status</mat-option>
-                        <mat-option value="Planned">Planned</mat-option>
-                        <mat-option value="Arrived">Arrived</mat-option>
-                        <mat-option value="Triaged">Triaged</mat-option>
-                        <mat-option value="In Progress">In Progress</mat-option>
-                        <mat-option value="On Leave">On Leave</mat-option>
-                        <mat-option value="Finished">Finished</mat-option>
-                        <mat-option value="Cancelled">Cancelled</mat-option>
-                        <mat-option value="Entered in Error">Entered in Error</mat-option>
-                        <mat-option value="Unknown">Unknown</mat-option>
+                        <mat-option *ngFor="let status of encounterStatusList" [value]="status.value">{{status.name}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -835,13 +904,10 @@
                   <div class="form-group">
                     <label class="control-label">Class</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="encounterClass">
                         <mat-option value="">Select class</mat-option>
-                        <mat-option value="AMB">Ambulatory</mat-option>
-                        <mat-option value="EMER">Emergency</mat-option>
-                        <mat-option value="HH">Home Health</mat-option>
-                        <mat-option value="IMP">Inpatient Encounter</mat-option>
-                        <mat-option value="SS">Short Stay</mat-option>
+                        <mat-option *ngFor="let class of encounterClassList" [value]="class.value">{{class.name}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -850,13 +916,22 @@
                   <div class="form-group">
                     <label class="control-label">Service Type</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="serviceType">
                         <mat-option value="">Select service type</mat-option>
-                        <mat-option value="237">237 - Acute Inpatient Serv</mat-option>
-                        <mat-option value="576">576 - Rehabilitation</mat-option>
-                        <mat-option value="356">356 - General Maintenance</mat-option>
-                        <mat-option value="621">621 - Complex Maintenance</mat-option>
-                        <mat-option value="179">179 - Palliative Medicine</mat-option>
+                        <mat-option *ngFor="let serviceType of encounterServiceTypeList" [value]="serviceType.value">
+                          {{serviceType.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group">
+                    <label class="control-label">Service Provider</label>
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select formControlName="serviceProvider">
+                        <mat-option value="">Select service provider</mat-option>
+                        <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -865,23 +940,10 @@
                   <div class="form-group">
                     <label class="control-label">Priority</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="priority">
                         <mat-option value="">Select priority</mat-option>
-                        <mat-option value="A">A - ASAP</mat-option>
-                        <mat-option value="CR">CR - Callback Results</mat-option>
-                        <mat-option value="CS">CS - Callback For Scheduling</mat-option>
-                        <mat-option value="CSP">CSP - Callback Placer For Scheduling</mat-option>
-                        <mat-option value="CSR">CSR - Contact Recipient For Scheduling</mat-option>
-                        <mat-option value="EL">EL - Elective</mat-option>
-                        <mat-option value="EM">EM - Emergency</mat-option>
-                        <mat-option value="P">P - Preop</mat-option>
-                        <mat-option value="PRN">PRN - As Needed</mat-option>
-                        <mat-option value="R">R - Routine</mat-option>
-                        <mat-option value="RR">RR - Rush Reporting</mat-option>
-                        <mat-option value="S">S - Stat</mat-option>
-                        <mat-option value="T">T - Timing Critical</mat-option>
-                        <mat-option value="UD">UD - Use As Directed</mat-option>
-                        <mat-option value="UR">UR - Urgent</mat-option>
+                        <mat-option *ngFor="let priority of encounterPriorityList" [value]="priority.value">
+                          {{priority.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -892,14 +954,16 @@
                     <div class="row small-gutter">
                       <div class="col-6">
                         <div class="date-picker">
-                          <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date">
+                          <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date"
+                            formControlName="startDate">
                           <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
                           <mat-datepicker #periodStartDate></mat-datepicker>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="date-picker">
-                          <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date">
+                          <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date"
+                            formControlName="periodEnd">
                           <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
                           <mat-datepicker #periodEndDate></mat-datepicker>
                         </div>
@@ -909,50 +973,56 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.claimEncounter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Status</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.statusName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Class</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.encounterClassName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Service Type</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.serviceTypeName}}</p>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group form-group-static">
+                    <label class="control-label">Service Provider</label>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.serviceProviderName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Priority</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.priorityName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Period</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.startDate | date:
+                      'dd-MM-yyyy'}} - {{otherDataModel.claimEncounter.periodEnd | date:'dd-MM-yyyy'}}</p>
                   </div>
                 </div>
               </div>
 
               <h5 class="form-title">Hospitalization</h5>
-              <div class="row small-gutter">
+              <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
                     <label class="control-label">Origin</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="origin">
                         <mat-option value="">Select provider</mat-option>
-                        <mat-option value="Provider 1">Provider 1</mat-option>
-                        <mat-option value="Provider 2">Provider 2</mat-option>
-                        <mat-option value="Provider 3">Provider 3</mat-option>
+                        <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -961,27 +1031,10 @@
                   <div class="form-group">
                     <label class="control-label">Admin Source</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="adminSource">
                         <mat-option value="">Select admin source</mat-option>
-                        <mat-option value="IA">IA - Immediate Admission</mat-option>
-                        <mat-option value="EER">EER - Admission from hospital ER</mat-option>
-                        <mat-option value="EOP">EOP - Emergency Admission from hospital outpatient</mat-option>
-                        <mat-option value="EGPHC">EGPHC - Emergency Admission by referral from government primary
-                          healthcare center</mat-option>
-                        <mat-option value="EGGH">EGGH - Emergency Admission by referral from general government hospital
-                        </mat-option>
-                        <mat-option value="EPPHC">EPPHC - Emergency Admission by referral from private primary
-                          healthcare center</mat-option>
-                        <mat-option value="EPH">EPH - Emergency Admission by referral from private hospital</mat-option>
-                        <mat-option value="EIC">EIC - Emergency Admission by insurance company</mat-option>
-                        <mat-option value="EWGS">EWGS - Elective waiting list admission government free Scheme
-                        </mat-option>
-                        <mat-option value="EWSS">EWSS - Elective waiting list admission self-payment Scheme</mat-option>
-                        <mat-option value="EWIS">EWIS - Elective waiting list admission insurance coverage Scheme
-                        </mat-option>
-                        <mat-option value="EMBA">EMBA - Emergency Maternity Birth Admission</mat-option>
-                        <mat-option value="PMBA">PMBA - Planned Maternity Birth Admission</mat-option>
-                        <mat-option value="Others">Others - Others</mat-option>
+                        <mat-option *ngFor="let adminSource of encounterAdminSourceList" [value]="adminSource.value">
+                          {{adminSource.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -990,11 +1043,10 @@
                   <div class="form-group">
                     <label class="control-label">Readmission</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="reAdmission">
                         <mat-option value="">Select readmission</mat-option>
-                        <mat-option value="Readmission 1">Readmission 1</mat-option>
-                        <mat-option value="Readmission 2">Readmission 2</mat-option>
-                        <mat-option value="Readmission 3">Readmission 3</mat-option>
+                        <mat-option *ngFor="let reAdmission of encounterReAdmissionList" [value]="reAdmission.value">
+                          {{reAdmission.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -1003,50 +1055,43 @@
                   <div class="form-group">
                     <label class="control-label">Discharge Disposition</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="dischargeDispotion">
                         <mat-option value="">Select discharge disposition</mat-option>
-                        <mat-option value="Home">Home</mat-option>
-                        <mat-option value="Alternative home">Alternative home</mat-option>
-                        <mat-option value="Other healthcare facility">Other healthcare facility</mat-option>
-                        <mat-option value="Hospice">Hospice</mat-option>
-                        <mat-option value="Long-term care">Long-term care</mat-option>
-                        <mat-option value="Left against advice">Left against advice</mat-option>
-                        <mat-option value="Expired">Expired</mat-option>
-                        <mat-option value="Psychiatric hospital">Psychiatric hospital</mat-option>
-                        <mat-option value="Rehabilitation">Rehabilitation</mat-option>
-                        <mat-option value="Skilled nursing facility">Skilled nursing facility</mat-option>
-                        <mat-option value="Other">Other</mat-option>
+                        <mat-option *ngFor="let dd of encounterDischargeDispositionList" [value]="dd.value">{{dd.name}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                 </div>
+
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.claimEncounter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Origin</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.originName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Admin Source</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.adminSourceName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Readmission</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.reAdmissionName}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Discharge Disposition</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter.dischargeDispotionName}}</p>
                   </div>
                 </div>
+
               </div>
 
             </mat-tab>
