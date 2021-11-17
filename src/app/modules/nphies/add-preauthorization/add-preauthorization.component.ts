@@ -890,7 +890,7 @@ export class AddPreauthorizationComponent implements OnInit {
       });
 
       if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-        if(!this.FormPreAuthorization.controls.prescriber.value){
+        if (this.FormPreAuthorization.controls.prescriber.value) {
           this.model.visionPrescription = {};
           // tslint:disable-next-line:max-line-length
           this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');

@@ -20,7 +20,8 @@
           <mat-tab-group [dynamicHeight]="true" class="primary-tab">
             <mat-tab>
               <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
+                <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true"
+                  [class.text-danger]="checkErrorClaimInfo === true">
                   error</mat-icon>
                 <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
               </ng-template>
@@ -29,14 +30,16 @@
                 <div class="form-group flex-grow-1"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
                   <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-                  <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
-                    (keyup)="searchBeneficiaries()">
+                  <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
+                    formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
                   <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                    <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                      (click)="selectBeneficiary(beneficiary)">
                       {{beneficiary.name}} ({{beneficiary.documentId}})
                     </mat-option>
                   </mat-autocomplete>
-                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
+                  <div
+                    *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
                     <span class="error-text">Please select a Beneficiary</span>
                   </div>
                 </div>
@@ -46,7 +49,8 @@
                 </div>
                 <div [hidden]="pageMode === 'VIEW' || pageMode === 'EDIT'" class="form-group">
                   <label class="control-label">&nbsp;</label>
-                  <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+                  <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+                    color="primary">Create New Beneficiary</button>
                 </div>
               </div>
 
@@ -111,7 +115,8 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
                       <span class="error-text">Please select an Insurance Plan</span>
                     </div>
                   </div>
@@ -125,11 +130,13 @@
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
                     <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
                     <div class="date-picker">
-                      <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today" formControlName="dateOrdered">
+                      <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                        [max]="today" formControlName="dateOrdered">
                       <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
                       <mat-datepicker #dateOrderedCtrl></mat-datepicker>
                     </div>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
                       <span class="error-text">Please enter Date Ordered</span>
                     </div>
                   </div>
@@ -145,13 +152,15 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
                       <span class="error-text">Please select Payee Type</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
                     <label class="control-label">Payee<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="payee">
@@ -160,13 +169,15 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
                       <span class="error-text">Please select payee</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')}">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')}">
                     <label class="control-label">Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
@@ -174,7 +185,8 @@
                         <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')">
                       <span class="error-text">Please select a Type</span>
                     </div>
                   </div>
@@ -240,7 +252,11 @@
                 <div class="col-4 col-lg-3">
                   <div class="form-group">
                     <label class="control-label">Approval Response IDs</label>
-                    <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId">
+                    <!-- <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId"> -->
+                    <tag-input formControlName="preAuthResponseId" [placeholder]="'Enter Response Id'">
+                      <!-- <tag-input-dropdown [autocompleteItems]="['321654', '564654', '654654']">
+                      </tag-input-dropdown> -->
+                    </tag-input>
                   </div>
                 </div>
               </div>
@@ -320,7 +336,8 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk">*</span></span>
-                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
+                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
+                  (click)="openAddEditCareTeam()">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -350,10 +367,12 @@
                         {{careTeam.speciality}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
-                        <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                        <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)"
+                          class="text-primary">
                           <mat-icon>create</mat-icon>
                         </button>
-                        <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                        <button mat-icon-button type="button" matTooltip="Delete"
+                          (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
                           <mat-icon>delete_outline</mat-icon>
                         </button>
                       </td>
@@ -363,7 +382,8 @@
               </div>
               <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
               </app-empty-state>
-              <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}" *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
+              <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}"
+                *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
               </app-empty-state>
             </mat-tab>
             <mat-tab>
@@ -374,8 +394,8 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
-                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()"
-                  [disabled]="!FormNphiesClaim.controls.type.value">
+                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
+                  (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -401,10 +421,12 @@
                         {{diagnosis.onAdmissionName}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
-                        <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
+                        <button type="button" mat-icon-button matTooltip="Edit"
+                          (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
                           <mat-icon>create</mat-icon>
                         </button>
-                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
+                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
+                          (click)="deleteDiagnosis(diagnosis.sequence, i)">
                           <mat-icon>delete_outline</mat-icon>
                         </button>
                       </td>
@@ -414,12 +436,15 @@
               </div>
               <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
               </app-empty-state>
-              <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
+              <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}"
+                *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
               </app-empty-state>
             </mat-tab>
-            <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
+            <mat-tab
+              *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
               <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="checkErrorVision === true" [class.text-danger]="checkErrorVision === true">
+                <mat-icon class="mr-1" *ngIf="checkErrorVision === true"
+                  [class.text-danger]="checkErrorVision === true">
                   error</mat-icon>
                 <span [class.text-danger]="checkErrorVision === true">Vision Prescription</span>
               </ng-template>
@@ -430,13 +455,16 @@
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
-                    <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
+                    <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
+                        class="asterisk">*</span></label>
                     <div class="date-picker">
-                      <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
+                      <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                        formControlName="dateWritten">
                       <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                       <mat-datepicker #visionWrittenDate></mat-datepicker>
                     </div>
-                    <div *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
+                    <div
+                      *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
                       <span class="error-text">Please select Date Written</span>
                     </div>
                   </div>
@@ -444,7 +472,8 @@
                 <div class="col-8 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))}">
-                    <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+                    <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
+                        class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="prescriber">
                         <mat-option value="">Select Prescriber</mat-option>
@@ -453,7 +482,8 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
+                    <div
+                      *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
                       <span class="error-text">Please select a Prescriber</span>
                     </div>
                   </div>
@@ -463,7 +493,8 @@
                 <h5 class="d-flex align-items-center mb-3">
                   <strong [ngClass]="{'text-danger': IsLensSpecificationRequired}" class="medium">Lens
                     Specifications</strong>
-                  <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+                  <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditVisionLensDialog()"
+                    class="btn-icon btn-primary ml-auto">
                     <mat-icon>add</mat-icon>
                   </button>
                 </h5>
@@ -496,12 +527,16 @@
                         <td>{{visionSpecification.lensPower}}</td>
                         <td>{{visionSpecification.lensBackCurve}}</td>
                         <td>{{visionSpecification.lensDiameter}}</td>
-                        <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+                        <td>{{visionSpecification.prismAmount}}<span
+                            *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                         <td [hidden]="pageMode === 'VIEW'" class="actions">
-                          <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit" class="text-primary">
+                          <button mat-icon-button type="button"
+                            (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit"
+                            class="text-primary">
                             <mat-icon>create</mat-icon>
                           </button>
-                          <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete" class="text-primary">
+                          <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete"
+                            class="text-primary">
                             <mat-icon>delete_outline</mat-icon>
                           </button>
                         </td>
@@ -509,9 +544,11 @@
                     </tbody>
                   </table>
                 </div>
-                <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" message='No Lens Specifications found!'>
+                <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0"
+                  message='No Lens Specifications found!'>
                 </app-empty-state>
-                <app-empty-state [ngClass]="{'text-danger': IsLensSpecificationRequired}" *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
+                <app-empty-state [ngClass]="{'text-danger': IsLensSpecificationRequired}"
+                  *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
                   message='Lens Specifications reqired!'>
                 </app-empty-state>
               </div>
@@ -519,7 +556,8 @@
             <mat-tab [label]="'Supporting Info'">
               <h5 class="form-title pt-0">
                 <span>Supporting Info</span>
-                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
+                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
+                  (click)="openAddEditSupportInfoDialog()">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -555,10 +593,12 @@
                         {{s.reasonName}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
-                        <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
+                        <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                          (click)="openAddEditSupportInfoDialog(s)">
                           <mat-icon>create</mat-icon>
                         </button>
-                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(s.sequence, i)">
+                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
+                          (click)="deleteSupportingInfo(s.sequence, i)">
                           <mat-icon>delete_outline</mat-icon>
                         </button>
                       </td>
@@ -574,7 +614,8 @@
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
-                    <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
+                    <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired"
+                        class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="accidentType">
                         <mat-option value="">Select Accident Type</mat-option>
@@ -609,9 +650,11 @@
                   <div class="form-group">
                     <label class="control-label">Country</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
+                      <mat-select [value]="selectedCountry" formControlName="country"
+                        (selectionChange)="selectedCountry = $event.value;" #Country>
                         <mat-option>
-                          <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName"
+                          <ngx-mat-select-search placeholderLabel="Select Country"
+                            noEntriesFoundLabel="No nationalities found" formControlName="countryName"
                             name='selectedCountry'>
                           </ngx-mat-select-search>
                         </mat-option>
@@ -627,11 +670,13 @@
                     [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
                     <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
                     <div class="date-picker">
-                      <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+                      <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
+                        formControlName="date">
                       <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
                       <mat-datepicker #accidentDate></mat-datepicker>
                     </div>
-                    <div *ngIf="(IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
+                    <div
+                      *ngIf="(IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
                       <span class="error-text">Please enter date</span>
                     </div>
                   </div>
@@ -686,7 +731,8 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
-                <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
+                <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()"
+                  class="btn-icon btn-primary ml-auto"
                   [disabled]="!FormNphiesClaim.controls.type.value || (FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
                   <mat-icon>add</mat-icon>
                 </button>
@@ -709,7 +755,8 @@
                   <tbody>
                     <ng-container *ngFor="let item of Items; let i = index">
                       <tr>
-                        <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                        <td class="text-primary text-center row-click" width="10"
+                          (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
                           <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                         </td>
@@ -726,14 +773,16 @@
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           {{item.nonStandardCode}}</td>
                         <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
-                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
-                            (click)="openAddEditItemDetailsDialog(item.sequence)">
+                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details"
+                            class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
                             <mat-icon>add</mat-icon>
                           </button>
-                          <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
+                          <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                            (click)="openAddEditItemDialog(item)">
                             <mat-icon>create</mat-icon>
                           </button>
-                          <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
+                          <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
+                            (click)="deleteItem(i)">
                             <mat-icon>delete_outline</mat-icon>
                           </button>
                         </td>
@@ -840,7 +889,7 @@
                           </div>
 
                           <div class="box" *ngIf="item.Details && item.Details.length > 0">
-                            <h5 class="align-self-center medium pb-2">Item Details</h5>
+                            <h5 class="align-self-center medium pb-2">Item Detail</h5>
                             <table class="primary-grid manual-row-color claim-view-table no-borders">
                               <thead>
                                 <tr>
@@ -849,7 +898,7 @@
                                   <th>Code - Description</th>
                                   <th>Non Standard Code</th>
                                   <th>Display</th>
-                                  <th width="10"></th>
+                                  <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -859,11 +908,13 @@
                                   <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
                                   <td class="row-click">{{d.nonStandardCode}}</td>
                                   <td class="row-click">{{d.display}}</td>
-                                  <td class="actions text-nowrap">
-                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                  <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
+                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                                      (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                       <mat-icon>create</mat-icon>
                                     </button>
-                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
+                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
+                                      (click)="deleteItemDetails(item.sequence, di)">
                                       <mat-icon>delete_outline</mat-icon>
                                     </button>
                                   </td>

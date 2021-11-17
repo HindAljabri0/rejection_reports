@@ -69,6 +69,7 @@
     "ng2-charts": "^2.4.2",
     "ng2-file-upload": "^1.4.0",
     "ngx-bootstrap": "^5.5.0",
+    "ngx-chips": "~2.1.0",
     "ngx-clipboard": "^12.3.1",
     "ngx-guided-tour": "^1.1.11",
     "ngx-infinite-scroll": "^8.0.1",
@@ -79,9 +80,9 @@
     "ngx-scrollbar": "^4.2.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
+    "typescript": "3.5.3",
     "xlsx": "^0.16.2",
-    "zone.js": "~0.9.1",
-    "typescript": "3.5.3"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.24",

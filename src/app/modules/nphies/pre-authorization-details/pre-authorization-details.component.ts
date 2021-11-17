@@ -62,16 +62,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       this.data.visionPrescription.dateWritten = moment(this.data.visionPrescription.dateWritten).format('DD-MM-YYYY');
     }
 
-    if (this.data.supportingInfo && this.data.supportingInfo.length > 0) {
-      this.data.supportingInfo.forEach(i => {
-        if (i.fromDate) {
-          i.fromDateStr = moment(i.fromDate).format('DD-MM-YYYY');
-        }
-        if (i.toDate) {
-          i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
-        }
-      });
-    }
+
 
     this.data.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
       x => x.value === this.data.preAuthorizationInfo.type)[0]
@@ -140,6 +131,33 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         i.reasonName = this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0]
           ? this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0].name
           : '';
+
+        const codeList = this.sharedDataService.getCodeName(i.category);
+
+        // tslint:disable-next-line:max-line-length
+        if ((i.category === 'missingtooth' || i.category === 'reason-for-visit' || i.category === 'chief-complaint' || i.category === 'onset') && codeList) {
+          if (i.category === 'chief-complaint' || i.category === 'onset') {
+            // tslint:disable-next-line:max-line-length
+            i.codeName = codeList.filter(y => y.diagnosisCode === i.code)[0] ? codeList.filter(y => y.diagnosisCode === i.code)[0].diagnosisDescription : '';
+          } else {
+            i.codeName = codeList.filter(y => y.value === i.code)[0] ? codeList.filter(y => y.value === i.code)[0].name : '';
+          }
+        }
+
+        if (this.data.supportingInfo && this.data.supportingInfo.length > 0) {
+          this.data.supportingInfo.forEach(i => {
+            if (i.fromDate) {
+              i.fromDateStr = moment(i.fromDate).format('DD-MM-YYYY');
+            }
+            if (i.toDate) {
+              i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
+            }
+          });
+        }
+
+        i.unit = this.sharedDataService.durationUnitList.filter(y => y.value === i.unit)[0];
+        i.byteArray = i.attachment;
+
       });
     }
 
