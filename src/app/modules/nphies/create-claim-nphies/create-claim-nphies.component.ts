@@ -46,6 +46,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    eligibilityOfflineId: [''],
+    eligibilityOfflineDate: [''],
+    eligibilityResponseId: [''],
+    preAuthOfflineDate: [''],
+    preAuthResponseId: [''],
     accidentType: [''],
     streetName: [''],
     city: [''],
@@ -55,6 +60,17 @@ export class CreateClaimNphiesComponent implements OnInit {
     date: [''],
     dateWritten: [''],
     prescriber: [''],
+    status: [''],
+    encounterClass: [''],
+    serviceType: [''],
+    priority: [''],
+    startDate: [''],
+    periodEnd: [''],
+    origin: [''],
+    adminSource: [''],
+    reAdmission: [''],
+    dischargeDispotion: [''],
+    serviceProvider: ['']
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -62,6 +78,13 @@ export class CreateClaimNphiesComponent implements OnInit {
   payeeList = [];
   subTypeList = [];
   accidentTypeList = this.sharedDataService.accidentTypeList;
+  encounterStatusList = this.sharedDataService.encounterStatusList;
+  encounterClassList = this.sharedDataService.encounterClassList;
+  encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
+  encounterPriorityList = this.sharedDataService.encounterPriorityList;
+  encounterAdminSourceList = this.sharedDataService.encounterAdminSourceList;
+  encounterReAdmissionList = this.sharedDataService.encounterReAdmissionList;
+  encounterDischargeDispositionList = this.sharedDataService.encounterDischargeDispositionList;
 
   VisionSpecifications = [];
   SupportingInfo = [];
@@ -108,9 +131,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPayees();
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
@@ -120,11 +140,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
     }
 
-    if (this.claimId && this.uploadId) {
-      this.pageMode = 'VIEW';
-      this.disableControls();
-      this.getClaimDetails();
-    }
+    this.getPayees();
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.filteredNations.next(this.nationalities.slice());
+
+
 
   }
 
@@ -135,6 +155,13 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
         if (event.body != null && event.body instanceof Array) {
           this.payeeList = event.body;
+          this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+          this.onPayeeTypeChange();
+          if (this.claimId && this.uploadId) {
+            this.pageMode = 'VIEW';
+            this.disableControls();
+            this.getClaimDetails();
+          }
         }
       }
     }, err => {
@@ -164,6 +191,22 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.date.disable();
     this.FormNphiesClaim.controls.dateWritten.disable();
     this.FormNphiesClaim.controls.prescriber.disable();
+    this.FormNphiesClaim.controls.status.disable();
+    this.FormNphiesClaim.controls.encounterClass.disable();
+    this.FormNphiesClaim.controls.serviceType.disable();
+    this.FormNphiesClaim.controls.priority.disable();
+    this.FormNphiesClaim.controls.startDate.disable();
+    this.FormNphiesClaim.controls.periodEnd.disable();
+    this.FormNphiesClaim.controls.origin.disable();
+    this.FormNphiesClaim.controls.adminSource.disable();
+    this.FormNphiesClaim.controls.reAdmission.disable();
+    this.FormNphiesClaim.controls.dischargeDispotion.disable();
+    this.FormNphiesClaim.controls.serviceProvider.disable();
+    this.FormNphiesClaim.controls.eligibilityOfflineId.disable();
+    this.FormNphiesClaim.controls.eligibilityOfflineDate.disable();
+    this.FormNphiesClaim.controls.eligibilityResponseId.disable();
+    this.FormNphiesClaim.controls.preAuthOfflineDate.disable();
+    this.FormNphiesClaim.controls.preAuthResponseId.disable();
   }
 
   filterNationality() {
@@ -185,11 +228,13 @@ export class CreateClaimNphiesComponent implements OnInit {
     );
   }
 
-  onPayeeTypeChange($event) {
-    if ($event.value && $event.value.value === 'provider') {
+  onPayeeTypeChange() {
+    if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
       this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
+    this.FormNphiesClaim.controls.payeeType.disable();
+    this.FormNphiesClaim.controls.payee.disable();
   }
 
   onTypeChange($event) {
@@ -344,7 +389,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   deleteCareTeam(sequence: number, index: number) {
 
-    if (this.Items.find(x => x.careTeamSequence.find(y => y === sequence))) {
+    if (this.Items.find(x => x.careTeamSequence && x.careTeamSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
@@ -411,7 +456,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   deleteDiagnosis(sequence: number, index: number) {
 
-    if (this.Items.find(x => x.diagnosisSequence.find(y => y === sequence))) {
+    if (this.Items.find(x => x.diagnosisSequence && x.diagnosisSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
@@ -658,8 +703,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   deleteSupportingInfo(sequence: number, index: number) {
-
-    if (this.Items.find(x => x.supportingInfoSequence.find(y => y === sequence))) {
+    if (this.Items.find(x => x.supportingInfoSequence && x.supportingInfoSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
@@ -869,6 +913,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.payeeType = this.FormNphiesClaim.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
       preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
+      preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
+      preAuthorizationModel.eligibilityOfflineId = this.FormNphiesClaim.controls.eligibilityOfflineId.value;
+      preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
+      preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.preAuthOfflineDate.value, 'yyyy-MM-dd');
+      preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {
@@ -1032,7 +1081,22 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.items.forEach((x) => {
         this.model.totalNet += x.net;
       });
-      // console.log('Model', this.model);
+
+      const encounterModel: any = {};
+      encounterModel.status = this.FormNphiesClaim.controls.status.value;
+      encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
+      encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
+      encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
+      encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
+      encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
+      encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
+      encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
+      encounterModel.dischargeDispotion = this.FormNphiesClaim.controls.dischargeDispotion.value;
+      encounterModel.priority = this.FormNphiesClaim.controls.priority.value;
+      encounterModel.serviceProvider = this.FormNphiesClaim.controls.serviceProvider.value;
+      this.model.claimEncounter = encounterModel;
+
+      console.log('Model', this.model);
 
       this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -1231,19 +1295,22 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.beneficiary = response.beneficiary;
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
+    // this.otherDataModel.claimEncounter = response.claimEncounter;
 
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
 
     if (response.preAuthorizationInfo.payeeType) {
-      this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === response.preAuthorizationInfo.payeeType));
-      if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value !== 'provider') {
-        this.FormNphiesClaim.controls.payee.setValue(this.FormNphiesClaim.controls.payee.value);
-      }
+      this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === response.preAuthorizationInfo.payeeType)[0] ? this.sharedDataService.payeeTypeList.filter(x => x.value === response.preAuthorizationInfo.payeeType)[0] : '');
+      // if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value !== 'provider') {
+      //   this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === response.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === response.preAuthorizationInfo.payeeId)[0].nphiesId : '');
+      // }
+      this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === response.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === response.preAuthorizationInfo.payeeId)[0].nphiesId : '');
+      this.otherDataModel.payeeName = this.payeeList.filter(x => x.nphiesId === response.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === response.preAuthorizationInfo.payeeId)[0].englistName : '';
     }
 
     // tslint:disable-next-line:max-line-length
-    this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0]);
+    this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0] : '');
 
     switch (response.preAuthorizationInfo.type) {
       case 'institutional':
@@ -1259,9 +1326,107 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (response.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
-      this.FormNphiesClaim.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0]);
+      this.FormNphiesClaim.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0] : '');
     }
 
+    if (response.preAuthorizationInfo.eligibilityOfflineId != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.eligibilityOfflineId.setValue(response.preAuthorizationInfo.eligibilityOfflineId);
+    }
+
+    if (response.preAuthorizationInfo.eligibilityOfflineDate != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.eligibilityOfflineDate.setValue(response.preAuthorizationInfo.eligibilityOfflineDate);
+    }
+
+    if (response.preAuthorizationInfo.eligibilityResponseId != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.eligibilityResponseId.setValue(response.preAuthorizationInfo.eligibilityResponseId);
+    }
+
+    if (response.preAuthorizationInfo.preAuthOfflineDate != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.preAuthOfflineDate.setValue(response.preAuthorizationInfo.preAuthOfflineDate);
+    }
+
+    if (response.preAuthorizationInfo.preAuthResponseId != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
+    }
+
+    if (response.claimEncounter) {
+      this.otherDataModel.claimEncounter = response.claimEncounter;
+      if (response.claimEncounter.status != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.status.setValue(response.claimEncounter.status);
+        this.otherDataModel.claimEncounter.statusName = this.encounterStatusList.filter(x => x.value === response.claimEncounter.status)[0] ? this.encounterStatusList.filter(x => x.value === response.claimEncounter.status)[0].name : '';
+      }
+
+      if (response.claimEncounter.encounterClass != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.status.setValue(response.claimEncounter.encounterClass);
+        this.otherDataModel.claimEncounter.encounterClassName = this.encounterClassList.filter(x => x.value === response.claimEncounter.encounterClass)[0] ? this.encounterClassList.filter(x => x.value === response.claimEncounter.encounterClass)[0].name : '';
+      }
+
+      if (response.claimEncounter.serviceType != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.serviceType.setValue(response.claimEncounter.serviceType);
+        this.otherDataModel.claimEncounter.serviceTypeName = this.encounterServiceTypeList.filter(x => x.value === response.claimEncounter.serviceType)[0] ? this.encounterServiceTypeList.filter(x => x.value === response.claimEncounter.serviceType)[0].name : '';
+
+      }
+
+      if (response.claimEncounter.startDate != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.startDate.setValue(response.claimEncounter.startDate);
+      }
+
+      if (response.claimEncounter.periodEnd != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.periodEnd.setValue(response.claimEncounter.periodEnd);
+      }
+
+      if (response.claimEncounter.origin != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.origin.setValue(response.claimEncounter.origin);
+        this.otherDataModel.claimEncounter.originName = this.payeeList.filter(x => x.nphiesId === response.claimEncounter.origin)[0] ? this.payeeList.filter(x => x.nphiesId === response.claimEncounter.origin)[0].englistName : '';
+
+      }
+
+      if (response.claimEncounter.adminSource != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.adminSource.setValue(response.claimEncounter.adminSource);
+        this.otherDataModel.claimEncounter.adminSourceName = this.encounterAdminSourceList.filter(x => x.value === response.claimEncounter.adminSource)[0] ? this.encounterAdminSourceList.filter(x => x.value === response.claimEncounter.adminSource)[0].name : '';
+
+      }
+
+      if (response.claimEncounter.reAdmission != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.reAdmission.setValue(response.claimEncounter.reAdmission);
+        this.otherDataModel.claimEncounter.reAdmissionName = this.encounterReAdmissionList.filter(x => x.value === response.claimEncounter.reAdmission)[0] ? this.encounterReAdmissionList.filter(x => x.value === response.claimEncounter.reAdmission)[0].name : '';
+
+      }
+
+      if (response.claimEncounter.dischargeDispotion != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.dischargeDispotion.setValue(response.claimEncounter.dischargeDispotion);
+        this.otherDataModel.claimEncounter.dischargeDispotionName = this.encounterDischargeDispositionList.filter(x => x.value === response.claimEncounter.dischargeDispotion)[0] ? this.encounterDischargeDispositionList.filter(x => x.value === response.claimEncounter.dischargeDispotion)[0].name : '';
+
+      }
+
+      if (response.claimEncounter.priority != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.priority.setValue(this.sharedDataService.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0] ? this.sharedDataService.encounterDischargeDispositionList.filter(x => x.value === response.claimEncounter.priority)[0] : '');
+        this.otherDataModel.claimEncounter.priorityName = this.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0] ? this.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0].name : '';
+
+      }
+
+      if (response.claimEncounter.serviceProvider != null) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.serviceProvider.setValue(response.claimEncounter.serviceProvider);
+        this.otherDataModel.claimEncounter.serviceProviderName = this.payeeList.filter(x => x.nphiesId === response.claimEncounter.serviceProvider)[0] ? this.payeeList.filter(x => x.nphiesId === response.claimEncounter.origin)[0].englistName : '';
+      }
+
+    }
 
     if (response.accident) {
       if (response.accident.accidentType) {
