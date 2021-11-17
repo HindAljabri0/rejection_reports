@@ -64,7 +64,7 @@ export class NphiesUploadsComponent implements OnInit {
   openUpload(uploadId: number) {
    // this.router.navigate(['nphies', 'claims'])
   
-    this.router.navigateByUrl('/nphies/claims');
+    this.router.navigateByUrl('/claims/nphies-search-claim');
 
     // this.router.navigate([this.sharedService.providerId, 'nphies'], {
     //   queryParams: { uploadId }

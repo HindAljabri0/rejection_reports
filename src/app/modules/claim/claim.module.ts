@@ -38,6 +38,7 @@ import { AddEditVisionLensSpecificationsComponent } from '../nphies/add-preautho
 import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { TagInputModule } from 'ngx-chips';
+import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { TagInputModule } from 'ngx-chips';
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
+      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent},
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
