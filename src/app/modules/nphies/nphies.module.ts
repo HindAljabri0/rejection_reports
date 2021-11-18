@@ -40,6 +40,8 @@ import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/n
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
 
 @NgModule({
   declarations: [
@@ -60,7 +62,7 @@ import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-searc
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
-    NphiesSearchClaimsComponent,
+  
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
@@ -71,6 +73,9 @@ import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-searc
     NphiesUploadCardComponent,
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
+
+  
+   
     
   ],
   imports: [
@@ -82,7 +87,9 @@ import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-searc
     BsDatepickerModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    NphiesRoutingModule
+    NphiesRoutingModule,
+    CarouselModule,
+    
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
