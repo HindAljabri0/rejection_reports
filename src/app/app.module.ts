@@ -158,7 +158,6 @@ import { GeneralSummaryStatementReportComponent } from './pages/reports/general-
     XmlViewDialogComponent,
     EditClaimComponent,
     ConfirmationAlertDialogComponent,
-    
   ],
   imports: [
     AppRoutingModule,

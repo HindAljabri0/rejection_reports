@@ -416,7 +416,7 @@
               </div>
             </div>
             <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-              <h5 class="align-self-center medium pb-2">Item Details</h5>
+              <h5 class="align-self-center medium pb-2">Item Detail</h5>
               <table class="primary-grid manual-row-color claim-view-table no-borders">
                 <thead>
                   <tr>
@@ -630,7 +630,8 @@
           </td>
           <td>
             <span *ngIf="s.category=='attachment'">
-              {{s.attachment}}
+              <!-- {{s.attachment}} -->
+              <button>View</button>
             </span>
             <span *ngIf="s.category!='attachment'">
               {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>

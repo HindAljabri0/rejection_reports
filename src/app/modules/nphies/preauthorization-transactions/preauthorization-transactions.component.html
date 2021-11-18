@@ -34,7 +34,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Pre Authorization ID</label>
-                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="preAuthorizationRequestId">
+                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -112,7 +112,7 @@
                     </button>
                     <span *ngIf="!transaction.processingStatus" class="pl-1">Processing Payment</span>
                     <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
-                    
+
                   </div>
                 </td>
                 <td class="actions">

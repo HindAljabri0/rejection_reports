@@ -39,6 +39,7 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
+    NphiesSearchClaimsComponent,
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
@@ -68,7 +70,8 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     NphiesUploadsComponent,
     NphiesUploadCardComponent,
     CancelReasonModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -93,7 +96,8 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     ApiErrorsDialogComponent,
     AddCommunicationDialogComponent,
     CancelReasonModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+   
   ],
   exports: [
     ApiErrorsDialogComponent
