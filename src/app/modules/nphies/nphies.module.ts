@@ -4,7 +4,7 @@ import { EligibilityComponent } from './eligibility/eligibility.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared.module';
-import { BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
@@ -38,6 +38,10 @@ import { AddCommunicationDialogComponent } from './add-communication-dialog/add-
 import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.component';
 import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
+import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
 
 @NgModule({
   declarations: [
@@ -58,6 +62,7 @@ import { CancelReasonModalComponent } from './preauthorization-transactions/canc
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
+  
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
@@ -66,7 +71,12 @@ import { CancelReasonModalComponent } from './preauthorization-transactions/canc
     AddCommunicationDialogComponent,
     NphiesUploadsComponent,
     NphiesUploadCardComponent,
-    CancelReasonModalComponent
+    CancelReasonModalComponent,
+    AddEditItemDetailsModalComponent,
+
+  
+   
+    
   ],
   imports: [
     CommonModule,
@@ -77,7 +87,9 @@ import { CancelReasonModalComponent } from './preauthorization-transactions/canc
     BsDatepickerModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    NphiesRoutingModule
+    NphiesRoutingModule,
+    CarouselModule,
+    
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
@@ -90,7 +102,9 @@ import { CancelReasonModalComponent } from './preauthorization-transactions/canc
     AddEditSupportingInfoModalComponent,
     ApiErrorsDialogComponent,
     AddCommunicationDialogComponent,
-    CancelReasonModalComponent
+    CancelReasonModalComponent,
+    AddEditItemDetailsModalComponent,
+   
   ],
   exports: [
     ApiErrorsDialogComponent

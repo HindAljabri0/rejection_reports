@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -36,6 +36,9 @@ import { AddEditCareTeamModalComponent } from '../nphies/add-preauthorization/ad
 import { AddEditDiagnosisModalComponent } from '../nphies/add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { AddEditVisionLensSpecificationsComponent } from '../nphies/add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { TagInputModule } from 'ngx-chips';
+import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +64,7 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
+      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent},
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
@@ -71,7 +75,9 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
     SharedModule,
     HttpClientModule,
     MatTabsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    TagInputModule,
+    FormsModule
   ],
   exports: [
     CreateByApprovalFormComponent,
@@ -102,6 +108,7 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
+    AddEditItemDetailsModalComponent
   ],
   providers: [
     DatePipe

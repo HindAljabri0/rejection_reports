@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';

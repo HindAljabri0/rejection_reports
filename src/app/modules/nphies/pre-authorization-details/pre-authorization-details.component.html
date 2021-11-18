@@ -56,12 +56,31 @@
       </p>
     </div>
   </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Offline Eligibility ID</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityOfflineId}}</p>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Offline Eligibility Date</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityOfflineDate | date: 'dd-MM-yyyy'}}</p>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Eligibility Response ID</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityResponseId}}</p>
+    </div>
+  </div>
   <div class="col-9">
     <div class="inline-label-table">
       <label>Disposition</label>
       <p class="text-primary">{{data.disposition}}</p>
     </div>
   </div>
+
 </div>
 
 <!-- payment info start -->
@@ -238,13 +257,13 @@
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
           <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">Dummy data</td>
-          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
-          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
-          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)">-</td>
+          <td class="row-click" (click)="toggleItem(i)">-</td>
+          <td class="row-click" (click)="toggleItem(i)">-</td>
+          <td class="row-click" (click)="toggleItem(i)">-</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
-          <td colspan="8">
+          <td colspan="9">
             <div class="box mb-2" *ngIf="item.itemDecision">
               <h5 class="align-self-center medium pb-2">Adjudication</h5>
               <div class="row">
@@ -298,8 +317,8 @@
                 </div>
               </div>
             </div>
-            <div class="box">
-              <h5 class="align-self-center medium pb-2">Details</h5>
+            <div class="box mb-2">
+              <h5 class="align-self-center medium pb-2">Item Info</h5>
               <div class="row">
                 <div class="col-4">
                   <table class="inline-label-table">
@@ -309,7 +328,7 @@
                         <td>{{item.quantity}}</td>
                       </tr>
                       <tr>
-                        <td class="label">Discount</td>
+                        <td class="label">Discount(%)</td>
                         <td>{{item.discount}} %</td>
                       </tr>
                       <tr>
@@ -326,6 +345,10 @@
                           <span *ngIf="item.isPackage === 1">Yes</span>
                           <span *ngIf="item.isPackage === 2">No</span>
                         </td>
+                      </tr>
+                      <tr>
+                        <td class="label">Body Site</td>
+                        <td>{{item.bodySiteName}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -353,6 +376,10 @@
                         <td class="label">Payer Share</td>
                         <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       </tr>
+                      <tr>
+                        <td class="label">Sub Site</td>
+                        <td>{{item.subSiteName}}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -366,6 +393,10 @@
                       <tr>
                         <td class="label">Non Standard Code</td>
                         <td>{{item.nonStandardCode}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Display</td>
+                        <td>{{item.nonStandardDesc}}</td>
                       </tr>
                       <tr>
                         <td class="label">Supporting Info</td>
@@ -383,6 +414,29 @@
                   </table>
                 </div>
               </div>
+            </div>
+            <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+              <h5 class="align-self-center medium pb-2">Item Detail</h5>
+              <table class="primary-grid manual-row-color claim-view-table no-borders">
+                <thead>
+                  <tr>
+                    <th>Seq.</th>
+                    <th>Type</th>
+                    <th>Code - Description</th>
+                    <th>Non Standard Code</th>
+                    <th>Display</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of item.itemDetails; let di = index">
+                    <td class="row-click">{{d.sequence}}</td>
+                    <td class="row-click">{{d.typeName}}</td>
+                    <td class="row-click">{{d.code}} - {{d.description}}</td>
+                    <td class="row-click">{{d.nonStandardCode}}</td>
+                    <td class="row-click">{{d.nonStandardDesc}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </td>
         </tr>
@@ -465,12 +519,12 @@
       <p class="form-control-static">{{data.visionPrescription.dateWritten}}</p>
     </div>
   </div>
-  <!-- <div class="col-4">
-        <div class="form-group form-group-static">
-            <div class="control-label">Prescriber</div>
-            <p class="form-control-static">Gordon Shelton</p>
-        </div>
-    </div> -->
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Prescriber</div>
+      <p class="form-control-static">{{data.visionPrescription.prescriberName}}</p>
+    </div>
+  </div>
 </div>
 <div class="box" *ngIf="data.visionPrescription">
   <h5 class="d-flex align-items-center mb-3">
@@ -515,13 +569,14 @@
             <td>{{visionSpecification.lensPower}}</td>
             <td>{{visionSpecification.lensBackCurve}}</td>
             <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}/{{visionSpecification.lensDurationUnitName}}</td>
+            <td>{{visionSpecification.lensDuration}}<span *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
             <td>{{visionSpecification.lensColor}}</td>
             <td>{{visionSpecification.lensBrand}}</td>
-            <td>{{visionSpecification.prismAmount}}/{{visionSpecification.prismBaseName}}</td>
+            <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
             <td class="actions text-center">
               <mat-menu #notesMenu="matMenu" class="primary-menu">
-                {{visionSpecification.lensNote}}
+                <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
+                <span *ngIf="!visionSpecification.lensNote">-</span>
               </mat-menu>
               <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
@@ -575,7 +630,8 @@
           </td>
           <td>
             <span *ngIf="s.category=='attachment'">
-              {{s.attachment}}
+              <!-- {{s.attachment}} -->
+              <button>View</button>
             </span>
             <span *ngIf="s.category!='attachment'">
               {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>

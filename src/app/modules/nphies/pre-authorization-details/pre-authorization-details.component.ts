@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -14,7 +15,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
 
-  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices) { }
+  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.readNotification();
@@ -62,16 +63,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       this.data.visionPrescription.dateWritten = moment(this.data.visionPrescription.dateWritten).format('DD-MM-YYYY');
     }
 
-    if (this.data.supportingInfo && this.data.supportingInfo.length > 0) {
-      this.data.supportingInfo.forEach(i => {
-        if (i.fromDate) {
-          i.fromDateStr = moment(i.fromDate).format('DD-MM-YYYY');
-        }
-        if (i.toDate) {
-          i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
-        }
-      });
-    }
+
 
     this.data.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
       x => x.value === this.data.preAuthorizationInfo.type)[0]
@@ -112,6 +104,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       });
     }
 
+    if (this.data.visionPrescription && this.data.visionPrescription.prescriber) {
+      // tslint:disable-next-line:max-line-length
+      this.data.visionPrescription.prescriberName = this.data.careTeam.filter(x => x.sequence === this.data.visionPrescription.prescriber)[0] ? this.data.careTeam.filter(x => x.sequence === this.data.visionPrescription.prescriber)[0].practitionerName : '';
+    }
+
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications
       && this.data.visionPrescription.lensSpecifications.length > 0) {
       this.data.visionPrescription.lensSpecifications.forEach(i => {
@@ -135,11 +132,51 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         i.reasonName = this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0]
           ? this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0].name
           : '';
+
+        const codeList = this.sharedDataService.getCodeName(i.category);
+
+        // tslint:disable-next-line:max-line-length
+        if ((i.category === 'missingtooth' || i.category === 'reason-for-visit' || i.category === 'chief-complaint' || i.category === 'onset') && codeList) {
+          if (i.category === 'chief-complaint' || i.category === 'onset') {
+            // tslint:disable-next-line:max-line-length
+            i.codeName = codeList.filter(y => y.diagnosisCode === i.code)[0] ? codeList.filter(y => y.diagnosisCode === i.code)[0].diagnosisDescription : '';
+          } else {
+            i.codeName = codeList.filter(y => y.value === i.code)[0] ? codeList.filter(y => y.value === i.code)[0].name : '';
+          }
+        }
+
+        if (i.fromDate) {
+          i.fromDateStr = moment(i.fromDate).format('DD-MM-YYYY');
+        }
+        if (i.toDate) {
+          i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
+        }
+
+        i.unit = this.sharedDataService.durationUnitList.filter(y => y.value === i.unit)[0];
+        i.byteArray = i.attachment;
+        // i.file = this.getImageOfBlob();
       });
     }
 
     if (this.data && this.data.items) {
       this.data.items.forEach(x => {
+
+        // tslint:disable-next-line:max-line-length
+        x.bodySiteName = this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        x.subSiteName = this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
+
+        if (x.itemDetails && x.itemDetails.length > 0) {
+          x.itemDetails.forEach(y => {
+            y.typeName = this.sharedDataService.claimTypeList.filter(
+              z => z.value === y.type)[0]
+              ? this.sharedDataService.claimTypeList.filter(z => z.value === y.type)[0].name
+              : '';
+          });
+        }
+
+        // tslint:disable-next-line:max-line-length
+        x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
         this.paymentAmount += x.net;
         x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
 
@@ -176,6 +213,17 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         }
 
       });
+    }
+  }
+
+  getImageOfBlob(attachmentName, attachment) {
+    const fileExt = attachmentName.split('.').pop();
+    if (fileExt.toLowerCase() === 'pdf') {
+      const objectURL = `data:application/pdf;base64,` + attachment;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else {
+      const objectURL = `data:image/${fileExt};base64,` + attachment;
+      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
   }
 

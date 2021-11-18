@@ -1,0 +1,127 @@
+
+        <div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
+            <div class="block-header has-border">
+                <p>Rejection Comparison Report</p>
+            </div>
+            <form #rejectionComparativeReportForm='ngForm' (ngSubmit)='rejectionComparativeReportForm.valid && generate()'>
+                <div class="block-filter-panel has-border">
+                    <div class="row small-gutter align-items-end">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="control-label">Payer</label>
+                                <mat-form-field class="form-control custom-select-control"
+                                    [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && !rejectionComparisonReport.payerId}">
+                                    <mat-select [(ngModel)]="rejectionComparisonReport.payerId" #payerId name="payer" required>
+                                        <mat-option value="0">All</mat-option>
+                                        <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                            ({{payer.arName}})</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group" [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && fromDate.invalid}">
+                                <label class="control-label">First Year</label>
+                                <div class="date-picker">
+                                    <!-- [matDatepicker]="fromDate" -->
+                                    <input [(ngModel)]='rejectionComparisonReport.fromDate' #fromDate='ngModel' name="fromDate" class="form-control date-picker"
+                                        placeholder="Select first year" bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="datePickerConfig" required
+                                        (bsValueChange)="dateValidation($event)" autocomplete="off" />
+                                    <!-- <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker> -->
+        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group" [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && toDate.invalid}">
+                                <label class="control-label">Second Year</label>
+                                <div class="date-picker">
+                                    <input bsDatepicker [minDate]="minDate" [bsConfig]="datePickerConfig" [(ngModel)]='rejectionComparisonReport.toDate' #toDate='ngModel' name="toDate"
+                                        class="form-control date-picker" (onShown)="onOpenCalendar($event)" required placeholder="Select second year" autocomplete="off" />
+                                    <!-- <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDate></mat-datepicker> -->
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-auto">
+                            <div class="form-group">
+                                <button mat-flat-button color="primary" type="submit">Generate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="progress-report-wrapper"  *ngIf="percenatgeChartData.length>0">
+                <div class="right-block full-width">
+                    <div class="chart-wrapper">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                            [chartType]="barChartType">
+                        </canvas>
+                    </div>
+                    <div class="table-responsive pt-2">
+                        <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th>Quarters</th>
+                                    <th>Quarter 1</th>
+                                    <th>Quarter 2</th>
+                                    <th>Quarter 3</th>
+                                    <th>Quarter 4</th>
+                                    <th>Sum of total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+        
+                                <tr class="align-middle medium">
+                                    <th class="header-cell">{{firstYear}}</th>
+                                    <td *ngFor="let item of quarterData.firstQuarter">{{item}} SR</td>
+                                    <td>{{quarterData.firstQuaterSumOfTotal}} SR</td>
+                                </tr>
+        
+                                <tr class="align-middle medium">
+                                    <th class="header-cell">{{secondYear}}</th>
+                                    <td *ngFor="let item of quarterData.secondQuarter">{{item}} SR</td>
+                                    <td>{{quarterData.secondQuaterSumOfTotal}} SR</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive pt-2">
+                        <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th>{{diffrenceLableName}}</th>
+                                    <th *ngFor="let item of percenatgeChartData">{{item.label}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+        
+                                <tr class="align-middle medium">
+                                    <th class="header-cell">Difference</th>
+                                    <ng-container *ngFor="let item of percenatgeChartData">
+                                        <td *ngIf="item.value===Rate.Equal">{{item.data}}%</td>
+                                        <td class="text-success" *ngIf="item.value===Rate.Up">
+                                            <mat-icon>trending_up</mat-icon><br>{{item.data}}%
+                                        </td>
+                                        <td class="text-danger" *ngIf="item.value===Rate.Down">
+                                            <mat-icon>trending_down</mat-icon><br>{{item.data}}%
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="right-block full-width" *ngIf="percenatgeChartData.length==0">
+                    <app-empty-state [message]="getEmptyStateMessage()" icon="ic-empty-chart.svg">
+                    </app-empty-state>
+                </div>
+            </div>
+            <!-- <div class="block-footer sticky-bottom">
+                <div class="right-block btn-list">
+                    <button color="primary" mat-flat-button>Print</button>
+                </div>
+            </div> -->
+        </div>

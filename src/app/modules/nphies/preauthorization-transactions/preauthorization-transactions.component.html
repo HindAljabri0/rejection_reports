@@ -34,7 +34,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Pre Authorization ID</label>
-                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="preAuthorizationRequestId">
+                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -80,12 +80,12 @@
       </div>
       <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" *ngIf="transactionModel && transactions.length > 0">
         <div class="fixed-height fixed-height-sm">
-          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+          <table class="primary-grid sticky-header no-borders" cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
                 <th>Member Card ID</th>
                 <th>Pre Authorization ID</th>
-                <th>Transaction Date/Time</th>
+                <th>Transaction Date</th>
                 <th>Payer</th>
                 <th>Status</th>
                 <th>Processing Status</th>
@@ -107,10 +107,12 @@
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
-                    <button mat-icon-button matTooltip="Check Status" class="text-primary">
+                    <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.responseId)">
                       <mat-icon>refresh</mat-icon>
                     </button>
-                    <span class="pl-1">Processing Payment</span>
+                    <span *ngIf="!transaction.processingStatus" class="pl-1">Processing Payment</span>
+                    <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
+
                   </div>
                 </td>
                 <td class="actions">

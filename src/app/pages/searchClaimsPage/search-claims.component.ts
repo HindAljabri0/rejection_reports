@@ -231,6 +231,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
         uploadId: this.params.uploadId,
+        nationalId:this.params.nationalId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -331,7 +332,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.memberId,
       this.params.invoiceNo,
       this.params.patientFileNo,
-      this.params.policyNo).toPromise().catch(error => {
+      this.params.policyNo,
+      this.params.nationalId
+      ).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == '4') {
@@ -437,7 +440,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_patientFileNo || this.params.patientFileNo,
       this.params.policyNo,
       this.params.filter_drName,
-      this.params.filter_nationalId,
+      this.params.filter_nationalId|| this.params.nationalId,
       this.params.filter_claimDate,
       this.params.filter_netAmount,
       this.params.filter_batchNum || this.params.batchId).subscribe((event) => {
@@ -1275,7 +1278,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 if (result === true) {
                   this.commen.loadingChanged.next(true);
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, null,
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId,  null,
                     this.params.filter_claimRefNo, this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims,
                     this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount,
                     this.params.filter_batchNum).subscribe(event => {
@@ -1326,7 +1329,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             break;
           case 'confirm':
             this.commen.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo,
+            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
               this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.params.filter_memberId,
               this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum)
               .subscribe(event => {
@@ -1387,7 +1390,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           if (result === true) {
             this.commen.loadingChanged.next(true);
             const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo,
+            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
               this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to,
               this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
                 if (event instanceof HttpResponse) {

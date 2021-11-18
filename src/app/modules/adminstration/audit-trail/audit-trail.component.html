@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="btn-list flex">
+            <div class="btn-list flex justify-content-end">
                 <button mat-flat-button color="primary" (click)="filter()">Filter</button>
                 <button *ngIf="isFiltered" mat-button color="primary" (click)="clear()">Clear</button>
                 <button (click)="stopWatchingLogs()" class="btn-action text-primary" *ngIf="watchLogsSubscription != null && !watchLogsSubscription.closed; else playButton"

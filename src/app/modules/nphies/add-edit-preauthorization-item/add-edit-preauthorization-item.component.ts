@@ -36,7 +36,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
+    display: [''],
     isPackage: [''],
+    bodySite: [''],
+    subSite: [''],
     quantity: ['', Validators.required],
     unitPrice: ['', Validators.required],
     discount: [''],
@@ -59,6 +62,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   isSubmitted = false;
 
   typeList = this.sharedDataService.itemTypeList;
+  bodySiteList = [];
+  subSiteList = [];
   IscareTeamSequenceRequired = false;
 
   today: Date;
@@ -71,16 +76,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.data.type) {
       this.setTypes(this.data.type);
+      this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+      this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
 
     if (this.data.item && this.data.item.itemCode) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
+        display: this.data.item.display,
         isPackage: this.data.item.isPackage,
+        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
+        subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
@@ -220,6 +229,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
+  typeChange() {
+    this.FormItem.controls.item.setValue('');
+    this.getItemList();
+  }
+
   getItemList() {
     this.IsItemLoading = true;
     this.FormItem.controls.item.disable();
@@ -262,7 +276,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     // filter the nations
     this.filteredItem.next(
-      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1)
+      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -458,7 +472,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.itemCode = this.FormItem.controls.item.value.code;
       model.itemDescription = this.FormItem.controls.item.value.description;
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
+      model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
+
+      model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
+      model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
+
+      model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
+      model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
       model.quantity = parseInt(this.FormItem.controls.quantity.value);
       model.unitPrice = parseFloat(this.FormItem.controls.unitPrice.value);
@@ -472,6 +493,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
       model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd');
+      model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy');
 
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
         model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
@@ -484,6 +506,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       if (this.FormItem.controls.diagnosisSequence.value && this.FormItem.controls.diagnosisSequence.value.length > 0) {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
+
+      model.Details = [];
 
       this.dialogRef.close(model);
     }

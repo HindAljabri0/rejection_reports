@@ -104,7 +104,7 @@
                                 <span class="text">Claim Status Summary Report</span>
                             </a>
                         </li>
-                        <li i18n="@@gssreport">
+                        <li i18n="@@gssreport" *ngIf='hasGSSPrivilege'>
                             <a routerLink="/{{providerId}}/reports/general-summary-statement-report" #GSSReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">General Summary Statement Report</span>
                             </a>
@@ -162,6 +162,15 @@
                                 <span class="text">Rejection Breakdown Report</span>
                             </a>
                         </li>
+
+                        <li i18n="@@rejectionComparisonReport">
+                            <a routerLink="/reports/rejection-comparison-report" routerLinkActive="is-active">
+
+                                <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
+                                <span class="text">Rejection Comparison Report</span>
+                            </a>
+                        </li>
                     </ul>
                 </mat-expansion-panel>
 
@@ -201,11 +210,6 @@
                             </a>
                             <a routerLink="/collection-management/statement-of-accounts-details" class="d-none" routerLinkActive="is-active"
                                 #statementAccountDetails="routerLinkActive"></a>
-                        </li>
-                        <li *ngIf="!envStaging && !envProd">
-                            <a routerLink="/collection-management/reconciliation" routerLinkActive="is-active">
-                                <span class="text">Reconciliation</span>
-                            </a>
                         </li>
                         <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/reconciliation-report" routerLinkActive="is-active">

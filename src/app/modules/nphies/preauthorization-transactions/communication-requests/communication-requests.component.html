@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let req of communicationRequests">
+        <tr *ngFor="let req of communicationRequests" [ngClass]="{'text-warning light-bg-warning': req.notificationStatus !== 'read'}">
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.communicationId}}</td>
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.category}}</td>
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.requestId}}</td>

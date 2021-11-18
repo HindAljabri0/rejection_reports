@@ -12,6 +12,7 @@ import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
 import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.component';
+import { NphiesSearchClaimsComponent } from './nphies/nphies-search-claims/nphies-search-claims.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.compone
         children: [
           { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
+          
           { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
           { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
@@ -42,10 +44,11 @@ import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.compone
             canLoad: [RouteCanActiveService]
           },
           {
-            path: 'claims',
+            path:':providerId/claims',
             loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
-            canLoad: [RouteCanActiveService]
+            canActivate: [RouteCanActiveService]
           },
+          
           {
             path: 'reports',
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),

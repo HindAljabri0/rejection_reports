@@ -7,7 +7,8 @@ import { EmptyStateComponent } from '../components/reusables/empty-state/empty-s
 @NgModule({
   declarations: [
     DetailscardComponent,
-    EmptyStateComponent
+    EmptyStateComponent,
+
   ],
   imports: [
     MaterialModule,

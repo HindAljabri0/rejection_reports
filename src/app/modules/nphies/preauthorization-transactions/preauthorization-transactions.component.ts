@@ -22,6 +22,7 @@ import { CommunicationRequest } from 'src/app/models/communication-request';
 import { ProcessedTransactionsComponent } from './processed-transactions/processed-transactions.component';
 import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
 import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -47,7 +48,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     fromDate: [''],
     toDate: [''],
     payerId: [''],
-    preAuthorizationRequestId: [''],
+    nphiesRequestId: [''],
     beneficiaryId: [''],
     beneficiaryName: [''],
     status: ['']
@@ -62,9 +63,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   statusList = [
     { value: 'queued', name: 'Queued' },
-    { value: 'complete', name: 'Processing Complete' },
+    { value: 'Processing Complete', name: 'Processing Complete' },
     { value: 'error', name: 'Error' },
-    { value: 'partial', name: 'Partial Processing' },
+    { value: 'Partial Processing', name: 'Partial Processing' },
   ];
 
   constructor(
@@ -74,6 +75,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private datePipe: DatePipe,
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
+    private dialogService: DialogService,
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
@@ -105,9 +107,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.FormPreAuthTransaction.controls.payerId.patchValue(parseInt(params.payerId));
       }
 
-      if (params.preAuthorizationRequestId != null) {
+      if (params.nphiesRequestId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.preAuthorizationRequestId.patchValue(parseInt(params.preAuthorizationRequestId));
+        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(parseInt(params.nphiesRequestId));
       }
 
       if (params.beneficiaryId != null) {
@@ -229,8 +231,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
-      if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value, 10);
+      if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+        model.nphiesRequestId = parseInt(this.FormPreAuthTransaction.controls.nphiesRequestId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
@@ -290,8 +292,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       path += `payerId=${this.FormPreAuthTransaction.controls.payerId.value}&`;
     }
 
-    if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-      path += `preAuthorizationRequestId=${this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value}&`;
+    if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+      path += `nphiesRequestId=${this.FormPreAuthTransaction.controls.nphiesRequestId.value}&`;
     }
 
     if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
@@ -424,6 +426,82 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
         }
         this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  checkStatus(responseId: number) {
+    this.sharedServices.loadingChanged.next(true);
+    const model: any = {};
+    model.approvalResponseId = responseId;
+    this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+
+          if (body.errors && body.errors.length > 0) {
+            const errors: any[] = [];
+            body.errors.forEach(err => {
+              err.coding.forEach(codex => {
+                errors.push(codex.code + ' : ' + codex.display);
+              });
+            });
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+          }
+          this.onSubmit();
+
+
+          // if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
+          //   const errors: any[] = [];
+
+          //   if (body.disposition) {
+          //     errors.push(body.disposition);
+          //   }
+
+          //   if (body.errors && body.errors.length > 0) {
+          //     body.errors.forEach(err => {
+          //       err.coding.forEach(codex => {
+          //         errors.push(codex.code + ' : ' + codex.display);
+          //       });
+          //     });
+          //   }
+          //   this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+
+          // } else {
+          //   // this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+          //   this.onSubmit();
+          // }
+        }
+        // this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        } else if (error.status === 500) {
+          this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        }
       }
     });
   }

@@ -102,16 +102,16 @@ export class ReportsService {
   }
 
   downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
-    const requestURL = `/providers/${providerId}/payments/${paymentReference}/download`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
+    const requestURL = `/providers/${providerId}/payments/${paymentReference}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
-    const requestURL = `/providers/${providerId}/submissions/download?` +
+    const requestURL = `/providers/${providerId}/submissions?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -122,9 +122,9 @@ export class ReportsService {
     } else if (criteria == '2') {
       queryType = 'claim';
     }
-    const requestURL = `/providers/${providerId}/rejections/download?` +
+    const requestURL = `/providers/${providerId}/rejections?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', {
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', {
       responseType: 'text',
       reportProgress: true
     });
@@ -165,7 +165,7 @@ export class ReportsService {
   }
 
   downalodClaimStatusSummaryCsv(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
-    const requestURL = `/providers/${providerId}/status-summary/download?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
+    const requestURL = `/providers/${providerId}/status-summary?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
 
     let searchparams = new HttpParams();
     if (data) {
@@ -174,7 +174,7 @@ export class ReportsService {
       }
     }
     // { responseType: 'text', params: searchparams }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
       { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
@@ -224,9 +224,9 @@ export class ReportsService {
     return this.http.request(request);
   }
   downloadTechnicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
-    const requestURL = `/providers/${providerId}/rejections/technical/download?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const requestURL = `/providers/${providerId}/rejections/technical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
       { responseType: 'blob', reportProgress: true, headers: headers });
     return this.http.request(request);
   }
@@ -236,9 +236,9 @@ export class ReportsService {
     return this.http.request(request);
   }
   downloadMedicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
-    const requestURL = `/providers/${providerId}/rejections/medical/download?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const requestURL = `/providers/${providerId}/rejections/medical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
       { responseType: 'blob', reportProgress: true, headers: headers });
     return this.http.request(request);
   }

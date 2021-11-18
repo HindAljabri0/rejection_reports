@@ -32,7 +32,9 @@ import { RevenueComparativeReportComponent } from './components/revenue-comparat
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ClaimStatusSummaryReportComponent } from 'src/app/pages/reports/claim-summary-status-report/claim-status-summary-report.component';
 import { RejectionTrackingReportComponent } from './components/rejection-tracking-report/rejection-tracking-report.component';
+import { RejectionBreakdownReportComponent } from './components/rejection-breakdown-report/rejection-breakdown-report.component';
 import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-rejction-report/medical-rejction-report.component';
+import { RejectionComparisonReportComponent } from './components/rejection-comparison-report/rejection-comparison-report.component';
 
 
 
@@ -57,6 +59,8 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
     RejectionTrackingReportComponent,
     MedicalRejctionReportComponent,
     ClaimStatusSummaryReportComponent,
+    RejectionBreakdownReportComponent,
+    RejectionComparisonReportComponent,
   ],
   imports: [
    

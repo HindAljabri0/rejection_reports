@@ -5,7 +5,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { SharedServices } from 'src/app/services/shared.services';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { RevenuComparativeReport } from 'src/app/models/revenuComparativeReport';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
