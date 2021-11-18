@@ -81,6 +81,41 @@ export class DownloadService {
     return downloadRequest.status$.asObservable();
   }
 
+  startGeneratingDownloadFile(request: Observable<HttpEvent<unknown>>) {
+    const downloadRequest = new DownloadRequest();
+    this.downloads.next([...this._downloads, downloadRequest]);
+    downloadRequest.status$.next(DownloadStatus.INIT);
+
+    request.subscribe(event => {
+      if (event.type == HttpEventType.DownloadProgress) {
+        const partialBody = event['partialText'];
+        if (partialBody != null) {
+          const splittedBody = partialBody.split(' - ');
+          const progress = Number.parseFloat(splittedBody.pop());
+          downloadRequest.filename$.next(splittedBody[0]);
+          downloadRequest.contentType$.next(splittedBody[1]);
+          downloadRequest.progress$.next(progress);
+        }
+        downloadRequest.status$.next(DownloadStatus.DOWNLOADING);
+      } else if (event instanceof HttpResponse) {
+        const body = event.body + '';
+        downloadRequest.url$.next(body.split(' - ').pop());
+        downloadRequest.status$.next(DownloadStatus.DONE);
+      }
+    }, errorEvent => {
+      downloadRequest.errorMessage$.next('Could not reach the server at the moment please try again later.');
+      downloadRequest.status$.next(DownloadStatus.ERROR);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status == 404) {
+          downloadRequest.errorMessage$.next('Could not find data to download.');
+        } else if (errorEvent.status < 500) {
+          downloadRequest.errorMessage$.next(errorEvent.message);
+        }
+      }
+    });
+    return downloadRequest.status$.asObservable();
+  }
+
   getFileName(contentDisposition: string) {
     if (contentDisposition != null) {
       if (contentDisposition.includes('filename')) {
