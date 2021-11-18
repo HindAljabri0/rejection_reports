@@ -48,7 +48,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     fromDate: [''],
     toDate: [''],
     payerId: [''],
-    preAuthorizationRequestId: [''],
+    nphiesRequestId: [''],
     beneficiaryId: [''],
     beneficiaryName: [''],
     status: ['']
@@ -63,9 +63,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   statusList = [
     { value: 'queued', name: 'Queued' },
-    { value: 'complete', name: 'Processing Complete' },
+    { value: 'Processing Complete', name: 'Processing Complete' },
     { value: 'error', name: 'Error' },
-    { value: 'partial', name: 'Partial Processing' },
+    { value: 'Partial Processing', name: 'Partial Processing' },
   ];
 
   constructor(
@@ -107,9 +107,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.FormPreAuthTransaction.controls.payerId.patchValue(parseInt(params.payerId));
       }
 
-      if (params.preAuthorizationRequestId != null) {
+      if (params.nphiesRequestId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.preAuthorizationRequestId.patchValue(parseInt(params.preAuthorizationRequestId));
+        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(parseInt(params.nphiesRequestId));
       }
 
       if (params.beneficiaryId != null) {
@@ -231,8 +231,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
-      if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value, 10);
+      if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+        model.nphiesRequestId = parseInt(this.FormPreAuthTransaction.controls.nphiesRequestId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
@@ -292,8 +292,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       path += `payerId=${this.FormPreAuthTransaction.controls.payerId.value}&`;
     }
 
-    if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-      path += `preAuthorizationRequestId=${this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value}&`;
+    if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+      path += `nphiesRequestId=${this.FormPreAuthTransaction.controls.nphiesRequestId.value}&`;
     }
 
     if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
