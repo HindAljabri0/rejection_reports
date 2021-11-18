@@ -46,6 +46,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     beneficiaryId: ['', Validators.required],
     patientFileNumber: [''],
     insurancePlanId: ['', Validators.required],
+    preAuthRefNo: [''],
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
     payeeType: ['', Validators.required],
@@ -910,6 +911,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
+      this.model.preAuthRefNo =  this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
+          return x.value;
+        });
+
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
       if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
@@ -927,11 +932,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.preAuthOfflineDate.value, 'yyyy-MM-dd');
-      if (this.FormNphiesClaim.controls.preAuthResponseId.value) {
-        preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value.map(x => {
-          return x.value;
-        });
-      }
+      preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
 
       this.model.preAuthorizationInfo = preAuthorizationModel;
 

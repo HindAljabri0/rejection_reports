@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -14,7 +15,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
 
-  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices) { }
+  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.readNotification();
@@ -144,20 +145,16 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           }
         }
 
-        if (this.data.supportingInfo && this.data.supportingInfo.length > 0) {
-          this.data.supportingInfo.forEach(i => {
-            if (i.fromDate) {
-              i.fromDateStr = moment(i.fromDate).format('DD-MM-YYYY');
-            }
-            if (i.toDate) {
-              i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
-            }
-          });
+        if (i.fromDate) {
+          i.fromDateStr = moment(i.fromDate).format('DD-MM-YYYY');
+        }
+        if (i.toDate) {
+          i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
         }
 
         i.unit = this.sharedDataService.durationUnitList.filter(y => y.value === i.unit)[0];
         i.byteArray = i.attachment;
-
+        // i.file = this.getImageOfBlob();
       });
     }
 
@@ -216,6 +213,17 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         }
 
       });
+    }
+  }
+
+  getImageOfBlob(attachmentName, attachment) {
+    const fileExt = attachmentName.split('.').pop();
+    if (fileExt.toLowerCase() === 'pdf') {
+      const objectURL = `data:application/pdf;base64,` + attachment;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else {
+      const objectURL = `data:image/${fileExt};base64,` + attachment;
+      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
   }
 

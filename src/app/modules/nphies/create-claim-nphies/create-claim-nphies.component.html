@@ -121,6 +121,16 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Preauthorization Reference No</label>
+                    <!-- <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId"> -->
+                    <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Response Id'">
+                      <!-- <tag-input-dropdown [autocompleteItems]="['321654', '564654', '654654']">
+                      </tag-input-dropdown> -->
+                    </tag-input>
+                  </div>
+                </div>
               </div>
 
               <h5 class="form-title">Claim Info</h5>
@@ -251,12 +261,8 @@
                 </div>
                 <div class="col-4 col-lg-3">
                   <div class="form-group">
-                    <label class="control-label">Approval Response IDs</label>
-                    <!-- <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId"> -->
-                    <tag-input formControlName="preAuthResponseId" [placeholder]="'Enter Response Id'">
-                      <!-- <tag-input-dropdown [autocompleteItems]="['321654', '564654', '654654']">
-                      </tag-input-dropdown> -->
-                    </tag-input>
+                    <label class="control-label">Approval Response ID</label>
+                    <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId">
                   </div>
                 </div>
               </div>
