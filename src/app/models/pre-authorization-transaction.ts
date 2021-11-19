@@ -9,6 +9,7 @@ export class PreAuthorizationTransaction extends Paginateable{
   payerId: number;
   status: string;
   processingStatus: string;
+  nphiesRequestId: string;
 
   constructor(body: {}) {
     super(body);
@@ -20,5 +21,6 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.payerId = body['payerId'];
     this.status = body['status'];
     this.processingStatus = body['processingStatus'];
+    this.nphiesRequestId = body['nphiesRequestId'];
   }
 }

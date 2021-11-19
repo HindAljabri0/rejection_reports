@@ -317,11 +317,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  openReasonModal(requestId: number, reqType: string) {
+  openReasonModal(requestId: number, responseId: number, reqType: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       approvalRequestId: requestId,
+      approvalResponseId: responseId,
       type: reqType
     };
 

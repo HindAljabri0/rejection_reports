@@ -631,26 +631,88 @@ export class BeneficiaryComponent implements OnInit {
       if (insurancePlan.selectePayer == null || insurancePlan.selectePayer == "") {
         insurancePlan.payerErorr = "Payer must be specified"
         thereIsError = true;
+      } else {
+        insurancePlan.payerErorr = ""
       }
+
       if (insurancePlan.memberCardId.value == null || insurancePlan.memberCardId.value.trim().length <= 0) {
         insurancePlan.memberCardIdErorr = "Member Card ID must be specified"
         thereIsError = true;
+      } else {
+        insurancePlan.memberCardIdErorr = ""
       }
 
       if (insurancePlan.selecteSubscriberRelationship == null || insurancePlan.selecteSubscriberRelationship.trim().length <= 0) {
         insurancePlan.selecteSubscriberRelationshipErorr = "Subscriber Relationship must be specified"
         thereIsError = true;
+      } else {
+        insurancePlan.selecteSubscriberRelationshipErorr = ""
       }
 
       if (insurancePlan.selecteCoverageType == null || insurancePlan.selecteCoverageType.trim().length <= 0) {
         insurancePlan.selecteCoverageTypeErorr = "Coverage Type must be specified"
         thereIsError = true;
+      } else {
+        insurancePlan.selecteCoverageTypeErorr = ""
       }
 
     }
 
     return thereIsError;
 
+  }
+
+  IsPayerErorr(i) {
+    let hasError = false;
+    this.insurancePlans.filter((x, index) => index === i).forEach(x => {
+      if (x.selectePayer == null || x.selectePayer == "") {
+        x.payerErorr = "Payer must be specified";
+        hasError = true;
+      } else {
+        x.payerErorr = "";
+      }
+    });
+    return hasError;
+  }
+
+  IsMemberCardIdErorr(i) {
+    let hasError = false;
+    this.insurancePlans.filter((x, index) => index === i).forEach(x => {
+      if (x.memberCardId.value == null || x.memberCardId.value.trim().length <= 0) {
+        x.memberCardIdErorr = "Member Card ID must be specified";
+        hasError = true;
+      } else {
+        x.memberCardIdErorr = "";
+      }
+    });
+    return hasError;
+  }
+
+  IsSelecteCoverageTypeErorr(i) {
+    let hasError = false;
+    this.insurancePlans.filter((x, index) => index === i).forEach(x => {
+      if (x.selecteCoverageType == null || x.selecteCoverageType.trim().length <= 0) {
+        x.selecteCoverageTypeErorr = "Coverage Type must be specified";
+        hasError = true;
+      } else {
+        x.selecteCoverageTypeErorr = "";
+      }
+    });
+    return hasError;
+  }
+
+  IsSelecteSubscriberRelationshipErorr(i) {
+    let hasError = false;
+    this.insurancePlans.filter((x, index) => index === i).forEach(x => {
+      if (x.selecteSubscriberRelationship == null || x.selecteSubscriberRelationship.trim().length <= 0) {
+        x.selecteSubscriberRelationshipErorr = "Subscriber Relationship must be specified";
+        hasError = true;
+      } else {
+        x.selecteSubscriberRelationshipErorr = "";
+      }
+
+    });
+    return hasError;
   }
 
   getSelectedPayerName(index) {
