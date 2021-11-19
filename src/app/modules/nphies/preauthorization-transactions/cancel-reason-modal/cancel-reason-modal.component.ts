@@ -44,6 +44,7 @@ export class CancelReasonModalComponent implements OnInit {
 
       const model: any = {};
       model.approvalRequestId = this.data.approvalRequestId;
+      // model.approvalResponseId  = this.data.approvalResponseId;
       model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
 
       let action: any;
