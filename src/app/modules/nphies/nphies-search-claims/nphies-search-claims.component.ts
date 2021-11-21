@@ -41,12 +41,16 @@ import { SEARCH_TAB_RESULTS_KEY, SharedServices } from 'src/app/services/shared.
 import { SearchService } from 'src/app/services/serchService/search.service';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { Console } from 'console';
+
 @Component({
   selector: 'app-nphies-search-claims',
   templateUrl: './nphies-search-claims.component.html',
   styleUrls: ['./nphies-search-claims.component.css']
 })
 export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
+
 
   owlCarouselOptions: OwlOptions = {
     mouseDrag: false,
@@ -169,7 +173,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private store: Store,
     private adminService: AdminService,
     private downloadService: DownloadService,
-    private actions$: Actions) { }
+    private actions$: Actions,
+    private providerNphiesSearchService:ProviderNphiesSearchService) { }
 
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -178,6 +183,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   ngOnInit() {
+  
     this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
@@ -322,21 +328,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
-    event = await this.searchService.getSummaries(this.providerId,
+    event = await this.providerNphiesSearchService.getClaimSummary(this.providerId,
+     this.params.uploadId,
       statuses,
-      this.params.from,
-      this.params.to,
-      this.params.payerId,
-      this.params.organizationId,
-      this.params.batchId,
-      this.params.uploadId,
-      this.params.caseTypes,
-      this.params.claimRefNo,
-      this.params.memberId,
-      this.params.invoiceNo,
-      this.params.patientFileNo,
-      this.params.policyNo,
-      this.params.nationalId
+     
       ).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
@@ -1750,5 +1745,41 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     const cardKey: any = this.selectedCardKey;
     return parseInt(cardKey) !== 0 && this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === this.statusSelected.Accepted.toLowerCase() ? true : false;
   }
+  
+  
+ 
+    
+     
+     
+  //     ).toPromise().catch(error => {
+  //       this.commen.loadingChanged.next(false);
+  //       if (error instanceof HttpErrorResponse) {
+  //         if ((error.status / 100).toFixed() == '4') {
+  //           this.errorMessage = error.message;
+  //         } else if ((error.status / 100).toFixed() == '5') {
+  //           this.errorMessage = 'Server could not handle the request. Please try again later.';
+  //         } else {
+  //           this.errorMessage = 'Somthing went wrong.';
+  //         }
+  //         return error.status;
+  //       }
+  //     });
+  //   if (event instanceof HttpResponse) {
+  //     if ((event.status / 100).toFixed() == '2') {
+  //       const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
+  //       if (summary.totalClaims > 0) {
+  //         if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
+  //           summary.statuses.push('all');
+  //           summary.statuses.push('All');
+  //           summary.statuses.push('ALL');
+  //         }
+  //         this.summaries.push(summary);
+  //       }
+  //     }
+  //   }
+  //   this.commen.loadingChanged.next(false);
+  //   return event.status;
+  // }
+    // }
 
 }

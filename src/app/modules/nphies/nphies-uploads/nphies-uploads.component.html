@@ -8,7 +8,7 @@
           <div class="col-6 pb-3" *ngFor="let upload of uploads">
               <!-- <app-nphies-upload-card [data]="upload" (click)="upload.uploadName.endsWith('[DELETED]')? null:openUpload(upload.uploadId)">
               </app-nphies-upload-card> -->
-              <app-nphies-upload-card [data]="upload"   (click)="openUpload(2229)" >
+              <app-nphies-upload-card [data]="upload"   (click)="openUpload(upload.uploadId)" >
               </app-nphies-upload-card>
           </div>
       </div>

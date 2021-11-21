@@ -1,6 +1,6 @@
-<div *ngIf="errorMessage != null" class="p-3 bg-white">
+<!-- <div *ngIf="errorMessage == null" class="p-3 bg-white">
     <p class="error-card mb-0">{{errorMessage}}</p>
-</div>
+</div> -->
 <ng-content></ng-content>
 
 <div class="inner-loader-wrapper">
@@ -8,7 +8,7 @@
         <mat-spinner diameter="48"></mat-spinner>
     </div>
 
-    <div class="block-header" *ngIf="errorMessage == null">
+    <div class="block-header" >
         <p *ngIf="uploadNameExist" class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
         <div class="ml-auto d-flex mt-n2 mb-n2">
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': !isManagingAttachments}"
@@ -18,7 +18,7 @@
                 Management</button>
         </div>
     </div>
-    <div class="block-body pb-0 mb-3" *ngIf="errorMessage == null">
+    <div class="block-body pb-0 mb-3" >
         <!-- <button mat-icon-button [disabled]="currentSummariesPage==1" (click)="previousSummary()" style="margin-top: 50px;">
                 <mat-icon>navigate_before</mat-icon>
             </button> 
@@ -65,7 +65,7 @@
                             </tr>
                             <tr>
                                 <th>Total Net</th>
-                                <th>Total Net Vat</th>
+                                <!-- <th>Total Net Vat</th> -->
                                 <th *ngIf="summary.value.statuses[0] == 'partially_paid'"></th>
                             </tr>
                             <tr>
@@ -73,10 +73,10 @@
                                     <span class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span
                                         class="currency"> SR</span>
                                 </td>
-                                <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                <!-- <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                                     <span class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span
                                         class="currency"> SR</span>
-                                </td>
+                                </td> -->
                                 <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
                             </tr>
                         </table>
@@ -86,7 +86,7 @@
         </owl-carousel-o>
     </div>
 
-    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
+    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null && errorMessage == null">
         <div
             class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
