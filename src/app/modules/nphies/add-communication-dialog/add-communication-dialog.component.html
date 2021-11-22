@@ -2,14 +2,14 @@
   <h5 class="primary-dialog-title">Add Communication</h5>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<form [formGroup]="FormCommunication" (ngSubmit)="onSubmit()">
+<form [formGroup]="FormCommunication" (ngSubmit)="add()">
   <div class="primary-dialog-body p-0">
     <div class="table-responsive">
       <table cellspacing="0" cellpadding="0" border="0" height="300"
         class="primary-grid manual-row-color horizontal-borders claim-view-table">
-        <thead>
+        <thead *ngIf="data.communicationRequestId">
           <tr>
-            <th>Communication Request ID: c6cb9f49-b1e5-5b28-8510-3cbf3e5ddd22</th>
+            <th>Communication Request ID: {{data.communicationRequestId}}</th>
           </tr>
         </thead>
         <tbody>
@@ -29,19 +29,21 @@
                 </div>
                 <div class="col-auto">or</div>
                 <div class="col">
-                  <div class="form-group mb-0" [ngClass]="{'has-error' : (isSubmitted || FormCommunication.get('payloadValue').touched) && FormCommunication.get('payloadValue').hasError('required')}">
+                  <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
                     <input type="text" class="form-control" placeholder="Enter comment here..." formControlName="payloadValue"/>
-                    <div *ngIf="(isSubmitted || FormCommunication.get('payloadValue').touched) && FormCommunication.get('payloadValue').hasError('required')">
+                    <div *ngIf="isSubmitted && FormCommunication.get('payloadValue').hasError('required')">
                       <span class="error-text">Please select a Payload Value</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-auto">
-                  <button mat-flat-button color="primary" type="button" (click)="add()">Add</button>
+                  <button mat-flat-button color="primary" type="submit" (click)="add()">Add</button>
                 </div>
               </div>
             </td>
           </tr>
+
+
           <ng-container *ngFor="let pay of payLoads; let i = index">
             <tr *ngIf="pay.payloadValue">
               <td>{{pay.payloadValue}}</td>
@@ -87,9 +89,12 @@
     </div>
   </div>
   <div class="primary-dialog-footer has-border">
+    <div *ngIf="emptyPayloadError" class="text-left text-danger">
+      {{emptyPayloadError}}
+    </div>
     <div class="btn-list text-right">
-      <button mat-button (click)="closeDialog()">Cancel</button>
-      <button mat-flat-button type="submit" color="primary">Add Communication</button>
+      <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+      <button mat-flat-button type="button" color="primary" (click)="onSubmit()">Add Communication</button>
     </div>
   </div>
 </form>

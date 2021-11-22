@@ -30,11 +30,6 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
   }
 
   openAddCommunicationDialog() {
-
-    this.dialog.open(AddCommunicationDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-lg']
-    });
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
     dialogConfig.data = {
@@ -43,9 +38,17 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
+
+    const sub = dialogRef.componentInstance.fetchCommunications.subscribe((result) => {
+      debugger;
+      if (result) {
+        this.getCommunications();
+      }
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
+        this.getCommunications();
       }
     }, error => { });
   }

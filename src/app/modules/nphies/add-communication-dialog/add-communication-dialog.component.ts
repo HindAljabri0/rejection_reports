@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NphiesPollManagementService } from 'src/app/services/nphiesPollManagement/nphies-poll-management.service';
@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 })
 export class AddCommunicationDialogComponent implements OnInit {
 
+fetchCommunications = new EventEmitter();
+
   payLoads = [];
   FormCommunication: FormGroup = this.formBuilder.group({
     payloadValue: ['', Validators.required],
@@ -25,6 +27,7 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   currentFileUpload: any;
   isSubmitted = false;
+  emptyPayloadError = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddCommunicationDialogComponent>, private nphiesPollManagementService: NphiesPollManagementService,
@@ -60,6 +63,7 @@ export class AddCommunicationDialogComponent implements OnInit {
       this.FormCommunication.controls.payloadAttachment.setValue(data.substring(data.indexOf(',') + 1));
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
+      this.emptyPayloadError = '';
       this.FormCommunication.reset();
       this.isSubmitted = false;
     };
@@ -85,6 +89,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     if (this.FormCommunication.valid) {
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
+      this.emptyPayloadError = '';
       this.FormCommunication.reset();
       this.isSubmitted = false;
     }
@@ -92,9 +97,17 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   removePayload(i) {
     this.payLoads.splice(i, 1);
+    if (this.payLoads.length === 0) {
+      this.emptyPayloadError = 'Please add payload';
+    }
   }
 
   onSubmit() {
+    if (this.payLoads.length === 0) {
+      this.emptyPayloadError = 'Please add payload';
+      return;
+    }
+    this.emptyPayloadError = '';
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
     model.claimResponseId = this.data.claimResponseId;
@@ -117,16 +130,15 @@ export class AddCommunicationDialogComponent implements OnInit {
 
             if (body.errors && body.errors.length > 0) {
               body.errors.forEach(err => {
-                err.coding.forEach(codex => {
-                  errors.push(codex.code + ' : ' + codex.display);
-                });
+                errors.push(err);
               });
             }
             this.sharedServices.loadingChanged.next(false);
-            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, true);
+            this.fetchCommunications.emit(true);
           } else {
             this.sharedServices.loadingChanged.next(false);
-            this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+            this.dialogRef.close(true);
           }
         }
       }
