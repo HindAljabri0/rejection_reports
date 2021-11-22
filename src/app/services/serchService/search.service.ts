@@ -88,7 +88,7 @@ export class SearchService {
     invoiceNo?: string,
     patientFileNo?: string,
     policyNo?: string,
-    drname?: string,
+    drName?: string,
     nationalId?: string,
     claimDate?: string,
     netAmount?: string,
@@ -129,8 +129,8 @@ export class SearchService {
     if (patientFileNo != null) {
       requestURL += `patientFileNo=${patientFileNo}&`;
     }
-    if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `drname=${drname}&`;
+    if (drName != null && drName !== '' && drName !== undefined) {
+      requestURL += `drName=${drName}&`;
     }
     if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
       requestURL += `nationalId=${nationalId}&`;
