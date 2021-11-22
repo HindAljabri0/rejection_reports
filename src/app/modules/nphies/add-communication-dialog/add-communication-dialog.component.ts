@@ -48,7 +48,7 @@ fetchCommunications = new EventEmitter();
     this.currentFileUpload = event.target.files[0];
     this.FormCommunication.controls.attachmentName.setValue(this.currentFileUpload.name);
     this.FormCommunication.controls.attachmentType.setValue(this.currentFileUpload.type);
-    this.FormCommunication.controls.createdDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormCommunication.controls.createdDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'));
 
     // this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
