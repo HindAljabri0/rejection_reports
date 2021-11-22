@@ -1135,7 +1135,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_netAmount,
       this.params.filter_batchNum);
     if (event != null) {
-      this.downloadService.startDownload(event)
+      this.downloadService.startGeneratingDownloadFile(event)
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
             this.detailTopActionIcon = 'ic-check-circle.svg';

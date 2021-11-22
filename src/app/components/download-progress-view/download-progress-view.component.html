@@ -1,6 +1,6 @@
 <div class="download-progress-view">
     <div class="left">
-        <mat-spinner *ngIf="!isCSV() && !isExcel() && !isZip() && downloadRequest.errorMessage == null" diameter="32"></mat-spinner>
+        <mat-spinner *ngIf="!isCSV() && !isExcel() && !isZip() && downloadRequest.errorMessage == null && downloadRequest.progress != 100" diameter="32"></mat-spinner>
         <img *ngIf="isCSV()  && downloadRequest.errorMessage == null" src="./assets/file-types/ic-csv.svg" alt="CSV File" />
         <img *ngIf="isExcel() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-xls.svg" alt="Excel File" />
         <img *ngIf="isZip() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-zip.svg" alt="Zip File" />
@@ -11,6 +11,8 @@
             <p class="text-danger" *ngIf="downloadRequest.status == 2">{{downloadRequest.errorMessage}}</p>
             <p class="text" *ngIf="downloadRequest.status == 0">Waiting for the server to download the file</p>
             <p class="text" *ngIf="downloadRequest.status == 1 || downloadRequest.status == 3" [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
+            <a *ngIf="downloadRequest.status == 1">Generating Download URL</a>
+            <a *ngIf="downloadRequest.url != null" [href]="getDownloadURL()" target="_blank">Click to Start Downloading</a>
             <div class="d-flex align-items-center">
                 <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">{{getReadableFileSize()}}</p>
                 <mat-icon *ngIf="downloadRequest.status == 3" class="text-success ml-auto">offline_pin</mat-icon>
