@@ -306,4 +306,8 @@ export class LabResultsComponent implements OnInit {
     return this.labsPaginationControl.size;
   }
 
+  get totalLabsPages() {
+    return Math.ceil(this.resultsControls.length/this.labsPaginationControl.size);
+  }
+
 }

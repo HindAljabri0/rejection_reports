@@ -884,6 +884,10 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     return this.invoicesPaginationControl.size;
   }
 
+  get totalInvoicesPages() {
+    return Math.ceil(this.controllers.length/this.invoicesPaginationControl.size);
+  }
+
   _isInvalidDate(date: Date) {
     if (date != null && !(date instanceof Date)) {
       date = new Date(date);
