@@ -147,4 +147,12 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
+  getClaimSummary(providerId: string, uploadId: string, statuses?: string[]) {
+    let requestUrl = `/providers/${providerId}/claims?uploadId=${uploadId}`;
+    if (statuses != null) {
+      requestUrl += `&status=${statuses}`;
+    }
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
 }
