@@ -863,7 +863,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this.invoicesPaginationControl.page = 0;
   }
   showNextInvoicesPage() {
-    if ((this.invoicesPaginationControl.page + 1) < Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed())) {
+    if ((this.invoicesPaginationControl.page + 1) < this.totalInvoicesPages) {
       this.invoicesPaginationControl.page++;
     }
   }
@@ -873,7 +873,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
   }
   showLastInvoicePage() {
-    this.invoicesPaginationControl.page = Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed()) - 1;
+    this.invoicesPaginationControl.page = this.totalInvoicesPages;
   }
 
   get currentInvoicesPage() {
@@ -882,6 +882,10 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
   get currentInvoicesSize() {
     return this.invoicesPaginationControl.size;
+  }
+
+  get totalInvoicesPages() {
+    return Math.ceil(this.controllers.length/this.invoicesPaginationControl.size);
   }
 
   _isInvalidDate(date: Date) {
