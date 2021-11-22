@@ -23,8 +23,7 @@
                             <img src="./assets/ic-page-prev.svg" alt="Previous" />
                         </button>
                         <p class="page-info">
-                            {{(invoicesPaginationControl.page+1)}}<small>/{{(controllers.length/
-                                invoicesPaginationControl.size).toFixed()}}</small>
+                            {{(invoicesPaginationControl.page+1)}}<small>/{{(totalInvoicesPages)}}</small>
                         </p>
                         <button matRipple (click)="showNextInvoicesPage()" type="button" title="Next Page">
                             <img src="./assets/ic-page-next.svg" alt="Next" />
