@@ -17,6 +17,11 @@ export class DownloadRequest {
     errorMessage$: Subject<string>;
     private _errorMessage: string;
 
+    progress$: Subject<number>;
+    private _progress: number;
+    url$: Subject<string>;
+    private _url: string;
+
     constructor() {
         this.downloadedSize$ = new Subject();
         this.downloadedSize$.subscribe(downloadedSize => this._downloadedSize = downloadedSize);
@@ -31,6 +36,10 @@ export class DownloadRequest {
         this.errorMessage$ = new Subject();
         this.errorMessage$.subscribe(errorMessage => this._errorMessage = errorMessage);
 
+        this.progress$ = new Subject();
+        this.progress$.subscribe(progress => this._progress = progress);
+        this.url$ = new Subject();
+        this.url$.subscribe(url => this._url = url);
     }
 
     get downloadedSize() {
@@ -50,6 +59,13 @@ export class DownloadRequest {
     }
     get errorMessage() {
         return this._errorMessage;
+    }
+
+    get progress() {
+        return this._progress;
+    }
+    get url() {
+        return this._url;
     }
 
 }
