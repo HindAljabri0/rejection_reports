@@ -40,7 +40,6 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
 
     const sub = dialogRef.componentInstance.fetchCommunications.subscribe((result) => {
-      debugger;
       if (result) {
         this.getCommunications();
       }
