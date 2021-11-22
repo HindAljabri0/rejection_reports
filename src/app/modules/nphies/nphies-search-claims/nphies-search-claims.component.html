@@ -1,9 +1,9 @@
-<!-- <div *ngIf="errorMessage == null" class="p-3 bg-white">
+ <div *ngIf="errorMessage != null" class="p-3 bg-white">
     <p class="error-card mb-0">{{errorMessage}}</p>
-</div> -->
+</div> 
 <ng-content></ng-content>
 
-<div class="inner-loader-wrapper">
+<div class="inner-loader-wrapper" *ngIf="errorMessage == null">
     <div class="inner-loader" *ngIf="isLoading || (showEligibilityButton && isWaitingForEligibility)">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
@@ -86,7 +86,7 @@
         </owl-carousel-o>
     </div>
 
-    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null && errorMessage == null">
+    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
         <div
             class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
