@@ -243,7 +243,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  getAllDownloadForProvider(providerId: string, page?: number, pageSize?: number) {
+  getAllDownloadsForProvider(providerId: string, page?: number, pageSize?: number) {
     if (page == null) {
       page = 0;
     }

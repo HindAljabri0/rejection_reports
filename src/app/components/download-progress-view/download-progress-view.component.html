@@ -10,7 +10,7 @@
         <div class="inner">
             <p class="text-danger" *ngIf="downloadRequest.status == 2">{{downloadRequest.errorMessage}}</p>
             <p class="text" *ngIf="downloadRequest.status == 0">Waiting for the server to download the file</p>
-            <p class="text" *ngIf="downloadRequest.status == 1 || downloadRequest.status == 3" [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
+            <p class="text" *ngIf="downloadRequest.status == 1 || downloadRequest.status == 3|| downloadRequest.status==null" [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
             <a *ngIf="downloadRequest.status == 1">Generating Download URL</a>
             <a *ngIf="downloadRequest.url != null" [href]="getDownloadURL()" target="_blank">Click to Start Downloading</a>
             <div class="d-flex align-items-center">

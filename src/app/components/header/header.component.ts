@@ -73,21 +73,26 @@ export class HeaderComponent implements OnInit {
 
     this.watchPreAuthorizationChanges();
 
-    this.reportsService.getAllDownloadForProvider(this.providerId,null,null).subscribe(downloads => {
+
+    this.downloadService.downloads.subscribe(downloads => {
+      this.downloads=[]
+      this.downloads = downloads;
+      this.thereIsActiveDownloads = downloads.length > 0;
+      setTimeout(() => this.downloadMenuRef.openMenu(), 500);
+    });
+ 
+    this.reportsService.getAllDownloadsForProvider(this.providerId,null,null).subscribe(downloads => {
+      this.downloads=[]
       if(downloads instanceof HttpResponse){
   
       this.downloads=downloads.body['content'] as DownloadRequest[];
       this.thereIsActiveDownloads = this.downloads.length>0 ;
     ;
+   
       setTimeout(() => this.downloadMenuRef.openMenu(), 500);
     }});
 
-    this.downloadService.downloads.subscribe(downloads => {
-      this.downloads = downloads;
-      this.thereIsActiveDownloads = downloads.length > 0;
-      setTimeout(() => this.downloadMenuRef.openMenu(), 500);
-    });
-
+  
   }
 
   setNewNotificationIndecater(show: boolean) {
