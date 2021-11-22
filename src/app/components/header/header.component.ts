@@ -3,9 +3,11 @@ import { SharedServices } from '../../services/shared.services';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadRequest } from 'src/app/models/downloadRequest';
+import { DownloadRequest, DownloadStatus } from 'src/app/models/downloadRequest';
 import { MatMenuTrigger } from '@angular/material';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
+import { ReportsService } from 'src/app/services/reportsService/reports.service';
+import { HttpRequest, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -35,7 +37,8 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     public authService: AuthService,
     private downloadService: DownloadService,
-    private notificationService: NotificationsService
+    private notificationService: NotificationsService,
+    private reportsService:ReportsService
   ) {
     this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
@@ -62,10 +65,23 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+  
     this.getUserData();
+  
     this.sharedServices.getProcessedCount();
     this.sharedServices.getCommunicationRequestCount();
+
     this.watchPreAuthorizationChanges();
+
+    this.reportsService.getAllDownloadForProvider(this.providerId,null,null).subscribe(downloads => {
+      if(downloads instanceof HttpResponse){
+  
+      this.downloads=downloads.body['content'] as DownloadRequest[];
+      this.thereIsActiveDownloads = this.downloads.length>0 ;
+    ;
+      setTimeout(() => this.downloadMenuRef.openMenu(), 500);
+    }});
+
     this.downloadService.downloads.subscribe(downloads => {
       this.downloads = downloads;
       this.thereIsActiveDownloads = downloads.length > 0;

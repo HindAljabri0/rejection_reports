@@ -12,6 +12,7 @@ import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { SearchService } from './serchService/search.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ReportsService } from './reportsService/reports.service';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,7 @@ export class SharedServices {
     uploadId: number,
     uploadName: string
   }[]> = new Subject();
+
 
 
   getUploadId: any;
@@ -677,6 +679,7 @@ export class SharedServices {
     }
     return bytes.buffer;
 }
+
 
 }
 
