@@ -43,6 +43,7 @@ import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/s
 import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { Console } from 'console';
+import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -755,7 +756,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    this.claimDialogRef = this.dialog.open(EditClaimComponent, {
+    
+    this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId }
     });
