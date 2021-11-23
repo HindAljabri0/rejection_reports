@@ -911,9 +911,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
-      this.model.preAuthRefNo =  this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
+      if(this.FormNphiesClaim.controls.preAuthRefNo.value){
+        this.model.preAuthRefNo =  this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
           return x.value;
         });
+      }
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
