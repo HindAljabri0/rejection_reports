@@ -1,9 +1,9 @@
-<!-- <div *ngIf="errorMessage == null" class="p-3 bg-white">
+ <div *ngIf="errorMessage != null" class="p-3 bg-white">
     <p class="error-card mb-0">{{errorMessage}}</p>
-</div> -->
+</div> 
 <ng-content></ng-content>
 
-<div class="inner-loader-wrapper">
+<div class="inner-loader-wrapper" *ngIf="errorMessage == null">
     <div class="inner-loader" *ngIf="isLoading || (showEligibilityButton && isWaitingForEligibility)">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
@@ -86,7 +86,7 @@
         </owl-carousel-o>
     </div>
 
-    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null && errorMessage == null">
+    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
         <div
             class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
@@ -177,10 +177,10 @@
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Member ID
                                     </th>
-                                    <th
+                                    <!-- <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         National ID
-                                    </th>
+                                    </th> -->
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Patient File No.
@@ -193,13 +193,13 @@
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Amount
                                     </th>
-                                    <th
+                                    <!-- <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Vat</th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Batch No.
-                                    </th>
+                                    </th> -->
                                     <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
@@ -228,13 +228,13 @@
                                             <span class="text-monospace">{{claim.providerClaimNumber}}</span>
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                            {{claim.drName}}</td>
+                                            {{claim.doctorsName[0]}}</td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                             <span class="text-monospace">{{claim.memberId}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <!-- <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                             <span class="text-monospace">{{claim.nationalId}}</span>
-                                        </td>
+                                        </td> -->
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                             <span class="text-monospace">{{claim.patientFileNumber}}</span>
                                         </td>
@@ -246,7 +246,7 @@
                                             class="row-click text-nowrap">
                                             {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <!-- <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="row-click text-nowrap">
                                             {{claim.netVatAmount}}<span class="currency">
                                                 {{claim.unitOfNetVatAmount}}</span>
@@ -254,7 +254,7 @@
                                         <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="row-click text-nowrap">
                                             <span class="text-monospace">{{claim.batchNumber}}</span>
-                                        </td>
+                                        </td> -->
                                         <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="text-center row-click">
                                             <span class="status-dot bg-{{accentColor(claim.status)}}"></span>

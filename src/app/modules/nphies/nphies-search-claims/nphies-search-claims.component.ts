@@ -421,27 +421,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.searchResult = null;
     this.currentSelectedTab = 0;
     this.validationDetails = [];
-    this.searchService.getResults(this.providerId,
-      this.params.from,
-      this.params.to,
-      this.params.payerId,
-      this.params.organizationId,
+    this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
+      this.params.uploadId,
       this.summaries[key].statuses.filter(status => status != 'all'),
       page,
       this.pageSize,
-      this.params.batchId,
-      this.params.uploadId,
-      this.params.caseTypes,
-      this.params.filter_claimRefNo || this.params.claimRefNo,
-      this.params.filter_memberId || this.params.memberId,
-      this.params.invoiceNo,
-      this.params.filter_patientFileNo || this.params.patientFileNo,
-      this.params.policyNo,
-      this.params.filter_drName,
-      this.params.filter_nationalId|| this.params.nationalId,
-      this.params.filter_claimDate,
-      this.params.filter_netAmount,
-      this.params.filter_batchNum || this.params.batchId).subscribe((event) => {
+      ).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);

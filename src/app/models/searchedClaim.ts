@@ -5,6 +5,7 @@ export class SearchedClaim extends Paginateable {
   claimId: string;
   providerClaimNumber: string;
   drName: string;
+  doctorsName:string[];
   policyNumber: string;
   memberId: string;
   nationalId: string;
@@ -53,6 +54,7 @@ export class SearchedClaim extends Paginateable {
       this.batchNumber = body['batchNumber'];
       this.statusApproval=body['statusApproval'];
       this.descApproval=body['descApproval'];
+      this.doctorsName=body['doctorsName'];
     }
   }
 }
