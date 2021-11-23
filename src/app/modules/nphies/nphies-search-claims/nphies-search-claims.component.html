@@ -177,10 +177,10 @@
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Member ID
                                     </th>
-                                    <!-- <th
+                                    <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         National ID
-                                    </th> -->
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Patient File No.
@@ -228,13 +228,13 @@
                                             <span class="text-monospace">{{claim.providerClaimNumber}}</span>
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                            {{claim.doctorsName[0]}}</td>
+                                            {{claim.drName}}</td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                             <span class="text-monospace">{{claim.memberId}}</span>
                                         </td>
-                                        <!-- <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                             <span class="text-monospace">{{claim.nationalId}}</span>
-                                        </td> -->
+                                        </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                             <span class="text-monospace">{{claim.patientFileNumber}}</span>
                                         </td>
