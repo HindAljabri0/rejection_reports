@@ -98,11 +98,11 @@ export class ProcessedTransactionsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId, responseId, notificationId) {
+  openDetailsDialog(requestId, responseId, notificationId, notificationStatus) {
     if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
       this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
     }
-    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId });
+    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
   }
 
   get paginatorLength() {

@@ -359,18 +359,18 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   openDetailsDialoEv(event) {
-    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId);
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId, event.notificationStatus);
   }
 
   openDetailsDialogCR(event) {
-    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId);
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId, event.notificationStatus);
   }
 
   openDetailsDialog(requestId, responseId) {
-    this.getTransactionDetails(requestId, responseId, null, null);
+    this.getTransactionDetails(requestId, responseId, null, null, null);
   }
 
-  getTransactionDetails(requestId, responseId, communicationId = null, notificationId) {
+  getTransactionDetails(requestId, responseId, communicationId = null, notificationId, notificationStatus) {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
@@ -391,6 +391,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           if (notificationId) {
             body.notificationId = notificationId;
           }
+          if (notificationStatus) {
+            body.notificationStatus = notificationStatus;
+          }
+
           const dialogConfig = new MatDialogConfig();
           dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
           dialogConfig.data = {

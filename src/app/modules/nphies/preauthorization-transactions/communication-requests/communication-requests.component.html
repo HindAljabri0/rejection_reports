@@ -12,11 +12,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let req of communicationRequests" [ngClass]="{'text-warning light-bg-warning': req.notificationStatus !== 'read'}">
-          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.communicationId}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.category}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.requestId}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.payerName}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.reasonCode}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId, req.notificationStatus)">{{req.communicationId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId, req.notificationStatus)">{{req.category}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId, req.notificationStatus)">{{req.requestId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId, req.notificationStatus)">{{req.payerName}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId, req.notificationStatus)">{{req.reasonCode}}</td>
         </tr>
       </tbody>
     </table>
