@@ -257,9 +257,9 @@
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
           <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.itemDecision.benefitValue}} <span class="currency">SR</span></td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.itemDecision.status}}</td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.itemDecision.benefitReason}}</td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.benefitValue}}</span> <span class="currency">SR</span></td>
+          <td class="row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span></td>
+          <td class="row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.benefitReason}}</span></td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
