@@ -73,11 +73,10 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117
-                    08:10 AM</span>
+                  <span>Communication ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
                 <div class="ml-auto">
-                  <button type="button" class="action-btn" (click)="openAddCommunicationDialog()">
+                  <button type="button" class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
                   </button>
@@ -121,8 +120,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117
-                    08:10 AM</span>
+                  <span>Communication ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
               </div>
             </ng-container>
@@ -165,8 +163,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114
-                    09:12 PM</span>
+                  <span>Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
               </div>
             </ng-container>
