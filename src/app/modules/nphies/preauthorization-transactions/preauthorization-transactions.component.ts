@@ -109,7 +109,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (params.nphiesRequestId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(parseInt(params.nphiesRequestId));
+        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(params.nphiesRequestId);
       }
 
       if (params.beneficiaryId != null) {
@@ -232,7 +232,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
-        model.nphiesRequestId = parseInt(this.FormPreAuthTransaction.controls.nphiesRequestId.value, 10);
+        model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {

@@ -507,7 +507,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
 
-      model.Details = [];
+      model.itemDetails = [];
 
       this.dialogRef.close(model);
     }

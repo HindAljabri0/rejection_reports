@@ -43,6 +43,8 @@ import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/s
 import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { Console } from 'console';
+import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
+import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -174,7 +176,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private adminService: AdminService,
     private downloadService: DownloadService,
     private actions$: Actions,
-    private providerNphiesSearchService:ProviderNphiesSearchService) { }
+    private providerNphiesSearchService:ProviderNphiesSearchService,
+    private providerNphiesApprovalService:ProviderNphiesApprovalService) { }
 
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -575,14 +578,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.commen.loading) {
       return;
     }
-
-
-
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.params.from, this.params.to, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, this.params.caseTypes,
-      null, this.params.filter_claimRefNo, this.params.filter_memberId, this.params.invoiceNo, this.params.filter_patientFileNo, this.params.policyNo, this.params.filter_drName, this.params.filter_nationalId,
-      this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe((event) => {
-
+    this.providerNphiesApprovalService.submitClaims(this.providerId,   this.selectedClaims,this.params.uploadId,
+    ).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if (event.body['queuedStatus'] == 'QUEUED') {
             this.dialogService.openMessageDialog(
@@ -755,7 +753,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    this.claimDialogRef = this.dialog.open(EditClaimComponent, {
+    
+    this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId }
     });
