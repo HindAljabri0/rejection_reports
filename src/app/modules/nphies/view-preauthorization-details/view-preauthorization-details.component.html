@@ -7,7 +7,7 @@
   <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding"  [selectedIndex]="selectedTab">
     <mat-tab>
       <ng-template mat-tab-label>
         <span>Details</span>

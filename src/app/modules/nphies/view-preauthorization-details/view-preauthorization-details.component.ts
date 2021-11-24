@@ -13,6 +13,8 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 export class ViewPreauthorizationDetailsComponent implements OnInit {
 
   communications = [];
+  selectedTab = 0;
+
   constructor(
     private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
@@ -22,11 +24,10 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.data.detailsModel.communicationId) {
+      this.selectedTab = 1;
+    }
     this.getCommunications();
-  }
-
-  closeDialog() {
-    this.dialogRef.close(true);
   }
 
   openAddCommunicationDialog(commRequestId = null) {
@@ -74,6 +75,10 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     } else {
       return 'image';
     }
+  }
+
+  closeDialog() {
+    this.dialogRef.close(true);
   }
 
 }

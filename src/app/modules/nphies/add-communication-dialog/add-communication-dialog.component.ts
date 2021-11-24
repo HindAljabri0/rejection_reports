@@ -91,22 +91,22 @@ export class AddCommunicationDialogComponent implements OnInit {
     if (this.FormCommunication.valid) {
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
+      this.isSubmitted = false;
       this.emptyPayloadError = '';
       this.FormCommunication.reset();
-      this.isSubmitted = false;
     }
   }
 
   removePayload(i) {
     this.payLoads.splice(i, 1);
     if (this.payLoads.length === 0) {
-      this.emptyPayloadError = 'Please add payload';
+      this.emptyPayloadError = 'Please select a file or enter comment';
     }
   }
 
   onSubmit() {
     if (this.payLoads.length === 0) {
-      this.emptyPayloadError = 'Please add payload';
+      this.emptyPayloadError = 'Please select a file or enter comment';
       return;
     }
     this.emptyPayloadError = '';
