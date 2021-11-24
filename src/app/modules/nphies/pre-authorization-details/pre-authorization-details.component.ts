@@ -23,22 +23,17 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   }
 
   readNotification() {
-    const notificationId: string = this.data.notificationId;
-    if (this.data.communicationId) {
-      this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
-      // tslint:disable-next-line:max-line-length
-      // notificationId = this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId === this.data.communicationId)[0] ? this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId === this.data.communicationId)[0].notificationId : '';
-      // tslint:disable-next-line:max-line-length
-      // this.sharedServices.communicationRequestNotificationList = this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId !== this.data.communicationId);
-    } else {
-      this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
-      // tslint:disable-next-line:max-line-length
-      // notificationId = this.sharedServices.processedNotificationList.filter(x => x.responseId === this.data.approvalResponseId)[0] ? this.sharedServices.processedNotificationList.filter(x => x.responseId === this.data.approvalResponseId)[0].notificationId : '';
+    if (this.data.notificationStatus === 'unread') {
+      const notificationId: string = this.data.notificationId;
+      if (this.data.communicationId) {
+        this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
+      } else {
+        this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
+      }
+      if (notificationId) {
+        this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+      }
     }
-    if (notificationId) {
-      this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
-    }
-
   }
 
   toggleItem(index) {
