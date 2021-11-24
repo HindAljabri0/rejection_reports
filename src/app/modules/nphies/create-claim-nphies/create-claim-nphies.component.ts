@@ -1101,24 +1101,25 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.items.forEach((x) => {
         this.model.totalNet += x.net;
       });
-      if (this.FormNphiesClaim.controls.status.value || this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceType.value ||
-        this.FormNphiesClaim.controls.startDate.value || this.FormNphiesClaim.controls.periodEnd.value || this.FormNphiesClaim.controls.origin.value ||
-        this.FormNphiesClaim.controls.adminSource.value || this.FormNphiesClaim.controls.reAdmission.value || this.FormNphiesClaim.controls.dischargeDispotion.value
-        || this.FormNphiesClaim.controls.priority.value || this.FormNphiesClaim.controls.serviceProvider.value) {
-        const encounterModel: any = {};
-        encounterModel.status = this.FormNphiesClaim.controls.status.value;
-        encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
-        encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
-        encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
-        encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
-        encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
-        encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
-        encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
-        encounterModel.dischargeDispotion = this.FormNphiesClaim.controls.dischargeDispotion.value;
-        encounterModel.priority = this.FormNphiesClaim.controls.priority.value;
-        encounterModel.serviceProvider = this.FormNphiesClaim.controls.serviceProvider.value;
-        this.model.claimEncounter = encounterModel;
-      }
+
+      // if (this.FormNphiesClaim.controls.status.value || this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceType.value ||
+      //   this.FormNphiesClaim.controls.startDate.value || this.FormNphiesClaim.controls.periodEnd.value || this.FormNphiesClaim.controls.origin.value ||
+      //   this.FormNphiesClaim.controls.adminSource.value || this.FormNphiesClaim.controls.reAdmission.value || this.FormNphiesClaim.controls.dischargeDispotion.value
+      //   || this.FormNphiesClaim.controls.priority.value || this.FormNphiesClaim.controls.serviceProvider.value) {
+      //   const encounterModel: any = {};
+      //   encounterModel.status = this.FormNphiesClaim.controls.status.value;
+      //   encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
+      //   encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
+      //   encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
+      //   encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
+      //   encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
+      //   encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
+      //   encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
+      //   encounterModel.dischargeDispotion = this.FormNphiesClaim.controls.dischargeDispotion.value;
+      //   encounterModel.priority = this.FormNphiesClaim.controls.priority.value;
+      //   encounterModel.serviceProvider = this.FormNphiesClaim.controls.serviceProvider.value;
+      //   this.model.claimEncounter = encounterModel;
+      // }
 
       console.log('Model', this.model);
 
