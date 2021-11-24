@@ -628,7 +628,7 @@
                         </div>
                       </div>
 
-                      <div class="box" *ngIf="item.Details && item.Details.length > 0">
+                      <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
                         <h5 class="align-self-center medium pb-2">Item Detail</h5>
                         <table class="primary-grid manual-row-color claim-view-table no-borders">
                           <thead>
@@ -642,7 +642,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let d of item.Details; let di = index">
+                            <tr *ngFor="let d of item.itemDetails; let di = index">
                               <td class="row-click">{{d.sequence}}</td>
                               <td class="row-click">{{d.typeName}}</td>
                               <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
