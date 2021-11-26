@@ -89,13 +89,21 @@
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Email</div>
-                    <p class="form-control-static">{{otherDataModel.beneficiary.email}}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.email ?
+                      otherDataModel.beneficiary.email:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Insurance Plan</div>
                     <p class="form-control-static">{{otherDataModel.insurancePlan}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Pre Authorization Reference Numbers</div>
+                    <p class="form-control-static">{{otherDataModel.preAuthRefNo ? otherDataModel.preAuthRefNo : "-"}}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -296,39 +304,45 @@
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Sub Type</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.subType.value.name}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.subType.value ?
+                      FormNphiesClaim.controls.subType.value.name : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Offline Eligibility ID</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineId.value}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineId.value ?
+                      FormNphiesClaim.controls.eligibilityOfflineId.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Offline Eligibility Date</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineDate.value | date:
-                      'dd-MM-yyyy'}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineDate.value ?
+                      (FormNphiesClaim.controls.eligibilityOfflineDate.value | date:
+                      'dd-MM-yyyy') : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Eligibility Response ID</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value ?
+                      FormNphiesClaim.controls.eligibilityResponseId.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Offline Approval Date</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value | date:
-                      'dd-MM-yyyy'}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value ?
+                      (FormNphiesClaim.controls.preAuthOfflineDate.value | date:
+                      'dd-MM-yyyy') : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Approval Response IDs</div>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value}}</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
+                      FormNphiesClaim.controls.preAuthResponseId.value : "-"}}</p>
                   </div>
                 </div>
               </div>
@@ -424,7 +438,7 @@
                         {{diagnosis.typeName}}
                       </td>
                       <td>
-                        {{diagnosis.onAdmissionName}}
+                        {{diagnosis.onAdmissionName ? diagnosis.onAdmissionName :"-"}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button type="button" mat-icon-button matTooltip="Edit"
@@ -585,18 +599,19 @@
                         {{s.categoryName}}
                       </td>
                       <td>
-                        {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
+                        {{s.code ? s.code :"-"}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
                         <!-- {{s.codeName}} -->
                       </td>
                       <td>
+                        <span *ngIf="!s.fromDateStr && !s.toDateStr">-</span>
                         <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
                         <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
                       </td>
                       <td>
-                        {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+                        {{s.value ? s.value:"-"}} <span *ngIf="s.unit">{{s.unit}}</span>
                       </td>
                       <td>
-                        {{s.reasonName}}
+                        {{s.reasonName ? s.reasonName:"-"}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
@@ -791,7 +806,7 @@
                         <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           {{item.net}} <span class="currency">SR</span></td>
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                          {{item.nonStandardCode}}</td>
+                          {{item.nonStandardCode ? item.nonStandardCode:"-"}}</td>
                         <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
                           <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details"
                             class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
@@ -834,13 +849,14 @@
                                     <tr>
                                       <td class="label">Is Package?</td>
                                       <td>
+                                        <span *ngIf="item.isPackage != 1 && item.isPackage !=2">-</span>
                                         <span *ngIf="item.isPackage === 1">Yes</span>
                                         <span *ngIf="item.isPackage === 2">No</span>
                                       </td>
                                     </tr>
                                     <tr>
                                       <td class="label">Body Site</td>
-                                      <td>{{item.bodySiteName}}</td>
+                                      <td>{{item.bodySiteName ? item.bodySiteName : "-"}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -870,7 +886,7 @@
                                     </tr>
                                     <tr>
                                       <td class="label">Sub Site</td>
-                                      <td>{{item.subSiteName}}</td>
+                                      <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -884,23 +900,23 @@
                                     </tr>
                                     <tr>
                                       <td class="label">Non Standard Code</td>
-                                      <td>{{item.nonStandardCode}}</td>
+                                      <td>{{item.nonStandardCode ? item.nonStandardCode :"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Display</td>
-                                      <td>{{item.display}}</td>
+                                      <td>{{item.display ? item.display :"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Supporting Info</td>
-                                      <td>{{item.supportingInfoNames}}</td>
+                                      <td>{{item.supportingInfoNames ? item.supportingInfoNames:"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Diagnosis</td>
-                                      <td>{{item.diagnosisNames}}</td>
+                                      <td>{{item.diagnosisNames?item.diagnosisNames:"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Care Teams</td>
-                                      <td>{{item.careTeamNames}}</td>
+                                      <td>{{item.careTeamNames ? item.careTeamNames:"-"}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -926,8 +942,8 @@
                                   <td class="row-click">{{d.sequence}}</td>
                                   <td class="row-click">{{d.typeName}}</td>
                                   <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
-                                  <td class="row-click">{{d.nonStandardCode}}</td>
-                                  <td class="row-click">{{d.display}}</td>
+                                  <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}</td>
+                                  <td class="row-click">{{d.display ? d.display :"-"}}</td>
                                   <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
                                     <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
                                       (click)="openAddEditItemDetailsDialog(item.sequence, d)">
@@ -1066,7 +1082,7 @@
                 </div>
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW'">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Status</label>
@@ -1169,7 +1185,7 @@
 
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW'">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Origin</label>
