@@ -115,6 +115,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   nationalities = nationalities;
   selectedCountry = '';
 
+  IsStatusRequired = false;
+  IsClassRequired = false;
+  IsServiceProviderRequired = false;
+
   hasErrorClaimInfo = false;
 
   claimId: number;
@@ -242,9 +246,14 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
-    this.FormNphiesClaim.controls.serviceProvider.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     this.FormNphiesClaim.controls.payeeType.disable();
     this.FormNphiesClaim.controls.payee.disable();
+  }
+
+  onStatusOrClassChange() {
+    if (this.FormNphiesClaim.controls.serviceProvider.value === '') {
+      this.FormNphiesClaim.controls.serviceProvider.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+    }
   }
 
   onTypeChange($event) {
@@ -819,27 +828,27 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     let hasError = false;
     // tslint:disable-next-line:max-line-length
-    if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
-      this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
-      this.IsAccidentTypeRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.accidentType.clearValidators();
-      this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
-      this.IsAccidentTypeRequired = false;
-    }
-    // tslint:disable-next-line:max-line-length
-    if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
-      this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.date.updateValueAndValidity();
-      this.IsDateRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.date.clearValidators();
-      this.FormNphiesClaim.controls.date.updateValueAndValidity();
-      this.IsDateRequired = false;
-    }
+    // if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
+    //   this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
+    //   this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
+    //   this.IsAccidentTypeRequired = true;
+    //   hasError = true;
+    // } else {
+    //   this.FormNphiesClaim.controls.accidentType.clearValidators();
+    //   this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
+    //   this.IsAccidentTypeRequired = false;
+    // }
+    // // tslint:disable-next-line:max-line-length
+    // if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
+    //   this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
+    //   this.FormNphiesClaim.controls.date.updateValueAndValidity();
+    //   this.IsDateRequired = true;
+    //   hasError = true;
+    // } else {
+    //   this.FormNphiesClaim.controls.date.clearValidators();
+    //   this.FormNphiesClaim.controls.date.updateValueAndValidity();
+    //   this.IsDateRequired = false;
+    // }
 
     if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
       if (this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
@@ -876,6 +885,39 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
         this.IsPrescriberRequired = false;
       }
+    }
+
+    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
+      this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.status.updateValueAndValidity();
+      this.IsStatusRequired = true;
+      hasError = true;
+    } else {
+      this.FormNphiesClaim.controls.status.clearValidators();
+      this.FormNphiesClaim.controls.status.updateValueAndValidity();
+      this.IsStatusRequired = false;
+    }
+
+    if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
+      this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+      this.IsClassRequired = true;
+      hasError = true;
+    } else {
+      this.FormNphiesClaim.controls.encounterClass.clearValidators();
+      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+      this.IsClassRequired = false;
+    }
+
+    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
+      this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+      this.IsServiceProviderRequired = true;
+      hasError = true;
+    } else {
+      this.FormNphiesClaim.controls.serviceProvider.clearValidators();
+      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+      this.IsServiceProviderRequired = false;
     }
 
     if (this.Diagnosises.length === 0 || this.Items.length === 0) {
@@ -1201,6 +1243,81 @@ export class CreateClaimNphiesComponent implements OnInit {
       // this.hasErrorClaimInfo = false;
       return false;
     }
+  }
+
+  get checkErrorAccident() {
+    let hasError = false;
+    if (this.isSubmitted) {
+
+      if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
+        this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.date.updateValueAndValidity();
+        this.IsDateRequired = true;
+        hasError = true;
+      } else {
+        this.FormNphiesClaim.controls.date.clearValidators();
+        this.FormNphiesClaim.controls.date.updateValueAndValidity();
+        this.IsDateRequired = false;
+      }
+      if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
+        this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
+        this.IsAccidentTypeRequired = true;
+        hasError = true;
+      } else {
+        this.FormNphiesClaim.controls.accidentType.clearValidators();
+        this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
+        this.IsAccidentTypeRequired = false;
+      }
+      if (!hasError) {
+        this.IsAccidentTypeRequired = false;
+        this.IsDateRequired = false;
+      }
+    }
+
+    return hasError;
+  }
+
+  get checkErrorEncounter() {
+    let hasError = false;
+    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
+      this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.status.updateValueAndValidity();
+      this.IsStatusRequired = true;
+      hasError = true;
+    } else {
+      this.FormNphiesClaim.controls.status.clearValidators();
+      this.FormNphiesClaim.controls.status.updateValueAndValidity();
+      this.IsStatusRequired = false;
+    }
+
+    if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
+      this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+      this.IsClassRequired = true;
+      hasError = true;
+    } else {
+      this.FormNphiesClaim.controls.encounterClass.clearValidators();
+      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+      this.IsClassRequired = false;
+    }
+
+    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
+      this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+      this.IsServiceProviderRequired = true;
+      hasError = true;
+    } else {
+      this.FormNphiesClaim.controls.serviceProvider.clearValidators();
+      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+      this.IsServiceProviderRequired = false;
+    }
+    if (!hasError) {
+      this.IsStatusRequired = false;
+      this.IsClassRequired = false;
+      this.IsServiceProviderRequired = false;
+    }
+    return hasError;
   }
 
   get checkErrorVision() {

@@ -615,7 +615,13 @@
               <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
               </app-empty-state>
             </mat-tab>
-            <mat-tab [label]="'Accident'">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="checkErrorAccident === true"
+                  [class.text-danger]="checkErrorAccident === true">
+                  error</mat-icon>
+                <span [class.text-danger]="checkErrorAccident === true">Accident</span>
+              </ng-template>
               <div *ngIf="pageMode !== 'VIEW'" class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
@@ -673,7 +679,7 @@
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
+                    [ngClass]="{'has-error' : IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
                     <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
                     <div class="date-picker">
                       <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
@@ -682,48 +688,56 @@
                       <mat-datepicker #accidentDate></mat-datepicker>
                     </div>
                     <div
-                      *ngIf="(IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
+                      *ngIf="IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
                       <span class="error-text">Please enter date</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div *ngIf="pageMode === 'VIEW' && this.otherDataModel && this.otherDataModel.accident" class="row">
+              <div *ngIf="pageMode === 'VIEW'" class="row">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Accident Type</label>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.accidentType.value.name}}</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.accidentType.value.name : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Street Name</label>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.streetName.value}}</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.streetName.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">City</label>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.city.value}}</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.city.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">State/Province</label>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.state.value}}</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.state.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Country</label>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.country.value}}</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.country.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Date</label>
-                    <p class="form-control-static">{{FormNphiesClaim.controls.date.value | date: 'dd-MM-yyyy'}}</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      (FormNphiesClaim.controls.startDate.value | date: 'dd-MM-yyyy') : ""}} - {{this.otherDataModel &&
+                      this.otherDataModel.accident ?
+                      (FormNphiesClaim.controls.periodEnd.value | date: 'dd-MM-yyyy') : ""}}</p>
                   </div>
                 </div>
               </div>
@@ -943,30 +957,46 @@
 
 
             </mat-tab>
-            <mat-tab [label]="'Encounter'">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true"
+                  [class.text-danger]="checkErrorEncounter === true">
+                  error</mat-icon>
+                <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
+              </ng-template>
               <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group">
-                    <label class="control-label">Status</label>
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))}">
+                    <label class="control-label">Status<span *ngIf="IsStatusRequired" class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select formControlName="status">
+                      <mat-select formControlName="status" (selectionChange)="onStatusOrClassChange()">
                         <mat-option value="">Select status</mat-option>
                         <mat-option *ngFor="let status of encounterStatusList" [value]="status.value">{{status.name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
+                    <div
+                      *ngIf="IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))">
+                      <span class="error-text">Please select status</span>
+                    </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group">
-                    <label class="control-label">Class</label>
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsClassRequired && ((isSubmitted || FormNphiesClaim.get('encounterClass').touched) && FormNphiesClaim.get('encounterClass').hasError('required'))}">
+                    <label class="control-label">Class<span *ngIf="IsClassRequired" class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select formControlName="encounterClass">
+                      <mat-select formControlName="encounterClass" (selectionChange)="onStatusOrClassChange()">
                         <mat-option value="">Select class</mat-option>
                         <mat-option *ngFor="let class of encounterClassList" [value]="class.value">{{class.name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
+                    <div
+                      *ngIf="IsClassRequired && ((isSubmitted || FormNphiesClaim.get('encounterClass').touched) && FormNphiesClaim.get('encounterClass').hasError('required'))">
+                      <span class="error-text">Please select Class</span>
+                    </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
@@ -982,8 +1012,10 @@
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group">
-                    <label class="control-label">Service Provider</label>
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))}">
+                    <label class="control-label">Service Provider<span *ngIf="IsServiceProviderRequired"
+                        class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="serviceProvider">
                         <mat-option value="">Select service provider</mat-option>
@@ -991,6 +1023,10 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
+                  </div>
+                  <div
+                    *ngIf="IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))">
+                    <span class="error-text">Please select Service Provider</span>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
@@ -1007,7 +1043,7 @@
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
-                    <label class="control-label">Period<span class="asterisk">*</span></label>
+                    <label class="control-label">Period</label>
                     <div class="row small-gutter">
                       <div class="col-6">
                         <div class="date-picker">
@@ -1030,49 +1066,57 @@
                 </div>
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.claimEncounter">
+              <div class="row" *ngIf="pageMode === 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Status</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.statusName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.statusName ? otherDataModel.claimEncounter.statusName : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Class</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.encounterClassName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.encounterClassName ?
+                      otherDataModel.claimEncounter.encounterClassName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Service Type</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.serviceTypeName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.serviceTypeName ?
+                      otherDataModel.claimEncounter.serviceTypeName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Service Provider</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.serviceProviderName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.serviceProviderName ?
+                      otherDataModel.claimEncounter.serviceProviderName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Priority</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.priorityName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.priorityName ? otherDataModel.claimEncounter.priorityName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Period</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.startDate | date:
-                      'dd-MM-yyyy'}} - {{otherDataModel.claimEncounter.periodEnd | date:'dd-MM-yyyy'}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.startDate ? (otherDataModel.claimEncounter.startDate | date:
+                      'dd-MM-yyyy') : ""}} - {{otherDataModel.claimEncounter && otherDataModel.claimEncounter.periodEnd
+                      ? (otherDataModel.claimEncounter.periodEnd | date:'dd-MM-yyyy') :""}}</p>
                   </div>
                 </div>
               </div>
 
-              <h5 class="form-title"
-                *ngIf="pageMode==='CREATE' || (pageMode === 'VIEW' && otherDataModel && otherDataModel.claimEncounter)">
-                Hospitalization</h5>
+              <h5 class="form-title">Hospitalization</h5>
               <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
@@ -1125,29 +1169,36 @@
 
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.claimEncounter">
+              <div class="row" *ngIf="pageMode === 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Origin</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.originName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.originName ? otherDataModel.claimEncounter.originName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Admin Source</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.adminSourceName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.adminSourceName ?
+                      otherDataModel.claimEncounter.adminSourceName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Readmission</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.reAdmissionName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.reAdmissionName ?
+                      otherDataModel.claimEncounter.reAdmissionName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Discharge Disposition</label>
-                    <p class="form-control-static">{{otherDataModel.claimEncounter.dischargeDispotionName}}</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.dischargeDispotionName ?
+                      otherDataModel.claimEncounter.dischargeDispotionName:"-"}}</p>
                   </div>
                 </div>
 

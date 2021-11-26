@@ -4,25 +4,25 @@
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
-<div class="primary-dialog-body pb-0">
-  <div class="row small-gutter">
+  <div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
       <div class="col-4 col-lg-3">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
-              <label class="control-label">Type<span class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="type" (selectionChange)="getItemList()">
-                      <mat-option value="">Select Type</mat-option>
-                      <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
-                  </mat-select>
-              </mat-form-field>
-              <div
-            *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
+          <label class="control-label">Type<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="type" (selectionChange)="getItemList()">
+              <mat-option value="">Select Type</mat-option>
+              <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
             <span class="error-text">Please select a Type</span>
           </div>
-          </div>
+        </div>
       </div>
       <div class="col-4 col-lg-3">
-          <div class="form-group"
+        <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
@@ -44,33 +44,32 @@
 
             </mat-select>
           </mat-form-field>
-          <div
-            *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
+          <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
             <span class="error-text">Please select a Code - Description</span>
           </div>
         </div>
       </div>
       <div class="col-4 col-lg-3">
-          <div class="form-group">
-              <label class="control-label">Non Standard Code</label>
-              <input class="form-control" placeholder="Enter non standard code" formControlName="nonStandardCode">
-          </div>
+        <div class="form-group">
+          <label class="control-label">Non Standard Code</label>
+          <input class="form-control" placeholder="Enter non standard code" formControlName="nonStandardCode">
+        </div>
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group">
-            <label class="control-label">Display</label>
-            <input class="form-control" placeholder="Enter non standard code" formControlName="display">
+          <label class="control-label">Display</label>
+          <input class="form-control" placeholder="Enter non standard description" formControlName="display">
         </div>
+      </div>
     </div>
   </div>
-</div>
-<div class="primary-dialog-footer has-border">
-  <div class="btn-list text-right">
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
       <button type="button" mat-button (click)="closeDialog()">Cancel</button>
       <button type="submit" mat-flat-button color="primary">
         <span *ngIf="!data.item">Add</span>
         <span *ngIf="data.item">Save</span>
       </button>
+    </div>
   </div>
-</div>
 </form>
