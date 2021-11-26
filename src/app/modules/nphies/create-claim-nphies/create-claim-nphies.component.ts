@@ -394,6 +394,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamRole = result.careTeamRole;
               x.speciality = result.speciality;
               x.speciallityCode = result.speciallityCode;
+              x.qualificationCode = result.speciallityCode;
               x.practitionerRoleName = result.practitionerRoleName;
               x.careTeamRoleName = result.careTeamRoleName;
             }
@@ -1027,6 +1028,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
         model.specialityCode = x.speciallityCode;
+        model.qualificationCode = x.speciallityCode;
         return model;
       });
 
