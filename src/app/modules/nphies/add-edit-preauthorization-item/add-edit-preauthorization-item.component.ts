@@ -276,7 +276,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     // filter the nations
     this.filteredItem.next(
-      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toLowerCase().indexOf(search) > -1)
+      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
 
