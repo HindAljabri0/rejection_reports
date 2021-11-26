@@ -887,38 +887,38 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     }
 
-    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
-      this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.status.updateValueAndValidity();
-      this.IsStatusRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.status.clearValidators();
-      this.FormNphiesClaim.controls.status.updateValueAndValidity();
-      this.IsStatusRequired = false;
-    }
+    // if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
+    //   this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
+    //   this.FormNphiesClaim.controls.status.updateValueAndValidity();
+    //   this.IsStatusRequired = true;
+    //   hasError = true;
+    // } else {
+    //   this.FormNphiesClaim.controls.status.clearValidators();
+    //   this.FormNphiesClaim.controls.status.updateValueAndValidity();
+    //   this.IsStatusRequired = false;
+    // }
 
-    if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
-      this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
-      this.IsClassRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.encounterClass.clearValidators();
-      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
-      this.IsClassRequired = false;
-    }
+    // if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
+    //   this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
+    //   this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+    //   this.IsClassRequired = true;
+    //   hasError = true;
+    // } else {
+    //   this.FormNphiesClaim.controls.encounterClass.clearValidators();
+    //   this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+    //   this.IsClassRequired = false;
+    // }
 
-    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
-      this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
-      this.IsServiceProviderRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.serviceProvider.clearValidators();
-      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
-      this.IsServiceProviderRequired = false;
-    }
+    // if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
+    //   this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
+    //   this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+    //   this.IsServiceProviderRequired = true;
+    //   hasError = true;
+    // } else {
+    //   this.FormNphiesClaim.controls.serviceProvider.clearValidators();
+    //   this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+    //   this.IsServiceProviderRequired = false;
+    // }
 
     if (this.Diagnosises.length === 0 || this.Items.length === 0) {
       hasError = true;
@@ -1145,24 +1145,21 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.totalNet += x.net;
       });
 
-      // if (this.FormNphiesClaim.controls.status.value || this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceType.value ||
-      //   this.FormNphiesClaim.controls.startDate.value || this.FormNphiesClaim.controls.periodEnd.value || this.FormNphiesClaim.controls.origin.value ||
-      //   this.FormNphiesClaim.controls.adminSource.value || this.FormNphiesClaim.controls.reAdmission.value || this.FormNphiesClaim.controls.dischargeDispotion.value
-      //   || this.FormNphiesClaim.controls.priority.value || this.FormNphiesClaim.controls.serviceProvider.value) {
-      //   const encounterModel: any = {};
-      //   encounterModel.status = this.FormNphiesClaim.controls.status.value;
-      //   encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
-      //   encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
-      //   encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
-      //   encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
-      //   encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
-      //   encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
-      //   encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
-      //   encounterModel.dischargeDispotion = this.FormNphiesClaim.controls.dischargeDispotion.value;
-      //   encounterModel.priority = this.FormNphiesClaim.controls.priority.value;
-      //   encounterModel.serviceProvider = this.FormNphiesClaim.controls.serviceProvider.value;
-      //   this.model.claimEncounter = encounterModel;
-      // }
+      if (this.FormNphiesClaim.controls.status.value) {
+        const encounterModel: any = {};
+        encounterModel.status = this.FormNphiesClaim.controls.status.value;
+        encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
+        encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
+        encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
+        encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
+        encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
+        encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
+        encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
+        encounterModel.dischargeDispotion = this.FormNphiesClaim.controls.dischargeDispotion.value;
+        encounterModel.priority = this.FormNphiesClaim.controls.priority.value;
+        encounterModel.serviceProvider = this.FormNphiesClaim.controls.serviceProvider.value;
+        this.model.claimEncounter = encounterModel;
+      }
 
       console.log('Model', this.model);
 
@@ -1281,43 +1278,45 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   get checkErrorEncounter() {
     let hasError = false;
-    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
-      this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.status.updateValueAndValidity();
-      this.IsStatusRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.status.clearValidators();
-      this.FormNphiesClaim.controls.status.updateValueAndValidity();
-      this.IsStatusRequired = false;
+    if (this.isSubmitted) {
+
+      if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
+        this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.status.updateValueAndValidity();
+        this.IsStatusRequired = true;
+        hasError = true;
+      } else {
+        this.FormNphiesClaim.controls.status.clearValidators();
+        this.FormNphiesClaim.controls.status.updateValueAndValidity();
+        this.IsStatusRequired = false;
+      }
+      if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
+        this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+        this.IsClassRequired = true;
+        hasError = true;
+      } else {
+        this.FormNphiesClaim.controls.encounterClass.clearValidators();
+        this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
+        this.IsClassRequired = false;
+      }
+      if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
+        this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+        this.IsServiceProviderRequired = true;
+        hasError = true;
+      } else {
+        this.FormNphiesClaim.controls.serviceProvider.clearValidators();
+        this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
+        this.IsServiceProviderRequired = false;
+      }
+      if (!hasError) {
+        this.IsStatusRequired = false;
+        this.IsClassRequired = false;
+        this.IsServiceProviderRequired = false;
+      }
     }
 
-    if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
-      this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
-      this.IsClassRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.encounterClass.clearValidators();
-      this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
-      this.IsClassRequired = false;
-    }
-
-    if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
-      this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
-      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
-      this.IsServiceProviderRequired = true;
-      hasError = true;
-    } else {
-      this.FormNphiesClaim.controls.serviceProvider.clearValidators();
-      this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
-      this.IsServiceProviderRequired = false;
-    }
-    if (!hasError) {
-      this.IsStatusRequired = false;
-      this.IsClassRequired = false;
-      this.IsServiceProviderRequired = false;
-    }
     return hasError;
   }
 
@@ -1424,6 +1423,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.beneficiary = response.beneficiary;
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
+    this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
     // this.otherDataModel.claimEncounter = response.claimEncounter;
 
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
@@ -1553,7 +1553,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       if (response.claimEncounter.serviceProvider != null) {
         this.FormNphiesClaim.controls.serviceProvider.setValue(response.claimEncounter.serviceProvider);
         // tslint:disable-next-line:max-line-length
-        this.otherDataModel.claimEncounter.serviceProviderName = this.payeeList.filter(x => x.nphiesId === response.claimEncounter.serviceProvider)[0] ? this.payeeList.filter(x => x.nphiesId === response.claimEncounter.origin)[0].englistName : '';
+        this.otherDataModel.claimEncounter.serviceProviderName = this.payeeList.filter(x => x.nphiesId === response.claimEncounter.serviceProvider)[0] ? this.payeeList.filter(x => x.nphiesId === response.claimEncounter.serviceProvider)[0].englistName : '';
       }
 
     }
@@ -1702,6 +1702,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             : '';
           y.itemCode = y.code;
           y.itemDescription = y.description;
+          y.display = y.nonStandardDesc;
         });
       }
       model.itemDetails = x.itemDetails;
@@ -1710,6 +1711,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemCode = x.itemCode.toString();
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
+      model.display = x.nonStandardDesc;
       model.isPackage = x.isPackage === true ? 1 : 2;
       model.quantity = x.quantity;
       model.unitPrice = x.unitPrice;
