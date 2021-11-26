@@ -695,6 +695,17 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
+  checkItemsCodeForSupportingInfo() {
+    // tslint:disable-next-line:max-line-length
+    if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medicationCode').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+      // tslint:disable-next-line:max-line-length
+      this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   updateSequenceNames() {
     this.Items.forEach(x => {
       if (x.supportingInfoSequence) {
@@ -800,6 +811,10 @@ export class AddPreauthorizationComponent implements OnInit {
     this.checkItemValidation();
 
     if (!this.checkItemCareTeams()) {
+      hasError = true;
+    }
+
+    if (!this.checkItemsCodeForSupportingInfo()) {
       hasError = true;
     }
 
