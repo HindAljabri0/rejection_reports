@@ -32,7 +32,6 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class CreateClaimNphiesComponent implements OnInit {
 
-  itemsAsObjects = [{ id: 0, name: 'Angular' }, { id: 1, name: 'React' }];
   beneficiarySearchController = new FormControl();
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
