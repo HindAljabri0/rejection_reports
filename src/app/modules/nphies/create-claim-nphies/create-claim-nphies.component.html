@@ -1,4 +1,10 @@
+
 <div class="animate__animated animate__faster animate__fadeIn">
+  <div *ngIf="errorMessage != null  && !isLoading" class="p-3 bg-white">
+      <p class="error-card mb-0">{{errorMessage}}</p>
+  </div>
+
+<div  *ngIf="errorMessage == null" class="animate__animated animate__faster animate__fadeIn">
   <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'"mode="indeterminate" class="page-top-loader"></mat-progress-bar>
   
 
