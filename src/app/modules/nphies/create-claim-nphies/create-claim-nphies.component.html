@@ -1,5 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-  <mat-progress-bar mode="indeterminate" class="page-top-loader"></mat-progress-bar>
+  <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'"mode="indeterminate" class="page-top-loader"></mat-progress-bar>
+  
+
   <div>
     <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
       <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
