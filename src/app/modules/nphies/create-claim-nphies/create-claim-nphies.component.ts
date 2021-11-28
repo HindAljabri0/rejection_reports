@@ -4,7 +4,7 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { ReplaySubject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
@@ -24,6 +24,7 @@ import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -31,7 +32,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
   styles: []
 })
 export class CreateClaimNphiesComponent implements OnInit {
-
+  errorMessage=null;
   beneficiarySearchController = new FormControl();
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
@@ -122,11 +123,12 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   claimId: number;
   uploadId: number;
-  pageMode = 'CREATE';
+  pageMode = '';
   currentOpenItem: number = null;
   otherDataModel: any;
 
   constructor(
+    private dialogRef: MatDialogRef<CreateClaimNphiesComponent>,
     private activatedRoute: ActivatedRoute,
     private location: Location,
     private dialogService: DialogService,
@@ -142,11 +144,18 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   ngOnInit() {
 
+    
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       this.isLoading=true;
       // tslint:disable-next-line:radix
       this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
     
+    }else{
+
+      this.pageMode = 'CREATE';
+      this.isLoading=false;
+       
+
     }
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
@@ -183,6 +192,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     }, err => {
       if (err instanceof HttpErrorResponse) {
         console.log('Error');
+        this.isLoading=false;
+        this.errorMessage=err.message
         this.sharedServices.loadingChanged.next(false);
       }
     });
@@ -1810,6 +1821,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    this.router.navigateByUrl('/nphies/uploads');
+    this.dialogRef.close(null);
+   // this.router.navigateByUrl('/nphies/uploads');
   }
 }
