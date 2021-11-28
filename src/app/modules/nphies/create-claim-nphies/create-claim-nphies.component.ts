@@ -176,7 +176,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             console.log(this.pageMode)
             this.disableControls();
             this.getClaimDetails();
-            this.isLoading=true;
+            this.isLoading=false;
           }
         }
       }
