@@ -37,7 +37,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   selectedBeneficiary: BeneficiariesSearchResult;
   selectedPlanId: string;
   selectedPlanIdError: string;
-
+  isLoading=false;
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   FormNphiesClaim: FormGroup = this.formBuilder.group({
@@ -143,8 +143,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   ngOnInit() {
 
     if (this.activatedRoute.snapshot.queryParams.claimId) {
+      this.isLoading=true;
       // tslint:disable-next-line:radix
       this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
+    
     }
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
@@ -171,8 +173,10 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.onPayeeTypeChange();
           if (this.claimId && this.uploadId) {
             this.pageMode = 'VIEW';
+            console.log(this.pageMode)
             this.disableControls();
             this.getClaimDetails();
+            this.isLoading=true;
           }
         }
       }
