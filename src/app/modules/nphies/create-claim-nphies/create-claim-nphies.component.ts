@@ -128,7 +128,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   otherDataModel: any;
 
   constructor(
-    private dialogRef: MatDialogRef<CreateClaimNphiesComponent>,
+    // private dialogRef: MatDialogRef<EditClaimComponent>,
     private activatedRoute: ActivatedRoute,
     private location: Location,
     private dialogService: DialogService,
@@ -166,7 +166,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-
+   
 
 
   }
@@ -193,7 +193,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       if (err instanceof HttpErrorResponse) {
         console.log('Error');
         this.isLoading=false;
-        this.errorMessage=err.message
+      //  this.errorMessage=err.message
         this.sharedServices.loadingChanged.next(false);
       }
     });
@@ -1821,7 +1821,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(null);
-   // this.router.navigateByUrl('/nphies/uploads');
+    
+    // this.router.navigateByUrl('/nphies/uploads').then(() => {
+    //   window.location.reload()
+    // }
+ this.router.navigateByUrl('/nphies/uploads');
   }
 }
