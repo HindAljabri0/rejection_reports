@@ -32,13 +32,13 @@ import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.componen
   styles: []
 })
 export class CreateClaimNphiesComponent implements OnInit {
-  errorMessage=null;
+  errorMessage = null;
   beneficiarySearchController = new FormControl();
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
   selectedPlanId: string;
   selectedPlanIdError: string;
-  isLoading=false;
+  isLoading = false;
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   FormNphiesClaim: FormGroup = this.formBuilder.group({
@@ -128,6 +128,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   otherDataModel: any;
 
   constructor(
+
     // private dialogRef: MatDialogRef<EditClaimComponent>,
     private activatedRoute: ActivatedRoute,
     private location: Location,
@@ -144,17 +145,17 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   ngOnInit() {
 
-    
+
     if (this.activatedRoute.snapshot.queryParams.claimId) {
-      this.isLoading=true;
+      this.isLoading = true;
       // tslint:disable-next-line:radix
       this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
-    
-    }else{
+
+    } else {
 
       this.pageMode = 'CREATE';
-      this.isLoading=false;
-       
+      this.isLoading = false;
+
 
     }
 
@@ -166,7 +167,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-   
+
 
 
   }
@@ -185,15 +186,15 @@ export class CreateClaimNphiesComponent implements OnInit {
             console.log(this.pageMode)
             this.disableControls();
             this.getClaimDetails();
-            this.isLoading=false;
+            this.isLoading = false;
           }
         }
       }
     }, err => {
       if (err instanceof HttpErrorResponse) {
         console.log('Error');
-        this.isLoading=false;
-      //  this.errorMessage=err.message
+        this.isLoading = false;
+        //  this.errorMessage=err.message
         this.sharedServices.loadingChanged.next(false);
       }
     });
@@ -1821,10 +1822,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    
-    // this.router.navigateByUrl('/nphies/uploads').then(() => {
-    //   window.location.reload()
-    // }
- this.router.navigateByUrl('/nphies/uploads');
+
+    this.location.back();
+
+
   }
 }
