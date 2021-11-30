@@ -536,7 +536,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return;
     }
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, null, null, null, null, null, null, null, this.selectedClaims).subscribe((event) => {
+    this.providerNphiesApprovalService.submitClaims(this.providerId,  this.selectedClaims, null).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
           this.dialogService.openMessageDialog(

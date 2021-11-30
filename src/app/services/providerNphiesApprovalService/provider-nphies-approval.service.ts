@@ -68,7 +68,7 @@ export class ProviderNphiesApprovalService {
     if (claimIds != null && claimIds.length > 0) {
       requestURL += `&claimIds=${claimIds.join(',')}`;
     }
-    const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
 }
