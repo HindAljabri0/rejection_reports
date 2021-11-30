@@ -538,7 +538,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.submitClaims(this.providerId,  this.selectedClaims, null).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        if (event.body['queuedStatus'] == 'QUEUED') {
+        if (event.body['status'] == 'Queued') {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
           ).subscribe(result => {
@@ -582,7 +582,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.submitClaims(this.providerId,   this.selectedClaims,this.params.uploadId,
     ).subscribe((event) => {
         if (event instanceof HttpResponse) {
-          if (event.body['queuedStatus'] == 'QUEUED') {
+          if (event.body['status'] == 'Queued') {
             this.dialogService.openMessageDialog(
               new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
             ).subscribe(result => {
