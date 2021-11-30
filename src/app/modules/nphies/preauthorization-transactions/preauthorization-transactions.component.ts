@@ -104,7 +104,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (params.payerId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.payerId.patchValue(parseInt(params.payerId));
+        this.FormPreAuthTransaction.controls.payerId.patchValue(params.payerId);
       }
 
       if (params.nphiesRequestId != null) {
@@ -236,7 +236,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
-        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value, 10);
+        model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
@@ -266,7 +266,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;
           this.paginator.pageIndex = this.transactionModel.number;
-          this.paginator.pageSize = this.transactionModel.numberOfElements;
+          this.paginator.pageSize = this.transactionModel.size;
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {

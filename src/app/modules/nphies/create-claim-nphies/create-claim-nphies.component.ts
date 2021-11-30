@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { ReplaySubject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
@@ -25,6 +25,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
+import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -127,6 +128,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   currentOpenItem: number = null;
   otherDataModel: any;
 
+  communications = [];
+
   constructor(
 
     // private dialogRef: MatDialogRef<EditClaimComponent>,
@@ -156,7 +159,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.pageMode = 'CREATE';
       this.isLoading = false;
 
-
     }
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
@@ -183,7 +185,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.onPayeeTypeChange();
           if (this.claimId && this.uploadId) {
             this.pageMode = 'VIEW';
-            console.log(this.pageMode)
+            this.getCommunications();
+            console.log(this.pageMode);
             this.disableControls();
             this.getClaimDetails();
             this.isLoading = false;
@@ -1818,6 +1821,53 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     } else {
       return false;
+    }
+  }
+
+  openAddCommunicationDialog(commRequestId = null) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      claimResponseId: this.claimId,
+      // tslint:disable-next-line:radix
+      communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
+    };
+
+    const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
+
+    const sub = dialogRef.componentInstance.fetchCommunications.subscribe((result) => {
+      if (result) {
+        this.getCommunications();
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getCommunications();
+      }
+    }, error => { });
+  }
+
+  getCommunications() {
+    this.sharedServices.loadingChanged.next(true);
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.claimId).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        this.communications = event.body.communicationList;
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, err => {
+      this.sharedServices.loadingChanged.next(false);
+      console.log(err);
+    });
+  }
+
+  getFilename(str) {
+    if (str.indexOf('pdf') > -1) {
+      return 'pdf';
+    } else {
+      return 'image';
     }
   }
 
