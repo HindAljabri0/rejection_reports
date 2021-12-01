@@ -17,30 +17,32 @@ export class ProviderNphiesSearchService {
 
   NphisBeneficiarySearchByCriteria(
     providerId: string, nationality: string, fullName: string, memberCardId: string, fileId: string,
-    contactNumber: string ,page:number  ,size:number ) {
+    contactNumber: string, page: number, size: number) {
 
     let requestURL = `/providers/${providerId}/beneficiaries/criteria?`;
 
-    if (nationality != null && nationality.trim().length>0 ) {
+    if (nationality != null && nationality.trim().length > 0) {
       requestURL += `nationality=${nationality}&`;
     }
-    if (fullName != null && fullName.trim().length>0) {
+    if (fullName != null && fullName.trim().length > 0) {
       requestURL += `fullName=${fullName}&`;
     }
-    if (memberCardId != null && memberCardId.trim().length>0) {
+    if (memberCardId != null && memberCardId.trim().length > 0) {
       requestURL += `memberCardId=${memberCardId}&`;
     }
-    if (contactNumber != null && contactNumber.trim().length>0) {
+    if (contactNumber != null && contactNumber.trim().length > 0) {
       requestURL += `contactNumber=${contactNumber}&`;
     }
-    if (fileId != null  && fileId.trim().length>0) {
+    if (fileId != null && fileId.trim().length > 0) {
       requestURL += `fileId=${fileId}&`;
-    } if (page != null) {
+    }
+    if (page != null) {
       requestURL += `page=${page}&`;
-    } if (size != null) {
+    }
+    if (size != null) {
       requestURL += `size=${size}&`;
     }
-    
+
     const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(httpRequest);
   }
@@ -57,7 +59,15 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
-  searchTransactionsLog(transactionId?:string,providerId?: string, payerId?: string, type?: string, fromDate?: string, toDate?: string, page?: number, size?: number) {
+  searchTransactionsLog(
+    transactionId?: string,
+    providerId?: string,
+    payerId?: string,
+    type?: string,
+    fromDate?: string,
+    toDate?: string,
+    page?: number,
+    size?: number) {
     let requestUrl = '/transactions?';
 
     if (transactionId != null) {
@@ -108,4 +118,27 @@ export class ProviderNphiesSearchService {
     return this.http.request(httpRequest);
   }
 
+  getProcessedTransaction(providerId: string, page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 10;
+    }
+    const requestUrl = `/providers/${providerId}/approvals/processed?page=${page}&pageSize=${pageSize}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+
+  getCommunicationRequests(providerId: string, page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 10;
+    }
+    const requestUrl = `/providers/${providerId}/approvals/communication-requests?page=${page}&pageSize=${pageSize}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
 }

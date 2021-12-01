@@ -20,17 +20,25 @@ import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-de
 import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import {
+  AddEditDiagnosisModalComponent
+} from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+import {
+  AddEditSupportingInfoModalComponent
+} from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
-// tslint:disable-next-line:max-line-length
-
 import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pre-authorization-details.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditVisionLensSpecificationsComponent } from './add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import {
+  AddEditVisionLensSpecificationsComponent
+} from './add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.component';
+import { ProcessedTransactionsComponent } from './preauthorization-transactions/processed-transactions/processed-transactions.component';
+import { CommunicationRequestsComponent } from './preauthorization-transactions/communication-requests/communication-requests.component';
+import { AddCommunicationDialogComponent } from './add-communication-dialog/add-communication-dialog.component';
+import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.component';
+import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
+import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
+import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +61,14 @@ import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.
     SearchBeneficiaryComponent,
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
-    ApiErrorsDialogComponent
+    ApiErrorsDialogComponent,
+    ProcessedTransactionsComponent,
+    CommunicationRequestsComponent,
+    AddCommunicationDialogComponent,
+    NphiesUploadsComponent,
+    NphiesUploadCardComponent,
+    CancelReasonModalComponent,
+    AddEditItemDetailsModalComponent
   ],
   imports: [
     CommonModule,
@@ -75,7 +90,10 @@ import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
-    ApiErrorsDialogComponent
+    ApiErrorsDialogComponent,
+    AddCommunicationDialogComponent,
+    CancelReasonModalComponent,
+    AddEditItemDetailsModalComponent
   ],
   exports: [
     ApiErrorsDialogComponent

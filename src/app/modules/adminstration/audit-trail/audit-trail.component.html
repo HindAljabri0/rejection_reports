@@ -1,104 +1,133 @@
-<div class="row" style="padding: 1%;">
-    <div class="col-md-12">
-        <div class="card " style="width: 100%; width: inherit; padding: 0px; background-color: #F8F7FF; ">
-            <div class="" style="background: white; padding: 10px 20px;  ">
-                <div class="menuContent">
-                    <div class="searchByDate">
-                        <mat-form-field floatLabel="never" style="margin-right: 1px;" appearance="outline">
-                            <input matInput placeholder="Object ID" [formControl]="objectIdControl">
-                        </mat-form-field>
-                        <mat-form-field floatLabel="never" style="margin-right: 1px;" appearance="outline">
-                            <input matInput placeholder="User ID" [formControl]="userIdControl">
-                        </mat-form-field>
-                        <mat-form-field floatLabel="never" style="margin-right: 1px;" appearance="outline">
-                            <input matInput placeholder="Provider ID" [formControl]="providerIdControl">
-                        </mat-form-field>
-                        <mat-form-field floatLabel="never" style="width: 15%;" appearance="outline">
-                            <mat-select placeholder="Event Type" [formControl]="eventTypeControl">
-                                <mat-option *ngFor="let type of types" [value]="type.value">
-                                    {{type.text}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field floatLabel="never" appearance="outline" style="width: 15%;">
-                            <input matInput [matDatepicker]="fromPicker" placeholder="Before date"
-                                [formControl]="beforeDateControl">
-                            <mat-datepicker-toggle matSuffix [for]="fromPicker">
-                                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #fromPicker></mat-datepicker>
-                        </mat-form-field>
-                        <button mat-raised-button color="primary" style=" margin-right: 5px;"
-                            (click)="filter()">Filter</button>
-                        <button *ngIf="isFiltered" mat-raised-button color="primary" style=" margin-right: 5px;"
-                            (click)="clear()">Clear</button>
-                        <button (click)="stopWatchingLogs()"
-                            *ngIf="watchLogsSubscription != null && !watchLogsSubscription.closed; else playButton"
-                            mat-icon-button matTooltip="Pause">
-                            <mat-icon aria-hidden="false" aria-label="Pause">pause</mat-icon>
-                        </button>
-                        <ng-template #playButton>
-                            <button (click)="reWatchLogs()" mat-icon-button matTooltip="Play">
-                                <mat-icon aria-hidden="false" aria-label="Play">play_arrow</mat-icon>
-                            </button>
-                        </ng-template>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Audit Trail</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-lg col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Object ID</label>
+                    <input placeholder="Enter Object ID" class="form-control" [formControl]="objectIdControl">
+                </div>
+            </div>
+            <div class="col-lg col-md-6">
+                <div class="form-group">
+                    <label class="control-label">User ID</label>
+                    <input placeholder="Enter User ID" class="form-control" [formControl]="userIdControl">
+                </div>
+            </div>
+            <div class="col-lg col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Provider ID</label>
+                    <input placeholder="Enter Provider ID" class="form-control" [formControl]="providerIdControl">
+                </div>
+            </div>
+            <div class="col-lg col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Event Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select Event Type" [formControl]="eventTypeControl">
+                            <mat-option *ngFor="let type of types" [value]="type.value">
+                                {{type.text}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-lg col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Before Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromPicker" placeholder="Select before date" class="form-control" [formControl]="beforeDateControl">
+                        <mat-datepicker-toggle [for]="fromPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromPicker></mat-datepicker>
                     </div>
                 </div>
             </div>
-            <div class="card-body "
-                style="width: 100%; padding:0px; text-align: center; line-height: 3; background-color: #EFF5FF;">
-                <table style="width: 100%; color: #4672B4; border-collapse:separate; border-spacing: 0px 5px;">
-                    <tr>
-                        <th>Object ID</th>
-                        <th>User ID</th>
-                        <th>Provider Name</th>
-                        <th>Event Type</th>
-                        <th>Event Description</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Data</th>
-                    </tr>
-                    <ng-container *ngFor="let log of logsArray">
-                        <tr style="color:#154185" *ngIf="log.id != null"
-                            [ngClass]="{ 'LoginColor':log.eventType == 'Login', 'ClaimManipulationColor':log.eventType == 'ClaimManipulation', 'ClaimSubmissionColor':log.eventType == 'ClaimSubmission', 'UploadColor':log.eventType == 'Upload', 'GenericColor':log.eventType == 'Generic'}">
-                            <td>{{log.objectId}}</td>
-                            <td>{{log.userId}}</td>
-                            <td>{{log.providerId}}</td>
-                            <td>{{log.eventType}}</td>
-                            <td>{{log.eventDescription}}</td>
-                            <td>{{log.eventTimeStamp.toLocaleDateString()}}</td>
-                            <td>{{log.eventTimeStamp.toLocaleTimeString()}}</td>
-                            <td><a class="primary-link underlined" *ngIf="log.newClaimData != null"
-                                    (click)="viewJSON(log.objectId, log.newClaimData)">View JSON</a><a
-                                    *ngIf="log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse'"
-                                    class="primary-link underlined" (click)="viewXml(log)">View XML</a></td>
-                        </tr>
-                    </ng-container>
-                    <ng-container *ngIf="isEmpty">
-                        <tr style="background-color: white;">
-                            <td colspan="7">No data were found.</td>
-                        </tr>
-                    </ng-container>
-                    <ng-container *ngIf="thereIsMoreToLoad; else noMoreDataToLoad">
-                        <tr style="background-color: white;">
-                            <td colspan="7">
-                                <button *ngIf="!loading; else showLoadingSpinner " mat-button (click)="loadMore()">Load
-                                    More</button>
-                                <ng-template #showLoadingSpinner>
-                                    <mat-spinner diameter="35" style="width: 100%; margin: 10px auto;">
-                                    </mat-spinner>
-                                </ng-template>
-                            </td>
-                        </tr>
-                    </ng-container>
-                    <ng-template #noMoreDataToLoad>
-                        <tr style="background-color: white;">
-                            <td colspan="7">No more data to load.</td>
-                        </tr>
-                    </ng-template>
-                </table>
-
+        </div>
+        <div class="form-group">
+            <div class="btn-list flex">
+                <button mat-flat-button color="primary" (click)="filter()">Filter</button>
+                <button *ngIf="isFiltered" mat-button color="primary" (click)="clear()">Clear</button>
+                <button (click)="stopWatchingLogs()" class="btn-action text-primary" *ngIf="watchLogsSubscription != null && !watchLogsSubscription.closed; else playButton"
+                    matRipple matTooltip="Pause">
+                    <mat-icon aria-label="Pause">pause</mat-icon>
+                </button>
+                <ng-template #playButton>
+                    <button (click)="reWatchLogs()" class="btn-action text-primary" matRipple matTooltip="Play">
+                        <mat-icon aria-label="Play">play_arrow</mat-icon>
+                    </button>
+                </ng-template>
             </div>
         </div>
+    </div>
+    <div class="table-responsive">
+        <table class="primary-grid no-borders manual-row-color" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Object ID</th>
+                    <th>User ID</th>
+                    <th>Provider Name</th>
+                    <th>Event Type</th>
+                    <th>Event Description</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let log of logsArray">
+                    <tr *ngIf="log.id != null"
+                        [ngClass]="{ 'light-bg-warning text-warning':log.eventType == 'Login', 'light-bg-primary text-primary':log.eventType == 'ClaimManipulation', 'light-bg-parrot text-parrot':log.eventType == 'ClaimSubmission', 'light-bg-cyan text-cyan':log.eventType == 'Upload', '':log.eventType == 'Generic'}">
+                        <td>{{log.objectId}}</td>
+                        <td>{{log.userId}}</td>
+                        <td>{{log.providerId}}</td>
+                        <td>{{log.eventType}}</td>
+                        <td>{{log.eventDescription}}</td>
+                        <td>{{log.eventTimeStamp.toLocaleDateString()}}</td>
+                        <td>{{log.eventTimeStamp.toLocaleTimeString()}}</td>
+                        <td class="actions">
+                            <mat-menu #actionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                    <button mat-menu-item *ngIf="log.newClaimData != null" (click)="viewJSON(log.objectId, log.newClaimData)">View JSON</button>
+                                    <button mat-menu-item *ngIf="log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse'" (click)="viewXml(log)">View
+                                        XML</button>
+                                </ng-template>
+                            </mat-menu>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                *ngIf="log.newClaimData != null || (log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse')">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="isEmpty">
+                    <tr>
+                        <td colspan="8" class="p-0">
+                            <app-empty-state message="No data found!"></app-empty-state>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="thereIsMoreToLoad; else noMoreDataToLoad">
+                    <tr>
+                        <td colspan="8" class="text-center">
+                            <button *ngIf="!loading; else showLoadingSpinner" mat-button color="primary" (click)="loadMore()">Load More</button>
+                            <ng-template #showLoadingSpinner>
+                                <div class="global-loader visible">
+                                    <mat-spinner diameter="64"></mat-spinner>
+                                </div>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-template #noMoreDataToLoad>
+                    <tr>
+                        <td class="text-center" colspan="8">
+                            <p class="info-block">No more data to load.</p>
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
     </div>
 </div>

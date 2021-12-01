@@ -7,6 +7,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MatSelect, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subject, ReplaySubject } from 'rxjs';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-care-team-modal',
@@ -42,26 +43,29 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   isSubmitted = false;
 
-  practitionerRoleList = [
-    { value: 'doctor', name: 'Doctor' },
-    { value: 'nurse', name: 'Nurse' },
-    { value: 'pharmacist', name: 'Pharmacist' },
-    { value: 'researcher', name: 'Researcher' },
-    { value: 'teacher', name: 'Teacher/educator' },
-    { value: 'dentist', name: 'Dentist' },
-    { value: 'physio', name: 'Physiotherapist' },
-    { value: 'speech', name: 'Speechtherapist' },
-    { value: 'ict', name: 'ICT professional' },
-  ];
+  practitionerRoleList = this.sharedDataService.practitionerRoleList;
+  // [
+  //   { value: 'doctor', name: 'Doctor' },
+  //   { value: 'nurse', name: 'Nurse' },
+  //   { value: 'pharmacist', name: 'Pharmacist' },
+  //   { value: 'researcher', name: 'Researcher' },
+  //   { value: 'teacher', name: 'Teacher/educator' },
+  //   { value: 'dentist', name: 'Dentist' },
+  //   { value: 'physio', name: 'Physiotherapist' },
+  //   { value: 'speech', name: 'Speechtherapist' },
+  //   { value: 'ict', name: 'ICT professional' },
+  // ];
 
-  careTeamRoleList = [
-    { value: 'primary', name: 'Primary provider' },
-    { value: 'assist', name: 'Assisting Provider' },
-    { value: 'supervisor', name: 'Supervising Provider' },
-    { value: 'other', name: 'Other' },
-  ];
+  careTeamRoleList = this.sharedDataService.careTeamRoleList;
+  // [
+  //   { value: 'primary', name: 'Primary provider' },
+  //   { value: 'assist', name: 'Assisting Provider' },
+  //   { value: 'supervisor', name: 'Supervising Provider' },
+  //   { value: 'other', name: 'Other' },
+  // ];
 
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditCareTeamModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
     private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService,
     private providerNphiesSearchService: ProviderNphiesSearchService) {

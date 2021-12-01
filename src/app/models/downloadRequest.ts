@@ -17,6 +17,19 @@ export class DownloadRequest {
     errorMessage$: Subject<string>;
     private _errorMessage: string;
 
+    progress$: Subject<number>;
+    private _progress: number;
+    url$: Subject<string>;
+    private _url: string;
+    downloadAttempts$: Subject<string>;
+    private _downloadAttempts: string;
+    fileId$: Subject<number>;
+    private _fileId: number;
+    creationStartDate$: Subject<string>;
+    private _creationStartDate: string;
+    creationEndDate$: Subject<string>;
+    private _creationEndDate: string;
+
     constructor() {
         this.downloadedSize$ = new Subject();
         this.downloadedSize$.subscribe(downloadedSize => this._downloadedSize = downloadedSize);
@@ -31,6 +44,18 @@ export class DownloadRequest {
         this.errorMessage$ = new Subject();
         this.errorMessage$.subscribe(errorMessage => this._errorMessage = errorMessage);
 
+        this.progress$ = new Subject();
+        this.progress$.subscribe(progress => this._progress = progress);
+        this.url$ = new Subject();
+        this.url$.subscribe(url => this._url = url);
+        this.downloadAttempts$ = new Subject();
+        this.downloadAttempts$.subscribe(downloadAttempts => this._downloadAttempts = downloadAttempts);
+        this.fileId$ = new Subject();
+        this.fileId$.subscribe(fileId => this._fileId = fileId);
+        this.creationStartDate$ = new Subject();
+        this.creationStartDate$.subscribe(creationStartDate => this._creationStartDate = creationStartDate);
+        this.creationEndDate$ = new Subject();
+        this.creationEndDate$.subscribe(creationEndDate => this._creationEndDate = creationEndDate);
     }
 
     get downloadedSize() {
@@ -50,6 +75,25 @@ export class DownloadRequest {
     }
     get errorMessage() {
         return this._errorMessage;
+    }
+
+    get progress() {
+        return this._progress;
+    }
+    get url() {
+        return this._url;
+    }
+    get fileId() {
+        return this._fileId;
+    }
+    get creationStartDate() {
+        return this._creationStartDate;
+    }
+    get creationEndDate() {
+        return this._creationEndDate;
+    }
+    get downloadAttempts() {
+        return this._downloadAttempts;
     }
 
 }

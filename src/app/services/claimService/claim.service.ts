@@ -139,7 +139,7 @@ export class ClaimService {
   }
 
   deleteClaimByCriteria(
-    providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[],
+    providerId: string, payerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
     claimIDs: string[], fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string, netAmount?: string, batchNo?: string) {
 
@@ -150,12 +150,17 @@ export class ClaimService {
       if (payerId != null && uploadId == null) {
         requestURL += `payerId=${payerId}&`;
       }
+      if (organizationId != null && uploadId == null) {
+        requestURL += `organizationId=${organizationId}&`
+      }
+
       if (batchId != null) {
         requestURL += `batchId=${batchId}&`;
       }
       if (uploadId != null) {
         requestURL += `uploadId=${uploadId}&`;
       }
+
       if (caseTypes != null) {
         requestURL += `caseTypes=${caseTypes}&`;
       }
@@ -205,7 +210,7 @@ export class ClaimService {
   }
 
   PBMValidation(
-    providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string,
+    providerId: string, payerId: string, organizationId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string,
     patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[],
     fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string) {
 
@@ -217,6 +222,9 @@ export class ClaimService {
 
       if (payerId != null && uploadId == null) {
         requestURL += `payerId=${payerId}&`;
+      }
+      if (organizationId != null && uploadId == null) {
+        requestURL += `organizationId=${organizationId}&`
       }
       if (batchId != null) {
         requestURL += `batchId=${batchId}&`;

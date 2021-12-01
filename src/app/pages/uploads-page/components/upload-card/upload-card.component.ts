@@ -54,7 +54,7 @@ export class UploadCardComponent implements OnInit {
                 if (result === true) {
                   this.sharedServices.loadingChanged.next(true);
                   this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '',
-                    null, null, null, null, null, null, null, null, null, null, null, null, null)
+                    null, null, null, null, null, null, null, null, null, null, null, null, null,null,null)
                     .subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.data.downloadable = 0;
@@ -93,8 +93,8 @@ export class UploadCardComponent implements OnInit {
           case 'confirm':
 
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null,
-              null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], null, null, null, null, null, null, null)
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null,
+              null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], null, null, null, null, null, null, null,null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.data.downloadable = 0;
@@ -139,8 +139,8 @@ export class UploadCardComponent implements OnInit {
         .subscribe(result => {
           if (result === true) {
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null,
-              null, null, null, null, null, null, null, null, null, null, null)
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null,
+              null, null, null, null, null, null, null, null, null, null, null,null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.data.downloadable = 0;

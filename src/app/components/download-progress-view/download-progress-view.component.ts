@@ -19,7 +19,7 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
   }
 
   getMode() {
-    return this.downloadRequest.totalSize != null && this.downloadRequest.totalSize != -1 ? 'determinate' : 'indeterminate';
+    return this.downloadRequest.progress != null && this.downloadRequest.progress > 0 ? 'determinate' : 'indeterminate';
   }
 
   getReadableFileSize() {
@@ -45,10 +45,12 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
   }
 
   getValue() {
-    return this.downloadRequest.totalSize != null
-      && this.downloadRequest.totalSize != -1
-      ? this.downloadRequest.downloadedSize / this.downloadRequest.totalSize
-      : this.downloadRequest.downloadedSize;
+    return this.downloadRequest.progress;
+  }
+
+  getDownloadURL() {
+    const access_token = localStorage.getItem("access_token");
+    return this.downloadRequest.url + `?access_token=${access_token}`;
   }
 
 }

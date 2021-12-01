@@ -1,0 +1,52 @@
+<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" *ngIf="processedTransactionModel && processedTransactions.length > 0">
+  <div class="fixed-height fixed-height-sm">
+    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <th>Member Card ID</th>
+          <th>Pre Authorization ID</th>
+          <th>Transaction Date</th>
+          <th>Payer</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of processedTransactions">
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.memberCardId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.requestId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.transactionDate | date: 'dd-MM-yyyy'}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.payerName}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.status}}</td>
+          <td class="actions">
+            <mat-menu #moreMenu="matMenu" xPosition="before">
+              <button mat-menu-item><span>Reuse</span></button>
+              <button mat-menu-item><span>Cancel</span></button>
+              <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+              <button mat-menu-item><span>Add New Related Claim</span></button>
+            </mat-menu>
+            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-scrollbar>
+<app-empty-state *ngIf="processedTransactionModel && processedTransactions.length === 0" message='No Processed transaction found!'>
+</app-empty-state>
+<div class="pagination-header">
+  <div class="form-group page-select">
+    <label class="control-label">Go to page: </label>
+    <mat-form-field class="form-control custom-select-control">
+      <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+        <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="material-paginator">
+    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+    </mat-paginator>
+  </div>
+</div>

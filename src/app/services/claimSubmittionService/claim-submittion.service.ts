@@ -21,6 +21,7 @@ export class ClaimSubmittionService {
     fromDate?: string,
     toDate?: string,
     payerId?: string,
+    organizationId?: string,
     batchId?: string,
     uploadId?: string,
     casetype?: string[],
@@ -40,8 +41,8 @@ export class ClaimSubmittionService {
     requestURL = `/providers/${providerId}/submit/criteria?`;
     if (uploadId != null) {
       requestURL += `uploadId=${uploadId}`;
-    } else if (payerId != null && fromDate != null && toDate != null) {
-      requestURL += `payerID=${payerId}&fromDate=` + this.formatDate(fromDate)
+    } else if ((payerId != null || organizationId != null) && fromDate != null && toDate != null) {
+      requestURL += `payerID=${payerId}&organizationId=${organizationId}&fromDate=` + this.formatDate(fromDate)
         + '&toDate=' + this.formatDate(toDate);
     } else if (batchId != null) {
       requestURL += `batchId=${batchId}`;

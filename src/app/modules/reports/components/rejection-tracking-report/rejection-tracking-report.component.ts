@@ -370,7 +370,7 @@ export class RejectionTrackingReportComponent implements OnInit {
       }
     }
     this.minDate = new Date(event);
-
+    this.minDate = new Date(this.minDate.setMonth(this.minDate.getMonth() + 1));
   }
   getEmptyStateMessage() {
     if (!this.isGenerateData && (this.error == null || this.error === undefined)) {

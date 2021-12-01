@@ -227,6 +227,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         patientFileNo: this.params.patientFileNo,
         policyNo: this.params.policyNo,
         payerId: this.params.payerId,
+        organizationId: this.params.organizationId,
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
         uploadId: this.params.uploadId,
@@ -322,6 +323,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.from,
       this.params.to,
       this.params.payerId,
+      this.params.organizationId,
       this.params.batchId,
       this.params.uploadId,
       this.params.caseTypes,
@@ -422,6 +424,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.from,
       this.params.to,
       this.params.payerId,
+      this.params.organizationId,
       this.summaries[key].statuses.filter(status => status != 'all'),
       page,
       this.pageSize,
@@ -544,7 +547,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return;
     }
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, null, null, null, null, null, null, this.selectedClaims).subscribe((event) => {
+    this.submittionService.submitAllClaims(this.providerId, null, null, null, null, null, null, null, this.selectedClaims).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
           this.dialogService.openMessageDialog(
@@ -590,7 +593,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.params.from, this.params.to, this.params.payerId, this.params.batchId, this.params.uploadId, this.params.caseTypes,
+    this.submittionService.submitAllClaims(this.providerId, this.params.from, this.params.to, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, this.params.caseTypes,
       null, this.params.filter_claimRefNo, this.params.filter_memberId, this.params.invoiceNo, this.params.filter_patientFileNo, this.params.policyNo, this.params.filter_drName, this.params.filter_nationalId,
       this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe((event) => {
 
@@ -861,6 +864,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
       this.params.payerId,
+      this.params.organizationId,
       this.params.from,
       this.params.to,
       this.params.batchId,
@@ -1117,6 +1121,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.from,
       this.params.to,
       this.params.payerId,
+      this.params.organizationId,
       this.params.batchId,
       this.params.uploadId,
       this.params.filter_claimRefNo,
@@ -1130,7 +1135,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_netAmount,
       this.params.filter_batchNum);
     if (event != null) {
-      this.downloadService.startDownload(event)
+      this.downloadService.startGeneratingDownloadFile(event)
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
             this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -1151,6 +1156,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.from,
       this.params.to,
       this.params.payerId,
+      this.params.organizationId,
       this.params.batchId,
       this.params.uploadId,
       this.params.filter_claimRefNo,
@@ -1269,7 +1275,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 if (result === true) {
                   this.commen.loadingChanged.next(true);
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null,
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId,  null,
                     this.params.filter_claimRefNo, this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims,
                     this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount,
                     this.params.filter_batchNum).subscribe(event => {
@@ -1320,7 +1326,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             break;
           case 'confirm':
             this.commen.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo,
+            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
               this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.params.filter_memberId,
               this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum)
               .subscribe(event => {
@@ -1381,7 +1387,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           if (result === true) {
             this.commen.loadingChanged.next(true);
             const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo,
+            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
               this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to,
               this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -1684,7 +1690,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
     // const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
     const status = this.isPBMValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
-    this.claimService.PBMValidation(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo, this.params.filter_patientFileNo,
+    this.claimService.PBMValidation(this.providerId, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo, this.params.filter_patientFileNo,
       this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId,
       this.params.filter_patientFileNo).subscribe(event => {
         if (event instanceof HttpResponse) {
