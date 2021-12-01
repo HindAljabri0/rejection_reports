@@ -2,6 +2,7 @@
     <div class="block-header has-border">
         <p>Reconciliation Report</p>
     </div>
+    <form #reconciliationReportForm='ngForm' (ngSubmit)='reconciliationReportForm.valid && search()' ></form>
     <div class="block-filter-panel">
         <div class="row">
             <div class="col-lg-8">
@@ -10,20 +11,18 @@
                         <div class="form-group">
                             <label class="control-label">Payer</label>
                             <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="">
-                                    <mat-option value="">Select Payer</mat-option>
-                                    <mat-option value="Payer 1">Payer 1</mat-option>
-                                    <mat-option value="Payer 2">Payer 2</mat-option>
-                                    <mat-option value="Payer 3">Payer 3</mat-option>
-                                    <mat-option value="Payer 4">Payer 4</mat-option>
-                                    <mat-option value="Payer 5">Payer 5</mat-option>
+                                <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId" required>
+                                    <mat-option value="All">All</mat-option>
+                                    <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                        ({{payer.arName}})
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label class="control-label">Year</label>
+                            <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
                                 <input [matDatepicker]="year" class="form-control" placeholder="Select year" />
                                 <mat-datepicker-toggle [for]="year"></mat-datepicker-toggle>
