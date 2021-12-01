@@ -210,7 +210,7 @@ export class SearchService {
     if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
       requestURL += `&batchNo=${batchNo}`;
     }
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -233,7 +233,7 @@ export class SearchService {
     claimDate?: string,
     netAmount?: string,
     batchNo?: string) {
-    let requestURL = `/providers/${providerId}/claims/excel?status=${statuses.toString()}`;
+    let requestURL = `/providers/${providerId}/claims/download/excel?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
     } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
