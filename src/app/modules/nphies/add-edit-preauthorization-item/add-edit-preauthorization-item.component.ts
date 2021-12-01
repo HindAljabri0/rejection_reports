@@ -37,7 +37,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
     display: [''],
-    isPackage: [''],
+    isPackage: [2],
     bodySite: [''],
     subSite: [''],
     quantity: ['', Validators.required],
@@ -235,6 +235,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   getItemList() {
+    this.sharedServices.loadingChanged.next(true);
     this.IsItemLoading = true;
     this.FormItem.controls.item.disable();
     // tslint:disable-next-line:max-line-length
@@ -254,6 +255,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           .subscribe(() => {
             this.filterItem();
           });
+        this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
