@@ -193,13 +193,13 @@
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Amount
                                     </th>
-                                    <th
+                                    <!-- <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Vat</th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Batch No.
-                                    </th>
+                                    </th> -->
                                     <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
@@ -246,7 +246,7 @@
                                             class="row-click text-nowrap">
                                             {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <!-- <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="row-click text-nowrap">
                                             {{claim.netVatAmount}}<span class="currency">
                                                 {{claim.unitOfNetVatAmount}}</span>
@@ -254,7 +254,7 @@
                                         <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="row-click text-nowrap">
                                             <span class="text-monospace">{{claim.batchNumber}}</span>
-                                        </td>
+                                        </td> -->
                                         <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="text-center row-click">
                                             <span class="status-dot bg-{{accentColor(claim.status)}}"></span>

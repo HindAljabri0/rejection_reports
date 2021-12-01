@@ -293,6 +293,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.careTeamRole = result.careTeamRole;
               x.speciality = result.speciality;
               x.speciallityCode = result.speciallityCode;
+              x.qualificationCode = result.speciallityCode;
               x.practitionerRoleName = result.practitionerRoleName;
               x.careTeamRoleName = result.careTeamRoleName;
             }
@@ -482,7 +483,7 @@ export class AddPreauthorizationComponent implements OnInit {
               }
 
               if (x.isPackage === 2) {
-                x.Details = [];
+                x.itemDetails = [];
               }
 
             }
@@ -536,7 +537,7 @@ export class AddPreauthorizationComponent implements OnInit {
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
-      Sequence: (itemModel !== null) ? itemModel.sequence : (item.Details.length === 0 ? 1 : (item.Details[item.Details.length - 1].sequence + 1)),
+      Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
       type: this.FormPreAuthorization.controls.type.value.value
     };
@@ -548,8 +549,8 @@ export class AddPreauthorizationComponent implements OnInit {
         if (this.Items.find(x => x.sequence === itemSequence)) {
           this.Items.map(x => {
             if (x.sequence === itemSequence) {
-              if (x.Details.find(y => y.sequence === result.sequence)) {
-                x.Details.map(y => {
+              if (x.itemDetails.find(y => y.sequence === result.sequence)) {
+                x.itemDetails.map(y => {
                   if (y.sequence === result.sequence) {
                     y.type = result.type;
                     y.typeName = result.typeName,
@@ -560,7 +561,7 @@ export class AddPreauthorizationComponent implements OnInit {
                   }
                 });
               } else {
-                x.Details.push(result);
+                x.itemDetails.push(result);
               }
             }
           });
@@ -574,7 +575,7 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.Items.find(x => x.sequence === itemSequence)) {
       this.Items.map(x => {
         if (x.sequence === itemSequence) {
-          x.Details.splice(index, 1);
+          x.itemDetails.splice(index, 1);
         }
       });
     }
@@ -694,6 +695,17 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
+  checkItemsCodeForSupportingInfo() {
+    // tslint:disable-next-line:max-line-length
+    if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medicationCode').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+      // tslint:disable-next-line:max-line-length
+      this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   updateSequenceNames() {
     this.Items.forEach(x => {
       if (x.supportingInfoSequence) {
@@ -802,6 +814,10 @@ export class AddPreauthorizationComponent implements OnInit {
       hasError = true;
     }
 
+    if (!this.checkItemsCodeForSupportingInfo()) {
+      hasError = true;
+    }
+
     if (hasError) {
       return;
     }
@@ -886,6 +902,7 @@ export class AddPreauthorizationComponent implements OnInit {
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
         model.specialityCode = x.speciallityCode;
+        model.qualificationCode = x.speciallityCode;
         return model;
       });
 
@@ -947,7 +964,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
 
-          model.itemDetails = x.Details.map(y => {
+          model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
@@ -985,7 +1002,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
 
-          model.itemDetails = x.Details.map(y => {
+          model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
@@ -1112,6 +1129,7 @@ export class AddPreauthorizationComponent implements OnInit {
       accidentType: '',
       country: ''
     });
+    this.CareTeams = [];
     this.CareTeams = [];
     this.Diagnosises = [];
     this.SupportingInfo = [];

@@ -32,12 +32,12 @@
                   <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
                     <input type="text" class="form-control" placeholder="Enter comment here..." formControlName="payloadValue"/>
                     <div *ngIf="isSubmitted && FormCommunication.get('payloadValue').hasError('required')">
-                      <span class="error-text">Please select a Payload Value</span>
+                      <span class="error-text">Please enter a comment</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-auto">
-                  <button mat-flat-button color="primary" type="submit" (click)="add()">Add</button>
+                  <button mat-flat-button color="primary" type="submit">Add</button>
                 </div>
               </div>
             </td>

@@ -13,6 +13,8 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 export class ViewPreauthorizationDetailsComponent implements OnInit {
 
   communications = [];
+  selectedTab = 0;
+
   constructor(
     private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
@@ -22,19 +24,20 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.data.detailsModel.communicationId) {
+      this.selectedTab = 1;
+    }
     this.getCommunications();
   }
 
-  closeDialog() {
-    this.dialogRef.close(true);
-  }
-
-  openAddCommunicationDialog() {
+  openAddCommunicationDialog(commRequestId = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
-      claimResponseId: this.data.detailsModel.approvalResponseId
+      claimResponseId: this.data.detailsModel.approvalResponseId,
+      // tslint:disable-next-line:radix
+      communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
@@ -72,6 +75,10 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     } else {
       return 'image';
     }
+  }
+
+  closeDialog() {
+    this.dialogRef.close(true);
   }
 
 }

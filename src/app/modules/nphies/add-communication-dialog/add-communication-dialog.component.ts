@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
 })
 export class AddCommunicationDialogComponent implements OnInit {
 
-fetchCommunications = new EventEmitter();
+  fetchCommunications = new EventEmitter();
 
   payLoads = [];
   FormCommunication: FormGroup = this.formBuilder.group({
@@ -48,7 +48,9 @@ fetchCommunications = new EventEmitter();
     this.currentFileUpload = event.target.files[0];
     this.FormCommunication.controls.attachmentName.setValue(this.currentFileUpload.name);
     this.FormCommunication.controls.attachmentType.setValue(this.currentFileUpload.type);
-    this.FormCommunication.controls.createdDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'));
+    const createDate = new Date();
+    const strCreateDate = createDate.toISOString().replace('Z', '');
+    this.FormCommunication.controls.createdDate.setValue(strCreateDate);
 
     // this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
@@ -89,22 +91,22 @@ fetchCommunications = new EventEmitter();
     if (this.FormCommunication.valid) {
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
+      this.isSubmitted = false;
       this.emptyPayloadError = '';
       this.FormCommunication.reset();
-      this.isSubmitted = false;
     }
   }
 
   removePayload(i) {
     this.payLoads.splice(i, 1);
     if (this.payLoads.length === 0) {
-      this.emptyPayloadError = 'Please add payload';
+      this.emptyPayloadError = 'Please select a file or enter comment';
     }
   }
 
   onSubmit() {
     if (this.payLoads.length === 0) {
-      this.emptyPayloadError = 'Please add payload';
+      this.emptyPayloadError = 'Please select a file or enter comment';
       return;
     }
     this.emptyPayloadError = '';

@@ -39,6 +39,7 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
 import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
+import { AddCommunicationDialogComponent } from '../nphies/add-communication-dialog/add-communication-dialog.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphi
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+    AddCommunicationDialogComponent
   ],
   providers: [
     DatePipe

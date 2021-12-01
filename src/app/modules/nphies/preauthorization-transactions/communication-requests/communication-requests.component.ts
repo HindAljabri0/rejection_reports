@@ -97,11 +97,11 @@ export class CommunicationRequestsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId, communicationId, notificationId) {
+  openDetailsDialog(requestId, communicationId, notificationId, notificationStatus) {
     if (this.communicationRequests.filter(x => x.notificationId === notificationId)[0]) {
       this.communicationRequests.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
     }
-    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId });
+    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId, 'notificationStatus': notificationStatus });
   }
 
   get paginatorLength() {

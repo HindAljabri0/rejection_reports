@@ -43,7 +43,7 @@
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="payerId">
                     <mat-option value="">Select Payer</mat-option>
-                    <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">{{payer.englistName}}
+                    <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
                       ({{payer.arabicName}})</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -110,7 +110,7 @@
                     <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.responseId)">
                       <mat-icon>refresh</mat-icon>
                     </button>
-                    <span *ngIf="!transaction.processingStatus" class="pl-1">Processing Payment</span>
+                    <span *ngIf="!transaction.processingStatus" class="pl-1">Check Processing Status</span>
                     <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
 
                   </div>

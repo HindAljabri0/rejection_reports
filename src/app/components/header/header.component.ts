@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit {
       this.thereIsActiveDownloads = this.downloads.length>0 ;
     ;
    
-      setTimeout(() => this.downloadMenuRef.openMenu(), 500);
+     
     }});
 
   

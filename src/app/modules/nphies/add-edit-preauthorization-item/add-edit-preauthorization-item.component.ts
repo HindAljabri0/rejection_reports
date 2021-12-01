@@ -276,7 +276,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     // filter the nations
     this.filteredItem.next(
-      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toLowerCase().indexOf(search) > -1)
+      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -507,7 +507,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
 
-      model.Details = [];
+      model.itemDetails = [];
 
       this.dialogRef.close(model);
     }
