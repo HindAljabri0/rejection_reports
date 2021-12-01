@@ -38,13 +38,13 @@
   <div class="col-3">
     <div class="inline-label-table">
       <label>PreAuth Ref. No.</label>
-      <p class="text-primary">{{data.referenceNumber}}</p>
+      <p class="text-primary">{{data.preAuthorizationInfo.preAuthRefNo}}</p>
     </div>
   </div>
   <div class="col-3">
     <div class="inline-label-table">
-      <label>Period</label>
-      <p class="text-primary">{{period}}</p>
+      <label>PreAuth Period</label>
+      <p class="text-primary">{{data.preAuthStartDate | date:'dd/MM/yyyy'}} - {{data.preAuthEndDate | date:'dd/MM/yyyy'}} [ {{period}} ]</p>
     </div>
   </div>
   <div class="col-3">

@@ -13,6 +13,7 @@ export class EligibilityResponseModel {
     noCoverageFoundReason: string;
     serviceDate: Date;
     transactionDate: Date;
+    nphiesResponseId: string;
     purpose: string[];
     errors: {
         code: string;

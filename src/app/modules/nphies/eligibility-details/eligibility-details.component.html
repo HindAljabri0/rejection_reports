@@ -39,6 +39,12 @@
                 <p class="form-control-static">{{eligibilityResponse.purpose.join(', ')}}</p>
             </div>
         </div>
+        <div class="col-4">
+          <div class="form-group form-group-static">
+              <div class="control-label">Eligibility Responded ID</div>
+              <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
+          </div>
+      </div>
     </div>
 
     <ng-container *ngIf="eligibilityResponse.errors != null && eligibilityResponse.errors.length > 0">
@@ -146,7 +152,7 @@
                                                         <div *ngFor="let excp of ctb.exceptionList" class="pb-2">
                                                             <p>{{excp.exceptionType}}</p>
                                                             <p class="text-grey">{{excp.exceptionStartDate | date: 'dd-MM-yyyy hh:mm aa'}} - {{excp.exceptionEndDate | date: 'dd-MM-yyyy hh:mm aa'}}</p>
-                                                        </div>                                                       
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </tbody>
