@@ -3,6 +3,9 @@ import * as moment from 'moment';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -15,7 +18,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
 
-  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer) { }
+  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.readNotification();
@@ -228,6 +231,15 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     } else {
       return this.data.period;
     }
+  }
+
+  viewAttachment(e, item) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: item.attachmentName, attachment: item.attachment
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }

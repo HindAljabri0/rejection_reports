@@ -21,6 +21,8 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
 import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -1152,6 +1154,15 @@ export class AddPreauthorizationComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  viewAttachment(e, item) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: item.attachmentName, attachment: item.byteArray
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }

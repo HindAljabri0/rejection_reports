@@ -699,7 +699,7 @@
           <td>
             <span *ngIf="s.category=='attachment'">
               <!-- {{s.attachment}} -->
-              <button>View</button>
+              <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
             </span>
             <span *ngIf="s.category!='attachment'">
               {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
