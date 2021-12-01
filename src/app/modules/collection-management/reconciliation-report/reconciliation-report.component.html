@@ -2,7 +2,7 @@
     <div class="block-header has-border">
         <p>Reconciliation Report</p>
     </div>
-    <form #reconciliationReportForm='ngForm' (ngSubmit)='reconciliationReportForm.valid && search()' ></form>
+    <form #reconciliationReportForm='ngForm' (ngSubmit)='reconciliationReportForm.valid && search()'></form>
     <div class="block-filter-panel">
         <div class="row">
             <div class="col-lg-8">
@@ -39,261 +39,108 @@
             </div>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
-            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-                <thead>
-                    <tr>
-                        <th rowspan="2">Duration</th>
-                        <th rowspan="2">Payer</th>
-                        <th rowspan="2">Total Submitted</th>
-                        <th colspan="2" class="text-center">Total Received</th>
-                        <th rowspan="2">Total Outstanding</th>
-                        <th colspan="2" class="text-center">Prompt Payment Discount</th>
-                        <th colspan="2" class="text-center">Volume Discount</th>
-                        <th rowspan="2">Reconciliation Amount</th>
-                        <th colspan="2">Final Rejection Amount</th>
-                        <th rowspan="2"></th>
-                    </tr>
-                    <tr>
-                        <th class="not-first-child">SR</th>
-                        <th>%</th>
-                        <th>SR</th>
-                        <th>%</th>
-                        <th>SR</th>
-                        <th>%</th>
-                        <th>SR</th>
-                        <th class="not-last-child">%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>May 2020 - Jan 2021</td>
-                        <td>Bupa</td>
-                        <td>1296</td>
-                        <td>132</td>
-                        <td>44.60%</td>
-                        <td>150</td>
-                        <td>972</td>
-                        <td>24.72%</td>
-                        <td>332</td>
-                        <td>25.96%</td>
-                        <td>385</td>
-                        <td>332</td>
-                        <td>25.96%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mar 2021 - Sep 2021</td>
-                        <td>Tawuniya</td>
-                        <td>1342</td>
-                        <td>503</td>
-                        <td>10.13%</td>
-                        <td>216</td>
-                        <td>368</td>
-                        <td>48.25%</td>
-                        <td>388</td>
-                        <td>23.80%</td>
-                        <td>150</td>
-                        <td>388</td>
-                        <td>23.80%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jan 2021 - Apr 2021</td>
-                        <td>Malath</td>
-                        <td>1884</td>
-                        <td>165</td>
-                        <td>20.34%</td>
-                        <td>458</td>
-                        <td>436</td>
-                        <td>32.13%</td>
-                        <td>335</td>
-                        <td>28.46%</td>
-                        <td>316</td>
-                        <td>335</td>
-                        <td>28.46%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Apr 2021 - Aug 2021</td>
-                        <td>Sagar</td>
-                        <td>1673</td>
-                        <td>681</td>
-                        <td>39.35%</td>
-                        <td>180</td>
-                        <td>336</td>
-                        <td>31.56%</td>
-                        <td>234</td>
-                        <td>19.52%</td>
-                        <td>227</td>
-                        <td>234</td>
-                        <td>19.52%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Dec 2020 - Jul 2021</td>
-                        <td>AXA</td>
-                        <td>1721</td>
-                        <td>370</td>
-                        <td>58.85%</td>
-                        <td>476</td>
-                        <td>241</td>
-                        <td>34.35%</td>
-                        <td>466</td>
-                        <td>28.42%</td>
-                        <td>374</td>
-                        <td>466</td>
-                        <td>28.42%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Oct 2020 - Jan 2021</td>
-                        <td>SAICO</td>
-                        <td>1047</td>
-                        <td>602</td>
-                        <td>10.27%</td>
-                        <td>491</td>
-                        <td>149</td>
-                        <td>57.43%</td>
-                        <td>357</td>
-                        <td>20.87%</td>
-                        <td>367</td>
-                        <td>357</td>
-                        <td>20.87%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jul 2020 - Feb 2021</td>
-                        <td>Rajhi</td>
-                        <td>1644</td>
-                        <td>201</td>
-                        <td>42.53%</td>
-                        <td>185</td>
-                        <td>319</td>
-                        <td>17.69%</td>
-                        <td>341</td>
-                        <td>28.40%</td>
-                        <td>427</td>
-                        <td>341</td>
-                        <td>28.40%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jan 2021 - Oct 2021</td>
-                        <td>Walaa</td>
-                        <td>1436</td>
-                        <td>606</td>
-                        <td>12.50%</td>
-                        <td>393</td>
-                        <td>702</td>
-                        <td>37.43%</td>
-                        <td>168</td>
-                        <td>21.40%</td>
-                        <td>244</td>
-                        <td>168</td>
-                        <td>21.40%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Apr 2021 - Oct 2021</td>
-                        <td>ASF</td>
-                        <td>1963</td>
-                        <td>873</td>
-                        <td>10.37%</td>
-                        <td>464</td>
-                        <td>257</td>
-                        <td>20.72%</td>
-                        <td>380</td>
-                        <td>25.33%</td>
-                        <td>414</td>
-                        <td>380</td>
-                        <td>25.33%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jul 2021 - Aug 2021</td>
-                        <td>JHAH</td>
-                        <td>1564</td>
-                        <td>346</td>
-                        <td>52.92%</td>
-                        <td>357</td>
-                        <td>499</td>
-                        <td>13.55%</td>
-                        <td>161</td>
-                        <td>10.78%</td>
-                        <td>247</td>
-                        <td>161</td>
-                        <td>10.78%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white" #tabEvent>
+
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <div class="fixed-height">
+                <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Duration</th>
+                            <th rowspan="2">Payer</th>
+                            <th rowspan="2">Total Submitted</th>
+                            <th colspan="2" class="text-center">Total Received</th>
+                            <th rowspan="2">Total Outstanding</th>
+                            <th colspan="2" class="text-center">Prompt Payment Discount</th>
+                            <th colspan="2" class="text-center">Volume Discount</th>
+                            <th rowspan="2">Reconciliation Amount</th>
+                            <th colspan="2">Final Rejection Amount</th>
+                            <th rowspan="2"></th>
+                        </tr>
+                        <tr>
+                            <th class="not-first-child">SR</th>
+                            <th>%</th>
+                            <th>SR</th>
+                            <th>%</th>
+                            <th>SR</th>
+                            <th>%</th>
+                            <th>SR</th>
+                            <th class="not-last-child">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of ReconciliationReportResponse">
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor">May 2020 -
+                                Jan 2021</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.Duration}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.payerId}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.totalSubmittedAmount}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.totalReceived}}</td>
+
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.totalReceivedPerc}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.totalOutstandingAmount}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.volumeDiscount}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.volumeDiscountPerc}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.reconciliationAmount}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.finalRejectionAmount}}</td>
+                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
+                                {{data.finalRejectionAmountPerc}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="p-0">
+                                <app-empty-state *ngIf="ReconciliationReportResponse == null || ReconciliationReportResponse.length == 0"
+                                    class="claim-list-empty-state" message='No records found!'>
+                                </app-empty-state>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+        <div class="block-footer sticky-bottom">
+            <div class="left-block custom-paginator">
+                <button matRipple type="button" title="First Page">
+                    <img src="./assets/ic-page-first.svg" alt="First" />
+                </button>
+                <button matRipple type="button" title="Previous Page">
+                    <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                </button>
+                <p class="page-info">
+                    1<small>/5</small>
+                </p>
+                <button matRipple type="button" title="Next Page">
+                    <img src="./assets/ic-page-next.svg" alt="Next" />
+                </button>
+                <button matRipple type="button" title="Last Page">
+                    <img src="./assets/ic-page-last.svg" alt="Last" />
+                </button>
+            </div>
         </div>
-    </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
-        <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page">
-                <img src="./assets/ic-page-first.svg" alt="First" />
-            </button>
-            <button matRipple type="button" title="Previous Page">
-                <img src="./assets/ic-page-prev.svg" alt="Previous" />
-            </button>
-            <p class="page-info">
-                1<small>/5</small>
-            </p>
-            <button matRipple type="button" title="Next Page">
-                <img src="./assets/ic-page-next.svg" alt="Next" />
-            </button>
-            <button matRipple type="button" title="Last Page">
-                <img src="./assets/ic-page-last.svg" alt="Last" />
-            </button>
-        </div>
-    </div>
-    <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
-</div>
+        <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </mat-tab-group>
 <mat-menu #actionsMenu xPosition="before">
     <ng-template matMenuContent>
         <button mat-menu-item>Add Payment</button>
