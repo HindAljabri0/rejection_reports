@@ -13,14 +13,16 @@
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
             <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-            <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
-              (keyup)="searchBeneficiaries()">
+            <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
+              formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                (click)="selectBeneficiary(beneficiary)">
                 {{beneficiary.name}} ({{beneficiary.documentId}})
               </mat-option>
             </mat-autocomplete>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
               <span class="error-text">Please select a Beneficiary</span>
             </div>
           </div>
@@ -30,7 +32,8 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+              color="primary">Create New Beneficiary</button>
           </div>
         </div>
 
@@ -48,7 +51,8 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
                 <span class="error-text">Please select an Insurance Plan</span>
               </div>
             </div>
@@ -62,17 +66,20 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
               <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today" formControlName="dateOrdered">
+                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                  [max]="today" formControlName="dateOrdered">
                 <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #dateOrderedCtrl></mat-datepicker>
               </div>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
                 <span class="error-text">Please enter Date Ordered</span>
               </div>
             </div>
           </div>
           <div class="col-4 col-xxl-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
               <label class="control-label">Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
@@ -80,7 +87,8 @@
                   <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
                 <span class="error-text">Please select a Type</span>
               </div>
             </div>
@@ -108,22 +116,24 @@
           <div class="col-4 col-lg-3">
             <div class="form-group">
               <label class="control-label">Eligibility Response ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityResponseId">
+              <input class="form-control" placeholder="Enter Offline Eligibility ID"
+                formControlName="eligibilityResponseId">
             </div>
           </div>
 
           <div class="col-4 col-lg-3">
             <div class="form-group">
               <label class="control-label">Offline Eligibility ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
+              <input class="form-control" placeholder="Enter Offline Eligibility ID"
+                formControlName="eligibilityOfflineId">
             </div>
           </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Offline Eligibility Date</label>
               <div class="date-picker">
-                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
-                  formControlName="eligibilityOfflineDate">
+                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
+                  placeholder="Select Offline Eligibility Date" [max]="today" formControlName="eligibilityOfflineDate">
                 <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
               </div>
@@ -141,7 +151,8 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
                 <span class="error-text">Please select Payee Type</span>
               </div>
             </div>
@@ -157,7 +168,8 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
                 <span class="error-text">Please select payee</span>
               </div>
             </div>
@@ -198,10 +210,12 @@
                     {{careTeam.speciality}}
                   </td>
                   <td class="actions">
-                    <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                    <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)"
+                      class="text-primary">
                       <mat-icon>create</mat-icon>
                     </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                    <button mat-icon-button type="button" matTooltip="Delete"
+                      (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
                       <mat-icon>delete_outline</mat-icon>
                     </button>
                   </td>
@@ -209,16 +223,19 @@
               </tbody>
             </table>
           </div>
-          <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='No Care Team found!'>
+          <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'"
+            message='No Care Team found!'>
           </app-empty-state>
-          <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='Care Team required!'>
+          <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'"
+            message='Care Team required!'>
           </app-empty-state>
         </div>
 
         <div [ngClass]="{'text-danger': IsDiagnosisRequired}">
           <h5 class="form-title">
             <span>Diagnosis<span class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
+            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()"
+              [disabled]="!FormPreAuthorization.controls.type.value">
               <mat-icon>add</mat-icon>
             </button>
           </h5>
@@ -244,10 +261,12 @@
                     {{diagnosis.onAdmissionName}}
                   </td>
                   <td class="actions">
-                    <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
+                    <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)"
+                      class="text-primary">
                       <mat-icon>create</mat-icon>
                     </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
+                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
+                      (click)="deleteDiagnosis(diagnosis.sequence, i)">
                       <mat-icon>delete_outline</mat-icon>
                     </button>
                   </td>
@@ -255,13 +274,16 @@
               </tbody>
             </table>
           </div>
-          <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='No Diagnosis found!'>
+          <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'"
+            message='No Diagnosis found!'>
           </app-empty-state>
-          <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='Diagnosis required!'>
+          <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'"
+            message='Diagnosis required!'>
           </app-empty-state>
         </div>
 
-        <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
+        <ng-container
+          *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
           <h5 class="form-title">
             Vision Prescription
           </h5>
@@ -269,9 +291,11 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
-                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
+                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
+                    class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
+                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                    formControlName="dateWritten">
                   <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                   <mat-datepicker #visionWrittenDate></mat-datepicker>
                 </div>
@@ -284,7 +308,8 @@
             <div class="col-8 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
-                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
+                    class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="prescriber">
                     <mat-option value="">Select Prescriber</mat-option>
@@ -335,12 +360,15 @@
                     <td>{{visionSpecification.lensPower}}</td>
                     <td>{{visionSpecification.lensBackCurve}}</td>
                     <td>{{visionSpecification.lensDiameter}}</td>
-                    <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+                    <td>{{visionSpecification.prismAmount}}<span
+                        *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td class="actions">
-                      <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit" class="text-primary">
+                      <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
+                        matTooltip="Edit" class="text-primary">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete" class="text-primary">
+                      <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete"
+                        class="text-primary">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
                     </td>
@@ -348,9 +376,11 @@
                 </tbody>
               </table>
             </div>
-            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='No Lens Specifications found!'>
+            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0"
+              [className]="'size-sm'" message='No Lens Specifications found!'>
             </app-empty-state>
-            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='Lens Specifications reqired!'>
+            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
+              [className]="'size-sm'" message='Lens Specifications reqired!'>
             </app-empty-state>
           </div>
         </ng-container>
@@ -391,16 +421,24 @@
                   <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
                 </td>
                 <td>
-                  {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+                  <span *ngIf="s.category=='attachment'">
+                    <!-- {{s.attachment}} -->
+                    <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
+                  </span>
+                  <span *ngIf="s.category!='attachment'">
+                    {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+                  </span>
                 </td>
                 <td>
                   {{s.reasonName}}
                 </td>
                 <td class="actions">
-                  <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
+                  <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                    (click)="openAddEditSupportInfoDialog(s)">
                     <mat-icon>create</mat-icon>
                   </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(s.sequence, i)">
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
+                    (click)="deleteSupportingInfo(s.sequence, i)">
                     <mat-icon>delete_outline</mat-icon>
                   </button>
                 </td>
@@ -408,7 +446,8 @@
             </tbody>
           </table>
         </div>
-        <app-empty-state *ngIf="SupportingInfo.length === 0" [className]="'size-sm'" message='No Supporting Info found!'>
+        <app-empty-state *ngIf="SupportingInfo.length === 0" [className]="'size-sm'"
+          message='No Supporting Info found!'>
         </app-empty-state>
 
         <h5 class="form-title">Accident</h5>
@@ -416,7 +455,8 @@
           <div class="col-4 col-xxl-3">
             <div class="form-group"
               [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))}">
-              <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
+              <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired"
+                  class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="accidentType">
                   <mat-option value="">Select Accident Type</mat-option>
@@ -451,9 +491,11 @@
             <div class="form-group">
               <label class="control-label">Country</label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
+                <mat-select [value]="selectedCountry" formControlName="country"
+                  (selectionChange)="selectedCountry = $event.value;" #Country>
                   <mat-option>
-                    <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
+                    <ngx-mat-select-search placeholderLabel="Select Country"
+                      noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
                     </ngx-mat-select-search>
                   </mat-option>
                   <mat-option value="">Select Country</mat-option>
@@ -468,11 +510,13 @@
               [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
               <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+                <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
+                  formControlName="date">
                 <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
                 <mat-datepicker #accidentDate></mat-datepicker>
               </div>
-              <div *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
+              <div
+                *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
                 <span class="error-text">Please enter date</span>
               </div>
             </div>
@@ -504,25 +548,28 @@
               <tbody>
                 <ng-container *ngFor="let item of Items; let i = index">
                   <tr>
-                    <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <td class="text-primary text-center row-click" width="10"
+                      (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
                       <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                     </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}</td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">>{{item.itemCode}} - {{item.itemDescription}}</td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}} - {{item.itemDescription}}</td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}</td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.unitPrice}} <span class="currency">SR</span></td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.net}} <span class="currency">SR</span></td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.nonStandardCode}}</td>
                     <td class="actions text-nowrap">
-                      <button mat-icon-button *ngIf="item.isPackage === 1" type="button" matTooltip="Add Details" class="text-primary"
-                        (click)="openAddEditItemDetailsDialog(item.sequence)">
+                      <button mat-icon-button *ngIf="item.isPackage === 1" type="button" matTooltip="Add Details"
+                        class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
                         <mat-icon>add</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
+                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                        (click)="openAddEditItemDialog(item)">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
+                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
+                        (click)="deleteItem(i)">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
                     </td>
@@ -649,10 +696,12 @@
                               <td class="row-click">{{d.nonStandardCode}}</td>
                               <td class="row-click">{{d.display}}</td>
                               <td class="actions text-nowrap">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                                  (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                   <mat-icon>create</mat-icon>
                                 </button>
-                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
+                                  (click)="deleteItemDetails(item.sequence, di)">
                                   <mat-icon>delete_outline</mat-icon>
                                 </button>
                               </td>
