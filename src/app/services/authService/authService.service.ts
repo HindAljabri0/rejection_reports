@@ -134,6 +134,7 @@ export class AuthService {
               localStorage.setItem(key, currentValue + '|' + value);
             }
           });
+          localStorage.setItem('cchi_id', event.body['cchiId']);
           localStorage.setItem('provider_id', event.body['providerId']);
           localStorage.setItem('user_name', event.body['fullName']);
           localStorage.setItem('provider_name', event.body['providerName']);
@@ -168,6 +169,9 @@ export class AuthService {
   }
   getProviderName() {
     return localStorage.getItem('provider_name');
+  }
+  getCCHIId() {
+    return localStorage.getItem('cchi_id');
   }
 
 }

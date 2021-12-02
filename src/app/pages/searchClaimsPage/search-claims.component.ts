@@ -231,6 +231,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
         uploadId: this.params.uploadId,
+        nationalId:this.params.nationalId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -331,7 +332,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.memberId,
       this.params.invoiceNo,
       this.params.patientFileNo,
-      this.params.policyNo).toPromise().catch(error => {
+      this.params.policyNo,
+      this.params.nationalId
+      ).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == '4') {
@@ -437,7 +440,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_patientFileNo || this.params.patientFileNo,
       this.params.policyNo,
       this.params.filter_drName,
-      this.params.filter_nationalId,
+      this.params.filter_nationalId|| this.params.nationalId,
       this.params.filter_claimDate,
       this.params.filter_netAmount,
       this.params.filter_batchNum || this.params.batchId).subscribe((event) => {
@@ -1135,7 +1138,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_netAmount,
       this.params.filter_batchNum);
     if (event != null) {
-      this.downloadService.startDownload(event)
+      this.downloadService.startGeneratingDownloadFile(event)
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
             this.detailTopActionIcon = 'ic-check-circle.svg';

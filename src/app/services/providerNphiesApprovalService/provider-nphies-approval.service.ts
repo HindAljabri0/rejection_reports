@@ -53,4 +53,22 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
+
+  statusCheck(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/checkstatus`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+  submitClaims(providerId: string,claimIds?: string[],uploadId?: string) {
+
+    let requestURL = `/providers/${providerId}/claims/submit?`;
+    if (uploadId != null) {
+      requestURL += `uploadId=${uploadId}`;
+    }
+    if (claimIds != null && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    return this.http.request(request);
+  }
 }

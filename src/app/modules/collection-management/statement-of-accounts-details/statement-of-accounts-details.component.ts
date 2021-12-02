@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { StatementAccountSummary } from 'src/app/models/statementAccountModel';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';

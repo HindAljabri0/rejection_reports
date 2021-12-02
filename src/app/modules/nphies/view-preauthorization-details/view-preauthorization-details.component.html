@@ -1,209 +1,193 @@
 <div class="primary-dialog-header has-border">
-    <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization - {{data.detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
-    <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction - {{data.detailsModel.providertransactionlogId}}</h5>
+  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization -
+    {{data.detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
+  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction -
+    {{data.detailsModel.providertransactionlogId}}</h5>
 
-    <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
+  <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span>Details</span>
-            </ng-template>
-            <div class="pre-auth-info-wrapper">
-                <app-pre-authorization-details *ngIf="data.detailsModel" [data]="data.detailsModel"></app-pre-authorization-details>
-            </div>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <div class="d-flex align-items-center">
-                    <span>Communication</span>
-                    <span class="alert-marker ml-2"></span>
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="selectedTab">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span>Details</span>
+      </ng-template>
+      <div class="pre-auth-info-wrapper">
+        <app-pre-authorization-details *ngIf="data.detailsModel" [data]="data.detailsModel">
+        </app-pre-authorization-details>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Communication</span>
+        </div>
+      </ng-template>
+      <div class="communication-wrapper">
+        <h5 class="form-title px-14 py-0 mb-0">
+          <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
+            (click)="openAddCommunicationDialog()">
+            <mat-icon>add_circle_outline</mat-icon>
+            <span class="pl-1">Add Communication</span>
+          </button>
+        </h5>
+        <ul class="communication">
+          <li *ngFor="let communication of communications">
+            <ng-container *ngIf="communication.communicationRequestId">
+              <div class="header-block">
+                <div class="message">
+                  <div class="table-responsive pb-2">
+                    <table cellspacing="0" cellpadding="0" border="0"
+                      class="primary-grid manual-row-color horizontal-borders">
+                      <tbody>
+                        <ng-container *ngFor="let payload of communication.payloadList">
+                          <tr *ngIf="payload.payloadValue">
+                            <td class="px-0">{{payload.payloadValue}}</td>
+                          </tr>
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                            <td class="px-0">
+                              <ul class="inline-attachments no-space">
+                                <li>
+                                  <button type="button">
+                                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                    <span>{{payload.attachmentName}}</span>
+                                  </button>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                            <td class="px-0">
+                              <ul class="inline-attachments no-space">
+                                <li>
+                                  <button type="button">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span>{{payload.attachmentName}}</span>
+                                  </button>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                  <span>Communication Request ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp;
+                    Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
-            </ng-template>
-            <div class="communication-wrapper">
-                <h5 class="form-title px-14 py-0 mb-0">
-                    <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true" (click)="openAddCommunicationDialog()">
-                        <mat-icon>add_circle_outline</mat-icon>
-                        <span class="pl-1">Add Communication</span>
-                    </button>
-                </h5>
-                <ul class="communication">
-                    <li>
-                        <div class="header-block">
-                            <div class="message">
-                                <div class="table-responsive pb-2">
-                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
-                                        <tbody>
-                                            <tr>
-                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
-                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                                                <span>img_0005.jpg</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                                                <span>report_054578.pdf</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
-                            </div>
-                            <div class="ml-auto">
-                                <button type="button" class="action-btn" (click)="openAddCommunicationDialog()">
-                                    <mat-icon class="text-primary">reply</mat-icon>
-                                    <span>Reply</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="body-block sent">
-                            <div class="message size-sm">
-                                <div class="table-responsive pb-2">
-                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
-                                        <tbody>
-                                            <tr>
-                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
-                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                                                <span>img_0005.jpg</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                                                <span>report_054578.pdf</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
-                            </div>
-                        </div>
-                        <div class="body-block sent">
-                            <div class="message size-sm">
-                                <div class="table-responsive pb-2">
-                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
-                                        <tbody>
-                                            <tr>
-                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
-                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                                                <span>img_0005.jpg</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                                                <span>report_054578.pdf</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="header-block sent">
-                            <div class="message">
-                                <div class="table-responsive pb-2">
-                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
-                                        <tbody>
-                                            <tr>
-                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
-                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                                                <span>img_0005.jpg</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-0">
-                                                    <ul class="inline-attachments no-space">
-                                                        <li>
-                                                            <button type="button">
-                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                                                <span>report_054578.pdf</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114 09:12 PM</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
+                <div class="ml-auto">
+                  <button type="button" class="action-btn"
+                    (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                    <mat-icon class="text-primary">reply</mat-icon>
+                    <span>Reply</span>
+                  </button>
+                </div>
+              </div>
+              <ng-container *ngIf="communication.communicationDataList">
+                <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
+                  <div class="message size-sm">
+                    <div class="table-responsive pb-2">
+                      <table cellspacing="0" cellpadding="0" border="0"
+                        class="primary-grid manual-row-color horizontal-borders">
+                        <tbody>
+                          <ng-container *ngFor="let payload of reply.payloadList">
+                            <tr *ngIf="payload.payloadValue">
+                              <td class="px-0">{{payload.payloadValue}}</td>
+                            </tr>
+                            <tr
+                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                              <td class="px-0">
+                                <ul class="inline-attachments no-space">
+                                  <li>
+                                    <button type="button">
+                                      <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                      <span>{{payload.attachmentName}}</span>
+                                    </button>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                            <tr
+                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                              <td class="px-0">
+                                <ul class="inline-attachments no-space">
+                                  <li>
+                                    <button type="button">
+                                      <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                      <span>{{payload.attachmentName}}</span>
+                                    </button>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                    <span>Communication ID: {{reply.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                      {{reply.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                  </div>
+                </div>
+              </ng-container>
+
+            </ng-container>
+            <ng-container *ngIf="!communication.communicationRequestId">
+              <div class="header-block sent">
+                <div class="message">
+                  <div class="table-responsive pb-2">
+                    <table cellspacing="0" cellpadding="0" border="0"
+                      class="primary-grid manual-row-color horizontal-borders">
+                      <tbody>
+                        <ng-container *ngFor="let payload of communication.payloadList">
+                          <tr *ngIf="payload.payloadValue">
+                            <td class="px-0">{{payload.payloadValue}}</td>
+                          </tr>
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                            <td class="px-0">
+                              <ul class="inline-attachments no-space">
+                                <li>
+                                  <button type="button">
+                                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                    <span>{{payload.attachmentName}}</span>
+                                  </button>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                            <td class="px-0">
+                              <ul class="inline-attachments no-space">
+                                <li>
+                                  <button type="button">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span>{{payload.attachmentName}}</span>
+                                  </button>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                  <span>Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                </div>
+              </div>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 <div class="primary-dialog-footer has-border">
-    <div class="btn-list text-right">
-        <button mat-flat-button color="primary">Progress to Encounter</button>
-        <button mat-flat-button color="primary">Reuse</button>
-        <button mat-flat-button color="primary">Cancel</button>
-    </div>
+  <div class="btn-list text-right">
+    <button mat-flat-button color="primary">Progress to Encounter</button>
+    <button mat-flat-button color="primary">Reuse</button>
+    <button mat-flat-button color="primary">Cancel</button>
+  </div>
 </div>

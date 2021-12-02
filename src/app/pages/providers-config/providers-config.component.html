@@ -59,10 +59,12 @@
                                 value="ORACLE"> Oracle </mat-radio-button>
                             <mat-radio-button *ngIf="isWaseelMidTables" class="col-sm-2" value="MYSQL"> MySql
                             </mat-radio-button>
-                            <mat-radio-button *ngIf="isWaseelMidTables" class="col-sm-2" value="SQLSERVER"> SqlServer
+                            <mat-radio-button *ngIf="isWaseelMidTables || isNphiesMidTables" class="col-sm-2"
+                                value="SQLSERVER"> SqlServer
                                 2016 onwards
                             </mat-radio-button>
-                            <mat-radio-button *ngIf="isWaseelMidTables" class="col-sm-2" value="SQLSERVERLEGACY">
+                            <mat-radio-button *ngIf="isWaseelMidTables || isNphiesMidTables" class="col-sm-2"
+                                value="SQLSERVERLEGACY">
                                 SqlServer Legacy
                             </mat-radio-button>
                             <mat-radio-button *ngIf="isWaseelMidTables" class="col-sm-2" value="POSTGRESQL"> PostgreSql

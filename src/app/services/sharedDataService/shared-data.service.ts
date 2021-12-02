@@ -19,6 +19,87 @@ export class SharedDataService {
     { value: 'vision', name: 'Optical' },
   ];
 
+  encounterStatusList = [
+    { value: 'planned', name: 'Planned' },
+    { value: 'arrived', name: 'Arrived' },
+    { value: 'Triaged', name: 'Triaged' },
+    { value: 'In Progress', name: 'In Progress' },
+    { value: 'On Leave', name: 'On Leave' },
+    { value: 'Finished', name: 'Finished' },
+    { value: 'Cancelled', name: 'Cancelled' },
+    { value: 'Entered in Error', name: 'Entered in Error' },
+    { value: 'Unknown', name: 'Unknown' }
+  ];
+
+  encounterClassList = [
+    { value: 'AMB', name: 'Ambulatory' },
+    { value: 'EMER', name: 'Emergency' },
+    { value: 'HH', name: 'Home Health' },
+    { value: 'IMP', name: 'Inpatient Encounter' },
+    { value: 'SS', name: 'Short Stay' }
+  ];
+
+  encounterServiceTypeList = [
+    { value: '237', name: '237 - Acute Inpatient Serv' },
+    { value: '576', name: '576 - Rehabilitation' },
+    { value: '356', name: '356 - General Maintenance' },
+    { value: '621', name: '621 - Complex Maintenance' },
+    { value: '179', name: '179 - Palliative Medicine' }
+  ];
+
+  encounterPriorityList = [
+    { value: 'A', name: 'A - ASAP' },
+    { value: 'CR', name: 'CR - Callback Results' },
+    { value: 'CS', name: 'CS - Callback For Scheduling' },
+    { value: 'CSP', name: 'CSP - Callback Placer For Scheduling' },
+    { value: 'CSR', name: 'CSR - Contact Recipient For Scheduling' },
+    { value: 'EL', name: 'EL - Elective' },
+    { value: 'EM', name: 'EM - Emergency' },
+    { value: 'P', name: 'P - Preop' },
+    { value: 'PRN', name: 'PRN - As Needed' },
+    { value: 'R', name: 'R - Routine' },
+    { value: 'RR', name: 'RR - Rush Reporting' },
+    { value: 'S', name: 'S - Stat' },
+    { value: 'T', name: 'T - Timing Critical' },
+    { value: 'UD', name: 'UD - Use As Directed' },
+    { value: 'UR', name: 'UR - Urgent' }
+  ];
+
+  encounterAdminSourceList = [
+    { value: 'IA', name: 'IA - Immediate Admission' },
+    { value: 'EER', name: 'EER - Admission from hospital ER' },
+    { value: 'EOP', name: 'EOP - Emergency Admission from hospital outpatient' },
+    { value: 'EGPHC', name: 'EGPHC - Emergency Admission by referral from government primary healthcare center' },
+    { value: 'EGGH', name: 'EGGH - Emergency Admission by referral from general government hospital' },
+    { value: 'EPPHC', name: 'EPPHC - Emergency Admission by referral from private primary healthcare center' },
+    { value: 'EPH', name: 'EPH - Emergency Admission by referral from private hospital' },
+    { value: 'EIC', name: 'EIC - Emergency Admission by insurance company' },
+    { value: 'EWGS', name: 'EWGS - Elective waiting list admission government free Scheme' },
+    { value: 'EWSS', name: 'EWSS - Elective waiting list admission self-payment Scheme' },
+    { value: 'EWIS', name: 'EWIS - Elective waiting list admission insurance coverage Scheme' },
+    { value: 'EMBA', name: 'EMBA - Emergency Maternity Birth Admission' },
+    { value: 'PMBA', name: 'PMBA - Planned Maternity Birth Admission' },
+    { value: 'Others', name: 'Others - Others' }
+  ];
+
+  encounterReAdmissionList = [
+    { value: 'R', name: 'Re-admission' }
+  ];
+
+  encounterDischargeDispositionList = [
+    { value: 'Home', name: 'Home' },
+    { value: 'Alternative home', name: 'Alternative home' },
+    { value: 'Other healthcare facility', name: 'Other healthcare facility' },
+    { value: 'Hospice', name: 'Hospice' },
+    { value: 'Long-term care', name: 'Long-term care' },
+    { value: 'Left against advice', name: 'Left against advice' },
+    { value: 'Expired', name: 'Expired' },
+    { value: 'Psychiatric hospital', name: 'Psychiatric hospital' },
+    { value: 'Rehabilitation', name: 'Rehabilitation' },
+    { value: 'Skilled nursing facility', name: 'Skilled nursing facility' },
+    { value: 'Other', name: 'Other' }
+  ];
+
   subTypeList = [
     { value: 'ip', name: 'InPatient' },
     { value: 'op', name: 'OutPatient' },
@@ -135,6 +216,12 @@ export class SharedDataService {
     { value: 'WI', name: 'Wrong information' },
     { value: 'NP', name: 'Service not performed' },
     { value: 'TAS', name: 'Transaction already submitted' }
+  ];
+
+  payeeTypeList = [
+    // { value: 'subscriber', name: 'Subscriber' },
+    { value: 'provider', name: 'Provider' },
+    { value: 'other', name: 'Other' },
   ];
 
   constructor(private adminService: AdminService) { }
@@ -342,7 +429,7 @@ export class SharedDataService {
 
   getSubSite(type: string) {
     let subSite: any = [];
-    if (subSite === 'oral') {
+    if (type === 'oral') {
       subSite = [
         { value: 'M', name: 'Mesial' },
         { value: 'O', name: 'Occlusal' },

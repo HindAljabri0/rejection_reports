@@ -37,7 +37,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
     display: [''],
-    isPackage: [''],
+    isPackage: [2],
     bodySite: [''],
     subSite: [''],
     quantity: ['', Validators.required],
@@ -76,9 +76,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.data.type) {
-      this.setTypes(this.data.type);      
+      this.setTypes(this.data.type);
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
       this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
@@ -89,8 +88,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.type)[0],
-        subSite: this.subSiteList.filter(x => x.value === this.data.item.type)[0],
+        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
+        subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
@@ -230,7 +229,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
+  typeChange() {
+    this.FormItem.controls.item.setValue('');
+    this.getItemList();
+  }
+
   getItemList() {
+    this.sharedServices.loadingChanged.next(true);
     this.IsItemLoading = true;
     this.FormItem.controls.item.disable();
     // tslint:disable-next-line:max-line-length
@@ -250,6 +255,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           .subscribe(() => {
             this.filterItem();
           });
+        this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -272,7 +278,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     // filter the nations
     this.filteredItem.next(
-      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1)
+      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -470,7 +476,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-      
+
       model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
       model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
 
@@ -489,6 +495,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
       model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd');
+      model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy');
 
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
         model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
@@ -502,7 +509,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
 
-      model.Details = [];
+      model.itemDetails = [];
 
       this.dialogRef.close(model);
     }

@@ -53,6 +53,7 @@ export class SearchedClaim extends Paginateable {
       this.batchNumber = body['batchNumber'];
       this.statusApproval=body['statusApproval'];
       this.descApproval=body['descApproval'];
+    
     }
   }
 }

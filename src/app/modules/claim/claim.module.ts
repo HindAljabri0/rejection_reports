@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -37,6 +37,9 @@ import { AddEditDiagnosisModalComponent } from '../nphies/add-preauthorization/a
 import { AddEditVisionLensSpecificationsComponent } from '../nphies/add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { TagInputModule } from 'ngx-chips';
+import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
+import { AddCommunicationDialogComponent } from '../nphies/add-communication-dialog/add-communication-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +65,7 @@ import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-detail
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
+      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent},
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
@@ -72,7 +76,9 @@ import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-detail
     SharedModule,
     HttpClientModule,
     MatTabsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    TagInputModule,
+    FormsModule
   ],
   exports: [
     CreateByApprovalFormComponent,
@@ -103,7 +109,8 @@ import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-detail
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+    AddCommunicationDialogComponent
   ],
   providers: [
     DatePipe

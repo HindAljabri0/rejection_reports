@@ -4,7 +4,7 @@ import { EligibilityComponent } from './eligibility/eligibility.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared.module';
-import { BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
@@ -39,6 +39,9 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
+  
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
@@ -68,7 +72,11 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     NphiesUploadsComponent,
     NphiesUploadCardComponent,
     CancelReasonModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+
+  
+   
+    
   ],
   imports: [
     CommonModule,
@@ -79,7 +87,9 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     BsDatepickerModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    NphiesRoutingModule
+    NphiesRoutingModule,
+    CarouselModule,
+    
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
@@ -93,7 +103,8 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
     ApiErrorsDialogComponent,
     AddCommunicationDialogComponent,
     CancelReasonModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+   
   ],
   exports: [
     ApiErrorsDialogComponent
