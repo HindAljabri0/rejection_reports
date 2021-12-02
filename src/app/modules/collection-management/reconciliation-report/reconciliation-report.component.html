@@ -2,7 +2,7 @@
     <div class="block-header has-border">
         <p>Reconciliation Report</p>
     </div>
-    <form #reconciliationReportForm='ngForm' (ngSubmit)='reconciliationReportForm.valid && search()'></form>
+
     <div class="block-filter-panel">
         <div class="row">
             <div class="col-lg-8">
@@ -21,18 +21,19 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group">
+                        <div class="form-group" >
                             <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
-                                <input [matDatepicker]="year" class="form-control" placeholder="Select year" />
-                                <mat-datepicker-toggle [for]="year"></mat-datepicker-toggle>
-                                <mat-datepicker #year></mat-datepicker>
+                                <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="dateController" />
+                                <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                                <mat-datepicker #startDate></mat-datepicker>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto align-self-end">
                         <div class="form-group">
-                            <button type="button" mat-flat-button color="primary">Search</button>
+                            <button type="button"  (click)="search()" mat-flat-button color="primary">Search</button>
                         </div>
                     </div>
                 </div>
@@ -69,12 +70,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of ReconciliationReportResponse">
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor">May 2020 -
-                                Jan 2021</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.Duration}}</td>
+                        <tr *ngFor="let data of reconciliationReportResponse">
+                            <td class="row-click"  routerLink="/collection-management/reconciliation-repor"
+                                [queryParams]="{year: strPayerYear,payerId:data.payerId}" >
+                                {{data.duration}}</td>
                             <td class="row-click" routerLink="/collection-management/reconciliation-repor"
                                 [queryParams]="{year: strPayerYear,payerId:data.payerId}">
                                 {{data.payerId}}</td>
@@ -109,7 +108,7 @@
                         </tr>
                         <tr>
                             <td colspan="5" class="p-0">
-                                <app-empty-state *ngIf="ReconciliationReportResponse == null || ReconciliationReportResponse.length == 0"
+                                <app-empty-state *ngIf="reconciliationReportResponse == null || reconciliationReportResponse.length == 0"
                                     class="claim-list-empty-state" message='No records found!'>
                                 </app-empty-state>
                             </td>
