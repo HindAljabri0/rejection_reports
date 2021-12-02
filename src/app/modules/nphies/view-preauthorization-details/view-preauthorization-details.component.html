@@ -7,7 +7,7 @@
   <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding"  [selectedIndex]="selectedTab">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="selectedTab">
     <mat-tab>
       <ng-template mat-tab-label>
         <span>Details</span>
@@ -44,7 +44,8 @@
                           <tr *ngIf="payload.payloadValue">
                             <td class="px-0">{{payload.payloadValue}}</td>
                           </tr>
-                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
@@ -56,7 +57,8 @@
                               </ul>
                             </td>
                           </tr>
-                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
@@ -72,56 +74,64 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                  <span>Communication Request ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp;
+                    Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
                 <div class="ml-auto">
-                  <button type="button" class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                  <button type="button" class="action-btn"
+                    (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
                   </button>
                 </div>
               </div>
-              <div class="body-block sent" *ngIf="communication.communicationPayloadList">
-                <div class="message size-sm">
-                  <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0"
-                      class="primary-grid manual-row-color horizontal-borders">
-                      <tbody>
-                        <ng-container  *ngFor="let payload of communication.communicationPayloadList">
-                        <tr *ngIf="payload.payloadValue">
-                          <td class="px-0">{{payload.payloadValue}}</td>
-                        </tr>
-                        <tr  *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
-                          <td class="px-0">
-                            <ul class="inline-attachments no-space">
-                              <li>
-                                <button type="button">
-                                  <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                  <span>{{payload.attachmentName}}</span>
-                                </button>
-                              </li>
-                            </ul>
-                          </td>
-                        </tr>
-                        <tr  *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
-                          <td class="px-0">
-                            <ul class="inline-attachments no-space">
-                              <li>
-                                <button type="button">
-                                  <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                  <span>{{payload.attachmentName}}</span>
-                                </button>
-                              </li>
-                            </ul>
-                          </td>
-                        </tr>
-                      </ng-container>
-                      </tbody>
-                    </table>
+              <ng-container *ngIf="communication.communicationDataList">
+                <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
+                  <div class="message size-sm">
+                    <div class="table-responsive pb-2">
+                      <table cellspacing="0" cellpadding="0" border="0"
+                        class="primary-grid manual-row-color horizontal-borders">
+                        <tbody>
+                          <ng-container *ngFor="let payload of reply.payloadList">
+                            <tr *ngIf="payload.payloadValue">
+                              <td class="px-0">{{payload.payloadValue}}</td>
+                            </tr>
+                            <tr
+                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                              <td class="px-0">
+                                <ul class="inline-attachments no-space">
+                                  <li>
+                                    <button type="button">
+                                      <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                      <span>{{payload.attachmentName}}</span>
+                                    </button>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                            <tr
+                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                              <td class="px-0">
+                                <ul class="inline-attachments no-space">
+                                  <li>
+                                    <button type="button">
+                                      <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                      <span>{{payload.attachmentName}}</span>
+                                    </button>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                    <span>Communication ID: {{reply.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                      {{reply.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                   </div>
-                  <span>Communication ID: {{communication.communicationRequestId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
-              </div>
+              </ng-container>
+
             </ng-container>
             <ng-container *ngIf="!communication.communicationRequestId">
               <div class="header-block sent">
@@ -131,34 +141,36 @@
                       class="primary-grid manual-row-color horizontal-borders">
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
-                        <tr  *ngIf="payload.payloadValue">
-                          <td class="px-0">{{payload.payloadValue}}</td>
-                        </tr>
-                        <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
-                          <td class="px-0">
-                            <ul class="inline-attachments no-space">
-                              <li>
-                                <button type="button">
-                                  <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                  <span>{{payload.attachmentName}}</span>
-                                </button>
-                              </li>
-                            </ul>
-                          </td>
-                        </tr>
-                        <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
-                          <td class="px-0">
-                            <ul class="inline-attachments no-space">
-                              <li>
-                                <button type="button">
-                                  <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                  <span>{{payload.attachmentName}}</span>
-                                </button>
-                              </li>
-                            </ul>
-                          </td>
-                        </tr>
-                      </ng-container>
+                          <tr *ngIf="payload.payloadValue">
+                            <td class="px-0">{{payload.payloadValue}}</td>
+                          </tr>
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                            <td class="px-0">
+                              <ul class="inline-attachments no-space">
+                                <li>
+                                  <button type="button">
+                                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                    <span>{{payload.attachmentName}}</span>
+                                  </button>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                            <td class="px-0">
+                              <ul class="inline-attachments no-space">
+                                <li>
+                                  <button type="button">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span>{{payload.attachmentName}}</span>
+                                  </button>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                        </ng-container>
                       </tbody>
                     </table>
                   </div>
