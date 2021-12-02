@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { AddStatmentAccountModel } from 'src/app/models/statementAccountModel';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';

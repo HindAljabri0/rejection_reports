@@ -22,6 +22,7 @@ import { CommunicationRequest } from 'src/app/models/communication-request';
 import { ProcessedTransactionsComponent } from './processed-transactions/processed-transactions.component';
 import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
 import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -47,7 +48,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     fromDate: [''],
     toDate: [''],
     payerId: [''],
-    preAuthorizationRequestId: [''],
+    nphiesRequestId: [''],
     beneficiaryId: [''],
     beneficiaryName: [''],
     status: ['']
@@ -62,9 +63,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   statusList = [
     { value: 'queued', name: 'Queued' },
-    { value: 'complete', name: 'Processing Complete' },
+    { value: 'Processing Complete', name: 'Processing Complete' },
     { value: 'error', name: 'Error' },
-    { value: 'partial', name: 'Partial Processing' },
+    { value: 'Partial Processing', name: 'Partial Processing' },
   ];
 
   constructor(
@@ -74,6 +75,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private datePipe: DatePipe,
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
+    private dialogService: DialogService,
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
@@ -102,12 +104,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (params.payerId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.payerId.patchValue(parseInt(params.payerId));
+        this.FormPreAuthTransaction.controls.payerId.patchValue(params.payerId);
       }
 
-      if (params.preAuthorizationRequestId != null) {
+      if (params.nphiesRequestId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.preAuthorizationRequestId.patchValue(parseInt(params.preAuthorizationRequestId));
+        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(params.nphiesRequestId);
       }
 
       if (params.beneficiaryId != null) {
@@ -229,12 +231,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
-      if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value, 10);
+      if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+        model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
-        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value, 10);
+        model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
@@ -264,7 +266,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;
           this.paginator.pageIndex = this.transactionModel.number;
-          this.paginator.pageSize = this.transactionModel.numberOfElements;
+          this.paginator.pageSize = this.transactionModel.size;
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {
@@ -290,8 +292,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       path += `payerId=${this.FormPreAuthTransaction.controls.payerId.value}&`;
     }
 
-    if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-      path += `preAuthorizationRequestId=${this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value}&`;
+    if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+      path += `nphiesRequestId=${this.FormPreAuthTransaction.controls.nphiesRequestId.value}&`;
     }
 
     if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
@@ -315,11 +317,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  openReasonModal(requestId: number, reqType: string) {
+  openReasonModal(requestId: number, responseId: number, reqType: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       approvalRequestId: requestId,
+      approvalResponseId: responseId,
       type: reqType
     };
 
@@ -356,18 +359,18 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   openDetailsDialoEv(event) {
-    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId);
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId, event.notificationStatus);
   }
 
   openDetailsDialogCR(event) {
-    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId);
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId, event.notificationStatus);
   }
 
   openDetailsDialog(requestId, responseId) {
-    this.getTransactionDetails(requestId, responseId, null, null);
+    this.getTransactionDetails(requestId, responseId, null, null, null);
   }
 
-  getTransactionDetails(requestId, responseId, communicationId = null, notificationId) {
+  getTransactionDetails(requestId, responseId, communicationId = null, notificationId, notificationStatus) {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
@@ -388,6 +391,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           if (notificationId) {
             body.notificationId = notificationId;
           }
+          if (notificationStatus) {
+            body.notificationStatus = notificationStatus;
+          }
+
           const dialogConfig = new MatDialogConfig();
           dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
           dialogConfig.data = {
@@ -424,6 +431,82 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
         }
         this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  checkStatus(responseId: number) {
+    this.sharedServices.loadingChanged.next(true);
+    const model: any = {};
+    model.approvalResponseId = responseId;
+    this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+
+          if (body.errors && body.errors.length > 0) {
+            const errors: any[] = [];
+            body.errors.forEach(err => {
+              err.coding.forEach(codex => {
+                errors.push(codex.code + ' : ' + codex.display);
+              });
+            });
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+          }
+          this.onSubmit();
+
+
+          // if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
+          //   const errors: any[] = [];
+
+          //   if (body.disposition) {
+          //     errors.push(body.disposition);
+          //   }
+
+          //   if (body.errors && body.errors.length > 0) {
+          //     body.errors.forEach(err => {
+          //       err.coding.forEach(codex => {
+          //         errors.push(codex.code + ' : ' + codex.display);
+          //       });
+          //     });
+          //   }
+          //   this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+
+          // } else {
+          //   // this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+          //   this.onSubmit();
+          // }
+        }
+        // this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        } else if (error.status === 500) {
+          this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        }
       }
     });
   }

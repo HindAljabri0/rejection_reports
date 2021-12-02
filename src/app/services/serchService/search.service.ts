@@ -24,7 +24,8 @@ export class SearchService {
     memberId?: string,
     invoiceNo?: string,
     patientFileNo?: string,
-    policyNo?: string) {
+    policyNo?: string,
+    nationalId?: string) {
     let requestURL = `/providers/${providerId}/claims?`;
     if (fromDate != null && toDate != null && (payerId != null || organizationId != null)) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
@@ -58,6 +59,9 @@ export class SearchService {
     }
     if (patientFileNo != null) {
       requestURL += `patientFileNo=${patientFileNo}&`;
+    } 
+    if (nationalId != null) {
+      requestURL += `nationalId=${nationalId}&`;
     }
     requestURL += `status=${statuses.toString()}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);

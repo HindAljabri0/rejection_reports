@@ -94,6 +94,8 @@ import { EditClaimComponent } from './pages/edit-claim/edit-claim.component';
 import { ClaimModule } from './modules/claim/claim.module';
 import { ConfirmationAlertDialogComponent } from './components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { GeneralSummaryStatementReportComponent } from './pages/reports/general-summary-statement-report/general-summary-statement-report.component';
+import { NphiesModule } from './modules/nphies/nphies.module';
+import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-claims/nphies-search-claims.component';
 
 
 
@@ -158,7 +160,7 @@ import { GeneralSummaryStatementReportComponent } from './pages/reports/general-
     XmlViewDialogComponent,
     EditClaimComponent,
     ConfirmationAlertDialogComponent,
-    
+    NphiesSearchClaimsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -183,7 +185,8 @@ import { GeneralSummaryStatementReportComponent } from './pages/reports/general-
     NgxJsonViewerModule,
     ClipboardModule,
     MonacoEditorModule.forRoot(),
-    ClaimModule
+    ClaimModule,
+    
   ],
   providers: [
     ThemeService,

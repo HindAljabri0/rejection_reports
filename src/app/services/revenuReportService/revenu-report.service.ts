@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
+
 import { Observable } from 'rxjs';
 import { HttpRequest, HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { RevenuComparativeReport } from 'src/app/models/revenuComparativeReport';
+import { RejectionComparisonReport} from 'src/app/models/rejectionComparisonReport';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +78,18 @@ export class RevenuReportService {
     category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers'): Observable<any> {
     const requestURL = `/providers/${providerId}/reports/rejection-breakdown/payers/${payerId}?fromDate=${fromDate}&toDate=${toDate}&category=${category}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+  generateRejectionComparativeProgressReport(providerId: string, data: any): Observable<any> {
+    const requestURL = `/providers/${providerId}/payerId/${data.payerId}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'payerId') { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
 

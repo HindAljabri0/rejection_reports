@@ -1,82 +1,104 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add Communication</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+  <h5 class="primary-dialog-title">Add Communication</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body p-0">
+<form [formGroup]="FormCommunication" (ngSubmit)="add()">
+  <div class="primary-dialog-body p-0">
     <div class="table-responsive">
-        <table cellspacing="0" cellpadding="0" border="0" height="300" class="primary-grid manual-row-color horizontal-borders claim-view-table">
-            <thead>
-                <tr>
-                    <th>Communication Request ID: c6cb9f49-b1e5-5b28-8510-3cbf3e5ddd22</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="row small-gutter align-items-center">
-                            <div class="col">
-                                <div class="form-group mb-0">
-                                    <input type="text" class="form-control" placeholder="Enter comment here..." />
-                                </div>
-                            </div>
-                            <div class="col-auto">or</div>
-                            <div class="col-auto">
-                                <div class="file-upload-wrapper inline">
-                                    <div class="content">
-                                        <button mat-stroked-button color="primary" type="button">
-                                            Choose File
-                                        </button>
-                                    </div>
-                                    <input type="file" class="file-upload-control" />
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <button mat-flat-button color="primary" type="button">Add</button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia quo esse deserunt eos quasi pariatur earum
-                        vitae voluptas harum.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <ul class="inline-attachments no-space">
-                            <li>
-                                <button type="button">
-                                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                    <span>img_0005.jpg</span>
-                                </button>
-                                <button type="button" title="Close" class="close">
-                                    <mat-icon class="size-16">close</mat-icon>
-                                </button>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <ul class="inline-attachments no-space">
-                            <li>
-                                <button type="button">
-                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                    <span>report_054578.pdf</span>
-                                </button>
-                                <button type="button" title="Close" class="close">
-                                    <mat-icon class="size-16">close</mat-icon>
-                                </button>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+      <table cellspacing="0" cellpadding="0" border="0" height="300"
+        class="primary-grid manual-row-color horizontal-borders claim-view-table">
+        <thead *ngIf="data.communicationRequestId">
+          <tr>
+            <th>Communication Request ID: {{data.communicationRequestId}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="row small-gutter align-items-center">
+                <div class="col-auto">
+                  <div class="file-upload-wrapper inline">
+                    <div class="content">
+                      <button mat-stroked-button color="primary" type="button">
+                        Choose File
+                      </button>
+                    </div>
+                    <input type="file" accept="application/pdf,image/png,image/jpeg" class="file-upload-control"
+                      multiple (change)="selectFile($event)" />
+                  </div>
+                </div>
+                <div class="col-auto">or</div>
+                <div class="col">
+                  <div class="form-group mb-0"
+                    [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
+                    <input type="text" class="form-control" placeholder="Enter comment here..."
+                      formControlName="payloadValue" />
+                    <div *ngIf="isSubmitted && FormCommunication.get('payloadValue').hasError('required')">
+                      <span class="error-text">Please enter a comment</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <button mat-flat-button color="primary" type="submit">Add</button>
+                </div>
+              </div>
+              <div *ngIf="invalidFileMessage" class="row small-gutter align-items-center">
+                <span class="error-text">{{invalidFileMessage}}</span>
+              </div>
+            </td>
+          </tr>
+
+          <ng-container *ngFor="let pay of payLoads; let i = index">
+            <tr *ngIf="pay.payloadValue">
+              <td>{{pay.payloadValue}}</td>
+            </tr>
+
+            <tr *ngIf="pay.payloadAttachment && pay.attachmentType && getFilename(pay.attachmentType) === 'image'">
+              <td>
+                <ul class="inline-attachments no-space">
+                  <li>
+                    <button type="button">
+                      <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                      <span>{{pay.attachmentName}}</span>
+                    </button>
+                    <button type="button" title="Close" class="close" (click)="removePayload(i)">
+                      <mat-icon class="size-16">close</mat-icon>
+                    </button>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr *ngIf="pay.payloadAttachment && pay.attachmentType && getFilename(pay.attachmentType) === 'pdf'">
+              <td>
+                <ul class="inline-attachments no-space">
+                  <li>
+                    <button type="button">
+                      <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                      <span>{{pay.attachmentName}}</span>
+                    </button>
+                    <button type="button" title="Close" class="close" (click)="removePayload(i)">
+                      <mat-icon class="size-16">close</mat-icon>
+                    </button>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+
+
+
+        </tbody>
+      </table>
     </div>
-</div>
-<div class="primary-dialog-footer has-border">
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div *ngIf="emptyPayloadError" class="text-left text-danger">
+      {{emptyPayloadError}}
+    </div>
     <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary">Add Communication</button>
+      <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+      <button mat-flat-button type="button" color="primary" (click)="onSubmit()">Add Communication</button>
     </div>
-</div>
+  </div>
+</form>

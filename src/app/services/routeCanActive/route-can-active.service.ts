@@ -7,6 +7,7 @@ import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-cla
 import { NotificationsPageComponent } from 'src/app/pages/notifications-page/notifications-page.component';
 import { Route } from '@angular/compiler/src/core';
 import { DashboardComponent } from 'src/app/pages/dashboard/dashboard.component';
+import { NphiesSearchClaimsComponent } from 'src/app/modules/nphies/nphies-search-claims/nphies-search-claims.component';
 
 
 @Injectable({
@@ -38,7 +39,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
           return true;
         }
 
-      case SearchClaimsComponent:
+      case SearchClaimsComponent || NphiesSearchClaimsComponent:
         providerId = route.url[0].path;
         const batchId = route.queryParamMap.get('batchId');
         if (batchId != null && batchId != '') {
@@ -66,6 +67,10 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         }
         const policyNo = route.queryParamMap.get('policyNo');
         if (policyNo != null && policyNo != '') {
+          return true;
+        }
+        const nationalId = route.queryParamMap.get('nationalId');
+        if (nationalId != null && nationalId != '') {
           return true;
         }
         payerId = route.queryParamMap.get('payerId');

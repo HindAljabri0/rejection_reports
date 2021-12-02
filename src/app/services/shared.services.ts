@@ -12,6 +12,7 @@ import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { SearchService } from './serchService/search.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ReportsService } from './reportsService/reports.service';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,7 @@ export class SharedServices {
     uploadId: number,
     uploadName: string
   }[]> = new Subject();
+
 
 
   getUploadId: any;
@@ -177,6 +179,17 @@ export class SharedServices {
     }
   }
 
+  get hasGSSPrivilege() {
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      // tslint:disable-next-line:max-line-length
+      return userPrivileges != null && (userPrivileges.includes('|24.0') || userPrivileges.startsWith('24.0') || userPrivileges.includes('|24.3') || userPrivileges.startsWith('24.3'));
+    } catch (error) {
+      return false;
+    }
+  }
+
   get hasAllNphiesPrivilege() {
     const providerId = localStorage.getItem('provider_id');
     try {
@@ -265,7 +278,7 @@ export class SharedServices {
 
   getProcessedCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCount(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
@@ -285,7 +298,7 @@ export class SharedServices {
 
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCount(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
@@ -321,6 +334,11 @@ export class SharedServices {
 
   public get providerId() {
     return this.authService.getProviderId();
+  }
+
+  public get cchiId(){
+    // tslint:disable-next-line:radix
+    return parseInt(this.authService.getCCHIId());
   }
 
   getCardAccentColor(status: string) {
@@ -651,6 +669,17 @@ export class SharedServices {
       return '';
     }
   }
+
+  _base64ToArrayBuffer(base64) {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
 
 }
 

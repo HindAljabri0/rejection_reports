@@ -141,4 +141,36 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
+
+  getCommunications(providerId: string, responseId: number) {
+    const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+  getClaimSummary(providerId: string, uploadId: string, statuses?: string[]) {
+    let requestUrl = `/providers/${providerId}/claims?uploadId=${uploadId}`;
+    if (statuses != null) {
+      requestUrl += `&status=${statuses}`;
+    }
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+  getClaimResults(
+    providerId: string,
+    uploadId?: string,
+    statuses?: string[],
+    page?: number,
+    pageSize?: number) {
+    if (page == null) { page = 0; }
+    if (pageSize == null) { pageSize = 10; }
+    let requestURL = `/providers/${providerId}/claims/details?`;
+
+    if (uploadId != null) {
+      requestURL += `uploadId=${uploadId}&`;
+    }
+    requestURL += `status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
 }

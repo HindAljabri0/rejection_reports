@@ -251,7 +251,7 @@ export class ReportsService {
       pageSize = 10;
     }
     const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL);
     return this.http.request(request);
   }
 

@@ -1,5 +1,5 @@
 export class RejectionComparisonReport {
-    payerId: any = '0';
+    payerId = '0';
     fromDate = '';
     toDate = '';
 }

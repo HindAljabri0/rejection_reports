@@ -21,7 +21,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'batchId', label: 'Batch ID' },
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
-    { key: 'policyNo', label: 'Policy No.' }
+    { key: 'policyNo', label: 'Policy No.' },
+    { key: 'nationalId', label: 'National ID' }
   ];
   selectedSearchMode = 'claimRefNo';
 
@@ -78,12 +79,14 @@ export class SearchWithAdvanceComponent implements OnInit {
   }
 
   onSearchModeChange(e) {
+   
     this.selectedSearchMode = e.value;
     this.searchControl.setValue('');
   }
 
 
   search() {
+ 
     if (this.selectedSearchMode == 'payer&date' || this.selectedSearchMode == 'tpa&date') {
       if (this.selectedSearchMode == 'payer&date' && this.selectedPayer == null) {
         this.payerHasError = true;
@@ -114,9 +117,11 @@ export class SearchWithAdvanceComponent implements OnInit {
         fragment: 'reload'
       });
     } else {
+   
       if (this.searchControl.value == null || this.searchControl.value.trim().length == 0) {
         return;
       }
+      
       this.router.navigate([this.commen.providerId, 'claims'], {
         queryParams: {
           claimRefNo: this.selectedSearchMode == 'claimRefNo' ? this.searchControl.value : null,
@@ -125,9 +130,11 @@ export class SearchWithAdvanceComponent implements OnInit {
           invoiceNo: this.selectedSearchMode == 'invoiceNo' ? this.searchControl.value : null,
           patientFileNo: this.selectedSearchMode == 'patientFileNo' ? this.searchControl.value : null,
           policyNo: this.selectedSearchMode == 'policyNo' ? this.searchControl.value : null,
+          nationalId:this.selectedSearchMode == 'nationalId' ? this.searchControl.value : null,
         },
         fragment: 'reload'
       });
+ 
 
     }
   }

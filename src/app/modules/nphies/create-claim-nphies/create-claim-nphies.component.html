@@ -1,5 +1,12 @@
+<!-- <div class="animate__animated animate__faster animate__fadeIn">
+  <div *ngIf="errorMessage != null  && !isLoading" class="p-3 bg-white">
+      <p class="error-card mb-0">{{errorMessage}}</p>
+  </div> -->
+
 <div class="animate__animated animate__faster animate__fadeIn">
-  <mat-progress-bar mode="indeterminate" class="page-top-loader"></mat-progress-bar>
+  <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate" class="page-top-loader">
+  </mat-progress-bar>
+
   <div>
     <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
       <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
@@ -26,7 +33,7 @@
                 <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
               </ng-template>
               <h5 class="form-title pt-0">Beneficary Info</h5>
-              <div class="d-flex">
+              <div *ngIf="pageMode !== 'VIEW'" class="d-flex">
                 <div class="form-group flex-grow-1"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
                   <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
@@ -54,53 +61,62 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.beneficiary">
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Name</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.beneficiaryName}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Document</div>
-                    <p class="form-control-static">Dummy data)</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.documentType}}
+                      ({{otherDataModel.beneficiary.documentId}})</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Gender</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.gender}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Date of Birth</div>
-                    <p class="form-control-static">Dummy data}</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Contact No.</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.contactNumber}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Email</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.beneficiary.email ?
+                      otherDataModel.beneficiary.email:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Insurance Plan</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.insurancePlan}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Pre Authorization Reference Numbers</div>
+                    <p class="form-control-static">{{otherDataModel.preAuthRefNo ? otherDataModel.preAuthRefNo : "-"}}
+                    </p>
                   </div>
                 </div>
               </div>
 
 
-              <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
+              <div class="row" *ngIf="pageMode !== 'VIEW' && selectedBeneficiary && selectedBeneficiary.plans">
                 <div class="col-md-4">
                   <div class="form-group" [matTooltip]="selectedPlanIdError"
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
@@ -120,10 +136,20 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Preauthorization Reference No</label>
+                    <!-- <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId"> -->
+                    <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Response Id'">
+                      <!-- <tag-input-dropdown [autocompleteItems]="['321654', '564654', '654654']">
+                      </tag-input-dropdown> -->
+                    </tag-input>
+                  </div>
+                </div>
               </div>
 
               <h5 class="form-title">Claim Info</h5>
-              <div class="row small-gutter">
+              <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
@@ -141,7 +167,25 @@
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
+                    <label class="control-label">Payee Type<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
+                        <mat-option value="">Select Payee Type</mat-option>
+                        <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
+                      <span class="error-text">Please select Payee Type</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
                     <label class="control-label">Payee<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="payee">
@@ -150,7 +194,8 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
                       <span class="error-text">Please select payee</span>
                     </div>
                   </div>
@@ -192,29 +237,122 @@
                     </mat-form-field>
                   </div>
                 </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Offline Eligibility ID</label>
+                    <input class="form-control" placeholder="Enter Offline Eligibility ID"
+                      formControlName="eligibilityOfflineId">
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group">
+                    <label class="control-label">Offline Eligibility Date</label>
+                    <div class="date-picker">
+                      <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
+                        placeholder="Select Offline Eligibility Date" [max]="today"
+                        formControlName="eligibilityOfflineDate">
+                      <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                      <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Eligibility Response ID</label>
+                    <input class="form-control" placeholder="Eligibility Response ID"
+                      formControlName="eligibilityResponseId">
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group">
+                    <label class="control-label">Offline Approval Date</label>
+                    <div class="date-picker">
+                      <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control"
+                        placeholder="Select Offline Approval Date" [max]="today" formControlName="preAuthOfflineDate">
+                      <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                      <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label">Approval Response ID</label>
+                    <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId">
+                  </div>
+                </div>
               </div>
 
-              <div class="row">
+              <div *ngIf="pageMode === 'VIEW' && otherDataModel && otherDataModel.payeeName" class="row">
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Date Ordered</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy'}}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Payee Type</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value.name}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Payee</div>
+                    <p class="form-control-static">{{otherDataModel.payeeName}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Type</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.type.value.name}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Sub Type</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.subType.value ?
+                      FormNphiesClaim.controls.subType.value.name : "-"}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Offline Eligibility ID</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineId.value ?
+                      FormNphiesClaim.controls.eligibilityOfflineId.value : "-"}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Offline Eligibility Date</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineDate.value ?
+                      (FormNphiesClaim.controls.eligibilityOfflineDate.value | date:
+                      'dd-MM-yyyy') : "-"}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Eligibility Response ID</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value ?
+                      FormNphiesClaim.controls.eligibilityResponseId.value : "-"}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Offline Approval Date</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value ?
+                      (FormNphiesClaim.controls.preAuthOfflineDate.value | date:
+                      'dd-MM-yyyy') : "-"}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Approval Response IDs</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
+                      FormNphiesClaim.controls.preAuthResponseId.value : "-"}}</p>
                   </div>
                 </div>
               </div>
-
 
             </mat-tab>
             <mat-tab [label]="'Care Team'">
@@ -307,7 +445,7 @@
                         {{diagnosis.typeName}}
                       </td>
                       <td>
-                        {{diagnosis.onAdmissionName}}
+                        {{diagnosis.onAdmissionName ? diagnosis.onAdmissionName :"-"}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button type="button" mat-icon-button matTooltip="Edit"
@@ -468,18 +606,19 @@
                         {{s.categoryName}}
                       </td>
                       <td>
-                        {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
+                        {{s.code ? s.code :"-"}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
                         <!-- {{s.codeName}} -->
                       </td>
                       <td>
+                        <span *ngIf="!s.fromDateStr && !s.toDateStr">-</span>
                         <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
                         <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
                       </td>
                       <td>
-                        {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+                        {{s.value ? s.value:"-"}} <span *ngIf="s.unit">{{s.unit}}</span>
                       </td>
                       <td>
-                        {{s.reasonName}}
+                        {{s.reasonName ? s.reasonName:"-"}}
                       </td>
                       <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
@@ -498,8 +637,14 @@
               <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
               </app-empty-state>
             </mat-tab>
-            <mat-tab [label]="'Accident'">
-              <div class="row small-gutter">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="checkErrorAccident === true"
+                  [class.text-danger]="checkErrorAccident === true">
+                  error</mat-icon>
+                <span [class.text-danger]="checkErrorAccident === true">Accident</span>
+              </ng-template>
+              <div *ngIf="pageMode !== 'VIEW'" class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
@@ -556,7 +701,7 @@
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
+                    [ngClass]="{'has-error' : IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
                     <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
                     <div class="date-picker">
                       <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
@@ -565,48 +710,57 @@
                       <mat-datepicker #accidentDate></mat-datepicker>
                     </div>
                     <div
-                      *ngIf="(IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
+                      *ngIf="IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
                       <span class="error-text">Please enter date</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="row">
+              <div *ngIf="pageMode === 'VIEW'" class="row">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Accident Type</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.accidentType.value.name : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Street Name</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.streetName.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">City</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.city.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">State/Province</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.state.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Country</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      FormNphiesClaim.controls.country.value : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Date</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+                      (FormNphiesClaim.controls.startDate.value | date: 'dd-MM-yyyy') : ""}} - {{this.otherDataModel
+                      &&
+                      this.otherDataModel.accident ?
+                      (FormNphiesClaim.controls.periodEnd.value | date: 'dd-MM-yyyy') : ""}}</p>
                   </div>
                 </div>
               </div>
@@ -638,27 +792,32 @@
                       <th>Unit Price</th>
                       <th>Net</th>
                       <th>Non Standard Code</th>
-                      <th>Display</th>
-                      <th width="10"></th>
+                      <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <ng-container *ngFor="let item of Items; let i = index">
                       <tr>
-                        <td class="text-primary text-center row-click" width="10">
-                          <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
-                          <mat-icon class="size-21">remove_circle_outline</mat-icon>
+                        <td class="text-primary text-center row-click" width="10"
+                          (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
+                          <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                         </td>
-                        <td class="row-click">{{item.typeName}}</td>
-                        <td class="row-click">>{{item.itemCode}} - {{item.itemDescription}}</td>
-                        <td class="row-click">{{item.quantity}}</td>
-                        <td class="text-nowrap row-click">{{item.unitPrice}} <span class="currency">SR</span></td>
-                        <td class="text-nowrap row-click">{{item.Net}} <span class="currency">SR</span></td>
-                        <td class="row-click">{{item.nonStandardCode}}</td>
-                        <td class="row-click">{{item.display}}</td>
-                        <td class="actions text-nowrap">
-                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
-                            (click)="openAddEditItemDetailsDialog(item.sequence)">
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.typeName}}</td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          >{{item.itemCode}} - {{item.itemDescription}}</td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.quantity}}</td>
+                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.unitPrice}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.net}} <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.nonStandardCode ? item.nonStandardCode:"-"}}</td>
+                        <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
+                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details"
+                            class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
                             <mat-icon>add</mat-icon>
                           </button>
                           <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
@@ -671,37 +830,42 @@
                           </button>
                         </td>
                       </tr>
-                      <tr>
+                      <tr *ngIf="currentOpenItem==i">
                         <td colspan="9">
                           <div class="box mb-2">
-                            <h5 class="align-self-center medium pb-2">Information</h5>
+                            <h5 class="align-self-center medium pb-2">Item Info</h5>
                             <div class="row">
                               <div class="col-4">
                                 <table class="inline-label-table">
                                   <tbody>
                                     <tr>
-                                      <td class="label">Is Package?</td>
-                                      <td>
-                                        <span *ngIf="item.isPackage === 1">Yes</span>
-                                        <span *ngIf="item.isPackage === 2">No</span>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="label">Body Site</td>
-                                      <td>{{item.bodySiteName}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="label">Sub Site</td>
-                                      <td>{{item.subSiteName}}</td>
+                                      <td class="label">Quantity</td>
+                                      <td>{{item.quantity}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Discount(%)</td>
                                       <td>{{item.discount}} %</td>
                                     </tr>
                                     <tr>
-                                      <td class="label">Factor</td>
-                                      <td>{{item.factor}}</td>
-                                    </tr>                                   
+                                      <td class="label">Tax(%)</td>
+                                      <td>{{item.taxPercent}} %</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Patient Share(%)</td>
+                                      <td>{{item.patientShare}} %</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Is Package?</td>
+                                      <td>
+                                        <span *ngIf="item.isPackage != 1 && item.isPackage !=2">-</span>
+                                        <span *ngIf="item.isPackage === 1">Yes</span>
+                                        <span *ngIf="item.isPackage === 2">No</span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Body Site</td>
+                                      <td>{{item.bodySiteName ? item.bodySiteName : "-"}}</td>
+                                    </tr>
                                   </tbody>
                                 </table>
                               </div>
@@ -709,17 +873,17 @@
                                 <table class="inline-label-table">
                                   <tbody>
                                     <tr>
-                                      <td class="label">Tax(%)</td>
-                                      <td>{{item.taxPercent}} %</td>
+                                      <td class="label">Unit Price</td>
+                                      <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Factor</td>
+                                      <td>{{item.factor}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Tax</td>
                                       <td>{{item.tax}} <span class="currency">SR</span></td>
                                     </tr>
-                                    <tr>
-                                      <td class="label">Patient Share(%)</td>
-                                      <td>{{item.patientShare}} %</td>
-                                    </tr>                                  
                                     <tr>
                                       <td class="label">Patient Share</td>
                                       <td>{{item.patientShare}} <span class="currency">SR</span></td>
@@ -727,6 +891,10 @@
                                     <tr>
                                       <td class="label">Payer Share</td>
                                       <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Sub Site</td>
+                                      <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -736,19 +904,27 @@
                                   <tbody>
                                     <tr>
                                       <td class="label">Start Date</td>
-                                      <td>{{item.startDate}}</td>
+                                      <td>{{item.startDateStr}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Non Standard Code</td>
+                                      <td>{{item.nonStandardCode ? item.nonStandardCode :"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Display</td>
+                                      <td>{{item.display ? item.display :"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Supporting Info</td>
-                                      <td>{{item.supportingInfoNames}}</td>
+                                      <td>{{item.supportingInfoNames ? item.supportingInfoNames:"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Diagnosis</td>
-                                      <td>{{item.diagnosisNames}}</td>
+                                      <td>{{item.diagnosisNames?item.diagnosisNames:"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Care Teams</td>
-                                      <td>{{item.careTeamNames}}</td>
+                                      <td>{{item.careTeamNames ? item.careTeamNames:"-"}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -756,32 +932,27 @@
                             </div>
                           </div>
 
-                          <div class="box" *ngIf="item.Details && item.Details.length > 0">
-                            <h5 class="align-self-center medium pb-2">Details</h5>
+                          <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                            <h5 class="align-self-center medium pb-2">Item Detail</h5>
                             <table class="primary-grid manual-row-color claim-view-table no-borders">
                               <thead>
                                 <tr>
-                                  <th width="10"></th>
                                   <th>Seq.</th>
                                   <th>Type</th>
                                   <th>Code - Description</th>
                                   <th>Non Standard Code</th>
                                   <th>Display</th>
-                                  <th width="10"></th>
+                                  <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let d of item.Details; let di = index">
-                                  <td class="text-primary text-center row-click" width="10">
-                                    <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
-                                    <mat-icon class="size-21">remove_circle_outline</mat-icon>
-                                  </td>
+                                <tr *ngFor="let d of item.itemDetails; let di = index">
                                   <td class="row-click">{{d.sequence}}</td>
                                   <td class="row-click">{{d.typeName}}</td>
                                   <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
-                                  <td class="row-click">{{d.nonStandardCode}}</td>
-                                  <td class="row-click">{{d.display}}</td>
-                                  <td class="actions text-nowrap">
+                                  <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}</td>
+                                  <td class="row-click">{{d.display ? d.display :"-"}}</td>
+                                  <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
                                     <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
                                       (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                       <mat-icon>create</mat-icon>
@@ -810,96 +981,106 @@
 
 
             </mat-tab>
-            <mat-tab [label]="'Encounter'">
-              <div class="row small-gutter">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true"
+                  [class.text-danger]="checkErrorEncounter === true">
+                  error</mat-icon>
+                <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
+              </ng-template>
+              <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group">
-                    <label class="control-label">Status</label>
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))}">
+                    <label class="control-label">Status<span *ngIf="IsStatusRequired" class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="status" (selectionChange)="onStatusOrClassChange()">
                         <mat-option value="">Select status</mat-option>
-                        <mat-option value="Planned">Planned</mat-option>
-                        <mat-option value="Arrived">Arrived</mat-option>
-                        <mat-option value="Triaged">Triaged</mat-option>
-                        <mat-option value="In Progress">In Progress</mat-option>
-                        <mat-option value="On Leave">On Leave</mat-option>
-                        <mat-option value="Finished">Finished</mat-option>
-                        <mat-option value="Cancelled">Cancelled</mat-option>
-                        <mat-option value="Entered in Error">Entered in Error</mat-option>
-                        <mat-option value="Unknown">Unknown</mat-option>
+                        <mat-option *ngFor="let status of encounterStatusList" [value]="status.value">{{status.name}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
+                    <div
+                      *ngIf="IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))">
+                      <span class="error-text">Please select status</span>
+                    </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group">
-                    <label class="control-label">Class</label>
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsClassRequired && ((isSubmitted || FormNphiesClaim.get('encounterClass').touched) && FormNphiesClaim.get('encounterClass').hasError('required'))}">
+                    <label class="control-label">Class<span *ngIf="IsClassRequired" class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="encounterClass" (selectionChange)="onStatusOrClassChange()">
                         <mat-option value="">Select class</mat-option>
-                        <mat-option value="AMB">Ambulatory</mat-option>
-                        <mat-option value="EMER">Emergency</mat-option>
-                        <mat-option value="HH">Home Health</mat-option>
-                        <mat-option value="IMP">Inpatient Encounter</mat-option>
-                        <mat-option value="SS">Short Stay</mat-option>
+                        <mat-option *ngFor="let class of encounterClassList" [value]="class.value">{{class.name}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
+                    <div
+                      *ngIf="IsClassRequired && ((isSubmitted || FormNphiesClaim.get('encounterClass').touched) && FormNphiesClaim.get('encounterClass').hasError('required'))">
+                      <span class="error-text">Please select Class</span>
+                    </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
                     <label class="control-label">Service Type</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="serviceType">
                         <mat-option value="">Select service type</mat-option>
-                        <mat-option value="237">237 - Acute Inpatient Serv</mat-option>
-                        <mat-option value="576">576 - Rehabilitation</mat-option>
-                        <mat-option value="356">356 - General Maintenance</mat-option>
-                        <mat-option value="621">621 - Complex Maintenance</mat-option>
-                        <mat-option value="179">179 - Palliative Medicine</mat-option>
+                        <mat-option *ngFor="let serviceType of encounterServiceTypeList" [value]="serviceType.value">
+                          {{serviceType.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))}">
+                    <label class="control-label">Service Provider<span *ngIf="IsServiceProviderRequired"
+                        class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select formControlName="serviceProvider">
+                        <mat-option value="">Select service provider</mat-option>
+                        <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    *ngIf="IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))">
+                    <span class="error-text">Please select Service Provider</span>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
                     <label class="control-label">Priority</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="priority">
                         <mat-option value="">Select priority</mat-option>
-                        <mat-option value="A">A - ASAP</mat-option>
-                        <mat-option value="CR">CR - Callback Results</mat-option>
-                        <mat-option value="CS">CS - Callback For Scheduling</mat-option>
-                        <mat-option value="CSP">CSP - Callback Placer For Scheduling</mat-option>
-                        <mat-option value="CSR">CSR - Contact Recipient For Scheduling</mat-option>
-                        <mat-option value="EL">EL - Elective</mat-option>
-                        <mat-option value="EM">EM - Emergency</mat-option>
-                        <mat-option value="P">P - Preop</mat-option>
-                        <mat-option value="PRN">PRN - As Needed</mat-option>
-                        <mat-option value="R">R - Routine</mat-option>
-                        <mat-option value="RR">RR - Rush Reporting</mat-option>
-                        <mat-option value="S">S - Stat</mat-option>
-                        <mat-option value="T">T - Timing Critical</mat-option>
-                        <mat-option value="UD">UD - Use As Directed</mat-option>
-                        <mat-option value="UR">UR - Urgent</mat-option>
+                        <mat-option *ngFor="let priority of encounterPriorityList" [value]="priority.value">
+                          {{priority.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
-                    <label class="control-label">Period<span class="asterisk">*</span></label>
+                    <label class="control-label">Period</label>
                     <div class="row small-gutter">
                       <div class="col-6">
                         <div class="date-picker">
-                          <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date">
+                          <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date"
+                            formControlName="startDate">
                           <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
                           <mat-datepicker #periodStartDate></mat-datepicker>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="date-picker">
-                          <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date">
+                          <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date"
+                            formControlName="periodEnd">
                           <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
                           <mat-datepicker #periodEndDate></mat-datepicker>
                         </div>
@@ -909,50 +1090,68 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Status</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.statusName ? otherDataModel.claimEncounter.statusName : "-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Class</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.encounterClassName ?
+                      otherDataModel.claimEncounter.encounterClassName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Service Type</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.serviceTypeName ?
+                      otherDataModel.claimEncounter.serviceTypeName:"-"}}</p>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                  <div class="form-group form-group-static">
+                    <label class="control-label">Service Provider</label>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.serviceProviderName ?
+                      otherDataModel.claimEncounter.serviceProviderName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Priority</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.priorityName ? otherDataModel.claimEncounter.priorityName:"-"}}
+                    </p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Period</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.startDate ? (otherDataModel.claimEncounter.startDate | date:
+                      'dd-MM-yyyy') : ""}} - {{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.periodEnd
+                      ? (otherDataModel.claimEncounter.periodEnd | date:'dd-MM-yyyy') :""}}</p>
                   </div>
                 </div>
               </div>
 
               <h5 class="form-title">Hospitalization</h5>
-              <div class="row small-gutter">
+              <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
                     <label class="control-label">Origin</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="origin">
                         <mat-option value="">Select provider</mat-option>
-                        <mat-option value="Provider 1">Provider 1</mat-option>
-                        <mat-option value="Provider 2">Provider 2</mat-option>
-                        <mat-option value="Provider 3">Provider 3</mat-option>
+                        <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -961,27 +1160,10 @@
                   <div class="form-group">
                     <label class="control-label">Admin Source</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="adminSource">
                         <mat-option value="">Select admin source</mat-option>
-                        <mat-option value="IA">IA - Immediate Admission</mat-option>
-                        <mat-option value="EER">EER - Admission from hospital ER</mat-option>
-                        <mat-option value="EOP">EOP - Emergency Admission from hospital outpatient</mat-option>
-                        <mat-option value="EGPHC">EGPHC - Emergency Admission by referral from government primary
-                          healthcare center</mat-option>
-                        <mat-option value="EGGH">EGGH - Emergency Admission by referral from general government hospital
-                        </mat-option>
-                        <mat-option value="EPPHC">EPPHC - Emergency Admission by referral from private primary
-                          healthcare center</mat-option>
-                        <mat-option value="EPH">EPH - Emergency Admission by referral from private hospital</mat-option>
-                        <mat-option value="EIC">EIC - Emergency Admission by insurance company</mat-option>
-                        <mat-option value="EWGS">EWGS - Elective waiting list admission government free Scheme
-                        </mat-option>
-                        <mat-option value="EWSS">EWSS - Elective waiting list admission self-payment Scheme</mat-option>
-                        <mat-option value="EWIS">EWIS - Elective waiting list admission insurance coverage Scheme
-                        </mat-option>
-                        <mat-option value="EMBA">EMBA - Emergency Maternity Birth Admission</mat-option>
-                        <mat-option value="PMBA">PMBA - Planned Maternity Birth Admission</mat-option>
-                        <mat-option value="Others">Others - Others</mat-option>
+                        <mat-option *ngFor="let adminSource of encounterAdminSourceList" [value]="adminSource.value">
+                          {{adminSource.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -990,11 +1172,10 @@
                   <div class="form-group">
                     <label class="control-label">Readmission</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="reAdmission">
                         <mat-option value="">Select readmission</mat-option>
-                        <mat-option value="Readmission 1">Readmission 1</mat-option>
-                        <mat-option value="Readmission 2">Readmission 2</mat-option>
-                        <mat-option value="Readmission 3">Readmission 3</mat-option>
+                        <mat-option *ngFor="let reAdmission of encounterReAdmissionList" [value]="reAdmission.value">
+                          {{reAdmission.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -1003,52 +1184,219 @@
                   <div class="form-group">
                     <label class="control-label">Discharge Disposition</label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
+                      <mat-select formControlName="dischargeDispotion">
                         <mat-option value="">Select discharge disposition</mat-option>
-                        <mat-option value="Home">Home</mat-option>
-                        <mat-option value="Alternative home">Alternative home</mat-option>
-                        <mat-option value="Other healthcare facility">Other healthcare facility</mat-option>
-                        <mat-option value="Hospice">Hospice</mat-option>
-                        <mat-option value="Long-term care">Long-term care</mat-option>
-                        <mat-option value="Left against advice">Left against advice</mat-option>
-                        <mat-option value="Expired">Expired</mat-option>
-                        <mat-option value="Psychiatric hospital">Psychiatric hospital</mat-option>
-                        <mat-option value="Rehabilitation">Rehabilitation</mat-option>
-                        <mat-option value="Skilled nursing facility">Skilled nursing facility</mat-option>
-                        <mat-option value="Other">Other</mat-option>
+                        <mat-option *ngFor="let dd of encounterDischargeDispositionList" [value]="dd.value">
+                          {{dd.name}}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                 </div>
+
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Origin</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.originName ? otherDataModel.claimEncounter.originName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Admin Source</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.adminSourceName ?
+                      otherDataModel.claimEncounter.adminSourceName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Readmission</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.reAdmissionName ?
+                      otherDataModel.claimEncounter.reAdmissionName:"-"}}</p>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Discharge Disposition</label>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{otherDataModel.claimEncounter &&
+                      otherDataModel.claimEncounter.dischargeDispotionName ?
+                      otherDataModel.claimEncounter.dischargeDispotionName:"-"}}</p>
                   </div>
                 </div>
+
               </div>
 
+            </mat-tab>
+            <mat-tab *ngIf="pageMode == 'VIEW' || pageMode == 'EDIT'">
+              <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                  <span>Communication</span>
+                </div>
+              </ng-template>
+              <div class="communication-wrapper">
+                <h5 class="form-title px-14 py-0 mb-0">
+                  <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
+                    (click)="openAddCommunicationDialog()">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    <span class="pl-1">Add Communication</span>
+                  </button>
+                </h5>
+                <ul class="communication">
+                  <li *ngFor="let communication of communications">
+                    <ng-container *ngIf="communication.communicationRequestId">
+                      <div class="header-block">
+                        <div class="message">
+                          <div class="table-responsive pb-2">
+                            <table cellspacing="0" cellpadding="0" border="0"
+                              class="primary-grid manual-row-color horizontal-borders">
+                              <tbody>
+                                <ng-container *ngFor="let payload of communication.payloadList">
+                                  <tr *ngIf="payload.payloadValue">
+                                    <td class="px-0">{{payload.payloadValue}}</td>
+                                  </tr>
+                                  <tr
+                                    *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                    <td class="px-0">
+                                      <ul class="inline-attachments no-space">
+                                        <li>
+                                          <button type="button">
+                                            <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                            <span>{{payload.attachmentName}}</span>
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                  <tr
+                                    *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                    <td class="px-0">
+                                      <ul class="inline-attachments no-space">
+                                        <li>
+                                          <button type="button">
+                                            <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                            <span>{{payload.attachmentName}}</span>
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                              </tbody>
+                            </table>
+                          </div>
+                          <span>Communication Request ID: {{communication.communicationRequestId}}
+                            &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm
+                            aa'}}</span>
+                        </div>
+                        <div class="ml-auto">
+                          <button type="button" class="action-btn"
+                            (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                            <mat-icon class="text-primary">reply</mat-icon>
+                            <span>Reply</span>
+                          </button>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="communication.communicationDataList">
+                        <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
+                          <div class="message size-sm">
+                            <div class="table-responsive pb-2">
+                              <table cellspacing="0" cellpadding="0" border="0"
+                                class="primary-grid manual-row-color horizontal-borders">
+                                <tbody>
+                                  <ng-container *ngFor="let payload of reply.payloadList">
+                                    <tr *ngIf="payload.payloadValue">
+                                      <td class="px-0">{{payload.payloadValue}}</td>
+                                    </tr>
+                                    <tr
+                                      *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                      <td class="px-0">
+                                        <ul class="inline-attachments no-space">
+                                          <li>
+                                            <button type="button">
+                                              <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                              <span>{{payload.attachmentName}}</span>
+                                            </button>
+                                          </li>
+                                        </ul>
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                      <td class="px-0">
+                                        <ul class="inline-attachments no-space">
+                                          <li>
+                                            <button type="button">
+                                              <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                              <span>{{payload.attachmentName}}</span>
+                                            </button>
+                                          </li>
+                                        </ul>
+                                      </td>
+                                    </tr>
+                                  </ng-container>
+                                </tbody>
+                              </table>
+                            </div>
+                            <span>Communication ID: {{reply.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                              {{reply.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                          </div>
+                        </div>
+                      </ng-container>
+
+                    </ng-container>
+                    <ng-container *ngIf="!communication.communicationRequestId">
+                      <div class="header-block sent">
+                        <div class="message">
+                          <div class="table-responsive pb-2">
+                            <table cellspacing="0" cellpadding="0" border="0"
+                              class="primary-grid manual-row-color horizontal-borders">
+                              <tbody>
+                                <ng-container *ngFor="let payload of communication.payloadList">
+                                  <tr *ngIf="payload.payloadValue">
+                                    <td class="px-0">{{payload.payloadValue}}</td>
+                                  </tr>
+                                  <tr
+                                    *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                    <td class="px-0">
+                                      <ul class="inline-attachments no-space">
+                                        <li>
+                                          <button type="button">
+                                            <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                            <span>{{payload.attachmentName}}</span>
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                  <tr
+                                    *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                    <td class="px-0">
+                                      <ul class="inline-attachments no-space">
+                                        <li>
+                                          <button type="button">
+                                            <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                            <span>{{payload.attachmentName}}</span>
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                              </tbody>
+                            </table>
+                          </div>
+                          <span>Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </li>
+                </ul>
+              </div>
             </mat-tab>
           </mat-tab-group>
         </div>

@@ -48,7 +48,7 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
     return this.downloadRequest.progress;
   }
 
-  getDownloadURL() {
+  getDownloadURL(){
     const access_token = localStorage.getItem("access_token");
     return this.downloadRequest.url + `?access_token=${access_token}`;
   }

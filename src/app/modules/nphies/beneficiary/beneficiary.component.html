@@ -279,7 +279,7 @@
 
                                 <td>
                                     <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
-                                        [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
+                                        [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
                                                 <mat-option [value]="insurancePlan.selectePayer">{{editMode?
@@ -287,7 +287,6 @@
                                                 </mat-option>
                                                 <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
                                                     {{payer.englistName}}({{payer.arabicName}})</mat-option>
-
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
@@ -304,12 +303,12 @@
                                 </td>
                                 <td>
                                     <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
-                                        [class.has-error]="insurancePlan.memberCardIdErorr!=null&&insurancePlan.memberCardIdErorr.trim().length>0">
-                                        <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" />
+                                        [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
+                                        <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)"/>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group m-0 w-160" [class.has-error]="insurancePlan.selecteSubscriberRelationshipErorr!=null&&insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0">
+                                    <div class="form-group m-0 w-160" [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
                                                 (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;" #selecteSubscriberRelationship>
@@ -323,7 +322,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group m-0 w-160" [class.has-error]="insurancePlan.selecteCoverageTypeErorr!=null&&insurancePlan.selecteCoverageTypeErorr.trim().length>0">
+                                    <div class="form-group m-0 w-160" [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;"
                                                 #selecteCoverageType>
@@ -350,7 +349,7 @@
             <div class="form-group btn-list">
                 <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save()">Add
                     Beneficiary</button>
-                <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)=" updateDate()">Save</button>
+                <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="updateDate()">Save</button>
                 <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
             </div>
         </div>
@@ -627,8 +626,8 @@
                                 <th>Payer<span class="asterisk">*</span></th>
                                 <th>Expiry Date</th>
                                 <th>Member Card ID<span class="asterisk">*</span></th>
-                                <th>Relation with Subscriber</th>
-                                <th>Coverage Type</th>
+                                <th>Relation with Subscriber<span class="asterisk">*</span></th>
+                                <th>Coverage Type<span class="asterisk">*</span></th>
                                 <th width="10"></th>
                             </tr>
                         </thead>
@@ -643,7 +642,7 @@
 
                                 <td>
                                     <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
-                                        [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
+                                        [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
                                                 <mat-option [value]="insurancePlan.selectePayer">{{editMode && selectedPayer(insurancePlan.selectePayer)!=null?
@@ -668,12 +667,12 @@
                                 </td>
                                 <td>
                                     <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
-                                        [class.has-error]="insurancePlan.memberCardIdErorr!=null&&insurancePlan.memberCardIdErorr.trim().length>0">
+                                        [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
                                         <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" />
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group m-0 w-160">
+                                    <div class="form-group m-0 w-160"  [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
                                                 (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;" #selecteSubscriberRelationship>
@@ -687,7 +686,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group m-0 w-160">
+                                    <div class="form-group m-0 w-160"  [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;"
                                                 #selecteCoverageType>

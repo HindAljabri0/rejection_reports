@@ -10,7 +10,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 @Component({
   selector: 'app-processed-transactions',
   templateUrl: './processed-transactions.component.html',
-  styleUrls: ['./processed-transactions.component.css']
+  styles: []
 })
 export class ProcessedTransactionsComponent implements OnInit {
 
@@ -98,8 +98,11 @@ export class ProcessedTransactionsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId = null, responseId = null, notificationId = null) {
-    this.openDetailsDialogEvent.emit({'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId});
+  openDetailsDialog(requestId, responseId, notificationId, notificationStatus) {
+    if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
+      this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
+    }
+    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
   }
 
   get paginatorLength() {
