@@ -31,8 +31,7 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<AddCommunicationDialogComponent>, private nphiesPollManagementService: NphiesPollManagementService,
-    private dialogService: DialogService, private datePipe: DatePipe,
-    private sharedServices: SharedServices,
+    private dialogService: DialogService, private sharedServices: SharedServices,
     @Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -45,30 +44,42 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   selectFile(event) {
     this.FormCommunication.reset();
-    this.currentFileUpload = event.target.files[0];
-    this.FormCommunication.controls.attachmentName.setValue(this.currentFileUpload.name);
-    this.FormCommunication.controls.attachmentType.setValue(this.currentFileUpload.type);
-    const createDate = new Date();
-    const strCreateDate = createDate.toISOString().replace('Z', '');
-    this.FormCommunication.controls.createdDate.setValue(strCreateDate);
 
-    // this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
-    if (!this.checkfile()) {
-      this.currentFileUpload = undefined;
-      return;
+    for (let i = 0; i < event.target.files.length; i++) {
+      this.currentFileUpload = event.target.files[i];
+      const attachmentName = this.currentFileUpload.name;
+      const attachmentType = this.currentFileUpload.type;
+      const sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
+
+      if (!this.checkfile()) {
+        this.currentFileUpload = undefined;
+        continue;
+      }
+
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[i]);
+      reader.onloadend = () => {
+        const data: string = reader.result as string;
+        const model: any = {};
+        model.payloadValue = null;
+        model.payloadAttachment = (data.substring(data.indexOf(',') + 1));
+        model.attachmentName = attachmentName;
+        model.attachmentType = attachmentType;
+        const createDate = new Date();
+        model.createdDate = createDate.toISOString().replace('Z', '');
+
+
+        this.payLoads.push(model);
+
+        if (i === event.target.files.length - 1) {
+          this.emptyPayloadError = '';
+          this.FormCommunication.reset();
+          this.isSubmitted = false;
+        }
+
+      };
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onloadend = () => {
-      const data: string = reader.result as string;
-      this.FormCommunication.controls.payloadAttachment.setValue(data.substring(data.indexOf(',') + 1));
-      const model: any = this.FormCommunication.value;
-      this.payLoads.push(model);
-      this.emptyPayloadError = '';
-      this.FormCommunication.reset();
-      this.isSubmitted = false;
-    };
   }
 
   checkfile() {
