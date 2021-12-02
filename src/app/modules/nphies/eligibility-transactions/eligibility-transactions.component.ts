@@ -60,10 +60,8 @@ export class EligibilityTransactionsComponent implements OnInit {
   ) { }
 
   statusList = [
-    { value: 'active', name: 'Active' },
-    { value: 'cancelled', name: 'Cancelled' },
-    { value: 'draft', name: 'Draft' },
-    { value: 'entered-in-error', name: 'Entered in Error' },
+    { value: 'Processing Complete', name: 'Processing Complete' },
+    { value: 'Error', name: 'Error' }
   ];
 
   ngOnInit() {
