@@ -23,14 +23,16 @@
                         Choose File
                       </button>
                     </div>
-                    <input type="file" accept="application/pdf,image/png,image/jpeg" class="file-upload-control" multiple
-                      (change)="selectFile($event)" />
+                    <input type="file" accept="application/pdf,image/png,image/jpeg" class="file-upload-control"
+                      multiple (change)="selectFile($event)" />
                   </div>
                 </div>
                 <div class="col-auto">or</div>
                 <div class="col">
-                  <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
-                    <input type="text" class="form-control" placeholder="Enter comment here..." formControlName="payloadValue"/>
+                  <div class="form-group mb-0"
+                    [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
+                    <input type="text" class="form-control" placeholder="Enter comment here..."
+                      formControlName="payloadValue" />
                     <div *ngIf="isSubmitted && FormCommunication.get('payloadValue').hasError('required')">
                       <span class="error-text">Please enter a comment</span>
                     </div>
@@ -40,9 +42,11 @@
                   <button mat-flat-button color="primary" type="submit">Add</button>
                 </div>
               </div>
+              <div *ngIf="invalidFileMessage" class="row small-gutter align-items-center">
+                <span class="error-text">{{invalidFileMessage}}</span>
+              </div>
             </td>
           </tr>
-
 
           <ng-container *ngFor="let pay of payLoads; let i = index">
             <tr *ngIf="pay.payloadValue">
