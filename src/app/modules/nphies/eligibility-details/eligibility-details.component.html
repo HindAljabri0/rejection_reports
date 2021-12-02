@@ -40,11 +40,11 @@
             </div>
         </div>
         <div class="col-4">
-          <div class="form-group form-group-static">
-              <div class="control-label">Eligibility Responded ID</div>
-              <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
-          </div>
-      </div>
+            <div class="form-group form-group-static">
+                <div class="control-label">Eligibility Response ID</div>
+                <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
+            </div>
+        </div>
     </div>
 
     <ng-container *ngIf="eligibilityResponse.errors != null && eligibilityResponse.errors.length > 0">
@@ -95,10 +95,13 @@
                         <tr>
                             <td class="text-primary text-center row-click" (click)="toggleRow(i)" width="10">
                                 <mat-icon *ngIf="currentOpenCoverage!=i" class="size-21">add_circle_outline</mat-icon>
-                                <mat-icon *ngIf="currentOpenCoverage==i" class="size-21">remove_circle_outline</mat-icon>
+                                <mat-icon *ngIf="currentOpenCoverage==i" class="size-21">remove_circle_outline
+                                </mat-icon>
                             </td>
-                            <td class="row-click" (click)="toggleRow(i)">{{coverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
-                            <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">
+                                {{coverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date
+                                :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{coverage.type}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{coverage.status}}</td>
@@ -113,7 +116,8 @@
                                 <div class="box mb-3" *ngIf="coverage.classList">
                                     <h5 class="medium pb-2">Classes</h5>
                                     <div class="table-responsive">
-                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
+                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0"
+                                            border="0">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -134,7 +138,8 @@
                                 <div class="box mb-3" *ngIf="coverage.costBeneficiaries">
                                     <h5 class="medium pb-2">Cost to Beneficiaries</h5>
                                     <div class="table-responsive">
-                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
+                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0"
+                                            border="0">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -151,7 +156,9 @@
                                                     <td>
                                                         <div *ngFor="let excp of ctb.exceptionList" class="pb-2">
                                                             <p>{{excp.exceptionType}}</p>
-                                                            <p class="text-grey">{{excp.exceptionStartDate | date: 'dd-MM-yyyy hh:mm aa'}} - {{excp.exceptionEndDate | date: 'dd-MM-yyyy hh:mm aa'}}</p>
+                                                            <p class="text-grey">{{excp.exceptionStartDate | date:
+                                                                'dd-MM-yyyy hh:mm aa'}} - {{excp.exceptionEndDate |
+                                                                date: 'dd-MM-yyyy hh:mm aa'}}</p>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -165,7 +172,8 @@
                                     <ng-container *ngFor="let items of coverage.items | keyvalue">
                                         <p class="pb-3">Benefit Category: <span class="medium">{{items.key}}</span></p>
                                         <div class="table-responsive mb-4">
-                                            <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
+                                            <table class="primary-grid no-borders" cellpadding="0" cellspacing="0"
+                                                border="0">
                                                 <thead>
                                                     <tr>
                                                         <td>Item Name</td>
@@ -185,7 +193,8 @@
                                                             <td>{{item.term}}</td>
                                                         </tr>
                                                         <tr *ngFor="let benefit of item.benefits" class="item-benefit">
-                                                            <td colspan="4" [matTooltip]="benefit.typeDisplay">{{benefit.type}}</td>
+                                                            <td colspan="4" [matTooltip]="benefit.typeDisplay">
+                                                                {{benefit.type}}</td>
                                                             <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
                                                         </tr>
                                                     </ng-container>
