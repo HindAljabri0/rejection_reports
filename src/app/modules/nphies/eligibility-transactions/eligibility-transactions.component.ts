@@ -61,7 +61,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   statusList = [
     { value: 'Processing Complete', name: 'Processing Complete' },
-    { value: 'Error', name: 'Error' }
+    { value: 'error', name: 'Error' }
   ];
 
   ngOnInit() {

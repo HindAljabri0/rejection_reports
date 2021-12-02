@@ -28,6 +28,7 @@ export class AddCommunicationDialogComponent implements OnInit {
   currentFileUpload: any;
   isSubmitted = false;
   emptyPayloadError = '';
+  invalidFileMessage = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddCommunicationDialogComponent>, private nphiesPollManagementService: NphiesPollManagementService,
@@ -44,6 +45,14 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   selectFile(event) {
     this.FormCommunication.reset();
+    this.invalidFileMessage = '';
+
+    for (let i = 0; i < event.target.files.length; i++) {
+      if (!this.checkfile(event.target.files[i])) {
+        this.invalidFileMessage = 'Attachments are only allowed in the formats of .pdf, .png, .jpg or .jpeg';
+        break;
+      }
+    }
 
     for (let i = 0; i < event.target.files.length; i++) {
       this.currentFileUpload = event.target.files[i];
@@ -51,8 +60,7 @@ export class AddCommunicationDialogComponent implements OnInit {
       const attachmentType = this.currentFileUpload.type;
       const sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
 
-      if (!this.checkfile()) {
-        this.currentFileUpload = undefined;
+      if (!this.checkfile(event.target.files[i])) {
         continue;
       }
 
@@ -82,17 +90,13 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   }
 
-  checkfile() {
+  checkfile(file: any) {
     const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
-    let fileExt = this.currentFileUpload.name;
+    let fileExt = file.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
-      // this.showError('Invalid file selected, valid files are of ' +
-      //   validExts.toString() + ' types.');
       return false;
     } else {
-      // this.uploadContainerClass = '';
-      // this.error = '';
       return true;
     }
   }
