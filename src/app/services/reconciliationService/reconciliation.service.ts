@@ -14,7 +14,7 @@ export class ReconciliationService {
   getReconciliationBtsearch(providerId: any, payerId:string, startDate:string, endDate:string, page: number, pageSize: number){
     const requestURL = `/providers/${providerId}/reconciliation-report/fetchReconciliation?payerId=${payerId}&startDate=${startDate}&endDate=${endDate}&page=${page}&size=${pageSize}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
-    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL);
     return this.http.request(request);
   }
 

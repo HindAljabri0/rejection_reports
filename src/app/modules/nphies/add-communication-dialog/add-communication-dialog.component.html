@@ -4,9 +4,8 @@
 </div>
 <form [formGroup]="FormCommunication" (ngSubmit)="add()">
   <div class="primary-dialog-body p-0">
-    <div class="table-responsive">
-      <table cellspacing="0" cellpadding="0" border="0" height="300"
-        class="primary-grid manual-row-color horizontal-borders claim-view-table">
+    <div class="table-responsive add-communication-table">
+      <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders claim-view-table">
         <thead *ngIf="data.communicationRequestId">
           <tr>
             <th>Communication Request ID: {{data.communicationRequestId}}</th>
@@ -23,16 +22,13 @@
                         Choose File
                       </button>
                     </div>
-                    <input type="file" accept="application/pdf,image/png,image/jpeg" class="file-upload-control"
-                      multiple (change)="selectFile($event)" />
+                    <input type="file" accept="application/pdf,image/png,image/jpeg" class="file-upload-control" multiple (change)="selectFile($event)" />
                   </div>
                 </div>
                 <div class="col-auto">or</div>
                 <div class="col">
-                  <div class="form-group mb-0"
-                    [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
-                    <input type="text" class="form-control" placeholder="Enter comment here..."
-                      formControlName="payloadValue" />
+                  <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && FormCommunication.get('payloadValue').hasError('required')}">
+                    <input type="text" class="form-control" placeholder="Enter comment here..." formControlName="payloadValue" />
                     <div *ngIf="isSubmitted && FormCommunication.get('payloadValue').hasError('required')">
                       <span class="error-text">Please enter a comment</span>
                     </div>
@@ -42,9 +38,7 @@
                   <button mat-flat-button color="primary" type="submit">Add</button>
                 </div>
               </div>
-              <div *ngIf="invalidFileMessage" class="row small-gutter align-items-center">
-                <span class="error-text">{{invalidFileMessage}}</span>
-              </div>
+              <div *ngIf="invalidFileMessage" class="error-text pt-2">{{invalidFileMessage}}</div>
             </td>
           </tr>
 
