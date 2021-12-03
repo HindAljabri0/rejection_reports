@@ -1289,9 +1289,8 @@
                               </tbody>
                             </table>
                           </div>
-                          <span>Communication Request ID: {{communication.communicationRequestId}}
-                            &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm
-                            aa'}}</span>
+                          <span>Communication Request ID: {{communication.requestIdentifierId}} &nbsp;&nbsp;&nbsp;&nbsp;
+                            Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                         </div>
                         <div class="ml-auto">
                           <button type="button" class="action-btn"
@@ -1390,7 +1389,7 @@
                               </tbody>
                             </table>
                           </div>
-                          <span>Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                          <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                         </div>
                       </div>
                     </ng-container>
