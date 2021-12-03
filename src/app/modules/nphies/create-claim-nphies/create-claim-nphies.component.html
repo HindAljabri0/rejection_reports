@@ -1240,7 +1240,7 @@
               </ng-template>
               <div class="communication-wrapper">
                 <h5 class="form-title px-14 py-0 mb-0">
-                  <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
+                  <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
                     (click)="openAddCommunicationDialog()">
                     <mat-icon>add_circle_outline</mat-icon>
                     <span class="pl-1">Add Communication</span>
@@ -1389,7 +1389,8 @@
                               </tbody>
                             </table>
                           </div>
-                          <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                          <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp;
+                            Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                         </div>
                       </div>
                     </ng-container>

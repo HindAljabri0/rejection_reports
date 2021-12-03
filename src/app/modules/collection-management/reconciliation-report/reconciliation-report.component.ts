@@ -97,7 +97,6 @@ export class ReconciliationReportComponent implements OnInit {
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-          debugger;
           this.reconciliationReportResponse = event.body['content'] as ReconciliationReportResponse[];
           this.totalPages = event.body['totalPages'];
 
