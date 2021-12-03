@@ -11,10 +11,10 @@
                         <div class="form-group">
                             <label class="control-label">Payer</label>
                             <mat-form-field class="form-control custom-select-control">
-                                <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId" required>
+                                <mat-select [formControl]="payerIdControl"  (keyup.enter)="search()" required>
                                     <mat-option value="All">All</mat-option>
-                                    <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
-                                        ({{payer.arName}})
+                                    <mat-option *ngFor="let payer of payersList" [value]="payer.id">
+                                        {{payer.name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -24,7 +24,7 @@
                         <div class="form-group" >
                             <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
-                                <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="dateController" />
+                                <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="dateController" (keyup.enter)="search()" />
                                 <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                                 <mat-datepicker #startDate></mat-datepicker>
                                 </div>
@@ -40,8 +40,6 @@
             </div>
         </div>
     </div>
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white" #tabEvent>
-
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
             <div class="fixed-height">
                 <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -71,40 +69,18 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of reconciliationReportResponse">
-                            <td class="row-click"  routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}" >
-                                {{data.duration}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.payerId}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.totalSubmittedAmount}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.totalReceived}}</td>
+                            <td>{{data.duration}}</td>
+                            <td>{{data.payerId}}</td>
+                            <td>{{data.totalSubmittedAmount}}</td>
+                            <td >{{data.totalReceived}}</td>
 
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.totalReceivedPerc}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.totalOutstandingAmount}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.volumeDiscount}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.volumeDiscountPerc}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.reconciliationAmount}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.finalRejectionAmount}}</td>
-                            <td class="row-click" routerLink="/collection-management/reconciliation-repor"
-                                [queryParams]="{year: strPayerYear,payerId:data.payerId}">
-                                {{data.finalRejectionAmountPerc}}</td>
+                            <td > {{data.totalReceivedPerc}}</td>
+                            <td > {{data.totalOutstandingAmount}}</td>
+                            <td>{{data.volumeDiscount}}</td>
+                            <td > {{data.volumeDiscountPerc}}</td>
+                            <td>{{data.reconciliationAmount}}</td>
+                            <td>{{data.finalRejectionAmount}}</td>
+                            <td>>{{data.finalRejectionAmountPerc}}</td>
                         </tr>
                         <tr>
                             <td colspan="5" class="p-0">
@@ -119,19 +95,19 @@
         </ng-scrollbar>
         <div class="block-footer sticky-bottom">
             <div class="left-block custom-paginator">
-                <button matRipple type="button" title="First Page">
+                <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
                     <img src="./assets/ic-page-first.svg" alt="First" />
                 </button>
-                <button matRipple type="button" title="Previous Page">
+                <button matRipple  (click)="goToPrePage()" type="button" title="Previous Page">
                     <img src="./assets/ic-page-prev.svg" alt="Previous" />
                 </button>
                 <p class="page-info">
-                    1<small>/5</small>
+                    {{(page+1)}}<small>/{{totalPages}}</small>
                 </p>
-                <button matRipple type="button" title="Next Page">
+                <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
                     <img src="./assets/ic-page-next.svg" alt="Next" />
                 </button>
-                <button matRipple type="button" title="Last Page">
+                <button matRipple  (click)="goToLastPage()" type="button" title="Last Page">
                     <img src="./assets/ic-page-last.svg" alt="Last" />
                 </button>
             </div>
@@ -139,7 +115,6 @@
         <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
             <mat-icon>add</mat-icon>
         </button>
-    </mat-tab-group>
 <mat-menu #actionsMenu xPosition="before">
     <ng-template matMenuContent>
         <button mat-menu-item>Add Payment</button>

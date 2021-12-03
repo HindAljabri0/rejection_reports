@@ -5,7 +5,7 @@ import { AddFinalRejectionDialogComponent } from '../add-final-rejection-dialog/
 import { AddReconciliationDialogComponent } from '../add-reconciliation-dialog/add-reconciliation-dialog.component';
 import { ReconciliationReport } from 'src/app/models/reconciliationReport'
 import { ReconciliationReportResponse } from 'src/app/models/reconciliationReportResponse'
-import{ ReconciliationService } from 'src/app/services/reconciliationService/reconciliation.service'
+import { ReconciliationService } from 'src/app/services/reconciliationService/reconciliation.service'
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -18,31 +18,50 @@ import { FormControl } from '@angular/forms';
   styles: []
 })
 export class ReconciliationReportComponent implements OnInit {
-   reconciliationReport  =new  ReconciliationReport();
+  reconciliationReport = new ReconciliationReport();
   selectedPayerId = 'All';
-  payersList: { id: number, name: string, arName: string }[] = [];
+  payersList: { id: string[] | string, name: string }[];
   selectedPayerName = 'All';
-  strPayerYear: string;
   selectedDate: Date;
+  YearDatePickerTitle = 'year';
   currentDetailsOpen = -1;
-  reconciliationReportResponse :ReconciliationReportResponse []=[];
+  reconciliationReportResponse: ReconciliationReportResponse[] = [];
+  payerIdControl: FormControl = new FormControl();
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
   dateController: FormControl = new FormControl();
+  totalPages: number;
+  page: number = 0;
   constructor(
-    private reconciliationService:ReconciliationService,
+    private reconciliationService: ReconciliationService,
     private dialog: MatDialog,
-    private sharedService: SharedServices ,
+    private sharedService: SharedServices,
     private routeActive: ActivatedRoute,
     private location: Location,
     private datePipe: DatePipe,
-    
-    ) { }
+
+  ) { }
 
   ngOnInit() {
-    this.payersList = this.sharedService.getPayersList();
+    this.payersList = [];
+    const allPayersIds = [];
+    this.sharedService.getPayersList().map(value => {
+      this.payersList.push({
+        id: `${value.id}`,
+        name: value.name
+      });
+      allPayersIds.push(`${value.id}`);
+    });
+    this.payersList.push({
+      id: allPayersIds,
+      name: 'All'
+    });
     this.routeActive.queryParams.subscribe(params => {
-      if (params.payerId != null) {
-        this.reconciliationReport.payerId = params.payerId;
+      if (params.payer != undefined) {
+        if (params.payer instanceof Array && params.payer.length > 1) {
+          this.payerIdControl.setValue(allPayersIds);
+        } else {
+          this.payerIdControl.setValue(params.payer);
+        }
       }
       if (params.startDate != null) {
         this.reconciliationReport.startDate = params.startDate;
@@ -57,63 +76,82 @@ export class ReconciliationReportComponent implements OnInit {
         this.reconciliationReport.size = params.size;
       }
       this.dateController.setValue(new Date());
-        this.search();
-      
+      this.search();
+
     });
   }
 
 
-search(){
-if(this.reconciliationReport.startDate==null || this.reconciliationReport.startDate==undefined )
-return
-this.reconciliationReportResponse=[];
-this.editURL(this.reconciliationReport.startDate,this.reconciliationReport.endDate)
-this.reconciliationService.getReconciliationBtsearch(
-  this.sharedService.providerId,
-  this.reconciliationReport.payerId,
-  '01-01-'+this.datePipe.transform(this.dateController.value,'yyyy'),
-  '31-12-'+this.datePipe.transform(this.dateController.value,'yyyy'),
-  this.reconciliationReport.page,
-  this.reconciliationReport.size
-).subscribe(event =>{
-if(event instanceof HttpResponse){
-  if(event.status===200){
-  this.reconciliationReportResponse = event.body  as ReconciliationReportResponse [];
+  search() {
+    if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
+      return
+    this.reconciliationReportResponse = [];
+    this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate)
+    this.reconciliationService.getReconciliationBtsearch(
+      this.sharedService.providerId,
+      this.payerIdControl.value,
+      '01-01-' + this.datePipe.transform(this.dateController.value, 'yyyy'),
+      '31-12-' + this.datePipe.transform(this.dateController.value, 'yyyy'),
+      this.reconciliationReport.page,
+      this.reconciliationReport.size
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          this.reconciliationReportResponse = event.body['content'] as ReconciliationReportResponse[];
+          this.totalPages = event.body['totalPages'];
 
-  
-  this.sharedService.loadingChanged.next(false);
-  }
-}
-}, err => {
-this.sharedService.loadingChanged.next(false);
-console.log(err);
+          this.sharedService.loadingChanged.next(false);
+        }
+      }
+    }, err => {
+      this.sharedService.loadingChanged.next(false);
+      console.log(err);
 
-});
-}
-editURL(startDate?: string, endDate?: string) {
-  let path = `/reconciliationService/reconciliation.service?`;
+    });
+  }
+  editURL(startDate?: string, endDate?: string) {
+    let path = `/reconciliationService/reconciliation.service?`;
 
-  if (this.reconciliationReport.payerId != null) {
-    path += `payer=${this.reconciliationReport.payerId}&`;
+    if (this.payerIdControl.value != null) {
+      path += `payer=${this.payerIdControl.value}&`;
+    }
+    if (startDate != null) {
+      path += `from=${startDate}&`;
+    }
+    if (endDate != null) {
+      path += `to=${endDate}`;
+    }
+    if (this.reconciliationReport.page > 0) {
+      path += `&page=${this.reconciliationReport.page}`;
+    }
+    if (this.reconciliationReport.size > 10) {
+      path += `&pageSize=${this.reconciliationReport.size}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 1);
+    }
+    this.location.go(path);
   }
-  if (startDate != null) {
-    path += `from=${startDate}&`;
-  }
-  if (endDate != null) {
-    path += `to=${endDate}`;
-  }
-  if (this.reconciliationReport.page > 0) {
-    path += `&page=${this.reconciliationReport.page}`;
-  }
-  if (this.reconciliationReport.size> 10) {
-    path += `&pageSize=${this.reconciliationReport.size}`;
-  }
-  if (path.endsWith('?') || path.endsWith('&')) {
-    path = path.substr(0, path.length - 1);
-  }
-  this.location.go(path);
-}
 
+  goToFirstPage() {
+    this.page = 0;
+    this.search();
+  }
+
+  goToPrePage() {
+    this.page -= 1;
+    this.search();
+  }
+
+  goToNextPage() {
+    this.page += 1;
+    this.search();
+  }
+
+  goToLastPage() {
+    this.page = this.totalPages - 1;
+    this.search();
+  }
 
   openAddReconciliationDialog() {
     const dialogRef = this.dialog.open(AddReconciliationDialogComponent, {

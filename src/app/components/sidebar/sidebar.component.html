@@ -312,7 +312,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
+                <mat-expansion-panel hideToggle *ngIf="hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <span class="d-flex align-items-center">
@@ -335,7 +335,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="hasAnyNphiesPrivilege">
+                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Claims</mat-panel-title>
                     </mat-expansion-panel-header>
