@@ -244,15 +244,15 @@ export class ReportsService {
   }
 
   getAllDownloadsForProvider(providerId: string, page?: number, pageSize?: number) {
-    if (page == null) {
-      page = 0;
-    }
-    if (pageSize == null) {
-      pageSize = 10;
-    }
-    const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL);
-    return this.http.request(request);
+    // if (page == null) {
+    //   page = 0;
+    // }
+    // if (pageSize == null) {
+    //   pageSize = 10;
+    // }
+    // const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+    // const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL);
+    // return this.http.request(request);
   }
 
 
