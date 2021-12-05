@@ -19,48 +19,61 @@
           <div class="block-header">
             <!-- <p>View Claim</p> -->
 
-                <div
-                  class="claim-status-header {{(pageMode == 'CREATE') ? '' : 'text-' +getClaimStatusColor(otherDataModel.status)}}">
-                  <p class="title">View Claim</p>
-                  <div class="summary">
-                    <p><span>Provider Reference
-                        No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong>
-                    </p>
-                    <p *ngIf="otherDataModel.batchNumber!=null" ><span>Batch
-                        Number:</span>&nbsp;<strong>{{otherDataModel.batchNumber}}</strong>
-                    </p>
-                    <p *ngIf="otherDataModel.submissionDate!=null"><span>Submission
-                        Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate}}</strong>
-                    </p>
-                    <!-- <p ><span>Payer Batch Reference
-                        No.:</span>&nbsp;<strong>{{1}}</strong>
-                    </p>
-                    <p ><span>Payer Claim Reference
-                        No.:</span>&nbsp;<strong>{{2}}</strong>
-                    </p>
-         -->
-                    <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status}}</strong>
-                    </p>
-        
-                    <!-- <p ><span>Status
-                        Description:</span>&nbsp;<strong>{{1}}</strong>
-                    </p> -->
-                  </div>
-                </div>
-            
+            <div
+              class="claim-status-header {{(pageMode == 'CREATE') ? '' : 'text-' +getClaimStatusColor(otherDataModel.status)}}">
+              <p class="title">View Claim</p>
+              <div class="summary">
+                <p><span>Provider Reference
+                    No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong>
+                </p>
+                <p *ngIf="otherDataModel.batchNumber!=null"><span>Batch
+                    Number:</span>&nbsp;<strong>{{otherDataModel.batchNumber}}</strong>
+                </p>
+                <p *ngIf="otherDataModel.submissionDate!=null"><span>Submission
+                    Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate}}</strong>
+                </p>
+                <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status}}</strong>
+                </p>
+
+              
+              </div>
+            </div>
+
           </div>
-          
+
         </ng-container>
-        
+
       </ng-template>
-  
-      <!-- <ng-container
-      *ngIf="pageMode == 'VIEW'">
-      <claim-data [claimType]='claimType'></claim-data>
-    </ng-container> -->
-  
+
+      <ul class="claim-totals" *ngIf="pageMode == 'VIEW'">
+        <li>
+          Claim Amount:
+          <span class="value">{{1}} SR</span>
+        </li>
+        <li>
+          Gross Amount:
+          <span class="value">{{1}} SR</span>
+        </li>
+        <li>
+          Discount:
+          <span class="value">{{1}} SR</span>
+        </li>
+        <li>
+          Net Amount:
+          <span class="value">{{1}} SR</span>
+        </li>
+
+        <li>
+          Patient Share:
+          <span class="value">{{1}} SR</span>
+        </li>
+
+
+      </ul>
+
+
       <div class="block-body create-claim-body">
-       
+
         <div class="bg-white">
           <mat-tab-group [dynamicHeight]="true" class="primary-tab">
             <mat-tab>
@@ -400,7 +413,8 @@
                 <span [class.text-danger]="IsCareTeamRequired">Care Team</span>
               </ng-template>
               <h5 class="form-title pt-0">
-                <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk" *ngIf="pageMode != 'VIEW'">*</span></span>
+                <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk"
+                    *ngIf="pageMode != 'VIEW'">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
                   (click)="openAddEditCareTeam()">
                   <mat-icon>add</mat-icon>
@@ -458,7 +472,8 @@
                 <span [class.text-danger]="IsDiagnosisRequired">Diagnosis</span>
               </ng-template>
               <h5 class="form-title pt-0">
-                <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk" *ngIf="pageMode != 'VIEW'">*</span></span>
+                <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk"
+                    *ngIf="pageMode != 'VIEW'">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
                   (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
                   <mat-icon>add</mat-icon>
@@ -754,7 +769,8 @@
                   </div>
                 </div>
               </div>
-              <app-empty-state *ngIf="pageMode === 'VIEW' && (!this.otherDataModel || !this.otherDataModel.accident)" message='No Accident found!'>
+              <app-empty-state *ngIf="pageMode === 'VIEW' && (!this.otherDataModel || !this.otherDataModel.accident)"
+                message='No Accident found!'>
               </app-empty-state>
               <div *ngIf="pageMode === 'VIEW' && this.otherDataModel && this.otherDataModel.accident" class="row">
                 <div class="col-4 col-xxl-3">
@@ -812,7 +828,8 @@
                 <span [class.text-danger]="IsItemRequired">Items</span>
               </ng-template>
               <h5 class="form-title pt-0">
-                <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk" *ngIf="pageMode != 'VIEW'">*</span></span>
+                <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk"
+                    *ngIf="pageMode != 'VIEW'">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()"
                   class="btn-icon btn-primary ml-auto"
                   [disabled]="!FormNphiesClaim.controls.type.value || (FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
@@ -921,15 +938,18 @@
                                     </tr>
                                     <tr>
                                       <td class="label">Tax</td>
-                                      <td>{{item.tax !=null?item.tax:"-"}} <span class="currency" *ngIf="item.tax !=null">SR</span></td>
+                                      <td>{{item.tax !=null?item.tax:"-"}} <span class="currency"
+                                          *ngIf="item.tax !=null">SR</span></td>
                                     </tr>
                                     <tr>
                                       <td class="label">Patient Share</td>
-                                      <td>{{item.patientShare  !=null?item.patientShare:"-"}} <span class="currency" *ngIf="item.patientShare!=null">SR</span></td>
+                                      <td>{{item.patientShare !=null?item.patientShare:"-"}} <span class="currency"
+                                          *ngIf="item.patientShare!=null">SR</span></td>
                                     </tr>
                                     <tr>
                                       <td class="label">Payer Share</td>
-                                      <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency" *ngIf="item.payerShare!=null">SR</span></td>
+                                      <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency"
+                                          *ngIf="item.payerShare!=null">SR</span></td>
                                     </tr>
                                     <tr>
                                       <td class="label">Sub Site</td>
@@ -1129,7 +1149,8 @@
                 </div>
               </div>
 
-              <app-empty-state *ngIf="pageMode === 'VIEW' && !otherDataModel.claimEncounter " message='No Encounter found!'>
+              <app-empty-state *ngIf="pageMode === 'VIEW' && !otherDataModel.claimEncounter "
+                message='No Encounter found!'>
               </app-empty-state>
               <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel.claimEncounter">
                 <div class="col-4 col-xxl-3">
@@ -1183,7 +1204,9 @@
                 </div>
               </div>
 
-              <h5 class="form-title" *ngIf="(pageMode !== 'VIEW')||(pageMode === 'VIEW' && otherDataModel.claimEncounter) ">Hospitalization</h5>
+              <h5 class="form-title"
+                *ngIf="(pageMode !== 'VIEW')||(pageMode === 'VIEW' && otherDataModel.claimEncounter) ">Hospitalization
+              </h5>
               <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
