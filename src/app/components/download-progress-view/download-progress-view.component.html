@@ -1,23 +1,35 @@
 <div class="download-progress-view">
     <div class="left">
-        <mat-spinner *ngIf="!isCSV() && !isExcel() && !isZip() && downloadRequest.errorMessage == null && downloadRequest.progress != 100" diameter="32"></mat-spinner>
-        <img *ngIf="isCSV()  && downloadRequest.errorMessage == null" src="./assets/file-types/ic-csv.svg" alt="CSV File" />
-        <img *ngIf="isExcel() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-xls.svg" alt="Excel File" />
-        <img *ngIf="isZip() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-zip.svg" alt="Zip File" />
+        <mat-spinner
+            *ngIf="!isCSV() && !isExcel() && !isZip() && downloadRequest.errorMessage == null && downloadRequest.progress != 100"
+            diameter="32"></mat-spinner>
+        <img *ngIf="isCSV()  && downloadRequest.errorMessage == null" src="./assets/file-types/ic-csv.svg"
+            alt="CSV File" />
+        <img *ngIf="isExcel() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-xls.svg"
+            alt="Excel File" />
+        <img *ngIf="isZip() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-zip.svg"
+            alt="Zip File" />
         <mat-icon class="error-icon" *ngIf="downloadRequest.errorMessage != null">error_outline</mat-icon>
     </div>
     <div class="right">
         <div class="inner">
             <p class="text-danger" *ngIf="downloadRequest.status == 2">{{downloadRequest.errorMessage}}</p>
             <p class="text" *ngIf="downloadRequest.status == 0">Waiting for the server to download the file</p>
-            <p class="text" *ngIf="downloadRequest.status == 1 || downloadRequest.status == 3|| downloadRequest.status==null" [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
-            <a *ngIf="downloadRequest.status == 1">Generating Download URL</a>
-            <a *ngIf="downloadRequest.url != null" [href]="getDownloadURL()" target="_blank">Click to Start Downloading</a>
+            <p class="text"
+                *ngIf="downloadRequest.status == 1 || downloadRequest.status == 3|| downloadRequest.status==null"
+                [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
+            <a *ngIf="downloadRequest.status == 1 || (downloadRequest.progress != 100 && downloadRequest.progress > 0)">Generating Download URL</a>
+            <a *ngIf="downloadRequest.progress == -1">Failed to generate the report, please try again later.</a>
+            <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"
+                target="_blank">Click to Start Downloading</a>
             <div class="d-flex align-items-center">
-                <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">{{getReadableFileSize()}}</p>
+                <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">
+                    {{getReadableFileSize()}}</p>
                 <mat-icon *ngIf="downloadRequest.status == 3" class="text-success ml-auto">offline_pin</mat-icon>
             </div>
-            <mat-progress-bar class="progress" *ngIf="downloadRequest.status == 0 || downloadRequest.status == 1" [mode]="getMode()" [value]="getValue()">
+            <mat-progress-bar class="progress"
+                *ngIf="downloadRequest.status == 0 || downloadRequest.status == 1 || (downloadRequest.progress != 100 && downloadRequest.progress > 0)"
+                [mode]="getMode()" [value]="getValue()">
             </mat-progress-bar>
         </div>
     </div>
