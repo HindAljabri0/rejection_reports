@@ -70,8 +70,8 @@
                             </tr>
                             <tr>
                                 <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                    <span class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span
-                                        class="currency"> SR</span>
+                                    <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span
+                                    *ngIf="summary.value.totalNetAmount!=null" class="currency"> SR</span>
                                 </td>
                                 <!-- <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                                     <span class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span
