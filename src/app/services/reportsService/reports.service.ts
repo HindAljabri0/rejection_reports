@@ -248,7 +248,7 @@ export class ReportsService {
       page = 0;
     }
     if (pageSize == null) {
-      pageSize = 10;
+      pageSize = 5;
     }
     const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL);
