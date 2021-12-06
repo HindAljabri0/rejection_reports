@@ -79,7 +79,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     dischargeDispotion: [''],
     serviceProvider: ['']
   });
-  claimType="PATIENT"
+ 
   typeList = this.sharedDataService.claimTypeList;
   payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
@@ -1453,6 +1453,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
     this.otherDataModel.provClaimNo=response.provClaimNo
     this.otherDataModel.status=response.status;
+    this.otherDataModel.totalNet=response.totalNet;
+    this.otherDataModel.preAuthRefNo=response.preAuthRefNo;
     // this.otherDataModel.claimEncounter = response.claimEncounter;
 
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
