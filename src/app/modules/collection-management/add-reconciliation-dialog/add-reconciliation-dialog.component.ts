@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-  import{SearchDiscountReconciliationReport} from 'src/app/models/reconciliationReport';
-  import { ReconciliationService } from 'src/app/services/reconciliationService/reconciliation.service'
+import { SearchDiscountReconciliationReport } from 'src/app/models/reconciliationReport';
+import { ReconciliationService } from 'src/app/services/reconciliationService/reconciliation.service'
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -21,7 +21,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 export class AddReconciliationDialogComponent implements OnInit {
   status: boolean = false;
   searchComplete = true;
-  searchDiscountReconciliationReport=new SearchDiscountReconciliationReport();
+  searchDiscountReconciliationReport = new SearchDiscountReconciliationReport();
   startDateController: FormControl = new FormControl();
   endDateController: FormControl = new FormControl();
   payerIdControl: FormControl = new FormControl();
@@ -48,9 +48,9 @@ export class AddReconciliationDialogComponent implements OnInit {
     private datePipe: DatePipe,
     private dialogService: DialogService,
 
-    
-    
-    ) { }
+
+
+  ) { }
 
   ngOnInit() {
     this.status = false;
@@ -92,21 +92,21 @@ export class AddReconciliationDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  search(){
-if(this.searchDiscountReconciliationReport.startDate == null || this.searchDiscountReconciliationReport.startDate == undefined && this.searchDiscountReconciliationReport.endDate== null || this.searchDiscountReconciliationReport == undefined)
-   return
-     this.editURL(this.searchDiscountReconciliationReport.startDate, this.searchDiscountReconciliationReport.endDate);
+  search() {
+    if (this.searchDiscountReconciliationReport.startDate == null || this.searchDiscountReconciliationReport.startDate == undefined && this.searchDiscountReconciliationReport.endDate == null || this.searchDiscountReconciliationReport == undefined)
+      return
+    this.editURL(this.searchDiscountReconciliationReport.startDate, this.searchDiscountReconciliationReport.endDate);
     this.reconciliationService.getSearchAddReconciliation(
-      this.sharedService.providerId,  
-      this.payerIdControl.value, 
-      this.datePipe.transform(this.startDateController.value,'dd-MM-yyyy'),
-      this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy'),
-       ).subscribe(event => {
+      this.sharedService.providerId,
+      this.payerIdControl.value,
+      this.datePipe.transform(this.startDateController.value, 'dd-MM-yyyy'),
+      this.datePipe.transform(this.endDateController.value, 'dd-MM-yyyy'),
+    ).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-           this.searchDiscountReconciliationReportResponse = event.body as SearchDiscountReconciliationReportResponse;
+          this.searchDiscountReconciliationReportResponse = event.body as SearchDiscountReconciliationReportResponse;
 
-         console.log(this.searchDiscountReconciliationReportResponse.duration);
+          console.log(this.searchDiscountReconciliationReportResponse.duration);
         }
       }
     }, err => {
@@ -132,34 +132,33 @@ if(this.searchDiscountReconciliationReport.startDate == null || this.searchDisco
     }
     this.location.go(path);
   }
-  debugger;
-  addDiscount(){
-    let data:AddDiscountReconciliationReport = {
-      promptDiscount:this.promptDiscountControl.value,
-      volumeDiscount:this.volumeDiscountCotrol.value,
-      startDate: this.datePipe.transform(this.startDateController.value,'dd-MM-yyyy'),
-     endDate: this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy'),
+  addDiscount() {
+    let data: AddDiscountReconciliationReport = {
+      promptDiscount: this.promptDiscountControl.value,
+      volumeDiscount: this.volumeDiscountCotrol.value,
+      startDate: this.datePipe.transform(this.startDateController.value, 'dd-MM-yyyy'),
+      endDate: this.datePipe.transform(this.endDateController.value, 'dd-MM-yyyy'),
       payerId: this.payerIdControl.value
     };
-  this.reconciliationService.getAddDiscount(
-    this.sharedService.providerId,data
-  ).subscribe(event => {
-  if (event instanceof HttpResponse) {
-    if (event.status === 200) {
-      this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
-      this.status = true;
-      this.closeDialog(true);
-      this.sharedService.loadingChanged.next(false);
-    }
-  }
-}, err => {
-  if (err instanceof HttpErrorResponse) {
-    this.sharedService.loadingChanged.next(false);
-    this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
-    this.status = false;
+    this.reconciliationService.getAddDiscount(
+      this.sharedService.providerId, data
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
+          this.status = true;
+          this.closeDialog(true);
+          this.sharedService.loadingChanged.next(false);
+        }
+      }
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        this.sharedService.loadingChanged.next(false);
+        this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
+        this.status = false;
 
+      }
+    });
   }
-});
-}
 
 }

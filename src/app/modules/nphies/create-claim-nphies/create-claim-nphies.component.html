@@ -39,7 +39,7 @@
                 <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status}}</strong>
                 </p>
 
-              
+
               </div>
             </div>
 
@@ -880,7 +880,7 @@
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           {{item.nonStandardCode ? item.nonStandardCode:"-"}}</td>
                         <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
-                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details"
+                          <button *ngIf="item.isPackage" mat-icon-button type="button" matTooltip="Add Details"
                             class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
                             <mat-icon>add</mat-icon>
                           </button>
@@ -921,9 +921,8 @@
                                     <tr>
                                       <td class="label">Is Package?</td>
                                       <td>
-                                        <span *ngIf="item.isPackage != 1 && item.isPackage !=2">-</span>
-                                        <span *ngIf="item.isPackage === 1">Yes</span>
-                                        <span *ngIf="item.isPackage === 2">No</span>
+                                        <span *ngIf="item.isPackage">Yes</span>
+                                        <span *ngIf="!item.isPackage">No</span>
                                       </td>
                                     </tr>
                                     <tr>
