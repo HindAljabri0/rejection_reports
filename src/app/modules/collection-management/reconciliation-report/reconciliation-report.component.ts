@@ -157,7 +157,14 @@ export class ReconciliationReportComponent implements OnInit {
     const dialogRef = this.dialog.open(AddReconciliationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg'],
       autoFocus: false
-    })
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.status) {
+      }
+    }, error => {
+
+    });
+  
   }
 
   openFinalRejectionDialog() {

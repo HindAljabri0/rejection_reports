@@ -13,3 +13,11 @@ reconciliationAmount	: any;
 volumeDiscountPerc:any;
  finalRejectionAmountPerc :any;
 }
+
+
+export class SearchDiscountReconciliationReportResponse{
+    duration:string;
+    totalSubmittedAmount :any;
+    totalReceived :any;
+ totalOutstandingAmount :any;
+}

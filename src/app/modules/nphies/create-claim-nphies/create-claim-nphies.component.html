@@ -11,18 +11,77 @@
     <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
       <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
         <div class="block-header">
-          <p>Create Claim</p>
+          <!-- <p>Create Claim</p> -->
         </div>
       </ng-container>
       <ng-template #statusHeader>
         <ng-container>
           <div class="block-header">
-            <p>View Claim</p>
+            <!-- <p>View Claim</p> -->
+
+            <div
+              class="claim-status-header {{(pageMode == 'CREATE') ? '' : 'text-' +getClaimStatusColor(otherDataModel.status)}}">
+              <p class="title">View Claim</p>
+              <div class="summary">
+                <p><span>Provider Reference
+                    No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong>
+                </p>
+                <p *ngIf="otherDataModel.batchNumber!=null"><span>Batch
+                    Number:</span>&nbsp;<strong>{{otherDataModel.batchNumber}}</strong>
+                </p>
+                <p *ngIf="otherDataModel.preAuthRefNo!=null"><span>pre Authentication Reference
+                  No.:</span>&nbsp;<strong>{{otherDataModel.preAuthRefNo}}</strong>
+              </p>
+                
+                <p *ngIf="otherDataModel.submissionDate!=null"><span>Submission
+                    Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate}}</strong>
+                </p>
+                <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status}}</strong>
+                </p>
+
+              
+              </div>
+            </div>
+
           </div>
+
         </ng-container>
+
       </ng-template>
 
+      <ul class="claim-totals" *ngIf="pageMode == 'VIEW'">
+        <!-- <li>
+          Claim Amount:
+          <span class="value">{{1}} SR</span>
+        </li> -->
+        <!-- <li>
+          Gross Amount:
+          <span class="value">{{1}} SR</span>
+        </li> -->
+        <!-- <li>
+          Discount:
+          <span class="value">{{1}} SR</span>
+        </li> -->
+         <!-- <li>
+          Discount:
+          <span class="value">{{1}} SR</span>
+        </li> -->
+        <li>
+          Net Amount:
+          <span class="value">{{otherDataModel.totalNet!=null?otherDataModel.totalNet +" SR":'-'}} </span>
+        </li>
+        
+        <!-- <li>
+          Patient Share:
+          <span class="value">{{1}} SR</span>
+        </li> -->
+
+
+      </ul>
+
+
       <div class="block-body create-claim-body">
+
         <div class="bg-white">
           <mat-tab-group [dynamicHeight]="true" class="primary-tab">
             <mat-tab>
@@ -362,7 +421,8 @@
                 <span [class.text-danger]="IsCareTeamRequired">Care Team</span>
               </ng-template>
               <h5 class="form-title pt-0">
-                <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk">*</span></span>
+                <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk"
+                    *ngIf="pageMode != 'VIEW'">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
                   (click)="openAddEditCareTeam()">
                   <mat-icon>add</mat-icon>
@@ -420,7 +480,8 @@
                 <span [class.text-danger]="IsDiagnosisRequired">Diagnosis</span>
               </ng-template>
               <h5 class="form-title pt-0">
-                <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
+                <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk"
+                    *ngIf="pageMode != 'VIEW'">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto"
                   (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
                   <mat-icon>add</mat-icon>
@@ -716,8 +777,10 @@
                   </div>
                 </div>
               </div>
-
-              <div *ngIf="pageMode === 'VIEW'" class="row">
+              <app-empty-state *ngIf="pageMode === 'VIEW' && (!this.otherDataModel || !this.otherDataModel.accident)"
+                message='No Accident found!'>
+              </app-empty-state>
+              <div *ngIf="pageMode === 'VIEW' && this.otherDataModel && this.otherDataModel.accident" class="row">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Accident Type</label>
@@ -773,7 +836,8 @@
                 <span [class.text-danger]="IsItemRequired">Items</span>
               </ng-template>
               <h5 class="form-title pt-0">
-                <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
+                <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk"
+                    *ngIf="pageMode != 'VIEW'">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()"
                   class="btn-icon btn-primary ml-auto"
                   [disabled]="!FormNphiesClaim.controls.type.value || (FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
@@ -806,7 +870,7 @@
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           {{item.typeName}}</td>
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                          >{{item.itemCode}} - {{item.itemDescription}}</td>
+                          {{item.itemCode}} - {{item.itemDescription}}</td>
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           {{item.quantity}}</td>
                         <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -844,15 +908,15 @@
                                     </tr>
                                     <tr>
                                       <td class="label">Discount(%)</td>
-                                      <td>{{item.discount}} %</td>
+                                      <td>{{item.discount!=null?item.discount +" %":"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Tax(%)</td>
-                                      <td>{{item.taxPercent}} %</td>
+                                      <td>{{item.taxPercent!=null?item.taxPercent +" %":"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Patient Share(%)</td>
-                                      <td>{{item.patientShare}} %</td>
+                                      <td>{{item.patientSharePercent!=null?item.patientSharePercent +" %":"-"}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Is Package?</td>
@@ -882,15 +946,18 @@
                                     </tr>
                                     <tr>
                                       <td class="label">Tax</td>
-                                      <td>{{item.tax}} <span class="currency">SR</span></td>
+                                      <td>{{item.tax !=null?item.tax:"-"}} <span class="currency"
+                                          *ngIf="item.tax !=null">SR</span></td>
                                     </tr>
                                     <tr>
                                       <td class="label">Patient Share</td>
-                                      <td>{{item.patientShare}} <span class="currency">SR</span></td>
+                                      <td>{{item.patientShare !=null?item.patientShare:"-"}} <span class="currency"
+                                          *ngIf="item.patientShare!=null">SR</span></td>
                                     </tr>
                                     <tr>
                                       <td class="label">Payer Share</td>
-                                      <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                                      <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency"
+                                          *ngIf="item.payerShare!=null">SR</span></td>
                                     </tr>
                                     <tr>
                                       <td class="label">Sub Site</td>
@@ -1090,7 +1157,10 @@
                 </div>
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel">
+              <app-empty-state *ngIf="pageMode === 'VIEW' && !otherDataModel.claimEncounter "
+                message='No Encounter found!'>
+              </app-empty-state>
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel.claimEncounter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Status</label>
@@ -1142,7 +1212,9 @@
                 </div>
               </div>
 
-              <h5 class="form-title">Hospitalization</h5>
+              <h5 class="form-title"
+                *ngIf="(pageMode !== 'VIEW')||(pageMode === 'VIEW' && otherDataModel.claimEncounter) ">Hospitalization
+              </h5>
               <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group">
@@ -1196,7 +1268,7 @@
 
               </div>
 
-              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel">
+              <div class="row" *ngIf="pageMode === 'VIEW' && otherDataModel.claimEncounter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group form-group-static">
                     <label class="control-label">Origin</label>
