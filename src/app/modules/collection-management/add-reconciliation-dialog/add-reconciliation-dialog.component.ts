@@ -13,6 +13,7 @@ import { AddDiscountReconciliationReport } from 'src/app/models/reconciliationRe
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 @Component({
   selector: 'app-reconciliation',
   templateUrl: './add-reconciliation-dialog.component.html',
@@ -30,6 +31,7 @@ export class AddReconciliationDialogComponent implements OnInit {
   selectedPayerId = 'All';
   payersList: { id: string[] | string, name: string }[];
   selectedPayerName = 'All';
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
   searchDiscountReconciliationReportResponse: SearchDiscountReconciliationReportResponse;
 
   AddDiscountReconciliationReport = new AddDiscountReconciliationReport();
@@ -132,15 +134,15 @@ if(this.searchDiscountReconciliationReport.startDate == null || this.searchDisco
     }
     this.location.go(path);
   }
-  debugger;
   addDiscount(){
     let data:AddDiscountReconciliationReport = {
       promptDiscount:this.promptDiscountControl.value,
       volumeDiscount:this.volumeDiscountCotrol.value,
-      startDate: this.datePipe.transform(this.startDateController.value,'dd-MM-yyyy'),
-     endDate: this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy'),
+      startDate:  new Date(this.datePipe.transform(this.startDateController.value,'dd-MM-yyyy')),
+      endDate: new Date(this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy')),
       payerId: this.payerIdControl.value
     };
+    console.log(data.startDate)
   this.reconciliationService.getAddDiscount(
     this.sharedService.providerId,data
   ).subscribe(event => {

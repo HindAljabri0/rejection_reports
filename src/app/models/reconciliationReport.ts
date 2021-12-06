@@ -15,8 +15,8 @@ export class SearchDiscountReconciliationReport{
 
 export class AddDiscountReconciliationReport{
     payerId: any = '0';
-    startDate = '';
-    endDate = '';
-    promptDiscount=Number;
-    volumeDiscount=Number;
+    startDate :Date;
+    endDate  :Date;
+    promptDiscount:Number;
+    volumeDiscount:Number;
 }
