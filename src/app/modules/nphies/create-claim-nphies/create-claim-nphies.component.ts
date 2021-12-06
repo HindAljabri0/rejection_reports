@@ -137,6 +137,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     private location: Location,
     private dialogService: DialogService,
     private sharedDataService: SharedDataService,
+    private sharedService: SharedServices,
     private router: Router,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
@@ -491,6 +492,13 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     });
   }
+  getClaimStatusColor(status: string) {
+    if (status != null) {
+      return this.sharedService.getCardAccentColor(status);
+    }
+    return 'all-claim';
+  }
+
 
   deleteDiagnosis(sequence: number, index: number) {
 
@@ -599,7 +607,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                 x.diagnosisNames = '';
               }
 
-              if (x.isPackage === 2) {
+              if (!x.isPackage) {
                 x.itemDetails = [];
               }
 
@@ -1443,6 +1451,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
     this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
+    this.otherDataModel.provClaimNo = response.provClaimNo
+    this.otherDataModel.status = response.status;
+    this.otherDataModel.totalNet = response.totalNet;
+    this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
     // this.otherDataModel.claimEncounter = response.claimEncounter;
 
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
@@ -1731,7 +1743,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
       model.display = x.nonStandardDesc;
-      model.isPackage = x.isPackage === true ? 1 : 2;
+      model.isPackage = x.isPackage;
       model.quantity = x.quantity;
       model.unitPrice = x.unitPrice;
       model.discount = x.discount;
@@ -1776,9 +1788,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
       }
 
-      if (response.approvalResponseId) {
-        x.isPackage = x.isPackage === true ? 1 : 2;
-      }
+      // if (response.approvalResponseId) {
+      //   x.isPackage = x.isPackage === true ? 1 : 2;
+      // }
       return model;
     });
 
