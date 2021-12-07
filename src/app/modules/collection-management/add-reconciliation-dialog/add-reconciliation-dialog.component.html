@@ -43,28 +43,28 @@
             </div>
         </div>
     </div>
-    <ng-container *ngIf="searchComplete">
+    <ng-container *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null">
         <hr class="hr ml-n16 mr-n16 mb-16" />
-        <div class="reconciliation-summary-wrapper"  *ngIf="searchDiscountReconciliationReportResponse!=null">
+        <div class="reconciliation-summary-wrapper">
             <div class="row">
                 <div class="col-6">
                     <div class="reconciliation-summary">
                         <label>Duration: </label>
-                        <label >{{searchDiscountReconciliationReportResponse.duration}}</label >
+                        <p>{{searchDiscountReconciliationReportResponse.duration}}</p >
                     </div>
                     <div class="reconciliation-summary">
                         <label>Total Submitted: </label>
-                        <label >{{searchDiscountReconciliationReportResponse.totalSubmittedAmount}}</label >
+                        <p>{{searchDiscountReconciliationReportResponse.totalSubmittedAmount}}</p >
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="reconciliation-summary">
                         <label>Total Received: </label>
-                        <label >{{searchDiscountReconciliationReportResponse.totalReceived}}</label >
+                        <p >{{searchDiscountReconciliationReportResponse.totalReceived}}</p >
                     </div>
                     <div class="reconciliation-summary">
                         <label>Total Outstanding: </label>
-                        <label >{{searchDiscountReconciliationReportResponse.totalOutstandingAmount}}</label >
+                        <p >{{searchDiscountReconciliationReportResponse.totalOutstandingAmount}}</p >
                     </div>
                 </div>
             </div>
@@ -85,6 +85,6 @@
         </div>
     </ng-container>
 </div>
-<div class="primary-dialog-footer has-border text-right" *ngIf="searchComplete">
+<div class="primary-dialog-footer has-border text-right" *ngIf="searchComplete &&  searchDiscountReconciliationReportResponse!=null">
     <button mat-flat-button color="primary"   (click)="addDiscount()">Add Discounts</button>
 </div>

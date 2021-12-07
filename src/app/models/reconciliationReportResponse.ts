@@ -1,4 +1,5 @@
 export class ReconciliationReportResponse{
+reconciliationId: number;
 payerId:string;
 duration:string;
  totalSubmittedAmount :any;

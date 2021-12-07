@@ -624,9 +624,8 @@
                                                     <tr>
                                                         <td class="label">Is Package?</td>
                                                         <td>
-                                                            <span *ngIf="item.isPackage != 1 && item.isPackage !=2">-</span>
-                                                            <span *ngIf="item.isPackage === 1">Yes</span>
-                                                            <span *ngIf="item.isPackage === 2">No</span>
+                                                            <span *ngIf="item.isPackage">Yes</span>
+                                                            <span *ngIf="!item.isPackage">No</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -1097,11 +1096,11 @@
                                     <span class="error-text">Please select a Beneficiary</span>
                                 </div>
                             </div>
-                            <div class="form-group pl-3 pr-3">
+                            <div [hidden]="pageMode === 'EDIT'" class="form-group pl-3 pr-3">
                                 <label class="control-label">&nbsp;</label>
                                 <span class="pt-2 d-block semibold">OR</span>
                             </div>
-                            <div class="form-group">
+                            <div [hidden]="pageMode === 'EDIT'" class="form-group">
                                 <label class="control-label">&nbsp;</label>
                                 <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
                             </div>
@@ -1133,7 +1132,7 @@
                                     <!-- <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId"> -->
                                     <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Response Id'">
                                         <!-- <tag-input-dropdown [autocompleteItems]="['321654', '564654', '654654']">
-                    </tag-input-dropdown> -->
+</tag-input-dropdown> -->
                                     </tag-input>
                                 </div>
                             </div>
@@ -1178,15 +1177,15 @@
                                             <mat-option value="">Select Sub Type</mat-option>
                                             <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
                                             <!-- <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="ip">
-                                                    InPatient
-                                                  </mat-option>
-                                                  <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'professional' ||
-                                                FormNphiesClaim.controls.type.value === 'oral' ||
-                                                FormNphiesClaim.controls.type.value === 'vision' ||
-                                                FormNphiesClaim.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
-                                                  <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="emr">
-                                                    Emergency
-                                                  </mat-option> -->
+        InPatient
+        </mat-option>
+        <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'professional' ||
+    FormNphiesClaim.controls.type.value === 'oral' ||
+    FormNphiesClaim.controls.type.value === 'vision' ||
+    FormNphiesClaim.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
+        <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="emr">
+        Emergency
+        </mat-option> -->
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -1647,7 +1646,7 @@
                                             <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                                                 {{item.nonStandardCode ? item.nonStandardCode:"-"}}</td>
                                             <td class="actions text-nowrap">
-                                                <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
+                                                <button *ngIf="item.isPackage" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
                                                     (click)="openAddEditItemDetailsDialog(item.sequence)">
                                                     <mat-icon>add</mat-icon>
                                                 </button>
@@ -1686,9 +1685,8 @@
                                                                     <tr>
                                                                         <td class="label">Is Package?</td>
                                                                         <td>
-                                                                            <span *ngIf="item.isPackage != 1 && item.isPackage !=2">-</span>
-                                                                            <span *ngIf="item.isPackage === 1">Yes</span>
-                                                                            <span *ngIf="item.isPackage === 2">No</span>
+                                                                            <span *ngIf="item.isPackage">Yes</span>
+                                                                            <span *ngIf="!item.isPackage">No</span>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -1897,14 +1895,16 @@
                                     <div class="row small-gutter">
                                         <div class="col-6">
                                             <div class="date-picker">
-                                                <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date" formControlName="startDate">
+                                                <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date" formControlName="startDate"
+                                                    [max]="FormNphiesClaim.controls.periodEnd.value">
                                                 <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
                                                 <mat-datepicker #periodStartDate></mat-datepicker>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="date-picker">
-                                                <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date" formControlName="periodEnd">
+                                                <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date" formControlName="periodEnd"
+                                                    [min]="FormNphiesClaim.controls.startDate.value">
                                                 <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
                                                 <mat-datepicker #periodEndDate></mat-datepicker>
                                             </div>

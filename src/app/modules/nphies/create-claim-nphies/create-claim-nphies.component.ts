@@ -603,7 +603,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                 x.diagnosisNames = '';
               }
 
-              if (x.isPackage === 2) {
+              if (!x.isPackage) {
                 x.itemDetails = [];
               }
 
@@ -1739,7 +1739,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
       model.display = x.nonStandardDesc;
-      model.isPackage = x.isPackage === true ? 1 : 2;
+      model.isPackage = x.isPackage;
       model.quantity = x.quantity;
       model.unitPrice = x.unitPrice;
       model.discount = x.discount;
@@ -1784,9 +1784,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
       }
 
-      if (response.approvalResponseId) {
-        x.isPackage = x.isPackage === true ? 1 : 2;
-      }
+      // if (response.approvalResponseId) {
+      //   x.isPackage = x.isPackage === true ? 1 : 2;
+      // }
       return model;
     });
 
