@@ -14,6 +14,7 @@ import { MainLayoutComponent } from '../main-layout/main-layout.component';
 import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.component';
 import { NphiesSearchClaimsComponent } from './nphies/nphies-search-claims/nphies-search-claims.component';
 import { EditClaimComponent } from '../pages/edit-claim/edit-claim.component';
+import { MainClaimPageComponent } from '../claim-module-components/main-claim-page/main-claim-page.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { EditClaimComponent } from '../pages/edit-claim/edit-claim.component';
         children: [
           { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
-          
+          { path: 'claims/:id', component: MainClaimPageComponent ,  canActivate: [RouteCanActiveService] },
           { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
           { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },

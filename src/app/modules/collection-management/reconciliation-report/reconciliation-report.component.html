@@ -128,7 +128,7 @@
         </button>
 <mat-menu #actionsMenu xPosition="before">
     <ng-template matMenuContent>
-        <button mat-menu-item>Add Payment</button>
+        <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
         <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button>
     </ng-template>
 </mat-menu>

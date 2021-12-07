@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { FormControl } from '@angular/forms';
+import { ReconciliationAddPaymentComponent } from '../reconciliation-add-payment/reconciliation-add-payment.component';
 @Component({
   selector: 'app-reconciliation-report',
   templateUrl: './reconciliation-report.component.html',
@@ -192,6 +193,27 @@ export class ReconciliationReportComponent implements OnInit {
 
     });
   }
+  openAddPaymentDialog(){
+    const dialogRef = this.dialog.open(ReconciliationAddPaymentComponent,
+      {
+        panelClass: ['primary-dialog'],
+
+        data :{
+        id:this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
+        payerId:this.selectedReconciliationIdAndTotalDubmitted.payerId
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.status) {
+        this.search();
+      }
+    }, error => {
+
+    });
+  }
+
+
+  
 }
 
   
