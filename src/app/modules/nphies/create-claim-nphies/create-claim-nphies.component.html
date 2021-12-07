@@ -30,9 +30,9 @@
                     Number:</span>&nbsp;<strong>{{otherDataModel.batchNumber}}</strong>
                 </p>
                 <p *ngIf="otherDataModel.preAuthRefNo!=null"><span>pre Authentication Reference
-                  No.:</span>&nbsp;<strong>{{otherDataModel.preAuthRefNo}}</strong>
-              </p>
-                
+                    No.:</span>&nbsp;<strong>{{otherDataModel.preAuthRefNo}}</strong>
+                </p>
+
                 <p *ngIf="otherDataModel.submissionDate!=null"><span>Submission
                     Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate}}</strong>
                 </p>
@@ -62,7 +62,7 @@
           Discount:
           <span class="value">{{1}} SR</span>
         </li> -->
-         <!-- <li>
+        <!-- <li>
           Discount:
           <span class="value">{{1}} SR</span>
         </li> -->
@@ -70,7 +70,7 @@
           Net Amount:
           <span class="value">{{otherDataModel.totalNet!=null?otherDataModel.totalNet +" SR":'-'}} </span>
         </li>
-        
+
         <!-- <li>
           Patient Share:
           <span class="value">{{1}} SR</span>
@@ -1138,7 +1138,7 @@
                       <div class="col-6">
                         <div class="date-picker">
                           <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date"
-                            formControlName="startDate">
+                            formControlName="startDate" [max]="FormNphiesClaim.controls.periodEnd.value">
                           <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
                           <mat-datepicker #periodStartDate></mat-datepicker>
                         </div>
@@ -1146,7 +1146,7 @@
                       <div class="col-6">
                         <div class="date-picker">
                           <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date"
-                            formControlName="periodEnd">
+                            formControlName="periodEnd" [min]="FormNphiesClaim.controls.startDate.value">
                           <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
                           <mat-datepicker #periodEndDate></mat-datepicker>
                         </div>
