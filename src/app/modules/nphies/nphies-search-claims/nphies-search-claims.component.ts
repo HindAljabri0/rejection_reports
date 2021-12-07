@@ -1120,7 +1120,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.filter_netAmount,
       this.params.filter_batchNum);
     if (event != null) {
-      this.downloadService.startDownload(event)
+      this.downloadService.startGeneratingDownloadFile(event)
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
             this.detailTopActionIcon = 'ic-check-circle.svg';
