@@ -1,22 +1,20 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { ReplaySubject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-// tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
-// tslint:disable-next-line:max-line-length
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,7 +22,6 @@ import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 
 @Component({
@@ -132,7 +129,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   constructor(
 
-    // private dialogRef: MatDialogRef<EditClaimComponent>,
     private activatedRoute: ActivatedRoute,
     private location: Location,
     private dialogService: DialogService,
@@ -1884,9 +1880,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-
     this.location.back();
-
-
   }
+
 }

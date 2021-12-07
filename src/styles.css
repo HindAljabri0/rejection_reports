@@ -373,7 +373,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-group .control-hint{padding-top: 4px;color: #909090;font-weight: 600;}
 .form-group-static .control-label{color:#707070;}
 .form-group.form-group-static{margin-bottom: 20px;}
-.form-control-static{font-size:16px;line-height:22px;color:#222;}
+.form-control-static{font-size:16px;line-height:22px;color:#222;font-weight: 500;}
 .form-group .block-slide-toggle.mat-slide-toggle{padding: 12px 0;height: auto;}
 
 /* select control
@@ -508,7 +508,6 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid>thead>tr>th .mat-icon-button .mat-icon,.primary-grid>thead>tr>td .mat-icon-button .mat-icon{font-size: 22px;line-height: 22px;}
 .primary-grid tr.mat-header-row,.primary-grid tr.mat-footer-row,.primary-grid tr.mat-row{height:auto;}
 .primary-grid:not(.contextful)>thead>tr>th,.primary-grid:not(.contextful)>thead>tr>td,.primary-grid .header-cell{background-color: #D5E4FC;color:#3060AA;border-color:#b2d0ff;}
-.primary-grid .header-cell-error{background-color: #dc354517 !important;color:#dc3545!important;}
 .primary-grid:not(.contextful)>thead>tr>th[colspan],.primary-grid:not(.contextful)>thead>tr>td[colspan],.primary-grid .header-cell[colspan]{border-bottom:1px solid #b2d0ff;}
 .primary-grid:not(.contextful)>.header-primary>tr>th,.primary-grid:not(.contextful)>.header-primary>tr>td{color:#fff;background-color: #3060AA;}
 .primary-grid>thead>tr>th:first-child:not(.not-first-child),.primary-grid>thead>tr>td:first-child:not(.not-first-child),.primary-grid>tbody>tr>th:first-child:not(.not-first-child),.primary-grid>tbody>tr>td:first-child:not(.not-first-child){padding-left: 12px;border-left: 0;}
@@ -586,7 +585,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* Claim status header
 --------------------------------------------------------------------------------------------------------*/
 .claim-status-header{padding: 12px 14px;background:#fff;border-left:14px solid currentColor;border-bottom:1px solid #e1e1e1;}
-.claim-status-header .summary{display: flex;}
+.claim-status-header .summary{display: flex;flex-wrap: wrap;}
 .claim-status-header .summary span{color:#505050;}
 .claim-status-header p{padding-right: 24px;}
 .claim-status-header .title{font-size: 16px;line-height: 22px;font-weight: 600;}
