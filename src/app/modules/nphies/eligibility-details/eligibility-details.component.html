@@ -55,8 +55,8 @@
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th class="header-cell-error">Code</th>
-                        <th class="header-cell-error">Message</th>
+                        <th class="light-bg-danger text-danger">Code</th>
+                        <th class="light-bg-danger text-danger">Message</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,8 +116,7 @@
                                 <div class="box mb-3" *ngIf="coverage.classList">
                                     <h5 class="medium pb-2">Classes</h5>
                                     <div class="table-responsive">
-                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0"
-                                            border="0">
+                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -138,8 +137,7 @@
                                 <div class="box mb-3" *ngIf="coverage.costBeneficiaries">
                                     <h5 class="medium pb-2">Cost to Beneficiaries</h5>
                                     <div class="table-responsive">
-                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0"
-                                            border="0">
+                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -172,8 +170,7 @@
                                     <ng-container *ngFor="let items of coverage.items | keyvalue">
                                         <p class="pb-3">Benefit Category: <span class="medium">{{items.key}}</span></p>
                                         <div class="table-responsive mb-4">
-                                            <table class="primary-grid no-borders" cellpadding="0" cellspacing="0"
-                                                border="0">
+                                            <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
                                                 <thead>
                                                     <tr>
                                                         <td>Item Name</td>

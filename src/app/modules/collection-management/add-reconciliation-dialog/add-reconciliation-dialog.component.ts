@@ -13,6 +13,7 @@ import { AddDiscountReconciliationReport } from 'src/app/models/reconciliationRe
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 @Component({
   selector: 'app-reconciliation',
   templateUrl: './add-reconciliation-dialog.component.html',
@@ -30,6 +31,7 @@ export class AddReconciliationDialogComponent implements OnInit {
   selectedPayerId = 'All';
   payersList: { id: string[] | string, name: string }[];
   selectedPayerName = 'All';
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
   searchDiscountReconciliationReportResponse: SearchDiscountReconciliationReportResponse;
 
   AddDiscountReconciliationReport = new AddDiscountReconciliationReport();
@@ -132,33 +134,33 @@ export class AddReconciliationDialogComponent implements OnInit {
     }
     this.location.go(path);
   }
-  addDiscount() {
-    let data: AddDiscountReconciliationReport = {
-      promptDiscount: this.promptDiscountControl.value,
-      volumeDiscount: this.volumeDiscountCotrol.value,
-      startDate: this.datePipe.transform(this.startDateController.value, 'dd-MM-yyyy'),
-      endDate: this.datePipe.transform(this.endDateController.value, 'dd-MM-yyyy'),
+  addDiscount(){
+    let data:AddDiscountReconciliationReport = {
+      promptDiscount:this.promptDiscountControl.value,
+      volumeDiscount:this.volumeDiscountCotrol.value,
+      startDate:  new Date(this.datePipe.transform(this.startDateController.value,'dd-MM-yyyy')),
+      endDate: new Date(this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy')),
       payerId: this.payerIdControl.value
     };
-    this.reconciliationService.getAddDiscount(
-      this.sharedService.providerId, data
-    ).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
-          this.status = true;
-          this.closeDialog(true);
-          this.sharedService.loadingChanged.next(false);
-        }
-      }
-    }, err => {
-      if (err instanceof HttpErrorResponse) {
-        this.sharedService.loadingChanged.next(false);
-        this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
-        this.status = false;
-
-      }
-    });
+    console.log(data.startDate)
+  this.reconciliationService.getAddDiscount(
+    this.sharedService.providerId,data
+  ).subscribe(event => {
+  if (event instanceof HttpResponse) {
+    if (event.status === 200) {
+      this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
+      this.status = true;
+      this.closeDialog(true);
+      this.sharedService.loadingChanged.next(false);
+    }
   }
-
+}, err => {
+  if (err instanceof HttpErrorResponse) {
+    this.sharedService.loadingChanged.next(false);
+    this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
+    this.status = false;
+  }
+});
+}
+  
 }
