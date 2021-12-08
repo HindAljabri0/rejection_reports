@@ -408,6 +408,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   getClaimTransactions(key: number, page?: number) {
+
+    
     this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
       this.params.uploadId,
       this.summaries[key].statuses.filter(status => status != 'all'),
