@@ -24,6 +24,8 @@ import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -908,7 +910,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
-      this.model.patientFileNumber = 'Test';
 
       const now = new Date(Date.now());
       // tslint:disable-next-line:max-line-length
@@ -1856,6 +1857,15 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   close() {
     this.location.back();
+  }
+
+  viewAttachment(e, item) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: item.attachmentName, attachment: item.byteArray
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }
