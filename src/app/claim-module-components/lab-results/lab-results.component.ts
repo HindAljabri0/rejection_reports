@@ -285,7 +285,7 @@ export class LabResultsComponent implements OnInit {
     this.labsPaginationControl.page = 0;
   }
   showNextLabsPage() {
-    if ((this.labsPaginationControl.page + 1) < this.totalLabPages) {
+    if ((this.labsPaginationControl.page + 1) < this.totalLabsPages) {
       this.labsPaginationControl.page++;
     }
   }
@@ -295,7 +295,7 @@ export class LabResultsComponent implements OnInit {
     }
   }
   showLastLabsPage() {
-    this.labsPaginationControl.page = this.totalLabPages;
+    this.labsPaginationControl.page = this.totalLabsPages;
   }
 
   get currentLabsPage(){
@@ -306,7 +306,7 @@ export class LabResultsComponent implements OnInit {
     return this.labsPaginationControl.size;
   }
 
-  get totalLabPages() {
+  get totalLabsPages() {
     return Math.ceil(this.resultsControls.length/this.labsPaginationControl.size);
   }
 

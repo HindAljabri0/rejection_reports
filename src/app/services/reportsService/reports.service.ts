@@ -102,8 +102,8 @@ export class ReportsService {
   }
 
   downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
-    const requestURL = `/providers/${providerId}/payments/${paymentReference}`;
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
+    const requestURL = `/providers/${providerId}/payments/${paymentReference}/download`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -122,9 +122,9 @@ export class ReportsService {
     } else if (criteria == '2') {
       queryType = 'claim';
     }
-    const requestURL = `/providers/${providerId}/rejections?` +
+    const requestURL = `/providers/${providerId}/rejections/download?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}`;
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', {
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', {
       responseType: 'text',
       reportProgress: true
     });
@@ -165,7 +165,7 @@ export class ReportsService {
   }
 
   downalodClaimStatusSummaryCsv(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
-    const requestURL = `/providers/${providerId}/status-summary?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
+    const requestURL = `/providers/${providerId}/status-summary/download?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
 
     let searchparams = new HttpParams();
     if (data) {
@@ -174,7 +174,7 @@ export class ReportsService {
       }
     }
     // { responseType: 'text', params: searchparams }
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
       { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
