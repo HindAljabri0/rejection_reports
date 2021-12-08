@@ -37,7 +37,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
     display: [''],
-    isPackage: [2],
+    isPackage: [false],
     bodySite: [''],
     subSite: [''],
     quantity: ['', Validators.required],

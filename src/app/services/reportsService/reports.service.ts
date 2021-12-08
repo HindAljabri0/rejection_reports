@@ -224,10 +224,9 @@ export class ReportsService {
     return this.http.request(request);
   }
   downloadTechnicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
-    const requestURL = `/providers/${providerId}/rejections/technical/download?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
-      { responseType: 'blob', reportProgress: true, headers: headers });
+    const requestURL = `/providers/${providerId}/rejections/technical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
+      { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
   getMedicalRejection(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string, page: number, pageSize: number): Observable<any> {
@@ -236,10 +235,9 @@ export class ReportsService {
     return this.http.request(request);
   }
   downloadMedicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
-    const requestURL = `/providers/${providerId}/rejections/medical/download?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
-      { responseType: 'blob', reportProgress: true, headers: headers });
+    const requestURL = `/providers/${providerId}/rejections/medical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
+      { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -248,7 +246,7 @@ export class ReportsService {
       page = 0;
     }
     if (pageSize == null) {
-      pageSize = 10;
+      pageSize = 5;
     }
     const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL);

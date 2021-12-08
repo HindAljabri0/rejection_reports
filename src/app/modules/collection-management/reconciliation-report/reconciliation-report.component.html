@@ -24,7 +24,7 @@
                         <div class="form-group" >
                             <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
-                                <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="dateController" (keyup.enter)="search()" />
+                                <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />
                                 <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                                 <mat-datepicker #startDate></mat-datepicker>
                                 </div>
@@ -45,6 +45,7 @@
                 <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                     <thead>
                         <tr>
+                          
                             <th rowspan="2">Duration</th>
                             <th rowspan="2">Payer</th>
                             <th rowspan="2">Total Submitted</th>
@@ -55,6 +56,7 @@
                             <th rowspan="2">Reconciliation Amount</th>
                             <th colspan="2">Final Rejection Amount</th>
                             <th rowspan="2"></th>
+                    
                         </tr>
                         <tr>
                             <th class="not-first-child">SR</th>
@@ -69,6 +71,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of reconciliationReportResponse">
+                            <td style="display:none;">{{data.reconciliationId}}</td>
                             <td>{{data.duration}}</td>
                             <td>{{data.payerId}}</td>
                             <td>{{data.totalSubmittedAmount}}</td>
@@ -80,8 +83,16 @@
                             <td > {{data.volumeDiscountPerc}}</td>
                             <td>{{data.reconciliationAmount}}</td>
                             <td>{{data.finalRejectionAmount}}</td>
-                            <td>>{{data.finalRejectionAmountPerc}}</td>
+                            <td>{{data.finalRejectionAmountPerc}}</td>
+                            <td></td>
+                        <td></td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="selectedReconciliationIdAndTotalDubmitted = data">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
                         </tr>
+
                         <tr>
                             <td colspan="5" class="p-0">
                                 <app-empty-state *ngIf="reconciliationReportResponse == null || reconciliationReportResponse.length == 0"
@@ -117,7 +128,7 @@
         </button>
 <mat-menu #actionsMenu xPosition="before">
     <ng-template matMenuContent>
-        <button mat-menu-item>Add Payment</button>
-        <button mat-menu-item (click)="openFinalRejectionDialog()">Add Final Rejection</button>
+        <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
+        <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button>
     </ng-template>
 </mat-menu>

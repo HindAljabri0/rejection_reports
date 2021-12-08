@@ -484,7 +484,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 x.diagnosisNames = '';
               }
 
-              if (x.isPackage === 2) {
+              if (!x.isPackage) {
                 x.itemDetails = [];
               }
 

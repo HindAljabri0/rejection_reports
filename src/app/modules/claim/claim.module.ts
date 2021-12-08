@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -40,6 +40,7 @@ import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-detail
 import { TagInputModule } from 'ngx-chips';
 import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
 import { AddCommunicationDialogComponent } from '../nphies/add-communication-dialog/add-communication-dialog.component';
+import { CancelReasonModalComponent } from '../nphies/preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 
 @NgModule({
   declarations: [
@@ -65,8 +66,8 @@ import { AddCommunicationDialogComponent } from '../nphies/add-communication-dia
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
-      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent},
-      { path: ':id', component: MainClaimPageComponent }
+      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent },
+
     ]),
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),
@@ -110,7 +111,8 @@ import { AddCommunicationDialogComponent } from '../nphies/add-communication-dia
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
     AddEditItemDetailsModalComponent,
-    AddCommunicationDialogComponent
+    AddCommunicationDialogComponent,
+    CancelReasonModalComponent
   ],
   providers: [
     DatePipe
