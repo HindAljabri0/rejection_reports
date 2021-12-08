@@ -497,7 +497,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (this.params.claimId != null && this.claimDialogRef == null) {
           const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
           if (index != -1) {
-            this.showClaim(this.claims[index].status, this.params.claimId, (this.params.editMode != null && this.params.editMode == 'true'));
+            this.showClaim(this.claims[index].status, this.params.claimId, this.params.claimResponseId, (this.params.editMode != null && this.params.editMode == 'true'));
             this.params.claimId = null;
             this.params.editMode = null;
           }
@@ -746,8 +746,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
 
-  showClaim(claimStatus: string, claimId: string, edit?: boolean) {
+  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit?: boolean) {
     this.params.claimId = claimId;
+    this.params.claimResponseId = claimResponseId;
     if (edit) {
       this.params.editMode = `${edit}`;
     } else {

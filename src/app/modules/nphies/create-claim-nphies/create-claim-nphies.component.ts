@@ -124,9 +124,10 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   claimId: number;
   uploadId: number;
+  responseId: number;
   pageMode = '';
   currentOpenItem: number = null;
-  otherDataModel: any;
+  otherDataModel: any = {};
 
   communications = [];
 
@@ -163,6 +164,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
       // tslint:disable-next-line:radix
       this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
+    }
+
+    if (this.activatedRoute.snapshot.queryParams.claimResponseId) {
+      // tslint:disable-next-line:radix
+      this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
     }
 
     this.getPayees();
@@ -1387,7 +1393,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   getClaimDetails() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, this.uploadId).subscribe(event => {
+    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, this.uploadId, this.responseId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -1417,11 +1423,13 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.provClaimNo = response.provClaimNo;
     this.otherDataModel.status = response.status;
     this.otherDataModel.totalNet = response.totalNet;
-    this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
+    this.otherDataModel.preAuthRefNo = response.preAuthDetails;
     this.otherDataModel.responseDecision = response.responseDecision;
+    this.otherDataModel.providertransactionlogId = response.providertransactionlogId;
+    // this.otherDataModel.totalAmount = response.totalAmount;
 
-    if (response.preAuthRefNo) {
-      this.FormNphiesClaim.controls.preAuthRefNo.setValue(response.preAuthRefNo);
+    if (response.preAuthDetails) {
+      this.FormNphiesClaim.controls.preAuthRefNo.setValue(response.preAuthDetails);
     }
 
     // this.otherDataModel.claimEncounter = response.claimEncounter;
@@ -1708,6 +1716,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           y.display = y.nonStandardDesc;
         });
       }
+      model.itemDecision = x.itemDecision;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
       model.type = x.type;
@@ -1813,7 +1822,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
-      claimResponseId: this.claimId,
+      claimResponseId: this.responseId,
       // tslint:disable-next-line:radix
       communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
     };
@@ -1836,7 +1845,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   getCommunications() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.claimId).subscribe((event: any) => {
+    this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         this.communications = event.body.communicationList;
         this.sharedServices.loadingChanged.next(false);

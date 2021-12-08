@@ -53,7 +53,8 @@
     <div class="inline-label-table">
       <label>Sub Type</label>
       <p class="text-primary">
-        <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span
+          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
@@ -94,7 +95,8 @@
       <div class="inline-label-table auto-width">
         <label>Benefit Amount:</label>
         <p class="text-primary">
-          <span *ngIf="data.responseDecision.benefitTotalValue">{{data.responseDecision.benefitTotalValue}} <span class="currency">SR</span></span>
+          <span *ngIf="data.responseDecision.benefitTotalValue">{{data.responseDecision.benefitTotalValue}} <span
+              class="currency">SR</span></span>
           <span *ngIf="!data.responseDecision.benefitTotalValue">-</span>
         </p>
       </div>
@@ -103,7 +105,8 @@
       <div class="inline-label-table auto-width">
         <label>Submitted Amount:</label>
         <p class="text-primary">
-          <span *ngIf="data.responseDecision.submittedTotalValue">{{data.responseDecision.submittedTotalValue}} <span class="currency">SR</span></span>
+          <span *ngIf="data.responseDecision.submittedTotalValue">{{data.responseDecision.submittedTotalValue}} <span
+              class="currency">SR</span></span>
           <span *ngIf="!data.responseDecision.submittedTotalValue">-</span>
         </p>
       </div>
@@ -112,7 +115,8 @@
       <div class="inline-label-table auto-width">
         <label>Eligible Amount:</label>
         <p class="text-primary">
-          <span *ngIf="data.responseDecision.eligibleTotalValue">{{data.responseDecision.eligibleTotalValue}} <span class="currency">SR</span></span>
+          <span *ngIf="data.responseDecision.eligibleTotalValue">{{data.responseDecision.eligibleTotalValue}} <span
+              class="currency">SR</span></span>
           <span *ngIf="!data.responseDecision.eligibleTotalValue">-</span>
         </p>
       </div>
@@ -131,7 +135,8 @@
       <div class="inline-label-table auto-width">
         <label>Patient Co-Payment:</label>
         <p class="text-primary">
-          <span *ngIf="data.responseDecision.copayTotalValue">{{data.responseDecision.copayTotalValue}} <span class="currency">SR</span></span>
+          <span *ngIf="data.responseDecision.copayTotalValue">{{data.responseDecision.copayTotalValue}} <span
+              class="currency">SR</span></span>
           <span *ngIf="!data.responseDecision.copayTotalValue">-</span>
         </p>
       </div>
@@ -140,7 +145,8 @@
       <div class="inline-label-table auto-width">
         <label>Deductible:</label>
         <p class="text-primary">
-          <span *ngIf="data.responseDecision.deductibleTotalValue">{{data.responseDecision.deductibleTotalValue}} <span class="currency">SR</span></span>
+          <span *ngIf="data.responseDecision.deductibleTotalValue">{{data.responseDecision.deductibleTotalValue}} <span
+              class="currency">SR</span></span>
           <span *ngIf="!data.responseDecision.deductibleTotalValue">-</span>
         </p>
       </div>
@@ -159,7 +165,8 @@
       <div class="inline-label-table auto-width">
         <label>Tax:</label>
         <p class="text-primary">
-          <span *ngIf="data.responseDecision.taxTotalValue">{{data.responseDecision.taxTotalValue}} <span class="currency">SR</span></span>
+          <span *ngIf="data.responseDecision.taxTotalValue">{{data.responseDecision.taxTotalValue}} <span
+              class="currency">SR</span></span>
           <span *ngIf="!data.responseDecision.taxTotalValue">-</span>
         </p>
       </div>
@@ -287,9 +294,12 @@
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
           <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.benefitValue}} </span> <span class="currency">SR</span></td>
-          <td class="row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span></td>
-          <td class="row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.benefitReason}}</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)"><span
+              *ngIf="item.itemDecision">{{item.itemDecision.benefitValue}} </span> <span class="currency">SR</span></td>
+          <td class="row-click" (click)="toggleItem(i)"><span
+              *ngIf="item.itemDecision">{{item.itemDecision.status}}</span></td>
+          <td class="row-click" (click)="toggleItem(i)"><span
+              *ngIf="item.itemDecision">{{item.itemDecision.benefitReason}}</span></td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
@@ -302,7 +312,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Benefit Amount:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.benefitValue">{{item.itemDecision.benefitValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.benefitValue">{{item.itemDecision.benefitValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.benefitValue">-</span>
                     </p>
                   </div>
@@ -311,7 +322,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Submitted Amount:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.submittedValue">{{item.itemDecision.submittedValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.submittedValue">{{item.itemDecision.submittedValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.submittedValue">-</span>
                     </p>
                   </div>
@@ -320,7 +332,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Eligible Amount:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.eligibleValue">{{item.itemDecision.eligibleValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.eligibleValue">{{item.itemDecision.eligibleValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.eligibleValue">-</span>
                     </p>
                   </div>
@@ -329,7 +342,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Eligible %:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.eligpercentValue">{{item.itemDecision.eligpercentValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.eligpercentValue">{{item.itemDecision.eligpercentValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.eligpercentValue">-</span>
                     </p>
                   </div>
@@ -338,7 +352,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Patient Co-Payment:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.copayValue">{{item.itemDecision.copayValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.copayValue">{{item.itemDecision.copayValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.copayValue">-</span>
                     </p>
                   </div>
@@ -347,7 +362,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Deductible:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.deductibleValue">{{item.itemDecision.deductibleValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.deductibleValue">{{item.itemDecision.deductibleValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.deductibleValue">-</span>
                     </p>
                   </div>
@@ -356,7 +372,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Unallocated Deductible:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.unallocdeductValue">{{item.itemDecision.unallocdeductValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.unallocdeductValue">{{item.itemDecision.unallocdeductValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.unallocdeductValue">-</span>
                     </p>
                   </div>
@@ -365,7 +382,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Tax:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.taxValue">{{item.itemDecision.taxValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.taxValue">{{item.itemDecision.taxValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.taxValue">-</span>
                     </p>
                   </div>
@@ -374,7 +392,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Rejected:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.rejectedValue">{{item.itemDecision.rejectedValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.rejectedValue">{{item.itemDecision.rejectedValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.rejectedValue">-</span>
                     </p>
                   </div>
@@ -383,7 +402,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Patient Share:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.patientShareValue">{{item.itemDecision.patientShareValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.patientShareValue">{{item.itemDecision.patientShareValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.patientShareValue">-</span>
                     </p>
                   </div>
@@ -392,7 +412,8 @@
                   <div class="inline-label-table auto-width">
                     <label>Discount:</label>
                     <p class="text-primary">
-                      <span *ngIf="item.itemDecision.discountValue">{{item.itemDecision.discountValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="item.itemDecision.discountValue">{{item.itemDecision.discountValue}} <span
+                          class="currency">SR</span></span>
                       <span *ngIf="!item.itemDecision.discountValue">-</span>
                     </p>
                   </div>
@@ -402,7 +423,7 @@
                     <label>Approved Quantity:</label>
                     <p class="text-primary">
                       <span *ngIf="item.itemDecision.approvedQuantityValue">{{item.itemDecision.approvedQuantityValue}}
-                        <span class="currency">SR</span></span>
+                      </span>
                       <span *ngIf="!item.itemDecision.approvedQuantityValue">-</span>
                     </p>
                   </div>
@@ -661,16 +682,19 @@
             <td>{{visionSpecification.lensPower}}</td>
             <td>{{visionSpecification.lensBackCurve}}</td>
             <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}<span *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
+            <td>{{visionSpecification.lensDuration}}<span
+                *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
             <td>{{visionSpecification.lensColor}}</td>
             <td>{{visionSpecification.lensBrand}}</td>
-            <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+            <td>{{visionSpecification.prismAmount}}<span
+                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
             <td class="actions text-center">
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
                 <span *ngIf="!visionSpecification.lensNote">-</span>
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
+                [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>
