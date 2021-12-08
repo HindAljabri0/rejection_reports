@@ -3,7 +3,6 @@ import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http
 import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { OwlOptions } from 'ngx-owl-carousel-o';
@@ -14,35 +13,21 @@ import { ClaimError } from 'src/app/models/claimError';
 import { ClaimListFilterSelection } from 'src/app/models/claimListSearch';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
-import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { AdminService } from 'src/app/services/adminService/admin.service';
-import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
-import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
-import { ValidationService } from 'src/app/services/validationService/validation.service';
-
-
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
-
 import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
 import { changePageTitle } from 'src/app/store/mainStore.actions';
-import { ApprovalDetailInquiryService } from 'src/app/services/approvalDetailInquiryService/approval-detail-inquiry.service';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { ClaimSubmittionService } from 'src/app/services/claimSubmittionService/claim-submittion.service';
 import { SEARCH_TAB_RESULTS_KEY, SharedServices } from 'src/app/services/shared.services';
-import { SearchService } from 'src/app/services/serchService/search.service';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
-import { EditClaimComponent } from 'src/app/pages/edit-claim/edit-claim.component';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
-import { Console } from 'console';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
@@ -110,7 +95,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   allCheckBoxIsChecked: boolean;
 
   paginatorPagesNumbers: number[];
-  // @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   manualPage = null;
 
 
@@ -135,7 +119,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   isDeleteBtnVisible = true;
   status: any = 1;
   isAllCards = false;
-
   length = 0;
   pageSize = 100;
   pageIndex = 0;
@@ -162,26 +145,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   constructor(
     public dialog: MatDialog,
     public location: Location,
-    public submittionService: ClaimSubmittionService,
     public commen: SharedServices,
     public routeActive: ActivatedRoute,
     public router: Router,
-    public searchService: SearchService,
     private dialogService: DialogService,
-    private claimService: ClaimService,
-    private eligibilityService: EligibilityService,
-    private approvalService: ApprovalDetailInquiryService,
-    private notificationService: NotificationsService,
-    private validationService: ValidationService,
     private store: Store,
     private adminService: AdminService,
-    private downloadService: DownloadService,
-    private actions$: Actions,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) { }
 
   ngOnDestroy(): void {
-    this.notificationService.stopWatchingMessages('eligibility');
+ 
     localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
     this.routerSubscription.unsubscribe();
   }
@@ -461,13 +435,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             for (const claim of this.claims) {
               if (this.selectedClaims.includes(claim.claimId)) { this.selectedClaimsCountOfPage++; }
             }
-            // if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
+           
             this.setAllCheckBoxIsIndeterminate();
             this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
             const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
             this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
             this.manualPage = this.searchResult.number;
-            // Validation Details
+           
             const content = event.body['content'];
             this.validationDetails = [];
             content.forEach((element) => {
@@ -497,7 +471,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (this.params.claimId != null && this.claimDialogRef == null) {
           const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
           if (index != -1) {
-            this.showClaim(this.claims[index].status, this.params.claimId, (this.params.editMode != null && this.params.editMode == 'true'));
+            this.showClaim(this.claims[index].status, this.params.claimId, this.params.claimResponseId, (this.params.editMode != null && this.params.editMode == 'true'));
             this.params.claimId = null;
             this.params.editMode = null;
           }
@@ -613,55 +587,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-  reValidateClaims() {
 
-    if (this.commen.loading) { return; }
-    this.commen.loadingChanged.next(true);
-    this.validationService.reValidateClaims(this.providerId,
-      null,
-      this.params.batchId,
-      this.params.uploadId,
-      null,
-      this.params.filter_claimRefNo,
-      this.params.filter_patientFileNo,
-      this.params.invoiceNo,
-      this.params.policyNo,
-      this.summaries[this.selectedCardKey].statuses,
-      this.params.filter_memberId,
-      this.selectedClaims,
-      this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum)
-      .subscribe(event => {
-        if (event instanceof HttpResponse) {
-          const numberOfClaims = event.body['numberOfClaims'];
-          const numberOfRejectedClaims = event.body['numberOfRejectedClaims'];
-          const numberOfAcceptedClaims = event.body['numberOfAcceptedClaims'];
-          const numberOfDownloadableClaims = event.body['numberOfDownloadableClaims'];
-
-          this.dialogService.openMessageDialog({
-            title: 'Validation Results',
-            message: `No. of Cliam: ${numberOfClaims} \nNo of Rejected by Waseel: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
-            isError: false
-          }).subscribe(result => {
-            location.reload();
-          });
-
-          this.commen.loadingChanged.next(false);
-
-        }
-      }, errorEvent => {
-        if (errorEvent instanceof HttpErrorResponse) {
-          this.dialogService.openMessageDialog({
-            title: 'Validation Results',
-            message: errorEvent.message,
-            isError: true
-          });
-
-
-
-        }
-        this.commen.loadingChanged.next(false);
-      });
-  }
 
 
   get hasData() {
@@ -746,8 +672,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
 
-  showClaim(claimStatus: string, claimId: string, edit?: boolean) {
+  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit?: boolean) {
     this.params.claimId = claimId;
+    this.params.claimResponseId = claimResponseId;
     if (edit) {
       this.params.editMode = `${edit}`;
     } else {
@@ -826,235 +753,15 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
   }
 
-  checkClaim(id: string) {
-    this.eligibilityWaitingList[id] = { result: '', waiting: true };
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.params.payerId, [Number.parseInt(id, 10)]));
-  }
-
-  checkClaimForApproval(id: string) {
-    this.approvalWaitingList[id] = { result: '', waiting: true };
-    let criteria = new ClaimCriteriaModel();
-    criteria.claimIds = [id];
-    this.handleApprovalCheckRequest(this.approvalService.verifyApprovalByCriteria(this.providerId, criteria));
-  }
-
-  checkSelectedClaims() {
-    this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = { result: '', waiting: true });
-    this.waitingEligibilityCheck = true;
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId,
-      this.params.payerId,
-      this.selectedClaims.map(id => Number.parseInt(id, 10))));
-  }
-
-  checkAllClaims() {
-    this.waitingEligibilityCheck = true;
-
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
-      this.params.payerId,
-      this.params.organizationId,
-      this.params.from,
-      this.params.to,
-      this.params.batchId,
-      this.params.uploadId,
-      this.params.filter_claimRefNo,
-      this.params.filter_memberId,
-      this.params.invoiceNo,
-      this.params.filter_patientFileNo,
-      this.params.policyNo,
-      this.params.caseTypes,
-      this.params.filter_drName,
-      this.params.filter_nationalId,
-      this.params.filter_claimDate,
-      this.params.filter_netAmount,
-      this.params.filter_batchNum
-    ));
-  }
-
-  checkClaimsApproval() {
-    if (this.selectedClaims.length > 0)
-      this.selectedClaims.forEach(claimid => this.approvalWaitingList[claimid] = { result: '', waiting: true });
-    else
-      this.claims.forEach(claim => this.approvalWaitingList[claim.claimId] = { result: '', waiting: true });
-    this.waitingApprovalCheck = true;
-    this.handleApprovalCheckRequest(this.approvalService.verifyApprovalByCriteria(this.providerId, this.getClaimQueryParams(true)));
-  }
 
 
-  handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
-
-    this.watchEligibilityChanges();
-    request.subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.deSelectAll();
-      }
-    }, errorEvent => {
-      this.waitingEligibilityCheck = false;
-      this.eligibilityWaitingList = [];
-      if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status == 400) {
-          this.dialogService.openMessageDialog(new MessageDialogData(
-            '', 'Some of the selected claims are already checked or are not ready for submission.', true)
-          );
-        } else if ((errorEvent.status / 100).toFixed() == '5') {
-          if (errorEvent.error['errors'] != null) {
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
-
-          } else {
-            this.dialogService.openMessageDialog(
-              new MessageDialogData('', 'Could not reach the server at the moment. Please try again later.', true)
-            );
-          }
-        }
-      }
-    });
-  }
-  handleApprovalCheckRequest(request: Observable<HttpEvent<unknown>>) {
-
-    this.watchApprovalChanges();
-    request.subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.deSelectAll();
-      }
-    }, errorEvent => {
-      this.waitingApprovalCheck = false;
-      this.approvalWaitingList = [];
-      if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status == 404) {
-          this.dialogService.openMessageDialog(new MessageDialogData(
-            '', "No claims were found to be verified. Make sure selected claims aren't already verified.", true)
-          );
-        } else if ((errorEvent.status / 100).toFixed() == '5') {
-          if (errorEvent.error['errors'] != null) {
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
-
-          } else {
-            this.dialogService.openMessageDialog(
-              new MessageDialogData('', 'Could not reach the server at the moment. Please try again later.', true)
-            );
-          }
-        }
-      }
-    });
-  }
-  watchEligibilityChanges() {
-    if (this.watchingEligibility) { return; }
-
-    this.watchingEligibility = true;
 
 
-    this.notificationService.startWatchingMessages(this.providerId, 'eligibility');
-    this.notificationService._messageWatchSources['eligibility'].subscribe(value => {
-      value = value.replace(`"`, '').replace(`"`, '');
-      const splitedValue: string[] = value.split(':');
-
-      if (splitedValue.length >= 2) {
-        const inde = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
-        if (inde > -1) {
-          const claims: any = [];
-          this.claims.map((ele: any, index: number) => {
-            const newModel = new SearchedClaim(ele.body);
-            newModel.batchId = ele['batchId'];
-            newModel.claimId = ele['claimId'];
-            newModel.providerClaimNumber = ele['providerClaimNumber'];
-            newModel.drName = ele['drName'];
-            newModel.policyNumber = ele['policyNumber'];
-            newModel.memberId = ele['memberId'];
-            newModel.nationalId = ele['nationalId'];
-            newModel.submissionDate = ele['submissionDate'];
-            newModel.patientFileNumber = ele['patientFileNumber'];
-            newModel.claimDate = ele['claimDate'];
-            newModel.netAmount = ele['netAmount'];
-            newModel.netVatAmount = ele['netVatAmount'];
-            newModel.unitOfNetAmount = ele['unitOfNetAmount'];
-            newModel.unitOfNetVatAmount = ele['unitOfNetVatAmount'];
-            newModel.status = ele['status'];
-            newModel.statusDetail = ele['statusDetail'];
-            newModel.payerId = ele['payerId'];
-            newModel.numOfAttachments = ele['numOfAttachments'];
-            newModel.numOfPriceListErrors = ele['numOfPriceListErrors'];
-            newModel.eligibilitycheck = inde === index ? splitedValue[1] : ele['eligibilitycheck'];
-            newModel.batchNumber = ele['batchNumber'];
-            newModel.eligibilityStatusDesc = splitedValue[2] != undefined &&
-              inde === index ? splitedValue[2] : ele['eligibilityStatusDesc'];
-            newModel.statusApproval = ele['statusApproval'];
-            newModel.descApproval = ele['descApproval'];
-            claims.push(newModel);
-          });
-          this.claims = new Array();
-          this.claims = claims;
-        }
-        if (this.eligibilityWaitingList[splitedValue[0]] != null) {
-          this.eligibilityWaitingList[splitedValue[0]].result = splitedValue[1];
-          this.eligibilityWaitingList[splitedValue[0]].waiting = false;
-        }
-      }
-      if ((this.eligibilityWaitingList.length != 0 && this.eligibilityWaitingList.every(claim => !claim.waiting))
-        || this.claims.every(claim => claim.status == 'Accepted' && claim.eligibilitycheck != null)) {
-        this.waitingEligibilityCheck = false;
-      }
-
-    });
-  }
-
-  watchApprovalChanges() {
-    if (this.watchingApproval) { return; }
-
-    this.watchingApproval = true;
+ 
 
 
-    this.notificationService.startWatchingMessages(this.providerId, 'approval');
-    this.notificationService._messageWatchSources['approval'].subscribe(value => {
-      value = value.replace(`"`, '').replace(`"`, '');
-      const splitedValue: string[] = value.split(':');
 
-      if (splitedValue.length >= 2) {
-        const inde = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
-        if (inde > -1) {
-          const claims: any = [];
-          this.claims.map((ele: any, index: number) => {
-            const newModel = new SearchedClaim(ele.body);
-            newModel.batchId = ele['batchId'];
-            newModel.claimId = ele['claimId'];
-            newModel.providerClaimNumber = ele['providerClaimNumber'];
-            newModel.drName = ele['drName'];
-            newModel.policyNumber = ele['policyNumber'];
-            newModel.memberId = ele['memberId'];
-            newModel.nationalId = ele['nationalId'];
-            newModel.submissionDate = ele['submissionDate'];
-            newModel.patientFileNumber = ele['patientFileNumber'];
-            newModel.claimDate = ele['claimDate'];
-            newModel.netAmount = ele['netAmount'];
-            newModel.netVatAmount = ele['netVatAmount'];
-            newModel.unitOfNetAmount = ele['unitOfNetAmount'];
-            newModel.unitOfNetVatAmount = ele['unitOfNetVatAmount'];
-            newModel.status = ele['status'];
-            newModel.statusDetail = ele['statusDetail'];
-            newModel.payerId = ele['payerId'];
-            newModel.numOfAttachments = ele['numOfAttachments'];
-            newModel.numOfPriceListErrors = ele['numOfPriceListErrors'];
-            newModel.batchNumber = ele['batchNumber'];
-            newModel.eligibilitycheck = ele['eligibilitycheck'];
-            newModel.eligibilityStatusDesc = ele['eligibilityStatusDesc'];
-            newModel.statusApproval = inde === index ? splitedValue[1] : ele['statusApproval'];
-            newModel.descApproval = splitedValue[2] != undefined &&
-              inde === index ? splitedValue[2] : ele['descApproval'];
-            claims.push(newModel);
-          });
-          this.claims = new Array();
-          this.claims = claims;
-        }
-        if (this.approvalWaitingList[splitedValue[0]] != null) {
-          this.approvalWaitingList[splitedValue[0]].result = splitedValue[1];
-          this.approvalWaitingList[splitedValue[0]].waiting = false;
-        }
-      }
-      if ((this.approvalWaitingList.length != 0 && this.approvalWaitingList.every(claim => !claim.waiting))
-        || this.claims.every(claim => claim.status == 'Accepted' && claim.statusApproval != null)) {
-        this.waitingApprovalCheck = false;
-      }
 
-    });
-  }
 
   claimIsWaitingEligibility(claimId: string) {
     return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
@@ -1070,101 +777,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return this.waitingApprovalCheck;
   }
 
-  deleteClaim(claimId: string, refNumber: string) {
-    this.dialogService.openMessageDialog(
-      new MessageDialogData('Delete Claim?',
-        `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
-        false,
-        true))
-      .subscribe(result => {
-        if (result === true) {
-          this.commen.loadingChanged.next(true);
-          this.claimService.deleteClaim(this.providerId, claimId).subscribe(event => {
-            if (event instanceof HttpResponse) {
-              this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('',
-                `Claim with reference ${refNumber} was deleted successfully.`,
-                false))
-                .subscribe(afterColse => this.fetchData());
+ 
 
-            }
-          }, errorEvent => {
-            if (errorEvent instanceof HttpErrorResponse) {
-              this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-            }
-          });
-        }
-      });
-  }
 
-  async downloadWaseelFormat() {
-    if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
 
-    let event;
-
-    event = this.searchService.downloadSummaries(this.providerId,
-      this.summaries[this.selectedCardKey].statuses,
-      this.params.from,
-      this.params.to,
-      this.params.payerId,
-      this.params.organizationId,
-      this.params.batchId,
-      this.params.uploadId,
-      this.params.filter_claimRefNo,
-      this.params.memberId,
-      this.params.invoiceNo,
-      this.params.filter_patientFileNo,
-      this.params.policyNo,
-      this.params.filter_drName,
-      this.params.filter_nationalId,
-      this.params.filter_claimDate,
-      this.params.filter_netAmount,
-      this.params.filter_batchNum);
-    if (event != null) {
-      this.downloadService.startGeneratingDownloadFile(event)
-        .subscribe(status => {
-          if (status != DownloadStatus.ERROR) {
-            this.detailTopActionIcon = 'ic-check-circle.svg';
-          } else {
-            this.detailTopActionIcon = 'ic-download.svg';
-          }
-        });
-    }
-
-  }
-
-  async downloadPayerFormat() {
-    if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
-
-    let event;
-    event = this.searchService.downloadExcelSummaries(this.providerId,
-      this.summaries[this.selectedCardKey].statuses,
-      this.params.from,
-      this.params.to,
-      this.params.payerId,
-      this.params.organizationId,
-      this.params.batchId,
-      this.params.uploadId,
-      this.params.filter_claimRefNo,
-      this.params.memberId,
-      this.params.invoiceNo,
-      this.params.filter_patientFileNo,
-      this.params.policyNo,
-      this.params.filter_drName,
-      this.params.filter_nationalId,
-      this.params.filter_claimDate,
-      this.params.filter_netAmount,
-      this.params.filter_batchNum);
-    this.downloadService.startDownload(event)
-      .subscribe(status => {
-        if (status != DownloadStatus.ERROR) {
-          this.detailTopActionIcon = 'ic-check-circle.svg';
-        } else {
-          this.detailTopActionIcon = 'ic-download.svg';
-        }
-      });
-  }
 
   submitAll() {
     if (this.selectedClaims.length == 0) {
@@ -1247,181 +863,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   get showApprovalButton() {
     return this.summaries[this.selectedCardKey] != null && (this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all'));
-  }
-  deleteClaimByUploadid() {
-    if (this.commen.isAdmin && this.commen.isProvider && this.isAllCards) {
-      this.dialogService.openConfirmAdminDeleteDialog().subscribe(action => {
-        switch (action) {
-          case 'deleteAll':
-            this.dialogService.openMessageDialog(
-              new MessageDialogData('Delete Claims?',
-                `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
-                false,
-                true))
-              .subscribe(result => {
-                if (result === true) {
-                  this.commen.loadingChanged.next(true);
-                  const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null,
-                    this.params.filter_claimRefNo, this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims,
-                    this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount,
-                    this.params.filter_batchNum).subscribe(event => {
-                      if (event instanceof HttpResponse) {
-                        this.commen.loadingChanged.next(false);
-                        const status = event.body['status'];
-                        if (status == 'Deleted') {
-                          this.dialogService.openMessageDialog(
-                            new MessageDialogData('',
-                              `Your claims deleted successfully.`,
-                              false))
-                            .subscribe(afterColse => {
-                              //  this.commen.showUploadsCenterChange.next(false);
-                              // this.claimService.summaryChange.next(new UploadSummary());
-                              this.router.navigate(['/uploads']);
-                              // location.reload();
-                            });
-                        } else if (status === 'AlreadySumitted') {
-                          this.dialogService.openMessageDialog(
-                            new MessageDialogData('',
-                              `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
-                              false))
-                            .subscribe(afterColse => {
-                              // this.claimService.summaryChange.next(new UploadSummary());
-
-                              // location.reload();
-
-                              this.router.navigate(['/uploads']);
-                            });
-
-                        } else {
-                          const error = event.body['errors'];
-                          this.dialogService.openMessageDialog(
-                            new MessageDialogData('',
-                              error[0].description,
-                              false));
-                        }
-
-                      }
-                    }, errorEvent => {
-                      if (errorEvent instanceof HttpErrorResponse) {
-                        this.commen.loadingChanged.next(false);
-                        this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-                      }
-                    });
-                }
-              });
-            break;
-          case 'confirm':
-            this.commen.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
-              this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.params.filter_memberId,
-              this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum)
-              .subscribe(event => {
-                if (event instanceof HttpResponse) {
-                  this.commen.loadingChanged.next(false);
-                  const status = event.body['status'];
-                  if (status == 'Deleted') {
-                    this.dialogService.openMessageDialog(
-                      new MessageDialogData('',
-                        `Your claims deleted successfully.`,
-                        false))
-                      .subscribe(afterColse => {
-                        //  this.commen.showUploadsCenterChange.next(false);
-                        // this.claimService.summaryChange.next(new UploadSummary());
-                        this.router.navigate(['/uploads']);
-                        // location.reload();
-                      });
-                  } else if (status === 'AlreadySumitted') {
-                    this.dialogService.openMessageDialog(
-                      new MessageDialogData('',
-                        `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
-                        false))
-                      .subscribe(afterColse => {
-                        // this.claimService.summaryChange.next(new UploadSummary());
-
-                        // location.reload();
-
-                        this.router.navigate(['/uploads']);
-                      });
-
-                  } else {
-                    const error = event.body['errors'];
-                    this.dialogService.openMessageDialog(
-                      new MessageDialogData('',
-                        error[0].description,
-                        false));
-                  }
-
-                }
-              }, errorEvent => {
-                if (errorEvent instanceof HttpErrorResponse) {
-                  this.commen.loadingChanged.next(false);
-                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-                }
-              });
-
-            break;
-
-        }
-      });
-    } else {
-      this.dialogService.openMessageDialog(
-        new MessageDialogData('Delete Claims?',
-          `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
-          false,
-          true))
-        .subscribe(result => {
-          if (result === true) {
-            this.commen.loadingChanged.next(true);
-            const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
-              this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to,
-              this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
-                if (event instanceof HttpResponse) {
-                  this.commen.loadingChanged.next(false);
-                  const status = event.body['status'];
-                  if (status == 'Deleted') {
-                    this.dialogService.openMessageDialog(
-                      new MessageDialogData('',
-                        `Your claims deleted successfully.`,
-                        false))
-                      .subscribe(afterColse => {
-                        //  this.commen.showUploadsCenterChange.next(false);
-                        // this.claimService.summaryChange.next(new UploadSummary());
-                        this.router.navigate(['/uploads']);
-                        // location.reload();
-                      });
-                  } else if (status === 'AlreadySumitted') {
-                    this.dialogService.openMessageDialog(
-                      new MessageDialogData('',
-                        `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
-                        false))
-                      .subscribe(afterColse => {
-                        // this.claimService.summaryChange.next(new UploadSummary());
-
-                        // location.reload();
-
-                        this.router.navigate(['/uploads']);
-                      });
-
-                  } else {
-                    const error = event.body['errors'];
-                    this.dialogService.openMessageDialog(
-                      new MessageDialogData('',
-                        error[0].description,
-                        false));
-                  }
-
-                }
-              }, errorEvent => {
-                if (errorEvent instanceof HttpErrorResponse) {
-                  this.commen.loadingChanged.next(false);
-                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-                }
-              });
-          }
-        });
-    }
   }
 
   isUnderProcessingStatus(status: string) {
@@ -1672,48 +1113,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
 
   }
-  applyPBMValidation() {
-    this.commen.loadingChanged.next(true);
-    // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-    // const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
-    const status = this.isPBMValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
-    this.claimService.PBMValidation(this.providerId, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo, this.params.filter_patientFileNo,
-      this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId,
-      this.params.filter_patientFileNo).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          this.commen.loadingChanged.next(false);
-          if (event.body['response']) {
-            this.dialogService.openMessageDialog(
-              new MessageDialogData('',
-                event.body['message'],
-                true))
-              .subscribe(afterColse => {
-                location.reload();
-              });
-          } else {
-            this.dialogService.openMessageDialog(
-              new MessageDialogData('',
-                event.body['message'],
-                false))
-              .subscribe(afterColse => {
-                location.reload();
-              });
-          }
-          this.commen.loadingChanged.next(false);
-        }
-      }, errorEvent => {
-        if (errorEvent instanceof HttpErrorResponse) {
-          if (errorEvent.status === 404) {
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
-          } else {
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-          }
-        }
-        this.commen.loadingChanged.next(false);
-      });
-    // }
-    // });
-  }
+
   get statusSelected() {
     return ClaimStatus;
   }

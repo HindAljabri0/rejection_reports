@@ -48,8 +48,14 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getNphisClaimDetails(providerId: string, claimId: number, uploadId: number) {
-    const requestUrl = `/providers/${providerId}/claim?claimId=${claimId}&uploadId=${uploadId}`;
+  getNphisClaimDetails(providerId: string, claimId: number, uploadId: number, responseId: number = null) {
+    let requestUrl = '';
+    if (!responseId) {
+      requestUrl = `/providers/${providerId}/claim?claimId=${claimId}&uploadId=${uploadId}`;
+    } else {
+      requestUrl = `/providers/${providerId}/claim?claimId=${claimId}&uploadId=${uploadId}&responseId=${responseId}`;
+    }
+
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
@@ -59,7 +65,7 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
-  submitClaims(providerId: string,claimIds?: string[],uploadId?: string) {
+  submitClaims(providerId: string, claimIds?: string[], uploadId?: string) {
 
     let requestURL = `/providers/${providerId}/claims/submit?`;
     if (uploadId != null) {

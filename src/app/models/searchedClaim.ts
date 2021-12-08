@@ -1,7 +1,8 @@
 import { Paginateable } from './paginateable';
 
 export class SearchedClaim extends Paginateable {
-  claimResponseId: number;
+  claimResponseId: string;
+  processingStatus: string;
   claimId: string;
   providerClaimNumber: string;
   drName: string;
@@ -54,7 +55,7 @@ export class SearchedClaim extends Paginateable {
       this.batchNumber = body['batchNumber'];
       this.statusApproval = body['statusApproval'];
       this.descApproval = body['descApproval'];
-
+      this.processingStatus = body['processingStatus'];
     }
   }
 }

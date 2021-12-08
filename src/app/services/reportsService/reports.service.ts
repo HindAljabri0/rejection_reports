@@ -109,9 +109,9 @@ export class ReportsService {
 
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
-    const requestURL = `/providers/${providerId}/submissions/download?` +
-      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
+    const requestURL = `/providers/${providerId}/submissions?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId.join(',')}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
