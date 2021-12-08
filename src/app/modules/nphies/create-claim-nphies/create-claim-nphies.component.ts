@@ -23,6 +23,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
+import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -145,7 +146,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   ngOnInit() {
 
-
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       this.isLoading = true;
       // tslint:disable-next-line:radix
@@ -166,8 +166,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-
-
 
   }
 
@@ -850,28 +848,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.isSubmitted = true;
 
     let hasError = false;
-    // tslint:disable-next-line:max-line-length
-    // if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
-    //   this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
-    //   this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
-    //   this.IsAccidentTypeRequired = true;
-    //   hasError = true;
-    // } else {
-    //   this.FormNphiesClaim.controls.accidentType.clearValidators();
-    //   this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
-    //   this.IsAccidentTypeRequired = false;
-    // }
-    // // tslint:disable-next-line:max-line-length
-    // if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
-    //   this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
-    //   this.FormNphiesClaim.controls.date.updateValueAndValidity();
-    //   this.IsDateRequired = true;
-    //   hasError = true;
-    // } else {
-    //   this.FormNphiesClaim.controls.date.clearValidators();
-    //   this.FormNphiesClaim.controls.date.updateValueAndValidity();
-    //   this.IsDateRequired = false;
-    // }
 
     if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
       if (this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
@@ -909,39 +885,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.IsPrescriberRequired = false;
       }
     }
-
-    // if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
-    //   this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
-    //   this.FormNphiesClaim.controls.status.updateValueAndValidity();
-    //   this.IsStatusRequired = true;
-    //   hasError = true;
-    // } else {
-    //   this.FormNphiesClaim.controls.status.clearValidators();
-    //   this.FormNphiesClaim.controls.status.updateValueAndValidity();
-    //   this.IsStatusRequired = false;
-    // }
-
-    // if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
-    //   this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
-    //   this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
-    //   this.IsClassRequired = true;
-    //   hasError = true;
-    // } else {
-    //   this.FormNphiesClaim.controls.encounterClass.clearValidators();
-    //   this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
-    //   this.IsClassRequired = false;
-    // }
-
-    // if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
-    //   this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
-    //   this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
-    //   this.IsServiceProviderRequired = true;
-    //   hasError = true;
-    // } else {
-    //   this.FormNphiesClaim.controls.serviceProvider.clearValidators();
-    //   this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
-    //   this.IsServiceProviderRequired = false;
-    // }
 
     if (this.Diagnosises.length === 0 || this.Items.length === 0) {
       hasError = true;
@@ -1196,6 +1139,25 @@ export class CreateClaimNphiesComponent implements OnInit {
               this.reset();
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
               this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+
+              // debugger;
+              // this.location.go(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+
+              // const dialogConfig = new MatDialogConfig();
+              // dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+
+              // const dialogRef = this.dialog.open(CreateClaimNphiesComponent, dialogConfig);
+              // dialogRef.afterOpened().subscribe(result => {
+              //   debugger;
+              //   this.claimId = parseInt(body.claimId);
+              //   this.uploadId = parseInt(body.uploadId);
+              //   this.getPayees();
+              // });
+              // dialogRef.afterClosed().subscribe(result => {
+              //   if (result) {
+              //     this.location.go(`/${this.sharedServices.providerId}/claims/nphies-claim`);
+              //   }
+              // });
             }
           }
           this.sharedServices.loadingChanged.next(false);
@@ -1443,15 +1405,28 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   setData(response) {
     this.otherDataModel = {};
+    this.otherDataModel.claimId = response.claimId;
+    this.otherDataModel.outcome = response.outcome;
+    this.otherDataModel.disposition = response.disposition;
+    this.otherDataModel.insurer = response.insurer;
+    this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.beneficiary = response.beneficiary;
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
-    this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
-    this.otherDataModel.provClaimNo = response.provClaimNo
+    this.otherDataModel.provClaimNo = response.provClaimNo;
     this.otherDataModel.status = response.status;
     this.otherDataModel.totalNet = response.totalNet;
     this.otherDataModel.preAuthRefNo = response.preAuthRefNo;
+    this.otherDataModel.responseDecision = response.responseDecision;
+
+    if (response.preAuthRefNo) {
+      this.FormNphiesClaim.controls.preAuthRefNo.setValue(response.preAuthRefNo);
+    }
+
     // this.otherDataModel.claimEncounter = response.claimEncounter;
+
+    this.otherDataModel.errors = response.errors;
+    this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);

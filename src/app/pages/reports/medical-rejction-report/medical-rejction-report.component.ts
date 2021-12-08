@@ -334,7 +334,7 @@ export class MedicalRejctionReportComponent implements OnInit {
     const toDate = moment(this.medicalRejectionReportForm.value.toDate).format('YYYY-MM-DD');
     const criteriaType = this.medicalRejectionReportForm.value.summaryCriteria.toString() === 'uploaddate' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
-      .startDownload(this.reportService
+      .startGeneratingDownloadFile(this.reportService
         .downloadMedicalRejectionReport(
           this.commen.providerId,
           fromDate,

@@ -29,7 +29,7 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { ValidationService } from 'src/app/services/validationService/validation.service';
 
 
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 
 import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
 import { changePageTitle } from 'src/app/store/mainStore.actions';
@@ -45,6 +45,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { Console } from 'console';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
+import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -176,8 +177,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private adminService: AdminService,
     private downloadService: DownloadService,
     private actions$: Actions,
-    private providerNphiesSearchService:ProviderNphiesSearchService,
-    private providerNphiesApprovalService:ProviderNphiesApprovalService) { }
+    private providerNphiesSearchService: ProviderNphiesSearchService,
+    private providerNphiesApprovalService: ProviderNphiesApprovalService) { }
 
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -186,7 +187,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   ngOnInit() {
-  
+
     this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
@@ -218,7 +219,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async fetchData() {
-    
+
     this.commen.searchIsOpenChange.next(true);
     this.claims = new Array();
     this.summaries = new Array();
@@ -243,7 +244,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
         uploadId: this.params.uploadId,
-        nationalId:this.params.nationalId,
+        nationalId: this.params.nationalId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -310,8 +311,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
         }
         invalidIsDone = true;
-      } else if(this.isAllStatus(status)) {
-        if(!isAllDone){
+      } else if (this.isAllStatus(status)) {
+        if (!isAllDone) {
           this.getSummaryOfStatus([status]);
         }
         isAllDone = true;
@@ -332,22 +333,22 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.commen.loadingChanged.next(true);
     let event;
     event = await this.providerNphiesSearchService.getClaimSummary(this.providerId,
-     this.params.uploadId,
+      this.params.uploadId,
       statuses,
-     
-      ).toPromise().catch(error => {
-        this.commen.loadingChanged.next(false);
-        if (error instanceof HttpErrorResponse) {
-          if ((error.status / 100).toFixed() == '4') {
-            this.errorMessage = error.message;
-          } else if ((error.status / 100).toFixed() == '5') {
-            this.errorMessage = 'Server could not handle the request. Please try again later.';
-          } else {
-            this.errorMessage = 'Somthing went wrong.';
-          }
-          return error.status;
+
+    ).toPromise().catch(error => {
+      this.commen.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == '4') {
+          this.errorMessage = error.message;
+        } else if ((error.status / 100).toFixed() == '5') {
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
         }
-      });
+        return error.status;
+      }
+    });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
@@ -424,99 +425,100 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.searchResult = null;
     this.currentSelectedTab = 0;
     this.validationDetails = [];
+
+    this.getClaimTransactions(key, page);
+
+    const status = this.routeActive.snapshot.queryParamMap.get('status');
+    this.status = status === null ? this.status : status;
+    this.getPBMValidation();
+  }
+
+  getClaimTransactions(key: number, page?: number) {
     this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
       this.params.uploadId,
       this.summaries[key].statuses.filter(status => status != 'all'),
       page,
       this.pageSize,
-      ).subscribe((event) => {
-        if (event instanceof HttpResponse) {
-          if ((event.status / 100).toFixed() == '2') {
-            this.searchResult = new PaginatedResult(event.body, SearchedClaim);
-            if (this.searchResult.content.length > 0) {
-              this.claims = this.searchResult.content;
-              this.length = this.searchResult.totalElements;
-              this.pageSize = this.searchResult.size;
-              this.pageIndex = this.searchResult.number;
-              console.log('this.length:' + this.length + 'this.pageSize:' + this.pageSize + 'this.pageIndex:' + this.pageIndex);
-              this.storeSearchResultsForClaimViewPagination();
-              this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
-              this.store.dispatch(storeClaims({
-                claims: this.claims,
-                currentPage: this.searchResult.number,
-                maxPages: this.searchResult.totalPages,
-                pageSize: this.searchResult.size
-              }));
-              this.selectedClaimsCountOfPage = 0;
-              for (const claim of this.claims) {
-                if (this.selectedClaims.includes(claim.claimId)) { this.selectedClaimsCountOfPage++; }
+    ).subscribe((event) => {
+      if (event instanceof HttpResponse) {
+        if ((event.status / 100).toFixed() == '2') {
+          this.searchResult = new PaginatedResult(event.body, SearchedClaim);
+          if (this.searchResult.content.length > 0) {
+            this.claims = this.searchResult.content;
+            this.length = this.searchResult.totalElements;
+            this.pageSize = this.searchResult.size;
+            this.pageIndex = this.searchResult.number;
+            console.log('this.length:' + this.length + 'this.pageSize:' + this.pageSize + 'this.pageIndex:' + this.pageIndex);
+            this.storeSearchResultsForClaimViewPagination();
+            this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
+            this.store.dispatch(storeClaims({
+              claims: this.claims,
+              currentPage: this.searchResult.number,
+              maxPages: this.searchResult.totalPages,
+              pageSize: this.searchResult.size
+            }));
+            this.selectedClaimsCountOfPage = 0;
+            for (const claim of this.claims) {
+              if (this.selectedClaims.includes(claim.claimId)) { this.selectedClaimsCountOfPage++; }
+            }
+            // if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
+            this.setAllCheckBoxIsIndeterminate();
+            this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
+            const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
+            this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+            this.manualPage = this.searchResult.number;
+            // Validation Details
+            const content = event.body['content'];
+            this.validationDetails = [];
+            content.forEach((element) => {
+              if (element.claimErrors && element.claimErrors.length > 0) {
+                const claimErrors = element.claimErrors;
+                claimErrors.forEach((error) => {
+                  const claimError = new ClaimError();
+                  claimError.providerClaimeNo = element.providerClaimNumber;
+                  claimError.status = element.status;
+                  claimError.fieldName = error.fieldName;
+                  claimError.description = error.description;
+                  claimError.code = error.code;
+                  this.validationDetails.push(claimError);
+                });
               }
-              // if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
-              this.setAllCheckBoxIsIndeterminate();
-              this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
-              const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
-              this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-              this.manualPage = this.searchResult.number;
-              // Validation Details
-              const content = event.body['content'];
-              this.validationDetails = [];
-              content.forEach((element) => {
-                if (element.claimErrors && element.claimErrors.length > 0) {
-                  const claimErrors = element.claimErrors;
-                  claimErrors.forEach((error) => {
-                    const claimError = new ClaimError();
-                    claimError.providerClaimeNo = element.providerClaimNumber;
-                    claimError.status = element.status;
-                    claimError.fieldName = error.fieldName;
-                    claimError.description = error.description;
-                    claimError.code = error.code;
-                    this.validationDetails.push(claimError);
-                  });
-                }
-              });
+            });
 
-            } else if ((event.status / 100).toFixed() == '4') {
-              console.log('400');
-            } else if ((event.status / 100).toFixed() == '5') {
-              console.log('500');
-            } else {
-              console.log('000');
-            }
-
+          } else if ((event.status / 100).toFixed() == '4') {
+            console.log('400');
+          } else if ((event.status / 100).toFixed() == '5') {
+            console.log('500');
+          } else {
+            console.log('000');
           }
-          if (this.params.claimId != null && this.claimDialogRef == null) {
-            const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
-            if (index != -1) {
-              this.showClaim(this.claims[index].status, this.params.claimId, (this.params.editMode != null && this.params.editMode == 'true'));
-              this.params.claimId = null;
-              this.params.editMode = null;
-            }
-          }
-          this.commen.loadingChanged.next(false);
-          this.reloadFilters();
 
         }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if ((error.status / 100).toFixed() == '4') {
-            this.errorMessage = 'Access Denied.';
-          } else if ((error.status / 100).toFixed() == '5') {
-            this.errorMessage = 'Server could not handle the request. Please try again later.';
-          } else {
-            this.errorMessage = 'Somthing went wrong.';
+        if (this.params.claimId != null && this.claimDialogRef == null) {
+          const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
+          if (index != -1) {
+            this.showClaim(this.claims[index].status, this.params.claimId, (this.params.editMode != null && this.params.editMode == 'true'));
+            this.params.claimId = null;
+            this.params.editMode = null;
           }
         }
         this.commen.loadingChanged.next(false);
-      });
+        this.reloadFilters();
 
-    const status = this.routeActive.snapshot.queryParamMap.get('status');
-
-
-    this.status = status === null ? this.status : status;
-    this.getPBMValidation();
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == '4') {
+          this.errorMessage = 'Access Denied.';
+        } else if ((error.status / 100).toFixed() == '5') {
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
+        }
+      }
+      this.commen.loadingChanged.next(false);
+    });
   }
-
-
 
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
@@ -536,7 +538,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return;
     }
     this.commen.loadingChanged.next(true);
-    this.providerNphiesApprovalService.submitClaims(this.providerId,  this.selectedClaims, null).subscribe((event) => {
+    this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims, null).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
           this.dialogService.openMessageDialog(
@@ -579,36 +581,36 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return;
     }
     this.commen.loadingChanged.next(true);
-    this.providerNphiesApprovalService.submitClaims(this.providerId,   this.selectedClaims,this.params.uploadId,
+    this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims, this.params.uploadId,
     ).subscribe((event) => {
-        if (event instanceof HttpResponse) {
-          if (event.body['status'] == 'Queued') {
-            this.dialogService.openMessageDialog(
-              new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
-            ).subscribe(result => {
-              this.resetURL();
-              this.fetchData();
-            });
-          }
-          this.commen.loadingChanged.next(false);
+      if (event instanceof HttpResponse) {
+        if (event.body['status'] == 'Queued') {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+          ).subscribe(result => {
+            this.resetURL();
+            this.fetchData();
+          });
         }
-      }, errorEvent => {
         this.commen.loadingChanged.next(false);
-        if (errorEvent instanceof HttpErrorResponse) {
-          if (errorEvent.status >= 500 || errorEvent.status == 0) {
-            if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
-              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
-            } else {
-              this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
-            }
-          }
-          if (errorEvent.error['errors'] != null) {
-            for (const error of errorEvent.error['errors']) {
-              this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
-            }
+      }
+    }, errorEvent => {
+      this.commen.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         }
-      });
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+      }
+    });
   }
 
   reValidateClaims() {
@@ -753,7 +755,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    
+
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId }
@@ -1120,7 +1122,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.filter_netAmount,
       this.params.filter_batchNum);
     if (event != null) {
-      this.downloadService.startDownload(event)
+      this.downloadService.startGeneratingDownloadFile(event)
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
             this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -1260,7 +1262,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 if (result === true) {
                   this.commen.loadingChanged.next(true);
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId,  null,
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null,
                     this.params.filter_claimRefNo, this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims,
                     this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount,
                     this.params.filter_batchNum).subscribe(event => {
@@ -1729,12 +1731,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     const cardKey: any = this.selectedCardKey;
     return parseInt(cardKey) !== 0 && this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === this.statusSelected.Accepted.toLowerCase() ? true : false;
   }
-  
-  
- 
-    
-     
-     
+
+
+
+
+
+
   //     ).toPromise().catch(error => {
   //       this.commen.loadingChanged.next(false);
   //       if (error instanceof HttpErrorResponse) {
@@ -1764,6 +1766,77 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   //   this.commen.loadingChanged.next(false);
   //   return event.status;
   // }
-    // }
+  // }
+
+
+  checkStatus(responseId: number) {
+    this.commen.loadingChanged.next(true);
+    const model: any = {};
+    model.approvalResponseId = responseId;
+    this.providerNphiesApprovalService.statusCheck(this.commen.providerId, model).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (body.errors && body.errors.length > 0) {
+            const errors: any[] = [];
+            body.errors.forEach(err => {
+              err.coding.forEach(codex => {
+                errors.push(codex.code + ' : ' + codex.display);
+              });
+            });
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+          }
+          this.getClaimTransactions(this.params.status, this.params.page);
+        }
+      }
+    }, error => {
+      this.commen.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        } else if (error.status === 500) {
+          this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        }
+      }
+    });
+  }
+
+  openReasonModal(requestId: number, responseId: number, reqType: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      approvalRequestId: requestId,
+      approvalResponseId: responseId,
+      type: reqType
+    };
+
+    const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getClaimTransactions(this.params.status, this.params.page);
+      }
+    });
+  }
 
 }
