@@ -81,13 +81,15 @@ export class ReconciliationReportComponent implements OnInit {
       }
       this.startDateController.setValue(new Date());
       this.endDateController.setValue(new Date());
-      this.search();
+
 
     });
   }
 
 
   search() {
+
+    console.log(this.payerIdControl.value)
     if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
       return
     this.reconciliationReportResponse = [];
