@@ -231,38 +231,43 @@
                                                 (change)="selectClaim(claim.claimId)">
                                             </mat-checkbox>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                                            class="row-click">
                                             <span class="text-monospace">{{claim.providerClaimNumber}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                                            class="row-click">
                                             {{claim.drName}}</td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                                            class="row-click">
                                             <span class="text-monospace">{{claim.memberId}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                                            class="row-click">
                                             <span class="text-monospace">{{claim.nationalId}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                                            class="row-click">
                                             <span class="text-monospace">{{claim.patientFileNumber}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="row-click text-nowrap">
                                             {{claim.claimDate}}
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="row-click text-nowrap">
                                             {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
                                         </td>
-                                        <!-- <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <!-- <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="row-click text-nowrap">
                                             {{claim.netVatAmount}}<span class="currency">
                                                 {{claim.unitOfNetVatAmount}}</span>
                                         </td>
-                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="row-click text-nowrap">
                                             <span class="text-monospace">{{claim.batchNumber}}</span>
                                         </td> -->
-                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="text-center row-click">
                                             <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                                         </td>
@@ -272,12 +277,13 @@
                                                     (click)="checkStatus(claim.claimResponseId)">
                                                     <mat-icon>refresh</mat-icon>
                                                 </button>
-                                                <span *ngIf="!claim.status" class="pl-1">Check
+                                                <span *ngIf="!claim.processingStatus" class="pl-1">Check
                                                     Processing Status</span>
-                                                <span *ngIf="claim.status" class="pl-1">{{claim.status}}</span>
+                                                <span *ngIf="claim.processingStatus"
+                                                    class="pl-1">{{claim.processingStatus}}</span>
                                             </div>
                                         </td>
-                                        <!-- <td (click)="showClaim(claim.status, claim.claimId)"
+                                        <!-- <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="text-center row-click" *ngIf="isPBMValidationVisible">
                                             <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='approved'"
                                                 class="material-icons-outlined size-21 text-success"
@@ -338,7 +344,7 @@
                                         <!-- <button mat-icon-button
                                                 *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
                                                 [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                                (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit"
+                                                (click)="showClaim(claim.status, claim.claimId,,claim.claimResponseId, true)" matTooltip="Edit"
                                                 class="text-primary">
                                                 <mat-icon>create</mat-icon>
                                             </button>

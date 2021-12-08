@@ -202,7 +202,7 @@ export class SharedDataService {
   itemTypeList = [
     { value: 'medicalDevices', name: 'Medical Devices' },
     { value: 'medicationCode', name: 'Medication Codes' },
-    { value: 'transporationService', name: 'Transportation SRCA' },
+    { value: 'transportationService', name: 'Transportation SRCA' },
     { value: 'imagingService', name: 'Imaging' },
     { value: 'procedures', name: 'Procedures' },
     { value: 'services', name: 'Services' },
