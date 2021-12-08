@@ -1,7 +1,7 @@
 import { Paginateable } from './paginateable';
 
 export class SearchedClaim extends Paginateable {
-
+  claimResponseId: number;
   claimId: string;
   providerClaimNumber: string;
   drName: string;
@@ -24,11 +24,12 @@ export class SearchedClaim extends Paginateable {
   numOfPriceListErrors: number;
   eligibilityStatusDesc: string;
   batchNumber: number;
-  statusApproval:string;
-  descApproval:string;
+  statusApproval: string;
+  descApproval: string;
   constructor(body: {}) {
     super(body);
     if (body != null) {
+      this.claimResponseId = body['claimResponseId'];
       this.claimId = body['claimId'];
       this.claimDate = body['claimDate'];
       this.policyNumber = body['policyNumber'];
@@ -51,9 +52,9 @@ export class SearchedClaim extends Paginateable {
       this.numOfPriceListErrors = body['numOfPriceListErrors'];
       this.eligibilityStatusDesc = body['eligibilityStatusDesc'];
       this.batchNumber = body['batchNumber'];
-      this.statusApproval=body['statusApproval'];
-      this.descApproval=body['descApproval'];
-    
+      this.statusApproval = body['statusApproval'];
+      this.descApproval = body['descApproval'];
+
     }
   }
 }
