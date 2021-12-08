@@ -169,7 +169,7 @@
                     <div class="control-label">Batch Period</div>
                     <p class="form-control-static">
                       <span *ngIf="otherDataModel.batchInfo">
-                        {{otherDataModel.batchInfo.startDate | date: dd/MM/yyyy}} - {{otherDataModel.batchInfo.endDate | date: dd/MM/yyyy}}
+                        {{otherDataModel.batchInfo.startDate | date: 'dd/MM/yyyy'}} - {{otherDataModel.batchInfo.endDate | date: 'dd/MM/yyyy'}}
                       </span>
                       <span *ngIf="!otherDataModel.batchInfo">-</span>
                     </p>
