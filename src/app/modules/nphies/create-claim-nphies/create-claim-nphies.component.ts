@@ -1607,6 +1607,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
 
     this.SupportingInfo = response.supportingInfo.map(x => {
+
       const model: any = {};
       model.sequence = x.sequence;
       model.category = x.category;
@@ -1616,6 +1617,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.value = x.value;
       model.reason = x.reason;
       model.attachment = x.attachment;
+
+      model.attachmentDate = x.attachmentDate;
+      model.attachmentName = x.attachmentName;
+      model.attachmentType = x.attachmentType;
 
       // tslint:disable-next-line:max-line-length
       model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
