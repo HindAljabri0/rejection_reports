@@ -155,7 +155,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private providerNphiesApprovalService: ProviderNphiesApprovalService) { }
 
   ngOnDestroy(): void {
- 
+
     localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
     this.routerSubscription.unsubscribe();
   }
@@ -341,7 +341,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   getResultsOfStatus(key: number, page?: number) {
-
     console.log(key)
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
@@ -411,7 +410,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   getClaimTransactions(key?: number, page?: number) {
 
-    
+
     this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
       this.params.uploadId,
       key!=0?this.summaries[key].statuses.filter(status => status != 'all'):null,
@@ -439,13 +438,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             for (const claim of this.claims) {
               if (this.selectedClaims.includes(claim.claimId)) { this.selectedClaimsCountOfPage++; }
             }
-           
+
             this.setAllCheckBoxIsIndeterminate();
             this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
             const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
             this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
             this.manualPage = this.searchResult.number;
-           
+
             const content = event.body['content'];
             this.validationDetails = [];
             content.forEach((element) => {
@@ -761,7 +760,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
 
 
- 
+
 
 
 
@@ -781,7 +780,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return this.waitingApprovalCheck;
   }
 
- 
+
 
 
 

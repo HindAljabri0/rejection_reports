@@ -166,9 +166,9 @@ export class ProviderNphiesSearchService {
     let requestURL = `/providers/${providerId}/claims/details?`;
 
     if (uploadId != null) {
-      requestURL += `uploadId=${uploadId}&`;
+      requestURL += `uploadId=${uploadId}`;
     }
-    requestURL += statuses!=null?`status=${statuses.toString()}`:'' + '&page=' + page + '&size=' + pageSize;
+    requestURL += (statuses != null ? `&status=${statuses.toString()}` : '') + '&page=' + page + '&size=' + pageSize;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
