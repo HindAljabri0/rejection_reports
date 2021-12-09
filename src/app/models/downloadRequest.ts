@@ -52,7 +52,9 @@ export class DownloadRequest {
         this.progress$ = new Subject();
         this.progress$.subscribe(progress => this._progress = progress);
         this.url$ = new Subject();
-        this.url$.subscribe(url => this._url = url);
+        this.url$.subscribe(url => {
+            this._url = url;
+        });
         this.downloadAttempts$ = new Subject();
         this.downloadAttempts$.subscribe(downloadAttempts => this._downloadAttempts = downloadAttempts);
     }

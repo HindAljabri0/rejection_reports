@@ -20,7 +20,7 @@ export class NphiesUploadCardComponent implements OnInit {
     return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
       + this.data.underProcessing + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer 
       + this.data.rejectedByNphies + this.data.approved + this.data.partialApproved 
-      + this.data.queuedByNphies;
+      + this.data.queuedByNphies +this.data.pended;
   }
 
   get canBeDeleted() {

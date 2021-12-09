@@ -99,7 +99,9 @@ export class DownloadService {
         downloadRequest.status$.next(DownloadStatus.DOWNLOADING);
       } else if (event instanceof HttpResponse) {
         const body = event.body + '';
-        downloadRequest.url$.next(body.split(' - ').pop());
+        const splittedBody = body.split(' - ');
+        downloadRequest.url$.next(splittedBody.pop());
+        downloadRequest.progress$.next(100);
         downloadRequest.status$.next(DownloadStatus.DONE);
       }
     }, errorEvent => {
