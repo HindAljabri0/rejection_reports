@@ -409,7 +409,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.getPBMValidation();
   }
 
-  getClaimTransactions(key?: number, page?: number,status?:string) {
+  getClaimTransactions(key?: number, page?: number) {
 
     
     this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
