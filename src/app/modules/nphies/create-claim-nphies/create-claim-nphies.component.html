@@ -177,13 +177,13 @@
                             'dd-MM-yyyy') : "-"}}</p>
                     </div>
                 </div>
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="form-group form-group-static">
                         <div class="control-label">Approval Response IDs</div>
                         <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
                             FormNphiesClaim.controls.preAuthResponseId.value : "-"}}</p>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-4">
                     <div class="form-group form-group-static">
                         <div class="control-label">Pre Authorization Reference No.</div>
@@ -445,7 +445,7 @@
                     <thead>
                         <tr>
                             <th>Category</th>
-                            <th>Attachment</th>
+                            <!-- <th>Attachment</th> -->
                             <th>Code</th>
                             <th>Timing</th>
                             <th>Value</th>
@@ -459,9 +459,9 @@
                                 {{s.categoryName}}
                             </td>
 
-                            <td>
+                            <!-- <td>
                                 {{s.attachment}}
-                            </td>
+                            </td> -->
                             <td>
                                 {{s.code ? s.code :"-"}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
                                 <!-- {{s.codeName}} -->
@@ -1285,10 +1285,7 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label class="control-label">Preauthorization Reference No</label>
-                                    <!-- <input class="form-control" placeholder="Approval Response IDs" formControlName="preAuthResponseId"> -->
                                     <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Response Id'">
-                                        <!-- <tag-input-dropdown [autocompleteItems]="['321654', '564654', '654654']">
-</tag-input-dropdown> -->
                                     </tag-input>
                                 </div>
                             </div>
@@ -1427,13 +1424,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4 col-lg-3">
+                            <!-- <div class="col-4 col-lg-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
                                     <input class="form-control" placeholder="Approval Response IDs"
                                         formControlName="preAuthResponseId">
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </mat-tab>
                     <mat-tab>
@@ -1682,7 +1679,7 @@
                                 <thead>
                                     <tr>
                                         <th>Category</th>
-                                        <th>Attachment</th>
+                                        <!-- <th>Attachment</th> -->
                                         <th>Code</th>
                                         <th>Timing</th>
                                         <th>Value</th>
@@ -1695,9 +1692,9 @@
                                         <td>
                                             {{s.categoryName}}
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             {{s.attachment}}
-                                        </td>
+                                        </td> -->
                                         <td>
                                             {{s.code ? s.code :"-"}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
                                             <!-- {{s.codeName}} -->

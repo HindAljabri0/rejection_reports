@@ -57,7 +57,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
     preAuthOfflineDate: [''],
-    preAuthResponseId: [''],
+    // preAuthResponseId: [''],
     accidentType: [''],
     streetName: [''],
     city: [''],
@@ -240,7 +240,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.eligibilityOfflineDate.disable();
     this.FormNphiesClaim.controls.eligibilityResponseId.disable();
     this.FormNphiesClaim.controls.preAuthOfflineDate.disable();
-    this.FormNphiesClaim.controls.preAuthResponseId.disable();
+    // this.FormNphiesClaim.controls.preAuthResponseId.disable();
   }
 
   filterNationality() {
@@ -950,7 +950,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.preAuthOfflineDate.value, 'yyyy-MM-dd');
-      preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
+      // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
 
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
@@ -1489,10 +1489,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.FormNphiesClaim.controls.preAuthOfflineDate.setValue(response.preAuthorizationInfo.preAuthOfflineDate);
     }
 
-    if (response.preAuthorizationInfo.preAuthResponseId != null) {
-      // tslint:disable-next-line:max-line-length
-      this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
-    }
+    // if (response.preAuthorizationInfo.preAuthResponseId != null) {
+    //   // tslint:disable-next-line:max-line-length
+    //   this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
+    // }
 
     if (response.claimEncounter) {
       this.otherDataModel.claimEncounter = response.claimEncounter;
@@ -1607,6 +1607,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
 
     this.SupportingInfo = response.supportingInfo.map(x => {
+
       const model: any = {};
       model.sequence = x.sequence;
       model.category = x.category;
@@ -1616,6 +1617,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.value = x.value;
       model.reason = x.reason;
       model.attachment = x.attachment;
+
+      model.attachmentDate = x.attachmentDate;
+      model.attachmentName = x.attachmentName;
+      model.attachmentType = x.attachmentType;
 
       // tslint:disable-next-line:max-line-length
       model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
