@@ -341,6 +341,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   getResultsOfStatus(key: number, page?: number) {
+
+    console.log(key)
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
@@ -407,12 +409,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.getPBMValidation();
   }
 
-  getClaimTransactions(key: number, page?: number) {
+  getClaimTransactions(key?: number, page?: number,status?:string) {
 
     
     this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
       this.params.uploadId,
-      this.summaries[key].statuses.filter(status => status != 'all'),
+      key!=0?this.summaries[key].statuses.filter(status => status != 'all'):null,
       page,
       this.pageSize,
     ).subscribe((event) => {
