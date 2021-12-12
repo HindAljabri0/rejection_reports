@@ -66,7 +66,7 @@ import { AddCommunicationDialogComponent } from '../nphies/add-communication-dia
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
       { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent},
-      { path: ':id', component: MainClaimPageComponent }
+      // { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),
