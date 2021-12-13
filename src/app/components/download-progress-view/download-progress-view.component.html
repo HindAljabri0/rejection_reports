@@ -20,7 +20,7 @@
                 [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
             <a *ngIf="downloadRequest.status == 1 || (downloadRequest.progress != 100 && downloadRequest.progress > 0)">Generating Download URL</a>
             <a *ngIf="downloadRequest.progress == -1">Failed to generate the report, please try again later.</a>
-            <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"
+            <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"  (click)="$event.stopPropagation();"
                 target="_blank" style="color: #3060aa; text-decoration: underline;">Click Here to Start Downloading</a>
             <div class="d-flex align-items-center">
                 <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">
