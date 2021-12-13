@@ -1130,8 +1130,9 @@ export class AddPreauthorizationComponent implements OnInit {
       subType: '',
       accidentType: '',
       country: '',
-      payeeType: this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0])
+      payeeType: this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]
     });
+    this.onPayeeTypeChange();
     this.CareTeams = [];
     this.CareTeams = [];
     this.Diagnosises = [];
