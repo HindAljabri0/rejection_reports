@@ -6,68 +6,308 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p>Payment Reconciliation Claims</p>
+            <p>Reconciliation Details</p>
         </div>
+    </div>
+    <div class="p-14 bg-white">
+        <div class="row small-gutter">
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Issuer</label>
+                    <span class="form-control-static">Dummy Data</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Disposition</label>
+                    <span class="form-control-static">Dummy Data</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Date</label>
+                    <span class="form-control-static">Dummy Data</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Amount</label>
+                    <span class="form-control-static">Dummy Data</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Identifier/ Payment Instrument ID </label>
+                    <span class="form-control-static">Dummy Data</span>
+                </div>
+            </div>
+        </div>
+        <h5 class="form-title no-border pt-3">Payment Distribution</h5>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height fixed-height-lg">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table class="primary-grid manual-row-color horizontal-borders no-borders" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
+                        <th width="10"></th>
+                        <th>ID</th>
                         <th>Claim ID</th>
-                        <th>Batch No.</th>
-                        <th>Batch Date</th>
-                        <th>Status</th>
-                        <th>Patient</th>
-                        <th>Provider</th>
-                        <th>Total</th>
+                        <th>Payment</th>
+                        <th>Early Fee</th>
+                        <th>NPHIES Fee</th>
+                        <th>Total Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>716361</td>
-                        <td>625</td>
-                        <td>30/6/2031</td>
-                        <td>Downloadable</td>
-                        <td>Rosetta Hopkins</td>
-                        <td>Tawuniya</td>
-                        <td>5009 <span class="currency">SR</span></td>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(0)">9086</td>
+                        <td class="row-click" (click)="toggleRow(0)">4373</td>
+                        <td class="row-click" (click)="toggleRow(0)">6753 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(0)">374 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(0)">883 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(0)">5511 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==0">
+                        <td colspan="7">
+                            <div class="box pb-0">
+                                <div class="row small-gutter">
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Predecessor</label>
+                                            <span class="form-control-static">Georgie Horton</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Type</label>
+                                            <span class="form-control-static">Payment</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response ID</label>
+                                            <span class="form-control-static">9484</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response Date</label>
+                                            <span class="form-control-static">6/3/2100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Payee</label>
+                                            <span class="form-control-static">Amy Gonzalez</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <td>644575</td>
-                        <td>844</td>
-                        <td>10/5/2043</td>
-                        <td>Downloadable</td>
-                        <td>Nathan Hayes</td>
-                        <td>Tawuniya</td>
-                        <td>3863 <span class="currency">SR</span></td>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(1)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=1" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==1" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(1)">6499</td>
+                        <td class="row-click" (click)="toggleRow(1)">7189</td>
+                        <td class="row-click" (click)="toggleRow(1)">2617 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(1)">272 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(1)">459 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(1)">2924 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==1">
+                        <td colspan="7">
+                            <div class="box pb-0">
+                                <div class="row small-gutter">
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Predecessor</label>
+                                            <span class="form-control-static">Georgie Horton</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Type</label>
+                                            <span class="form-control-static">Payment</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response ID</label>
+                                            <span class="form-control-static">9484</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response Date</label>
+                                            <span class="form-control-static">6/3/2100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Payee</label>
+                                            <span class="form-control-static">Amy Gonzalez</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <td>662464</td>
-                        <td>129</td>
-                        <td>26/4/2080</td>
-                        <td>Downloadable</td>
-                        <td>Eugene Wheeler</td>
-                        <td>Tawuniya</td>
-                        <td>5439 <span class="currency">SR</span></td>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(2)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=2" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==2" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(2)">2194</td>
+                        <td class="row-click" (click)="toggleRow(2)">2613</td>
+                        <td class="row-click" (click)="toggleRow(2)">8333 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(2)">680 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(2)">962 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(2)">2946 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==2">
+                        <td colspan="7">
+                            <div class="box pb-0">
+                                <div class="row small-gutter">
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Predecessor</label>
+                                            <span class="form-control-static">Georgie Horton</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Type</label>
+                                            <span class="form-control-static">Payment</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response ID</label>
+                                            <span class="form-control-static">9484</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response Date</label>
+                                            <span class="form-control-static">6/3/2100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Payee</label>
+                                            <span class="form-control-static">Amy Gonzalez</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <td>840442</td>
-                        <td>833</td>
-                        <td>26/8/2025</td>
-                        <td>Downloadable</td>
-                        <td>Nell Kelley</td>
-                        <td>Tawuniya</td>
-                        <td>225 <span class="currency">SR</span></td>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(3)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=3" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==3" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(3)">5544</td>
+                        <td class="row-click" (click)="toggleRow(3)">6737</td>
+                        <td class="row-click" (click)="toggleRow(3)">9526 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(3)">275 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(3)">554 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(3)">8077 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==3">
+                        <td colspan="7">
+                            <div class="box pb-0">
+                                <div class="row small-gutter">
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Predecessor</label>
+                                            <span class="form-control-static">Georgie Horton</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Type</label>
+                                            <span class="form-control-static">Payment</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response ID</label>
+                                            <span class="form-control-static">9484</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response Date</label>
+                                            <span class="form-control-static">6/3/2100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Payee</label>
+                                            <span class="form-control-static">Amy Gonzalez</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <td>612580</td>
-                        <td>539</td>
-                        <td>2/4/2056</td>
-                        <td>Downloadable</td>
-                        <td>Steve Simon</td>
-                        <td>Tawuniya</td>
-                        <td>7605 <span class="currency">SR</span></td>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(4)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=4" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==4" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(4)">4838</td>
+                        <td class="row-click" (click)="toggleRow(4)">5735</td>
+                        <td class="row-click" (click)="toggleRow(4)">3936 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(4)">583 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(4)">654 <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="toggleRow(4)">6538 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==4">
+                        <td colspan="7">
+                            <div class="box pb-0">
+                                <div class="row small-gutter">
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Predecessor</label>
+                                            <span class="form-control-static">Georgie Horton</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Type</label>
+                                            <span class="form-control-static">Payment</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response ID</label>
+                                            <span class="form-control-static">9484</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Claim Response Date</label>
+                                            <span class="form-control-static">6/3/2100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-group-static">
+                                            <label class="control-label">Payee</label>
+                                            <span class="form-control-static">Amy Gonzalez</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaymentReconciliationDetailsComponent implements OnInit {
 
+  currentOpenRecord = -1;
   constructor(private location: Location) { }
 
   ngOnInit() {
@@ -15,6 +16,10 @@ export class PaymentReconciliationDetailsComponent implements OnInit {
 
   goBack() {
     this.location.back()
+  }
+
+  toggleRow(index) {
+    this.currentOpenRecord = (index == this.currentOpenRecord) ? -1 : index;
   }
 
 }
