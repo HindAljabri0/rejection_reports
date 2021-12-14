@@ -75,17 +75,16 @@
                             <td>{{data.duration}}</td>
                             <td>{{data.payerId}}</td>
                             <td>{{data.totalSubmittedAmount}}</td>
-                            <td >{{data.totalReceived}}</td>
-
-                            <td > {{data.totalReceivedPerc}}</td>
-                            <td > {{data.totalOutstandingAmount}}</td>
+                            <td>{{data.totalReceived}}</td>
+                            <td>{{data.totalReceivedPerc}}</td>
+                            <td>{{data.totalOutstandingAmount}}</td>
+                            <td>{{data.promptDiscount}}</td>
+                            <td>{{data.promptDiscountPerc}}</td>
                             <td>{{data.volumeDiscount}}</td>
-                            <td > {{data.volumeDiscountPerc}}</td>
+                            <td>{{data.volumeDiscountPerc}}</td>
                             <td>{{data.reconciliationAmount}}</td>
                             <td>{{data.finalRejectionAmount}}</td>
                             <td>{{data.finalRejectionAmountPerc}}</td>
-                            <td></td>
-                        <td></td>
                         <td class="actions">
                             <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="selectedReconciliationIdAndTotalDubmitted = data">
                                 <mat-icon>more_vert</mat-icon>
