@@ -14,4 +14,10 @@ export class NphiesPollManagementService {
     const request = new HttpRequest('POST', environment.nphiesPollManagement + requestUrl, body);
     return this.http.request(request);
   }
+
+  senPaymentNotice(providerId: string, body: any){
+    const requestUrl = `/providers/${providerId}/paymentNotice/save?reconciliationId=${body.reconciliationId}`;
+    const request = new HttpRequest('POST', environment.nphiesPollManagement + requestUrl, null);
+    return this.http.request(request);
+  }
 }
