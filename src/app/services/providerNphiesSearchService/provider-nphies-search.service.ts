@@ -185,13 +185,14 @@ export class ProviderNphiesSearchService {
       requestUrl += `issuerId=${body.issuerId}&`;
     }
 
+    if (body.page) {
+      requestUrl += `page=${body.page}&`;
+    }
+    if (body.pageSize) {
+      requestUrl += `pageSize=${body.pageSize}&`;
+    }
+
     requestUrl = requestUrl.slice(0, requestUrl.length - 1);
-    // if (body.page) {
-    //   requestURL += `page=${body.page}`;
-    // }
-    // if (body.pageSize) {
-    //   requestURL += `pageSize=${body.pageSize}`;
-    // }
 
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
     return this.http.request(request);

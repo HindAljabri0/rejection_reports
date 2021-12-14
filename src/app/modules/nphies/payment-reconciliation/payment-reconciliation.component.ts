@@ -266,6 +266,7 @@ export class PaymentReconciliationComponent implements OnInit {
             } else {
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
             }
+            this.onSubmit();
           }
         }
         this.sharedServices.loadingChanged.next(false);
