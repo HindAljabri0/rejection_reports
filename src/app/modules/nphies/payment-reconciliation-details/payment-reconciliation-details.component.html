@@ -87,7 +87,7 @@
                     <div class="col-4">
                       <div class="form-group form-group-static">
                         <label class="control-label">Predecessor</label>
-                        <span class="form-control-static">{{pd.detailPredecessorId}}</span>
+                        <span class="form-control-static">{{pd.detailPredecessorId ? pd.detailPredecessorId : '-'}}</span>
                       </div>
                     </div>
                     <div class="col-4">
@@ -99,7 +99,7 @@
                     <div class="col-4">
                       <div class="form-group form-group-static">
                         <label class="control-label">Claim Response ID</label>
-                        <span class="form-control-static">{{pd.claimResponseId}}</span>
+                        <span class="form-control-static">{{pd.claimResponseId ? pd.claimResponseId : '-'}}</span>
                       </div>
                     </div>
                     <div class="col-4">
@@ -114,7 +114,7 @@
                     <div class="col-4">
                       <div class="form-group form-group-static">
                         <label class="control-label">Payee</label>
-                        <span class="form-control-static">{{pd.payeeId}}</span>
+                        <span class="form-control-static">{{pd.payeeId ? pd.payeeId : '-'}}</span>
                       </div>
                     </div>
                   </div>
