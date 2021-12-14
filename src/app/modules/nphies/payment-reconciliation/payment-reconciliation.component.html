@@ -3,12 +3,13 @@
         <p>Payment Reconciliation</p>
     </div>
     <div class="block-filter-panel">
+      <form [formGroup]="FormPaymentReconciliation" (ngSubmit)="onSubmit()">
         <div class="row small-gutter">
             <div class="col">
                 <div class="form-group">
                     <label class="control-label">Payment From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterFromDate></mat-datepicker>
                     </div>
@@ -18,7 +19,7 @@
                 <div class="form-group">
                     <label class="control-label">Payment To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" formControlName="toDate">
                         <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterToDate></mat-datepicker>
                     </div>
@@ -26,28 +27,12 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="control-label">Payment Notice</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Payment Notice</mat-option>
-                            <mat-option value="Payment Notice 1">Payment Notice 1</mat-option>
-                            <mat-option value="Payment Notice 2">Payment Notice 2</mat-option>
-                            <mat-option value="Payment Notice 3">Payment Notice 3</mat-option>
-                            <mat-option value="Payment Notice 4">Payment Notice 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
                     <label class="control-label">Issuer</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Issuer</mat-option>
-                            <mat-option value="Issuer 1">Issuer 1</mat-option>
-                            <mat-option value="Issuer 2">Issuer 2</mat-option>
-                            <mat-option value="Issuer 3">Issuer 3</mat-option>
-                            <mat-option value="Issuer 4">Issuer 4</mat-option>
+                        <mat-select  formControlName="issuerId">
+                            <mat-option value="">Select Issuer</mat-option>
+                            <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
+                              ({{payer.arabicName}})</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -55,10 +40,11 @@
             <div class="col-auto">
                 <div class="form-group">
                     <label class="control-label">&nbsp;</label>
-                    <button type="button" mat-flat-button color="primary">Search</button>
+                    <button type="submit" mat-flat-button color="primary">Search</button>
                 </div>
             </div>
         </div>
+      </form>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
@@ -76,78 +62,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">7547</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">7/9/2026</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">11/10/2120</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Bess Douglas</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">9/6/2048</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">1802 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Pending</td>
+                    <tr *ngFor="let pr of paymentReconciliations">
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.reconciliationId}}</td>
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.periodStartDate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.periodEndDate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.issuerName}}</td>
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.paymentDate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.paymentAmount}} <span class="currency">SR</span></td>
+                        <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.paymentNoticeStatus}}</td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary" (click)="openSendPaymentNoticeConfimationDialog()">
-                                <mat-icon>send</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">6935</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">9/11/2099</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">12/10/2103</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Margaret Blake</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">24/4/2062</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">4074 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Pending</td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary" (click)="openSendPaymentNoticeConfimationDialog()">
-                                <mat-icon>send</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">2913</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">25/1/2030</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">19/7/2107</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Elizabeth Ray</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">10/3/2052</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">4190 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Sent</td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary" (click)="openSendPaymentNoticeConfimationDialog()">
-                                <mat-icon>send</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">4299</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">19/11/2030</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">6/9/2036</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Tommy Brock</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">21/11/2089</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">271 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Sent</td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary" (click)="openSendPaymentNoticeConfimationDialog()">
-                                <mat-icon>send</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">6482</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">26/10/2108</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">31/3/2024</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Scott Graves</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">8/11/2053</td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">3415 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/nphies/payment-reconciliation-details">Pending</td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary" (click)="openSendPaymentNoticeConfimationDialog()">
+                            <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary" (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)">
                                 <mat-icon>send</mat-icon>
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="pagination-header">
+          <div class="form-group page-select">
+            <label class="control-label">Go to page: </label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="material-paginator">
+            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+            </mat-paginator>
+          </div>
         </div>
     </ng-scrollbar>
 </div>

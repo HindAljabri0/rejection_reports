@@ -22,10 +22,10 @@ const routes: Routes = [
   { path: 'preauthorization-transactions', component: PreauthorizationTransactionsComponent },
   { path: 'insurance-plans', component: InsurancePlanComponent },
   { path: 'payment-reconciliation', component: PaymentReconciliationComponent },
-  { path: 'payment-reconciliation-details', component: PaymentReconciliationDetailsComponent },
+  { path: 'payment-reconciliation-details/:reconciliationId', component: PaymentReconciliationDetailsComponent },
   { path: 'beneficiary', component: SearchBeneficiaryComponent },
   { path: 'uploads', component: NphiesUploadsComponent},
-  
+
 ];
 
 @NgModule({
