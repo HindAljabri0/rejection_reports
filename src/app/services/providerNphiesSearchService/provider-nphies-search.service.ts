@@ -185,7 +185,7 @@ export class ProviderNphiesSearchService {
       requestUrl += `issuerId=${body.issuerId}&`;
     }
 
-    if (body.page) {
+    if (body.page !== undefined && body.page !== null) {
       requestUrl += `page=${body.page}&`;
     }
     if (body.pageSize) {
