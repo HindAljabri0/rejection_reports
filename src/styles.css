@@ -57,6 +57,7 @@ input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allo
 .w-190{width: 190px;}
 .w-200{width: 200px;}
 .w-260{width: 260px;}
+.col{min-width: 0;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
