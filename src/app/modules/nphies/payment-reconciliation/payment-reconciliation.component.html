@@ -86,7 +86,7 @@
         <app-empty-state *ngIf="paymentReconciliations && paymentReconciliations.length === 0" message='No payment reconciliation found!'>
         </app-empty-state>
     </div>
-    <div class="pagination-header">
+    <div class="pagination-header" *ngIf="paymentReconciliations && paymentReconciliations.length > 0">
         <div class="form-group page-select">
             <label class="control-label">Go to page: </label>
             <mat-form-field class="form-control custom-select-control">
