@@ -73,7 +73,7 @@
                                     class="currency">SR</span></td>
                             <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">{{pr.paymentNoticeStatus}}</td>
                             <td class="actions">
-                                <button mat-icon-button matTooltip="Send Payment Notice" class="text-primary"
+                                <button *ngIf="pr.paymentNoticeStatus !== 'Sent'" mat-icon-button matTooltip="Send Payment Notice" class="text-primary"
                                     (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)">
                                     <mat-icon>send</mat-icon>
                                 </button>
