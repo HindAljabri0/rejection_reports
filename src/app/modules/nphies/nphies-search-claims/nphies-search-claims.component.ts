@@ -413,7 +413,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.providerNphiesSearchService.getClaimResults(this.commen.providerId,
       this.params.uploadId,
-      key!=0?this.summaries[key].statuses.filter(status => status != 'all'):null,
+      key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null,
       page,
       this.pageSize,
     ).subscribe((event) => {
@@ -1240,6 +1240,19 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.getClaimTransactions(this.params.status, this.params.page);
       }
     });
+  }
+
+  showColumns(selectedCardKey: number, status: string) {
+    if (selectedCardKey == 0) {
+      return false;
+    }
+    status = status.toLowerCase();
+    const validStatus = ['accepted', 'notaccepted', 'batched'];
+    if (validStatus.indexOf(status) >= 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }
