@@ -85,27 +85,27 @@ export class ReconciliationReportComponent implements OnInit {
 
     });
   }
-incrementYear(startDate){
-  var year = new Date(startDate);
-return new Date(year.setFullYear(year.getFullYear() +1));
 
 
-}
+  incrementYear(startDate){
+    var year = new Date(startDate);
+  return new Date(year.setFullYear(year.getFullYear() +1));
+  }
 
   search() {
 
-    console.log(this.payerIdControl.value)
     if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
       return
 
     this.reconciliationReportResponse = [];
-    this.endDateController.setValue(this.incrementYear(this.startDateController.value));
-    // this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
+    this.reconciliationReport.endDate = this.datePipe.transform(this.incrementYear(this.reconciliationReport.startDate),'yyyy-MM-dd');
+ // this.endDateController.setValue(this.incrementYear(this.reconciliationReport.startDate));
+  this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
     this.reconciliationService.getReconciliationBtsearch(
       this.sharedService.providerId,
       this.payerIdControl.value,
-      this.datePipe.transform(this.startDateController.value,'yyyy-MM-dd'),
-      this.datePipe.transform(this.endDateController.value,'yyyy-MM-dd'),
+      this.datePipe.transform(this.reconciliationReport.startDate,'yyyy-MM-dd'),
+      this.reconciliationReport.endDate,
       this.reconciliationReport.page,
       this.reconciliationReport.size
     ).subscribe(event => {
