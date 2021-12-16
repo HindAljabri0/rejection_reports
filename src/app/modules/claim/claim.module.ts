@@ -67,7 +67,6 @@ import { CancelReasonModalComponent } from '../nphies/preauthorization-transacti
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
       { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent },
-
     ]),
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),
