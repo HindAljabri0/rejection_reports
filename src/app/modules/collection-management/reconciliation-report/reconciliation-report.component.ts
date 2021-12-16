@@ -29,7 +29,7 @@ export class ReconciliationReportComponent implements OnInit {
   selectedReconciliationIdAndTotalDubmitted: any;
   reconciliationReportResponse: ReconciliationReportResponse[] = [];
   payerIdControl: FormControl = new FormControl();
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   startDateController: FormControl = new FormControl();
   endDateController: FormControl = new FormControl();
 
@@ -85,27 +85,27 @@ export class ReconciliationReportComponent implements OnInit {
 
     });
   }
-incrementYear(startDate){
-  var year = new Date(startDate);
-return new Date(year.setFullYear(year.getFullYear() +1));
 
 
-}
+  incrementYear(startDate){
+    var year = new Date(startDate);
+  return new Date(year.setFullYear(year.getFullYear() +1));
+  }
 
   search() {
 
-    console.log(this.payerIdControl.value)
     if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
       return
 
     this.reconciliationReportResponse = [];
-    this.endDateController.setValue(this.incrementYear(this.startDateController.value));
-    // this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
+    this.reconciliationReport.endDate = this.datePipe.transform(this.incrementYear(this.reconciliationReport.startDate),'yyyy-MM-dd');
+ // this.endDateController.setValue(this.incrementYear(this.reconciliationReport.startDate));
+  this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
     this.reconciliationService.getReconciliationBtsearch(
       this.sharedService.providerId,
       this.payerIdControl.value,
-      this.datePipe.transform(this.startDateController.value, 'dd-MM-yyyy'),
-      this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy'),
+      this.datePipe.transform(this.reconciliationReport.startDate,'yyyy-MM-dd'),
+      this.reconciliationReport.endDate,
       this.reconciliationReport.page,
       this.reconciliationReport.size
     ).subscribe(event => {
@@ -167,6 +167,7 @@ return new Date(year.setFullYear(year.getFullYear() +1));
     this.search();
   }
 
+
   openAddReconciliationDialog() {
     const dialogRef = this.dialog.open(AddReconciliationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg'],
@@ -222,6 +223,22 @@ return new Date(year.setFullYear(year.getFullYear() +1));
   }
 
 
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.reconciliationReport.endDate).format('YYYY-MM-DD');
+      if (startDate > endDate) {
+        this.reconciliationReport.endDate = '';
+      }
+    }
+  }
 
 }
 
