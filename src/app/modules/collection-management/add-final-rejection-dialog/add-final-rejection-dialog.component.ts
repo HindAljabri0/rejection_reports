@@ -62,8 +62,8 @@ this.reconciliationService.addFinalRejection(
       this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
       this.status = true;
       let finalRejectionAmountPerc=0
-      if(this.selectedUnit.value=="%"){
-      finalRejectionAmountPerc = (this.addFinalRejectionModel.finalRejectionAmount *this.selectedReconciliationIdAndTotalDubmitted.totalSubmitted) /100;
+      if(this.selectedUnit.value=='PERCENT'){
+      finalRejectionAmountPerc = (this.addFinalRejectionModel.finalRejectionAmount*this.selectedReconciliationIdAndTotalDubmitted.totalSubmitted)/100;
       this.addFinalRejectionModel = event.body as AddFinalRejectionModel;
       }
       else

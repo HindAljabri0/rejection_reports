@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="block-body pb-0 mb-3">
-      
+
         <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width"
             [class.fixed-card]="summaries.length<4">
             <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
@@ -58,7 +58,7 @@
                             </tr>
                             <tr>
                                 <th>Total Net</th>
-                              
+
                                 <th *ngIf="summary.value.statuses[0] == 'partially_paid'"></th>
                             </tr>
                             <tr>
@@ -67,7 +67,7 @@
                                         class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span
                                         *ngIf="summary.value.totalNetAmount!=null" class="currency"> SR</span>
                                 </td>
-                               
+
                                 <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
                             </tr>
                         </table>
@@ -84,8 +84,8 @@
                 *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
                 {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
             </button>
-          
-           
+
+
         </div>
         <mat-tab-group [selectedIndex]="currentSelectedTab"
             *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header bg-white">
@@ -132,20 +132,19 @@
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Amount
                                     </th>
-    
+
                                     <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
-                                    <th
+                                    <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Processing Status</th>
-                                    
-                                    <th
+
+                                    <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                     </th>
-                                   
-                                </tr>
 
+                                </tr>
                             </thead>
                             <tbody>
                                 <ng-container *ngIf='claims.length > 0'>
@@ -177,20 +176,20 @@
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="row-click text-nowrap">
-                                            {{claim.claimDate}}
+                                            {{claim.claimDate | date: 'dd-MM-yyyy'}}
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="row-click text-nowrap">
-                                            {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
+                                            {{claim.netAmount}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
                                         </td>
 
-                                
-                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
 
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                                             class="text-center row-click">
                                             <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                                         </td>
-                                        <td class="actions text-left text-wrap">
+                                        <td *ngIf="showColumns(selectedCardKey,claim.status)"
+                                            class="actions text-left text-wrap">
                                             <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
                                                 <button mat-icon-button matTooltip="Check Status" class="text-primary"
                                                     (click)="checkStatus(claim.claimResponseId)">
@@ -203,7 +202,7 @@
                                             </div>
                                         </td>
 
-                                        <td class="actions">
+                                        <td class="actions" *ngIf="showColumns(selectedCardKey,claim.status)">
                                             <ng-container *ngIf="claim.claimId && claim.claimResponseId">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <button mat-menu-item><span>Reuse</span></button>
@@ -289,7 +288,7 @@
                     [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons"
                     [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
                 </mat-paginator>
-                
+
             </div>
             <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
                 <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
