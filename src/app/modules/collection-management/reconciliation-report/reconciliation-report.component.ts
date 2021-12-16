@@ -29,7 +29,7 @@ export class ReconciliationReportComponent implements OnInit {
   selectedReconciliationIdAndTotalDubmitted: any;
   reconciliationReportResponse: ReconciliationReportResponse[] = [];
   payerIdControl: FormControl = new FormControl();
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   startDateController: FormControl = new FormControl();
   endDateController: FormControl = new FormControl();
 
@@ -104,8 +104,8 @@ return new Date(year.setFullYear(year.getFullYear() +1));
     this.reconciliationService.getReconciliationBtsearch(
       this.sharedService.providerId,
       this.payerIdControl.value,
-      this.datePipe.transform(this.startDateController.value, 'dd-MM-yyyy'),
-      this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy'),
+      this.datePipe.transform(this.startDateController.value,'yyyy-MM-dd'),
+      this.datePipe.transform(this.endDateController.value,'yyyy-MM-dd'),
       this.reconciliationReport.page,
       this.reconciliationReport.size
     ).subscribe(event => {
@@ -167,6 +167,7 @@ return new Date(year.setFullYear(year.getFullYear() +1));
     this.search();
   }
 
+
   openAddReconciliationDialog() {
     const dialogRef = this.dialog.open(AddReconciliationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg'],
@@ -222,6 +223,22 @@ return new Date(year.setFullYear(year.getFullYear() +1));
   }
 
 
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.reconciliationReport.endDate).format('YYYY-MM-DD');
+      if (startDate > endDate) {
+        this.reconciliationReport.endDate = '';
+      }
+    }
+  }
 
 }
 
