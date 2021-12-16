@@ -9,9 +9,10 @@ import { ReconciliationService } from 'src/app/services/reconciliationService/re
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { FormControl } from '@angular/forms';
+import { ReconciliationAddPaymentComponent } from '../reconciliation-add-payment/reconciliation-add-payment.component';
 @Component({
   selector: 'app-reconciliation-report',
   templateUrl: './reconciliation-report.component.html',
@@ -25,10 +26,13 @@ export class ReconciliationReportComponent implements OnInit {
   selectedDate: Date;
   YearDatePickerTitle = 'year';
   currentDetailsOpen = -1;
+  selectedReconciliationIdAndTotalDubmitted: any;
   reconciliationReportResponse: ReconciliationReportResponse[] = [];
   payerIdControl: FormControl = new FormControl();
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
-  dateController: FormControl = new FormControl();
+  startDateController: FormControl = new FormControl();
+  endDateController: FormControl = new FormControl();
+
   totalPages: number;
   page: number = 0;
   constructor(
@@ -75,23 +79,33 @@ export class ReconciliationReportComponent implements OnInit {
       if (params.size != null) {
         this.reconciliationReport.size = params.size;
       }
-      this.dateController.setValue(new Date());
-      this.search();
+      this.startDateController.setValue(new Date());
+      this.endDateController.setValue(new Date());
+
 
     });
   }
+incrementYear(startDate){
+  var year = new Date(startDate);
+return new Date(year.setFullYear(year.getFullYear() +1));
 
+
+}
 
   search() {
+
+    console.log(this.payerIdControl.value)
     if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
       return
+
     this.reconciliationReportResponse = [];
-    this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate)
+    this.endDateController.setValue(this.incrementYear(this.startDateController.value));
+    // this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
     this.reconciliationService.getReconciliationBtsearch(
       this.sharedService.providerId,
       this.payerIdControl.value,
-      '01-01-' + this.datePipe.transform(this.dateController.value, 'yyyy'),
-      '31-12-' + this.datePipe.transform(this.dateController.value, 'yyyy'),
+      this.datePipe.transform(this.startDateController.value, 'dd-MM-yyyy'),
+      this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy'),
       this.reconciliationReport.page,
       this.reconciliationReport.size
     ).subscribe(event => {
@@ -157,14 +171,59 @@ export class ReconciliationReportComponent implements OnInit {
     const dialogRef = this.dialog.open(AddReconciliationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg'],
       autoFocus: false
-    })
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.status) {
+      }
+    }, error => {
+
+    });
+
   }
 
-  openFinalRejectionDialog() {
-    const dialogRef = this.dialog.open(AddFinalRejectionDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-sm'],
-      autoFocus: false
-    })
+  openAddFinalRejectionDialog() {
+
+    const dialogRef = this.dialog.open(AddFinalRejectionDialogComponent,
+      {
+        panelClass: ['primary-dialog', 'dialog-sm'],
+
+        data: {
+          id: this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
+          total: this.selectedReconciliationIdAndTotalDubmitted.totalSubmitted
+
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.status) {
+        this.search();
+      }
+    }, error => {
+
+
+    });
   }
+  openAddPaymentDialog() {
+    const dialogRef = this.dialog.open(ReconciliationAddPaymentComponent,
+      {
+        panelClass: ['primary-dialog'],
+
+        data: {
+          id: this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
+          payerId: this.selectedReconciliationIdAndTotalDubmitted.payerId
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.status) {
+        this.search();
+      }
+    }, error => {
+
+    });
+  }
+
+
 
 }
+
+
+

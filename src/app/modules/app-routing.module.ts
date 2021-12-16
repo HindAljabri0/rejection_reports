@@ -13,6 +13,7 @@ import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
 import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.component';
 import { NphiesSearchClaimsComponent } from './nphies/nphies-search-claims/nphies-search-claims.component';
+import { EditClaimComponent } from '../pages/edit-claim/edit-claim.component';
 import { MainClaimPageComponent } from '../claim-module-components/main-claim-page/main-claim-page.component';
 
 @NgModule({

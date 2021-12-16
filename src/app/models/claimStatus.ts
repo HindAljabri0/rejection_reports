@@ -31,7 +31,9 @@ export enum ClaimStatus {
     // PARTIALLY_DISPENSED = "PARTIALL DISPENSED",
     // NOT_DISPENSED = "NO DISPENSED",
     // NO_APPROVAL_REQUIRED= "No Approva Required",
-
+    Pended='Pended',
+    Error='Error',
+    Queued='Queued',
     Downloadable = 'Downloadable',
     Under_Processing = 'UNDER PROCESSING',
     Under_Submision = 'UNDER SUBMISSION',

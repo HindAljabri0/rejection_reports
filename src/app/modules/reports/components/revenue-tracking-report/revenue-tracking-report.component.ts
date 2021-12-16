@@ -369,7 +369,7 @@ export class RevenueTrackingReportComponent implements OnInit {
       }
     }
     this.minDate = new Date(event);
-    this.minDate = new Date(this.minDate.setMonth(this.minDate.getMonth() + 1));
+    this.minDate = new Date(this.minDate.setMonth(this.minDate.getMonth()));
   }
   getEmptyStateMessage() {
     if (!this.isGenerateData && (this.error == null || this.error === undefined)) {
