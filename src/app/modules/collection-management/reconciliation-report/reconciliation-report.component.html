@@ -24,10 +24,13 @@
                         <div class="form-group" >
                             <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
-                                <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />
+                                <input autocomplete="off" class="form-control date-picker" bsDatepicker
+                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                placeholder="Select from month" [(ngModel)]='reconciliationReport.startDate'
+                                #fromDate='ngModel' name="fromDate" required (bsValueChange)="dateValidation($event)" />
+                                <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />
                                 <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
-                                <mat-datepicker #startDate></mat-datepicker>
-                                </div>
+                                <mat-datepicker #startDate></mat-datepicker> -->
                             </div>
                         </div>
                     </div>

@@ -135,14 +135,17 @@ export class AddReconciliationDialogComponent implements OnInit {
     this.location.go(path);
   }
   addDiscount(){
+    debugger;
+    this.editURL(this.searchDiscountReconciliationReport.startDate, this.searchDiscountReconciliationReport.endDate);
     let data:AddDiscountReconciliationReport = {
       promptDiscount:this.promptDiscountControl.value,
       volumeDiscount:this.volumeDiscountCotrol.value,
-      startDate:  new Date(this.datePipe.transform(this.startDateController.value,'dd-MM-yyyy')),
-      endDate: new Date(this.datePipe.transform(this.endDateController.value,'dd-MM-yyyy')),
+      startDate:this.datePipe.transform(this.startDateController.value,'yyyy-MM-dd'),
+      endDate:this.datePipe.transform(this.endDateController.value,'yyyy-MM-dd'),
       payerId: this.payerIdControl.value
     };
-    console.log(data.startDate)
+console.log(data.startDate)
+console.log(data.endDate)
   this.reconciliationService.getAddDiscount(
     this.sharedService.providerId,data
   ).subscribe(event => {

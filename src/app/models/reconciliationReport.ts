@@ -1,7 +1,7 @@
 export class ReconciliationReport{
     payerId: any = '0';
     startDate = '';
-    endDate : '';
+    endDate ='';
     page: number = 0;
     size: number = 10;
 }
@@ -15,8 +15,8 @@ export class SearchDiscountReconciliationReport{
 
 export class AddDiscountReconciliationReport{
     payerId: any = '0';
-    startDate :Date;
-    endDate  :Date;
+    startDate ='';
+    endDate  ='';
     promptDiscount:Number;
     volumeDiscount:Number;
 }
