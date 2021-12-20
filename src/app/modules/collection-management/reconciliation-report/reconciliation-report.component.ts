@@ -25,6 +25,7 @@ export class ReconciliationReportComponent implements OnInit {
   selectedPayerName = 'All';
   selectedDate: Date;
   YearDatePickerTitle = 'year';
+  sumOfTotalReceivableObj: any;
   currentDetailsOpen = -1;
   selectedReconciliationIdAndTotalDubmitted: any;
   reconciliationReportResponse: ReconciliationReportResponse[] = [];
@@ -114,15 +115,77 @@ export class ReconciliationReportComponent implements OnInit {
           this.reconciliationReportResponse = event.body['content'] as ReconciliationReportResponse[];
           this.totalPages = event.body['totalPages'];
 
+          let sumTotalSubmitted = 0, sumTotalReceivedAmount = 0, sumTotalReceivedAmountPerc = 0, finalRejectionAmount = 0, finalRejectionAmountPrec = 0,  sumTotalOutstandingAmount = 0, promptPaymentDiscountPrec=0, sumPromptPaymentDiscount=0, sumVolumeDiscount=0, volumeDiscountPrec=0;
+          this.reconciliationReportResponse.map(ele => {
+            const payerData = this.payersList.find(sele => sele.id === ele.payerId);
+            ele.payerId = payerData !== undefined ? payerData.name : ele.payerId;
+            if (ele.finalRejectionAmountPerc !== null)
+            ele.finalRejectionAmountPerc = ele.finalRejectionAmountPerc + '%';
+
+            if (ele.totalReceivedPerc !== null)
+              ele.totalReceivedPerc = ele.totalReceivedPerc + '%';
+
+              if (ele.promptDiscountPerc !== null)
+              ele.promptDiscountPerc = ele.promptDiscountPerc + '%';
+
+              if (ele.volumeDiscountPerc !== null)
+              ele.volumeDiscountPerc = ele.volumeDiscountPerc + '%';
+
+
+
+
+
+            sumTotalSubmitted += ele.totalSubmittedAmount;
+            sumTotalReceivedAmount += ele.totalReceived;
+            finalRejectionAmount += ele.finalRejectionAmount;
+            sumTotalOutstandingAmount += ele.totalOutstandingAmount;
+            sumPromptPaymentDiscount+=ele.promptDiscount;
+            sumVolumeDiscount +=ele.promptDiscount;
+
+            return ele;
+          });
+
+          sumTotalReceivedAmountPerc = (sumTotalReceivedAmount / sumTotalSubmitted) * 100;
+          finalRejectionAmountPrec = (finalRejectionAmount / sumTotalSubmitted) * 100;
+          promptPaymentDiscountPrec = (sumPromptPaymentDiscount / sumTotalSubmitted) * 100;
+          volumeDiscountPrec = (sumVolumeDiscount / sumTotalSubmitted) * 100;
+
+          this.sumOfTotalReceivableObj = {
+            sumTotalSubmitted: sumTotalSubmitted.toFixed(2),
+            sumTotalReceivedAmount: sumTotalReceivedAmount.toFixed(2),
+            sumTotalReceivedAmountPerc: sumTotalReceivedAmountPerc !== null && !isNaN(sumTotalReceivedAmountPerc) ? sumTotalReceivedAmountPerc.toFixed(2) + '%' : '0%',
+            initRejectionAmountPerc: finalRejectionAmountPrec !== null && !isNaN(finalRejectionAmountPrec) ? finalRejectionAmountPrec.toFixed(2) + '%' : '0%',
+            initRejectionAmount: finalRejectionAmount.toFixed(2),
+            sumTotalOutstandingAmount: sumTotalOutstandingAmount.toFixed(2),
+
+            sumPromptPaymentDiscount: sumPromptPaymentDiscount.toFixed(2),
+            promptPaymentDiscountPrec: promptPaymentDiscountPrec !== null && !isNaN(promptPaymentDiscountPrec) ? promptPaymentDiscountPrec.toFixed(2) + '%' : '0%',
+
+            sumVolumeDiscount: sumVolumeDiscount.toFixed(2),
+            volumeDiscountPrec: volumeDiscountPrec !== null && !isNaN(volumeDiscountPrec) ? volumeDiscountPrec.toFixed(2) + '%' : '0%'
+
+          }
           this.sharedService.loadingChanged.next(false);
         }
       }
     }, err => {
-      this.sharedService.loadingChanged.next(false);
-      console.log(err);
-
+      if (err instanceof HttpErrorResponse) {
+        this.sharedService.loadingChanged.next(false);
+        this.reconciliationReportResponse = [];
+        console.log(err);
+      }
     });
   }
+
+  //          this.sharedService.loadingChanged.next(false);
+  //        }
+  //      }
+  //   }, err => {
+  //     this.sharedService.loadingChanged.next(false);
+  //      console.log(err);
+
+  //   });
+  //  }
   editURL(startDate?: string, endDate?: string) {
     let path = `/reconciliationService/reconciliation.service?`;
 
