@@ -1403,6 +1403,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
     this.otherDataModel.provClaimNo = response.provClaimNo;
+    this.otherDataModel.claimRefNo = response.claimRefNo;
     this.otherDataModel.status = response.status;
     this.otherDataModel.totalNet = response.totalNet;
     this.otherDataModel.preAuthRefNo = response.preAuthDetails;
