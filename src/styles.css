@@ -233,7 +233,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .text-submitted-outside-waseel,.text-submitted,.text-under-processing,.text-deep-red{color: #851111!important;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #909090!important;}
-.text-grey{color: #707070!important;}
+.text-grey,.text-duplicate{color: #707070!important;}
 .text-success{color: #29bf24!important;}
 .text-danger{color: #CC2F2F!important;}
 .text-invalid,.text-purple{color: #682691!important;}
@@ -252,6 +252,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .bg-submitted-outside-waseel,.bg-submitted,.bg-under-processing,.bg-deep-red{background-color: #7D0202!important;}
 .bg-light-grey{background-color: #adadad!important;}
 .bg-middle-grey{background-color:#bebebe!important;}
+.bg-grey,.bg-duplicate{background-color:#707070!important;}
 .bg-off-white{background-color:#f6f6f6!important;}
 .bg-success{background-color: #29bf24!important;}
 .bg-danger{background-color: #CC2F2F!important;}
@@ -264,6 +265,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .light-bg-not-saved,.light-bg-orange,.light-bg-warning{background-color: #fcf5e4!important;}
 .light-bg-under-submission,.light-bg-cyan{background-color: #e0fafc!important;}
 .light-bg-rejected,.light-bg-light-pink{background-color: #ffeaf4!important;}
+.light-bg-duplicate{background-color: #f4f4f4!important;}
 .light-bg-paid,.light-bg-green{background-color: #e3efe5!important;}
 .light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
 .light-bg-submitted-outside-waseel,.light-bg-submitted,.light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
