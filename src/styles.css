@@ -707,7 +707,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 --------------------------------------------------------------------------------------------------------*/
 .empty-state{padding: 48px 15px;text-align:center;background-color: rgba(48, 96, 170,0.05);display: flex;flex-direction: column;justify-content: center;}
 .summary-empty-state .empty-state{min-height: calc(100vh - 475px);}
-.claim-list-empty-state  .empty-state{min-height:calc(100vh - 406px);   }
+.claim-list-empty-state  .empty-state{min-height:calc(100vh - 406px);}
+.reconciliation-report-empty-state .empty-state{min-height: calc(100vh - 293px);}
 .empty-state>img{height: 64px;width: 64px;display: block;margin: 0 auto 24px;}
 .empty-state>span{font-size: 18px;line-height: 22px;}
 .empty-state.size-sm{padding: 24px 0;}

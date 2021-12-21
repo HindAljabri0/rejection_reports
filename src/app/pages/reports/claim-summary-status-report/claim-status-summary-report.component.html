@@ -27,8 +27,9 @@
               >
             <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="datePickerConfig" placeholder="Select From Date" required
-              (bsValueChange)="dateValidation($event)" />
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
+              [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }" placeholder="Select From Date"
+              required (bsValueChange)="dateValidation($event)" />
           </div>
           <div *ngIf="submitted && formCn.fromDate.errors">
             <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a date</span>
@@ -43,7 +44,8 @@
               formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig" [minDate]="minDate"
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
+              [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }" [minDate]="minDate"
               placeholder="Select To Date" required />
           </div>
           <div *ngIf="submitted && formCn.toDate.errors">
@@ -178,7 +180,8 @@
         </table>
       </div>
     </ng-scrollbar>
-    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined" class="claim-list-empty-state" message='No reports found!'>
+    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
+      class="claim-list-empty-state" message='No reports found!'>
     </app-empty-state>
 
     <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
