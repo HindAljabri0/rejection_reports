@@ -11,7 +11,7 @@
                         <div class="form-group">
                             <label class="control-label">Payer</label>
                             <mat-form-field class="form-control custom-select-control">
-                                <mat-select [formControl]="payerIdControl"  (keyup.enter)="search()" required>
+                                <mat-select [formControl]="payerIdControl" (keyup.enter)="search()" required>
                                     <mat-option value="All">All</mat-option>
                                     <mat-option *ngFor="let payer of payersList" [value]="payer.id">
                                         {{payer.name}}
@@ -21,13 +21,12 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group" >
+                        <div class="form-group">
                             <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
-                                <input autocomplete="off" class="form-control date-picker" bsDatepicker
-                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                                placeholder="Select from month" [(ngModel)]='reconciliationReport.startDate'
-                                #fromDate='ngModel' name="fromDate" required (bsValueChange)="dateValidation($event)" />
+                                <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                    placeholder="Select from month" [(ngModel)]='reconciliationReport.startDate' #fromDate='ngModel' name="fromDate" required
+                                    (bsValueChange)="dateValidation($event)" />
                                 <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />
                                 <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                                 <mat-datepicker #startDate></mat-datepicker> -->
@@ -36,101 +35,101 @@
                     </div>
                     <div class="col-auto align-self-end">
                         <div class="form-group">
-                            <button type="button"  (click)="search()" mat-flat-button color="primary">Search</button>
+                            <button type="button" (click)="search()" mat-flat-button color="primary">Search</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-            <div class="fixed-height">
-                <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-                    <thead>
-                        <tr>
-                          
-                            <th rowspan="2">Duration</th>
-                            <th rowspan="2">Payer</th>
-                            <th rowspan="2">Total Submitted</th>
-                            <th colspan="2" class="text-center">Total Received</th>
-                            <th rowspan="2">Total Outstanding</th>
-                            <th colspan="2" class="text-center">Prompt Payment Discount</th>
-                            <th colspan="2" class="text-center">Volume Discount</th>
-                            <th rowspan="2">Reconciliation Amount</th>
-                            <th colspan="2">Final Rejection Amount</th>
-                            <th rowspan="2"></th>
-                    
-                        </tr>
-                        <tr>
-                            <th class="not-first-child">SR</th>
-                            <th>%</th>
-                            <th>SR</th>
-                            <th>%</th>
-                            <th>SR</th>
-                            <th>%</th>
-                            <th>SR</th>
-                            <th class="not-last-child">%</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of reconciliationReportResponse">
-                            <td style="display:none;">{{data.reconciliationId}}</td>
-                            <td>{{data.duration}}</td>
-                            <td>{{data.payerId}}</td>
-                            <td>{{data.totalSubmittedAmount}}</td>
-                            <td>{{data.totalReceived}}</td>
-                            <td>{{data.totalReceivedPerc}}</td>
-                            <td>{{data.totalOutstandingAmount}}</td>
-                            <td>{{data.promptDiscount}}</td>
-                            <td>{{data.promptDiscountPerc}}</td>
-                            <td>{{data.volumeDiscount}}</td>
-                            <td>{{data.volumeDiscountPerc}}</td>
-                            <td>{{data.reconciliationAmount}}</td>
-                            <td>{{data.finalRejectionAmount}}</td>
-                            <td>{{data.finalRejectionAmountPerc}}</td>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+
+                        <th rowspan="2">Duration</th>
+                        <th rowspan="2">Payer</th>
+                        <th rowspan="2">Total Submitted</th>
+                        <th colspan="2" class="text-center">Total Received</th>
+                        <th rowspan="2">Total Outstanding</th>
+                        <th colspan="2" class="text-center">Prompt Payment Discount</th>
+                        <th colspan="2" class="text-center">Volume Discount</th>
+                        <th rowspan="2">Reconciliation Amount</th>
+                        <th colspan="2">Final Rejection Amount</th>
+                        <th rowspan="2"></th>
+
+                    </tr>
+                    <tr>
+                        <th class="not-first-child">SR</th>
+                        <th>%</th>
+                        <th>SR</th>
+                        <th>%</th>
+                        <th>SR</th>
+                        <th>%</th>
+                        <th>SR</th>
+                        <th class="not-last-child">%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of reconciliationReportResponse">
+                        <td style="display:none;">{{data.reconciliationId}}</td>
+                        <td>{{data.duration}}</td>
+                        <td>{{data.payerId}}</td>
+                        <td>{{data.totalSubmittedAmount}}</td>
+                        <td>{{data.totalReceived}}</td>
+                        <td>{{data.totalReceivedPerc}}</td>
+                        <td>{{data.totalOutstandingAmount}}</td>
+                        <td>{{data.promptDiscount}}</td>
+                        <td>{{data.promptDiscountPerc}}</td>
+                        <td>{{data.volumeDiscount}}</td>
+                        <td>{{data.volumeDiscountPerc}}</td>
+                        <td>{{data.reconciliationAmount}}</td>
+                        <td>{{data.finalRejectionAmount}}</td>
+                        <td>{{data.finalRejectionAmountPerc}}</td>
                         <td class="actions">
                             <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="selectedReconciliationIdAndTotalDubmitted = data">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
-                        </tr>
+                    </tr>
 
-                        <tr>
-                            <td colspan="5" class="p-0">
-                                <app-empty-state *ngIf="reconciliationReportResponse == null || reconciliationReportResponse.length == 0"
-                                    class="claim-list-empty-state" message='No records found!'>
-                                </app-empty-state>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </ng-scrollbar>
-        <div class="block-footer sticky-bottom">
-            <div class="left-block custom-paginator">
-                <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
-                    <img src="./assets/ic-page-first.svg" alt="First" />
-                </button>
-                <button matRipple  (click)="goToPrePage()" type="button" title="Previous Page">
-                    <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                </button>
-                <p class="page-info">
-                    {{(page+1)}}<small>/{{totalPages}}</small>
-                </p>
-                <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
-                    <img src="./assets/ic-page-next.svg" alt="Next" />
-                </button>
-                <button matRipple  (click)="goToLastPage()" type="button" title="Last Page">
-                    <img src="./assets/ic-page-last.svg" alt="Last" />
-                </button>
-            </div>
+                    <tr>
+                        <td colspan="14" class="p-0">
+                            <app-empty-state *ngIf="reconciliationReportResponse == null || reconciliationReportResponse.length == 0" class="reconciliation-report-empty-state"
+                                message='No records found!'>
+                            </app-empty-state>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
-            <mat-icon>add</mat-icon>
-        </button>
-<mat-menu #actionsMenu xPosition="before">
-    <ng-template matMenuContent>
-        <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
-        <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button>
-    </ng-template>
-</mat-menu>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom" *ngIf="!(reconciliationReportResponse == null || reconciliationReportResponse.length == 0)">
+        <div class="left-block custom-paginator">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                {{(page+1)}}<small>/{{totalPages}}</small>
+            </p>
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
+    <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
+    <mat-menu #actionsMenu xPosition="before">
+        <ng-template matMenuContent>
+            <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
+            <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button>
+        </ng-template>
+    </mat-menu>
