@@ -88,59 +88,64 @@ export class ReconciliationReportComponent implements OnInit {
   }
 
 
-  incrementYear(startDate){
+  decrementYear(startDate) {
     var year = new Date(startDate);
-  return new Date(year.setFullYear(year.getFullYear() +1));
+    return new Date(year.setFullYear(year.getFullYear() - 1));
   }
 
   search() {
 
-    if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
-      return
+    if (this.reconciliationReport.endDate == null || this.reconciliationReport.endDate == undefined) {
+      return;
+    }
 
     this.reconciliationReportResponse = [];
-    this.reconciliationReport.endDate = this.datePipe.transform(this.incrementYear(this.reconciliationReport.startDate),'yyyy-MM-dd');
- // this.endDateController.setValue(this.incrementYear(this.reconciliationReport.startDate));
-  this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
+    // this.endDateController.setValue(this.incrementYear(this.reconciliationReport.startDate));
+
+    let model: any = {};
+    model.payerId = this.payerIdControl.value;
+    model.startDate =  this.datePipe.transform(this.decrementYear(this.reconciliationReport.endDate), 'yyyy-MM-dd');
+    model.endDate = this.datePipe.transform(this.reconciliationReport.endDate, 'yyyy-MM-dd');
+    model.page = this.reconciliationReport.page;
+    model.pageSize = this.reconciliationReport.size;
+
+    this.editURL(model.startDate, model.endDate);
+
     this.reconciliationService.getReconciliationBtsearch(
       this.sharedService.providerId,
-      this.payerIdControl.value,
-      this.datePipe.transform(this.reconciliationReport.startDate,'yyyy-MM-dd'),
-      this.reconciliationReport.endDate,
-      this.reconciliationReport.page,
-      this.reconciliationReport.size
+      model.payerId,
+      model.startDate,
+      model.endDate,
+      model.page,
+      model.pageSize
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.reconciliationReportResponse = event.body['content'] as ReconciliationReportResponse[];
           this.totalPages = event.body['totalPages'];
 
-          let sumTotalSubmitted = 0, sumTotalReceivedAmount = 0, sumTotalReceivedAmountPerc = 0, finalRejectionAmount = 0, finalRejectionAmountPrec = 0,  sumTotalOutstandingAmount = 0, promptPaymentDiscountPrec=0, sumPromptPaymentDiscount=0, sumVolumeDiscount=0, volumeDiscountPrec=0;
+          let sumTotalSubmitted = 0, sumTotalReceivedAmount = 0, sumTotalReceivedAmountPerc = 0, finalRejectionAmount = 0, finalRejectionAmountPrec = 0, sumTotalOutstandingAmount = 0, promptPaymentDiscountPrec = 0, sumPromptPaymentDiscount = 0, sumVolumeDiscount = 0, volumeDiscountPrec = 0;
           this.reconciliationReportResponse.map(ele => {
             const payerData = this.payersList.find(sele => sele.id === ele.payerId);
             ele.payerId = payerData !== undefined ? payerData.name : ele.payerId;
             if (ele.finalRejectionAmountPerc !== null)
-            ele.finalRejectionAmountPerc = ele.finalRejectionAmountPerc + '%';
+              ele.finalRejectionAmountPerc = ele.finalRejectionAmountPerc + '%';
 
             if (ele.totalReceivedPerc !== null)
               ele.totalReceivedPerc = ele.totalReceivedPerc + '%';
 
-              if (ele.promptDiscountPerc !== null)
+            if (ele.promptDiscountPerc !== null)
               ele.promptDiscountPerc = ele.promptDiscountPerc + '%';
 
-              if (ele.volumeDiscountPerc !== null)
+            if (ele.volumeDiscountPerc !== null)
               ele.volumeDiscountPerc = ele.volumeDiscountPerc + '%';
-
-
-
-
 
             sumTotalSubmitted += ele.totalSubmittedAmount;
             sumTotalReceivedAmount += ele.totalReceived;
             finalRejectionAmount += ele.finalRejectionAmount;
             sumTotalOutstandingAmount += ele.totalOutstandingAmount;
-            sumPromptPaymentDiscount+=ele.promptDiscount;
-            sumVolumeDiscount +=ele.promptDiscount;
+            sumPromptPaymentDiscount += ele.promptDiscount;
+            sumVolumeDiscount += ele.promptDiscount;
 
             return ele;
           });
@@ -164,7 +169,8 @@ export class ReconciliationReportComponent implements OnInit {
             sumVolumeDiscount: sumVolumeDiscount.toFixed(2),
             volumeDiscountPrec: volumeDiscountPrec !== null && !isNaN(volumeDiscountPrec) ? volumeDiscountPrec.toFixed(2) + '%' : '0%'
 
-          }
+          };
+
           this.sharedService.loadingChanged.next(false);
         }
       }
