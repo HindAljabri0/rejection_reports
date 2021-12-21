@@ -13,12 +13,15 @@ import { AddDiscountReconciliationReport } from 'src/app/models/reconciliationRe
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-reconciliation',
   templateUrl: './add-reconciliation-dialog.component.html',
   styles: []
 })
 export class AddReconciliationDialogComponent implements OnInit {
+
   status: boolean = false;
   searchComplete = true;
   searchDiscountReconciliationReport = new SearchDiscountReconciliationReport();
@@ -30,14 +33,9 @@ export class AddReconciliationDialogComponent implements OnInit {
   selectedPayerId = 'All';
   payersList: { id: string[] | string, name: string }[];
   selectedPayerName = 'All';
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   searchDiscountReconciliationReportResponse: SearchDiscountReconciliationReportResponse;
-
   AddDiscountReconciliationReport = new AddDiscountReconciliationReport();
-
-
-
-
 
   constructor(
     private dialogRef: MatDialogRef<AddReconciliationDialogComponent>,
@@ -48,9 +46,6 @@ export class AddReconciliationDialogComponent implements OnInit {
     private location: Location,
     private datePipe: DatePipe,
     private dialogService: DialogService,
-
-
-
   ) { }
 
   ngOnInit() {
@@ -85,6 +80,9 @@ export class AddReconciliationDialogComponent implements OnInit {
       this.startDateController.setValue(new Date());
       this.endDateController.setValue(new Date());
 
+      if (this.payerIdControl.value === undefined) {
+        this.payerIdControl.setValue('');
+      }
     });
   }
 
@@ -133,8 +131,8 @@ export class AddReconciliationDialogComponent implements OnInit {
     }
     this.location.go(path);
   }
+
   addDiscount() {
-    debugger;
     this.editURL(this.searchDiscountReconciliationReport.startDate, this.searchDiscountReconciliationReport.endDate);
     let data: AddDiscountReconciliationReport = {
       promptDiscount: this.promptDiscountControl.value,
@@ -163,6 +161,23 @@ export class AddReconciliationDialogComponent implements OnInit {
         this.status = false;
       }
     });
+  }
+
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.endDateController.value).format('YYYY-MM-DD');
+      if (startDate > endDate) {
+        this.endDateController.setValue('');
+      }
+    }
   }
 
 }

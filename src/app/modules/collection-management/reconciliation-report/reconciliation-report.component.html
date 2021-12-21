@@ -25,7 +25,7 @@
                             <label class="control-label">Select Current Date</label>
                             <div class="date-picker">
                                 <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                                    placeholder="Select from month" [(ngModel)]='reconciliationReport.startDate' #fromDate='ngModel' name="fromDate" required
+                                    placeholder="Select from month" [(ngModel)]='reconciliationReport.endDate' #fromDate='ngModel' name="fromDate" required
                                     (bsValueChange)="dateValidation($event)" />
                                 <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />
                                 <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
@@ -95,7 +95,7 @@
                     </tr>
 
                     <tr>
-                        <td colspan="14" class="p-0">
+                        <td colspan="20" class="p-0">
                             <app-empty-state *ngIf="reconciliationReportResponse == null || reconciliationReportResponse.length == 0" class="reconciliation-report-empty-state"
                                 message='No records found!'>
                             </app-empty-state>
@@ -130,6 +130,6 @@
     <mat-menu #actionsMenu xPosition="before">
         <ng-template matMenuContent>
             <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
-            <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button>
+            <!-- <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button> -->
         </ng-template>
     </mat-menu>
