@@ -71,7 +71,10 @@ export class SuperAdminService {
   }
   addPayerPaymentContractDetailsData(providerId: any, file: File, data: any) {
     const formdata: FormData = new FormData();
-    formdata.append('agreementCopy', file, file.name);
+    if (file) {
+      formdata.append('agreementCopy', file, file.name);
+    }
+
     formdata.append('effectiveDate', data.effectiveDate);
     formdata.append('expiryDate', data.expiryDate);
     formdata.append('payerid', data.payerid);
@@ -89,7 +92,10 @@ export class SuperAdminService {
   }
   updatePayerPaymentContractDetailsData(providerId: any, file: File, data: any, editId) {
     const formdata: FormData = new FormData();
-    formdata.append('agreementCopy', file, file.name);
+    if (file) {
+      formdata.append('agreementCopy', file, file.name);
+    }
+
     formdata.append('effectiveDate', data.effectiveDate);
     formdata.append('expiryDate', data.expiryDate);
     formdata.append('payerid', data.payerid);
