@@ -127,7 +127,7 @@ export class ReconciliationReportComponent implements OnInit {
           let sumTotalSubmitted = 0, sumTotalReceivedAmount = 0, sumTotalReceivedAmountPerc = 0, finalRejectionAmount = 0, finalRejectionAmountPrec = 0, sumTotalOutstandingAmount = 0, promptPaymentDiscountPrec = 0, sumPromptPaymentDiscount = 0, sumVolumeDiscount = 0, volumeDiscountPrec = 0;
           this.reconciliationReportResponse.map(ele => {
             const payerData = this.payersList.find(sele => sele.id === ele.payerId);
-            ele.payerId = payerData !== undefined ? payerData.name : ele.payerId;
+            ele.payerName = payerData !== undefined ? payerData.name : ele.payerId;
             if (ele.finalRejectionAmountPerc !== null)
               ele.finalRejectionAmountPerc = ele.finalRejectionAmountPerc + '%';
 
