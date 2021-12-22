@@ -145,8 +145,17 @@ export class AddProviderContractDialogComponent implements OnInit {
   submit() {
     this.sharedServices.loadingChanged.next(true);
     this.closeStatus = false;
-    const expiryDate = moment(this.paymentProviderContractModel.expiryDate).format('YYYY-MM-DD');
-    const effectiveDate = moment(this.paymentProviderContractModel.effectiveDate).format('YYYY-MM-DD');
+
+    let expiryDate = '';
+    if (this.paymentProviderContractModel.expiryDate) {
+      expiryDate = moment(this.paymentProviderContractModel.expiryDate).format('YYYY-MM-DD');
+    }
+
+    let effectiveDate = '';
+    if (this.paymentProviderContractModel.effectiveDate) {
+      effectiveDate = moment(this.paymentProviderContractModel.effectiveDate).format('YYYY-MM-DD');
+    }
+
     const providerContractObjdata = {
       effectiveDate,
       expiryDate,

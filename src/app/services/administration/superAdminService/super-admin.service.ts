@@ -75,8 +75,11 @@ export class SuperAdminService {
       formdata.append('agreementCopy', file, file.name);
     }
 
+    if (data.expiryDate) {
+      formdata.append('expiryDate', data.expiryDate);
+    }
+
     formdata.append('effectiveDate', data.effectiveDate);
-    formdata.append('expiryDate', data.expiryDate);
     formdata.append('payerid', data.payerid);
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
@@ -96,8 +99,11 @@ export class SuperAdminService {
       formdata.append('agreementCopy', file, file.name);
     }
 
+    if (data.expiryDate) {
+      formdata.append('expiryDate', data.expiryDate);
+    }
+
     formdata.append('effectiveDate', data.effectiveDate);
-    formdata.append('expiryDate', data.expiryDate);
     formdata.append('payerid', data.payerid);
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
