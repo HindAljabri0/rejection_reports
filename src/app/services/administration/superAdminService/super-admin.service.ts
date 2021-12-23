@@ -71,13 +71,18 @@ export class SuperAdminService {
   }
   addPayerPaymentContractDetailsData(providerId: any, file: File, data: any) {
     const formdata: FormData = new FormData();
-    formdata.append('agreementCopy', file, file.name);
+    if (file) {
+      formdata.append('agreementCopy', file, file.name);
+    }
+
+    if (data.expiryDate) {
+      formdata.append('expiryDate', data.expiryDate);
+    }
+
     formdata.append('effectiveDate', data.effectiveDate);
-    formdata.append('expiryDate', data.expiryDate);
     formdata.append('payerid', data.payerid);
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
-    formdata.append('isActive', data.isActive);
 
     const requestURL = `/providers/${providerId}`;
 
@@ -89,9 +94,15 @@ export class SuperAdminService {
   }
   updatePayerPaymentContractDetailsData(providerId: any, file: File, data: any, editId) {
     const formdata: FormData = new FormData();
-    formdata.append('agreementCopy', file, file.name);
+    if (file) {
+      formdata.append('agreementCopy', file, file.name);
+    }
+
+    if (data.expiryDate) {
+      formdata.append('expiryDate', data.expiryDate);
+    }
+
     formdata.append('effectiveDate', data.effectiveDate);
-    formdata.append('expiryDate', data.expiryDate);
     formdata.append('payerid', data.payerid);
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);

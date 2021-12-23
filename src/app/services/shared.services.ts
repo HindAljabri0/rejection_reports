@@ -371,6 +371,8 @@ export class SharedServices {
         return 'downloadable';
       case ClaimStatus.INVALID.toLowerCase():
         return 'invalid';
+        case ClaimStatus.DUPLICATE.toLowerCase():
+        return 'duplicate';
       default:
         return 'not-saved';
     }
