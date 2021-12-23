@@ -96,6 +96,8 @@ import { ConfirmationAlertDialogComponent } from './components/confirmation-aler
 import { GeneralSummaryStatementReportComponent } from './pages/reports/general-summary-statement-report/general-summary-statement-report.component';
 import { NphiesModule } from './modules/nphies/nphies.module';
 import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-claims/nphies-search-claims.component';
+import { CertificateConfigurationComponent } from './pages/certificate-configuration/certificate-configuration.component';
+import { CertificateConfigurationModelComponent } from './pages/certificate-configuration-model/certificate-configuration-model.component';
 
 
 
@@ -160,7 +162,9 @@ import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-clai
     XmlViewDialogComponent,
     EditClaimComponent,
     ConfirmationAlertDialogComponent,
-    NphiesSearchClaimsComponent
+    NphiesSearchClaimsComponent,
+    CertificateConfigurationComponent,
+    CertificateConfigurationModelComponent
   ],
   imports: [
     AppRoutingModule,
@@ -236,7 +240,8 @@ import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-clai
     ConfirmAdminDeleteDialogComponent,
     XmlViewDialogComponent,
     EditClaimComponent,
-    ConfirmationAlertDialogComponent
+    ConfirmationAlertDialogComponent,
+    CertificateConfigurationModelComponent
   ],
 })
 export class AppModule { }

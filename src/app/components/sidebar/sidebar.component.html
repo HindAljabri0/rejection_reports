@@ -385,7 +385,7 @@
         </ng-container>
         <div class="list-container pt-0" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerCertificate.isActive ">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -398,6 +398,11 @@
                         <li i18n="@@providermapping">
                             <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active" #providermapping="routerLinkActive">
                                 <span class="text">Provider Mapping</span>
+                            </a>
+                        </li>
+                        <li i18n="@@providerCertificate">
+                            <a routerLink="/administration/config/providerCertificate" routerLinkActive="is-active" #providerCertificate="routerLinkActive" >
+                                <span class="text">Provider Certificate Configuration</span>
                             </a>
                         </li>
                     </ul>
