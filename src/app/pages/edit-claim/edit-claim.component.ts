@@ -44,7 +44,7 @@ export class EditClaimComponent implements OnInit, OnDestroy {
   isViewOnly: boolean = false;
 
   routerSubscription: Subscription;
-
+  isEdit=null;
   constructor(
     private dialogRef: MatDialogRef<EditClaimComponent>,
     private store: Store,
@@ -103,6 +103,7 @@ export class EditClaimComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
+    this.close(this.isEdit)
     this.routerSubscription.unsubscribe();
   }
 
@@ -187,6 +188,7 @@ export class EditClaimComponent implements OnInit, OnDestroy {
 
 
   save() {
+    this.isEdit='true'
     if (this.isLoading) { return; }
     this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());

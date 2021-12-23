@@ -750,7 +750,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return this.selectedClaims.length + ' of ' + this.searchResult.totalElements + ' are selected.';
     } else { return '0 of 0 are selected.'; }
   }
-
+checkCloseDialogAfterEdit=null;   
   resetURL() {
     if (this.routerSubscription.closed) { return; }
     this.params.status = this.selectedCardKey > 0 ? this.selectedCardKey : null;
@@ -759,6 +759,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, size: null },
       fragment: this.params.editMode == 'true' ? 'edit' : null,
+    }).then(()=>{
+
+      if(this.checkCloseDialogAfterEdit!=null){
+        window.location.reload();
+      }
     });
   }
 
@@ -780,6 +785,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.claimDialogRef = null;
       this.params.claimId = null;
       this.params.editMode = null;
+      this.checkCloseDialogAfterEdit=result;
       this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
