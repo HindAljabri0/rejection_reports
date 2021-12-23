@@ -1,0 +1,46 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Provider Certificate Configuration</p>
+    </div>
+    <div class="block-body bg-white" *ngIf="isLoading">
+        <div class="inline-loader">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+    </div>
+    <ng-container *ngIf="!isLoading">
+        <div class="block-body bg-white">
+            <h5 class="medium pb-2">Step 1: Select Provider</h5>
+            <div class="form-group">
+                <label class="control-label">Provider</label>
+                <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="auto"
+                    (keyup.enter)="selectProvider()" [formControl]="providerController" (input)="updateFilter()" />
+                <mat-autocomplete autoActiveFirstOption #auto>
+                    <mat-option *ngFor="let provider of filteredProviders"
+                        [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                        (click)="selectProvider(provider.switchAccountId)">
+                        {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <h5 class="medium pb-2">Step 2: Enter Password</h5>
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <input type="text" class="form-control" placeholder="Enter Password" [matAutocomplete]="auto"
+                [(ngModel)]="certificateConfigurationProvider.password" name ="certificateConfigurationProvider.password"  required />
+               
+            </div>
+
+          
+            <h5 class="medium pb-2 pt-2">Step 3: Upload P12 File</h5>
+            <div class="custom-file-upload" [class.disabled]="selectedProvider!==undefined">
+                <div class="content">
+                    <img src="./assets/ic-upload.svg" alt="Upload" />
+                    <p>Drag & drop .p12 file here, or click here to upload files</p>
+                    <span>Only .p12 files allowed</span>
+                </div>
+                <input type="file" accept=".p12" [disabled]="selectedProvider===undefined" (change)="openP12($event)"
+                    (click)="clearFiles($event)" class="upload-control" (click)="clearFiles($event)">
+            </div>
+        </div>
+    </ng-container>
+</div>
