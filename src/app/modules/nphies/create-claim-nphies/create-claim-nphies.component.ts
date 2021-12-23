@@ -1145,26 +1145,8 @@ export class CreateClaimNphiesComponent implements OnInit {
             } else {
               this.reset();
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+              // tslint:disable-next-line:max-line-length
               this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-
-              // debugger;
-              // this.location.go(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-
-              // const dialogConfig = new MatDialogConfig();
-              // dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
-
-              // const dialogRef = this.dialog.open(CreateClaimNphiesComponent, dialogConfig);
-              // dialogRef.afterOpened().subscribe(result => {
-              //   debugger;
-              //   this.claimId = parseInt(body.claimId);
-              //   this.uploadId = parseInt(body.uploadId);
-              //   this.getPayees();
-              // });
-              // dialogRef.afterClosed().subscribe(result => {
-              //   if (result) {
-              //     this.location.go(`/${this.sharedServices.providerId}/claims/nphies-claim`);
-              //   }
-              // });
             }
           }
           this.sharedServices.loadingChanged.next(false);

@@ -26,10 +26,10 @@ export class ReconciliationReportComponent implements OnInit {
   selectedDate: Date;
   YearDatePickerTitle = 'year';
   currentDetailsOpen = -1;
-  selectedReconciliationIdAndTotalDubmitted :any;
+  selectedReconciliationIdAndTotalDubmitted: any;
   reconciliationReportResponse: ReconciliationReportResponse[] = [];
   payerIdControl: FormControl = new FormControl();
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'dd-MM-yyyy' };
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   startDateController: FormControl = new FormControl();
   endDateController: FormControl = new FormControl();
 
@@ -87,18 +87,25 @@ export class ReconciliationReportComponent implements OnInit {
   }
 
 
+  incrementYear(startDate){
+    var year = new Date(startDate);
+  return new Date(year.setFullYear(year.getFullYear() +1));
+  }
+
   search() {
 
-    console.log(this.payerIdControl.value)
     if (this.reconciliationReport.startDate == null || this.reconciliationReport.startDate == undefined)
       return
+
     this.reconciliationReportResponse = [];
-    this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate)
+    this.reconciliationReport.endDate = this.datePipe.transform(this.incrementYear(this.reconciliationReport.startDate),'yyyy-MM-dd');
+ // this.endDateController.setValue(this.incrementYear(this.reconciliationReport.startDate));
+  this.editURL(this.reconciliationReport.startDate, this.reconciliationReport.endDate);
     this.reconciliationService.getReconciliationBtsearch(
       this.sharedService.providerId,
       this.payerIdControl.value,
-      '01-01-' + this.datePipe.transform(this.startDateController.value, 'yyyy'),
-      '31-12-' + this.datePipe.transform(this.endDateController.value, 'yyyy'),
+      this.datePipe.transform(this.reconciliationReport.startDate,'yyyy-MM-dd'),
+      this.reconciliationReport.endDate,
       this.reconciliationReport.page,
       this.reconciliationReport.size
     ).subscribe(event => {
@@ -160,6 +167,7 @@ export class ReconciliationReportComponent implements OnInit {
     this.search();
   }
 
+
   openAddReconciliationDialog() {
     const dialogRef = this.dialog.open(AddReconciliationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg'],
@@ -171,18 +179,18 @@ export class ReconciliationReportComponent implements OnInit {
     }, error => {
 
     });
-  
+
   }
 
   openAddFinalRejectionDialog() {
-    
+
     const dialogRef = this.dialog.open(AddFinalRejectionDialogComponent,
       {
         panelClass: ['primary-dialog', 'dialog-sm'],
-        
+
         data: {
-          id:this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
-          total:this.selectedReconciliationIdAndTotalDubmitted.totalSubmitted
+          id: this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
+          total: this.selectedReconciliationIdAndTotalDubmitted.totalSubmitted
 
         }
       });
@@ -191,18 +199,18 @@ export class ReconciliationReportComponent implements OnInit {
         this.search();
       }
     }, error => {
-     
+
 
     });
   }
-  openAddPaymentDialog(){
+  openAddPaymentDialog() {
     const dialogRef = this.dialog.open(ReconciliationAddPaymentComponent,
       {
         panelClass: ['primary-dialog'],
 
-        data :{
-        id:this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
-        payerId:this.selectedReconciliationIdAndTotalDubmitted.payerId
+        data: {
+          id: this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
+          payerId: this.selectedReconciliationIdAndTotalDubmitted.payerId
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -215,8 +223,24 @@ export class ReconciliationReportComponent implements OnInit {
   }
 
 
-  
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.reconciliationReport.endDate).format('YYYY-MM-DD');
+      if (startDate > endDate) {
+        this.reconciliationReport.endDate = '';
+      }
+    }
+  }
+
 }
 
-  
+
 

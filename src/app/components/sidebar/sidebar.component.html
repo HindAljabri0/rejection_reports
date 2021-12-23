@@ -335,12 +335,12 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
+                <mat-expansion-panel hideToggle *ngIf="hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Claims</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
-                        <li>
+                        <li *ngIf="!envProd && !envStaging">
                             <a routerLink="/upload" routerLinkActive="is-active">
                                 <span class="text">Upload Claims</span>
                             </a>
@@ -361,7 +361,7 @@
 
             <ng-container *ngIf="isProviderAdmin">
                 <ul class="nav-list">
-                    <li *ngIf="!envProd && !envStaging">
+                    <li>
                         <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
                             <span class="text">Payment Reconciliation</span>
                         </a>

@@ -133,7 +133,7 @@
                             <input type="file" accept="application/pdf"
                                 [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
                                 name="agreementCopy" [disabled]="isPayerSelected" class="file-upload-control"
-                                (change)="selectFile($event)" required />
+                                (change)="selectFile($event)" [required]="paymentProviderContractModel.modePayment && paymentProviderContractModel.modePayment === 'Prompt Payment'" />
                             <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
                                 <span class="error-text">Please choose a file</span>
                             </div>
