@@ -38,6 +38,7 @@ import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ApprovalDetailInquiryService } from 'src/app/services/approvalDetailInquiryService/approval-detail-inquiry.service';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
+import { Console } from 'console';
 
 
 @Component({
@@ -750,7 +751,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return this.selectedClaims.length + ' of ' + this.searchResult.totalElements + ' are selected.';
     } else { return '0 of 0 are selected.'; }
   }
-
+  checkCloseDialogAfterEditClaim=null
   resetURL() {
     if (this.routerSubscription.closed) { return; }
     this.params.status = this.selectedCardKey > 0 ? this.selectedCardKey : null;
@@ -759,6 +760,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, size: null },
       fragment: this.params.editMode == 'true' ? 'edit' : null,
+    }).then(()=>{
+      if(this.checkCloseDialogAfterEditClaim!=null){
+        window.location.reload();
+      }
     });
   }
 
@@ -780,9 +785,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.claimDialogRef = null;
       this.params.claimId = null;
       this.params.editMode = null;
+    
+        this.checkCloseDialogAfterEditClaim=result ;  
+
+      console.log('tessssssssst'+result);
+      
       this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
+    
     });
   }
 

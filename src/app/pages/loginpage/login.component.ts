@@ -96,7 +96,10 @@ export class LoginComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status < 500 && errorEvent.status >= 400) {
+        if(errorEvent.status == 403){
+          this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
+        }
+        else if (errorEvent.status < 500 && errorEvent.status >= 400) {
           this.errors = 'Username or Password is invalid!';
         } else {
           this.errors = 'Could not reach server at the moment. Please try again later.';
