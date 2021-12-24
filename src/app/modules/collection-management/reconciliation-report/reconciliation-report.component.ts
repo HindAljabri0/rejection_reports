@@ -60,23 +60,42 @@ export class ReconciliationReportComponent implements OnInit {
       });
       allPayersIds.push(`${value.id}`);
     });
-    this.payersList.push({
+    this.payersList.splice(0, 0, {
       id: allPayersIds,
       name: 'All'
     });
+
+    this.FormReconciliationReport.controls.payerId.setValue(allPayersIds);
+    this.FormReconciliationReport.controls.startDate.setValue(new Date());
+    this.FormReconciliationReport.controls.endDate.setValue(new Date());
+    // this.payersList.push({
+    //   id: allPayersIds,
+    //   name: 'All'
+    // });
+
+    // this.FormReconciliationReport.controls.startDate.setValue(this.decrementYear(new Date()));
+    // this.FormReconciliationReport.controls.endDate.setValue(new Date());
+
     this.routeActive.queryParams.subscribe(params => {
-      if (params.payer != undefined) {
-        if (params.payer instanceof Array && params.payer.length > 1) {
+      if (params.payer !== undefined) {
+        if (params.payer.split(',') instanceof Array && params.payer.split(',').length > 1) {
           this.FormReconciliationReport.controls.payerId.setValue(allPayersIds);
         } else {
           this.FormReconciliationReport.controls.payerId.setValue(params.payer);
         }
       }
-      if (params.startDate != null) {
-        this.reconciliationReport.startDate = params.startDate;
-      }
+      // if (params.startDate != null) {
+      //   this.reconciliationReport.startDate = params.startDate;
+      //   const startDate: any = moment(params.startDate, 'YYYY-MM-DD').toDate();
+      //   this.FormReconciliationReport.controls.startDate.setValue(startDate);
+      // }
       if (params.endDate != null) {
+        this.reconciliationReport.startDate = params.endDate;
+        const endDate: any = moment(params.endDate, 'YYYY-MM-DD').toDate();
+        this.FormReconciliationReport.controls.startDate.setValue(endDate);
+
         this.reconciliationReport.endDate = params.endDate;
+        this.FormReconciliationReport.controls.endDate.setValue(endDate);
       }
       if (params.page != null) {
         this.reconciliationReport.page = params.page;
@@ -84,9 +103,8 @@ export class ReconciliationReportComponent implements OnInit {
       if (params.size != null) {
         this.reconciliationReport.size = params.size;
       }
-      this.FormReconciliationReport.controls.startDate.setValue(new Date());
-      this.FormReconciliationReport.controls.endDate.setValue(new Date());
 
+      this.search();
     });
   }
 
@@ -94,6 +112,12 @@ export class ReconciliationReportComponent implements OnInit {
   decrementYear(startDate) {
     var year = new Date(startDate);
     return new Date(year.setFullYear(year.getFullYear() - 1));
+  }
+
+  onSubmit() {
+    this.reconciliationReport.page = 0;
+    this.reconciliationReport.size = 10;
+    this.search();
   }
 
   search() {
@@ -205,10 +229,10 @@ export class ReconciliationReportComponent implements OnInit {
     }
 
     if (startDate != null) {
-      path += `from=${startDate}&`;
+      path += `startDate=${startDate}&`;
     }
     if (endDate != null) {
-      path += `to=${endDate}`;
+      path += `endDate=${endDate}`;
     }
 
     if (this.reconciliationReport.page > 0) {
