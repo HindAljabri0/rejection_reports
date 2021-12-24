@@ -1,4 +1,4 @@
-<div class="bg-white block-body create-claim-body p-0" *ngIf="pageMode == 'VIEW'">
+<div class="bg-white block-body create-claim-body p-0" *ngIf="pageMode && pageMode == 'VIEW' && otherDataModel && otherDataModel.claimId">
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">View Claim</h5>
         <button type="button" (click)="close()" class="dialog-close" matRipple></button>
@@ -1211,7 +1211,7 @@
 </div>
 
 
-<div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode !== 'VIEW'">
+<div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode && pageMode !== 'VIEW'">
     <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate" class="page-top-loader">
     </mat-progress-bar>
 
