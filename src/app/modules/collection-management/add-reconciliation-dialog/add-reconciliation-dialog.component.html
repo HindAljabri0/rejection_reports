@@ -72,7 +72,8 @@
       <app-empty-state message='Select criteria to add discounts' icon="ic-empty-search.svg" className='mb-14'>
       </app-empty-state>
     </ng-container>
-    <ng-container *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null">
+    <ng-container
+      *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null && searchDiscountReconciliationReportResponse.totalSubmittedAmount !=0">
       <hr class="hr ml-n16 mr-n16 mb-16" />
       <div class="reconciliation-summary-wrapper">
         <div class="row">
@@ -114,6 +115,12 @@
           </div>
         </div>
       </div>
+    </ng-container>
+    <ng-container
+      *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null && searchDiscountReconciliationReportResponse.totalSubmittedAmount === 0">
+      <hr class="hr ml-n16 mr-n16 mb-16" />
+      <app-empty-state message='No claims were submitted in this duration' className='mb-14 text-danger'>
+      </app-empty-state>
     </ng-container>
   </form>
 </div>
