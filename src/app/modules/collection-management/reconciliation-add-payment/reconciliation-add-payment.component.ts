@@ -4,8 +4,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { AddFinalRejectionModel } from 'src/app/models/addFinalRejectionModel';
 import { AddPaymentReconciliationModel } from 'src/app/models/addPaymentReconciliationModel';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -19,7 +17,6 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class ReconciliationAddPaymentComponent implements OnInit {
   addPaymentReconciliationModel = new AddPaymentReconciliationModel();
   addPaymentForm: FormGroup;
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'DD/MM/YYYY' };
   startDateController: FormControl = new FormControl();
   endDateController: FormControl = new FormControl();
   payementData: any[] = [];
@@ -41,10 +38,10 @@ export class ReconciliationAddPaymentComponent implements OnInit {
 
   ngOnInit() {
     this.status = false;
-    this.addPaymentReconciliationModel.reconciliationId = this.data.id
-    this.addPaymentReconciliationModel.payerId = this.data.payerId
+    this.addPaymentReconciliationModel.reconciliationId = this.data.id;
+    this.addPaymentReconciliationModel.payerId = this.data.payerId;
     this.formLoad();
-
+    this.search();
   }
 
   closeDialog() {
@@ -59,14 +56,15 @@ export class ReconciliationAddPaymentComponent implements OnInit {
       toDate: [new Date(), Validators.required],
     });
   }
+
   search() {
-    if (this.addPaymentForm.invalid)
-      return
-    
-  
-     const fromDate = moment(this.addPaymentForm.value.fromDate).format('YYYY-MM-DD');
-     const toDate = moment(this.addPaymentForm.value.toDate).format('YYYY-MM-DD');
-    
+    if (this.addPaymentForm.invalid) {
+      return;
+    }
+
+    const fromDate = moment(this.addPaymentForm.value.fromDate).format('YYYY-MM-DD');
+    const toDate = moment(this.addPaymentForm.value.toDate).format('YYYY-MM-DD');
+
     this.sharedService.loadingChanged.next(true);
     this.reconciliationService.getReconciliationReceivalble(
       this.sharedService.providerId,
@@ -99,34 +97,35 @@ export class ReconciliationAddPaymentComponent implements OnInit {
 
     this.sharedService.loadingChanged.next(true);
     const body = {
-     reconciliationId: this.data.id}
-       this.selctedReconciliationPayerData,
-    
-    this.reconciliationService.addPayment(
-      this.sharedService.providerId,
-    body,
-      this.selctedReconciliationPayerData
-      
-    ).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
+      reconciliationId: this.data.id
+    }
+    this.selctedReconciliationPayerData,
+
+      this.reconciliationService.addPayment(
+        this.sharedService.providerId,
+        body,
+        this.selctedReconciliationPayerData
+
+      ).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          if (event.status === 200) {
+            this.sharedService.loadingChanged.next(false);
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Your payment data has been saved successfully', false));
+            this.status = true;
+            this.closeDialog();
+          }
+          else {
+            this.status = false;
+          }
+        }
+      }, err => {
+        if (err instanceof HttpErrorResponse) {
           this.sharedService.loadingChanged.next(false);
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your payment data has been saved successfully', false));
-          this.status = true;
-          this.closeDialog();
-        }
-        else {
           this.status = false;
+          this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
+          console.log(err);
         }
-      }
-    }, err => {
-      if (err instanceof HttpErrorResponse) {
-        this.sharedService.loadingChanged.next(false);
-        this.status = false;
-        this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
-        console.log(err);
-      }
-    });
+      });
   }
 
   selectedAccountPayer(item, event) {
