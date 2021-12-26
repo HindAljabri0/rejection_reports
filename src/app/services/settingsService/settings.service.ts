@@ -38,10 +38,11 @@ export class SettingsService {
     return this.httpClient.request(requestWithBody);
   }
 
-  getSaveCertificateFileToProvider(providerId: any, file: File, item:CertificateConfigurationProvider) {
+  // getSaveCertificateFileToProvider(providerId: any, file: File, item:CertificateConfigurationProvider) {
+    getSaveCertificateFileToProvider(providerId: any, file: File,password:string) {
     const formdata: FormData = new FormData();
     formdata.append('uploadFile', file, file.name);
-    const requestURL = `/providers/${providerId}/addFile`;
+    const requestURL = `/providers/${providerId}/addFile?password=${password}`;
     const req = new HttpRequest('POST', environment.settingsServiceHost + requestURL, formdata, {
       reportProgress: true,
       responseType: 'text'
