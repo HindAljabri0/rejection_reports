@@ -72,26 +72,27 @@ export class CertificateConfigurationModelComponent implements OnInit {
     }
   }
   upload() {
-    console.log(this.data.password);
+
     if (this.currentFileUpload === undefined) {
       this.error = 'Please upload the one p12 file.';
       return;
     }
     this.error = '';
 
-    console.log(this.data.password);
+   
     
     this.startUploading();
   }
   startUploading() {
-    let item:  CertificateConfigurationProvider ={
-      password: this.data.password
+    // let item:  CertificateConfigurationProvider ={
+    //   password: this.data.password
      
-    };
+    // };
     this.settingsService.getSaveCertificateFileToProvider(
       this.data.selectedProviderId,
       this.currentFileUpload,
-      item
+      this.data.password
+      // item
 
       ).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -130,7 +131,5 @@ export class CertificateConfigurationModelComponent implements OnInit {
 
 }
 
-function body(selectedProviderId: any, currentFileUpload: File, body: any) {
-  throw new Error('Function not implemented.');
-}
+
 
