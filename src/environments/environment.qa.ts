@@ -2,6 +2,7 @@ const host = 'http://gateway.okd.waseel.com';
 export const environment = {
   name: 'qa',
   production: true,
+  GA_TRACKING_ID: '',
   versionCheckURL: `http://okd.waseel.com`,
   uploaderHost: `${host}/claim-uploader`,
   claimSearchHost: `${host}/claim-search`,
