@@ -40,8 +40,6 @@ export class AppComponent implements OnInit, OnDestroy {
       });
     }
 
-
-
     this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
       this.viewportScroller.scrollToPosition([0, 0]);
       document.body.classList.remove('nav-open');

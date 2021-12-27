@@ -2,7 +2,7 @@ const host = 'https://api.stg-eclaims.waseel.com';
 export const environment = {
   name: 'staging',
   production: true,
-  GA_TRACKING_ID: 'G-VML3GL1L5T',
+  GA_TRACKING_ID: '',
   versionCheckURL: `https://stg-eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
