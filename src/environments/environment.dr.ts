@@ -3,6 +3,7 @@ const url = window.location.protocol + '//' + window.location.hostname;
 export const environment = {
   name: 'dr',
   production: true,
+  GA_TRACKING_ID: '',
   versionCheckURL: `${url}`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,

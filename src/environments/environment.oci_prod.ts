@@ -2,6 +2,7 @@ const host = 'https://api.eclaims.waseel.com';
 export const environment = {
   name: 'oci_prod',
   production: true,
+  GA_TRACKING_ID: '',
   versionCheckURL: `https://eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
