@@ -15,6 +15,7 @@
                                 <mat-form-field class="form-control custom-select-control">
                                     <mat-select placeholder="Select Payer" formControlName="payerId"
                                         (keyup.enter)="search()">
+                                        <mat-option value="all">All</mat-option>
                                         <mat-option *ngFor="let payer of payersList" [value]="payer.id">
                                             {{payer.name}}
                                         </mat-option>
