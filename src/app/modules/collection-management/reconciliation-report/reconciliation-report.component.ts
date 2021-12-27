@@ -52,20 +52,14 @@ export class ReconciliationReportComponent implements OnInit {
 
   ngOnInit() {
     this.payersList = [];
-    const allPayersIds = [];
     this.sharedService.getPayersList().map(value => {
       this.payersList.push({
         id: `${value.id}`,
         name: value.name
       });
-      allPayersIds.push(`${value.id}`);
-    });
-    this.payersList.splice(0, 0, {
-      id: allPayersIds,
-      name: 'All'
     });
 
-    this.FormReconciliationReport.controls.payerId.setValue(allPayersIds);
+    this.FormReconciliationReport.controls.payerId.setValue('all');
     this.FormReconciliationReport.controls.startDate.setValue(new Date());
     this.FormReconciliationReport.controls.endDate.setValue(new Date());
     // this.payersList.push({
@@ -75,11 +69,10 @@ export class ReconciliationReportComponent implements OnInit {
 
     // this.FormReconciliationReport.controls.startDate.setValue(this.decrementYear(new Date()));
     // this.FormReconciliationReport.controls.endDate.setValue(new Date());
-
     this.routeActive.queryParams.subscribe(params => {
       if (params.payer !== undefined) {
-        if (params.payer.split(',') instanceof Array && params.payer.split(',').length > 1) {
-          this.FormReconciliationReport.controls.payerId.setValue(allPayersIds);
+        if (params.payer == 'all') {
+          this.FormReconciliationReport.controls.payerId.setValue('all');
         } else {
           this.FormReconciliationReport.controls.payerId.setValue(params.payer);
         }
