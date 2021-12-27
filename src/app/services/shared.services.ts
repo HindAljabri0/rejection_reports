@@ -65,6 +65,8 @@ export class SharedServices {
     uploadId: number,
     uploadName: string
   }[]> = new Subject();
+  uploadsListLoading: boolean = false;
+  uploadsListLoadingChange: Subject<boolean> = new Subject();
 
 
 
@@ -83,12 +85,17 @@ export class SharedServices {
       this.loading = value;
     });
 
+    this.uploadsListLoadingChange.subscribe((value) => {
+      this.uploadsListLoading = value;
+    });
+
     this.searchIsOpenChange.subscribe(value => {
       this.searchIsOpen = value;
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
       if (value) {
+        this.getNotifications();
         this.showUploadsCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
       }
@@ -102,6 +109,7 @@ export class SharedServices {
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
       if (value) {
+        this.getAnnouncements();
         this.showUploadsCenterChange.next(false);
         this.showNotificationCenterChange.next(false);
       }
@@ -109,6 +117,7 @@ export class SharedServices {
     this.showUploadsCenterChange.subscribe(value => {
       this.showUploadsCenter = value;
       if (value) {
+        this.getUploads();
         this.showNotificationCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
       }
@@ -126,13 +135,9 @@ export class SharedServices {
         };
       });
     });
-    this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.getNotifications();
-      this.getUploads();
-      this.getAnnouncements();
-    });
+
+    this.getNotifications();
+
     this.unReadProcessedCountChange.subscribe(value => {
       this.unReadProcessedCount = value;
     });
@@ -264,15 +269,17 @@ export class SharedServices {
 
   getUploads() {
     if (!this.isProvider) { return; }
-
+    this.uploadsListLoadingChange.next(true);
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.uploadsListChange.next(event.body['content']);
+        this.uploadsListLoadingChange.next(false);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         this.uploadsListChange.next([]);
       }
+      this.uploadsListLoadingChange.next(false);
     });
   }
 
