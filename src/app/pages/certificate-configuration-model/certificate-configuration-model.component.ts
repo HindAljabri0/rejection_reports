@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CertificateConfigurationProvider } from 'src/app/models/certificateConfigurationProvider';
@@ -11,7 +11,7 @@ import { SharedServices } from 'src/app/services/shared.services';
   selector: 'app-certificate-configuration-model',
   templateUrl: './certificate-configuration-model.component.html',
   styleUrls: ['./certificate-configuration-model.component.css']
-  
+
 })
 export class CertificateConfigurationModelComponent implements OnInit {
 
@@ -20,7 +20,7 @@ export class CertificateConfigurationModelComponent implements OnInit {
   error = '';
   sizeInMB: string;
   closeStatus = false;
-  certificateConfigurationProvider =new CertificateConfigurationProvider();
+  certificateConfigurationProvider = new CertificateConfigurationProvider();
   constructor(
     private dialogRef: MatDialogRef<CertificateConfigurationModelComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -78,56 +78,42 @@ export class CertificateConfigurationModelComponent implements OnInit {
       return;
     }
     this.error = '';
+    this.dialogRef.close(true);
 
-   
-    
-    this.startUploading();
+
+    // this.startUploading();
   }
-  startUploading() {
-    // let item:  CertificateConfigurationProvider ={
-    //   password: this.data.password
-     
-    // };
-    this.settingsService.getSaveCertificateFileToProvider(
-      this.data.selectedProviderId,
-      this.currentFileUpload,
-      this.data.password
-      // item
+  // startUploading() {
+  //   // let item:  CertificateConfigurationProvider ={
+  //   //   password: this.data.password
 
-      ).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status === 200) {
-            this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
-            this.closeStatus = true;
-            this.closeDialog();
-          }
-  
-          this.common.loadingChanged.next(false);
-        }
-      }, err => {
-        if (err instanceof HttpErrorResponse) {
-          this.common.loadingChanged.next(false);
-          this.closeStatus = false;
-          this.dialogService.openMessageDialog(new MessageDialogData('', err.message, true));
-        }
-      });
-    }
+  //   // };
+  //   this.settingsService.getSaveCertificateFileToProvider(
+  //     this.data.selectedProviderId,
+  //     this.currentFileUpload,
+  //     this.data.password
+  //     // item
 
+  //   ).subscribe(event => {
+  //     if (event instanceof HttpResponse) {
+  //       if (event.status === 200) {
+  //         this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
+  //         this.closeStatus = true;
+  //         this.closeDialog();
+  //       }
 
-  //      ).subscribe((res: any) => {
-  //     if (res.body !== undefined) {
   //       this.common.loadingChanged.next(false);
-  //       this.closeDialog();
-  //       !res.body.response
-  //         ? this.dialogService.openMessageDialog(new MessageDialogData('', res.body.message, true))
-  //         : this.dialogService.openMessageDialog(new MessageDialogData('', res.body.message, false));
   //     }
   //   }, err => {
-  //     this.common.loadingChanged.next(false);
-  //     this.error = err.error.message;
-  //     console.log(err);
+  //     if (err instanceof HttpErrorResponse) {
+  //       this.common.loadingChanged.next(false);
+  //       this.closeStatus = false;
+  //       this.dialogService.openMessageDialog(new MessageDialogData('', err.message, true));
+  //     }
   //   });
   // }
+
+
 
 }
 
