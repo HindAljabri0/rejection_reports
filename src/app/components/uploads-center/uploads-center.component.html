@@ -2,6 +2,7 @@
     <button type="button" (click)="hideCenter()"></button>
 </div>
 <div class="aside-panel upload-history-list" [ngClass]="{'show':showCenter}">
+    <mat-spinner diameter="20" *ngIf="isLoading" style="margin: 30px auto;"></mat-spinner>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
         <div *ngFor="let data of dataList">
             <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" fragment="reload" [queryParams]="{uploadId: data.uploadId}" (click)="hideCenter()">
