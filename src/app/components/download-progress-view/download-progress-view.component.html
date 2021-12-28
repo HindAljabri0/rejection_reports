@@ -1,7 +1,7 @@
 <div class="download-progress-view">
     <div class="left">
         <mat-spinner
-            *ngIf="!isCSV() && !isExcel() && !isZip() && downloadRequest.errorMessage == null && downloadRequest.progress != 100"
+            *ngIf="!isCSV() && !isExcel() && !isZip() && !isPDF() && downloadRequest.errorMessage == null && downloadRequest.progress != 100"
             diameter="32"></mat-spinner>
         <img *ngIf="isCSV()  && downloadRequest.errorMessage == null" src="./assets/file-types/ic-csv.svg"
             alt="CSV File" />
@@ -9,6 +9,8 @@
             alt="Excel File" />
         <img *ngIf="isZip() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-zip.svg"
             alt="Zip File" />
+        <img *ngIf="isPDF() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-pdf.svg"
+            alt="PDF File" />
         <mat-icon class="error-icon" *ngIf="downloadRequest.errorMessage != null">error_outline</mat-icon>
     </div>
     <div class="right">
@@ -18,10 +20,12 @@
             <p class="text"
                 *ngIf="downloadRequest.status == 1 || downloadRequest.status == 3|| downloadRequest.status==null"
                 [matTooltip]="downloadRequest.filename">{{downloadRequest.filename}}</p>
-            <a *ngIf="downloadRequest.status == 1 || (downloadRequest.progress != 100 && downloadRequest.progress > 0)">Generating Download URL</a>
+            <a *ngIf="downloadRequest.status == 1 || (downloadRequest.progress != 100 && downloadRequest.progress > 0)">Generating
+                Download URL</a>
             <a *ngIf="downloadRequest.progress == -1">Failed to generate the report, please try again later.</a>
-            <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"  (click)="$event.stopPropagation();"
-                target="_blank" style="color: #3060aa; text-decoration: underline;">Click Here to Start Downloading</a>
+            <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"
+                (click)="$event.stopPropagation();" target="_blank"
+                style="color: #3060aa; text-decoration: underline;">Click Here to Start Downloading</a>
             <div class="d-flex align-items-center">
                 <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">
                     {{getReadableFileSize()}}</p>

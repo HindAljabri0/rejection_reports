@@ -44,6 +44,10 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
     return this.downloadRequest.contentType == 'application/zip';
   }
 
+  isPDF() {
+    return this.downloadRequest.contentType == 'application/pdf';
+  }
+
   getValue() {
     return this.downloadRequest.progress;
   }
