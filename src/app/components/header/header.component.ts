@@ -71,9 +71,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
 
-    if (environment.showFreshChat) {
-      this.showFreshChatBox();
-    }
+    // if (environment.showFreshChat) {
+    //   this.showFreshChatBox();
+    // }
 
     this.getUserData();
 
@@ -124,9 +124,9 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    if (environment.showFreshChat) {
-      this.hideFreshChatBox();
-    }
+    // if (environment.showFreshChat) {
+    //   this.hideFreshChatBox();
+    // }
     this.authService.logout();
   }
 
@@ -187,7 +187,7 @@ export class HeaderComponent implements OnInit {
         } else {
           location.reload();
         }
-      }, 1000);
+      }, 3000);
 
     };
   }
