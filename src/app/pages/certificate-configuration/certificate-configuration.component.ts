@@ -36,11 +36,12 @@ export class CertificateConfigurationComponent implements OnInit {
     private dialog: MatDialog,
     private sharedServices: SharedServices,
     private settingsService: SettingsService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private superAdmin: SuperAdminService,) { }
 
   ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
-    this.settingsService.getProviders().subscribe(event => {
+    this.superAdmin.getProviders().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.providers = event.body;
