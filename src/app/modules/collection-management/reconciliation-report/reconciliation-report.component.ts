@@ -91,10 +91,10 @@ export class ReconciliationReportComponent implements OnInit {
         this.FormReconciliationReport.controls.endDate.setValue(endDate);
       }
       if (params.page != null) {
-        this.reconciliationReport.page = params.page;
+        this.reconciliationReport.page = parseInt(params.page);
       }
       if (params.size != null) {
-        this.reconciliationReport.size = params.size;
+        this.reconciliationReport.size = parseInt(params.size);
       }
 
       this.search();
@@ -108,6 +108,7 @@ export class ReconciliationReportComponent implements OnInit {
   }
 
   onSubmit() {
+    this.page = 0;
     this.reconciliationReport.page = 0;
     this.reconciliationReport.size = 10;
     this.search();

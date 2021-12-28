@@ -12,7 +12,7 @@
           <div class="date-picker">
             <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
               (onShown)="onOpenCalendar($event)" placeholder="Select from month" formControlName="startDate"
-              name="fromDate" (bsValueChange)="dateValidation($event)" />
+              name="fromDate" [maxDate]="FormAddReconciliation.controls.endDate.value" />
             <!-- <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month"
             [formControl]="startDateController" required />
           <mat-datepicker-toggle [for]="fromMonth"></mat-datepicker-toggle>
@@ -31,7 +31,7 @@
           <div class="date-picker">
             <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
               (onShown)="onOpenCalendar($event)" placeholder="Select from month" formControlName="endDate" name="toDate"
-              (bsValueChange)="dateValidation($event)" />
+              [minDate]="FormAddReconciliation.controls.startDate.value" />
             <!-- <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month"
             [formControl]="endDateController" required />
           <mat-datepicker-toggle [for]="toMonth"></mat-datepicker-toggle>
@@ -80,7 +80,8 @@
           <div class="col-6">
             <div class="reconciliation-summary">
               <label>Duration: </label>
-              <p>{{searchDiscountReconciliationReportResponse.duration}}</p>
+              <p>{{searchDiscountReconciliationReportResponse.startDate | date:"MMM y"}} -
+                {{searchDiscountReconciliationReportResponse.endDate | date:"MMM y"}}</p>
             </div>
             <div class="reconciliation-summary">
               <label>Total Submitted: </label>
