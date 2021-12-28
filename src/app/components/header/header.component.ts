@@ -71,9 +71,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
 
-    // if (environment.showFreshChat) {
-    //   this.showFreshChatBox();
-    // }
+    if (environment.showFreshChat) {
+      this.showFreshChatBox();
+    }
 
     this.getUserData();
 
@@ -124,9 +124,6 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    // if (environment.showFreshChat) {
-    //   this.hideFreshChatBox();
-    // }
     this.authService.logout();
   }
 
@@ -175,37 +172,10 @@ export class HeaderComponent implements OnInit {
 
 
   showFreshChatBox() {
-    this.renderExternalScript('./assets/scripts/freshChat.js').onload = () => {
-      console.log('Google API Script loaded');
-      // do something with this library
-      setTimeout(() => {
-        if (window['fcWidget']) {
-          window['fcWidget'].init({
-            token: '32afa4a2-e443-4a99-aa8b-67e3a6639fd2',
-            host: 'https://wchat.freshchat.com'
-          });
-        } else {
-          location.reload();
-        }
-      }, 3000);
-
-    };
-  }
-
-  renderExternalScript(src: string): HTMLScriptElement {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.id = 'fresh-chat';
-    script.src = src;
-    script.async = true;
-    script.defer = true;
-    this.renderer.appendChild(document.body, script);
-    return script;
-  }
-
-  hideFreshChatBox() {
-    const freshChat = document.getElementById('fresh-chat');
-    freshChat.remove();
+    window['fcWidget'].init({
+      token: '32afa4a2-e443-4a99-aa8b-67e3a6639fd2',
+      host: 'https://wchat.freshchat.com'
+    });
   }
 
   get isProvider() {
