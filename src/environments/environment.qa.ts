@@ -3,6 +3,7 @@ export const environment = {
   name: 'qa',
   production: true,
   GA_TRACKING_ID: '',
+  showFreshChat: false,
   versionCheckURL: `http://okd.waseel.com`,
   uploaderHost: `${host}/claim-uploader`,
   claimSearchHost: `${host}/claim-search`,
