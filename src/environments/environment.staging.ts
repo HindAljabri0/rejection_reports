@@ -3,6 +3,7 @@ export const environment = {
   name: 'staging',
   production: true,
   GA_TRACKING_ID: '',
+  showFreshChat: false,
   versionCheckURL: `https://stg-eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,

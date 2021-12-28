@@ -10,6 +10,7 @@ export const environment = {
   name: `dev`,
   production: false,
   GA_TRACKING_ID: '',
+  showFreshChat: false,
   versionCheckURL: `${host}:4200`,
   uploaderHost: `${host}:8080`,
   claimSearchHost: `${host}:8082`,
