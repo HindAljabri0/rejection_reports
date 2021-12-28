@@ -187,7 +187,7 @@ export class HeaderComponent implements OnInit {
         } else {
           location.reload();
         }
-      }, 1000);
+      }, 3000);
 
     };
   }
