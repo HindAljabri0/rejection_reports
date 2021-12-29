@@ -26,7 +26,7 @@
                 Download URL</a>
             <a *ngIf="downloadRequest.progress == -1">Failed to generate the report, please try again later.</a>
             <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"
-                (click)="$event.stopPropagation(); downloadRequest.downloadAttempts$.next(1);" target="_blank"
+                (click)="$event.stopPropagation(); downloadRequest.downloadAttempts$.next('1');" target="_blank"
                 style="color: #3060aa; text-decoration: underline;">Click Here to Start Downloading</a>
             <div class="d-flex align-items-center">
                 <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">
