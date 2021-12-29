@@ -11,6 +11,8 @@
             alt="Zip File" />
         <img *ngIf="isPDF() && downloadRequest.errorMessage == null" src="./assets/file-types/ic-pdf.svg"
             alt="PDF File" />
+        <p *ngIf="isNewDownload && downloadRequest.errorMessage == null" class="animate__bounceIn badge badge-danger"
+            style="position: absolute; z-index: 3; left: 50px;">New</p>
         <mat-icon class="error-icon" *ngIf="downloadRequest.errorMessage != null">error_outline</mat-icon>
     </div>
     <div class="right">
@@ -24,7 +26,7 @@
                 Download URL</a>
             <a *ngIf="downloadRequest.progress == -1">Failed to generate the report, please try again later.</a>
             <a *ngIf="downloadRequest.url != null && downloadRequest.progress == 100" [href]="getDownloadURL()"
-                (click)="$event.stopPropagation();" target="_blank"
+                (click)="$event.stopPropagation(); downloadRequest.downloadAttempts$.next(1);" target="_blank"
                 style="color: #3060aa; text-decoration: underline;">Click Here to Start Downloading</a>
             <div class="d-flex align-items-center">
                 <p class="size" *ngIf="downloadRequest.downloadedSize != null && downloadRequest.downloadedSize > 0">

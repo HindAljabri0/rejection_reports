@@ -57,4 +57,8 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
     return this.downloadRequest.url + `?access_token=${access_token}`;
   }
 
+  get isNewDownload(){
+    return this.downloadRequest.progress == 100 && this.downloadRequest.downloadAttempts == '0';
+  }
+
 }
