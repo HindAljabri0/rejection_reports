@@ -6,10 +6,10 @@ Project Name : Waseel GUI;
 ------------------------------------------------------------
 */
 
-/* Reset 
+/* Reset
 --------------------------------------------------------------------------------------------------------*/
 
-/* 
+/*
 http://meyerweb.com/eric/tools/css/reset/
 v2.0 | 20110126
 License: none (public domain)
@@ -25,7 +25,7 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 table { border-collapse: collapse; border-spacing: 0; }
 input, .mat-badge-content, .mat-h1, .mat-headline, .mat-typography h1, .mat-h2, .mat-title, .mat-typography h2, .mat-h3, .mat-subheading-2, .mat-typography h3, .mat-h4, .mat-subheading-1, .mat-typography h4, .mat-h5, .mat-typography h5, .mat-h6, .mat-typography h6, .mat-body-2, .mat-body-strong, .mat-body, .mat-body-1, .mat-typography, .mat-caption, .mat-small, .mat-display-4, .mat-typography .mat-display-4, .mat-display-3, .mat-typography .mat-display-3, .mat-display-2, .mat-typography .mat-display-2, .mat-display-1, .mat-typography .mat-display-1, .mat-bottom-sheet-container, .mat-button, .mat-fab, .mat-flat-button, .mat-icon-button, .mat-mini-fab, .mat-raised-button, .mat-stroked-button, .mat-button-toggle, .mat-card, .mat-checkbox, .mat-table, .mat-calendar, .mat-dialog-title, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-form-field, .mat-menu-item, .mat-paginator, .mat-paginator-page-size .mat-select-trigger, .mat-radio-button, .mat-select, .mat-slide-toggle-content, .mat-slider-thumb-label-text, .mat-stepper-horizontal, .mat-stepper-vertical, .mat-tab-group, .mat-tab-label, .mat-tab-link, .mat-toolbar, .mat-toolbar h1, .mat-toolbar h2, .mat-toolbar h3, .mat-toolbar h4, .mat-toolbar h5, .mat-toolbar h6, .mat-tooltip, .mat-list-item, .mat-list-option, .mat-list-base .mat-subheader, .mat-list-base[dense] .mat-subheader, .mat-option, .mat-optgroup-label, .mat-simple-snackbar, .mat-tree { font-family: inherit !important; }
 
-/* General 
+/* General
 --------------------------------------------------------------------------------------------------------*/
 * { outline: none !important; }
 a{transition: all 0.3s;}
@@ -218,7 +218,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .global-loader.visible{opacity: 1;visibility: visible;}
 .calculation-arrow{position: absolute;border-radius: 500px;background: #3060AA;color: #fff;padding: 4px;top: 46%;transform: translate(0,-50%);right: -14px;}
 .add-communication-table{min-height: 300px;}
-.whatsapp-chat-btn{display: block;background-color: #075E54;padding: 17px;border-radius: 16px;position: fixed;bottom: 21px;box-shadow: 0 5px 4px 0 rgba(0,0,0,.26);right: 97px;}
+.whatsapp-chat-btn{display: block;background-color: #075E54;padding: 17px;border-radius: 16px;position: fixed;bottom: 21px;box-shadow: 0 5px 4px 0 rgba(0,0,0,.26);right: 97px;z-index: 999;}
 .whatsapp-chat-btn>img{display: block;height: 26px;width: 26px;}
 
 /* contextual colors
@@ -274,7 +274,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .light-bg-danger{background-color: #f9e6e6!important;}
 .light-bg-invalid,.light-bg-purple{background-color: #ede4f2!important;}
 
-/* brand header 
+/* brand header
 --------------------------------------------------------------------------------------------------------*/
 .brand-header{background-color: #3060aa;color: #fff;position: fixed;top: 0;left: 0;right: 0;display: flex;box-shadow: 0 3px 6px rgba(0,0,0,0.16);z-index: 10;}
 .brand-header .logo-wrapper{width: 240px;align-self: center;-ms-flex-item-align: center;text-align: center;;}
@@ -1361,7 +1361,7 @@ tag tag-ripple{display:none;}
 
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
-@media (max-width:1599px) { 
+@media (max-width:1599px) {
     .advance-search {width: 610px;display: flex;height: 42px;margin: 13px 0;}
     .advance-search .mat-chip>span{max-width: 120px;overflow: hidden;text-overflow: ellipsis;display: block;white-space: nowrap;}
     .abstract-card-list>div{flex-basis: 25%;max-width: 25%;}
@@ -1370,7 +1370,7 @@ tag tag-ripple{display:none;}
     .general-info-wrapper>div{flex-basis:20%;max-width: 20%;}
     .tawuniya-report-details .credit-report-header{position: static;}
 }
-@media (max-width:1199px) { 
+@media (max-width:1199px) {
     .advance-search{padding-left: 10px;width: 430px;}
     .brand-header .tablet-search,.advance-search .close-btn{display: block;}
     .advance-search{position: absolute;left: 0;right: 0;background: #3060aa;margin: 0;padding: 13px 16px;height: 68px;width: auto;z-index: 1;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom: 100%;}
@@ -1400,7 +1400,7 @@ tag tag-ripple{display:none;}
     .border-xl-bottom{border-bottom:0;}
     .revenue-header>.row>div:nth-child(2),.revenue-report-body>.row>div:nth-child(2){border-right: 0;}
 }
-@media (max-width:991px) { 
+@media (max-width:991px) {
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}
     .file-upload-drag-drop .text-block>span{padding-right: 0;padding-bottom: 12px;}
     .file-upload-drag-drop .icon-wrapper>img{height: 108px;width: 108px;}
@@ -1434,8 +1434,8 @@ tag tag-ripple{display:none;}
  }
 
  .mat-card:not([class*=mat-elevation-z]) {
-    box-shadow: 0 2px 1px -1px rgb(233, 233, 233), 
-                0 1px 1px 0 rgb(233, 233, 233), 
+    box-shadow: 0 2px 1px -1px rgb(233, 233, 233),
+                0 1px 1px 0 rgb(233, 233, 233),
                 0 1px 3px 0 rgb(233, 233, 233);
 }
 .mat-figure > *{
