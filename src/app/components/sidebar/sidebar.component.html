@@ -36,8 +36,8 @@
                         </li>
                         <li i18n="@@uploads">
                             <a routerLink="/uploads" routerLinkActive="is-active" #uploads="routerLinkActive">
-                                <img src="assets/ic-cloud.svg" alt="Create Claim" class="default-icon" />
-                                <img src="assets/ic-cloud-active.svg" alt="Create Claim" class="active-icon" />
+                                <img src="assets/ic-cloud.svg" alt="Cloud" class="default-icon" />
+                                <img src="assets/ic-cloud-active.svg" alt="Cloud" class="active-icon" />
                                 <span class="text">Uploads</span>
                             </a>
                         </li>
@@ -342,16 +342,22 @@
                     <ul class="nav-list">
                         <li *ngIf="!envProd && !envStaging">
                             <a routerLink="/upload" routerLinkActive="is-active">
+                                <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
+                                <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" />
                                 <span class="text">Upload Claims</span>
                             </a>
                         </li>
                         <li>
                             <a routerLink="/{{providerId}}/claims/create-nphies" routerLinkActive="is-active">
+                                <img src="assets/ic-create-claim.svg" alt="Uploads" class="default-icon" />
+                                <img src="assets/ic-create-claim-active.svg" alt="Uploads" class="active-icon" />
                                 <span class="text">Create Claim</span>
                             </a>
                         </li>
                         <li>
                             <a routerLink="/nphies/uploads" routerLinkActive="is-active">
+                                <img src="assets/ic-cloud.svg" alt="Cloud" class="default-icon" />
+                                <img src="assets/ic-cloud-active.svg" alt="Cloud" class="active-icon" />
                                 <span class="text">Uploads</span>
                             </a>
                         </li>
@@ -401,7 +407,7 @@
                             </a>
                         </li>
                         <li i18n="@@providerCertificate">
-                            <a routerLink="/administration/config/providerCertificate" routerLinkActive="is-active" #providerCertificate="routerLinkActive" >
+                            <a routerLink="/administration/config/providerCertificate" routerLinkActive="is-active" #providerCertificate="routerLinkActive">
                                 <span class="text">Provider Certificate Configuration</span>
                             </a>
                         </li>
