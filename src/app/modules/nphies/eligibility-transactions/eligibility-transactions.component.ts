@@ -60,10 +60,8 @@ export class EligibilityTransactionsComponent implements OnInit {
   ) { }
 
   statusList = [
-    { value: 'active', name: 'Active' },
-    { value: 'cancelled', name: 'Cancelled' },
-    { value: 'draft', name: 'Draft' },
-    { value: 'entered-in-error', name: 'Entered in Error' },
+    { value: 'Processing Complete', name: 'Processing Complete' },
+    { value: 'error', name: 'Error' }
   ];
 
   ngOnInit() {
@@ -87,7 +85,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
       if (params.payerId != null) {
         // tslint:disable-next-line:radix
-        this.FormEligibilityTransaction.controls.payerId.patchValue(parseInt(params.payerId));
+        this.FormEligibilityTransaction.controls.payerId.patchValue(params.payerId);
       }
 
       if (params.eligibilityId != null) {
@@ -179,9 +177,9 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   paginatorAction(event) {
     this.manualPage = event.pageIndex;
-    this.paginationChange(event);
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
+    this.paginationChange(event);
     this.onSubmit();
   }
 
@@ -212,7 +210,7 @@ export class EligibilityTransactionsComponent implements OnInit {
       }
 
       if (this.FormEligibilityTransaction.controls.payerId.value) {
-        model.payerId = parseInt(this.FormEligibilityTransaction.controls.payerId.value);
+        model.payerId = this.FormEligibilityTransaction.controls.payerId.value;
       }
 
       if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
@@ -242,7 +240,7 @@ export class EligibilityTransactionsComponent implements OnInit {
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;
           this.paginator.pageIndex = this.transactionModel.number;
-          this.paginator.pageSize = this.transactionModel.numberOfElements;
+          this.paginator.pageSize = this.transactionModel.size;
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {

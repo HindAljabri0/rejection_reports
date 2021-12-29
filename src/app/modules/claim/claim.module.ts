@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -39,6 +39,8 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
 import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
+import { AddCommunicationDialogComponent } from '../nphies/add-communication-dialog/add-communication-dialog.component';
+import { CancelReasonModalComponent } from '../nphies/preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 
 @NgModule({
   declarations: [
@@ -64,8 +66,8 @@ import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphi
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
-      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent},
-      { path: ':id', component: MainClaimPageComponent }
+      { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent },
+
     ]),
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),
@@ -108,7 +110,9 @@ import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphi
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
-    AddEditItemDetailsModalComponent
+    AddEditItemDetailsModalComponent,
+    AddCommunicationDialogComponent,
+    CancelReasonModalComponent
   ],
   providers: [
     DatePipe

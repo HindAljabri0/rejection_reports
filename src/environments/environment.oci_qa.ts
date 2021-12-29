@@ -2,6 +2,8 @@ const host = 'https://api.qa-eclaims.waseel.com';
 export const environment = {
   name: 'oci_qa',
   production: true,
+  GA_TRACKING_ID: 'G-J17HY3QXBF',
+  showFreshChat: true,
   versionCheckURL: `https://qa-eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,

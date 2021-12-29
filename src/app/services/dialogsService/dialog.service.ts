@@ -127,8 +127,10 @@ export class DialogService {
     });
   }
 
-  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
-    this.closeAll();
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null) {
+    if (!dontCloseAll) {
+      this.closeAll();
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {

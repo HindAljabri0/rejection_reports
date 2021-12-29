@@ -1,76 +1,129 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-        <div class="d-flex align-items-center">
-            <div class="actions mr-2 my-n2 ml-n1">
-                <button matRipple type="button" (click)="goBack()" class="action-btn">
-                    <mat-icon>arrow_back</mat-icon>
-                </button>
-            </div>
-            <p>Payment Reconciliation Claims</p>
-        </div>
+  <div class="block-header has-border">
+    <div class="d-flex align-items-center">
+      <div class="actions mr-2 my-n2 ml-n1">
+        <button matRipple type="button" (click)="goBack()" class="action-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <p>Reconciliation Details</p>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height fixed-height-lg">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
-                    <tr>
-                        <th>Claim ID</th>
-                        <th>Batch No.</th>
-                        <th>Batch Date</th>
-                        <th>Status</th>
-                        <th>Patient</th>
-                        <th>Provider</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>716361</td>
-                        <td>625</td>
-                        <td>30/6/2031</td>
-                        <td>Downloadable</td>
-                        <td>Rosetta Hopkins</td>
-                        <td>Tawuniya</td>
-                        <td>5009 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>644575</td>
-                        <td>844</td>
-                        <td>10/5/2043</td>
-                        <td>Downloadable</td>
-                        <td>Nathan Hayes</td>
-                        <td>Tawuniya</td>
-                        <td>3863 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>662464</td>
-                        <td>129</td>
-                        <td>26/4/2080</td>
-                        <td>Downloadable</td>
-                        <td>Eugene Wheeler</td>
-                        <td>Tawuniya</td>
-                        <td>5439 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>840442</td>
-                        <td>833</td>
-                        <td>26/8/2025</td>
-                        <td>Downloadable</td>
-                        <td>Nell Kelley</td>
-                        <td>Tawuniya</td>
-                        <td>225 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>612580</td>
-                        <td>539</td>
-                        <td>2/4/2056</td>
-                        <td>Downloadable</td>
-                        <td>Steve Simon</td>
-                        <td>Tawuniya</td>
-                        <td>7605 <span class="currency">SR</span></td>
-                    </tr>
-                </tbody>
-            </table>
+  </div>
+  <div class="p-14 bg-white" *ngIf="reconciliationDetails">
+    <div class="row small-gutter">
+      <div class="col-4">
+        <div class="form-group form-group-static">
+          <label class="control-label">Payment Issuer</label>
+          <span class="form-control-static">{{reconciliationDetails.paymentIssuer ? reconciliationDetails.paymentIssuer : '-'}}</span>
         </div>
-    </ng-scrollbar>
+      </div>
+      <div class="col-4">
+        <div class="form-group form-group-static">
+          <label class="control-label">Disposition</label>
+          <span class="form-control-static">{{reconciliationDetails.disposition ? reconciliationDetails.disposition : '-'}}</span>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group form-group-static">
+          <label class="control-label">Payment Date</label>
+          <span class="form-control-static">{{reconciliationDetails.paymentDate | date : 'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group form-group-static">
+          <label class="control-label">Payment Amount</label>
+          <span class="form-control-static">{{reconciliationDetails.paymentAmount}} <span
+              class="currency">SR</span></span>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group form-group-static">
+          <label class="control-label">Payment Identifier</label>
+          <span class="form-control-static">{{reconciliationDetails.paymentIdentifierId ? reconciliationDetails.paymentIdentifierId : '-'}}</span>
+        </div>
+      </div>
+    </div>
+    <h5 class="form-title no-border pt-3">Payment Distribution</h5>
+  </div>
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+    <div class="fixed-height fixed-height-lg">
+      <table *ngIf="reconciliationDetails" class="primary-grid manual-row-color horizontal-borders no-borders" cellpadding="0" cellspacing="0"
+        border="0">
+        <thead>
+          <tr>
+            <th width="10"></th>
+            <th>ID</th>
+            <th>Claim ID</th>
+            <th>Payment</th>
+            <th>Early Fee</th>
+            <th>NPHIES Fee</th>
+            <th>Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let pd of reconciliationDetails.reconciliationDetails">
+            <tr>
+              <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
+                <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
+                <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
+              </td>
+              <td class="row-click" (click)="toggleRow(0)">{{pd.reconciliationDetailId}}</td>
+              <td class="row-click" (click)="toggleRow(0)">{{pd.claimRequestId}}</td>
+              <td class="row-click" (click)="toggleRow(0)">{{pd.componentPayment}} <span class="currency">SR</span></td>
+              <td class="row-click" (click)="toggleRow(0)">
+                <span *ngIf="pd.componentEarlyFee">{{pd.componentEarlyFee}} <span class="currency">SR</span></span>
+                <span *ngIf="!pd.componentEarlyFee">-</span>
+              </td>
+              <td class="row-click" (click)="toggleRow(0)">
+                <span *ngIf="pd.componentNphiesFee">{{pd.componentNphiesFee}} <span class="currency">SR</span></span>
+                <span *ngIf="!pd.componentNphiesFee">-</span>
+              </td>
+              <td class="row-click" (click)="toggleRow(0)">{{pd.amount}} <span class="currency">SR</span></td>
+            </tr>
+            <tr *ngIf="currentOpenRecord==0">
+              <td colspan="7">
+                <div class="box pb-0">
+                  <div class="row small-gutter">
+                    <div class="col-4">
+                      <div class="form-group form-group-static">
+                        <label class="control-label">Predecessor</label>
+                        <span class="form-control-static">{{pd.detailPredecessorId ? pd.detailPredecessorId : '-'}}</span>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group form-group-static">
+                        <label class="control-label">Type</label>
+                        <span class="form-control-static">{{pd.type | titlecase}}</span>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group form-group-static">
+                        <label class="control-label">Claim Response ID</label>
+                        <span class="form-control-static">{{pd.claimResponseId ? pd.claimResponseId : '-'}}</span>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group form-group-static">
+                        <label class="control-label">Claim Response Date</label>
+                        <span class="form-control-static">
+                          <span *ngIf="pd.cliamResponseDate">{{pd.cliamResponseDate | date : 'dd/MM/yyyy'}}</span>
+                          <span *ngIf="!pd.cliamResponseDate">-</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group form-group-static">
+                        <label class="control-label">Payee</label>
+                        <span class="form-control-static">{{pd.payeeId ? pd.payeeId : '-'}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </ng-scrollbar>
 </div>

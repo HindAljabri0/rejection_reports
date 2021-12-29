@@ -104,12 +104,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (params.payerId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.payerId.patchValue(parseInt(params.payerId));
+        this.FormPreAuthTransaction.controls.payerId.patchValue(params.payerId);
       }
 
       if (params.nphiesRequestId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(parseInt(params.nphiesRequestId));
+        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(params.nphiesRequestId);
       }
 
       if (params.beneficiaryId != null) {
@@ -232,11 +232,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
-        model.nphiesRequestId = parseInt(this.FormPreAuthTransaction.controls.nphiesRequestId.value, 10);
+        model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
-        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value, 10);
+        model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
@@ -266,7 +266,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;
           this.paginator.pageIndex = this.transactionModel.number;
-          this.paginator.pageSize = this.transactionModel.numberOfElements;
+          this.paginator.pageSize = this.transactionModel.size;
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {
@@ -317,11 +317,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  openReasonModal(requestId: number, reqType: string) {
+  openReasonModal(requestId: number, responseId: number, reqType: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       approvalRequestId: requestId,
+      approvalResponseId: responseId,
       type: reqType
     };
 
@@ -358,18 +359,18 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   openDetailsDialoEv(event) {
-    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId);
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId, event.notificationStatus);
   }
 
   openDetailsDialogCR(event) {
-    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId);
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId, event.notificationStatus);
   }
 
   openDetailsDialog(requestId, responseId) {
-    this.getTransactionDetails(requestId, responseId, null, null);
+    this.getTransactionDetails(requestId, responseId, null, null, null);
   }
 
-  getTransactionDetails(requestId, responseId, communicationId = null, notificationId) {
+  getTransactionDetails(requestId, responseId, communicationId = null, notificationId, notificationStatus) {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
@@ -390,6 +391,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           if (notificationId) {
             body.notificationId = notificationId;
           }
+          if (notificationStatus) {
+            body.notificationStatus = notificationStatus;
+          }
+
           const dialogConfig = new MatDialogConfig();
           dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
           dialogConfig.data = {

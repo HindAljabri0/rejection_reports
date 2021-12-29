@@ -104,7 +104,7 @@ export class SubmittedInvoicesComponent {
       return;
     }
 
-    this.downloadService.startDownload(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to,
+    this.downloadService.startGeneratingDownloadFile(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to,
       this.payerId)).subscribe(status => {
         if (status == DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-download.svg';

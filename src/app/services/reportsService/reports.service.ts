@@ -110,7 +110,7 @@ export class ReportsService {
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
     const requestURL = `/providers/${providerId}/submissions?` +
-      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId.join(',')}`;
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
@@ -225,9 +225,8 @@ export class ReportsService {
   }
   downloadTechnicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
     const requestURL = `/providers/${providerId}/rejections/technical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
-      { responseType: 'blob', reportProgress: true, headers: headers });
+      { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
   getMedicalRejection(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string, page: number, pageSize: number): Observable<any> {
@@ -237,10 +236,22 @@ export class ReportsService {
   }
   downloadMedicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
     const requestURL = `/providers/${providerId}/rejections/medical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
-      { responseType: 'blob', reportProgress: true, headers: headers });
+      { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
+
+  getAllDownloadsForProvider(providerId: string, page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 5;
+    }
+    const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL);
+    return this.http.request(request);
+  }
+
 
 }

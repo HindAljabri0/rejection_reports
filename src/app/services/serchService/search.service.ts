@@ -59,7 +59,7 @@ export class SearchService {
     }
     if (patientFileNo != null) {
       requestURL += `patientFileNo=${patientFileNo}&`;
-    } 
+    }
     if (nationalId != null) {
       requestURL += `nationalId=${nationalId}&`;
     }
@@ -92,7 +92,7 @@ export class SearchService {
     invoiceNo?: string,
     patientFileNo?: string,
     policyNo?: string,
-    drname?: string,
+    drName?: string,
     nationalId?: string,
     claimDate?: string,
     netAmount?: string,
@@ -133,8 +133,8 @@ export class SearchService {
     if (patientFileNo != null) {
       requestURL += `patientFileNo=${patientFileNo}&`;
     }
-    if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `drname=${drname}&`;
+    if (drName != null && drName !== '' && drName !== undefined) {
+      requestURL += `drName=${drName}&`;
     }
     if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
       requestURL += `nationalId=${nationalId}&`;
@@ -279,7 +279,7 @@ export class SearchService {
     if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
       requestURL += `&batchNo=${batchNo}`;
     }
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'blob', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -316,7 +316,7 @@ export class SearchService {
   }
 
   getGssData(providerId: string, payer: string, fromDate: string, toDate: string,page?: number, size?: number) {
-  
+
     const requestUrl = `/providers/${providerId}/gss?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&page=${page}&pageSize=${size}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
     return this.http.request(request);
@@ -324,9 +324,9 @@ export class SearchService {
   downloadGssReport(providerId: string, payer: string[], fromDate: string, toDate: string) {
     const requestUrl = `/providers/${providerId}/gss/pdf?payer=${payer.join(',')}&fromDate=${fromDate}&toDate=${toDate}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/pdf');
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl,'', 
-      { responseType: 'blob', reportProgress: true, headers: headers });
+    // tslint:disable-next-line:max-line-length
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl, '', { responseType: 'text', reportProgress: true, headers: headers });
     return this.http.request(request);
   }
-  
+
 }

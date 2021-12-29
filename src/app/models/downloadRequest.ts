@@ -3,7 +3,12 @@ import { Observable, Subject } from 'rxjs';
 
 
 export class DownloadRequest {
-
+    fileId$: Subject<number>;
+    private _fileId: number;
+    creationStartDate$: Subject<string>;
+    private _creationStartDate: string;
+    creationEndDate$: Subject<string>;
+    private _creationEndDate: string;
     downloadedSize$: Subject<number>;
     private _downloadedSize = -1;
     totalSize$: Subject<number>;
@@ -17,7 +22,22 @@ export class DownloadRequest {
     errorMessage$: Subject<string>;
     private _errorMessage: string;
 
+    progress$: Subject<number>;
+    private _progress: number;
+    url$: Subject<string>;
+    private _url: string;
+    downloadAttempts$: Subject<string>;
+    private _downloadAttempts: string;
+
+
     constructor() {
+        this.fileId$ = new Subject();
+        this.fileId$.subscribe(fileId => this._fileId = fileId);
+        this.creationStartDate$ = new Subject();
+        this.creationStartDate$.subscribe(creationStartDate => this._creationStartDate = creationStartDate);
+        this.creationEndDate$ = new Subject();
+        this.creationEndDate$.subscribe(creationEndDate => this._creationEndDate = creationEndDate);
+
         this.downloadedSize$ = new Subject();
         this.downloadedSize$.subscribe(downloadedSize => this._downloadedSize = downloadedSize);
         this.totalSize$ = new Subject();
@@ -30,9 +50,25 @@ export class DownloadRequest {
         this.contentType$.subscribe(contentType => this._contentType = contentType);
         this.errorMessage$ = new Subject();
         this.errorMessage$.subscribe(errorMessage => this._errorMessage = errorMessage);
-
+        this.progress$ = new Subject();
+        this.progress$.subscribe(progress => this._progress = progress);
+        this.url$ = new Subject();
+        this.url$.subscribe(url => {
+            this._url = url;
+        });
+        this.downloadAttempts$ = new Subject();
+        this.downloadAttempts$.subscribe(downloadAttempts => this._downloadAttempts = downloadAttempts);
     }
 
+    get fileId() {
+        return this._fileId;
+    }
+    get creationStartDate() {
+        return this._creationStartDate;
+    }
+    get creationEndDate() {
+        return this._creationEndDate;
+    }
     get downloadedSize() {
         return this._downloadedSize;
     }
@@ -50,6 +86,17 @@ export class DownloadRequest {
     }
     get errorMessage() {
         return this._errorMessage;
+    }
+
+    get progress() {
+        return this._progress;
+    }
+    get url() {
+        return this._url;
+    }
+
+    get downloadAttempts() {
+        return this._downloadAttempts;
     }
 
 }

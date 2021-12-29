@@ -6,11 +6,12 @@ export class SearchPageQueryParams {
 
 
     claimId?: string;
+    claimResponseId?: string;
     editMode?: string;
     from?: string;
     to?: string;
     payerId?: string;
-    organizationId?:string
+    organizationId?: string
     caseTypes?: string[];
     batchId?: string;
     uploadId?: string;
@@ -51,12 +52,13 @@ export class SearchPageQueryParams {
         if (params.caseTypes != null)
             pageParams.caseTypes = params.caseTypes.split(',');
         pageParams.claimId = params.claimId;
+        pageParams.claimResponseId = params.claimResponseId;
         pageParams.claimRefNo = params.claimRefNo;
         pageParams.memberId = params.memberId;
         pageParams.invoiceNo = params.invoiceNo;
         pageParams.patientFileNo = params.patientFileNo;
         pageParams.policyNo = params.policyNo;
-        pageParams.nationalId=params.nationalId;
+        pageParams.nationalId = params.nationalId;
         pageParams.editMode = params.editMode || location.href.includes('#edit');
 
         pageParams.filter_drName = params.filter_drName;
@@ -90,7 +92,7 @@ export class SearchPageQueryParams {
         criteria.batchNo = this.filter_batchNum;
         criteria.claimDate = this.filter_claimDate;
         criteria.drname = this.filter_drName;
-        criteria.nationalId = this.filter_nationalId||this.nationalId;
+        criteria.nationalId = this.filter_nationalId || this.nationalId;
         criteria.netAmount = this.filter_netAmount;
 
         criteria.statuses = statuses;

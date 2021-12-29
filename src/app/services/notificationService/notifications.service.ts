@@ -30,7 +30,7 @@ export class NotificationsService {
   }
 
   getNotificationsCountByWeek(providerId: string, type:string, status: string) {
-    const requestUrl = `/providers/${providerId}/${type}/count/${status}/by-week`;
+    const requestUrl = `/providers/${providerId}/${type}/count/by-week`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl);
     return this.httpClient.request(request);
   }

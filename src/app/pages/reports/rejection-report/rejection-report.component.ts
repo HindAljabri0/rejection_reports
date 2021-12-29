@@ -279,7 +279,7 @@ export class RejectionReportComponent implements OnInit {
     const toDate = moment(this.toDateControl.value).format('YYYY-MM-DD');
     const criteriaType = this.rejectionCriteriaControl.value.toString() === '1' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
-      .startDownload(this.reportService
+      .startGeneratingDownloadFile(this.reportService
         .downloadTechnicalRejectionReport(this.commen.providerId, fromDate, toDate, this.payerIdControl.value, criteriaType))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {

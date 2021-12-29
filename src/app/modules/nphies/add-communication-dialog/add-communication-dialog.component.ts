@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NphiesPollManagementService } from 'src/app/services/nphiesPollManagement/nphies-poll-management.service';
@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 })
 export class AddCommunicationDialogComponent implements OnInit {
 
+  fetchCommunications = new EventEmitter();
+
   payLoads = [];
   FormCommunication: FormGroup = this.formBuilder.group({
     payloadValue: ['', Validators.required],
@@ -25,11 +27,12 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   currentFileUpload: any;
   isSubmitted = false;
+  emptyPayloadError = '';
+  invalidFileMessage = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddCommunicationDialogComponent>, private nphiesPollManagementService: NphiesPollManagementService,
-    private dialogService: DialogService, private datePipe: DatePipe,
-    private sharedServices: SharedServices,
+    private dialogService: DialogService, private sharedServices: SharedServices,
     @Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -42,40 +45,58 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   selectFile(event) {
     this.FormCommunication.reset();
-    this.currentFileUpload = event.target.files[0];
-    this.FormCommunication.controls.attachmentName.setValue(this.currentFileUpload.name);
-    this.FormCommunication.controls.attachmentType.setValue(this.currentFileUpload.type);
-    this.FormCommunication.controls.createdDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.invalidFileMessage = '';
 
-    // this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
-    if (!this.checkfile()) {
-      this.currentFileUpload = undefined;
-      return;
+    for (let i = 0; i < event.target.files.length; i++) {
+      if (!this.checkfile(event.target.files[i])) {
+        this.invalidFileMessage = 'Attachments are only allowed in the formats of .pdf, .png, .jpg or .jpeg';
+        break;
+      }
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onloadend = () => {
-      const data: string = reader.result as string;
-      this.FormCommunication.controls.payloadAttachment.setValue(data.substring(data.indexOf(',') + 1));
-      const model: any = this.FormCommunication.value;
-      this.payLoads.push(model);
-      this.FormCommunication.reset();
-      this.isSubmitted = false;
-    };
+    for (let i = 0; i < event.target.files.length; i++) {
+      this.currentFileUpload = event.target.files[i];
+      const attachmentName = this.currentFileUpload.name;
+      const attachmentType = this.currentFileUpload.type;
+      const sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
+
+      if (!this.checkfile(event.target.files[i])) {
+        continue;
+      }
+
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[i]);
+      reader.onloadend = () => {
+        const data: string = reader.result as string;
+        const model: any = {};
+        model.payloadValue = null;
+        model.payloadAttachment = (data.substring(data.indexOf(',') + 1));
+        model.attachmentName = attachmentName;
+        model.attachmentType = attachmentType;
+        const createDate = new Date();
+        model.createdDate = createDate.toISOString().replace('Z', '');
+
+
+        this.payLoads.push(model);
+
+        if (i === event.target.files.length - 1) {
+          this.emptyPayloadError = '';
+          this.FormCommunication.reset();
+          this.isSubmitted = false;
+        }
+
+      };
+    }
+
   }
 
-  checkfile() {
+  checkfile(file: any) {
     const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
-    let fileExt = this.currentFileUpload.name;
+    let fileExt = file.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
-      // this.showError('Invalid file selected, valid files are of ' +
-      //   validExts.toString() + ' types.');
       return false;
     } else {
-      // this.uploadContainerClass = '';
-      // this.error = '';
       return true;
     }
   }
@@ -85,16 +106,25 @@ export class AddCommunicationDialogComponent implements OnInit {
     if (this.FormCommunication.valid) {
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
-      this.FormCommunication.reset();
       this.isSubmitted = false;
+      this.emptyPayloadError = '';
+      this.FormCommunication.reset();
     }
   }
 
   removePayload(i) {
     this.payLoads.splice(i, 1);
+    if (this.payLoads.length === 0) {
+      this.emptyPayloadError = 'Please select a file or enter comment';
+    }
   }
 
   onSubmit() {
+    if (this.payLoads.length === 0) {
+      this.emptyPayloadError = 'Please select a file or enter comment';
+      return;
+    }
+    this.emptyPayloadError = '';
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
     model.claimResponseId = this.data.claimResponseId;
@@ -117,16 +147,15 @@ export class AddCommunicationDialogComponent implements OnInit {
 
             if (body.errors && body.errors.length > 0) {
               body.errors.forEach(err => {
-                err.coding.forEach(codex => {
-                  errors.push(codex.code + ' : ' + codex.display);
-                });
+                errors.push(err);
               });
             }
             this.sharedServices.loadingChanged.next(false);
-            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, true);
+            this.fetchCommunications.emit(true);
           } else {
             this.sharedServices.loadingChanged.next(false);
-            this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+            this.dialogRef.close(true);
           }
         }
       }

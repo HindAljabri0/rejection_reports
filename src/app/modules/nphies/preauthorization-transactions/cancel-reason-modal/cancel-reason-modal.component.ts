@@ -44,6 +44,7 @@ export class CancelReasonModalComponent implements OnInit {
 
       const model: any = {};
       model.approvalRequestId = this.data.approvalRequestId;
+      // model.approvalResponseId  = this.data.approvalResponseId;
       model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
 
       let action: any;
@@ -61,6 +62,10 @@ export class CancelReasonModalComponent implements OnInit {
               if (body.outcome.toString().toLowerCase() === 'failed') {
                 const errors: any[] = [];
 
+                if (body.statusReason) {
+                  errors.push('Outcome Reason: ' + body.statusReason);
+                }
+
                 if (body.disposition) {
                   errors.push(body.disposition);
                 }
@@ -72,9 +77,19 @@ export class CancelReasonModalComponent implements OnInit {
                     });
                   });
                 }
+
                 this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
               } else {
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+                const errors: any[] = [];
+                if (body.statusReason) {
+                  errors.push('Outcome Reason: ' + body.statusReason);
+                }
+                if (errors.length > 0) {
+                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', errors);
+                } else {
+                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+                }
+
                 this.dialogRef.close(true);
               }
 

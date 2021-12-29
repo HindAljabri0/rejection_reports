@@ -12,6 +12,7 @@ import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { SearchService } from './serchService/search.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ReportsService } from './reportsService/reports.service';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,9 @@ export class SharedServices {
     uploadId: number,
     uploadName: string
   }[]> = new Subject();
+  uploadsListLoading: boolean = false;
+  uploadsListLoadingChange: Subject<boolean> = new Subject();
+
 
 
   getUploadId: any;
@@ -81,12 +85,17 @@ export class SharedServices {
       this.loading = value;
     });
 
+    this.uploadsListLoadingChange.subscribe((value) => {
+      this.uploadsListLoading = value;
+    });
+
     this.searchIsOpenChange.subscribe(value => {
       this.searchIsOpen = value;
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
       if (value) {
+        this.getNotifications();
         this.showUploadsCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
       }
@@ -100,6 +109,7 @@ export class SharedServices {
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
       if (value) {
+        this.getAnnouncements();
         this.showUploadsCenterChange.next(false);
         this.showNotificationCenterChange.next(false);
       }
@@ -107,6 +117,7 @@ export class SharedServices {
     this.showUploadsCenterChange.subscribe(value => {
       this.showUploadsCenter = value;
       if (value) {
+        this.getUploads();
         this.showNotificationCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
       }
@@ -124,13 +135,9 @@ export class SharedServices {
         };
       });
     });
-    this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.getNotifications();
-      this.getUploads();
-      this.getAnnouncements();
-    });
+
+    this.getNotifications();
+
     this.unReadProcessedCountChange.subscribe(value => {
       this.unReadProcessedCount = value;
     });
@@ -262,15 +269,17 @@ export class SharedServices {
 
   getUploads() {
     if (!this.isProvider) { return; }
-
+    this.uploadsListLoadingChange.next(true);
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.uploadsListChange.next(event.body['content']);
+        this.uploadsListLoadingChange.next(false);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         this.uploadsListChange.next([]);
       }
+      this.uploadsListLoadingChange.next(false);
     });
   }
 
@@ -334,16 +343,18 @@ export class SharedServices {
     return this.authService.getProviderId();
   }
 
-  public get cchiId(){
+  public get cchiId() {
     // tslint:disable-next-line:radix
     return parseInt(this.authService.getCCHIId());
   }
+
+
 
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
         return 'ready-submission';
-      case ClaimStatus.NotAccepted.toLowerCase():
+      case ClaimStatus.NotAccepted.toLowerCase(): case ClaimStatus.Error.toLowerCase():
         return 'rejected-waseel';
       case ClaimStatus.ALL.toLowerCase():
         return 'all-claim';
@@ -351,11 +362,11 @@ export class SharedServices {
         return 'middle-grey';
       case ClaimStatus.REJECTED.toLowerCase():
         return 'rejected';
-      case ClaimStatus.PAID.toLowerCase():
+      case ClaimStatus.PAID.toLowerCase(): case ClaimStatus.APPROVED.toLowerCase():
         return 'paid';
-      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase(): case ClaimStatus.PARTIALLY_APPROVED.toLowerCase():
         return 'partially-paid';
-      case ClaimStatus.OUTSTANDING.toLowerCase():
+      case ClaimStatus.OUTSTANDING.toLowerCase(): case ClaimStatus.Pended.toLowerCase():
         return 'under-processing';
       case ClaimStatus.Submitted.toLowerCase():
         return 'submitted';
@@ -367,6 +378,8 @@ export class SharedServices {
         return 'downloadable';
       case ClaimStatus.INVALID.toLowerCase():
         return 'invalid';
+        case ClaimStatus.DUPLICATE.toLowerCase():
+        return 'duplicate';
       default:
         return 'not-saved';
     }
@@ -394,6 +407,10 @@ export class SharedServices {
         return 'Total Not Submitted';
       case ClaimStatus.TOTALSUBMITTED.toLowerCase():
         return 'Total Submitted';
+      case ClaimStatus.Queued.toLowerCase():
+        return 'Queued By NPHIES';
+      case ClaimStatus.Error.toLowerCase():
+        return 'Rejected By NPHIES';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
@@ -588,7 +605,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -606,7 +623,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
@@ -673,10 +690,11 @@ export class SharedServices {
     const len = binaryString.length;
     const bytes = new Uint8Array(len);
     for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
-}
+  }
+
 
 }
 

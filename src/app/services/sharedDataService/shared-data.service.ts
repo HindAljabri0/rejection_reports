@@ -22,13 +22,13 @@ export class SharedDataService {
   encounterStatusList = [
     { value: 'planned', name: 'Planned' },
     { value: 'arrived', name: 'Arrived' },
-    { value: 'Triaged', name: 'Triaged' },
-    { value: 'In Progress', name: 'In Progress' },
-    { value: 'On Leave', name: 'On Leave' },
-    { value: 'Finished', name: 'Finished' },
-    { value: 'Cancelled', name: 'Cancelled' },
-    { value: 'Entered in Error', name: 'Entered in Error' },
-    { value: 'Unknown', name: 'Unknown' }
+    { value: 'triaged', name: 'Triaged' },
+    { value: 'in-progress', name: 'In Progress' },
+    { value: 'onleave', name: 'On Leave' },
+    { value: 'finished', name: 'Finished' },
+    { value: 'cancelled', name: 'Cancelled' },
+    { value: 'entered-in-error', name: 'Entered in Error' },
+    { value: 'unknown', name: 'Unknown' }
   ];
 
   encounterClassList = [
@@ -202,7 +202,7 @@ export class SharedDataService {
   itemTypeList = [
     { value: 'medicalDevices', name: 'Medical Devices' },
     { value: 'medicationCode', name: 'Medication Codes' },
-    { value: 'transporationService', name: 'Transportation SRCA' },
+    { value: 'transportationService', name: 'Transportation SRCA' },
     { value: 'imagingService', name: 'Imaging' },
     { value: 'procedures', name: 'Procedures' },
     { value: 'services', name: 'Services' },

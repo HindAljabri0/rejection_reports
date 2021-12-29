@@ -141,4 +141,67 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
+
+  getCommunications(providerId: string, responseId: number) {
+    const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+  getClaimSummary(providerId: string, uploadId: string, statuses?: string[]) {
+    let requestUrl = `/providers/${providerId}/claims?uploadId=${uploadId}`;
+    if (statuses != null) {
+      requestUrl += `&status=${statuses}`;
+    }
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+  getClaimResults(
+    providerId: string,
+    uploadId?: string,
+    statuses?: string[],
+    page?: number,
+    pageSize?: number) {
+    if (page == null) { page = 0; }
+    if (pageSize == null) { pageSize = 10; }
+    let requestURL = `/providers/${providerId}/claims/details?`;
+
+    if (uploadId != null) {
+      requestURL += `uploadId=${uploadId}`;
+    }
+    requestURL += (statuses != null ? `&status=${statuses.toString()}` : '') + '&page=' + page + '&size=' + pageSize;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
+  getPaymentReconciliation(providerId: string, body: any) {
+    let requestUrl = `/providers/${providerId}/payment-reconciliation?`;
+    if (body.fromDate) {
+      requestUrl += `fromDate=${body.fromDate}&`;
+    }
+    if (body.toDate) {
+      requestUrl += `toDate=${body.toDate}&`;
+    }
+    if (body.issuerId) {
+      requestUrl += `issuerId=${body.issuerId}&`;
+    }
+
+    if (body.page !== undefined && body.page !== null) {
+      requestUrl += `page=${body.page}&`;
+    }
+    if (body.pageSize) {
+      requestUrl += `pageSize=${body.pageSize}&`;
+    }
+
+    requestUrl = requestUrl.slice(0, requestUrl.length - 1);
+
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  getPaymentReconciliationDetails(providerId: string, reconciliationId: number) {
+    const requestUrl = `/providers/${providerId}/reconciliationDetails/fetch?reconciliationId=${reconciliationId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+
 }

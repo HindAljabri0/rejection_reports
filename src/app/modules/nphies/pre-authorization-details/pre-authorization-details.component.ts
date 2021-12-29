@@ -3,6 +3,9 @@ import * as moment from 'moment';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -15,7 +18,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
 
-  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer) { }
+  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.readNotification();
@@ -23,22 +26,17 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   }
 
   readNotification() {
-    const notificationId: string = this.data.notificationId;
-    if (this.data.communicationId) {
-      this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
-      // tslint:disable-next-line:max-line-length
-      // notificationId = this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId === this.data.communicationId)[0] ? this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId === this.data.communicationId)[0].notificationId : '';
-      // tslint:disable-next-line:max-line-length
-      // this.sharedServices.communicationRequestNotificationList = this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId !== this.data.communicationId);
-    } else {
-      this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
-      // tslint:disable-next-line:max-line-length
-      // notificationId = this.sharedServices.processedNotificationList.filter(x => x.responseId === this.data.approvalResponseId)[0] ? this.sharedServices.processedNotificationList.filter(x => x.responseId === this.data.approvalResponseId)[0].notificationId : '';
+    if (this.data.notificationStatus === 'unread') {
+      const notificationId: string = this.data.notificationId;
+      if (this.data.communicationId) {
+        this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
+      } else {
+        this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
+      }
+      if (notificationId) {
+        this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+      }
     }
-    if (notificationId) {
-      this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
-    }
-
   }
 
   toggleItem(index) {
@@ -233,6 +231,15 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     } else {
       return this.data.period;
     }
+  }
+
+  viewAttachment(e, item) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: item.attachmentName, attachment: item.attachment
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }

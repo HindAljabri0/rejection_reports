@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CertificateConfigurationProvider } from 'src/app/models/certificateConfigurationProvider';
 import { ModifyingCodeValueRequest } from 'src/app/pages/configurationsPage/store/configurations.reducer';
 import { environment } from 'src/environments/environment';
 
@@ -35,6 +36,24 @@ export class SettingsService {
     const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestUrl);
     const requestWithBody = request.clone({ body: toDeleteValues });
     return this.httpClient.request(requestWithBody);
+  }
+
+  // getSaveCertificateFileToProvider(providerId: any, file: File, item:CertificateConfigurationProvider) {
+    getSaveCertificateFileToProvider(providerId: any, file: File,password:string) {
+    const formdata: FormData = new FormData();
+    formdata.append('uploadFile', file, file.name);
+    const requestURL = `/providers/${providerId}/addFile?password=${password}`;
+    const req = new HttpRequest('POST', environment.settingsServiceHost + requestURL, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+    return this.httpClient.request(req);
+
+  }
+  getProviders() {
+    const requestURL = '/providers';
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.httpClient.request(request);
   }
 
 }

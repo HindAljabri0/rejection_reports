@@ -2,41 +2,59 @@
     <div class="block-header has-border">
         <p>Reconciliation Report</p>
     </div>
+
     <div class="block-filter-panel">
         <div class="row">
             <div class="col-lg-8">
-                <div class="row small-gutter">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">Payer</label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="">
-                                    <mat-option value="">Select Payer</mat-option>
-                                    <mat-option value="Payer 1">Payer 1</mat-option>
-                                    <mat-option value="Payer 2">Payer 2</mat-option>
-                                    <mat-option value="Payer 3">Payer 3</mat-option>
-                                    <mat-option value="Payer 4">Payer 4</mat-option>
-                                    <mat-option value="Payer 5">Payer 5</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                <form [formGroup]="FormReconciliationReport" (ngSubmit)="onSubmit()">
+                    <div class="row small-gutter">
+                        <div class="col">
+                            <div class="form-group"
+                                [ngClass]="{'has-error' : (isSubmitted || FormReconciliationReport.get('payerId').touched) && FormReconciliationReport.get('payerId').hasError('required')}">
+                                <label class="control-label">Payer</label>
+                                <mat-form-field class="form-control custom-select-control">
+                                    <mat-select placeholder="Select Payer" formControlName="payerId"
+                                        (keyup.enter)="search()">
+                                        <mat-option value="all">All</mat-option>
+                                        <mat-option *ngFor="let payer of payersList" [value]="payer.id">
+                                            {{payer.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <div
+                                        *ngIf="(isSubmitted || FormReconciliationReport.get('payerId').touched) && FormReconciliationReport.get('payerId').hasError('required')">
+                                        <span class="error-text">Please select a Payer</span>
+                                    </div>
+                                </mat-form-field>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">Year</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="year" class="form-control" placeholder="Select year" />
-                                <mat-datepicker-toggle [for]="year"></mat-datepicker-toggle>
-                                <mat-datepicker #year></mat-datepicker>
+                        <div class="col">
+                            <div class="form-group"
+                                [ngClass]="{'has-error' : (isSubmitted || FormReconciliationReport.get('startDate').touched) && FormReconciliationReport.get('startDate').hasError('required')}">
+                                <label class="control-label">Select Current Date</label>
+                                <div class="date-picker">
+                                    <input autocomplete="off" class="form-control date-picker" bsDatepicker
+                                        [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                        placeholder="Select from month" formControlName="startDate" name="fromDate"
+                                        (bsValueChange)="dateValidation($event)" />
+                                    <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />
+                                <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                                <mat-datepicker #startDate></mat-datepicker> -->
+                                </div>
+                                <div
+                                    *ngIf="(isSubmitted || FormReconciliationReport.get('startDate').touched) && FormReconciliationReport.get('startDate').hasError('required')">
+                                    <span class="error-text">Please select a Date</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="control-label">&nbsp;</label>
+                                <button type="button" (click)="onSubmit()" mat-flat-button
+                                    color="primary">Search</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-auto align-self-end">
-                        <div class="form-group">
-                            <button type="button" mat-flat-button color="primary">Search</button>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -45,6 +63,7 @@
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
+
                         <th rowspan="2">Duration</th>
                         <th rowspan="2">Payer</th>
                         <th rowspan="2">Total Submitted</th>
@@ -55,6 +74,7 @@
                         <th rowspan="2">Reconciliation Amount</th>
                         <th colspan="2">Final Rejection Amount</th>
                         <th rowspan="2"></th>
+
                     </tr>
                     <tr>
                         <th class="not-first-child">SR</th>
@@ -68,225 +88,61 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>May 2020 - Jan 2021</td>
-                        <td>Bupa</td>
-                        <td>1296</td>
-                        <td>132</td>
-                        <td>44.60%</td>
-                        <td>150</td>
-                        <td>972</td>
-                        <td>24.72%</td>
-                        <td>332</td>
-                        <td>25.96%</td>
-                        <td>385</td>
-                        <td>332</td>
-                        <td>25.96%</td>
+                    <tr *ngFor="let data of reconciliationReportResponse">
+                        <td style="display:none;">{{data.reconciliationId}}</td>
+                        <td>{{data.startDate | date:"MMM y"}} - {{data.endDate | date:"MMM y"}}</td>
+                        <td>{{data.payerName}}</td>
+                        <td>{{data.totalSubmittedAmount}}</td>
+                        <td>{{data.totalReceived}}</td>
+                        <td>{{data.totalReceivedPerc}}</td>
+                        <td>{{data.totalOutstandingAmount}}</td>
+                        <td>{{data.promptDiscount}}</td>
+                        <td>{{data.promptDiscountPerc}}</td>
+                        <td>{{data.volumeDiscount}}</td>
+                        <td>{{data.volumeDiscountPerc}}</td>
+                        <td>{{data.reconciliationAmount}}</td>
+                        <td>{{data.finalRejectionAmount}}</td>
+                        <td>{{data.finalRejectionAmountPerc}}</td>
                         <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                (click)="selectedReconciliationIdAndTotalDubmitted = data">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
+
                     <tr>
-                        <td>Mar 2021 - Sep 2021</td>
-                        <td>Tawuniya</td>
-                        <td>1342</td>
-                        <td>503</td>
-                        <td>10.13%</td>
-                        <td>216</td>
-                        <td>368</td>
-                        <td>48.25%</td>
-                        <td>388</td>
-                        <td>23.80%</td>
-                        <td>150</td>
-                        <td>388</td>
-                        <td>23.80%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jan 2021 - Apr 2021</td>
-                        <td>Malath</td>
-                        <td>1884</td>
-                        <td>165</td>
-                        <td>20.34%</td>
-                        <td>458</td>
-                        <td>436</td>
-                        <td>32.13%</td>
-                        <td>335</td>
-                        <td>28.46%</td>
-                        <td>316</td>
-                        <td>335</td>
-                        <td>28.46%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Apr 2021 - Aug 2021</td>
-                        <td>Sagar</td>
-                        <td>1673</td>
-                        <td>681</td>
-                        <td>39.35%</td>
-                        <td>180</td>
-                        <td>336</td>
-                        <td>31.56%</td>
-                        <td>234</td>
-                        <td>19.52%</td>
-                        <td>227</td>
-                        <td>234</td>
-                        <td>19.52%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Dec 2020 - Jul 2021</td>
-                        <td>AXA</td>
-                        <td>1721</td>
-                        <td>370</td>
-                        <td>58.85%</td>
-                        <td>476</td>
-                        <td>241</td>
-                        <td>34.35%</td>
-                        <td>466</td>
-                        <td>28.42%</td>
-                        <td>374</td>
-                        <td>466</td>
-                        <td>28.42%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Oct 2020 - Jan 2021</td>
-                        <td>SAICO</td>
-                        <td>1047</td>
-                        <td>602</td>
-                        <td>10.27%</td>
-                        <td>491</td>
-                        <td>149</td>
-                        <td>57.43%</td>
-                        <td>357</td>
-                        <td>20.87%</td>
-                        <td>367</td>
-                        <td>357</td>
-                        <td>20.87%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jul 2020 - Feb 2021</td>
-                        <td>Rajhi</td>
-                        <td>1644</td>
-                        <td>201</td>
-                        <td>42.53%</td>
-                        <td>185</td>
-                        <td>319</td>
-                        <td>17.69%</td>
-                        <td>341</td>
-                        <td>28.40%</td>
-                        <td>427</td>
-                        <td>341</td>
-                        <td>28.40%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jan 2021 - Oct 2021</td>
-                        <td>Walaa</td>
-                        <td>1436</td>
-                        <td>606</td>
-                        <td>12.50%</td>
-                        <td>393</td>
-                        <td>702</td>
-                        <td>37.43%</td>
-                        <td>168</td>
-                        <td>21.40%</td>
-                        <td>244</td>
-                        <td>168</td>
-                        <td>21.40%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Apr 2021 - Oct 2021</td>
-                        <td>ASF</td>
-                        <td>1963</td>
-                        <td>873</td>
-                        <td>10.37%</td>
-                        <td>464</td>
-                        <td>257</td>
-                        <td>20.72%</td>
-                        <td>380</td>
-                        <td>25.33%</td>
-                        <td>414</td>
-                        <td>380</td>
-                        <td>25.33%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jul 2021 - Aug 2021</td>
-                        <td>JHAH</td>
-                        <td>1564</td>
-                        <td>346</td>
-                        <td>52.92%</td>
-                        <td>357</td>
-                        <td>499</td>
-                        <td>13.55%</td>
-                        <td>161</td>
-                        <td>10.78%</td>
-                        <td>247</td>
-                        <td>161</td>
-                        <td>10.78%</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
+                        <td colspan="20" class="p-0">
+                            <app-empty-state
+                                *ngIf="reconciliationReportResponse == null || reconciliationReportResponse.length == 0"
+                                class="reconciliation-report-empty-state" message='No records found!'>
+                            </app-empty-state>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky-bottom"
+        *ngIf="!(reconciliationReportResponse == null || reconciliationReportResponse.length == 0)">
         <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page">
+            <button matRipple [disabled]="reconciliationReport.page <= 0" (click)="goToFirstPage()" type="button"
+                title="First Page">
                 <img src="./assets/ic-page-first.svg" alt="First" />
             </button>
-            <button matRipple type="button" title="Previous Page">
+            <button matRipple [disabled]="reconciliationReport.page <= 0" (click)="goToPrePage()" type="button"
+                title="Previous Page">
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
-                1<small>/5</small>
+                {{(page+1)}}<small>/{{totalPages}}</small>
             </p>
-            <button matRipple type="button" title="Next Page">
+            <button matRipple [disabled]="(reconciliationReport.page + 1) >= totalPages" (click)="goToNextPage()"
+                type="button" title="Next Page">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
             </button>
-            <button matRipple type="button" title="Last Page">
+            <button matRipple [disabled]="(reconciliationReport.page + 1) >= totalPages" (click)="goToLastPage()"
+                type="button" title="Last Page">
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>
@@ -294,10 +150,9 @@
     <button mat-fab color="primary" class="page-fab" (click)="openAddReconciliationDialog()">
         <mat-icon>add</mat-icon>
     </button>
-</div>
-<mat-menu #actionsMenu xPosition="before">
-    <ng-template matMenuContent>
-        <button mat-menu-item>Add Payment</button>
-        <button mat-menu-item (click)="openFinalRejectionDialog()">Add Final Rejection</button>
-    </ng-template>
-</mat-menu>
+    <mat-menu #actionsMenu xPosition="before">
+        <ng-template matMenuContent>
+            <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
+            <!-- <button mat-menu-item (click)="openAddFinalRejectionDialog()">Add Final Rejection</button> -->
+        </ng-template>
+    </mat-menu>
