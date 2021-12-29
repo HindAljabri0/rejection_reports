@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
   thereIsActiveDownloads = false;
   downloads: DownloadRequest[] = [];
   watchingProcessed = false;
+  showWhatsAppSupport = false;
 
   @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
@@ -72,6 +73,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
 
     if (environment.showFreshChat) {
+      this.showWhatsAppSupport = true;
       this.showFreshChatBox();
     }
 

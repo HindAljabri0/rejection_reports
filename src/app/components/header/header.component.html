@@ -45,3 +45,7 @@
     <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
   </ng-container>
 </mat-menu>
+
+<a *ngIf="showWhatsAppSupport" target="_blank" href="https://api.whatsapp.com/send/?phone=920012099&text=Hi" title="Chat on WhatsApp" class="whatsapp-chat-btn">
+  <img src="./assets/whatsapp.svg" alt="WhatsApp" />
+</a>
