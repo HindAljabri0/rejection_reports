@@ -272,14 +272,27 @@
                             </li>
                         </ul>
                     </mat-expansion-panel> -->
-                    <ul class="nav-list" *ngIf="isProviderAdmin">
-                        <li i18n="@@configurations">
-                            <a routerLink="/configurations" routerLinkActive="is-active">
-                                <span class="text">Configurations</span>
-                            </a>
-                        </li>
-                    </ul>
                 </mat-accordion>
+                <ul class="nav-list" *ngIf="isProviderAdmin">
+                    <li i18n="@@configurations">
+                        <a routerLink="/configurations" routerLinkActive="is-active">
+                            <span class="text">Configurations</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/contract-management" routerLinkActive="is-active">
+                            <span class="text">Contract Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/policy-management" routerLinkActive="is-active">
+                            <span class="text">Policy Management</span>
+                        </a>
+                    </li>
+                </ul>
+
 
                 <ng-container *ngIf="hasAnyNphiesPrivilege">
                     <div class="list-title">

@@ -128,6 +128,9 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .fixed-height{height: calc(100vh - 224px);}
 .fixed-height.fixed-height-sm{height: calc(100vh - 362px);}
 .fixed-height.fixed-height-lg{height: calc(100vh - 164px);}
+.fixed-height.no-min-height{max-height: calc(100vh - 224px);height: auto;}
+.fixed-height.no-min-height.fixed-height-sm{max-height: calc(100vh - 362px);height:auto;}
+.fixed-height.no-min-height.fixed-height-lg{max-height: calc(100vh - 164px);height:auto;}
 .primary-dialog .fixed-height{height: calc(100vh - 200px);}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
 .block-title.sm{font-size: 16px;line-height: 22px;}
@@ -197,6 +200,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .error-btn>span{padding-left: 4px;}
 .status{display: inline-block;vertical-align: middle;background: #3060AA;color: #fff;padding: 6px 12px;border-radius: 6px;}
 .mat-select-panel-wrap .mat-select-panel,.cdk-overlay-pane .mat-menu-panel,.mat-datepicker-popup .mat-datepicker-content{background: rgba(255,255,255,0.85);-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
+.mat-select-panel-wrap .mat-optgroup-label{color: #3060AA;font-weight: 600;height: auto;line-height: 32px;}
 .mat-select-panel .mat-option:hover:not(.mat-option-disabled), .mat-select-panel .mat-option:focus:not(.mat-option-disabled){background-color: rgba(0,0,0,0.06);}
 .cdk-overlay-container .cdk-overlay-backdrop.cdk-overlay-dark-backdrop{-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
 .attachment-view-img{display: block;max-width: 100%;margin: 0 auto;}
@@ -210,6 +214,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .mat-icon.size-18{font-size:18px;line-height:18px;height:18px;width:18px;}
 .mat-icon.size-20{font-size:20px;line-height:20px;height:20px;width:20px;}
 .form-title{font-weight: 600;padding-bottom: 8px;padding-top: 24px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;margin-bottom: 16px;}
+.form-title .mat-slide-toggle{font-weight: 400;}
 .form-title.no-border{padding-bottom: 0;border-bottom: 0;margin-bottom: 0;}
 .mat-dialog-container{color: inherit;}
 .alert-marker{display: block;height: 8px;width: 8px;background: #264d88;border-radius: 50px;color: #fff;font-weight: 500;text-align: center;font-size: 12px;}
@@ -1291,6 +1296,10 @@ table.inline-label-table{width: 100%;}
 .inline-attachments>li .close:hover,.inline-attachments>li .close:focus,.inline-attachments>li .close:active{background-color: #dadada;opacity: 0.8;}
 .inline-attachments.no-space{margin-bottom: -8px;}
 .pre-auth-info-wrapper{padding: 14px;overflow: auto;max-height: calc(100vh - 177px);}
+
+/* slide toggle */
+.theme-success.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb{background-color: #29bf24;}
+.theme-success.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{background-color: rgba(41, 191, 36, 0.54);}
 
 /* reconciliation summary
 --------------------------------------------------------------------------------------------------------*/

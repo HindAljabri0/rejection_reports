@@ -126,6 +126,6 @@
   </form>
 </div>
 <div class="primary-dialog-footer has-border text-right"
-  *ngIf="searchComplete &&  searchDiscountReconciliationReportResponse!=null">
+  *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null && searchDiscountReconciliationReportResponse.totalSubmittedAmount !=0">
   <button mat-flat-button color="primary" (click)="addDiscount()">Add Discounts</button>
 </div>
