@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { AddDiscountReconciliationReport } from 'src/app/models/reconciliationReport';
@@ -50,6 +50,35 @@ export class ReconciliationService {
     const requestURL = `/providers/${providerId}/reconciliation-report/addPayment?paymentId=${paymentId}&reconciliationId=${data.reconciliationId}&receivableDate=${data.receivableDate}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, {}, { headers: headers });
+    return this.http.request(request);
+  }
+
+  getArBreakDownData(providerId: any, data: any): Observable<any> {
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    let requestURL = '';
+    if (!data.status) {
+      requestURL = `/providers/${providerId}/arBreakdown/payment/status/search`;
+    } else {
+      requestURL = `/providers/${providerId}/arBreakdown/payer/status/search`;
+    }
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { params: searchparams });
+    return this.http.request(request);
+  }
+
+  getArBreakDownCategoryData(providerId: any, data: any): Observable<any> {
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const requestURL = `/providers/${providerId}/arBreakdown/payment/category/search`;
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { params: searchparams });
     return this.http.request(request);
   }
 
