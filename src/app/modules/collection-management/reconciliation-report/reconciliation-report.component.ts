@@ -273,6 +273,7 @@ export class ReconciliationReportComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (dialogRef.componentInstance.status) {
+        this.search();
       }
     }, error => {
 
@@ -308,7 +309,8 @@ export class ReconciliationReportComponent implements OnInit {
 
         data: {
           id: this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
-          payerId: this.selectedReconciliationIdAndTotalDubmitted.payerId
+          payerId: this.selectedReconciliationIdAndTotalDubmitted.payerId,
+          startDate: this.selectedReconciliationIdAndTotalDubmitted.startDate
         }
       });
     dialogRef.afterClosed().subscribe(result => {

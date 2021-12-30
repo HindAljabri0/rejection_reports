@@ -97,7 +97,9 @@ export class ReconciliationAddPaymentComponent implements OnInit {
 
     this.sharedService.loadingChanged.next(true);
     const body = {
-      reconciliationId: this.data.id
+      reconciliationId: this.data.id,
+      receivableDate: moment(this.data.
+        startDate).set('date', 1).format('YYYY-MM-DD')
     }
     this.selctedReconciliationPayerData,
 
