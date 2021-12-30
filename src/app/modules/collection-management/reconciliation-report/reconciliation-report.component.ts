@@ -44,6 +44,15 @@ export class ReconciliationReportComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
 
+  getPreviousDate() {
+    this.selectedDate = new Date(this.FormReconciliationReport.controls.startDate.value)
+    return this.datePipe.transform(new Date(this.selectedDate.getFullYear() - 1, this.selectedDate.getMonth(), this.selectedDate.getDate()), 'dd-MM-yyyy');
+  }
+
+  formatDate(date: Date) {
+    return this.datePipe.transform(date, 'dd-MM-yyyy');
+  }
+
   FormReconciliationReport: FormGroup = this.formBuilder.group({
     payerId: ['', Validators.required],
     startDate: ['', Validators.required],
