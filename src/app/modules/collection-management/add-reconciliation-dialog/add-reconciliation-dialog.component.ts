@@ -91,8 +91,6 @@ export class AddReconciliationDialogComponent implements OnInit {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
             this.searchDiscountReconciliationReportResponse = event.body as SearchDiscountReconciliationReportResponse;
-
-            console.log(this.searchDiscountReconciliationReportResponse.duration);
           }
           this.sharedService.loadingChanged.next(false);
         }
@@ -142,16 +140,6 @@ export class AddReconciliationDialogComponent implements OnInit {
       container._store.dispatch(container._actions.select(event.date));
     };
     container.setViewMode('month');
-  }
-
-  dateValidation(event: any) {
-    if (event !== null) {
-      const startDate = moment(event).format('YYYY-MM-DD');
-      const endDate = moment(this.FormAddReconciliation.controls.startDate.value).format('YYYY-MM-DD');
-      if (startDate > endDate) {
-        this.FormAddReconciliation.controls.startDate.setValue('');
-      }
-    }
   }
 
 }

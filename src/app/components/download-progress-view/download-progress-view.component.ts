@@ -44,6 +44,10 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
     return this.downloadRequest.contentType == 'application/zip';
   }
 
+  isPDF() {
+    return this.downloadRequest.contentType == 'application/pdf';
+  }
+
   getValue() {
     return this.downloadRequest.progress;
   }
@@ -51,6 +55,10 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
   getDownloadURL(){
     const access_token = localStorage.getItem("access_token");
     return this.downloadRequest.url + `?access_token=${access_token}`;
+  }
+
+  get isNewDownload(){
+    return this.downloadRequest.progress == 100 && this.downloadRequest.downloadAttempts == '0';
   }
 
 }

@@ -75,6 +75,16 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
             path: 'nphies',
             loadChildren: () => import('./nphies/nphies.module').then(m => m.NphiesModule),
             canActivate: [RouteCanActiveService]
+          },
+          {
+            path: 'contract-management',
+            loadChildren: () => import('./contract-management/contract-management.module').then(m => m.ContractManagementModule),
+            canActivate: [RouteCanActiveService]
+          },
+          {
+            path: 'policy-management',
+            loadChildren: () => import('./policy-management/policy-management.module').then(m => m.PolicyManagementModule),
+            canActivate: [RouteCanActiveService]
           }
         ]
       }

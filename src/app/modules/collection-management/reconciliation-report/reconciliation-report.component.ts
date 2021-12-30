@@ -44,6 +44,15 @@ export class ReconciliationReportComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
 
+  getPreviousDate() {
+    this.selectedDate = new Date(this.FormReconciliationReport.controls.startDate.value)
+    return this.datePipe.transform(new Date(this.selectedDate.getFullYear() - 1, this.selectedDate.getMonth(), this.selectedDate.getDate()), 'dd-MM-yyyy');
+  }
+
+  formatDate(date: Date) {
+    return this.datePipe.transform(date, 'dd-MM-yyyy');
+  }
+
   FormReconciliationReport: FormGroup = this.formBuilder.group({
     payerId: ['', Validators.required],
     startDate: ['', Validators.required],
@@ -91,10 +100,10 @@ export class ReconciliationReportComponent implements OnInit {
         this.FormReconciliationReport.controls.endDate.setValue(endDate);
       }
       if (params.page != null) {
-        this.reconciliationReport.page = params.page;
+        this.reconciliationReport.page = parseInt(params.page);
       }
       if (params.size != null) {
-        this.reconciliationReport.size = params.size;
+        this.reconciliationReport.size = parseInt(params.size);
       }
 
       this.search();
@@ -108,6 +117,7 @@ export class ReconciliationReportComponent implements OnInit {
   }
 
   onSubmit() {
+    this.page = 0;
     this.reconciliationReport.page = 0;
     this.reconciliationReport.size = 10;
     this.search();
@@ -272,6 +282,7 @@ export class ReconciliationReportComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (dialogRef.componentInstance.status) {
+        this.search();
       }
     }, error => {
 
@@ -307,7 +318,8 @@ export class ReconciliationReportComponent implements OnInit {
 
         data: {
           id: this.selectedReconciliationIdAndTotalDubmitted.reconciliationId,
-          payerId: this.selectedReconciliationIdAndTotalDubmitted.payerId
+          payerId: this.selectedReconciliationIdAndTotalDubmitted.payerId,
+          startDate: this.selectedReconciliationIdAndTotalDubmitted.startDate
         }
       });
     dialogRef.afterClosed().subscribe(result => {

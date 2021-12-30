@@ -33,8 +33,7 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_total)+summaries.data.failed_total)}}
                         <small>Claims</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_total)}} Claims">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_total)}} Claims">
                         {{sharedServices.kFormatter((summaries.data.notaccepted_total))}} <small>Claims</small>
                     </div>
                 </div>
@@ -44,7 +43,7 @@
                 </mat-spinner>
             </div>
             <div class="error" *ngIf="summaries.error ">
-                <p class="error-text">{{summaries.error}}</p>
+                <p class="error-card mb-0">{{summaries.error}}</p>
             </div>
         </div>
     </div>
@@ -78,8 +77,7 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_gross)+getConvertfromStringToNumber(summaries.data.failed_gross))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_gross)}} SR">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_gross)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_gross))}}
                         <small>SR</small>
                     </div>
@@ -90,7 +88,7 @@
                 </mat-spinner>
             </div>
             <div class="error" *ngIf="summaries.error">
-                <p class="error-text">{{summaries.error}}</p>
+                <p class="error-card mb-0">{{summaries.error}}</p>
             </div>
         </div>
     </div>
@@ -127,8 +125,7 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_disCount)+getConvertfromStringToNumber(summaries.data.failed_disCount))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_disCount)}} SR">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_disCount)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_disCount))}}
                         <small>SR</small>
 
@@ -141,7 +138,7 @@
                 </mat-spinner>
             </div>
             <div class="error" *ngIf="summaries.error  ">
-                <p class="error-text">{{summaries.error}}</p>
+                <p class="error-card mb-0">{{summaries.error}}</p>
             </div>
         </div>
     </div>
@@ -178,8 +175,7 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_Patientshare)+getConvertfromStringToNumber(summaries.data.failed_Patientshare))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare)}} SR">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare))}}
                         <small>SR</small>
 
@@ -192,7 +188,7 @@
                 </mat-spinner>
             </div>
             <div class="error" *ngIf="summaries.error ">
-                <p class="error-text">{{summaries.error}}</p>
+                <p class="error-card mb-0">{{summaries.error}}</p>
             </div>
         </div>
     </div>
@@ -228,8 +224,7 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_netAmount)+getConvertfromStringToNumber(summaries.data.failed_netAmount))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_netAmount)}} SR">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_netAmount)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_netAmount))}}
                         <small>SR</small>
                     </div>
@@ -240,7 +235,7 @@
                 </mat-spinner>
             </div>
             <div class="error" *ngIf="summaries.error ">
-                <p class="error-text">{{summaries.error}}</p>
+                <p class="error-card mb-0">{{summaries.error}}</p>
             </div>
         </div>
     </div>
@@ -274,8 +269,7 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_VatAmount)+getConvertfromStringToNumber(summaries.data.failed_VatAmount))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount)}} SR">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount))}}
                         <small>SR</small>
                     </div>
@@ -286,7 +280,7 @@
                 </mat-spinner>
             </div>
             <div class="error" *ngIf="summaries.error ">
-                <p class="error-text">{{summaries.error}}</p>
+                <p class="error-card mb-0">{{summaries.error}}</p>
             </div>
         </div>
     </div>

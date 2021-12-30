@@ -1,0 +1,24 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Select Existing Insurance Company</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="form-group">
+        <label class="control-label">Existing Insurance Company</label>
+        <mat-form-field class="form-control custom-select-control">
+            <mat-select value="">
+                <mat-option value="">Select Existing Insurance Company</mat-option>
+                <mat-option value="Insurance Company 1">Insurance Company 1</mat-option>
+                <mat-option value="Insurance Company 2">Insurance Company 2</mat-option>
+                <mat-option value="Insurance Company 3">Insurance Company 3</mat-option>
+                <mat-option value="Insurance Company 4">Insurance Company 4</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="redirectToAddPage()">Select & Continue</button>
+        <button mat-flat-button color="primary" (click)="redirectToAddPage()">Wanna Create New</button>
+    </div>
+</div>
