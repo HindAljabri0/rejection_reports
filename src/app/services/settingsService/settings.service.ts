@@ -50,8 +50,8 @@ export class SettingsService {
     return this.httpClient.request(req);
 
   }
-  getProviders() {
-    const requestURL = '/providers';
+  getDetails(providerId: any) {
+    const requestURL =`/providers/${providerId}/details`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.httpClient.request(request);
   }

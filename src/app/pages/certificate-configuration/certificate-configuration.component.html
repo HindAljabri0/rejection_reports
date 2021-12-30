@@ -12,9 +12,9 @@
             <h5 class="medium pb-2">Step 1: Select Provider</h5>
             <div class="form-group">
                 <label class="control-label">Provider</label>
-                <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="auto"
-                    (keyup)="selectProvider()" [formControl]="providerController" (input)="updateFilter()" />
-                <mat-autocomplete autoActiveFirstOption #auto>
+                <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="off"
+                    (keyup.enter)="selectProvider()" [formControl]="providerController" (input)="updateFilter()" autocomplete="false" />
+                <mat-autocomplete autoActiveFirstOption #off>
                     <mat-option *ngFor="let provider of filteredProviders"
                         [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                         (click)="selectProvider(provider.switchAccountId)">
@@ -25,8 +25,8 @@
             <h5 class="medium pb-2">Step 2: Enter Password</h5>
             <div class="form-group">
                 <label class="control-label">Password</label>
-                <input type="password" class="form-control" placeholder="Enter Password" [matAutocomplete]="auto"
-                [(ngModel)]="certificateConfigurationProvider.password" name ="certificateConfigurationProvider.password"  required  />
+                <input type="password" class="form-control ltr auto-complete-off" placeholder="Enter Password" 
+                [(ngModel)]="certificateConfigurationProvider.password" name ="certificateConfigurationProvider.password" autocomplete="new-password" [matAutocomplete]="off" required  />
               
             </div>
 
@@ -49,6 +49,11 @@
             <div class="col-auto align-self-end">
                 <div class="form-group">
                     <button type="button"  (click)="startUploading()" mat-flat-button color="primary">Save</button>
+                </div>
+            </div>
+            <div class="col-auto align-self-end">
+                <div class="form-group">
+                    <button type="button"  style="float: right ; margin:-55px -6px"  (click)="edit()" mat-flat-button color="primary">edit</button>
                 </div>
             </div>
         </div>

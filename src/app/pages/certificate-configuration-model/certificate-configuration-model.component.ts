@@ -7,6 +7,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { SharedServices } from 'src/app/services/shared.services';
+
 @Component({
   selector: 'app-certificate-configuration-model',
   templateUrl: './certificate-configuration-model.component.html',
@@ -36,6 +37,7 @@ export class CertificateConfigurationModelComponent implements OnInit {
       return;
     }
   }
+  
 
   closeDialog() {
     this.dialogRef.close();
