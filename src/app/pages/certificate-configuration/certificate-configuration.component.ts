@@ -37,7 +37,9 @@ export class CertificateConfigurationComponent implements OnInit {
   uploadContainerClass = '';
   store: any;
   certificateConfigurationRespnse =new CertificateConfigurationRespnse();
-
+  notEditMode = true;
+  isEdit=false;
+  
   constructor(
     private dialog: MatDialog,
     private sharedServices: SharedServices,
@@ -56,6 +58,7 @@ export class CertificateConfigurationComponent implements OnInit {
         if (event.body instanceof Array) {
           this.providers = event.body;
           this.filteredProviders = this.providers;
+          this.notEditMode=false;
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -89,9 +92,12 @@ upload() {
 
 
 
-  this.startUploading();
+  this.save();
 }
-startUploading() {
+save() {
+  if(this.certificateConfigurationProvider.password ==null || this.certificateConfigurationProvider.password=='' &&  this.currentFileUplod==null|| this.currentFileUplod==undefined ){
+    return  this.dialogService.openMessageDialog(new MessageDialogData('','Please Make Sure Password is ENTER Or File is Uploded', true));
+  }
   this.settingsService.getSaveCertificateFileToProvider(
     this.selectedProvider,
     this.currentFileUplod,
@@ -225,15 +231,9 @@ checkfile() {
   return this.sharedServices.loading;
 }
 
-
-edit() {
-  if (this.editable) {
-    this.location.go(this.location.path() + '#edit');
-    this.store.dispatch(toEditMode());
-  }
+onEdit(){
+  this.isEdit=true;
 }
-  get editable() {
-  return this.currentFileUplod != null && this.certificateConfigurationProvider.password != null
 
-}
+
 }

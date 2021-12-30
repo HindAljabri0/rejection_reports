@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="control-label">Provider</label>
                 <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="off"
-                    (keyup.enter)="selectProvider()" [formControl]="providerController" (input)="updateFilter()" autocomplete="false" />
+                    (keyup.enter)="selectProvider()" [formControl]="providerController" (input)="updateFilter()" autocomplete="false" [disabled] = "false"/>
                 <mat-autocomplete autoActiveFirstOption #off>
                     <mat-option *ngFor="let provider of filteredProviders"
                         [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
@@ -25,9 +25,9 @@
             <h5 class="medium pb-2">Step 2: Enter Password</h5>
             <div class="form-group">
                 <label class="control-label">Password</label>
-                <input type="password" class="form-control ltr auto-complete-off" placeholder="Enter Password" 
-                [(ngModel)]="certificateConfigurationProvider.password" name ="certificateConfigurationProvider.password" autocomplete="new-password" [matAutocomplete]="off" required  />
-              
+                <input type="password"  class="form-control ltr auto-complete-off" placeholder="Enter Password" 
+                [(ngModel)]="certificateConfigurationProvider.password" name ="certificateConfigurationProvider.password" autocomplete="new-password" [matAutocomplete]="off" [disabled] = "(!notEditMode && !isEdit)" required  />
+                
             </div>
 
           
@@ -43,17 +43,17 @@
                     <p class="text-normal-color">{{fileName}}</p>
                     <span>File Size: {{fileSize}}</span>
                   </div>
-                <input type="file" accept=".p12" [disabled]="selectedProvider===undefined" (change)="openP12($event)"
-                    (click)="clearFiles($event)" class="upload-control">
+                <input type="file" accept=".p12" [disabled]="selectedProvider===undefined || (!notEditMode && !isEdit)" (change)="openP12($event)"
+                    (click)="clearFiles($event)" class="upload-control" required >
             </div>
             <div class="col-auto align-self-end">
                 <div class="form-group">
-                    <button type="button"  (click)="startUploading()" mat-flat-button color="primary">Save</button>
+                    <button type="button"  (click)="save()" mat-flat-button color="primary">Save</button>
                 </div>
             </div>
             <div class="col-auto align-self-end">
                 <div class="form-group">
-                    <button type="button"  style="float: right ; margin:-55px -6px"  (click)="edit()" mat-flat-button color="primary">edit</button>
+                    <button type="button" class="f2" style="float: right ; margin:-55px -6px"  mat-flat-button color="primary" [disabled] = "notEditMode"  (click)="onEdit()" >edit</button>
                 </div>
             </div>
         </div>
