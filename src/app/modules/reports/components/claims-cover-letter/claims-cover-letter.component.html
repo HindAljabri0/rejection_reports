@@ -1,0 +1,132 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Claim Status Summary Report</p>
+    </div>
+    <div class="block-filter-panel has-border">
+        <div class="row small-gutter">
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="control-label">TPA or Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select TPA or Payer</mat-option>
+                            <mat-optgroup label="TPAs">
+                                <mat-option value="TPA 1">TPA 1</mat-option>
+                                <mat-option value="TPA 2">TPA 2</mat-option>
+                            </mat-optgroup>
+                            <mat-optgroup label="Payers">
+                                <mat-option value="Payer 1">Payer 1</mat-option>
+                                <mat-option value="Payer 2">Payer 2</mat-option>
+                                <mat-option value="Payer 3">Payer 3</mat-option>
+                                <mat-option value="Payer 4">Payer 4</mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="control-label">Month</label>
+                    <div class="date-picker">
+                        <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select month" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="pagination-header">
+            <button matRipple type="button" class="action-btn ml-auto" matTooltip="Download">
+                <img src="./assets/ic-download.svg" />
+            </button>
+        </div>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+            <div class="fixed-height">
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Gross Amount</th>
+                            <th>Discount</th>
+                            <th>Deductible</th>
+                            <th>Net Req.</th>
+                            <th>VAT</th>
+                            <th>Comp. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Payer 1</td>
+                            <td>58637 <span class="currency">SR</span></td>
+                            <td>96923 <span class="currency">SR</span></td>
+                            <td>75192 <span class="currency">SR</span></td>
+                            <td>11788 <span class="currency">SR</span></td>
+                            <td>33177 <span class="currency">SR</span></td>
+                            <td>52530 <span class="currency">SR</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payer 1</td>
+                            <td>32559 <span class="currency">SR</span></td>
+                            <td>87879 <span class="currency">SR</span></td>
+                            <td>46398 <span class="currency">SR</span></td>
+                            <td>44206 <span class="currency">SR</span></td>
+                            <td>92975 <span class="currency">SR</span></td>
+                            <td>43180 <span class="currency">SR</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payer 1</td>
+                            <td>75824 <span class="currency">SR</span></td>
+                            <td>17851 <span class="currency">SR</span></td>
+                            <td>93285 <span class="currency">SR</span></td>
+                            <td>49991 <span class="currency">SR</span></td>
+                            <td>21595 <span class="currency">SR</span></td>
+                            <td>38329 <span class="currency">SR</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payer 1</td>
+                            <td>14062 <span class="currency">SR</span></td>
+                            <td>16739 <span class="currency">SR</span></td>
+                            <td>56639 <span class="currency">SR</span></td>
+                            <td>25331 <span class="currency">SR</span></td>
+                            <td>55150 <span class="currency">SR</span></td>
+                            <td>24349 <span class="currency">SR</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payer 1</td>
+                            <td>33917 <span class="currency">SR</span></td>
+                            <td>95056 <span class="currency">SR</span></td>
+                            <td>59635 <span class="currency">SR</span></td>
+                            <td>78656 <span class="currency">SR</span></td>
+                            <td>91176 <span class="currency">SR</span></td>
+                            <td>36797 <span class="currency">SR</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payer 1</td>
+                            <td>40608 <span class="currency">SR</span></td>
+                            <td>46291 <span class="currency">SR</span></td>
+                            <td>76902 <span class="currency">SR</span></td>
+                            <td>29932 <span class="currency">SR</span></td>
+                            <td>72478 <span class="currency">SR</span></td>
+                            <td>63889 <span class="currency">SR</span></td>
+                        </tr>
+                        <tr>
+                            <td class="semibold">Total</td>
+                            <td class="semibold">406140 <span class="currency">SR</span></td>
+                            <td class="semibold">612518 <span class="currency">SR</span></td>
+                            <td class="semibold">159167 <span class="currency">SR</span></td>
+                            <td class="semibold">351024 <span class="currency">SR</span></td>
+                            <td class="semibold">411538 <span class="currency">SR</span></td>
+                            <td class="semibold">911818 <span class="currency">SR</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+    </div>
+</div>
