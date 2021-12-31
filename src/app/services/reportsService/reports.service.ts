@@ -175,7 +175,7 @@ export class ReportsService {
     }
     // { responseType: 'text', params: searchparams }
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
-      { responseType: 'arraybuffer', reportProgress: true });
+      { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
   addPayerSOAData(providerId: any, fileUpload: File, data: any) {
