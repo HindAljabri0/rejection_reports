@@ -155,6 +155,7 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
   onSubmit(status = null) {
     this.isSubmitted = true;
     if (this.FormBreakDownReport.valid) {
+      this.chartMode = 0;
       const model: any = {};
 
       model.year = this.datePipe.transform(this.FormBreakDownReport.controls.year.value, 'yyyy');
@@ -264,8 +265,10 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
   }
 
   public paymentStatusChartClicked({ event, active }: { event: MouseEvent, active: any }): void {
-    const status = this.paymentStatusChartLabels[active[0]._index];
-    this.onSubmit(status.toString().toLocaleLowerCase());
+    if (this.FormBreakDownReport.controls.payerId.value === 'all') {
+      const status = this.paymentStatusChartLabels[active[0]._index];
+      this.onSubmit(status.toString().toLocaleLowerCase());
+    }
   }
 
 }
