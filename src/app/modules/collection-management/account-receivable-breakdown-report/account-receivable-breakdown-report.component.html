@@ -8,8 +8,7 @@
         <form [formGroup]="FormBreakDownReport" (ngSubmit)="onSubmit()">
           <div class="row small-gutter">
             <div class="col">
-              <div class="form-group"
-                [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('payerId').hasError('required')}">
+              <div class="form-group" [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('payerId').hasError('required')}">
                 <label class="control-label">Payer <span class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
 
@@ -20,29 +19,26 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <div
-                  *ngIf="isSubmitted && FormBreakDownReport.get('payerId').hasError('required')">
+                <div *ngIf="isSubmitted && FormBreakDownReport.get('payerId').hasError('required')">
                   <span class="error-text">Please select payer</span>
                 </div>
               </div>
             </div>
             <div class="col">
-              <div class="form-group"
-                [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('year').hasError('required')}">
+              <div class="form-group" [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('year').hasError('required')}">
                 <label class="control-label">Year <span class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input autocomplete="off" class="form-control date-picker" bsDatepicker
-                  [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                  placeholder="Select year" formControlName="year" />
+                  <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" placeholder="Select year"
+                    formControlName="year" />
                 </div>
-                <div
-                *ngIf="isSubmitted && FormBreakDownReport.get('year').hasError('required')">
-                <span class="error-text">Please select year</span>
-              </div>
+                <div *ngIf="isSubmitted && FormBreakDownReport.get('year').hasError('required')">
+                  <span class="error-text">Please select year</span>
+                </div>
               </div>
             </div>
-            <div class="col-auto align-self-end">
+            <div class="col-auto">
               <div class="form-group">
+                <label class="control-label">&nbsp;</label>
                 <button type="submit" mat-flat-button color="primary">Search</button>
               </div>
             </div>
@@ -57,8 +53,7 @@
         <div class="section-card">
           <p class="section-title">Payment Status</p>
           <div class="status-chart">
-            <canvas  baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels"
-              [chartType]="paymentStatusChartType" [options]="paymentStatusChartOptions"
+            <canvas baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels" [chartType]="paymentStatusChartType" [options]="paymentStatusChartOptions"
               [legend]="paymentStatusChartLegend" (chartClick)="paymentStatusChartClicked($event)">
             </canvas>
           </div>
@@ -67,10 +62,9 @@
       <div class="col-4">
         <div class="section-card" *ngIf="!emptyCategoryStatus">
           <p class="section-title">Payment Category</p>
-          <div class="category-chart">
-            <canvas baseChart [datasets]="paymentCategoryChartData" [labels]="paymentCategoryChartLabels"
-              [chartType]="paymentCategoryChartType" [options]="paymentCategoryChartOptions"
-              [legend]="paymentCategoryChartLegend">
+          <div class="status-chart">
+            <canvas baseChart [datasets]="paymentCategoryChartData" [labels]="paymentCategoryChartLabels" [chartType]="paymentCategoryChartType"
+              [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
             </canvas>
           </div>
           <app-empty-state *ngIf="emptyCategoryStatus" message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
@@ -90,9 +84,8 @@
           <ng-container *ngIf="chartMode!=0">
             <p class="section-title">Payer Breakdown</p>
             <div class="status-chart">
-              <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels"
-                [chartType]="payerBreakdownChartType" [options]="payerBreakdownChartOptions"
-                [legend]="payerBreakdownChartLegend">
+              <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels" [chartType]="payerBreakdownChartType"
+                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
               </canvas>
             </div>
           </ng-container>

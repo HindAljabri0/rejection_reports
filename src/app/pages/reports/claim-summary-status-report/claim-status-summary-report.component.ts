@@ -112,7 +112,7 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     }
     this.claimStatusSummaryForm.value.fromDate = moment(this.claimStatusSummaryForm.value.fromDate).format('YYYY-MM-DD');
     this.claimStatusSummaryForm.value.toDate = moment(this.claimStatusSummaryForm.value.toDate).format('YYYY-MM-DD');
-    this.downloadService.startDownload(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId,
+    this.downloadService.startGeneratingDownloadFile(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId,
       this.claimStatusSummaryForm.value)).subscribe(status => {
         if (status == DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-download.svg';

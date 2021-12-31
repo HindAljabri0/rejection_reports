@@ -51,7 +51,7 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
   public paymentCategoryChartOptions: ChartOptions = {
     maintainAspectRatio: false,
     legend: {
-      position: 'right',
+      position: 'bottom',
       labels: {
         fontColor: this.chartFontColor,
         fontFamily: this.chartFontFamily
