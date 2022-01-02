@@ -1,4 +1,5 @@
 export class CertificateConfigurationRespnse{
     password?: string ;
-    fileName: boolean;
+    fileName: string;
+    uploadfile:File;
 }
