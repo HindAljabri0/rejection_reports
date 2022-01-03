@@ -263,4 +263,14 @@ export class ReportsService {
     return this.http.request(request);
   }
 
+  downloadClaimCovers(model: any): Observable<any> {
+    if (model.payerId) {
+      var requestURL = `/providers/${model.providerId}/cover-letter?payerId=${model.payerId}&month=${model.month}`;
+    } else {
+      var requestURL = `/providers/${model.providerId}/cover-letter?tpaId=${model.tpaId}&month=${model.month}`;
+    }
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
+    return this.http.request(request);
+  }
+
 }
