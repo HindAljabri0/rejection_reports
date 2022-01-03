@@ -3,19 +3,22 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Location } from '@angular/common';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CertificateConfigurationProvider } from 'src/app/models/certificateConfigurationProvider';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import{ changePageTitle } from 'src/app/store/mainStore.actions';
 import { CertificateConfigurationModelComponent } from '../certificate-configuration-model/certificate-configuration-model.component';
 import { Store } from '@ngrx/store';
 import { toEditMode, cancelEdit } from 'src/app/claim-module-components/store/claim.actions';
 import { CertificateConfigurationRespnse } from 'src/app/models/certificateConfigurationRespnse';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { ClaimPageMode, getClaim, getPageMode, getPageType } from 'src/app/claim-module-components/store/claim.reducer';
+import { Claim } from 'src/app/claim-module-components/models/claim.model';
 @Component({
   selector: 'app-certificate-configuration',
   templateUrl: './certificate-configuration.component.html',
@@ -35,20 +38,24 @@ export class CertificateConfigurationComponent implements OnInit {
   closeStatus = false;
   error = '';
   uploadContainerClass = '';
-  store: any;
   certificateConfigurationRespnse = new CertificateConfigurationRespnse();
   notEditMode = true;
   isEdit = false;
-
+  // pageMode: ClaimPageMode;
+  pageMode=''
+  claim: Claim;
+  pageType: string;
   constructor(
     private dialog: MatDialog,
     private sharedServices: SharedServices,
     private settingsService: SettingsService,
     private dialogService: DialogService,
     private superAdmin: SuperAdminService,
-    private location: Location) { }
+    private location: Location,
+  ){}
 
   ngOnInit() {
+    
     if (!this.currentFileUplod == null && this.certificateConfigurationProvider.password !== null) {
 
     }
@@ -78,8 +85,8 @@ export class CertificateConfigurationComponent implements OnInit {
     );
     this.selectedProvider = this.providerController.value === '' ? undefined : this.selectedProvider;
   }
-  // closeDialog() {
-  //   this.dialogRef.close();
+  // close(result?) {
+  //   this.dialogRef.close(result != null ? `${result}` : null);
   // }
 
   upload() {
@@ -95,6 +102,7 @@ export class CertificateConfigurationComponent implements OnInit {
     this.save();
   }
   save() {
+    
     if (this.certificateConfigurationProvider.password == null || this.certificateConfigurationProvider.password == '' && this.currentFileUplod == null || this.currentFileUplod == undefined) {
       return this.dialogService.openMessageDialog(new MessageDialogData('', 'Please Make Sure Password is ENTER Or File is Uploded', true));
     }
@@ -168,6 +176,7 @@ export class CertificateConfigurationComponent implements OnInit {
   }
 
   selectProvider(providerId: string = null) {
+    this.pageMode = 'EDIT';
     if (providerId !== null)
       this.selectedProvider = providerId;
 
@@ -186,17 +195,17 @@ export class CertificateConfigurationComponent implements OnInit {
 
           this.fileName = this.certificateConfigurationRespnse.fileName;
           this.currentFileUplod  =this.dataURLtoFile("data:text/plain;base64,"+this.certificateConfigurationRespnse.uploadfile,this.fileName);
-          debugger;
+      //    debugger;
           this.isFileUploded = true;
           this.certificateConfigurationProvider.password = this.certificateConfigurationRespnse.password;
-
+console.log( this.pageMode)
 
           this.sharedServices.loadingChanged.next(false);
         }
 
       }
     });
-
+console.log(this.pageMode)
 
   }
 
@@ -243,11 +252,14 @@ export class CertificateConfigurationComponent implements OnInit {
 
   onEdit() {
     this.isEdit = true;
+    this.pageMode = 'save';
+    //this.pageMode == 'EDIT';
  
   }
   deleteFile() {
     this.currentFileUplod = null;
     this.isFileUploded = false;
   }
+
 
 }
