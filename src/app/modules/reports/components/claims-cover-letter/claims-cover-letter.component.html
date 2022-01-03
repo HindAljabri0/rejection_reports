@@ -1,13 +1,13 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Claim Cover Letter Report</p>
+        <p>Claims Cover Letter</p>
     </div>
     <div class="block-filter-panel has-border">
         <form [formGroup]="FormClaimCover" (ngSubmit)="onSubmit()">
             <div class="row small-gutter">
                 <div class="col-3">
                     <div class="form-group"
-                        [ngClass]="{'has-error' : (isSubmitted || FormClaimCover.get('tpaORpayer').touched) && FormClaimCover.get('tpaORpayer').hasError('required')}">
+                        [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')}">
                         <label class="control-label">TPA or Payer</label>
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select formControlName="tpaORpayer">
@@ -20,7 +20,7 @@
                                 </mat-optgroup>
                             </mat-select>
                             <div
-                                *ngIf="(isSubmitted || FormClaimCover.get('tpaORpayer').touched) && FormClaimCover.get('tpaORpayer').hasError('required')">
+                                *ngIf="isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')">
                                 <span class="error-text">Please select a Payer or TPA</span>
                             </div>
                         </mat-form-field>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-3">
                     <div class="form-group"
-                        [ngClass]="{'has-error' : (isSubmitted || FormClaimCover.get('month').touched) && FormClaimCover.get('month').hasError('required')}">
+                        [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
                         <label class="control-label">Month</label>
                         <div class="date-picker">
                             <input autocomplete="off" class="form-control date-picker" bsDatepicker
@@ -36,7 +36,7 @@
                                 (onShown)="onOpenCalendar($event)" />
                         </div>
                         <div
-                            *ngIf="(isSubmitted || FormClaimCover.get('month').touched) && FormClaimCover.get('month').hasError('required')">
+                            *ngIf="isSubmitted && FormClaimCover.get('month').hasError('required')">
                             <span class="error-text">Please select a month</span>
                         </div>
                     </div>
