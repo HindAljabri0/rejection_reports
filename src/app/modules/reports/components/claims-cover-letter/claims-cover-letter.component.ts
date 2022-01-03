@@ -4,6 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Subscription } from 'rxjs';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 @Component({
@@ -19,6 +22,8 @@ export class ClaimsCoverLetterComponent implements OnInit {
   tpasList = this.sharedServices.getTPAsList();
   claimCoverList = [];
   selectedGroup;
+  detailTopActionIcon = 'ic-download.svg';
+  lastDownloadSubscriptions: Subscription;
 
   groups = [
     {
@@ -36,7 +41,8 @@ export class ClaimsCoverLetterComponent implements OnInit {
     private reportsService: ReportsService,
     private datePipe: DatePipe,
     private location: Location,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private downloadService: DownloadService) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -133,5 +139,30 @@ export class ClaimsCoverLetterComponent implements OnInit {
     this.location.go(path);
   }
 
+  download() {
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') {
+      return;
+    }
+
+    const model: any = {};
+    model.providerId = this.sharedServices.providerId;
+    model.month = this.datePipe.transform(this.FormClaimCover.controls.month.value, 'yyyy-MM-dd');
+    if (this.selectedGroup == 'TPAs') {
+      model.tpaId = this.FormClaimCover.controls.tpaORpayer.value;
+    } else {
+      model.payerId = this.FormClaimCover.controls.tpaORpayer.value;
+    }
+
+    this.downloadService
+      .startGeneratingDownloadFile(
+        this.reportsService.downloadClaimCovers(model))
+      .subscribe(status => {
+        if (status != DownloadStatus.ERROR) {
+          this.detailTopActionIcon = 'ic-check-circle.svg';
+        } else {
+          this.detailTopActionIcon = 'ic-download.svg';
+        }
+      });
+  }
 
 }

@@ -52,8 +52,8 @@
     </div>
     <div class="bg-white">
         <div class="pagination-header" *ngIf="claimCoverList.length > 0">
-            <button matRipple type="button" class="action-btn ml-auto" matTooltip="Download">
-                <img src="./assets/ic-download.svg" />
+            <button matRipple type="button" class="action-btn ml-auto" matTooltip="Download" (click)="download()">
+                <img src="./assets/{{detailTopActionIcon}}" />
             </button>
         </div>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="claimCoverList.length > 0">
