@@ -110,11 +110,16 @@ export class ReconciliationAddPaymentComponent implements OnInit {
 
       ).subscribe(event => {
         if (event instanceof HttpResponse) {
+          console.log(event, "event");
           if (event.status === 200) {
             this.sharedService.loadingChanged.next(false);
-            this.dialogService.openMessageDialog(new MessageDialogData('', 'Your payment data has been saved successfully', false));
             this.status = true;
             this.closeDialog();
+            if (event.body['error']) {
+              this.dialogService.openMessageDialog(new MessageDialogData('', event.body['message'], true));
+            } else {
+              this.dialogService.openMessageDialog(new MessageDialogData('', 'Your payment data has been saved successfully', false));
+            }
           }
           else {
             this.status = false;
