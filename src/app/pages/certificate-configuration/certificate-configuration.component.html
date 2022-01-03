@@ -29,7 +29,7 @@
                 <input type="password" class="form-control ltr auto-complete-off" placeholder="Enter Password"
                     [(ngModel)]="certificateConfigurationProvider.password"
                     name="certificateConfigurationProvider.password" autocomplete="new-password" 
-                    [disabled]="(!notEditMode && !isEdit)" required />
+                    [disabled]="(!notEditMode && !isEdit)"  />
 
             </div>
 
@@ -50,7 +50,7 @@
                     </button>
                 </div>
                 <input *ngIf="!isFileUploded" type="file" accept=".p12" [disabled]="selectedProvider===undefined || (!notEditMode && !isEdit)"
-                    (change)="openP12($event)" (click)="clearFiles($event)" class="upload-control" required>
+                    (change)="openP12($event)" (click)="clearFiles($event)" class="upload-control" >
             </div>
             <div class="col-auto align-self-end" *ngIf="pageMode == 'save'">
                 <div class="form-group" >
