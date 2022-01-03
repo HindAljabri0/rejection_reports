@@ -10,7 +10,7 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import{ changePageTitle } from 'src/app/store/mainStore.actions';
+import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { CertificateConfigurationModelComponent } from '../certificate-configuration-model/certificate-configuration-model.component';
 import { Store } from '@ngrx/store';
 import { toEditMode, cancelEdit } from 'src/app/claim-module-components/store/claim.actions';
@@ -42,7 +42,7 @@ export class CertificateConfigurationComponent implements OnInit {
   notEditMode = true;
   isEdit = false;
   // pageMode: ClaimPageMode;
-  pageMode=''
+  pageMode = ''
   claim: Claim;
   pageType: string;
   constructor(
@@ -52,10 +52,10 @@ export class CertificateConfigurationComponent implements OnInit {
     private dialogService: DialogService,
     private superAdmin: SuperAdminService,
     private location: Location,
-  ){}
+  ) { }
 
   ngOnInit() {
-    
+
     if (!this.currentFileUplod == null && this.certificateConfigurationProvider.password !== null) {
 
     }
@@ -102,7 +102,7 @@ export class CertificateConfigurationComponent implements OnInit {
     this.save();
   }
   save() {
-    
+
     if (this.certificateConfigurationProvider.password == null || this.certificateConfigurationProvider.password == '' && this.currentFileUplod == null || this.currentFileUplod == undefined) {
       return this.dialogService.openMessageDialog(new MessageDialogData('', 'Please Make Sure Password is ENTER Or File is Uploded', true));
     }
@@ -184,7 +184,8 @@ export class CertificateConfigurationComponent implements OnInit {
       const providerId = this.providerController.value.split('|')[0].trim();
       this.selectedProvider = providerId;
     }
-
+    this.certificateConfigurationProvider.password = null;
+    this.isFileUploded = false;
     this.settingsService.getDetails(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -194,35 +195,35 @@ export class CertificateConfigurationComponent implements OnInit {
 
 
           this.fileName = this.certificateConfigurationRespnse.fileName;
-          this.currentFileUplod  =this.dataURLtoFile("data:text/plain;base64,"+this.certificateConfigurationRespnse.uploadfile,this.fileName);
-      //    debugger;
+          this.currentFileUplod = this.dataURLtoFile("data:text/plain;base64," + this.certificateConfigurationRespnse.uploadfile, this.fileName);
+
           this.isFileUploded = true;
           this.certificateConfigurationProvider.password = this.certificateConfigurationRespnse.password;
-console.log( this.pageMode)
+
 
           this.sharedServices.loadingChanged.next(false);
         }
 
       }
     });
-console.log(this.pageMode)
+    console.log(this.pageMode)
 
   }
 
   dataURLtoFile(dataurl, filename) {
- 
+
     var arr = dataurl.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), 
-        n = bstr.length, 
-        u8arr = new Uint8Array(n);
-        
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    
-    return new File([u8arr], filename, {type:mime});
-}
+
+    return new File([u8arr], filename, { type: mime });
+  }
 
   showError(error: string) {
     this.currentFileUplod = null;
@@ -254,7 +255,7 @@ console.log(this.pageMode)
     this.isEdit = true;
     this.pageMode = 'save';
     //this.pageMode == 'EDIT';
- 
+
   }
   deleteFile() {
     this.currentFileUplod = null;
