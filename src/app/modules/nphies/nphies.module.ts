@@ -41,6 +41,7 @@ import { CancelReasonModalComponent } from './preauthorization-transactions/canc
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     NphiesUploadCardComponent,
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
+    RecentReconciliationComponent,
 
   
    
