@@ -116,6 +116,11 @@ export class CertificateConfigurationComponent implements OnInit {
         if (event.status === 200) {
           this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
           this.closeStatus = true;
+          this.pageMode = 'EDIT';
+          this.notEditMode =false ;
+          this.isEdit=false;
+        
+        
           // this.closeDialog();
         }
         this.sharedServices.loadingChanged.next(false);
@@ -175,7 +180,9 @@ export class CertificateConfigurationComponent implements OnInit {
 
   }
 
-  selectProvider(providerId: string = null) {
+  selectProvider(providerId: string =null) {
+    this.notEditMode =false ;
+    this.isEdit=false;
     this.pageMode = 'EDIT';
     if (providerId !== null)
       this.selectedProvider = providerId;
@@ -201,12 +208,30 @@ export class CertificateConfigurationComponent implements OnInit {
           this.certificateConfigurationProvider.password = this.certificateConfigurationRespnse.password;
 
 
+
+      
+
+
           this.sharedServices.loadingChanged.next(false);
         }
 
       }
+    }, err=>{
+
+      if(err instanceof HttpErrorResponse){
+        if(err.status==404){
+        this.notEditMode =true ;
+        this.isEdit=true;
+        this.pageMode = 'save';
+      }}
+
+      
+
+
+
+
     });
-    console.log(this.pageMode)
+
 
   }
 
@@ -254,6 +279,8 @@ export class CertificateConfigurationComponent implements OnInit {
   onEdit() {
     this.isEdit = true;
     this.pageMode = 'save';
+    this.notEditMode =true ;
+
     //this.pageMode == 'EDIT';
 
   }
