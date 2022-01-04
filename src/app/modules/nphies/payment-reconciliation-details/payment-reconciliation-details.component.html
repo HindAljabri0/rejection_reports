@@ -68,7 +68,7 @@
                 <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
               </td>
               <td class="row-click" (click)="toggleRow(0)">{{pd.reconciliationDetailId}}</td>
-              <td class="row-click" (click)="showClaim(pd.claimRequestId, pd.uploadId)">{{pd.claimRequestId}}</td>
+              <td class="row-click" (click)="showClaim(pd.claimRequestId, pd.uploadId, pd.claimResponseId)">{{pd.claimRequestId}}</td>
               <td class="row-click" (click)="toggleRow(0)">{{pd.componentPayment}} <span class="currency">SR</span></td>
               <td class="row-click" (click)="toggleRow(0)">
                 <span *ngIf="pd.componentEarlyFee">{{pd.componentEarlyFee}} <span class="currency">SR</span></span>

@@ -3,11 +3,11 @@ import { MatDialog } from '@angular/material';
 import { AddEditViewClassComponent } from '../add-edit-view-class/add-edit-view-class.component';
 
 @Component({
-  selector: 'app-add-edit-view-policy',
-  templateUrl: './add-edit-view-policy.component.html',
+  selector: 'app-classes',
+  templateUrl: './classes.component.html',
   styles: []
 })
-export class AddEditViewPolicyComponent implements OnInit {
+export class ClassesComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog
