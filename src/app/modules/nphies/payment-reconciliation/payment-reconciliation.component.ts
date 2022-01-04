@@ -14,6 +14,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PreAuthorizationTransaction } from 'src/app/models/pre-authorization-transaction';
 import { PaymentReconciliation } from 'src/app/models/payment-reconciliation';
 import { NphiesPollManagementService } from 'src/app/services/nphiesPollManagement/nphies-poll-management.service';
+import { RecentReconciliationComponent } from './recent-reconciliation/recent-reconciliation.component';
 
 @Component({
   selector: 'app-payment-reconciliation',
@@ -22,6 +23,7 @@ import { NphiesPollManagementService } from 'src/app/services/nphiesPollManageme
 })
 export class PaymentReconciliationComponent implements OnInit {
 
+  @ViewChild('recentReconciliation', { static: false }) recentReconciliation: RecentReconciliationComponent;
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
@@ -39,6 +41,7 @@ export class PaymentReconciliationComponent implements OnInit {
   payersList = [];
   paymentReconciliationModel: PaginatedResult<PaymentReconciliation>;
   paymentReconciliations = [];
+  searchModel: any;
 
   constructor(
     private dialog: MatDialog,
@@ -130,6 +133,7 @@ export class PaymentReconciliationComponent implements OnInit {
 
       model.page = this.page;
       model.pageSize = this.pageSize;
+      this.searchModel = model;
       this.editURL();
 
       this.providerNphiesSearchService.getPaymentReconciliation(this.sharedServices.providerId, model).subscribe((event: any) => {
@@ -153,6 +157,12 @@ export class PaymentReconciliationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
         console.log(err);
       });
+    }
+  }
+
+  tabChange($event) {
+    if ($event && $event.index === 1) {
+      this.recentReconciliation.getRecentReconciliation();
     }
   }
 

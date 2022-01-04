@@ -175,7 +175,7 @@ export class ReportsService {
     }
     // { responseType: 'text', params: searchparams }
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
-      { responseType: 'arraybuffer', reportProgress: true });
+      { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
   addPayerSOAData(providerId: any, fileUpload: File, data: any) {
@@ -253,5 +253,24 @@ export class ReportsService {
     return this.http.request(request);
   }
 
+  getClaimCovers(model: any): Observable<any> {
+    if (model.payerId) {
+      var requestURL = `/providers/${model.providerId}/cover-letter?payerId=${model.payerId}&month=${model.month}`;
+    } else {
+      var requestURL = `/providers/${model.providerId}/cover-letter?tpaId=${model.tpaId}&month=${model.month}`;
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+  downloadClaimCovers(model: any): Observable<any> {
+    if (model.payerId) {
+      var requestURL = `/providers/${model.providerId}/cover-letter?payerId=${model.payerId}&month=${model.month}`;
+    } else {
+      var requestURL = `/providers/${model.providerId}/cover-letter?tpaId=${model.tpaId}&month=${model.month}`;
+    }
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
+    return this.http.request(request);
+  }
 
 }
