@@ -1,5 +1,4 @@
-import { Component, LOCALE_ID, Inject, OnInit, HostBinding, Input } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-language-switcher',
@@ -11,8 +10,6 @@ export class LanguageSwitcherComponent implements OnInit {
   @Input() activeLanguageLabel: string;
 
   @Input() languageList;
-
-  @Input() isWhite: boolean = false;
 
   constructor() { }
 
