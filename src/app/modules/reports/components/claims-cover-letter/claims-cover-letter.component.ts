@@ -18,7 +18,7 @@ export class ClaimsCoverLetterComponent implements OnInit {
 
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   isSubmitted: boolean = false;
-  payersList = this.sharedServices.getPayersList();
+  payersList = this.sharedServices.getPayersListWithoutTPA();
   tpasList = this.sharedServices.getTPAsList();
   claimCoverList = [];
   selectedGroup;
@@ -34,9 +34,10 @@ export class ClaimsCoverLetterComponent implements OnInit {
       name: "Payers",
       options: this.payersList
     },
-  ]
+  ];
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private sharedServices: SharedServices,
     private reportsService: ReportsService,
     private datePipe: DatePipe,
