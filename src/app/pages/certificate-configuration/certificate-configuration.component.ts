@@ -106,6 +106,7 @@ export class CertificateConfigurationComponent implements OnInit {
     if (this.certificateConfigurationProvider.password == null || this.certificateConfigurationProvider.password == '' && this.currentFileUplod == null || this.currentFileUplod == undefined) {
       return this.dialogService.openMessageDialog(new MessageDialogData('', 'Please Make Sure Password is ENTER Or File is Uploded', true));
     }
+    this.isEdit = false;
     this.settingsService.getSaveCertificateFileToProvider(
       this.selectedProvider,
       this.currentFileUplod,
@@ -180,9 +181,14 @@ export class CertificateConfigurationComponent implements OnInit {
 
   }
 
-  selectProvider(providerId: string =null) {
-    this.notEditMode =false ;
-    this.isEdit=false;
+  reset() {
+    this.certificateConfigurationProvider.password = '';
+    this.fileName = '';
+    this.isFileUploded = false;
+    this.currentFileUplod == null;
+  }
+
+  selectProvider(providerId: string = null) {
     this.pageMode = 'EDIT';
     if (providerId !== null)
       this.selectedProvider = providerId;
@@ -191,12 +197,10 @@ export class CertificateConfigurationComponent implements OnInit {
       const providerId = this.providerController.value.split('|')[0].trim();
       this.selectedProvider = providerId;
     }
-    this.certificateConfigurationProvider.password = null;
-    this.isFileUploded = false;
+    this.reset();
     this.settingsService.getDetails(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-
+        if (event.status === 200 && event.body != null) {
           this.certificateConfigurationRespnse = event.body as CertificateConfigurationRespnse;
 
 

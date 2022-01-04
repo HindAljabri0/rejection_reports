@@ -64,10 +64,6 @@ export class AddReconciliationDialogComponent implements OnInit {
       });
       allPayersIds.push(`${value.id}`);
     });
-    this.payersList.push({
-      id: allPayersIds,
-      name: 'All'
-    });
     this.FormAddReconciliation.controls.startDate.setValue(new Date());
     this.FormAddReconciliation.controls.endDate.setValue(new Date());
   }

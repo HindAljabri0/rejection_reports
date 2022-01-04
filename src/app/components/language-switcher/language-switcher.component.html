@@ -1,8 +1,8 @@
-<button mat-button [matMenuTriggerFor]="menu" class="language-picker" [ngClass]="{'whiteText': isWhite}">
+<button mat-button [matMenuTriggerFor]="menu" class="language-picker">
     <span class="material-icons">language</span>
     <span class="text">{{activeLanguageLabel}}</span>
 </button>
-<mat-menu #menu="matMenu" class="language-picker-panel">
+<mat-menu #menu="matMenu" xPosition="before" class="language-picker-panel">
     <ng-container *ngFor="let language of languageList">
         <a class="menuItem" href="/{{language.code}}/">{{language.label}}</a>
     </ng-container>
