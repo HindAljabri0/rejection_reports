@@ -10,22 +10,23 @@
             </mat-slide-toggle>
         </h5>
         <div class="row small-gutter">
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Insurance Company Code</label>
-                    <input type="text" placeholder="Enter insurance company code" class="form-control">
+                    <label class="control-label">Insurance Company Code & Name (EN)</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Insurance Company</mat-option>
+                            <mat-option value="Code 1 - Company 1">Code 1 - Company 1</mat-option>
+                            <mat-option value="Code 2 - Company 2">Code 2 - Company 2</mat-option>
+                            <mat-option value="Code 3 - Company 3">Code 3 - Company 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Insurance Company Name (AR)</label>
                     <input type="text" placeholder="Enter insurance company name (ar)" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Insurance Company Name (EN)</label>
-                    <input type="text" placeholder="Enter insurance company name (en)" class="form-control">
                 </div>
             </div>
             <div class="col-md-3">
@@ -106,7 +107,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Start Date</label>
+                    <label class="control-label">Start Date <span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date">
                         <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
@@ -116,7 +117,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">End Date</label>
+                    <label class="control-label">End Date <span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input [matDatepicker]="endDate" class="form-control" placeholder="Select end date">
                         <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>

@@ -291,12 +291,26 @@
                             <span class="text">Contract Management</span>
                         </a>
                     </li>
-                    <li>
-                        <a routerLink="/policy-management" routerLinkActive="is-active">
-                            <span class="text">Policy Management</span>
-                        </a>
-                    </li>
                 </ul>
+                <mat-accordion displayMode="flat">
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Policy Management</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="nav-list">
+                            <li>
+                                <a routerLink="/policy-management" routerLinkActive="is-active">
+                                    <span class="text">Policies</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/policy-management/class-management" routerLinkActive="is-active">
+                                    <span class="text">Classes</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                </mat-accordion>
 
 
                 <ng-container *ngIf="hasAnyNphiesPrivilege">

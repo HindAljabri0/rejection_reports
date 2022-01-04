@@ -7,15 +7,13 @@ import { ContractManagementRoutingModule } from './contract-management-routing.m
 import { ContractsComponent } from './contracts/contracts.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { AddEditViewContractComponent } from './add-edit-view-contract/add-edit-view-contract.component';
-import { ExistingOrNewContractDialogComponent } from './existing-or-new-contract-dialog/existing-or-new-contract-dialog.component';
 
 
 
 @NgModule({
   declarations: [
     ContractsComponent,
-    AddEditViewContractComponent,
-    ExistingOrNewContractDialogComponent
+    AddEditViewContractComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +26,6 @@ import { ExistingOrNewContractDialogComponent } from './existing-or-new-contract
     SmoothScrollModule
   ],
   entryComponents: [
-    ExistingOrNewContractDialogComponent
   ]
 })
 export class ContractManagementModule { }

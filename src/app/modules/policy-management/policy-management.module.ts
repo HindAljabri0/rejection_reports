@@ -8,6 +8,7 @@ import { PolicyManagementRoutingModule } from './policy-management-routing.modul
 import { AddEditViewPolicyComponent } from './add-edit-view-policy/add-edit-view-policy.component';
 import { PoliciesComponent } from './policies/policies.component';
 import { AddEditViewClassComponent } from './add-edit-view-class/add-edit-view-class.component';
+import { ClassesComponent } from './classes/classes.component';
 
 
 
@@ -15,7 +16,8 @@ import { AddEditViewClassComponent } from './add-edit-view-class/add-edit-view-c
   declarations: [
     AddEditViewPolicyComponent,
     PoliciesComponent,
-    AddEditViewClassComponent
+    AddEditViewClassComponent,
+    ClassesComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,9 @@ import { AddEditViewClassComponent } from './add-edit-view-class/add-edit-view-c
     NgScrollbarModule,
     SmoothScrollModule,
     PolicyManagementRoutingModule
+  ],
+  entryComponents: [
+    AddEditViewClassComponent
   ]
 })
 export class PolicyManagementModule { }

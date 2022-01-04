@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class PoliciesComponent implements OnInit {
-  isInsuranceSelected = false;
   constructor() { }
 
   ngOnInit() {
