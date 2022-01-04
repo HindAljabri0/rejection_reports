@@ -126,6 +126,7 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
   payersList: { id: string[] | string, name: string }[];
   emptypaymentStatus = true;
   emptyCategoryStatus = true;
+  emptyBreakDownStatus = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -170,54 +171,57 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
         if (event.status === 200) {
           const body: any = event.body;
           if (status) {
-            this.payerBreakdownChartLabels = body.map(x => {
-              return this.payersList.filter(y => y.id === x.payerId)[0] ? this.payersList.filter(y => y.id === x.payerId)[0].name : '';
-            });
-            this.payerBreakdownChartData = [
-              {
-                data: body.map(x => {
-                  return x.amountRatio;
-                }),
-                backgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
-                hoverBackgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
-                borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff'],
-                borderWidth: 1,
-                hoverBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff']
-              }];
+            if (body.length === 0) {
+              this.emptyBreakDownStatus = true;
+            } else {
+              this.emptyBreakDownStatus = false;
+              this.payerBreakdownChartLabels = body.map(x => {
+                // tslint:disable-next-line:radix
+                // tslint:disable-next-line:max-line-length
+                return this.payersList.filter(y => y.id === x.label)[0] ? this.payersList.filter(y => y.id === x.label)[0].name : '';
+              });
+              this.payerBreakdownChartData = [
+                {
+                  data: body.map(x => {
+                    return x.value;
+                  }),
+                  backgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
+                  hoverBackgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
+                  borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff'],
+                  borderWidth: 0,
+                  hoverBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff']
+                }];
 
-            this.chartMode++;
-            // if (this.chartMode === 3) {
-            //   this.chartMode = 0;
-            // }
-            // if (this.chartMode === 0) {
-            //   this.paymentStatusChartData[0].backgroundColor = ['#3FE04A', '#FF7171'];
-            //   this.paymentStatusChartData[0].hoverBackgroundColor = ['#3FE04A', '#FF7171'];
-            // } else if (this.chartMode === 1) {
-            //   this.paymentStatusChartData[0].backgroundColor = ['#3FE04A', '#f2f2f2'];
-            //   this.paymentStatusChartData[0].hoverBackgroundColor = ['#3FE04A', '#f2f2f2'];
-            // } else if (this.chartMode === 2) {
-            //   this.paymentStatusChartData[0].backgroundColor = ['#f2f2f2', '#FF7171'];
-            //   this.paymentStatusChartData[0].hoverBackgroundColor = ['#f2f2f2', '#FF7171'];
-            // }
+              this.chartMode++;
+            }
+
+
           } else {
-            if (body.unpaidAmountRatio === 0 && body.paidAmountRatio === 0) {
+            if (body.length === 0) {
               this.emptypaymentStatus = true;
             } else {
               this.emptypaymentStatus = false;
+              this.paymentStatusChartLabels = body.map(x => {
+                return x.label;
+              });
+
               this.paymentStatusChartData = [
                 {
-                  data: [body.unpaidAmountRatio, body.paidAmountRatio],
+                  data: body.map(x => {
+                    return x.value;
+                  }),
                   backgroundColor: ['#3FE04A', '#FF7171'],
                   hoverBackgroundColor: ['#3FE04A', '#FF7171'],
                   borderColor: ['#fff', '#fff'],
-                  borderWidth: 3,
+                  borderWidth: 0,
                   hoverBorderColor: ['#fff', '#fff']
                 }
               ];
             }
+
+            this.searchcategoryData();
           }
 
-          this.searchcategoryData();
           this.sharedService.loadingChanged.next(false);
         }
       }, err => {
@@ -239,17 +243,22 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
     this.reconciliationService.getArBreakDownCategoryData(this.sharedService.providerId, model).subscribe(event => {
       if (event.status === 200) {
         const body: any = event.body;
-        if (body.monthlyRatio === 0 && body.reconciledPaymentRatio === 0) {
+        if (body.length === 0) {
           this.emptyCategoryStatus = true;
         } else {
           this.emptyCategoryStatus = false;
+          this.paymentCategoryChartLabels = body.map(x => {
+            return x.label;
+          });
           this.paymentCategoryChartData = [
             {
-              data: [body.monthlyRatio, body.reconciledPaymentRatio],
+              data: body.map(x => {
+                return x.ratio;
+              }),
               backgroundColor: ['#2394E0', '#F471FF'],
               hoverBackgroundColor: ['#2394E0', '#F471FF'],
               borderColor: ['#fff', '#fff'],
-              borderWidth: 3,
+              borderWidth: 0,
               hoverBorderColor: ['#fff', '#fff']
             }
           ];
