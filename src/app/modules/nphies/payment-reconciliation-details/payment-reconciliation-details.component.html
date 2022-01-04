@@ -68,7 +68,7 @@
                 <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
               </td>
               <td class="row-click" (click)="toggleRow(0)">{{pd.reconciliationDetailId}}</td>
-              <td class="row-click" (click)="toggleRow(0)">{{pd.claimRequestId}}</td>
+              <td class="row-click" (click)="showClaim(pd.claimRequestId, pd.uploadId)">{{pd.claimRequestId}}</td>
               <td class="row-click" (click)="toggleRow(0)">{{pd.componentPayment}} <span class="currency">SR</span></td>
               <td class="row-click" (click)="toggleRow(0)">
                 <span *ngIf="pd.componentEarlyFee">{{pd.componentEarlyFee}} <span class="currency">SR</span></span>
@@ -99,7 +99,7 @@
                     <div class="col-4">
                       <div class="form-group form-group-static">
                         <label class="control-label">Claim Response ID</label>
-                        <span class="form-control-static">{{pd.claimResponseId ? pd.claimResponseId : '-'}}</span>
+                        <span class="form-control-static">{{pd.responseNphiesId ? pd.responseNphiesId : '-'}}</span>
                       </div>
                     </div>
                     <div class="col-4">

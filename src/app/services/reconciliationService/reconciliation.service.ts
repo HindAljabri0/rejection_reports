@@ -27,13 +27,13 @@ export class ReconciliationService {
   }
 
   getReconciliationReceivalble(providerId: any, payerId: string, fromDate: string, toDate: string) {
-    const requestURL = `/providers/${providerId}/reconciliation-report/fetchPayment?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}`;
+    const requestURL = `/providers/${providerId}/payment/account/receivable/fetch?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}`;
     const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
     return this.http.request(request);
   }
 
   getAddDiscount(providerId: string, data: AddDiscountReconciliationReport): Observable<any> {
-    const requestURL = `/providers/${providerId}/reconciliation-report/save/addDiscount`;
+    const requestURL = `/providers/${providerId}/reconciliation-report/save/discount`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, data, { headers: headers });
     return this.http.request(request);
@@ -62,9 +62,9 @@ export class ReconciliationService {
     }
     let requestURL = '';
     if (!data.status) {
-      requestURL = `/providers/${providerId}/arBreakdown/payment/status/search`;
+      requestURL = `/providers/${providerId}/account/receivable/report`;
     } else {
-      requestURL = `/providers/${providerId}/arBreakdown/payer/status/search`;
+      requestURL = `/providers/${providerId}/account/receivable/status/report`;
     }
     const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { params: searchparams });
     return this.http.request(request);
@@ -77,7 +77,7 @@ export class ReconciliationService {
         if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
       }
     }
-    const requestURL = `/providers/${providerId}/arBreakdown/payment/category/search`;
+    const requestURL = `/providers/${providerId}/account/receivable/category/report`;
     const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { params: searchparams });
     return this.http.request(request);
   }

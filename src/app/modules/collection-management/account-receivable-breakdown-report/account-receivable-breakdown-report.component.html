@@ -57,6 +57,8 @@
               [legend]="paymentStatusChartLegend" (chartClick)="paymentStatusChartClicked($event)">
             </canvas>
           </div>
+          <app-empty-state *ngIf="emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
+          </app-empty-state>
         </div>
       </div>
       <div class="col-4">
@@ -67,7 +69,7 @@
               [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
             </canvas>
           </div>
-          <app-empty-state *ngIf="emptyCategoryStatus" message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
+          <app-empty-state *ngIf="emptyCategoryStatus" message="No data found" icon="ic-empty-chart.svg">
           </app-empty-state>
         </div>
         <!-- <div class="section-card half">
@@ -79,9 +81,9 @@
           </div>
         </div> -->
       </div>
-      <div class="col-4">
+      <div class="col-4" *ngIf="chartMode > 0">
         <div class="section-card">
-          <ng-container *ngIf="chartMode!=0">
+          <ng-container *ngIf="!emptyBreakDownStatus">
             <p class="section-title">Payer Breakdown</p>
             <div class="status-chart">
               <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels" [chartType]="payerBreakdownChartType"
@@ -89,17 +91,13 @@
               </canvas>
             </div>
           </ng-container>
-          <app-empty-state *ngIf="chartMode==0" message="Please select payment status." icon="ic-empty-chart.svg">
-          </app-empty-state>
+          <app-empty-state *ngIf="emptyBreakDownStatus" message="No data found!"></app-empty-state>
         </div>
       </div>
     </div>
-    <app-empty-state *ngIf="emptypaymentStatus" message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
+    <app-empty-state *ngIf="!isSubmitted" message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
     </app-empty-state>
-  </div>
-  <div class="block-footer sticky-bottom">
-    <div class="right-block">
-      <button type="button" mat-flat-button color="primary">Print</button>
-    </div>
+    <app-empty-state *ngIf="isSubmitted && emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
+    </app-empty-state>
   </div>
 </div>
