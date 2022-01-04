@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { HttpResponse } from '@angular/common/http';
+import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
+import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-payment-reconciliation-details',
@@ -16,7 +19,13 @@ export class PaymentReconciliationDetailsComponent implements OnInit {
   reconciliationDetails: any;
 
   currentOpenRecord = -1;
+  params: SearchPageQueryParams = new SearchPageQueryParams();
+
+  claimId: number;
+  uploadId: number;
+
   constructor(
+    public dialog: MatDialog,
     private location: Location,
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
@@ -30,6 +39,18 @@ export class PaymentReconciliationDetailsComponent implements OnInit {
 
     if (this.reconciliationId) {
       this.getPaymentReconciliationDetails();
+    }
+
+    if (this.activatedRoute.snapshot.queryParams.claimId) {
+      this.claimId = this.activatedRoute.snapshot.queryParams.claimId;
+    }
+
+    if (this.activatedRoute.snapshot.queryParams.uploadId) {
+      this.uploadId = this.activatedRoute.snapshot.queryParams.uploadId;
+    }
+
+    if (this.claimId && this.uploadId) {
+      this.showClaim(this.claimId, this.uploadId);
     }
 
   }
@@ -55,6 +76,20 @@ export class PaymentReconciliationDetailsComponent implements OnInit {
 
   toggleRow(index) {
     this.currentOpenRecord = (index === this.currentOpenRecord) ? -1 : index;
+  }
+
+  showClaim(claimId: number, uploadId: number) {
+    this.editURL(claimId, uploadId);
+    this.dialog.open(CreateClaimNphiesComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+      autoFocus: false, data: { claimId }
+    });
+
+  }
+
+  editURL(claimId: number, uploadId: number) {
+    const path = '/nphies/payment-reconciliation-details/' + this.reconciliationId + '?claimId=' + claimId + '&uploadId=' + uploadId;
+    this.location.go(path);
   }
 
 }

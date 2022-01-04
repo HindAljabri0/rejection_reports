@@ -38,6 +38,8 @@ export class RecentReconciliationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.page = 0;
+    this.pageSize = 10;
   }
 
   getRecentReconciliation() {
