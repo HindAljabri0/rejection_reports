@@ -115,10 +115,10 @@ export class ReconciliationAddPaymentComponent implements OnInit {
             this.sharedService.loadingChanged.next(false);
             this.status = true;
             this.closeDialog();
-            if (event.body['error']) {
-              this.dialogService.openMessageDialog(new MessageDialogData('', event.body['message'], true));
-            } else {
+            if (event.body['response']) {
               this.dialogService.openMessageDialog(new MessageDialogData('', 'Your payment data has been saved successfully', false));
+            } else {
+              this.dialogService.openMessageDialog(new MessageDialogData('', event.body['message'], true));
             }
           }
           else {

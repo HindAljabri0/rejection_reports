@@ -89,7 +89,7 @@ export class ClaimsCoverLetterComponent implements OnInit {
     let total = this.claimCoverList.reduce(function (accumulator, claimCover) {
       return accumulator + claimCover[field];
     }, 0);
-    return total;
+    return Math.round(total * 100) / 100;
   }
 
   onSubmit() {
