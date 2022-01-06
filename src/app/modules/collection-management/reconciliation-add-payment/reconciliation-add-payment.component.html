@@ -9,16 +9,16 @@
                 <div class="form-group" [class.has-error]="formCn.fromDate.errors">
                     <label class="control-label">Date From</label>
                     <div class="date-picker">
-                        <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig" formControlName="fromDate" class="form-control date-picker"
-                            placeholder="Select start date" (bsValueChange)="dateValidation($event)" />
-                        <div *ngIf="formCn.fromDate.errors">
-                            <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a date</span>
-                        </div>
+                        <input bsDatepicker autocomplete="off"
+                            [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }"
+                            formControlName="fromDate" class="form-control date-picker" placeholder="Select start date"
+                            (bsValueChange)="dateValidation($event)" />
                         <!-- <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                 <mat-datepicker #startDate></mat-datepicker> -->
-                        <div *ngIf="formCn.fromDate.errors">
-                            <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
-                        </div>
+                    </div>
+                    <div *ngIf="formCn.fromDate.errors">
+                        <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a from
+                            date</span>
                     </div>
                 </div>
             </div>
@@ -30,11 +30,12 @@
                   formControlName="toDate">
                 <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                 <mat-datepicker #toPicker></mat-datepicker> -->
-                        <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig" [minDate]="minDate"
+                        <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
+                            [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }" [minDate]="minDate"
                             placeholder="Select To Date" required />
                     </div>
                     <div *ngIf="formCn.toDate.errors">
-                        <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
+                        <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a end date</span>
                     </div>
                 </div>
 

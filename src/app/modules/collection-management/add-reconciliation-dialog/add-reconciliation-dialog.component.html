@@ -1,90 +1,131 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add Discounts</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+  <h5 class="primary-dialog-title">Add Discounts</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="primary-dialog-body pb-0">
+  <form [formGroup]="FormAddReconciliation" (ngSubmit)="search()">
     <div class="row small-gutter">
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">From Month</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month"  [formControl]="startDateController"  required/>
-                    <mat-datepicker-toggle [for]="fromMonth"></mat-datepicker-toggle>
-                    <mat-datepicker #fromMonth></mat-datepicker>
-                </div>
-            </div>
+      <div class="col">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormAddReconciliation.get('startDate').touched) && FormAddReconciliation.get('startDate').hasError('required')}">
+          <label class="control-label">From Month</label>
+          <div class="date-picker">
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+              (onShown)="onOpenCalendar($event)" placeholder="Select from month" formControlName="startDate"
+              name="fromDate" [maxDate]="FormAddReconciliation.controls.endDate.value" />
+            <!-- <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month"
+            [formControl]="startDateController" required />
+          <mat-datepicker-toggle [for]="fromMonth"></mat-datepicker-toggle>
+          <mat-datepicker #fromMonth></mat-datepicker> -->
+          </div>
+          <div
+            *ngIf="(isSubmitted || FormAddReconciliation.get('startDate').touched) && FormAddReconciliation.get('startDate').hasError('required')">
+            <span class="error-text">Please select start month</span>
+          </div>
         </div>
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">To Month</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month" [formControl]="endDateController" required/>
-                    <mat-datepicker-toggle [for]="toMonth"></mat-datepicker-toggle>
-                    <mat-datepicker #toMonth></mat-datepicker>
-                </div>
-            </div>
+      </div>
+      <div class="col">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormAddReconciliation.get('endDate').touched) && FormAddReconciliation.get('endDate').hasError('required')}">
+          <label class="control-label">To Month</label>
+          <div class="date-picker">
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+              (onShown)="onOpenCalendar($event)" placeholder="Select from month" formControlName="endDate" name="toDate"
+              [minDate]="FormAddReconciliation.controls.startDate.value" />
+            <!-- <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month"
+            [formControl]="endDateController" required />
+          <mat-datepicker-toggle [for]="toMonth"></mat-datepicker-toggle>
+          <mat-datepicker #toMonth></mat-datepicker> -->
+          </div>
+          <div
+            *ngIf="(isSubmitted || FormAddReconciliation.get('endDate').touched) && FormAddReconciliation.get('endDate').hasError('required')">
+            <span class="error-text">Please select end month</span>
+          </div>
         </div>
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">Payer</label>
-                <mat-form-field class="form-control custom-select-control">
-                    <mat-select [formControl]="payerIdControl"  required>
-                        <mat-option value="All">All</mat-option>
-                        <mat-option *ngFor="let payer of payersList" [value]="payer.id">
-                            {{payer.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+      </div>
+      <div class="col">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormAddReconciliation.get('payerId').touched) && FormAddReconciliation.get('payerId').hasError('required')}">
+          <label class="control-label">Payer</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select placeholder="Select Payer" formControlName="payerId">
+              <mat-option *ngFor="let payer of payersList" [value]="payer.id">
+                {{payer.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div
+            *ngIf="(isSubmitted || FormAddReconciliation.get('payerId').touched) && FormAddReconciliation.get('payerId').hasError('required')">
+            <span class="error-text">Please select a Payer</span>
+          </div>
         </div>
-        <div class="col-auto align-self-end">
-            <div class="form-group">
-                <button type="button" (click)="searchComplete=true" mat-flat-button color="primary" (click)="search()">Search</button>
-            </div>
+      </div>
+      <div class="col-auto align-self-end">
+        <div class="form-group">
+          <button type="button" (click)="searchComplete=true" mat-flat-button color="primary"
+            (click)="search()">Search</button>
         </div>
+      </div>
     </div>
-    <ng-container *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null">
-        <hr class="hr ml-n16 mr-n16 mb-16" />
-        <div class="reconciliation-summary-wrapper">
-            <div class="row">
-                <div class="col-6">
-                    <div class="reconciliation-summary">
-                        <label>Duration: </label>
-                        <p>{{searchDiscountReconciliationReportResponse.duration}}</p >
-                    </div>
-                    <div class="reconciliation-summary">
-                        <label>Total Submitted: </label>
-                        <p>{{searchDiscountReconciliationReportResponse.totalSubmittedAmount}}</p >
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="reconciliation-summary">
-                        <label>Total Received: </label>
-                        <p >{{searchDiscountReconciliationReportResponse.totalReceived}}</p >
-                    </div>
-                    <div class="reconciliation-summary">
-                        <label>Total Outstanding: </label>
-                        <p >{{searchDiscountReconciliationReportResponse.totalOutstandingAmount}}</p >
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row small-gutter">
-            <div class="col-6">
-                <div class="form-group">
-                    <label class="control-label">Volume Discount</label>
-                    <input type="text"  class="form-control" placeholder="Enter volume discount"  [formControl]="volumeDiscountCotrol" />
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group">
-                    <label class="control-label">Prompt Payment Discount</label>
-                    <input type="text" class="form-control" placeholder="Enter prompt payment discount"[formControl]="promptDiscountControl" />
-                </div>
-            </div>
-        </div>
+    <ng-container *ngIf="!(searchComplete && searchDiscountReconciliationReportResponse!=null)">
+      <hr class="hr ml-n16 mr-n16 mb-16" />
+      <app-empty-state message='Select criteria to add discounts' icon="ic-empty-search.svg" className='mb-14'>
+      </app-empty-state>
     </ng-container>
+    <ng-container
+      *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null && searchDiscountReconciliationReportResponse.totalSubmittedAmount !=0">
+      <hr class="hr ml-n16 mr-n16 mb-16" />
+      <div class="reconciliation-summary-wrapper">
+        <div class="row">
+          <div class="col-6">
+            <div class="reconciliation-summary">
+              <label>Duration: </label>
+              <p>{{searchDiscountReconciliationReportResponse.startDate | date:"MMM y"}} -
+                {{searchDiscountReconciliationReportResponse.endDate | date:"MMM y"}}</p>
+            </div>
+            <div class="reconciliation-summary">
+              <label>Total Submitted: </label>
+              <p>{{searchDiscountReconciliationReportResponse.totalSubmittedAmount}}</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="reconciliation-summary">
+              <label>Total Received: </label>
+              <p>{{searchDiscountReconciliationReportResponse.totalReceived}}</p>
+            </div>
+            <div class="reconciliation-summary">
+              <label>Total Outstanding: </label>
+              <p>{{searchDiscountReconciliationReportResponse.totalOutstandingAmount}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row small-gutter">
+        <div class="col-6">
+          <div class="form-group">
+            <label class="control-label">Volume Discount</label>
+            <input type="text" class="form-control" placeholder="Enter volume discount"
+              formControlName="volumeDiscount" />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label class="control-label">Prompt Payment Discount</label>
+            <input type="text" class="form-control" placeholder="Enter prompt payment discount"
+              formControlName="promptDiscount" />
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null && searchDiscountReconciliationReportResponse.totalSubmittedAmount === 0">
+      <hr class="hr ml-n16 mr-n16 mb-16" />
+      <app-empty-state message='No claims were submitted in this duration' className='mb-14 text-danger'>
+      </app-empty-state>
+    </ng-container>
+  </form>
 </div>
-<div class="primary-dialog-footer has-border text-right" *ngIf="searchComplete &&  searchDiscountReconciliationReportResponse!=null">
-    <button mat-flat-button color="primary"   (click)="addDiscount()">Add Discounts</button>
+<div class="primary-dialog-footer has-border text-right"
+  *ngIf="searchComplete && searchDiscountReconciliationReportResponse!=null && searchDiscountReconciliationReportResponse.totalSubmittedAmount !=0">
+  <button mat-flat-button color="primary" (click)="addDiscount()">Add Discounts</button>
 </div>

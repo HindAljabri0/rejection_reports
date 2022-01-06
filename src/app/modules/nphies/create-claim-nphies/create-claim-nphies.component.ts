@@ -148,7 +148,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       this.isLoading = true;
       // tslint:disable-next-line:radix
@@ -181,7 +180,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.providersBeneficiariesService.getPayees().subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.sharedServices.loadingChanged.next(false);
         if (event.body != null && event.body instanceof Array) {
           this.payeeList = event.body;
           this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
@@ -189,11 +187,15 @@ export class CreateClaimNphiesComponent implements OnInit {
           if (this.claimId && this.uploadId) {
             this.pageMode = 'VIEW';
             this.getCommunications();
-            console.log(this.pageMode);
             this.disableControls();
             this.getClaimDetails();
+          } else {
             this.isLoading = false;
+            this.sharedServices.loadingChanged.next(false);
           }
+        } else {
+          this.isLoading = false;
+          this.sharedServices.loadingChanged.next(false);
         }
       }
     }, err => {
@@ -1393,7 +1395,18 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   setData(response) {
+
+    this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
+
+    this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
+    this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
+
+    //     componentEarlyFee: null
+    // componentNphiesFee: null
+    // componentPayment: 40.25
+    // paymentDate: "2021-12-07T21:30:00.000+03:00"
+    // type: "payment"
     this.otherDataModel.claimId = response.claimId;
     this.otherDataModel.outcome = response.outcome;
     this.otherDataModel.disposition = response.disposition;
@@ -1403,6 +1416,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
     this.otherDataModel.provClaimNo = response.provClaimNo;
+    this.otherDataModel.claimRefNo = response.claimRefNo;
     this.otherDataModel.status = response.status;
     this.otherDataModel.totalNet = response.totalNet;
     this.otherDataModel.preAuthRefNo = response.preAuthDetails;
@@ -1830,12 +1844,12 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   getCommunications() {
-    this.sharedServices.loadingChanged.next(true);
+    // this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         this.communications = event.body.communicationList;
-        this.sharedServices.loadingChanged.next(false);
+        // this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
       this.sharedServices.loadingChanged.next(false);

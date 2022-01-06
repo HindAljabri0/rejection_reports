@@ -94,6 +94,10 @@ export class DownloadRequest {
         return this._url;
     }
 
+    get downloadAttempts() {
+        return this._downloadAttempts;
+    }
+
 }
 
 export enum DownloadStatus { INIT, DOWNLOADING, ERROR, DONE }

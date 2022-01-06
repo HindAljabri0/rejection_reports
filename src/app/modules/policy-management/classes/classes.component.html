@@ -1,0 +1,140 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Classes</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Class Name / Category</label>
+                    <input placeholder="Enter class name / category" class="form-control">
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Insurance Company</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Company</mat-option>
+                            <mat-option value="Company 1">Company 1</mat-option>
+                            <mat-option value="Company 2">Company 2</mat-option>
+                            <mat-optgroup label="TPA 1">
+                                <mat-option value="TPA Company 1">TPA Company 1</mat-option>
+                                <mat-option value="TPA Company 2">TPA Company 2</mat-option>
+                                <mat-option value="TPA Company 3">TPA Company 3</mat-option>
+                            </mat-optgroup>
+                            <mat-option value="Company 4">Company 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Policy No.</label>
+                    <input placeholder="Enter policy no." class="form-control">
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Policy Name</label>
+                    <input placeholder="Enter policy name" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Policy No.</th>
+                        <th>Policy Name</th>
+                        <th>Insurance Company</th>
+                        <th>Class Name / Category</th>
+                        <th>Visit Preapproval Limit / Threshold</th>
+                        <th>Deductible / Patient Share</th>
+                        <th>Max Episode Limit</th>
+                        <th class="text-center">Active</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4202</td>
+                        <td>Adipisicing elit. praesentium </td>
+                        <td>Adipisicing elit. praesentium </td>
+                        <td>Adipisicing elit. praesentium </td>
+                        <td>8</td>
+                        <td>909 <span class="currency">SR</span></td>
+                        <td>2</td>
+                        <td class="text-center">
+                            <mat-checkbox color="primary" class="grid-checkbox" checked></mat-checkbox>
+                        </td>
+                        <td class="actions">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
+                                <mat-icon>create</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2522</td>
+                        <td>Ullam deserunt, rerum maxime </td>
+                        <td>Ullam deserunt, rerum maxime </td>
+                        <td>Ullam deserunt, rerum maxime </td>
+                        <td>5</td>
+                        <td>497 <span class="currency">SR</span></td>
+                        <td>1</td>
+                        <td class="text-center">
+                            <mat-checkbox color="primary" class="grid-checkbox" checked></mat-checkbox>
+                        </td>
+                        <td class="actions">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
+                                <mat-icon>create</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2307</td>
+                        <td>Beatae commodi explicabo</td>
+                        <td>Beatae commodi explicabo</td>
+                        <td>Beatae commodi explicabo</td>
+                        <td>6</td>
+                        <td>855 <span class="currency">SR</span></td>
+                        <td>9</td>
+                        <td class="text-center">
+                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                        </td>
+                        <td class="actions">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
+                                <mat-icon>create</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7953</td>
+                        <td>Minima suscipit! ad, maiores.</td>
+                        <td>Minima suscipit! ad, maiores.</td>
+                        <td>Minima suscipit! ad, maiores.</td>
+                        <td>5</td>
+                        <td>292 <span class="currency">SR</span></td>
+                        <td>7</td>
+                        <td class="text-center">
+                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                        </td>
+                        <td class="actions">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
+                                <mat-icon>create</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <button mat-fab color="primary" class="page-fab" (click)="openAddClassDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

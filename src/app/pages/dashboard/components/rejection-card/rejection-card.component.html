@@ -12,8 +12,8 @@
                 <mat-spinner diameter="48" *ngIf="loading" class="ml-auto"></mat-spinner>
             </div>
         </div>
-        <div class="error-text pb-2" *ngIf="error != null && !error.startsWith('Payer')">Could not get data from the server.</div>
-        <div class="error-text pb-2" *ngIf="error != null && error.startsWith('Payer')">{{error}}</div>
+        <div class="error-card" *ngIf="error != null && !error.startsWith('Payer')">Could not get data from the server.</div>
+        <div class="error-card" *ngIf="error != null && error.startsWith('Payer')">{{error}}</div>
         <ul class="item-list">
             <li *ngFor="let item of data.topFive; let i = index">
                 <div class="status-dot size-lg" [style.background-color]="colors[0].backgroundColor[i]"></div>

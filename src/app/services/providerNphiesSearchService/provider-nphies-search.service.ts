@@ -198,6 +198,22 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  getProcessedPaymentReconciliation(providerId: string, body: any) {
+    let requestUrl = `/providers/${providerId}/payment-reconciliation/processed?`;
+
+    if (body.page !== undefined && body.page !== null) {
+      requestUrl += `page=${body.page}&`;
+    }
+    if (body.pageSize) {
+      requestUrl += `pageSize=${body.pageSize}&`;
+    }
+
+    requestUrl = requestUrl.slice(0, requestUrl.length - 1);
+
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
   getPaymentReconciliationDetails(providerId: string, reconciliationId: number) {
     const requestUrl = `/providers/${providerId}/reconciliationDetails/fetch?reconciliationId=${reconciliationId}`;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);

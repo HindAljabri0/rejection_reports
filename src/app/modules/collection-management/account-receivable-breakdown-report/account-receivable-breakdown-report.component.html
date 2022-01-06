@@ -1,92 +1,103 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-        <p>Accounts Receivables Breakdown Report</p>
-    </div>
-    <div class="block-filter-panel has-border">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="row small-gutter">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">Payer</label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="">
-                                    <mat-option value="">Select Payer</mat-option>
-                                    <mat-option value="Payer 1">Payer 1</mat-option>
-                                    <mat-option value="Payer 2">Payer 2</mat-option>
-                                    <mat-option value="Payer 3">Payer 3</mat-option>
-                                    <mat-option value="Payer 4">Payer 4</mat-option>
-                                    <mat-option value="Payer 5">Payer 5</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">Year</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="year" class="form-control" placeholder="Select year" />
-                                <mat-datepicker-toggle [for]="year"></mat-datepicker-toggle>
-                                <mat-datepicker #year></mat-datepicker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto align-self-end">
-                        <div class="form-group">
-                            <button type="button" mat-flat-button color="primary">Search</button>
-                        </div>
-                    </div>
+  <div class="block-header has-border">
+    <p>Accounts Receivables Breakdown Report</p>
+  </div>
+  <div class="block-filter-panel has-border">
+    <div class="row">
+      <div class="col-lg-8">
+        <form [formGroup]="FormBreakDownReport" (ngSubmit)="onSubmit()">
+          <div class="row small-gutter">
+            <div class="col">
+              <div class="form-group" [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('payerId').hasError('required')}">
+                <label class="control-label">Payer <span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+
+                  <mat-select placeholder="Select Payer" formControlName="payerId">
+                    <mat-option value="all">All</mat-option>
+                    <mat-option *ngFor="let payer of payersList" [value]="payer.id">
+                      {{payer.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="isSubmitted && FormBreakDownReport.get('payerId').hasError('required')">
+                  <span class="error-text">Please select payer</span>
                 </div>
+              </div>
             </div>
+            <div class="col">
+              <div class="form-group" [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('year').hasError('required')}">
+                <label class="control-label">Year <span class="asterisk">*</span></label>
+                <div class="date-picker">
+                  <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" placeholder="Select year"
+                    formControlName="year" />
+                </div>
+                <div *ngIf="isSubmitted && FormBreakDownReport.get('year').hasError('required')">
+                  <span class="error-text">Please select year</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button type="submit" mat-flat-button color="primary">Search</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="ar-report-body">
+    <div class="row small-gutter" *ngIf="!emptypaymentStatus">
+      <div class="col-4">
+        <div class="section-card">
+          <p class="section-title">Payment Status</p>
+          <div class="status-chart">
+            <canvas baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels" [chartType]="paymentStatusChartType" [options]="paymentStatusChartOptions"
+              [legend]="paymentStatusChartLegend" (chartClick)="paymentStatusChartClicked($event)">
+            </canvas>
+          </div>
+          <app-empty-state *ngIf="emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
+          </app-empty-state>
         </div>
-    </div>
-    <div class="ar-report-body">
-        <div class="row small-gutter">
-            <div class="col-4">
-                <div class="section-card">
-                    <p class="section-title">Payment Status</p>
-                    <div class="status-chart">
-                        <canvas baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels" [chartType]="paymentStatusChartType"
-                            [options]="paymentStatusChartOptions" [legend]="paymentStatusChartLegend" (chartClick)="paymentStatusChartClicked($event)">
-                        </canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="section-card half">
-                    <p class="section-title">Payment Category</p>
-                    <div class="category-chart">
-                        <canvas baseChart [datasets]="paymentCategoryChartData" [labels]="paymentCategoryChartLabels" [chartType]="paymentCategoryChartType"
-                            [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
-                        </canvas>
-                    </div>
-                </div>
-                <div class="section-card half">
-                    <p class="section-title">Payment Type</p>
-                    <div class="type-chart">
-                        <canvas baseChart [datasets]="paymentTypeChartData" [labels]="paymentTypeChartLabels" [chartType]="paymentTypeChartType" [options]="paymentTypeChartOptions"
-                            [legend]="paymentTypeChartLegend">
-                        </canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="section-card">
-                    <ng-container *ngIf="chartMode!=0">
-                        <p class="section-title">Payer Breakdown</p>
-                        <div class="status-chart">
-                            <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels" [chartType]="payerBreakdownChartType"
-                                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
-                            </canvas>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
+      </div>
+      <div class="col-4">
+        <div class="section-card" *ngIf="!emptyCategoryStatus">
+          <p class="section-title">Payment Category</p>
+          <div class="status-chart">
+            <canvas baseChart [datasets]="paymentCategoryChartData" [labels]="paymentCategoryChartLabels" [chartType]="paymentCategoryChartType"
+              [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
+            </canvas>
+          </div>
+          <app-empty-state *ngIf="emptyCategoryStatus" message="No data found" icon="ic-empty-chart.svg">
+          </app-empty-state>
         </div>
-    </div>
-    <div class="block-footer sticky-bottom">
-        <div class="right-block">
-            <button type="button" mat-flat-button color="primary">Print</button>
+        <!-- <div class="section-card half">
+          <p class="section-title">Payment Type</p>
+          <div class="type-chart">
+            <canvas baseChart [datasets]="paymentTypeChartData" [labels]="paymentTypeChartLabels"
+              [chartType]="paymentTypeChartType" [options]="paymentTypeChartOptions" [legend]="paymentTypeChartLegend">
+            </canvas>
+          </div>
+        </div> -->
+      </div>
+      <div class="col-4" *ngIf="chartMode > 0">
+        <div class="section-card">
+          <ng-container *ngIf="!emptyBreakDownStatus">
+            <p class="section-title">Payer Breakdown</p>
+            <div class="status-chart">
+              <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels" [chartType]="payerBreakdownChartType"
+                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
+              </canvas>
+            </div>
+          </ng-container>
+          <app-empty-state *ngIf="emptyBreakDownStatus" message="No data found!"></app-empty-state>
         </div>
+      </div>
     </div>
+    <app-empty-state *ngIf="!isSubmitted" message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
+    </app-empty-state>
+    <app-empty-state *ngIf="isSubmitted && emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
+    </app-empty-state>
+  </div>
 </div>

@@ -60,19 +60,22 @@ export class AddProviderContractDialogComponent implements OnInit {
       this.paymentProviderContractModel.payerid = null;
       this.isPromptPayment = this.paymentProviderContractModel.modePayment === 'Prompt Payment' ? true : false;
       this.paymentProviderContractModel.numberOfDays = this.data.editData.numberOfDays;
-      const fileBlob = this.sharedServices.dataURItoBlob(this.data.editData.agreementCopy, 'application/pdf');
       const expiryDate = moment(this.data.editData.expiryDate).format('DD-MM-YYYY');
       const effectiveDate = moment(this.data.editData.effectiveDate).format('DD-MM-YYYY');
       // this.currentFileUpload = new File([fileBlob],
       //   this.data.editData.providerId + '_' + this.data.editData.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf',
       //   { type: 'application/pdf' });
-      this.currentFileUpload = new File([fileBlob],
-        this.data.editData.fileName,
-        { type: 'application/pdf' });
 
-      this.paymentProviderContractModel.agreementCopy = this.data.editData.agreementCopy;
+      if (this.data.editData.agreementCopy) {
+        this.fileUploadFlag = true;
+        this.paymentProviderContractModel.agreementCopy = this.data.editData.agreementCopy;
+        const fileBlob = this.sharedServices.dataURItoBlob(this.data.editData.agreementCopy, 'application/pdf');
+        this.currentFileUpload = new File([fileBlob],
+          this.data.editData.fileName,
+          { type: 'application/pdf' });
+      }
+
       this.paymentProviderContractModel.isActive = this.data.editData.isActive;
-      this.fileUploadFlag = true;
       this.associatedPayers = this.data.associatedPayers;
       this.isProviderDisabled = false;
       this.isPayerSelected = false;
@@ -145,8 +148,17 @@ export class AddProviderContractDialogComponent implements OnInit {
   submit() {
     this.sharedServices.loadingChanged.next(true);
     this.closeStatus = false;
-    const expiryDate = moment(this.paymentProviderContractModel.expiryDate).format('YYYY-MM-DD');
-    const effectiveDate = moment(this.paymentProviderContractModel.effectiveDate).format('YYYY-MM-DD');
+
+    let expiryDate = '';
+    if (this.paymentProviderContractModel.expiryDate) {
+      expiryDate = moment(this.paymentProviderContractModel.expiryDate).format('YYYY-MM-DD');
+    }
+
+    let effectiveDate = '';
+    if (this.paymentProviderContractModel.effectiveDate) {
+      effectiveDate = moment(this.paymentProviderContractModel.effectiveDate).format('YYYY-MM-DD');
+    }
+
     const providerContractObjdata = {
       effectiveDate,
       expiryDate,

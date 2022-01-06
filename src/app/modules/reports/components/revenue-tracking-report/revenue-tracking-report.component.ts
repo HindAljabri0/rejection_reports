@@ -327,10 +327,10 @@ export class RevenueTrackingReportComponent implements OnInit {
           this.lineChartColors.push({
             backgroundColor: 'rgba(0,0,0,0)',
             borderColor: colors[i],
-            pointBackgroundColor: 'rgba(0,0,0,0)',
-            pointBorderColor: 'rgba(0,0,0,0)',
-            pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-            pointHoverBorderColor: 'rgba(0,0,0,0)',
+            pointBackgroundColor: colors[i],
+            pointBorderColor: colors[i],
+            pointHoverBackgroundColor: colors[i],
+            pointHoverBorderColor: colors[i],
           });
         }
         /*this.router.navigateByUrl('/reports/revenue-report-breakdown', { queryParams: { payerId: this.revenuTrackingReport.payerId,
