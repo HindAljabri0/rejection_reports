@@ -3,7 +3,7 @@ export const environment = {
   name: 'oci_prod',
   production: true,
   GA_TRACKING_ID: 'G-5NSFHV5Y6V',
-  showFreshChat: false,
+  showFreshChat: true,
   versionCheckURL: `https://eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
