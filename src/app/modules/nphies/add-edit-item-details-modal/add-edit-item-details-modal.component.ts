@@ -12,7 +12,7 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
 @Component({
   selector: 'app-add-edit-item-details-modal',
   templateUrl: './add-edit-item-details-modal.component.html',
-  styleUrls: ['./add-edit-item-details-modal.component.css']
+  styles: []
 })
 export class AddEditItemDetailsModalComponent implements OnInit {
 

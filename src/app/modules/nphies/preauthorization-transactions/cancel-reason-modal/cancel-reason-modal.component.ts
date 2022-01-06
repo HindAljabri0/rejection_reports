@@ -10,7 +10,7 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
 @Component({
   selector: 'app-cancel-reason-modal',
   templateUrl: './cancel-reason-modal.component.html',
-  styleUrls: ['./cancel-reason-modal.component.css']
+  styles: []
 })
 export class CancelReasonModalComponent implements OnInit {
 

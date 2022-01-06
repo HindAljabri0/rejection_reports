@@ -1,10 +1,7 @@
 <div class="d-flex mb-3">
     <h4 class="align-self-center medium">Lab Results</h4>
-    <button *ngIf="pageMode != 'VIEW'" (click)="onAddResultClick()" disableRipple="true" mat-flat-button class="ml-auto mt-n1 mb-n1 px-0 primary-text-btn">
-        <span class="d-flex align-items-center">
-            <mat-icon>add_circle_outline</mat-icon>
-            <span class="pl-1">Add Result</span>
-        </span>
+    <button type="button" class="btn-icon btn-primary ml-auto" *ngIf="pageMode != 'VIEW'" (click)="onAddResultClick()">
+        <mat-icon>add</mat-icon>
     </button>
 </div>
 <div class="table-responsive" *ngIf="resultsControls.length !== 0">
@@ -13,8 +10,7 @@
             <tr *ngIf="resultsControls.length > 10">
                 <th colspan="10">
                     <div class="right-block custom-paginator">
-                        <button matRipple (click)="showFirstLabsPage()" type="button" title="First Page"
-                            style="margin-left: auto;">
+                        <button matRipple (click)="showFirstLabsPage()" type="button" title="First Page" style="margin-left: auto;">
                             <img src="./assets/ic-page-first.svg" alt="First" />
                         </button>
                         <button matRipple (click)="showPreviousLabsPage()" type="button" title="Previous Page">
@@ -44,7 +40,8 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let result of resultsControls| slice:currentLabsPage*currentLabsSize:(currentLabsPage*currentLabsSize)+currentLabsSize; let i = index">
-                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="resultHasErrors(i+(currentLabsPage*currentLabsSize))" [class.light-bg-danger]="resultHasErrors(i+(currentLabsPage*currentLabsSize))">
+                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="resultHasErrors(i+(currentLabsPage*currentLabsSize))"
+                    [class.light-bg-danger]="resultHasErrors(i+(currentLabsPage*currentLabsSize))">
                     <td class="text-primary text-center row-click" (click)="toggleResult(i+(currentLabsPage*currentLabsSize))">
                         <mat-icon *ngIf="expandedResult != i+(currentLabsPage*currentLabsSize)" class="size-21">chevron_right</mat-icon>
                         <mat-icon *ngIf="expandedResult == i+(currentLabsPage*currentLabsSize)" class="size-21">expand_more</mat-icon>
@@ -87,9 +84,8 @@
                             <div class="d-flex pb-2">
                                 <h5 class="align-self-center medium">Components</h5>
                                 <div class="ml-auto btn-list mt-n1 mb-n1" *ngIf="pageMode != 'VIEW'">
-                                    <button mat-flat-button (click)="onAddComponentClick(i+(currentLabsPage*currentLabsSize))" class="primary-text-btn px-0" disableRipple="true">
-                                        <mat-icon>add_circle_outline</mat-icon>
-                                        <span class="pl-1">Add Component</span>
+                                    <button type="button" class="btn-icon btn-primary ml-auto" (click)="onAddComponentClick(i+(currentLabsPage*currentLabsSize))">
+                                        <mat-icon>add</mat-icon>
                                     </button>
                                 </div>
                             </div>
@@ -117,11 +113,15 @@
                                                     <mat-icon *ngIf="componentHasErrors(i+(currentLabsPage*currentLabsSize), j)">error</mat-icon>
                                                 </td>
                                                 <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">{{(j+1)}}</td>
-                                                <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">{{component.componentCode.value}}</td>
-                                                <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">{{component.componentLabResult.value}}</td>
-                                                <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">{{component.componentResultUnit.value}}</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
+                                                    {{component.componentCode.value}}</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
+                                                    {{component.componentLabResult.value}}</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
+                                                    {{component.componentResultUnit.value}}</td>
                                                 <td>
-                                                    <button (click)="onDeleteComponentClick($event, i+(currentLabsPage*currentLabsSize), j)" class="text-danger delete-btn" *ngIf="pageMode == 'EDIT'">
+                                                    <button (click)="onDeleteComponentClick($event, i+(currentLabsPage*currentLabsSize), j)" class="text-danger delete-btn"
+                                                        *ngIf="pageMode == 'EDIT'">
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
                                                 </td>

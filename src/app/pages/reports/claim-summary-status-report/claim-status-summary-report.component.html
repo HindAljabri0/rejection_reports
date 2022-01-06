@@ -177,7 +177,8 @@
         </table>
       </div>
     </ng-scrollbar>
-    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined" class="claim-list-empty-state" message='No reports found!'>
+    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined" class="claim-list-empty-state" icon="ic-empty-search.svg"
+      message='Select criteria to generate report'>
     </app-empty-state>
 
     <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">

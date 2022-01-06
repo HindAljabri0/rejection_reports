@@ -1,17 +1,12 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CertificateConfigurationProvider } from 'src/app/models/certificateConfigurationProvider';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-certificate-configuration-model',
   templateUrl: './certificate-configuration-model.component.html',
-  styleUrls: ['./certificate-configuration-model.component.css']
+  styles: []
 
 })
 export class CertificateConfigurationModelComponent implements OnInit {
@@ -25,9 +20,7 @@ export class CertificateConfigurationModelComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<CertificateConfigurationModelComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public common: SharedServices,
-    private settingsService: SettingsService,
-    private dialogService: DialogService) { }
+    public common: SharedServices) { }
 
   ngOnInit() {
     this.currentFileUpload = this.data.file;
@@ -37,7 +30,7 @@ export class CertificateConfigurationModelComponent implements OnInit {
       return;
     }
   }
-  
+
 
   closeDialog() {
     this.dialogRef.close();

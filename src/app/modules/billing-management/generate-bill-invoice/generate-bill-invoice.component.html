@@ -1,0 +1,317 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" routerLink="/billing-management/bill-details" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p>Generate Invoice</p>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="border-bottom p-14 pb-0">
+            <div class="row small-gutter">
+                <div class="col-md-3">
+                    <div class="form-group form-group-static">
+                        <label class="control-label">Patient</label>
+                        <span class="form-control-static">Esther Howard - 258GF5</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group form-group-static">
+                        <label class="control-label">Department</label>
+                        <span class="form-control-static">Dental</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group form-group-static">
+                        <label class="control-label">Doctor / Physician</label>
+                        <span class="form-control-static">Dr. Theresa Webb</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group form-group-static">
+                        <label class="control-label">Eligibility Status</label>
+                        <span class="form-control-static semibold text-success">Approved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h5 class="form-title p-14 mb-0">
+            <span>Services</span>
+        </h5>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+            <table class="primary-grid sticky-header manual-row-color claim-view-table" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">Service</th>
+                        <th colspan="2" class="text-center">Insurance Service</th>
+                        <th rowspan="2" class="minw130">Payment Type</th>
+                        <th colspan="2" class="text-center">Prior Authorization</th>
+                        <th rowspan="2" class="minw90">Qty.</th>
+                        <th rowspan="2" class="minw110">U.Price</th>
+                        <th rowspan="2">Gross Amount</th>
+                        <th rowspan="2">Discount</th>
+                        <th colspan="2" class="text-center">Insurance Share</th>
+                        <th colspan="2" class="text-center">Patient Share</th>
+                        <th rowspan="2">Net Amount</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>App/Rej Code</th>
+                        <th>Sts</th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-nowrap">76700-003</td>
+                        <td>U/S ABDOMAN FULL</td>
+                        <td class="text-nowrap">76700-003</td>
+                        <td>U/S ABDOMAN FULL</td>
+                        <td>
+                            <div class="form-group m-0">
+                                <mat-form-field class="form-control custom-select-control">
+                                    <mat-select value="">
+                                        <mat-option value="">Select</mat-option>
+                                        <mat-option value="Option 1">Option 1</mat-option>
+                                        <mat-option value="Option 2">Option 2</mat-option>
+                                        <mat-option value="Option 3">Option 3</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="form-group m-0">
+                                <input type="text" value="1" class="form-control">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group m-0">
+                                <input type="text" value="27" class="form-control">
+                            </div>
+                        </td>
+                        <td class="text-nowrap">27 <span class="currency">SR</span></td>
+                        <td class="text-nowrap">
+                            2.16 <span class="currency">SR</span>
+                            <p class="text-grey">8%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            22.356 <span class="currency">SR</span>
+                            <p class="text-grey">90%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            0 <span class="currency">SR</span>
+                            <p class="text-grey">0%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            2.484 <span class="currency">SR</span>
+                            <p class="text-grey">10%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            0 <span class="currency">SR</span>
+                            <p class="text-grey">0%</p>
+                        </td>
+                        <td class="text-nowrap">24.84 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">99201-004</td>
+                        <td>FIRST CONSULTATION - SPECIALIST</td>
+                        <td class="text-nowrap">99201-004</td>
+                        <td>FIRST CONSULTATION - SPECIALIST</td>
+                        <td>
+                            <div class="form-group m-0">
+                                <mat-form-field class="form-control custom-select-control">
+                                    <mat-select value="">
+                                        <mat-option value="">Select</mat-option>
+                                        <mat-option value="Option 1">Option 1</mat-option>
+                                        <mat-option value="Option 2">Option 2</mat-option>
+                                        <mat-option value="Option 3">Option 3</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="form-group m-0">
+                                <input type="text" value="1" class="form-control">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group m-0">
+                                <input type="text" value="15" class="form-control">
+                            </div>
+                        </td>
+                        <td class="text-nowrap">15 <span class="currency">SR</span></td>
+                        <td class="text-nowrap">
+                            0.75 <span class="currency">SR</span>
+                            <p class="text-grey">5%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            12.825 <span class="currency">SR</span>
+                            <p class="text-grey">90%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            0 <span class="currency">SR</span>
+                            <p class="text-grey">0%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            1.423 <span class="currency">SR</span>
+                            <p class="text-grey">10%</p>
+                        </td>
+                        <td class="text-nowrap">
+                            0 <span class="currency">SR</span>
+                            <p class="text-grey">0%</p>
+                        </td>
+                        <td class="text-nowrap">14.25 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="text-right border-top bold">Total</td>
+                        <td class="text-nowrap bold border-top">54 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">3.87 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">12.825 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">1.423 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">14.25 <span class="currency">SR</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-scrollbar>
+        <h5 class="form-title p-14 mb-0">
+            <span>Totals</span>
+        </h5>
+        <div class="p-14 pb-0">
+            <div class="row small-gutter">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Gross Amount</label>
+                        <input type="text" class="form-control" placeholder="Enter gross amount">
+                        <span class="control-hint">(Insurance Share + Patient Share)</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Discount Amount</label>
+                        <input type="text" class="form-control" placeholder="Enter discount amount">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Net Amount</label>
+                        <input type="text" class="form-control" placeholder="Enter net amount">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">VAT (% - Amount)</label>
+                        <input type="text" class="form-control" placeholder="Enter VAT">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Total Insurance Claim Amount</label>
+                        <input type="text" class="form-control" placeholder="Enter total insurance claim amount">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Total Patient Share Amount</label>
+                        <input type="text" class="form-control" placeholder="Enter total patient share amount">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Total Payment Received</label>
+                        <input type="text" class="form-control" placeholder="Enter total payment received">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label text-danger">Short Payment</label>
+                        <input type="text" class="form-control" placeholder="Enter short payment">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h5 class="form-title p-14 mb-0">
+            <span>Payments</span>
+            <button type="button" class="btn-icon btn-primary ml-auto">
+                <mat-icon>add</mat-icon>
+            </button>
+        </h5>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+            <table class="primary-grid sticky-header manual-row-color claim-view-table" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th class="text-center">Receipt No.</th>
+                        <th>Receipt Type</th>
+                        <th>Ref. Details</th>
+                        <th>Date</th>
+                        <th>Amount Received</th>
+                        <th class="text-center">Currency</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle">
+                        <td class="text-center">1</td>
+                        <td>
+                            <div class="form-group mt-n1 mb-n1">
+                                <mat-form-field class="form-control custom-select-control">
+                                    <mat-select value="">
+                                        <mat-option value="">Select type</mat-option>
+                                        <mat-option value="Option 1">Option 1</mat-option>
+                                        <mat-option value="Option 2">Option 2</mat-option>
+                                        <mat-option value="Option 3">Option 3</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group mt-n1 mb-n1">
+                                <input type="text" class="form-control" placeholder="Enter ref. details">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group mt-n1 mb-n1">
+                                <div class="date-picker">
+                                    <input [matDatepicker]="paymentDate" class="form-control" placeholder="Select date">
+                                    <mat-datepicker-toggle [for]="paymentDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #paymentDate></mat-datepicker>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group mt-n1 mb-n1">
+                                <input type="text" class="form-control" placeholder="Enter amount received">
+                            </div>
+                        </td>
+                        <td class="text-primary medium text-center">SR</td>
+                        <td class="actions">
+                            <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-scrollbar>
+        <div class="block-footer has-border">
+            <div class="btn-list right-block">
+                <button mat-flat-button color="primary">Print</button>
+                <button mat-flat-button color="primary" routerLink="/billing-management/bill-details">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

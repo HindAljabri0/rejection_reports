@@ -19,7 +19,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 @Component({
   selector: 'app-rejection-tracking-report',
   templateUrl: './rejection-tracking-report.component.html',
-  styleUrls: ['./rejection-tracking-report.component.css']
+  styles: []
 })
 export class RejectionTrackingReportComponent implements OnInit {
   public chartFontFamily = '"Poppins", sans-serif';
