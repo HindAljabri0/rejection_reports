@@ -12,7 +12,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-reconciliation-add-payment',
   templateUrl: './reconciliation-add-payment.component.html',
-  styleUrls: ['./reconciliation-add-payment.component.css']
+  styles: []
 })
 export class ReconciliationAddPaymentComponent implements OnInit {
   addPaymentReconciliationModel = new AddPaymentReconciliationModel();

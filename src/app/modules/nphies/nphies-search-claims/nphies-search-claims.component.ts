@@ -35,7 +35,7 @@ import { CancelReasonModalComponent } from '../preauthorization-transactions/can
 @Component({
   selector: 'app-nphies-search-claims',
   templateUrl: './nphies-search-claims.component.html',
-  styleUrls: ['./nphies-search-claims.component.css']
+  styles: []
 })
 export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
 

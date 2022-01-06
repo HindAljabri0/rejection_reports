@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatPaginator, MatDialog } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
-import { DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { HttpResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
@@ -13,7 +12,7 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
 @Component({
   selector: 'app-recent-reconciliation',
   templateUrl: './recent-reconciliation.component.html',
-  styleUrls: ['./recent-reconciliation.component.css']
+  styles: []
 })
 export class RecentReconciliationComponent implements OnInit {
 

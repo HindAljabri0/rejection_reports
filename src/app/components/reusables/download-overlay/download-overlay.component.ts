@@ -10,7 +10,7 @@ import { DOWNLOAD_STATUS_OBSERVER, OVERLAY_REFERENCE, REQUEST_OBSERVER } from 's
 @Component({
   selector: 'app-download-overlay',
   templateUrl: './download-overlay.component.html',
-  styleUrls: ['./download-overlay.component.css']
+  styles: []
 })
 export class DownloadOverlayComponent implements OnInit {
 

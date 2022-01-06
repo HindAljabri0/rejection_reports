@@ -5,7 +5,7 @@ import { ApiError } from 'src/app/models/nphies/apiError';
 @Component({
   selector: 'app-api-errors-dialog',
   templateUrl: './api-errors-dialog.component.html',
-  styleUrls: ['./api-errors-dialog.component.css']
+  styles: []
 })
 export class ApiErrorsDialogComponent implements OnInit {
 
@@ -20,5 +20,5 @@ export class ApiErrorsDialogComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  
+
 }

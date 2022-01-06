@@ -236,7 +236,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .add-communication-table{min-height: 300px;}
 .whatsapp-chat-btn{display: block;background-color: #25D366;padding: 17px;border-radius: 16px;position: fixed;bottom: 21px;box-shadow: 0 5px 4px 0 rgba(0,0,0,.26);left: 54px;z-index: 2;}
 .whatsapp-chat-btn>img{display: block;height: 26px;width: 26px;}
-#fc_frame, #fc_frame.fc-widget-small{left: 125px;right: auto!important;z-index: 2!important;}
+#fc_frame, #fc_frame.fc-widget-small{left: 85px;right: auto!important;z-index: 2!important;bottom: 8px!important;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -254,7 +254,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .text-medium-grey{color: #909090!important;}
 .text-grey,.text-duplicate{color: #707070!important;}
 .text-success{color: #59C14F!important;}
-.text-danger{color: #CD4949!important;}
+.text-cancelled,.text-danger{color: #CD4949!important;}
 .text-warning{color: #E79143!important;}
 .text-invalid,.text-purple{color: #682691!important;}
 .text-middle-grey{color:#bebebe!important;}
@@ -275,7 +275,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .bg-grey,.bg-duplicate{background-color:#707070!important;}
 .bg-off-white{background-color:#f6f6f6!important;}
 .bg-success{background-color: #29bf24!important;}
-.bg-danger{background-color: #CC2F2F!important;}
+.bg-cancelled,.bg-danger{background-color: #CC2F2F!important;}
 .bg-invalid,.bg-purple{background-color: #682691!important;}
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
@@ -289,7 +289,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .light-bg-paid,.light-bg-green{background-color: #e3efe5!important;}
 .light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
 .light-bg-submitted-outside-waseel,.light-bg-submitted,.light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
-.light-bg-danger{background-color: #f9e6e6!important;}
+.light-bg-cancelled,.light-bg-danger{background-color: #f9e6e6!important;}
 .light-bg-invalid,.light-bg-purple{background-color: #ede4f2!important;}
 
 /* brand header
@@ -324,7 +324,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 /* sidebar
 --------------------------------------------------------------------------------------------------------*/
 .sidebar {width: 240px;z-index: 1;top: 68px;bottom: 0;left: 0;height:auto;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position:fixed;background-color: #f2f2f2;}
-.sidebar>.inner{height: calc(100vh - 168px);overflow: auto;border-bottom: 1px solid #bebebe;}
+.sidebar>.inner{height: calc(100vh - 156px);overflow: auto;border-bottom: 1px solid #bebebe;}
 .sidebar hr{margin: 0;}
 .sidebar .list-container{padding: 10px 0;}
 .sidebar .list-title {color: #878B96;list-style: none;padding: 10px;text-decoration: none;padding-left: 16px;}

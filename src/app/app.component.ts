@@ -13,7 +13,7 @@ declare const gtag: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styles: []
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Waseel E-Claims';
