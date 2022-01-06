@@ -2,15 +2,6 @@
     <div class="inner">
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
             <div class="list-container" *ngIf="isProvider">
-                <ul class="nav-list">
-                    <li i18n="@@dashboard">
-                        <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                            <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
-                            <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
-                            <span class="text">Dashboard</span>
-                        </a>
-                    </li>
-                </ul>
                 <div class="list-title primary">
                     Waseel
                 </div>
@@ -311,6 +302,13 @@
                         </ul>
                     </mat-expansion-panel>
                 </mat-accordion>
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/billing-management" routerLinkActive="is-active">
+                            <span class="text">Billing Management</span>
+                        </a>
+                    </li>
+                </ul>
 
 
                 <ng-container *ngIf="hasAnyNphiesPrivilege">

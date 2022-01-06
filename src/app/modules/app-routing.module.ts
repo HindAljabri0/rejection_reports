@@ -12,8 +12,6 @@ import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
 import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.component';
-import { NphiesSearchClaimsComponent } from './nphies/nphies-search-claims/nphies-search-claims.component';
-import { EditClaimComponent } from '../pages/edit-claim/edit-claim.component';
 import { MainClaimPageComponent } from '../claim-module-components/main-claim-page/main-claim-page.component';
 
 @NgModule({
@@ -26,7 +24,7 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
         children: [
           { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
-          { path: 'claims/:id', component: MainClaimPageComponent ,  canActivate: [RouteCanActiveService] },
+          { path: 'claims/:id', component: MainClaimPageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
           { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
@@ -46,11 +44,11 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
             canLoad: [RouteCanActiveService]
           },
           {
-            path:':providerId/claims',
+            path: ':providerId/claims',
             loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
             canActivate: [RouteCanActiveService]
           },
-          
+
           {
             path: 'reports',
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
@@ -84,6 +82,11 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
           {
             path: 'policy-management',
             loadChildren: () => import('./policy-management/policy-management.module').then(m => m.PolicyManagementModule),
+            canActivate: [RouteCanActiveService]
+          },
+          {
+            path: 'billing-management',
+            loadChildren: () => import('./billing-management/billing-management.module').then(m => m.BillingManagementModule),
             canActivate: [RouteCanActiveService]
           }
         ]
