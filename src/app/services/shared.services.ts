@@ -380,6 +380,8 @@ export class SharedServices {
         return 'invalid';
       case ClaimStatus.DUPLICATE.toLowerCase():
         return 'duplicate';
+      case ClaimStatus.CANCELLED.toLowerCase():
+        return 'cancelled'
       default:
         return 'not-saved';
     }
@@ -645,7 +647,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -663,7 +665,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

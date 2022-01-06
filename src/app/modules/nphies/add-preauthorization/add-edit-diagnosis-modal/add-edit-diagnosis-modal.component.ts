@@ -1,20 +1,16 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatSelect, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { SharedServices } from 'src/app/services/shared.services';
 import { AdminService } from 'src/app/services/adminService/admin.service';
-import { takeUntil } from 'rxjs/operators';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
-import { X } from '@angular/cdk/keycodes';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-diagnosis-modal',
   templateUrl: './add-edit-diagnosis-modal.component.html',
-  styleUrls: ['./add-edit-diagnosis-modal.component.css']
+  styles: []
 })
 export class AddEditDiagnosisModalComponent implements OnInit {
 

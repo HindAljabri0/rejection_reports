@@ -6,37 +6,31 @@
         <form [formGroup]="FormClaimCover" (ngSubmit)="onSubmit()">
             <div class="row small-gutter">
                 <div class="col-3">
-                    <div class="form-group"
-                        [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')}">
+                    <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')}">
                         <label class="control-label">TPA or Payer</label>
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select formControlName="tpaORpayer">
                                 <mat-option value="">Select TPA or Payer</mat-option>
                                 <mat-optgroup *ngFor="let group of groups" [label]="group.name">
-                                    <mat-option *ngFor="let option of group.options" [value]="option.id"
-                                        (onSelectionChange)="selectChange($event,group.name)">
+                                    <mat-option *ngFor="let option of group.options" [value]="option.id" (onSelectionChange)="selectChange($event,group.name)">
                                         {{option.name}}
                                     </mat-option>
                                 </mat-optgroup>
                             </mat-select>
-                            <div
-                                *ngIf="isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')">
+                            <div *ngIf="isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')">
                                 <span class="error-text">Please select a Payer or TPA</span>
                             </div>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="form-group"
-                        [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
+                    <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
                         <label class="control-label">Month</label>
                         <div class="date-picker">
-                            <input autocomplete="off" class="form-control date-picker" bsDatepicker
-                                [bsConfig]="datePickerConfig" formControlName="month" placeholder="Select month"
+                            <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" formControlName="month" placeholder="Select month"
                                 (onShown)="onOpenCalendar($event)" />
                         </div>
-                        <div
-                            *ngIf="isSubmitted && FormClaimCover.get('month').hasError('required')">
+                        <div *ngIf="isSubmitted && FormClaimCover.get('month').hasError('required')">
                             <span class="error-text">Please select a month</span>
                         </div>
                     </div>
@@ -93,7 +87,7 @@
                 </table>
             </div>
         </ng-scrollbar>
-        <app-empty-state *ngIf="claimCoverList.length == 0" class="claim-list-empty-state" message='No reports found!'>
+        <app-empty-state *ngIf="claimCoverList.length == 0" class="claim-list-empty-state" icon="ic-empty-search.svg" message='Select criteria to generate cover letter'>
         </app-empty-state>
     </div>
 </div>
