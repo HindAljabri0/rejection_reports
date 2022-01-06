@@ -148,7 +148,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       this.isLoading = true;
       // tslint:disable-next-line:radix
@@ -1396,8 +1395,18 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   setData(response) {
+
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
+
+    this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
+    this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
+
+    //     componentEarlyFee: null
+    // componentNphiesFee: null
+    // componentPayment: 40.25
+    // paymentDate: "2021-12-07T21:30:00.000+03:00"
+    // type: "payment"
     this.otherDataModel.claimId = response.claimId;
     this.otherDataModel.outcome = response.outcome;
     this.otherDataModel.disposition = response.disposition;

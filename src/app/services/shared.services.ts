@@ -378,7 +378,7 @@ export class SharedServices {
         return 'downloadable';
       case ClaimStatus.INVALID.toLowerCase():
         return 'invalid';
-        case ClaimStatus.DUPLICATE.toLowerCase():
+      case ClaimStatus.DUPLICATE.toLowerCase():
         return 'duplicate';
       default:
         return 'not-saved';
@@ -435,6 +435,46 @@ export class SharedServices {
           arName: value.split(':')[1].split(',')[1],
           payerCategory: value.split(':')[1].split(',')[2]
         }));
+    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
+      return [{
+        id: Number.parseInt(payersStr.split(':')[0], 10),
+        name: payersStr.split(':')[1].split(',')[0],
+        arName: payersStr.split(':')[1].split(',')[1],
+        payerCategory: payersStr.split(':')[1].split(',')[2]
+      }];
+    }
+
+    return payers;
+  }
+
+  getPayersListWithoutTPA(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
+
+    const tpaList = this.getTPAsList();
+
+    if (globMed == null) {
+      globMed = false;
+    }
+    const payers: { id: number, name: string, arName: string, payerCategory: string }[] = [];
+    const payersStr = localStorage.getItem('payers');
+    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
+      const payersStrSplitted = payersStr.split('|');
+      payersStrSplitted
+        // As globemed is not integrated with us so comment this below lines
+        // .filter(value =>
+        //   (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
+        //   || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
+        .map(value => {
+          // tslint:disable-next-line:max-line-length
+          if (value.split(':')[1].split(',')[3] && tpaList.filter(x => x.name.toLowerCase() === value.split(':')[1].split(',')[3].toLowerCase()).length === 0) {
+            payers.push({
+              id: Number.parseInt(value.split(':')[0], 10),
+              name: value.split(':')[1].split(',')[0],
+              arName: value.split(':')[1].split(',')[1],
+              payerCategory: value.split(':')[1].split(',')[2]
+            });
+          }
+        }
+        );
     } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
       return [{
         id: Number.parseInt(payersStr.split(':')[0], 10),
@@ -605,7 +645,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -623,7 +663,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
