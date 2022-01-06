@@ -187,7 +187,7 @@
                                 <a routerLink="/collection-management/accounts-receivable-details-payer" class="d-none" routerLinkActive="is-active"
                                     #accountsReceivableDetailsPayer="routerLinkActive"></a>
                             </li>
-                            <li *ngIf="!envStaging && !envProd">
+                            <li>
                                 <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active">
                                     <span class="text">AR Breakdown Report</span>
                                 </a>
@@ -209,7 +209,7 @@
                                 <a routerLink="/collection-management/statement-of-accounts-details" class="d-none" routerLinkActive="is-active"
                                     #statementAccountDetails="routerLinkActive"></a>
                             </li>
-                            <li *ngIf="!envStaging && !envProd">
+                            <li>
                                 <a routerLink="/collection-management/reconciliation-report" routerLinkActive="is-active">
                                     <span class="text">Reconciliation Report</span>
                                 </a>
@@ -276,14 +276,14 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav-list">
+                <ul class="nav-list" *ngIf="!envProd && !envStaging">
                     <li>
                         <a routerLink="/contract-management" routerLinkActive="is-active">
                             <span class="text">Contract Management</span>
                         </a>
                     </li>
                 </ul>
-                <mat-accordion displayMode="flat">
+                <mat-accordion displayMode="flat" *ngIf="!envProd && !envStaging">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
                             <mat-panel-title>Policy Management</mat-panel-title>
@@ -302,7 +302,7 @@
                         </ul>
                     </mat-expansion-panel>
                 </mat-accordion>
-                <ul class="nav-list">
+                <ul class="nav-list" *ngIf="!envProd && !envStaging">
                     <li>
                         <a routerLink="/billing-management" routerLinkActive="is-active">
                             <span class="text">Billing Management</span>
