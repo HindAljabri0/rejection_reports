@@ -35,6 +35,7 @@ import { RejectionTrackingReportComponent } from './components/rejection-trackin
 import { RejectionBreakdownReportComponent } from './components/rejection-breakdown-report/rejection-breakdown-report.component';
 import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-rejction-report/medical-rejction-report.component';
 import { RejectionComparisonReportComponent } from './components/rejection-comparison-report/rejection-comparison-report.component';
+import { ClaimsCoverLetterComponent } from './components/claims-cover-letter/claims-cover-letter.component';
 
 
 
@@ -61,6 +62,7 @@ import { RejectionComparisonReportComponent } from './components/rejection-compa
     ClaimStatusSummaryReportComponent,
     RejectionBreakdownReportComponent,
     RejectionComparisonReportComponent,
+    ClaimsCoverLetterComponent,
   ],
   imports: [
    

@@ -38,6 +38,7 @@ import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ApprovalDetailInquiryService } from 'src/app/services/approvalDetailInquiryService/approval-detail-inquiry.service';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
+import { Console } from 'console';
 
 
 @Component({
@@ -231,7 +232,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
         uploadId: this.params.uploadId,
-        nationalId:this.params.nationalId,
+        nationalId: this.params.nationalId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -268,10 +269,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     let underProcessingIsDone = false;
     let rejectedByPayerIsDone = false;
+    let duplicateIsDone = false;
     let readyForSubmissionIsDone = false;
     let paidIsDone = false;
     let invalidIsDone = false;
     let isAllDone = false;
+
     for (let status of statuses) {
       if (this.isUnderProcessingStatus(status)) {
         if (!underProcessingIsDone) {
@@ -280,9 +283,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         underProcessingIsDone = true;
       } else if (this.isRejectedByPayerStatus(status)) {
         if (!rejectedByPayerIsDone) {
-          await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
+          await this.getSummaryOfStatus([ClaimStatus.REJECTED]);
         }
         rejectedByPayerIsDone = true;
+      } else if (this.isDuplicateStatus(status)) {
+        if (!duplicateIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.DUPLICATE]);
+        }
+        duplicateIsDone = true;
       } else if (this.isReadyForSubmissionStatus(status)) {
         if (!readyForSubmissionIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
@@ -298,8 +306,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
         }
         invalidIsDone = true;
-      } else if(this.isAllStatus(status)) {
-        if(!isAllDone){
+      } else if (this.isAllStatus(status)) {
+        if (!isAllDone) {
           this.getSummaryOfStatus([status]);
         }
         isAllDone = true;
@@ -334,19 +342,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.patientFileNo,
       this.params.policyNo,
       this.params.nationalId
-      ).toPromise().catch(error => {
-        this.commen.loadingChanged.next(false);
-        if (error instanceof HttpErrorResponse) {
-          if ((error.status / 100).toFixed() == '4') {
-            this.errorMessage = error.message;
-          } else if ((error.status / 100).toFixed() == '5') {
-            this.errorMessage = 'Server could not handle the request. Please try again later.';
-          } else {
-            this.errorMessage = 'Somthing went wrong.';
-          }
-          return error.status;
+    ).toPromise().catch(error => {
+      this.commen.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == '4') {
+          this.errorMessage = error.message;
+        } else if ((error.status / 100).toFixed() == '5') {
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
         }
-      });
+        return error.status;
+      }
+    });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
@@ -409,6 +417,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       || name === ClaimStatus.PAID.toLowerCase()
       || name === ClaimStatus.Under_Processing.toLowerCase()
       || name === ClaimStatus.Under_Submision.toLowerCase()
+      || name === ClaimStatus.DUPLICATE.toLowerCase()
       || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
     this.isPBMValidationVisible = this.apiPBMValidationEnabled
       && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
@@ -440,7 +449,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_patientFileNo || this.params.patientFileNo,
       this.params.policyNo,
       this.params.filter_drName,
-      this.params.filter_nationalId|| this.params.nationalId,
+      this.params.filter_nationalId || this.params.nationalId,
       this.params.filter_claimDate,
       this.params.filter_netAmount,
       this.params.filter_batchNum || this.params.batchId).subscribe((event) => {
@@ -750,7 +759,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return this.selectedClaims.length + ' of ' + this.searchResult.totalElements + ' are selected.';
     } else { return '0 of 0 are selected.'; }
   }
-checkCloseDialogAfterEdit=null;   
+  checkCloseDialogAfterEditClaim=null
   resetURL() {
     if (this.routerSubscription.closed) { return; }
     this.params.status = this.selectedCardKey > 0 ? this.selectedCardKey : null;
@@ -760,8 +769,7 @@ checkCloseDialogAfterEdit=null;
       queryParams: { ...this.params, editMode: null, size: null },
       fragment: this.params.editMode == 'true' ? 'edit' : null,
     }).then(()=>{
-
-      if(this.checkCloseDialogAfterEdit!=null){
+      if(this.checkCloseDialogAfterEditClaim!=null){
         window.location.reload();
       }
     });
@@ -785,10 +793,15 @@ checkCloseDialogAfterEdit=null;
       this.claimDialogRef = null;
       this.params.claimId = null;
       this.params.editMode = null;
-      this.checkCloseDialogAfterEdit=result;
+    
+        this.checkCloseDialogAfterEditClaim=result ;  
+
+      console.log('tessssssssst'+result);
+      
       this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
+    
     });
   }
 
@@ -1178,7 +1191,7 @@ checkCloseDialogAfterEdit=null;
       this.params.filter_claimDate,
       this.params.filter_netAmount,
       this.params.filter_batchNum);
-    this.downloadService.startDownload(event)
+    this.downloadService.startGeneratingDownloadFile(event)
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -1284,7 +1297,7 @@ checkCloseDialogAfterEdit=null;
                 if (result === true) {
                   this.commen.loadingChanged.next(true);
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId,  null,
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId, this.params.uploadId, this.params.batchId, null,
                     this.params.filter_claimRefNo, this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims,
                     this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount,
                     this.params.filter_batchNum).subscribe(event => {
@@ -1454,8 +1467,12 @@ checkCloseDialogAfterEdit=null;
 
   isRejectedByPayerStatus(status: string) {
     status = status.toUpperCase();
-    return status == ClaimStatus.REJECTED.toUpperCase() ||
-      status == 'DUPLICATE';
+    return status == ClaimStatus.REJECTED.toUpperCase();
+  }
+
+  isDuplicateStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.DUPLICATE.toUpperCase();
   }
 
   isReadyForSubmissionStatus(status: string) {

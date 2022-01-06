@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, HostListener } from '@angular/core';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { RetrievedClaimProps } from 'src/app/claim-module-components/models/retrievedClaimProps.model';
 import { ClaimPageMode, ClaimPageType, getPageMode, getPageType, getClaim, getRetrievedClaimProps, getClaimModuleError, getClaimModuleIsLoading, getPaginationControl } from 'src/app/claim-module-components/store/claim.reducer';
@@ -8,11 +8,13 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { hideHeaderAndSideMenu, changePageTitle } from 'src/app/store/mainStore.actions';
 import { retrieveClaim, loadLOVs, openCreateByApprovalDialog, startCreatingNewClaim, saveLabResults, saveInvoices_Services, setLoading, startValidatingClaim, toEditMode, cancelClaim, cancelEdit, goToClaim } from 'src/app/claim-module-components/store/claim.actions';
 import { getDepartments } from '../dashboard/store/dashboard.reducer';
-import { Location } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterEvent } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Console } from 'console';
+
 @Component({
   selector: 'app-edit-claim',
   templateUrl: './edit-claim.component.html',
@@ -53,7 +55,9 @@ export class EditClaimComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private activatedRouter: ActivatedRoute,
+    location1: PlatformLocation,
     @Inject(MAT_DIALOG_DATA) public data) {
+
     store.select(getPageMode).subscribe(claimPageMode => {
       this.pageMode = claimPageMode;
       this.editPageTitle();
@@ -100,14 +104,21 @@ export class EditClaimComponent implements OnInit, OnDestroy {
             break;
         }
       }
+      
     });
+    
   }
-  ngOnDestroy(): void {
-    this.close(this.isEdit)
+ async ngOnDestroy() {
+  this.close(this.isEdit)
+    
+
     this.routerSubscription.unsubscribe();
   }
 
-
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    console.log('Back button pressed');
+  }
   ngOnInit() {
     this.store.select(getClaimModuleIsLoading).subscribe(loading => {
       this.isLoading = loading;
@@ -183,18 +194,24 @@ export class EditClaimComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
+  
 
 
   save() {
-    this.isEdit='true'
+    this.isEdit = 'true'
     if (this.isLoading) { return; }
     this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());
   }
+ 
+  
+backClicked() {
+  console.log("OMAEomar omar ");
+  
+  close()}
+
 
   getClaimStatusLabel(status: string) {
     return this.sharedService.statusToName(status);
@@ -223,6 +240,7 @@ export class EditClaimComponent implements OnInit, OnDestroy {
     }
   }
 
+
   close(result?) {
     this.dialogRef.close(result != null ? `${result}` : null);
   }
@@ -237,6 +255,8 @@ export class EditClaimComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+ 
 
   goToFirstPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
