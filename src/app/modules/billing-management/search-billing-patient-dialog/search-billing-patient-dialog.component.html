@@ -1,0 +1,95 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Select Patient</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+    <div class="row small-gutter">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Patient Name</label>
+                <input type="text" placeholder="Enter patient name here" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Mobile No.</label>
+                <input type="text" placeholder="Enter patient mobile no. here" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Patient ID / IQAMA</label>
+                <input type="text" placeholder="Enter patient ID / IQAMA" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Patient File No.</label>
+                <input type="text" placeholder="Enter patient file no." class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="text-right">
+        <button mat-flat-button type="button" color="primary">Search Patients</button>
+    </div>
+</div>
+<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Mobile No.</th>
+                <th>Patient ID / IQAMA</th>
+                <th>Patient File No.</th>
+                <th width="10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Annette Black</td>
+                <td>(907) 555-0101</td>
+                <td>651535</td>
+                <td>487441</td>
+                <td>
+                    <button type="button" mat-stroked-button color="primary" class="btn-sm mt-n1 mb-n1" (click)="closeDialog()">Select</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Darlene Robertson</td>
+                <td>(225) 555-0118</td>
+                <td>449003</td>
+                <td>558612</td>
+                <td>
+                    <button type="button" mat-stroked-button color="primary" class="btn-sm mt-n1 mb-n1" (click)="closeDialog()">Select</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Cameron Williamson</td>
+                <td>(207) 555-0119</td>
+                <td>487441</td>
+                <td>651535</td>
+                <td>
+                    <button type="button" mat-stroked-button color="primary" class="btn-sm mt-n1 mb-n1" (click)="closeDialog()">Select</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Leslie Alexander</td>
+                <td>(239) 555-0108</td>
+                <td>558612</td>
+                <td>653518</td>
+                <td>
+                    <button type="button" mat-stroked-button color="primary" class="btn-sm mt-n1 mb-n1" (click)="closeDialog()">Select</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Esther Howard</td>
+                <td>(302) 555-0107</td>
+                <td>653518</td>
+                <td>267400</td>
+                <td>
+                    <button type="button" mat-stroked-button color="primary" class="btn-sm mt-n1 mb-n1" (click)="closeDialog()">Select</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-scrollbar>

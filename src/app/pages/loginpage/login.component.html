@@ -29,36 +29,30 @@
             <img *ngIf="!isCloseToNationalDay()" src="./assets/login-upper-art.svg" class="upper-art" alt="Abstract art" />
             <img *ngIf="isCloseToNationalDay()" src="./assets/login-upper-art-national-day.svg" class="upper-art" alt="Abstract art" />
             <div class="middle">
-                <img *ngIf="!isCloseToNationalDay()" src="./assets/waseel_logo_Dark_Blue.png" alt="Waseel" class="logo" />
+                <img *ngIf="!isCloseToNationalDay()" src="./assets/logo.svg" alt="Waseel" class="logo" />
                 <img *ngIf="isCloseToNationalDay()" src="assets/national-day-logo.svg" class="logo" alt="Happy National Day">
                 <h2>Welcome to Waseel</h2>
                 <ul class="login-contact">
                     <li>
-                        <a href="tel:920012099">
-                            <span class="icon">
-                                <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-whatsapp-primary.svg" alt="WhatsApp" />
-                                <img *ngIf="isCloseToNationalDay()" src="./assets/ic-whatsapp-national-day.svg" alt="WhatsApp" />
-                            </span>
-                            <span class="text">920012099</span>
-                        </a>
+                        <span class="icon">
+                            <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-call-primary.svg" alt="Call" />
+                            <img *ngIf="isCloseToNationalDay()" src="./assets/ic-call-national-day.svg" alt="Call" />
+                        </span>
+                        <span class="text">920012099</span>
                     </li>
                     <li>
-                        <a href="mailto:customercare@waseel.com">
-                            <span class="icon">
-                                <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-mail-primary.svg" alt="Mail" />
-                                <img *ngIf="isCloseToNationalDay()" src="./assets/ic-mail-national-day.svg" alt="Mail" />
-                            </span>
-                            <span class="text">customercare@waseel.com</span>
-                        </a>
+                        <span class="icon">
+                            <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-mail-primary.svg" alt="Mail" />
+                            <img *ngIf="isCloseToNationalDay()" src="./assets/ic-mail-national-day.svg" alt="Mail" />
+                        </span>
+                        <span class="text">customercare@waseel.com</span>
                     </li>
                     <li>
-                        <div>
-                            <span class="icon">
-                                <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-chat-primary.svg" alt="Chat" />
-                                <img *ngIf="isCloseToNationalDay()" src="./assets/ic-chat-national-day.svg" alt="Chat" />
-                            </span>
-                            <span class="text">Instant chatting</span>
-                        </div>
+                        <span class="icon">
+                            <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-chat-primary.svg" alt="Chat" />
+                            <img *ngIf="isCloseToNationalDay()" src="./assets/ic-chat-national-day.svg" alt="Chat" />
+                        </span>
+                        <span class="text">Instant Chat</span>
                     </li>
                 </ul>
             </div>

@@ -1,28 +1,21 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Location } from '@angular/common';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CertificateConfigurationProvider } from 'src/app/models/certificateConfigurationProvider';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { CertificateConfigurationModelComponent } from '../certificate-configuration-model/certificate-configuration-model.component';
-import { Store } from '@ngrx/store';
-import { toEditMode, cancelEdit } from 'src/app/claim-module-components/store/claim.actions';
 import { CertificateConfigurationRespnse } from 'src/app/models/certificateConfigurationRespnse';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
-import { ClaimPageMode, getClaim, getPageMode, getPageType } from 'src/app/claim-module-components/store/claim.reducer';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 @Component({
   selector: 'app-certificate-configuration',
   templateUrl: './certificate-configuration.component.html',
-  styleUrls: ['./certificate-configuration.component.css']
+  styles: []
 })
 export class CertificateConfigurationComponent implements OnInit {
   providerController: FormControl = new FormControl();
@@ -118,10 +111,10 @@ export class CertificateConfigurationComponent implements OnInit {
           this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
           this.closeStatus = true;
           this.pageMode = 'EDIT';
-          this.notEditMode =false ;
-          this.isEdit=false;
-        
-        
+          this.notEditMode = false;
+          this.isEdit = false;
+
+
           // this.closeDialog();
         }
         this.sharedServices.loadingChanged.next(false);
@@ -213,23 +206,24 @@ export class CertificateConfigurationComponent implements OnInit {
 
 
 
-      
+
 
 
           this.sharedServices.loadingChanged.next(false);
         }
 
       }
-    }, err=>{
+    }, err => {
 
-      if(err instanceof HttpErrorResponse){
-        if(err.status==404){
-        this.notEditMode =true ;
-        this.isEdit=true;
-        this.pageMode = 'save';
-      }}
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 404) {
+          this.notEditMode = true;
+          this.isEdit = true;
+          this.pageMode = 'save';
+        }
+      }
 
-      
+
 
 
 
@@ -283,7 +277,7 @@ export class CertificateConfigurationComponent implements OnInit {
   onEdit() {
     this.isEdit = true;
     this.pageMode = 'save';
-    this.notEditMode =true ;
+    this.notEditMode = true;
 
     //this.pageMode == 'EDIT';
 
