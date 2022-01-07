@@ -66,7 +66,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let claimCover of claimCoverList">
-                            <td>{{getPayerName(claimCover.payerId)}}</td>
+                            <td>{{claimCover.description}}</td>
                             <td>{{claimCover.gross}}<span class="currency"> SR</span></td>
                             <td>{{claimCover.discount}}<span class="currency"> SR</span></td>
                             <td>{{claimCover.patientShare}}<span class="currency"> SR</span></td>
