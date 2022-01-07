@@ -106,6 +106,9 @@
                 </tr>
             </tbody>
         </table>
+        <app-empty-state *ngIf="payments.length == 0" class="claim-list-empty-state" icon="ic-empty-search.svg"
+            message='Select criteria to generate report'>
+        </app-empty-state>
     </div>
 
     <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">

@@ -252,6 +252,9 @@
           </tr>
         </tbody>
       </table>
+      <app-empty-state *ngIf="medicalRejectedClaims.length == 0" class="claim-list-empty-state"
+        icon="ic-empty-search.svg" message='Select criteria to generate report'>
+      </app-empty-state>
     </div>
 
 
