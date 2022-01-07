@@ -24,6 +24,7 @@ export class ClaimsCoverLetterComponent implements OnInit {
   selectedGroup;
   detailTopActionIcon = 'ic-download.svg';
   lastDownloadSubscriptions: Subscription;
+  errorMessage: string;
 
   groups = [
     {
@@ -95,6 +96,7 @@ export class ClaimsCoverLetterComponent implements OnInit {
     this.isSubmitted = true;
     if (this.FormClaimCover.valid) {
       this.sharedServices.loadingChanged.next(true);
+      this.errorMessage = null;
       const model: any = {};
       model.providerId = this.sharedServices.providerId;
       model.month = this.datePipe.transform(this.FormClaimCover.controls.month.value, 'yyyy-MM-dd');
@@ -118,6 +120,9 @@ export class ClaimsCoverLetterComponent implements OnInit {
                 x.description = payersList.filter(payer => payer.id === parseInt(x.payerId))[0] ? payersList.filter(payer => payer.id === parseInt(x.payerId))[0].name : '';
               }
             });
+            if (this.claimCoverList.length == 0) {
+              this.errorMessage = 'No Results Found';
+            }
             this.sharedServices.loadingChanged.next(false);
           }
         }
