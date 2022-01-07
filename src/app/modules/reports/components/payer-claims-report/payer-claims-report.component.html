@@ -1,0 +1,120 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Payer Claims Report</p>
+    </div>
+    <div class="block-filter-panel has-border">
+        <div class="row small-gutter">
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Provider</label>
+                    <input type="text" class="form-control" placeholder="Select provider" />
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option value="Payer 1">Payer 1</mat-option>
+                            <mat-option value="Payer 2">Payer 2</mat-option>
+                            <mat-option value="Payer 3">Payer 3</mat-option>
+                            <mat-option value="Payer 4">Payer 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="" multiple>
+                            <mat-option value="">Select Status</mat-option>
+                            <mat-option value="Status 1">Status 1</mat-option>
+                            <mat-option value="Status 2">Status 2</mat-option>
+                            <mat-option value="Status 3">Status 3</mat-option>
+                            <mat-option value="Status 4">Status 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromDatePicker" class="form-control" placeholder="Select from date">
+                        <mat-datepicker-toggle [for]="fromDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toDatePicker" class="form-control" placeholder="Select to date">
+                        <mat-datepicker-toggle [for]="toDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+    <div class="bg-white">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+            <div class="fixed-height">
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                        </tr>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                        </tr>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                        </tr>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                        </tr>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+    </div>
+</div>

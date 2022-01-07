@@ -109,8 +109,8 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .currency {font-size: 12px;font-weight: 700;opacity: 0.4;}
 .abstract-card-list{display: flex;margin-left: -7px;margin-right: -7px;flex-wrap: wrap;}
 .abstract-card-list>div{padding-left: 7px;padding-right: 7px;flex-grow: 0;flex-shrink: 0;flex-basis: 20%;max-width: 20%;}
-.error-text,.asterisk{color: #CC2F2F;}
-.error-block{color: #CC2F2F;padding: 16px;background-color: #fff;border-radius: 8px;text-align: center;}
+.error-text,.asterisk{color: #CD4949;}
+.error-block{color: #CD4949;padding: 16px;background-color: #fff;border-radius: 8px;text-align: center;}
 .info-block{padding: 16px;border-radius: 8px;color: #3060AA;background-color: rgba(48, 96, 170,0.1);}
 .status-dot{height: 10px;width: 10px;border-radius: 50%;display: inline-block;}
 .status-dot.size-lg{height: 14px;width: 14px;}
@@ -118,7 +118,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .status-dot.account-receivable-orange{background-color: #FFAD41;}
 .status-dot.account-receivable-yellow{background-color: #F0F63C;}
 .status-dot.account-receivable-red{background-color: #F55656;}
-.error-card {background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;margin-bottom: 16px;padding: 12px 16px;border-radius: 8px;}
+.error-card {background-color: rgba(205, 73, 73, 0.1);color: #CD4949;margin-bottom: 16px;padding: 12px 16px;border-radius: 8px;}
 .inner-loader-wrapper,.relative{position: relative;}
 .inner-loader-wrapper .inner-loader{z-index: 8;position: absolute;background-color: rgba(255, 255, 255, 0.5);top: 0;left: 0;right: 0;bottom: 0;display: flex;align-items: center;justify-content: center;}
 .tab-btn {color: #3060AA;opacity: 0.5;}
@@ -207,7 +207,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .minw145{min-width: 145px;}
 .vertical-bottom{vertical-align: bottom!important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
-.error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
+.error-btn{display: flex;align-items:center;background: none;border:0;color: #CD4949;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
 .error-btn>span{padding-left: 4px;}
 .status{display: inline-block;vertical-align: middle;background: #3060AA;color: #fff;padding: 6px 12px;border-radius: 8px;}
 .mat-select-panel-wrap .mat-select-panel,.cdk-overlay-pane .mat-menu-panel,.mat-datepicker-popup .mat-datepicker-content{background: rgba(255,255,255,0.85);-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
@@ -237,6 +237,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .whatsapp-chat-btn{display: block;background-color: #25D366;padding: 17px;border-radius: 16px;position: fixed;bottom: 21px;box-shadow: 0 5px 4px 0 rgba(0,0,0,.26);left: 54px;z-index: 2;}
 .whatsapp-chat-btn>img{display: block;height: 26px;width: 26px;}
 #fc_frame, #fc_frame.fc-widget-small{left: 85px;right: auto!important;z-index: 2!important;bottom: 8px!important;}
+.badge-danger{background: #CD4949;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -275,7 +276,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .bg-grey,.bg-duplicate{background-color:#707070!important;}
 .bg-off-white{background-color:#f6f6f6!important;}
 .bg-success{background-color: #29bf24!important;}
-.bg-cancelled,.bg-danger{background-color: #CC2F2F!important;}
+.bg-cancelled,.bg-danger{background-color: #CD4949!important;}
 .bg-invalid,.bg-purple{background-color: #682691!important;}
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
@@ -430,26 +431,26 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-control.custom-select-control.mat-form-field .mat-select.mat-select-disabled .mat-select-trigger{cursor: not-allowed;}
 .mat-select-panel-wrap .mat-select-panel .mat-option{height:auto;line-height:inherit;white-space:normal;overflow:visible;padding:11px 16px;}
 .form-control.custom-select-control.mat-form-field .mat-form-field-label{top: 20px;left: 12px;color: rgba(48, 96, 170,0.6);width: calc(100% - 40px);transition: none;}
-.has-error .form-control.custom-select-control.mat-form-field .mat-form-field-label{color: rgba(204, 47, 47,0.6);}
+.has-error .form-control.custom-select-control.mat-form-field .mat-form-field-label{color: rgba(205, 73, 73,0.6);}
 .form-control.custom-select-control.mat-form-field.mat-form-field-should-float .mat-form-field-label{display: none;}
 
 /* form error
 --------------------------------------------------------------------------------------------------------*/
-.form-group.has-error .form-control,.form-group.has-error .form-control.custom-select-control.mat-form-field{color:#CC2F2F;caret-color: #CC2F2F;background-color: #faeaea;border-color: #f9cece;}
-.form-group.has-error .form-control:focus,.form-group.has-error .form-control.custom-select-control.mat-form-field.mat-focused{border-color: #CC2F2F;}
-.form-group.has-error .input-group-text{background-color: #ffd5d5;color:#CC2F2F;border-color:#f1b9b9;}
-.form-group.has-error .control-label{color:#CC2F2F;}
-.form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(204, 47, 47,0.64); }
-.form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
-.form-group.has-error .form-control:-ms-input-placeholder { color: rgba(204, 47, 47,0.64); }
-.form-group.has-error .form-control:-moz-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control,.form-group.has-error .form-control.custom-select-control.mat-form-field{color:#CD4949;caret-color: #CD4949;background-color: #faeaea;border-color: #f9cece;}
+.form-group.has-error .form-control:focus,.form-group.has-error .form-control.custom-select-control.mat-form-field.mat-focused{border-color: #CD4949;}
+.form-group.has-error .input-group-text{background-color: #ffd5d5;color:#CD4949;border-color:#f1b9b9;}
+.form-group.has-error .control-label{color:#CD4949;}
+.form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(205, 73, 73,0.64); }
+.form-group.has-error .form-control::-moz-placeholder { color: rgba(205, 73, 73,0.64); }
+.form-group.has-error .form-control:-ms-input-placeholder { color: rgba(205, 73, 73,0.64); }
+.form-group.has-error .form-control:-moz-placeholder { color: rgba(205, 73, 73,0.64); }
 .control-error{padding-top: 4px;}
 
 /* date picker
 --------------------------------------------------------------------------------------------------------*/
 .date-picker{position: relative;}
 .date-picker .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
-.has-error .date-picker .mat-datepicker-toggle{color:#CC2F2F;}
+.has-error .date-picker .mat-datepicker-toggle{color:#CD4949;}
 .date-picker.form-control,.date-picker .form-control{padding-right: 40px;}
 .date-picker.form-control{background-image: url('./assets/ic-datepicker.svg');background-position:calc(100% - 7px) center;background-repeat: no-repeat; background-size: 24px 24px;}
 .has-error .date-picker.form-control{background-image: url('./assets/ic-datepicker-error.svg');}
@@ -571,7 +572,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
 .primary-grid:not(.claim-view-table) td:not(.actions) .mat-icon-button{height: 32px;width: 32px;line-height: 32px;display: block;}
 .primary-grid:not(.claim-view-table) .mat-datepicker-toggle-default-icon{height: 18px;width: 18px;}
-.primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
+.primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CD4949;}
 .primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
 .primary-grid .column-header-action{display: flex;align-items:flex-start;}
 .primary-grid .column-header-action>span{display: block;padding-right: 6px;}
@@ -667,7 +668,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-button-toggle.mat-button-toggle-group .mat-button-toggle.mat-button-toggle-checked,.primary-button-toggle .mat-button-toggle.mat-button-toggle-checked{background: #3060AA;color:#fff;border-color:#3060AA;}
 .primary-button-toggle.mat-button-toggle-group .mat-button-toggle-focus-overlay,.primary-button-toggle .mat-button-toggle-focus-overlay{border-radius:8px;}
 .primary-button-toggle.mat-button-toggle-group .mat-button-toggle-checked .mat-button-toggle-focus-overlay,.primary-button-toggle .mat-button-toggle-checked .mat-button-toggle-focus-overlay{border:0;}
-.form-group.has-error .primary-button-toggle.mat-button-toggle-group .mat-button-toggle,.form-group.has-error .primary-button-toggle .mat-button-toggle{color:#CC2F2F;background-color: #faeaea;border-color:#f9cece;}
+.form-group.has-error .primary-button-toggle.mat-button-toggle-group .mat-button-toggle,.form-group.has-error .primary-button-toggle .mat-button-toggle{color:#CD4949;background-color: #faeaea;border-color:#f9cece;}
 .primary-button-toggle.inline.mat-button-toggle-group,.primary-button-toggle.inline{flex-wrap:wrap;margin: 0;}
 .primary-button-toggle.inline.mat-button-toggle-group .mat-button-toggle, .primary-button-toggle.inline .mat-button-toggle{margin:0 12px 12px 0;flex-grow:0;flex-shrink:0;}
 .primary-button-toggle.block.mat-button-toggle-group,.primary-button-toggle.block{flex-wrap:wrap;margin: 0;}
@@ -696,7 +697,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .item-group-panel .parent-panel ul>li>.invoice-btn>span{display: flex;}
 .item-group-panel .parent-panel ul>li>.invoice-btn>span .right{margin-left: auto;text-align: right;}
 .item-group-panel .parent-panel ul>li>.invoice-btn .value{color:#3060AA;}
-.item-group-panel .parent-panel ul>li>.invoice-btn.text-danger .value{color:#CC2F2F;}
+.item-group-panel .parent-panel ul>li>.invoice-btn.text-danger .value{color:#CD4949;}
 .item-group-panel .parent-panel.invoice-list ul>li{align-items: flex-start;}
 .item-group-panel .parent-panel.invoice-list ul>li>.delete-btn{margin-top: 8px;}
 
@@ -1145,7 +1146,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* dashboard claim card
 --------------------------------------------------------------------------------------------------------*/
-.dashboard-claim-card{background-color: #fff;padding: 14px;color:#505050;margin-bottom: 14px;height: calc(100% - 14px);}
+.dashboard-claim-card{background-color: #fff;padding: 14px;color:#505050;margin-bottom: 14px;height: calc(100% - 14px);border-radius: 8px;}
 .dashboard-claim-card .title{padding-bottom: 6px;color: #898989;}
 .dashboard-claim-card h4{font-weight: 600;padding-bottom: 32px;position: relative;}
 .dashboard-claim-card h4:after{content: '';position: absolute;display: block;height: 1px;width: 24px;background-color: #bebebe;bottom: 18px;left: 0;}
@@ -1155,7 +1156,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .dashboard-claim-card .statistics small{font-size: 12px;font-weight: 500;color: #505050;}
 .dashboard-claim-card .progress-block{overflow: hidden;margin-bottom: 12px;}
 .dashboard-claim-card .progress-block .ready-submission-bar{margin-bottom: 4px;}
-.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 6px;border-radius: 2px;}
+.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 6px;border-radius: 8px;}
 .dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;overflow: hidden;}
 .dashboard-claim-card .loader-wrapper{display: flex;align-items: center;justify-content: center;padding: 53px 0;}
 .dashboard-legend{display: flex;justify-content: flex-end;padding: 0 0 18px;margin-top: -38px;color: #505050;}
@@ -1235,7 +1236,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* tooltip
 --------------------------------------------------------------------------------------------------------*/
-.mat-tooltip-panel .mat-tooltip{margin: 8px;font-size: 14px;line-height: 20px;background: rgba(48, 96, 170, 0.85);-webkit-backdrop-filter: blur(2px);backdrop-filter: blur(2px);}
+.mat-tooltip-panel .mat-tooltip{margin: 8px;font-size: 14px;line-height: 20px;background: rgba(48, 96, 170, 0.85);-webkit-backdrop-filter: blur(4px);backdrop-filter: blur(4px);border-radius: 8px;}
 
 /* box
 --------------------------------------------------------------------------------------------------------*/
@@ -1248,7 +1249,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .alert>.mat-icon{flex-shrink: 0;flex-basis: 24px;flex-grow: 0;max-width: 24px;margin-right: 8px;}
 .alert.info{background-color: #e6ecf5;color: #3060AA;}
 .alert.success{background-color: #edf9e4;color: #67CD23;}
-.alert.danger{background-color: #f9e6e6;color: #CC2F2F;}
+.alert.danger{background-color: #f9e6e6;color: #CD4949;}
 
 /* json xml viewer
 --------------------------------------------------------------------------------------------------------*/
@@ -1273,23 +1274,24 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .download-progress-view-panel .mat-menu-content:not(:empty){padding: 0;background: #fff;}
 .download-progress-view {display: flex;border-bottom: 1px solid #e1e1e1;}
 .download-progress-view:last-child{border-bottom:0;}
-.download-progress-view>.left{display: flex;justify-content: center;flex-basis: 88px;max-width: 88px;flex-grow: 0;flex-shrink: 0;min-height: 88px;border-right: 1px solid #e1e1e1;padding-top: 20px;}
+.download-progress-view>.left{display: flex;justify-content: center;flex-basis: 88px;max-width: 88px;flex-grow: 0;flex-shrink: 0;min-height: 88px;border-right: 1px solid #e1e1e1;padding-top: 20px;position: relative;}
 .download-progress-view>.left>img{height: 48px;width: 48px;display: block;}
 .download-progress-view>.right{flex-basis: calc(100% - 88px);max-width: calc(100% - 88px);flex-grow: 0;flex-shrink: 0;padding: 14px;min-height: 88px;display: flex;align-items: center;}
 .download-progress-view>.right>.inner{flex-grow: 1;}
 .download-progress-view>.download-icon{display: grid;place-items: center;}
 .download-progress-view>.download-icon>*{width: 50px;}
-.download-progress-view .error-icon{height: 32px;width: 32px;font-size: 32px;line-height: 32px;color: #CC2F2F;}
+.download-progress-view .error-icon{height: 32px;width: 32px;font-size: 32px;line-height: 32px;color: #CD4949;}
 .download-progress-view .text {font-size: 16px;line-height: 24px;font-weight: 500;max-height: 48px;overflow: hidden;position: relative;word-break: break-all;}
 .download-progress-view .text:after {content: '';position: absolute;right: 0;top: 24px;width: 136px;display: block;height: 24px;background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );}
 .download-progress-view .size{color:#909090;}
 .download-progress-view .progress{margin-top: 8px;}
+.download-progress-view .badge{padding: 3px 6px;font-size: 12px;font-weight: 600;line-height: 16px;border-radius: 4px;position: absolute;top: 8px;right: 8px;}
 
 /* action letter btn
 --------------------------------------------------------------------------------------------------------*/
 .action-letter-btn{height: 20px;width: 20px;border-radius:50px;font-size: 12px;font-weight: 700;text-align: center;line-height: 16px;overflow: hidden;text-overflow: ellipsis;display: block;padding: 0;border:2px solid #909090;background:transparent;}
 .action-letter-btn.theme-success{border-color:#29bf24;color:#29bf24;}
-.action-letter-btn.theme-danger{border-color:#CC2F2F;color:#CC2F2F;}
+.action-letter-btn.theme-danger{border-color:#CD4949;color:#CD4949;}
 .action-letter-btn.theme-warning{border-color:#E6AE24;color: #E6AE24;}
 
 /* confirmation dialog body

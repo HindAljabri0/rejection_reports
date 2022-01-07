@@ -467,7 +467,7 @@
                     </mat-expansion-panel>
                 </mat-accordion>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="claimSubmissions.isActive">
+                <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="claimSubmissions.isActive || payerClaimsReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Reports</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -475,6 +475,11 @@
                         <li>
                             <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive">
                                 <span class="text">Claim Submissions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive">
+                                <span class="text">Payer Claims Report</span>
                             </a>
                         </li>
                     </ul>
