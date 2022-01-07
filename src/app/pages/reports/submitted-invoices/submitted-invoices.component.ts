@@ -104,7 +104,10 @@ export class SubmittedInvoicesComponent {
       return;
     }
 
-    this.downloadService.startGeneratingDownloadFile(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to,
+    const fromDate = moment(this.from).format('YYYY-MM-DD');
+    const toDate = moment(this.to).format('YYYY-MM-DD');
+    // tslint:disable-next-line:max-line-length
+    this.downloadService.startGeneratingDownloadFile(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, fromDate, toDate,
       this.payerId)).subscribe(status => {
         if (status == DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-download.svg';
