@@ -78,6 +78,11 @@ export class AddEditCareTeamModalComponent implements OnInit {
         practitionerRole: this.practitionerRoleList.filter(x => x.value === this.data.item.practitionerRole)[0],
         careTeamRole: this.careTeamRoleList.filter(x => x.value === this.data.item.careTeamRole)[0],
       });
+    } else {
+      this.FormCareTeam.patchValue({
+        practitionerRole: this.practitionerRoleList.filter(role => role.value === 'doctor')[0],
+        careTeamRole: this.careTeamRoleList.filter(role => role.value === 'primary')[0],
+      });
     }
     this.getPractitionerList();
     this.getSpecialityList();

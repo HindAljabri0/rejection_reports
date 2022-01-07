@@ -75,6 +75,10 @@ export class PaymentReferenceReportComponent implements OnInit {
     // this.fetchData();
     this.payers = [];
     const allPayersIds = [];
+    this.payers.push({
+      id: allPayersIds,
+      name: 'All'
+    });
     this.commen.getPayersList().map(value => {
       this.payers.push({
         id: `${value.id}`,
@@ -82,48 +86,51 @@ export class PaymentReferenceReportComponent implements OnInit {
       });
       allPayersIds.push(`${value.id}`);
     });
-    this.payers.push({
-      id: allPayersIds,
-      name: 'All'
-    });
+
     this.routeActive.queryParams.subscribe(value => {
-      if (value.from != undefined) {
+      if (value.from) {
         const fromDate: Date = new Date(value.from);
         this.fromDateControl.setValue(fromDate);
       }
-      if (value.to != undefined) {
+
+      if (value.to) {
         const toDate: Date = new Date(value.to);
         this.toDateControl.setValue(toDate);
       }
-      if (value.payer != undefined) {
+
+      if (value.payer) {
         if (value.payer instanceof Array && value.payer.length > 1) {
           this.payerIdControl.setValue(allPayersIds);
         } else {
           this.payerIdControl.setValue(value.payer);
         }
       }
+
       if (value.pRef != null) {
         this.paymentReference = value.pRef;
       }
+
       if (value.claimId != null) {
         this.claimId = value.claimId;
       }
-
 
       if (value.page != null) {
         this.page = Number.parseInt(value.page, 10);
       } else {
         this.page = 0;
       }
+
       if (value.pageSize != null) {
         this.pageSize = Number.parseInt(value.pageSize, 10);
       } else {
         this.pageSize = 10;
       }
+
     }).unsubscribe();
     this.fetchData();
   }
   async fetchData() {
+
     this.fromDateHasError = false;
     this.toDateHasError = false;
     this.payerIdHasError = false;
@@ -144,14 +151,16 @@ export class PaymentReferenceReportComponent implements OnInit {
       return;
     }
 
+    // tslint:disable-next-line:max-line-length
     if (this.commen.providerId == null || this.fromDateControl.value == null || this.toDateControl.value == null || this.payerIdControl.value == null) {
       return;
     }
 
-
+    // tslint:disable-next-line:max-line-length
     if (this.commen.providerId == null || this.fromDateControl.value == null || this.toDateControl.value == null || this.payerIdControl.value == null) {
       return;
     }
+
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     const fromDate = moment(this.fromDateControl.value).format('YYYY-MM-DD');
@@ -202,10 +211,12 @@ export class PaymentReferenceReportComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.fetchData();
   }
+
   paginationChange(event) {
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
   }
+
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
@@ -228,6 +239,7 @@ export class PaymentReferenceReportComponent implements OnInit {
   mapPayer(payerId) {
     return this.commen.getPayersList().find(value => `${value.id}` == payerId).name;
   }
+
   editURL(fromDate?: string, toDate?: string) {
     let path = `/${this.commen.providerId}/reports/payment-report?`;
     if (this.paymentReference != null) {
@@ -256,36 +268,7 @@ export class PaymentReferenceReportComponent implements OnInit {
     }
     this.location.go(path);
   }
-  onPaymentClick(ref) {
-    // if (this.reportTypeControl.value == 1) {
-    this.tempPage = this.page;
-    this.tempPageSize = this.pageSize;
-    this.page = 0;
-    this.pageSize = 10;
-    // this.resetURL();
-    this.paymentReference = ref;
-    this.paymentClaimSummaryReport.fetchData(this.paymentReference);
-    this.location.go(`${this.location.path()}&pRef=${ref}`);
-    // }
-    // else if (this.reportTypeControl.value == 2) {
-    this.claimId = ref;
-    // }
-    // else if (this.reportTypeControl.value == 3) {
-    //   this.criteria = ref;
-    // }
 
-  }
-  backButton() {
-    this.paymentReference = null;
-    this.page = this.tempPage;
-    this.pageSize = this.tempPageSize;
-    // this.paymentSearchResult.queryPage = this.page;
-    // this.paymentSearchResult.pageSize = this.pageSize;
-    // if (this.paymentSearchResult.payments.length == 0) {
-    //   this.paymentSearchResult.fetchData();
-    // }
-    // this.resetURL();
-  }
   download() {
     if (this.actionIcon === 'ic-check-circle.svg') {
       return;

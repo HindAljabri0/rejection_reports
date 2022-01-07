@@ -75,14 +75,6 @@
     </div>
     <!-- *ngIf="paymentReference != null" -->
     <div class="pagination-header">
-        <div class="d-flex align-items-center text-primary">
-            <button type="button" (click)="backButton()" class="btn-action" matRipple>
-                <mat-icon>keyboard_backspace</mat-icon>
-            </button>
-            <h5 class="pl-2 semibold">Payment Report</h5>
-        </div>
-        <span class="text-medium-grey ml-auto">Payment Ref. No. <span
-                class="text-primary semibold">{{paymentReference}}</span></span>
         <button matRipple type="button" class="action-btn ml-3" (click)="download()" matTooltip="Download">
             <img src="./assets/{{actionIcon}}" />
         </button>
@@ -101,15 +93,15 @@
             </thead>
             <tbody>
                 <tr *ngFor="let payment of payments">
-                    <td class="row-click" (click)="onPaymentClick(payment.paymentReference)">
+                    <td class="row-click">
                         {{payment.paymentReference}}</td>
-                    <td class="row-click" (click)="onPaymentClick(payment.paymentReference)">
+                    <td class="row-click">
                         {{payment.totalNumberOfClaims}}</td>
-                    <td class="row-click" (click)="onPaymentClick(payment.paymentReference)">
+                    <td class="row-click">
                         {{mapPayer(payment.payerId)}}</td>
-                    <td class="row-click" (click)="onPaymentClick(payment.paymentReference)">
+                    <td class="row-click">
                         {{payment.paymentDate}}</td>
-                    <td class="row-click" (click)="onPaymentClick(payment.paymentReference)">
+                    <td class="row-click">
                         {{payment.totalPaidAmount}}<span class="currency">SAR</span></td>
                 </tr>
             </tbody>
