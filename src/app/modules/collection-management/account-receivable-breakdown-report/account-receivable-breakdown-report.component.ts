@@ -116,17 +116,20 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
       footerFontFamily: this.chartFontFamily,
     },
   };
-  public payerBreakdownChartLabels: Label[] = ['Bupa', 'AXA', 'Medgulf', 'Enayah', 'Malath'];
-  public payerBreakdownChartData: ChartDataSets[] = [
+  public paidChartLabels: Label[] = [];
+  public paidChartData: ChartDataSets[] = [];
 
-  ];
+  public unPaidChartLabels: Label[] = [];
+  public unPaidChartData: ChartDataSets[] = [];
+
   public payerBreakdownChartType: ChartType = 'pie';
   public payerBreakdownChartLegend = true;
 
   payersList: { id: string[] | string, name: string }[];
   emptypaymentStatus = true;
   emptyCategoryStatus = true;
-  emptyBreakDownStatus = true;
+  emptyPaidStatus = true;
+  emptyUnPaidStatus = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -153,6 +156,12 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
     container.setViewMode('year');
   }
 
+  payerChange($event) {
+    this.isSubmitted = false;
+    this.emptypaymentStatus = true;
+  }
+
+
   onSubmit(status = null) {
     this.isSubmitted = true;
     if (this.FormBreakDownReport.valid) {
@@ -171,36 +180,59 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
         if (event.status === 200) {
           const body: any = event.body;
           if (status) {
-            if (body.length === 0) {
-              this.emptyBreakDownStatus = true;
-            } else {
-              this.emptyBreakDownStatus = false;
-              this.payerBreakdownChartLabels = body.map(x => {
-                // tslint:disable-next-line:radix
-                // tslint:disable-next-line:max-line-length
-                return this.payersList.filter(y => y.id === x.label)[0] ? this.payersList.filter(y => y.id === x.label)[0].name : '';
-              });
-              this.payerBreakdownChartData = [
-                {
-                  data: body.map(x => {
-                    return x.value;
-                  }),
-                  backgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
-                  hoverBackgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
-                  borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff'],
-                  borderWidth: 0,
-                  hoverBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff']
-                }];
-
-              this.chartMode++;
+            if (status === 'paid') {
+              if (body.length === 0) {
+                this.emptyPaidStatus = true;
+              } else {
+                this.emptyPaidStatus = false;
+                this.paidChartLabels = body.map(x => {
+                  // tslint:disable-next-line:radix
+                  // tslint:disable-next-line:max-line-length
+                  return this.payersList.filter(y => y.id === x.label)[0] ? this.payersList.filter(y => y.id === x.label)[0].name : '';
+                });
+                this.paidChartData = [
+                  {
+                    data: body.map(x => {
+                      return x.value;
+                    }),
+                    backgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
+                    hoverBackgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
+                    borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff'],
+                    borderWidth: 0,
+                    hoverBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff']
+                  }];
+                this.chartMode++;
+              }
+            } else if (status === 'unpaid') {
+              if (body.length === 0) {
+                this.emptyUnPaidStatus = true;
+              } else {
+                this.emptyUnPaidStatus = false;
+                this.unPaidChartLabels = body.map(x => {
+                  // tslint:disable-next-line:radix
+                  // tslint:disable-next-line:max-line-length
+                  return this.payersList.filter(y => y.id === x.label)[0] ? this.payersList.filter(y => y.id === x.label)[0].name : '';
+                });
+                this.unPaidChartData = [
+                  {
+                    data: body.map(x => {
+                      return x.value;
+                    }),
+                    backgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
+                    hoverBackgroundColor: ['#1F78B4', '#A6CEE3', '#B2DF8A', '#33A02C', '#FB9A99'],
+                    borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff'],
+                    borderWidth: 0,
+                    hoverBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff']
+                  }];
+                this.chartMode++;
+              }
             }
-
-
           } else {
             if (body.length === 0) {
               this.emptypaymentStatus = true;
             } else {
               this.emptypaymentStatus = false;
+
               this.paymentStatusChartLabels = body.map(x => {
                 return x.label;
               });
@@ -217,6 +249,12 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
                   hoverBorderColor: ['#fff', '#fff']
                 }
               ];
+
+              if (this.FormBreakDownReport.controls.payerId.value === 'all') {
+                this.onSubmit('paid');
+                this.onSubmit('unpaid');
+              }
+
             }
 
             this.searchcategoryData();
@@ -273,11 +311,6 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
     });
   }
 
-  public paymentStatusChartClicked({ event, active }: { event: MouseEvent, active: any }): void {
-    if (this.FormBreakDownReport.controls.payerId.value === 'all') {
-      const status = this.paymentStatusChartLabels[active[0]._index];
-      this.onSubmit(status.toString().toLocaleLowerCase());
-    }
-  }
+
 
 }

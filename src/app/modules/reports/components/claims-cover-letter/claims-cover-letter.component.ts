@@ -92,6 +92,7 @@ export class ClaimsCoverLetterComponent implements OnInit {
     return Math.round(total * 100) / 100;
   }
 
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.FormClaimCover.valid) {
