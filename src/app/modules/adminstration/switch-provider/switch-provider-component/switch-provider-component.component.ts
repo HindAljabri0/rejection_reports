@@ -5,6 +5,7 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 import { SharedServices } from 'src/app/services/shared.services';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
+import { takeUntil, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-switch-provider-component',
@@ -75,13 +76,13 @@ export class SwitchProviderComponentComponent implements OnInit {
               });
               this.sharedServices.loadingChanged.next(false);
             }
-          }).unsubscribe();
+          });
           this.authService.setTokens(event.body);
         }
       }, error => {
         this.sharedServices.loadingChanged.next(false);
         console.log(error);
-      }).unsubscribe();
+      })
     }
   }
 }
