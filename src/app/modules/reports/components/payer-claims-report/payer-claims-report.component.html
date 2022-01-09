@@ -14,13 +14,13 @@
                 <div class="form-group">
                     <label class="control-label">Payer</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Payer</mat-option>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
-                        </mat-select>
+
+                        <mat-select formControlName="payerId">
+                            <mat-option *ngFor="let payer of payers" [value]="payer.id">
+                              {{payer.name}}
+                            </mat-option>
+                          </mat-select>
+
                     </mat-form-field>
                 </div>
             </div>
@@ -28,16 +28,17 @@
                 <div class="form-group">
                     <label class="control-label">Status</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="" multiple>
-                            <mat-option value="">Select Status</mat-option>
-                            <mat-option value="Status 1">Status 1</mat-option>
-                            <mat-option value="Status 2">Status 2</mat-option>
-                            <mat-option value="Status 3">Status 3</mat-option>
-                            <mat-option value="Status 4">Status 4</mat-option>
+                        <mat-select value="" multiple formControlName="summaryCriteria" >
+                            <mat-option *ngFor="let statuse of statuses" [value]="statuse">
+                                {{statuse}}
+                              </mat-option>
                         </mat-select>
+                        
                     </mat-form-field>
                 </div>
             </div>
+            {{PayerClaimsReport.controls['summaryCriteria']}}
+           
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">From Date</label>
