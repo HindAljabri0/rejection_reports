@@ -14,6 +14,7 @@ import { ProviderContractComponent } from './provider-contract/provider-contract
 import { AddProviderContractDialogComponent } from './add-provider-contract-dialog/add-provider-contract-dialog.component';
 import { SwitchProviderComponentComponent } from './switch-provider/switch-provider-component/switch-provider-component.component';
 import { TransactionsLogComponent } from './transactions-log/transactions-log.component';
+import { CertificateConfigurationComponent } from 'src/app/pages/certificate-configuration/certificate-configuration.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { TransactionsLogComponent } from './transactions-log/transactions-log.co
       { path: 'config/providerMapping', component: ProviderMappingComponent },
       { path: 'config/providers/:providerId', component: ProvidersConfigComponent },
       { path: 'config/payer-payment-contract', component: ProviderContractComponent },
-      { path: 'switch-provider', component: SwitchProviderComponentComponent }
+      { path: 'switch-provider', component: SwitchProviderComponentComponent },
+      { path: 'config/providerCertificate', component: CertificateConfigurationComponent }
     ]),
     CommonModule,
     MaterialModule,

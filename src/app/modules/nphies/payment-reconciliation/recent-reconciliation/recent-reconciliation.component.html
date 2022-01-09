@@ -1,0 +1,64 @@
+<div class="bg-white">
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+    *ngIf="paymentReconciliations && paymentReconciliations.length > 0">
+    <div class="fixed-height">
+      <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Period Start Date</th>
+            <th>Period End Date</th>
+            <th>Issuer</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Payment Notice</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pr of paymentReconciliations">
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.reconciliationId}}</td>
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.periodStartDate | date: 'dd/MM/yyyy'}}</td>
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.periodEndDate | date: 'dd/MM/yyyy'}}</td>
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.issuerName}}</td>
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.paymentDate | date: 'dd/MM/yyyy'}}</td>
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.paymentAmount}} <span class="currency">SR</span></td>
+            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+              {{pr.paymentNoticeStatus}}</td>
+            <td class="actions">
+              <button  *ngIf="pr.paymentNoticeStatus !== 'Sent'" mat-icon-button matTooltip="Send Payment Notice"
+                class="text-primary"
+                (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)">
+                <mat-icon>send</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-scrollbar>
+  <app-empty-state *ngIf="paymentReconciliations && paymentReconciliations.length === 0"
+    message='No payment reconciliation found!'>
+  </app-empty-state>
+</div>
+<div class="pagination-header">
+  <div class="form-group page-select">
+    <label class="control-label">Go to page: </label>
+    <mat-form-field class="form-control custom-select-control">
+      <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+        <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="material-paginator">
+    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+      (page)="paginatorAction($event)">
+    </mat-paginator>
+  </div>
+</div>

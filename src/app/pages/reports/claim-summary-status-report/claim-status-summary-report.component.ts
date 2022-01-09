@@ -6,7 +6,6 @@ import * as moment from 'moment';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 @Component({
@@ -21,7 +20,6 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   errorMessage: string;
   detailTopActionIcon = 'ic-download.svg';
   claimStatusSummaryData: any;
-  datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false };
   minDate: any;
   constructor(
     public commen: SharedServices,
@@ -38,7 +36,6 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   ngOnInit() {
     this.payers = [];
     const allPayersIds = [];
-    this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
     this.payers.push({
       id: '0',
       name: 'All'
@@ -115,7 +112,7 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     }
     this.claimStatusSummaryForm.value.fromDate = moment(this.claimStatusSummaryForm.value.fromDate).format('YYYY-MM-DD');
     this.claimStatusSummaryForm.value.toDate = moment(this.claimStatusSummaryForm.value.toDate).format('YYYY-MM-DD');
-    this.downloadService.startDownload(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId,
+    this.downloadService.startGeneratingDownloadFile(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId,
       this.claimStatusSummaryForm.value)).subscribe(status => {
         if (status == DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-download.svg';

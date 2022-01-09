@@ -86,8 +86,10 @@
                                 <td>{{item.modeOfPayment}}</td>
                                 <td>{{item.numberOfDays}}</td>
                                 <td>
-                                    <a href="#" title="View" class="primary-link"
-                                        (click)="viewAttachment($event,item)">View</a>
+                                    <span *ngIf="item.agreementCopy">
+                                        <a href="#" title="View" class="primary-link"
+                                            (click)="viewAttachment($event,item)">View</a>
+                                    </span>
                                 </td>
                                 <td class="actions">
                                     <button type="button" mat-icon-button class="text-primary"
@@ -131,8 +133,10 @@
                                 <td>{{item.modeOfPayment}}</td>
                                 <td>{{item.numberOfDays}}</td>
                                 <td>
-                                    <a href="#" title="View" class="primary-link"
-                                        (click)="viewAttachment($event,item)">View</a>
+                                    <span *ngIf="item.agreementCopy">
+                                        <a href="#" title="View" class="primary-link"
+                                            (click)="viewAttachment($event,item)">View</a>
+                                    </span>
                                 </td>
                                 <td class="actions">
                                     <button type="button" mat-icon-button class="text-primary"

@@ -1,33 +1,67 @@
-<app-language-switcher class="login-language-switch animate__animated animate__faster animate__fadeIn" [isWhite]="isCloseToNationalDay()" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
-</app-language-switcher>
-<div class="login-outer" [ngClass]="{'national-day': isCloseToNationalDay()}">
-    <div class="login-inner">
-        <div class="login-card animate__animated animate__faster animate__fadeIn">
-            <img *ngIf="!isCloseToNationalDay()" src="assets/waseel_logo_Dark_Blue.png" class="brand" alt="Waseel">
-            <img *ngIf="isCloseToNationalDay()" src="assets/national-day-logo.svg" class="brand" alt="Happy National Day">
-            <div class="form-group mb-0">
-                <mat-form-field appearance="outline">
-                    <mat-label i19n="@@username">Username</mat-label>
-                    <input matInput autofocus i18n-placeholder="@@username" placeholder="Enter username here..." [formControl]="username" (keyup.enter)="login()">
-                    <mat-icon matSuffix>account_circle</mat-icon>
-                </mat-form-field>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <app-language-switcher class="login-language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
+    </app-language-switcher>
+    <div class="login-wrapper" [ngClass]="{'national-day': isCloseToNationalDay()}">
+        <div class="left-block">
+            <div class="login-card">
+                <div class="login-text">
+                    <h4>Sign in to continue</h4>
+                    <h6>Enter your username & password</h6>
+                </div>
+                <div class="form-group mb-0">
+                    <mat-form-field appearance="fill">
+                        <mat-label i19n="@@username">Username</mat-label>
+                        <input matInput autofocus i18n-placeholder="@@username" placeholder="Enter username here..." [formControl]="username" (keyup.enter)="login()">
+                    </mat-form-field>
+                </div>
+                <div class="form-group mb-0">
+                    <mat-form-field appearance="fill">
+                        <mat-label i18n="@@password">Password</mat-label>
+                        <input type="password" matInput i18n-placeholder="@@password" placeholder="Enter password here..." [formControl]="password" (keyup.enter)="login()">
+                    </mat-form-field>
+                </div>
+                <p *ngIf="errors != null" class="error-card">{{errors}}</p>
+                <button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
             </div>
-            <div class="form-group mb-0">
-                <mat-form-field appearance="outline">
-                    <mat-label i18n="@@password">Password</mat-label>
-                    <input type="password" matInput i18n-placeholder="@@password" placeholder="Enter password here..." [formControl]="password" (keyup.enter)="login()">
-                    <mat-icon matSuffix>lock</mat-icon>
-                </mat-form-field>
-            </div>
-            <p *ngIf="errors != null" class="error-block">{{errors}}</p>
-            <img *ngIf="isCloseToNationalDay()" class="identity-image" src="assets/national-day-identitiy-footer-image.svg">
-            <button class="submit-btn" [ngClass]="{'national-day': isCloseToNationalDay()}" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
-            <div class="loader-block" *ngIf="isLoading">
-                <mat-spinner [diameter]="48"></mat-spinner>
-            </div>
+            <p class="copyright">&copy; Copyright {{getYear()}} Waseel ASP LTD. All rights reserved.</p>
         </div>
-        <div class="login-page-footer">
-            <p class="copyright-message">Copyright {{getYear()}}, Waseel ASP LTD</p>
+        <div class="right-block">
+            <img *ngIf="!isCloseToNationalDay()" src="./assets/login-upper-art.svg" class="upper-art" alt="Abstract art" />
+            <img *ngIf="isCloseToNationalDay()" src="./assets/login-upper-art-national-day.svg" class="upper-art" alt="Abstract art" />
+            <div class="middle">
+                <img *ngIf="!isCloseToNationalDay()" src="./assets/logo.svg" alt="Waseel" class="logo" />
+                <img *ngIf="isCloseToNationalDay()" src="assets/national-day-logo.svg" class="logo" alt="Happy National Day">
+                <h2>Welcome to Waseel</h2>
+                <ul class="login-contact">
+                    <li>
+                        <span class="icon">
+                            <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-call-primary.svg" alt="Call" />
+                            <img *ngIf="isCloseToNationalDay()" src="./assets/ic-call-national-day.svg" alt="Call" />
+                        </span>
+                        <span class="text">920012099</span>
+                    </li>
+                    <li>
+                        <span class="icon">
+                            <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-mail-primary.svg" alt="Mail" />
+                            <img *ngIf="isCloseToNationalDay()" src="./assets/ic-mail-national-day.svg" alt="Mail" />
+                        </span>
+                        <span class="text">customercare@waseel.com</span>
+                    </li>
+                    <li>
+                        <span class="icon">
+                            <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-chat-primary.svg" alt="Chat" />
+                            <img *ngIf="isCloseToNationalDay()" src="./assets/ic-chat-national-day.svg" alt="Chat" />
+                        </span>
+                        <span class="text">Instant Chat</span>
+                    </li>
+                </ul>
+            </div>
+            <img *ngIf="!isCloseToNationalDay()" src="./assets/login-lower-art.svg" class="lower-art" alt="Abstract art" />
+            <img *ngIf="isCloseToNationalDay()" class="lower-art" src="assets/national-day-identitiy-footer-image.svg">
         </div>
+
     </div>
+</div>
+<div class="global-loader" [class.visible]="isLoading">
+    <mat-spinner diameter="64"></mat-spinner>
 </div>

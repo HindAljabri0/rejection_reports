@@ -1,0 +1,773 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Add Contract</p>
+    </div>
+    <div class="p-14 bg-white">
+        <h5 class="form-title pt-0">
+            <span>Insurance Company Info</span>
+            <mat-slide-toggle color="primary" class="ml-auto theme-success" checked="true" labelPosition="before">
+                Active
+            </mat-slide-toggle>
+        </h5>
+        <div class="row small-gutter">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Insurance Company Code & Name (EN)</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Insurance Company</mat-option>
+                            <mat-option value="Code 1 - Company 1">Code 1 - Company 1</mat-option>
+                            <mat-option value="Code 2 - Company 2">Code 2 - Company 2</mat-option>
+                            <mat-option value="Code 3 - Company 3">Code 3 - Company 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Insurance Company Name (AR)</label>
+                    <input type="text" placeholder="Enter insurance company name (ar)" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">TPA <span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select TPA</mat-option>
+                            <mat-option value="Individual Payer">Individual Payer</mat-option>
+                            <mat-option value="TPA 1">TPA 1</mat-option>
+                            <mat-option value="TPA 1">TPA 1</mat-option>
+                            <mat-option value="TPA 2">TPA 2</mat-option>
+                            <mat-option value="TPA 3">TPA 3</mat-option>
+                            <mat-option value="TPA 4">TPA 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Account Number</label>
+                    <input type="text" placeholder="Enter account number" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Waseel Ins. Company Code</label>
+                    <input type="text" placeholder="Enter waseel insurance company code" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Provider ID</label>
+                    <input type="text" placeholder="Enter provider ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Contact Person Name</label>
+                    <input type="text" placeholder="Enter contact person name" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Mobile Number</label>
+                    <input type="text" placeholder="Enter mobile number" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Phone Number</label>
+                    <input type="text" placeholder="Enter phone number" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <input type="text" placeholder="Enter email" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Address</label>
+                    <input type="text" placeholder="Enter address" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">City</label>
+                    <input type="text" placeholder="Enter city" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">VAT Number</label>
+                    <input type="text" placeholder="Enter vat number" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Start Date <span class="asterisk">*</span></label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date">
+                        <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">End Date <span class="asterisk">*</span></label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="endDate" class="form-control" placeholder="Select end date">
+                        <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                        <mat-datepicker #endDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="form-title">
+            <span>Department Discount</span>
+        </h5>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <div class="fixed-height no-min-height">
+                <table class="primary-grid sticky-header manual-row-color no-borders claim-view-table" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Discount</th>
+                            <th width="10"></th>
+                            <th>Department</th>
+                            <th>Discount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="align-middle">
+                            <td>Consultation</td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter discount" class="form-control">
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>Pharmacy</td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter discount" class="form-control">
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>Lab</td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter discount" class="form-control">
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>Radiology</td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter discount" class="form-control">
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>Dental</td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter discount" class="form-control">
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>Orthodontic</td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter discount" class="form-control">
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+        <div class="text-right">
+            <button type="button" mat-stroked-button color="primary">Apply</button>
+        </div>
+
+        <h5 class="form-title">
+            <span>Services Discount</span>
+        </h5>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <div class="fixed-height no-min-height">
+                <table class="primary-grid sticky-header manual-row-color claim-view-table no-borders" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Service Code</th>
+                            <th>Service Description</th>
+                            <th>Cash Amount</th>
+                            <th>Ins. Service Code</th>
+                            <th>Ins. Service Description</th>
+                            <th>Department Code</th>
+                            <th>Department Name</th>
+                            <th>Gross Amount</th>
+                            <th>Ins. Discount Amount</th>
+                            <th>Net Amount</th>
+                            <th>Discount Amount</th>
+                            <th class="text-center">Is Covered?</th>
+                            <th class="text-center">Needs Approval?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>490</td>
+                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td>4578 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service code" /></div>
+                            </td>
+                            <td>
+                                <div class="form-group my-n1"><input type="text" class="form-control" placeholder="Insurance service description" /></div>
+                            </td>
+                            <td>5478</td>
+                            <td>ABCD</td>
+                            <td>3214 <span class="currency">SR</span></td>
+                            <td>
+                                <div class="form-group my-n1">
+                                    <div class="row small-gutter">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Insurance discount amount" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select value="SR">
+                                                    <mat-option value="SR">SR</mat-option>
+                                                    <mat-option value="%">%</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>5478 <span class="currency">SR</span></td>
+                            <td>457 <span class="currency">SR</span></td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox" checked="true"></mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+    </div>
+    <div class="block-footer sticky-bottom">
+        <div class="right-block btn-list">
+            <button type="button" color="primary" mat-flat-button>Save</button>
+        </div>
+    </div>
+</div>

@@ -8,6 +8,10 @@ import { MatMenuTrigger } from '@angular/material';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { Renderer2 } from '@angular/core';
+import { environment } from 'src/environments/environment';
+
+declare function initFreshChat(): any;
 
 @Component({
   selector: 'app-header',
@@ -29,16 +33,18 @@ export class HeaderComponent implements OnInit {
   thereIsActiveDownloads = false;
   downloads: DownloadRequest[] = [];
   watchingProcessed = false;
+  showWhatsAppSupport = false;
 
   @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
   constructor(
     private sharedServices: SharedServices,
+    private renderer: Renderer2,
     public router: Router,
     public authService: AuthService,
     private downloadService: DownloadService,
     private notificationService: NotificationsService,
-    private reportsService:ReportsService
+    private reportsService: ReportsService
   ) {
     this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
@@ -65,9 +71,14 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-  
+
+    if (environment.showFreshChat) {
+      this.showWhatsAppSupport = true;
+      this.showFreshChatBox();
+    }
+
     this.getUserData();
-  
+
     this.sharedServices.getProcessedCount();
     this.sharedServices.getCommunicationRequestCount();
 
@@ -75,24 +86,22 @@ export class HeaderComponent implements OnInit {
 
 
     this.downloadService.downloads.subscribe(downloads => {
-      this.downloads=[]
-      this.downloads = downloads;
+      this.downloads.unshift(...downloads);
       this.thereIsActiveDownloads = downloads.length > 0;
       setTimeout(() => this.downloadMenuRef.openMenu(), 500);
     });
- 
-    this.reportsService.getAllDownloadsForProvider(this.providerId,null,null).subscribe(downloads => {
-      this.downloads=[]
-      if(downloads instanceof HttpResponse){
-  
-      this.downloads=downloads.body['content'] as DownloadRequest[];
-      this.thereIsActiveDownloads = this.downloads.length>0 ;
-    ;
-   
-     
-    }});
 
-  
+    this.reportsService.getAllDownloadsForProvider(this.providerId, null, null).subscribe(downloads => {
+      this.downloads = []
+      if (downloads instanceof HttpResponse) {
+
+        this.downloads = downloads.body['content'] as DownloadRequest[];
+        this.thereIsActiveDownloads = this.downloads.length > 0;
+
+      }
+    });
+
+
   }
 
   setNewNotificationIndecater(show: boolean) {
@@ -160,6 +169,18 @@ export class HeaderComponent implements OnInit {
       }
 
     });
+  }
+
+
+  showFreshChatBox() {
+    window['fcWidget'].init({
+      token: '32afa4a2-e443-4a99-aa8b-67e3a6639fd2',
+      host: 'https://wchat.freshchat.com'
+    });
+  }
+
+  get hasNewDownload(){
+    return this.downloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
   }
 
   get isProvider() {

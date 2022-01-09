@@ -29,6 +29,10 @@ export class UploadsCenterComponent implements OnInit {
     return this.commen.providerId;
   }
 
+  get isLoading() {
+    return this.commen.uploadsListLoading;
+  }
+
   hideCenter() {
     this.commen.showUploadsCenterChange.next(false);
   }

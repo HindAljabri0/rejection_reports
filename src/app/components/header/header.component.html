@@ -3,7 +3,7 @@
     <mat-icon aria-hidden="false" aria-label="Toggle">menu</mat-icon>
   </button>
   <div class="logo-wrapper">
-    <a routerLink="/" class="logo"><img src="assets/waseel_logo.png" alt="Waseel"></a>
+    <a routerLink="/" class="logo"><img src="assets/logo-white.svg" alt="Waseel"></a>
   </div>
   <app-search-with-advance *ngIf="isProvider"></app-search-with-advance>
   <div class="right-block">
@@ -11,8 +11,8 @@
       <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
     </button>
     <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
-    <button *ngIf="thereIsActiveDownloads" [matMenuTriggerFor]="downloadMenu" class="icon-btn uploads-btn" #downloadMenuTriggerButton mat-icon-button
-      matTooltip="You can view your download progress here">
+    <button *ngIf="thereIsActiveDownloads" [matMenuTriggerFor]="downloadMenu" class="icon-btn uploads-btn" [ngClass]="{'hasNotifications':hasNewDownload}"
+      #downloadMenuTriggerButton mat-icon-button matTooltip="You can view your download progress here">
       <mat-icon aria-hidden="false">download</mat-icon>
     </button>
     <button (click)="toggleUploadHistoryCenter()" *ngIf="isProvider" class="icon-btn uploads-btn" mat-icon-button matTooltip="Uploads">
@@ -45,3 +45,8 @@
     <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
   </ng-container>
 </mat-menu>
+
+<!-- <a *ngIf="showWhatsAppSupport" target="_blank" href="https://api.whatsapp.com/send/?phone=920012099&text=Hi"
+  title="Chat on WhatsApp" class="whatsapp-chat-btn">
+  <img src="./assets/whatsapp.svg" alt="WhatsApp" />
+</a> -->

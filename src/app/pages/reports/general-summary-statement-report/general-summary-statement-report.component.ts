@@ -143,7 +143,7 @@ export class GeneralSummaryStatementReportComponent implements OnInit {
     let toDate = this.datepipe.transform(this.toDate.value, 'dd-MM-yyyy');;
 
     this.lastDownloadSubscriptions = this.downloadService
-      .startDownload(this.searchService.downloadGssReport(
+      .startGeneratingDownloadFile(this.searchService.downloadGssReport(
         this.commen.providerId,
         this.payerId == 'All' ? this.payers.map(payer => payer.id) : [this.payerId],
         fromDate,

@@ -19,7 +19,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 @Component({
   selector: 'app-rejection-tracking-report',
   templateUrl: './rejection-tracking-report.component.html',
-  styleUrls: ['./rejection-tracking-report.component.css']
+  styles: []
 })
 export class RejectionTrackingReportComponent implements OnInit {
   public chartFontFamily = '"Poppins", sans-serif';
@@ -328,10 +328,10 @@ export class RejectionTrackingReportComponent implements OnInit {
           this.lineChartColors.push({
             backgroundColor: 'rgba(0,0,0,0)',
             borderColor: colors[i],
-            pointBackgroundColor: 'rgba(0,0,0,0)',
-            pointBorderColor: 'rgba(0,0,0,0)',
-            pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-            pointHoverBorderColor: 'rgba(0,0,0,0)',
+            pointBackgroundColor: colors[i],
+            pointBorderColor: colors[i],
+            pointHoverBackgroundColor: colors[i],
+            pointHoverBorderColor: colors[i],
           });
         }
         /*this.router.navigateByUrl('/reports/revenue-report-breakdown', { queryParams: { payerId: this.revenuTrackingReport.payerId,

@@ -83,7 +83,8 @@ export class DownloadService {
 
   startGeneratingDownloadFile(request: Observable<HttpEvent<unknown>>) {
     const downloadRequest = new DownloadRequest();
-    this.downloads.next([...this._downloads, downloadRequest]);
+    this._downloads.unshift(downloadRequest);
+    this.downloads.next(this._downloads);
     downloadRequest.status$.next(DownloadStatus.INIT);
 
     request.subscribe(event => {

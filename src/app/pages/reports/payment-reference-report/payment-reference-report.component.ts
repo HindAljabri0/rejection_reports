@@ -287,12 +287,12 @@ export class PaymentReferenceReportComponent implements OnInit {
     // this.resetURL();
   }
   download() {
-    if (this.actionIcon == 'ic-check-circle.svg') {
+    if (this.actionIcon === 'ic-check-circle.svg') {
       return;
     }
-    this.downloadService.startDownload(this.reportService.downloadPaymentClaimSummaryAsCSV(
+    this.downloadService.startGeneratingDownloadFile(this.reportService.downloadPaymentClaimSummaryAsCSV(
       this.commen.providerId, this.paymentReference)).subscribe(status => {
-        if (status == DownloadStatus.ERROR) {
+        if (status === DownloadStatus.ERROR) {
           this.actionIcon = 'ic-download.svg';
         } else {
           this.actionIcon = 'ic-check-circle.svg';

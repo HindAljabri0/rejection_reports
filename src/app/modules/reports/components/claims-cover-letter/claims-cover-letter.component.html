@@ -1,0 +1,93 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Claims Cover Letter</p>
+    </div>
+    <div class="block-filter-panel has-border">
+        <form [formGroup]="FormClaimCover" (ngSubmit)="onSubmit()">
+            <div class="row small-gutter">
+                <div class="col-3">
+                    <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')}">
+                        <label class="control-label">TPA or Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select formControlName="tpaORpayer">
+                                <mat-option value="">Select TPA or Payer</mat-option>
+                                <mat-optgroup *ngFor="let group of groups" [label]="group.name">
+                                    <mat-option *ngFor="let option of group.options" [value]="option.id" (onSelectionChange)="selectChange($event,group.name)">
+                                        {{option.name}}
+                                    </mat-option>
+                                </mat-optgroup>
+                            </mat-select>
+                            <div *ngIf="isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')">
+                                <span class="error-text">Please select a Payer or TPA</span>
+                            </div>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
+                        <label class="control-label">Month</label>
+                        <div class="date-picker">
+                            <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" formControlName="month" placeholder="Select month"
+                                (onShown)="onOpenCalendar($event)" />
+                        </div>
+                        <div *ngIf="isSubmitted && FormClaimCover.get('month').hasError('required')">
+                            <span class="error-text">Please select a month</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <button type="submit" mat-flat-button color="primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="bg-white">
+        <div class="pagination-header" *ngIf="claimCoverList.length > 0">
+            <button matRipple type="button" class="action-btn ml-auto" matTooltip="Download" (click)="download()">
+                <img src="./assets/{{detailTopActionIcon}}" />
+            </button>
+        </div>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="claimCoverList.length > 0">
+            <div class="fixed-height">
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Gross Amount</th>
+                            <th>Discount</th>
+                            <th>Deductible</th>
+                            <th>Net Req.</th>
+                            <th>VAT</th>
+                            <th>Comp. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let claimCover of claimCoverList">
+                            <td>{{getPayerName(claimCover.payerId)}}</td>
+                            <td>{{claimCover.gross}}<span class="currency"> SR</span></td>
+                            <td>{{claimCover.discount}}<span class="currency"> SR</span></td>
+                            <td>{{claimCover.patientShare}}<span class="currency"> SR</span></td>
+                            <td>{{claimCover.net}}<span class="currency"> SR</span></td>
+                            <td>{{claimCover.netVat}}<span class="currency"> SR</span></td>
+                            <td>{{claimCover.total}}<span class="currency"> SR</span></td>
+                        </tr>
+                        <tr>
+                            <td class="semibold">Total</td>
+                            <td class="semibold">{{getTotal("gross")}}<span class="currency"> SR</span></td>
+                            <td class="semibold">{{getTotal("discount")}}<span class="currency"> SR</span></td>
+                            <td class="semibold">{{getTotal("patientShare")}}<span class="currency"> SR</span></td>
+                            <td class="semibold">{{getTotal("net")}}<span class="currency"> SR</span></td>
+                            <td class="semibold">{{getTotal("netVat")}}<span class="currency"> SR</span></td>
+                            <td class="semibold">{{getTotal("total")}}<span class="currency"> SR</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+        <app-empty-state *ngIf="claimCoverList.length == 0" class="claim-list-empty-state" icon="ic-empty-search.svg" message='Select criteria to generate cover letter'>
+        </app-empty-state>
+    </div>
+</div>
