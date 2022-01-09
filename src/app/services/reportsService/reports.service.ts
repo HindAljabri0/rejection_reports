@@ -165,7 +165,7 @@ export class ReportsService {
   }
 
   downalodClaimStatusSummaryCsv(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
-    const requestURL = `/providers/${providerId}/status-summary/download?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
+    const requestURL = `/providers/${providerId}/status-summary?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
 
     let searchparams = new HttpParams();
     if (data) {
