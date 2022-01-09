@@ -75,32 +75,13 @@ export class SwitchProviderComponentComponent implements OnInit {
               });
               this.sharedServices.loadingChanged.next(false);
             }
-          });
+          }).unsubscribe();
           this.authService.setTokens(event.body);
         }
       }, error => {
         this.sharedServices.loadingChanged.next(false);
         console.log(error);
-      });
+      }).unsubscribe();
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
