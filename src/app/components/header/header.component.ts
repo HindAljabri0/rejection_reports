@@ -150,22 +150,14 @@ export class HeaderComponent implements OnInit {
 
       if (splitedValue[0] === 'approval-notifications') {
         this.sharedServices.getProcessedCount();
-        // const model: any = {};
-        // // tslint:disable-next-line:radix
-        // model.notificationId = parseInt(splitedValue[2]);
-        // // tslint:disable-next-line:radix
-        // model.responseId = parseInt(splitedValue[1]);
-        // this.sharedServices.addProcessedNotifications(model);
       }
 
       if (splitedValue[0] === 'communication-request-notification') {
         this.sharedServices.getCommunicationRequestCount();
-        // const model: any = {};
-        // // tslint:disable-next-line:radix
-        // model.notificationId = parseInt(splitedValue[2]);
-        // // tslint:disable-next-line:radix
-        // model.communicationId = parseInt(splitedValue[1]);
-        // this.sharedServices.addCommunicationRequestNotifications(model);
+      }
+
+      if (splitedValue[0] === 'payment-reconciliation-notification') {
+        this.sharedServices.getRecentReconciliationCount();
       }
 
     });
