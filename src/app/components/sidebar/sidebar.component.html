@@ -402,6 +402,7 @@
                         <li>
                             <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
                                 <span class="text">Payment Reconciliation</span>
+                                <span *ngIf="RecentReconciliations > 0" class="alert-marker ml-auto alert-count">{{RecentReconciliations}}</span>
                             </a>
                             <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
                         </li>

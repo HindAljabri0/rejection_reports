@@ -512,20 +512,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   get NewTransactionProcessed() {
-    // if (this.sharedServices.unReadProcessedCount > 0) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
     return this.sharedServices.unReadProcessedCount;
   }
 
   get NewComunicationRequests() {
-    // if (this.sharedServices.unReadComunicationRequestCount > 0) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
     return this.sharedServices.unReadComunicationRequestCount;
   }
 

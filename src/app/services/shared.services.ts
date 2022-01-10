@@ -53,6 +53,9 @@ export class SharedServices {
   unReadComunicationRequestCountChange: Subject<number> = new Subject();
   // communicationRequestNotificationList: any[] = [];
 
+  unReadRecentCount = 0;
+  unReadRecentCountChange: Subject<number> = new Subject();
+
   uploadsList: {
     totalClaims: number,
     uploadDate: Date,
@@ -143,6 +146,9 @@ export class SharedServices {
     });
     this.unReadComunicationRequestCountChange.subscribe(value => {
       this.unReadComunicationRequestCount = value;
+    });
+    this.unReadRecentCountChange.subscribe(value => {
+      this.unReadRecentCount = value;
     });
   }
 
@@ -299,10 +305,6 @@ export class SharedServices {
     });
   }
 
-  // addProcessedNotifications(notification) {
-  //   this.processedNotificationList.push(notification);
-  // }
-
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
     this.notifications.getNotificationsCountByWeek(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
@@ -319,9 +321,21 @@ export class SharedServices {
     });
   }
 
-  // addCommunicationRequestNotifications(notification) {
-  //   this.communicationRequestNotificationList.push(notification);
-  // }
+  getRecentReconciliationCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'payment-reconciliation-notification', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadComunicationRequestCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
 
   markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
