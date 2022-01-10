@@ -35,32 +35,14 @@
       </p>
     </div>
   </div>
-  <ul class="claim-totals" *ngIf="otherDataModel">
+  <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision.claimResDecisionCategories">
+
+    <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+     {{res.category}}:<span class="value">{{res.categoryValue}} </span>
+     <span class="currency">SR</span>
+    </li>
+
     <!-- <li>
-            Claim Amount:
-            <span class="value">{{1}} SR</span>
-          </li> -->
-    <!-- <li>
-            Gross Amount:
-            <span class="value">{{1}} SR</span>
-          </li> -->
-    <!-- <li>
-            Discount:
-            <span class="value">{{1}} SR</span>
-          </li> -->
-    <!-- <li>
-            Discount:
-            <span class="value">{{1}} SR</span>
-          </li> -->
-    <!-- <li>
-            Net Amount:
-            <span class="value">{{otherDataModel.totalNet!=null?otherDataModel.totalNet +" SR":'-'}} </span>
-        </li> -->
-    <!-- <li>
-            Patient Share:
-            <span class="value">{{1}} SR</span>
-          </li> -->
-    <li>
       Benefit Amount:<span class="value">{{otherDataModel.responseDecision ?
         (otherDataModel.responseDecision.benefitTotalValue ?
         otherDataModel.responseDecision.benefitTotalValue : '-') : '-'}} </span> <span
@@ -133,7 +115,7 @@
         otherDataModel.paymentReconciliationDetails.componentPayment : '-') :
         '-'}} </span> <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.componentPayment"
         class="currency">SR</span>
-    </li>
+    </li> -->
   </ul>
 
   <mat-tab-group [dynamicHeight]="true" class="primary-tab">
@@ -624,11 +606,22 @@
               </tr>
               <tr *ngIf="currentOpenItem==i">
                 <td colspan="9">
-                  <div class="box mb-2" *ngIf="item.itemDecision">
+                  <div class="box mb-2" *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                     <h5 class="align-self-center medium pb-2">Adjudication</h5>
                     <div class="row">
                       <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
-                      <div class="col-2">
+
+                      <div class="col-2" *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                        <div class="inline-label-table auto-width">
+                          <label>{{res.category}}:</label>
+                          <p class="text-primary">
+                            <span>{{res.categoryValue}} <span
+                                class="currency">SR</span></span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- <div class="col-2">
                         <div class="inline-label-table auto-width">
                           <label>Benefit Amount:</label>
                           <p class="text-primary">
@@ -748,7 +741,7 @@
                             <span *ngIf="!item.itemDecision.approvedQuantityValue">-</span>
                           </p>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="box mb-2">
