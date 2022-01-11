@@ -84,15 +84,19 @@
             </button>
             <div class="right-block">
                 <div class="actions">
-                    <mat-menu #downloadMenu="matMenu" xPosition="before">
+                    <mat-menu #downloadMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items">
                         <button mat-menu-item (click)="downloadWaseelFormat()">
-                            <span>Download in Waseel Format</span>
+                            <span>Download CSV</span>
                         </button>
-                        <button mat-menu-item (click)="downloadPayerFormat()">
+                        <button mat-menu-item>
+                            <span>Download Multiple Spreadsheet (Excel Format)</span>
+                        </button>
+                        <button mat-menu-item (click)="downloadPayerFormat()"
+                            *ngIf="summaries[selectedCardKey].statuses.length == 1 && (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))">
                             <span>Download in Payer Format</span>
                         </button>
                     </mat-menu>
-                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                    <mat-menu #moreMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items">
                         <button mat-menu-item (click)="checkAllClaims()" *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
                             <span>Verify All Ready Claims' Eligibility</span>
                         </button>
@@ -111,12 +115,8 @@
                     <button mat-flat-button type="button" color="primary" *ngIf="isRevalidate" (click)="reValidateClaims()">
                         Re-Validate {{selectedClaims.length==0?" All":"Selection"}}
                     </button>
-                    <button matRipple (click)="downloadWaseelFormat()" type="button" class="action-btn"
-                        *ngIf="(searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null) && !(summaries[selectedCardKey].statuses.length == 1 && (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase())))">
-                        <img src="./assets/{{detailTopActionIcon}}" />
-                    </button>
                     <button matRipple [matMenuTriggerFor]="downloadMenu" type="button" class="action-btn"
-                        *ngIf="(searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null) && (summaries[selectedCardKey].statuses.length == 1 && (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase())))">
+                        *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
                         <img src="./assets/{{detailTopActionIcon}}" />
                     </button>
                     <button matRipple type="button" class="action-btn"
