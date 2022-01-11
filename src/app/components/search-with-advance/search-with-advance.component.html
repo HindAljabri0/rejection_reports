@@ -1,4 +1,3 @@
-
 <div class="advance-search">
     <mat-form-field class="search-mode-select">
         <mat-select [value]="selectedSearchMode" (selectionChange)="onSearchModeChange($event);">
@@ -9,9 +8,21 @@
     </mat-form-field>
     <div class="input-wrapper">
         <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [readonly]="selectedSearchMode == 'payer&date'" (keyup.enter)="search()">
-        <button mat-icon-button (click)="search()" class="search-btn">
+        <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
-        </button>
+        </button> -->
+        <div class="search-btns">
+            <button type="button" matRipple matRippleColor="red" class="search-btn" (click)="search()">
+                <mat-icon>search</mat-icon>
+                <span>Waseel</span>
+            </button>
+            <span class="separator"></span>
+            <button type="button" matRipple class="search-btn">
+                <mat-icon>search</mat-icon>
+                <span>NPHIES</span>
+            </button>
+        </div>
+
         <mat-chip-list #chipList (keyup.enter)="search()">
             <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'">
                 <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu" *ngIf="selectedSearchMode == 'payer&date'">
