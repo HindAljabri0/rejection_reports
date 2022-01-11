@@ -12,7 +12,7 @@
                 <label class="control-label">Payer <span class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
 
-                  <mat-select placeholder="Select Payer" formControlName="payerId">
+                  <mat-select placeholder="Select Payer" formControlName="payerId" (selectionChange)="payerChange($event)">
                     <mat-option value="all">All</mat-option>
                     <mat-option *ngFor="let payer of payersList" [value]="payer.id">
                       {{payer.name}}
@@ -49,19 +49,19 @@
   </div>
   <div class="ar-report-body">
     <div class="row small-gutter" *ngIf="!emptypaymentStatus">
-      <div class="col-4">
+      <div class="col-6">
         <div class="section-card">
           <p class="section-title">Payment Status</p>
           <div class="status-chart">
             <canvas baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels" [chartType]="paymentStatusChartType" [options]="paymentStatusChartOptions"
-              [legend]="paymentStatusChartLegend" (chartClick)="paymentStatusChartClicked($event)">
+              [legend]="paymentStatusChartLegend">
             </canvas>
           </div>
           <app-empty-state *ngIf="emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
           </app-empty-state>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <div class="section-card" *ngIf="!emptyCategoryStatus">
           <p class="section-title">Payment Category</p>
           <div class="status-chart">
@@ -81,17 +81,30 @@
           </div>
         </div> -->
       </div>
-      <div class="col-4" *ngIf="chartMode > 0">
+      <div class="col-6" *ngIf="chartMode > 0">
         <div class="section-card">
-          <ng-container *ngIf="!emptyBreakDownStatus">
-            <p class="section-title">Payer Breakdown</p>
+          <ng-container *ngIf="!emptyPaidStatus">
+            <p class="section-title">Payer Breakdown Paid</p>
             <div class="status-chart">
-              <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels" [chartType]="payerBreakdownChartType"
+              <canvas baseChart [datasets]="paidChartData" [labels]="paidChartLabels" [chartType]="payerBreakdownChartType"
                 [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
               </canvas>
             </div>
           </ng-container>
-          <app-empty-state *ngIf="emptyBreakDownStatus" message="No data found!"></app-empty-state>
+          <app-empty-state *ngIf="emptyPaidStatus" message="No data found!"></app-empty-state>
+        </div>
+      </div>
+      <div class="col-6" *ngIf="chartMode > 0">
+        <div class="section-card">
+          <ng-container *ngIf="!emptyUnPaidStatus">
+            <p class="section-title">Payer Breakdown Unpaid</p>
+            <div class="status-chart">
+              <canvas baseChart [datasets]="unPaidChartData" [labels]="unPaidChartLabels" [chartType]="payerBreakdownChartType"
+                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
+              </canvas>
+            </div>
+          </ng-container>
+          <app-empty-state *ngIf="emptyUnPaidStatus" message="No data found!"></app-empty-state>
         </div>
       </div>
     </div>

@@ -27,8 +27,9 @@
               >
             <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }"
-              placeholder="Select From Date" required (bsValueChange)="dateValidation($event)" />
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
+              [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }" placeholder="Select From Date"
+              required (bsValueChange)="dateValidation($event)" />
           </div>
           <div *ngIf="submitted && formCn.fromDate.errors">
             <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a date</span>
@@ -43,8 +44,9 @@
               formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }"
-              [minDate]="minDate" placeholder="Select To Date" required />
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
+              [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }" [minDate]="minDate"
+              placeholder="Select To Date" required />
           </div>
           <div *ngIf="submitted && formCn.toDate.errors">
             <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
@@ -83,7 +85,8 @@
         <img src="./assets/{{detailTopActionIcon}}" />
       </button>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+      *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
       <div class="fixed-height">
         <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
           <thead>
@@ -177,8 +180,8 @@
         </table>
       </div>
     </ng-scrollbar>
-    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined" class="claim-list-empty-state" icon="ic-empty-search.svg"
-      message='Select criteria to generate report'>
+    <app-empty-state *ngIf="(claimStatusSummaryData === null || claimStatusSummaryData == undefined) && !errorMessage"
+      class="claim-list-empty-state" icon="ic-empty-search.svg" message='Select criteria to generate report'>
     </app-empty-state>
 
     <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
