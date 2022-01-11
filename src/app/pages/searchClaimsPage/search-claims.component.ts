@@ -604,8 +604,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.params.from, this.params.to, this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId, this.params.caseTypes,
-      null, this.params.filter_claimRefNo, this.params.filter_memberId, this.params.invoiceNo, this.params.filter_patientFileNo, this.params.policyNo, this.params.filter_drName, this.params.filter_nationalId,
+    this.submittionService.submitAllClaims(this.providerId, this.params.from, this.params.to,
+      this.params.payerId, this.params.organizationId, this.params.batchId, this.params.uploadId,
+      this.params.caseTypes, null, this.params.filter_claimRefNo || this.params.claimRefNo,
+      this.params.filter_memberId || this.params.memberId, this.params.invoiceNo,
+      this.params.filter_patientFileNo || this.params.patientFileNo, this.params.policyNo,
+      this.params.filter_drName, this.params.filter_nationalId || this.params.nationalId,
       this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
