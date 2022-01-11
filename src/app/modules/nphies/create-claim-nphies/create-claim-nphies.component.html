@@ -35,7 +35,7 @@
       </p>
     </div>
   </div>
-  <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision.claimResDecisionCategories">
+  <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
 
     <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
      {{res.category}}:<span class="value">{{res.categoryValue}} </span>
