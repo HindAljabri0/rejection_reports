@@ -90,4 +90,9 @@ export class SidebarComponent implements OnInit {
   get RecentReconciliations() {
     return this.sharedServices.unReadRecentCount;
   }
+
+  get NewClaimTransactions() {
+    const transCount = this.sharedServices.unReadClaimProcessedCount + this.sharedServices.unReadClaimComunicationRequestCount;
+    return transCount;
+  }
 }

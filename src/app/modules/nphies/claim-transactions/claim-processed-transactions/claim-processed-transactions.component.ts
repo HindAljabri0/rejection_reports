@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { MatPaginator } from '@angular/material';
+import { SharedServices } from 'src/app/services/shared.services';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { ProcessedTransaction } from 'src/app/models/processed-transaction';
-import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
-import { SharedServices } from 'src/app/services/shared.services';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { MatPaginator } from '@angular/material';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
-  selector: 'app-processed-transactions',
-  templateUrl: './processed-transactions.component.html',
-  styles: []
+  selector: 'app-claim-processed-transactions',
+  templateUrl: './claim-processed-transactions.component.html',
+  styleUrls: ['./claim-processed-transactions.component.css']
 })
-export class ProcessedTransactionsComponent implements OnInit {
+export class ClaimProcessedTransactionsComponent implements OnInit {
 
   @Input() payersList: any;
   @Output() openDetailsDialogEvent = new EventEmitter<any>();
@@ -34,12 +34,13 @@ export class ProcessedTransactionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
   }
 
   getProcessedTransactions() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId, 'approval', this.page, this.pageSize).subscribe((event: any) => {
+    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId, 'claim', this.page, this.pageSize).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -99,10 +100,10 @@ export class ProcessedTransactionsComponent implements OnInit {
   }
 
   openDetailsDialog(requestId, responseId, notificationId, notificationStatus) {
-    if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
-      this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
-    }
-    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
+    // if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
+    //   this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
+    // }
+    // this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
   }
 
   get paginatorLength() {
@@ -112,4 +113,5 @@ export class ProcessedTransactionsComponent implements OnInit {
       return 0;
     }
   }
+
 }

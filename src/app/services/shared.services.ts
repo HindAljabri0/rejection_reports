@@ -47,14 +47,18 @@ export class SharedServices {
 
   unReadProcessedCount = 0;
   unReadProcessedCountChange: Subject<number> = new Subject();
-  // processedNotificationList: any[] = [];
 
   unReadComunicationRequestCount = 0;
   unReadComunicationRequestCountChange: Subject<number> = new Subject();
-  // communicationRequestNotificationList: any[] = [];
 
   unReadRecentCount = 0;
   unReadRecentCountChange: Subject<number> = new Subject();
+
+  unReadClaimProcessedCount = 0;
+  unReadClaimProcessedCountChange: Subject<number> = new Subject();
+
+  unReadClaimComunicationRequestCount = 0;
+  unReadClaimComunicationRequestCountChange: Subject<number> = new Subject();
 
   uploadsList: {
     totalClaims: number,
@@ -149,6 +153,12 @@ export class SharedServices {
     });
     this.unReadRecentCountChange.subscribe(value => {
       this.unReadRecentCount = value;
+    });
+    this.unReadClaimProcessedCountChange.subscribe(value => {
+      this.unReadClaimProcessedCount = value;
+    });
+    this.unReadClaimComunicationRequestCountChange.subscribe(value => {
+      this.unReadClaimComunicationRequestCount = value;
     });
   }
 
@@ -307,7 +317,7 @@ export class SharedServices {
 
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-communication-request-notification', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
@@ -327,12 +337,44 @@ export class SharedServices {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
-          this.unReadComunicationRequestCountChange.next(count);
+          this.unReadRecentCountChange.next(count);
         }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadRecentCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  getClaimProcessedCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'claim-notifications', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadClaimProcessedCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadClaimProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  getClaimCommunicationRequestCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'claim-communication-request-notification', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadClaimComunicationRequestCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadClaimComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
   }
@@ -661,7 +703,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -679,7 +721,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
