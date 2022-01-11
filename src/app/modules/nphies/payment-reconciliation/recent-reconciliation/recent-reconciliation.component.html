@@ -17,19 +17,19 @@
         </thead>
         <tbody>
           <tr *ngFor="let pr of paymentReconciliations">
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.reconciliationId}}</td>
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.periodStartDate | date: 'dd/MM/yyyy'}}</td>
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.periodEndDate | date: 'dd/MM/yyyy'}}</td>
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.issuerName}}</td>
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.paymentDate | date: 'dd/MM/yyyy'}}</td>
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.paymentAmount}} <span class="currency">SR</span></td>
-            <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+            <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.paymentNoticeStatus}}</td>
             <td class="actions">
               <button  *ngIf="pr.paymentNoticeStatus !== 'Sent'" mat-icon-button matTooltip="Send Payment Notice"

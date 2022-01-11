@@ -8,6 +8,7 @@ import { PaymentReconciliation } from 'src/app/models/payment-reconciliation';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { NphiesPollManagementService } from 'src/app/services/nphiesPollManagement/nphies-poll-management.service';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recent-reconciliation',
@@ -32,6 +33,7 @@ export class RecentReconciliationComponent implements OnInit {
     private dialog: MatDialog,
     public sharedServices: SharedServices,
     private dialogService: DialogService,
+    private router: Router,
     private nphiesPollManagementService: NphiesPollManagementService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
   ) { }
@@ -160,6 +162,20 @@ export class RecentReconciliationComponent implements OnInit {
   paginationChange(event) {
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+
+  RedirectToDetails(reconciliationId: number, notificationStatus: string, notificationId: string) {
+    this.readNotification(notificationStatus, notificationId);
+    this.router.navigate(['/nphies/payment-reconciliation-details', reconciliationId]);
+  }
+
+  readNotification(notificationStatus: string, notificationId: string) {
+    if (notificationStatus === 'unread') {
+      this.sharedServices.unReadRecentCount = this.sharedServices.unReadRecentCount - 1;
+      if (notificationId) {
+        this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+      }
+    }
   }
 
   get paginatorLength() {

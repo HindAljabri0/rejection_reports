@@ -113,12 +113,17 @@ export class AddReconciliationDialogComponent implements OnInit {
       this.sharedService.providerId, data
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
-        console.log(event, "event response");
 
+        const body = event.body;
         if (event.status === 200) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
-          this.status = true;
-          this.closeDialog(true);
+          if (body.response) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
+            this.status = true;
+            this.closeDialog(true);
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', body.message, true));
+          }
+
           this.sharedService.loadingChanged.next(false);
         }
       }
