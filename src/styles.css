@@ -1268,9 +1268,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .ar-report-body .section-card .empty-state{min-height: calc(100vh - 480px);}
 .ar-report-body .section-card.half{height: auto;}
 .ar-report-body .section-title{padding-bottom: 12px;font-weight: 600;}
-.ar-report-body .status-chart{height: calc(100% - 32px);width: 90%;margin: 0 auto;position: relative;}
-.ar-report-body .category-chart,.ar-report-body .type-chart{min-height: 180px;height: calc(100vh - 652px);max-height: 320px;position: relative;}
-.ar-report-body .ar-payment-tracking-chart{position: relative;width: 100%;height: calc(100vh - 407px);min-height: 380px;}
+.ar-report-body .chart-wrapper{width: 90%;margin: 0 auto;position: relative;height: 240px;}
 
 /* download progress panel
 --------------------------------------------------------------------------------------------------------*/
