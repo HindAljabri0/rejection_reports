@@ -7,7 +7,7 @@
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Provider</label>
-                    <input type="text" class="form-control" placeholder="Select provider" />
+                    <input type="text" class="form-control" placeholder="Select provider" formControlName="Provider"/>
                 </div>
             </div>
             <div class="col-md">
@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="fromDatePicker" class="form-control" placeholder="Select from date">
+                        <input [matDatepicker]="fromDatePicker" class="form-control" placeholder="Select from date" formControlName="fromDate" >
                         <mat-datepicker-toggle [for]="fromDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromDatePicker></mat-datepicker>
                     </div>
@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="toDatePicker" class="form-control" placeholder="Select to date">
+                        <input [matDatepicker]="toDatePicker" class="form-control" placeholder="Select to date" formControlName="toDate" >
                         <mat-datepicker-toggle [for]="toDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #toDatePicker></mat-datepicker>
                     </div>
@@ -61,6 +61,7 @@
         <div class="form-group">
             <button type="button" mat-flat-button color="primary" (click)='search()'>Search</button>
         </div>
+        
     </div>
     <div class="bg-white">
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
