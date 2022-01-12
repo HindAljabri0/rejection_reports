@@ -329,4 +329,10 @@ export class SearchService {
     return this.http.request(request);
   }
 
+  getClaimSearchResults(providerId: string, payer: string, statuses: string[],fromDate: string, toDate: string , page?:Number,pageSize?:Number ) {
+    const requestUrl = `/providers/${providerId}/claims/details?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&status=${statuses}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+    return this.http.request(request);
+  }
+
 }
