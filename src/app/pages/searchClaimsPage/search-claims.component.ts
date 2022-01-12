@@ -1162,6 +1162,42 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   }
 
+  async downloadSheetFormat() {
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
+
+    let event;
+
+    event = this.searchService.downloadMultiSheetSummaries(this.providerId,
+      this.summaries[this.selectedCardKey].statuses,
+      this.params.from,
+      this.params.to,
+      this.params.payerId,
+      this.params.organizationId,
+      this.params.batchId,
+      this.params.uploadId,
+      this.params.filter_claimRefNo,
+      this.params.memberId,
+      this.params.invoiceNo,
+      this.params.filter_patientFileNo,
+      this.params.policyNo,
+      this.params.filter_drName,
+      this.params.filter_nationalId,
+      this.params.filter_claimDate,
+      this.params.filter_netAmount,
+      this.params.filter_batchNum);
+    if (event != null) {
+      this.downloadService.startGeneratingDownloadFile(event)
+        .subscribe(status => {
+          if (status != DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }
+
+  }
+
   async downloadPayerFormat() {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
 
