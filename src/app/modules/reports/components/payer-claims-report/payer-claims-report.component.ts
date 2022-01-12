@@ -13,6 +13,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class PayerClaimsReportComponent implements OnInit {
   payers: { id: string[] | string, name: string }[];
+
   filtterStatuses: string[] = []
   statuses: { code: string, name: string }[] = [
     { code: 'Accepted,failed', name: 'Ready for Submission' },
@@ -26,9 +27,8 @@ export class PayerClaimsReportComponent implements OnInit {
     { code: 'Downloadable', name: 'Downloadable' },
     { code: 'SUBMITTED_OUTSIDE_WASEEL', name: 'Submitted Outside Waseel' }
 
-
-
   ];
+
 
 
   PayerClaimsReportForm: FormGroup;
@@ -53,6 +53,7 @@ export class PayerClaimsReportComponent implements OnInit {
     });
 
   }
+
   search() {
     this.filtterStatuses = [];
     if (this.PayerClaimsReportForm.valid) {
@@ -75,6 +76,7 @@ export class PayerClaimsReportComponent implements OnInit {
       });
 
     }
+
 
 
 

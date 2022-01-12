@@ -118,26 +118,26 @@ export class ProviderNphiesSearchService {
     return this.http.request(httpRequest);
   }
 
-  getProcessedTransaction(providerId: string, page?: number, pageSize?: number) {
+  getProcessedTransaction(providerId: string, claimType: string, page?: number, pageSize?: number) {
     if (page == null) {
       page = 0;
     }
     if (pageSize == null) {
       pageSize = 10;
     }
-    const requestUrl = `/providers/${providerId}/approvals/processed?page=${page}&pageSize=${pageSize}`;
+    const requestUrl = `/providers/${providerId}/approvals/processed?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
 
-  getCommunicationRequests(providerId: string, page?: number, pageSize?: number) {
+  getCommunicationRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
     if (page == null) {
       page = 0;
     }
     if (pageSize == null) {
       pageSize = 10;
     }
-    const requestUrl = `/providers/${providerId}/approvals/communication-requests?page=${page}&pageSize=${pageSize}`;
+    const requestUrl = `/providers/${providerId}/approvals/communication-requests?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }

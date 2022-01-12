@@ -218,6 +218,71 @@ export class SearchService {
     return this.http.request(request);
   }
 
+  downloadMultiSheetSummaries(
+    providerId: string,
+    statuses: string[],
+    fromDate?: string,
+    toDate?: string,
+    payerId?: string,
+    organizationId?: string,
+    batchId?: string,
+    uploadId?: string,
+    claimRefNo?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    policyNo?: string,
+    drname?: string,
+    nationalId?: string,
+    claimDate?: string,
+    netAmount?: string,
+    batchNo?: string) {
+    let requestURL = `/providers/${providerId}/claims/multisheet?status=${statuses.toString()}`;
+    if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
+    } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
+      if (batchId.includes('-')) {
+        batchId = batchId.split('-')[1];
+      }
+      requestURL += `&batchId=${batchId}`;
+    }
+    if (uploadId != null) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+    if (claimRefNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&claimRefNo=${claimRefNo}`;
+    }
+    if (memberId != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&memberId=${memberId}`;
+    }
+    if (invoiceNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+    if (patientFileNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+    if (policyNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&policyNo=${policyNo}`;
+    }
+    if (drname != null && drname !== '' && drname !== undefined) {
+      requestURL += `&drname=${drname}`;
+    }
+    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+      requestURL += `&nationalId=${nationalId}`;
+    }
+    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+      requestURL += `&claimDate=${claimDate}`;
+    }
+    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
+    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+      requestURL += `&batchNo=${batchNo}`;
+    }
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
+    return this.http.request(request);
+  }
+
   downloadExcelSummaries(
     providerId: string,
     statuses: string[],

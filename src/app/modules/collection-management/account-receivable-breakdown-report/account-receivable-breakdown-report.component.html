@@ -52,7 +52,7 @@
       <div class="col-6">
         <div class="section-card">
           <p class="section-title">Payment Status</p>
-          <div class="status-chart">
+          <div class="chart-wrapper">
             <canvas baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels" [chartType]="paymentStatusChartType" [options]="paymentStatusChartOptions"
               [legend]="paymentStatusChartLegend">
             </canvas>
@@ -64,7 +64,7 @@
       <div class="col-6">
         <div class="section-card" *ngIf="!emptyCategoryStatus">
           <p class="section-title">Payment Category</p>
-          <div class="status-chart">
+          <div class="chart-wrapper">
             <canvas baseChart [datasets]="paymentCategoryChartData" [labels]="paymentCategoryChartLabels" [chartType]="paymentCategoryChartType"
               [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
             </canvas>
@@ -85,9 +85,9 @@
         <div class="section-card">
           <ng-container *ngIf="!emptyPaidStatus">
             <p class="section-title">Payer Breakdown Paid</p>
-            <div class="status-chart">
-              <canvas baseChart [datasets]="paidChartData" [labels]="paidChartLabels" [chartType]="payerBreakdownChartType"
-                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
+            <div class="chart-wrapper">
+              <canvas baseChart [datasets]="paidChartData" [labels]="paidChartLabels" [chartType]="payerBreakdownChartType" [options]="payerBreakdownChartOptions"
+                [legend]="payerBreakdownChartLegend">
               </canvas>
             </div>
           </ng-container>
@@ -98,9 +98,9 @@
         <div class="section-card">
           <ng-container *ngIf="!emptyUnPaidStatus">
             <p class="section-title">Payer Breakdown Unpaid</p>
-            <div class="status-chart">
-              <canvas baseChart [datasets]="unPaidChartData" [labels]="unPaidChartLabels" [chartType]="payerBreakdownChartType"
-                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
+            <div class="chart-wrapper">
+              <canvas baseChart [datasets]="unPaidChartData" [labels]="unPaidChartLabels" [chartType]="payerBreakdownChartType" [options]="payerBreakdownChartOptions"
+                [legend]="payerBreakdownChartLegend">
               </canvas>
             </div>
           </ng-container>
