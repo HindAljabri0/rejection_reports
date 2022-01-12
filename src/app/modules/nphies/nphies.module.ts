@@ -42,6 +42,9 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
 import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
+import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
+import { ClaimProcessedTransactionsComponent } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
+import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
 
 
 @NgModule({
@@ -75,6 +78,9 @@ import { RecentReconciliationComponent } from './payment-reconciliation/recent-r
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
     RecentReconciliationComponent,
+    ClaimTransactionsComponent,
+    ClaimProcessedTransactionsComponent,
+    ClaimCommunicationRequestsComponent,
 
   
    

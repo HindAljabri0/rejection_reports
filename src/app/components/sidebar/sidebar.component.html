@@ -393,6 +393,12 @@
                                     <span class="text">Uploads</span>
                                 </a>
                             </li>
+                            <li  *ngIf="!envProd && !envStaging">
+                              <a routerLink="/{{providerId}}/claims/transactions" routerLinkActive="is-active">
+                                  <span class="text">Claim Transactions</span>
+                                  <span *ngIf="NewClaimTransactions > 0" class="alert-marker ml-auto alert-count">{{NewClaimTransactions}}</span>
+                              </a>
+                          </li>
                         </ul>
                     </mat-expansion-panel>
                 </mat-accordion>

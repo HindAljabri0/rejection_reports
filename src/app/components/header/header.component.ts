@@ -152,13 +152,22 @@ export class HeaderComponent implements OnInit {
         this.sharedServices.getProcessedCount();
       }
 
-      if (splitedValue[0] === 'communication-request-notification') {
+      if (splitedValue[0] === 'approval-communication-request-notification') {
         this.sharedServices.getCommunicationRequestCount();
       }
 
       if (splitedValue[0] === 'payment-reconciliation-notification') {
         this.sharedServices.getRecentReconciliationCount();
       }
+
+      if (splitedValue[0] === 'claim-notifications') {
+        this.sharedServices.getClaimProcessedCount();
+      }
+
+      if (splitedValue[0] === 'claim-communication-request-notification') {
+        this.sharedServices.getClaimCommunicationRequestCount();
+      }
+
 
     });
   }
