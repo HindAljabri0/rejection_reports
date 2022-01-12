@@ -23,12 +23,8 @@ export class PayerClaimsReportComponent implements OnInit {
     {code:'Downloadable',name:'Downloadable'},
     {code:'SUBMITTED_OUTSIDE_WASEEL',name:'Submitted Outside Waseel'}
 
-
-    
  ];
 
- 
- 
   PayerClaimsReportForm: FormGroup;
 
   constructor( public commen: SharedServices,  private formBuilder: FormBuilder) { }
@@ -51,7 +47,6 @@ export class PayerClaimsReportComponent implements OnInit {
 
   }
   search(){
-
    
      this.PayerClaimsReportForm.controls['summaryCriteria'].value.forEach(element => {
       this.filtterStatuses=this.filtterStatuses.concat(element.split(",", 3));
