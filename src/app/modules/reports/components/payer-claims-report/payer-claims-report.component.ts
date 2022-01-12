@@ -29,8 +29,6 @@ export class PayerClaimsReportComponent implements OnInit {
 
   ];
 
-
-
   PayerClaimsReportForm: FormGroup;
 
   constructor(public commen: SharedServices, private formBuilder: FormBuilder, private searchService: SearchService) { }
