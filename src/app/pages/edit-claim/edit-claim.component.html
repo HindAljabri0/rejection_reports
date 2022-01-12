@@ -30,7 +30,9 @@
             <p *ngIf="claimProps.payerclaimrefno !=null"><span>Payer Claim Reference
                 No.:</span>&nbsp;<strong>{{claimProps.payerclaimrefno}}</strong>
             </p>
-
+            <p *ngIf="claimProps.paymentReference !=null"><span>Payment
+                Reference:</span>&nbsp;<strong>{{claimProps.paymentReference}}</strong>
+            </p>
             <p><span>Status:</span>&nbsp;<strong>{{getClaimStatusLabel(claimProps.statusCode)}}</strong>
             </p>
 

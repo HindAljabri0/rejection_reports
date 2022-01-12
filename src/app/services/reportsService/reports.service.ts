@@ -102,15 +102,16 @@ export class ReportsService {
   }
 
   downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
-    const requestURL = `/providers/${providerId}/payments/${paymentReference}/download`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
+    const requestURL = `/providers/${providerId}/payments/${paymentReference}`;
+    // tslint:disable-next-line:max-line-length
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
-    const requestURL = `/providers/${providerId}/submissions?` +
-      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId.join(',')}`;
+    const requestURL = `/providers/${providerId}/submissions/download?` + `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
+    // tslint:disable-next-line:max-line-length
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }

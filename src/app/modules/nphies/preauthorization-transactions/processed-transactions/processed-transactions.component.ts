@@ -39,7 +39,7 @@ export class ProcessedTransactionsComponent implements OnInit {
   getProcessedTransactions() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId, this.page, this.pageSize).subscribe((event: any) => {
+    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId, 'approval', this.page, this.pageSize).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
