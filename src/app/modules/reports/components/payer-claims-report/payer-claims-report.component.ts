@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { SearchService } from 'src/app/services/serchService/search.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -30,7 +31,7 @@ export class PayerClaimsReportComponent implements OnInit {
   ];
 
   PayerClaimsReportForm: FormGroup;
-
+  searchedClaim: SearchedClaim []=[]
   constructor(public commen: SharedServices, private formBuilder: FormBuilder, private searchService: SearchService) { }
 
   ngOnInit() {
@@ -53,8 +54,10 @@ export class PayerClaimsReportComponent implements OnInit {
   }
 
   search() {
+ 
     this.filtterStatuses = [];
     if (this.PayerClaimsReportForm.valid) {
+      this.commen.loadingChanged.next(true);
       let Provider = this.PayerClaimsReportForm.controls['Provider'].value
       let fromDate = moment(this.PayerClaimsReportForm.controls['fromDate'].value).format('YYYY-MM-DD');
       let toDate = moment(this.PayerClaimsReportForm.controls['toDate'].value).format('YYYY-MM-DD');
@@ -68,7 +71,9 @@ export class PayerClaimsReportComponent implements OnInit {
       this.searchService.getClaimSearchResults(Provider, payerId, this.filtterStatuses, fromDate, toDate).subscribe((event) => {
         if (event instanceof HttpResponse) {
 
-          console.log(event.body)
+          this.searchedClaim=event.body["content"] as SearchedClaim[];
+          this.commen.loadingChanged.next(false);
+           
         }
 
       });
