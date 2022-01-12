@@ -232,38 +232,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       });
   }
 
-
-  downloadInvoice() {
-    if (this.actionIcon == 'ic-check-circle.svg') {
-      return;
-    }
-
-    this.reportsService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId,
-      this.fromDate, this.toDate, this.payerIdControl.value).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          const exportedFilenmae = `Report_Submitted_Invoice_Reference.csv`;
-          if (navigator.msSaveBlob) { // IE 10+
-            const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-            navigator.msSaveBlob(blob, exportedFilenmae);
-          } else {
-            const a = document.createElement('a');
-            a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
-            a.target = '_blank';
-            a.download = exportedFilenmae;
-
-            a.click();
-            this.actionIcon = 'ic-check-circle.svg';
-          }
-        }
-      }, errorEvent => {
-        if (errorEvent instanceof HttpErrorResponse) {
-          console.log(errorEvent);
-          this.dialogService.openMessageDialog(new MessageDialogData('',
-            'Could not reach the server at the moment. Please try again later.', true));
-        }
-      });
-  }
-
   resetURL() {
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);

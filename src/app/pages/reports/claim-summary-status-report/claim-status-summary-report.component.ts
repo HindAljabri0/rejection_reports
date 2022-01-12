@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
@@ -95,8 +95,14 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
         const body = event['body'];
         this.commen.loadingChanged.next(false);
         this.claimStatusSummaryData = JSON.parse(body);
+        if (this.claimStatusSummaryData.length == 0) {
+          this.errorMessage = 'No Results Found';
+        }
       }
     }, err => {
+      if (err instanceof HttpErrorResponse) {
+        this.errorMessage = err.error;
+      }
       this.claimStatusSummaryData = null;
       this.commen.loadingChanged.next(false);
       console.log(err);

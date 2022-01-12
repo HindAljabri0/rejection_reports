@@ -1,0 +1,29 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+  <div class="block-header has-border">
+    <p>Claim Transactions</p>
+  </div>
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding" (selectedTabChange)="tabChange($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Processed</span>
+          <span *ngIf="NewClaimTransactionProcessed > 0" class="alert-marker ml-2 alert-count">{{NewClaimTransactionProcessed}}</span>
+        </div>
+      </ng-template>
+
+      <app-claim-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList">
+      </app-claim-processed-transactions>
+
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Communication Request</span>
+          <span *ngIf="NewClaimComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewClaimComunicationRequests}}</span>
+        </div>
+      </ng-template>
+      <app-claim-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList">
+      </app-claim-communication-requests>
+    </mat-tab>
+  </mat-tab-group>
+</div>

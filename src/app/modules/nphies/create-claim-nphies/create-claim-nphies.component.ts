@@ -186,7 +186,9 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.onPayeeTypeChange();
           if (this.claimId && this.uploadId) {
             this.pageMode = 'VIEW';
-            this.getCommunications();
+            if (this.responseId) {
+              this.getCommunications();
+            }
             this.disableControls();
             this.getClaimDetails();
           } else {

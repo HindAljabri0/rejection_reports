@@ -24,6 +24,7 @@ export class ClaimsCoverLetterComponent implements OnInit {
   selectedGroup;
   detailTopActionIcon = 'ic-download.svg';
   lastDownloadSubscriptions: Subscription;
+  errorMessage: string;
 
   groups = [
     {
@@ -35,6 +36,12 @@ export class ClaimsCoverLetterComponent implements OnInit {
       options: this.payersList
     },
   ];
+
+
+  FormClaimCover: FormGroup = this.formBuilder.group({
+    tpaORpayer: ['', Validators.required],
+    month: ['', Validators.required]
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,9 +56,11 @@ export class ClaimsCoverLetterComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params.tpaId) {
         this.FormClaimCover.controls.tpaORpayer.setValue(parseInt(params.tpaId));
+        this.selectedGroup = 'TPAs';
       }
       if (params.payerId) {
         this.FormClaimCover.controls.tpaORpayer.setValue(parseInt(params.payerId));
+        this.selectedGroup = 'Payers';
       }
       if (params.month) {
         let month = new Date(params.month);
@@ -62,11 +71,6 @@ export class ClaimsCoverLetterComponent implements OnInit {
       }
     });
   }
-
-  FormClaimCover: FormGroup = this.formBuilder.group({
-    tpaORpayer: ['', Validators.required],
-    month: ['', Validators.required]
-  });
 
   selectChange(event, groupName: string) {
     if (event.isUserInput) {
@@ -81,10 +85,6 @@ export class ClaimsCoverLetterComponent implements OnInit {
     container.setViewMode('month');
   }
 
-  getPayerName(payerId) {
-    return (this.payersList.filter(payer => payer.id === parseInt(payerId))[0] ? this.payersList.filter(payer => payer.id === parseInt(payerId))[0].name : '');
-  }
-
   getTotal(field: string) {
     let total = this.claimCoverList.reduce(function (accumulator, claimCover) {
       return accumulator + claimCover[field];
@@ -92,14 +92,16 @@ export class ClaimsCoverLetterComponent implements OnInit {
     return Math.round(total * 100) / 100;
   }
 
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.FormClaimCover.valid) {
       this.sharedServices.loadingChanged.next(true);
+      this.errorMessage = null;
       const model: any = {};
       model.providerId = this.sharedServices.providerId;
       model.month = this.datePipe.transform(this.FormClaimCover.controls.month.value, 'yyyy-MM-dd');
-      if (this.selectedGroup == 'TPAs') {
+      if (this.selectedGroup === 'TPAs') {
         model.tpaId = this.FormClaimCover.controls.tpaORpayer.value;
       } else {
         model.payerId = this.FormClaimCover.controls.tpaORpayer.value;
@@ -109,6 +111,19 @@ export class ClaimsCoverLetterComponent implements OnInit {
         if (event instanceof HttpResponse) {
           if (event.status == 200) {
             this.claimCoverList = event.body;
+            const payersList = this.sharedServices.getPayersList();
+            this.claimCoverList.forEach(x => {
+              if (this.selectedGroup === 'Payers') {
+                // tslint:disable-next-line:max-line-length
+                x.description = this.payersList.filter(payer => payer.id === parseInt(x.payerId))[0] ? this.payersList.filter(payer => payer.id === parseInt(x.payerId))[0].name : '';
+              } else if (this.selectedGroup === 'TPAs') {
+                // tslint:disable-next-line:max-line-length
+                x.description = payersList.filter(payer => payer.id === parseInt(x.payerId))[0] ? payersList.filter(payer => payer.id === parseInt(x.payerId))[0].name : '';
+              }
+            });
+            if (this.claimCoverList.length == 0) {
+              this.errorMessage = 'No Results Found';
+            }
             this.sharedServices.loadingChanged.next(false);
           }
         }
