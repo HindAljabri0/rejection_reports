@@ -19,7 +19,7 @@
     <div class="block-body pb-0 mb-3" *ngIf="errorMessage == null">
         <!-- <button mat-icon-button [disabled]="currentSummariesPage==1" (click)="previousSummary()" style="margin-top: 50px;">
                 <mat-icon>navigate_before</mat-icon>
-            </button> 
+            </button>
             <button mat-icon-button (click)="nextSummary()" [disabled]="currentSummariesPage>=summaries.length-3" style="margin-top: 50px;">
                 <mat-icon>navigate_next</mat-icon>
             </button>
@@ -88,7 +88,7 @@
                         <button mat-menu-item (click)="downloadWaseelFormat()">
                             <span>Download CSV</span>
                         </button>
-                        <button mat-menu-item>
+                        <button mat-menu-item (click)="downloadSheetFormat()">
                             <span>Download Multiple Spreadsheet (Excel Format)</span>
                         </button>
                         <button mat-menu-item (click)="downloadPayerFormat()"
