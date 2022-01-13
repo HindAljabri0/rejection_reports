@@ -169,10 +169,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
-            y.typeName = this.sharedDataService.claimTypeList.filter(
-              z => z.value === y.type)[0]
-              ? this.sharedDataService.claimTypeList.filter(z => z.value === y.type)[0].name
-              : '';
+            // tslint:disable-next-line:max-line-length
+            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name: '';
+            y.itemCode = y.code;
+            y.itemDescription = y.description;
+            y.display = y.nonStandardDesc;
           });
         }
 

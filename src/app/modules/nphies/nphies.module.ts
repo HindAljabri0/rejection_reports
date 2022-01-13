@@ -45,6 +45,7 @@ import { RecentReconciliationComponent } from './payment-reconciliation/recent-r
 import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
 import { ClaimProcessedTransactionsComponent } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
 import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
+import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 
 
 @NgModule({
@@ -66,7 +67,6 @@ import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
-  
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
@@ -81,10 +81,7 @@ import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-
     ClaimTransactionsComponent,
     ClaimProcessedTransactionsComponent,
     ClaimCommunicationRequestsComponent,
-
-  
-   
-    
+    ReuseApprovalModalComponent,
   ],
   imports: [
     CommonModule,
@@ -97,7 +94,6 @@ import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-
     SmoothScrollModule,
     NphiesRoutingModule,
     CarouselModule,
-    
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
@@ -112,7 +108,7 @@ import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-
     AddCommunicationDialogComponent,
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
-   
+    ReuseApprovalModalComponent
   ],
   exports: [
     ApiErrorsDialogComponent
