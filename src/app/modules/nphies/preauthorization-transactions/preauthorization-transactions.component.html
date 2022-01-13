@@ -118,7 +118,7 @@
                 <td class="actions">
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item><span>Reuse</span></button>
+                      <button mat-menu-item *ngIf="transaction.status === 'Processing Complete'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)"><span>Reuse</span></button>
                       <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')"><span>Cancel</span></button>
                       <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'nullify')"><span>Nullify/Soft
                           Delete</span></button>

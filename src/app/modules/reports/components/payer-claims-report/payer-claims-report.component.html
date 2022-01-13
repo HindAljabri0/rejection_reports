@@ -1,98 +1,124 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-        <p>Payer Claims Report</p>
-    </div>
-    <div class="block-filter-panel has-border" [formGroup]="PayerClaimsReportForm">
-        <div class="row small-gutter">
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">Provider</label>
-                    <input type="text" class="form-control" placeholder="Select provider" formControlName="Provider"/>
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">Payer</label>
-                    <mat-form-field class="form-control custom-select-control">
-
-                        <mat-select formControlName="payerId">
-                            <mat-option *ngFor="let payer of payers" [value]="payer.id">
-                              {{payer.name}}
-                            </mat-option>
-                          </mat-select>
-
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="form-group" >
-                    <label class="control-label">Status</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select  multiple formControlName="summaryCriteria" >
-                            <mat-option *ngFor="let statuse of statuses" [value]="statuse.code">
-                                {{statuse.name}}
-                              </mat-option>
-                        </mat-select>
-                        
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">From Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="fromDatePicker" class="form-control" placeholder="Select from date" formControlName="fromDate" >
-                        <mat-datepicker-toggle [for]="fromDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #fromDatePicker></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">To Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="toDatePicker" class="form-control" placeholder="Select to date" formControlName="toDate" >
-                        <mat-datepicker-toggle [for]="toDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #toDatePicker></mat-datepicker>
-                    </div>
-                </div>
-            </div>
+  <div class="block-header has-border">
+    <p>Payer Claims Report</p>
+  </div>
+  <div class="block-filter-panel has-border" [formGroup]="PayerClaimsReportForm">
+    <div class="row small-gutter">
+      <div class="col-md">
+        <div class="form-group" [class.has-error]="submitted && formCn.providerId.errors">
+          <label class="control-label">Provider</label>
+          <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" />
         </div>
+      </div>
+      <div class="col-md">
+        <div class="form-group" [class.has-error]="submitted && formCn.payerId.errors">
+          <label class="control-label">Payer</label>
+          <input type="text" class="form-control" placeholder="Select Payer" formControlName="payerId" />
+        </div>
+      </div>
+      <div class="col-md">
         <div class="form-group">
-            <button type="button" mat-flat-button color="primary" (click)='search()'>Search</button>
+          <label class="control-label">Status</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select multiple formControlName="summaryCriteria">
+              <mat-option *ngFor="let statuse of statuses" [value]="statuse.code">
+                {{statuse.name}}
+              </mat-option>
+            </mat-select>
+
+          </mat-form-field>
         </div>
-        
+      </div>
+      <div class="col-md">
+        <div class="form-group">
+          <label class="control-label">From Date</label>
+          <div class="date-picker">
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
+              [bsConfig]="datePickerConfig" placeholder="Select From Date" required
+              (bsValueChange)="dateValidation($event)" />
+          </div>
+        </div>
+        <div *ngIf="submitted && formCn.fromDate.errors">
+          <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a date</span>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-group">
+          <label class="control-label">To Date</label>
+          <div class="date-picker">
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
+              [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required />
+          </div>
+          <div *ngIf="submitted && formCn.toDate.errors">
+            <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="bg-white">
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-            <div class="fixed-height">
-                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0" >
-                    <thead>
-                        <tr >
-                            <th>Claim Ref. No.</th>
-                            <th>Dr.Name</th>
-                            <th>Member Card Id</th>
-                            <th>Patient File No.</th> 
-                            <th>Claim Date </th>
-                            <th>Net Amount</th>
-                            <th>Status</th>
-                            <th>Status Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of searchedClaim">
-                            <th>{{data.providerClaimNumber}}</th>
-                            <th>{{data.drName}}</th>
-                            <th>{{data.memberId}}</th>
-                            <th>{{data.patientFileNumber}}</th>
-                            <th>{{data.claimDate}}</th>
-                            <th>{{data.netAmount}}</th>
-                            <th>{{data.status}}</th>
-                            <th>{{data.statusDetail}}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </ng-scrollbar>
+    <div class="form-group">
+      <button type="button" mat-flat-button color="primary" (click)='search()'>Search</button>
     </div>
-</div>
+  </div>
+  <div class="bg-white">
+    <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
+
+      <button matRipple type="button" class="action-btn ml-auto" matTooltip="Download">
+        <img src="./assets/{{detailTopActionIcon}}" />
+      </button>
+    </div>
+
+    <div class="pagination-header">
+      <div class="form-group page-select">
+        <label class="control-label">Go to page: </label>
+        <mat-form-field class="form-control custom-select-control">
+          <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="material-paginator">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+          (page)="paginatorAction($event)">
+        </mat-paginator>
+      </div>
+      <button matRipple type="button" class="action-btn ml-2" matTooltip="Download">
+        <img src="./assets/{{detailTopActionIcon}}" />
+      </button>
+    </div>
+
+    <div class="bg-white" *ngIf='errorMessage==null'>
+      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+                <th>Claim Ref. No.</th>
+                <th>Dr.Name</th>
+                <th>Member Card Id</th>
+                <th>Patient File No.</th>
+                <th>Claim Date </th>
+                <th>Net Amount</th>
+                <th>Status</th>
+                <th>Status Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of searchedClaim">
+                <th>{{data.providerClaimNumber}}</th>
+                <th>{{data.drName}}</th>
+                <th>{{data.memberId}}</th>
+                <th>{{data.patientFileNumber}}</th>
+                <th>{{data.claimDate}}</th>
+                <th>{{data.netAmount}}</th>
+                <th>{{data.status}}</th>
+                <th>{{data.statusDetail}}</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-scrollbar>
+    </div>
+    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+      <p class="error-card m-0">{{errorMessage}}</p>
+    </div>
+  </div>

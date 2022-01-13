@@ -1,11 +1,17 @@
-import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { SearchService } from 'src/app/services/serchService/search.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { Subscription } from 'rxjs';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { MatPaginator } from '@angular/material';
+import { PaginatedResult } from 'src/app/models/paginatedResult';
 
 @Component({
   selector: 'app-payer-claims-report',
@@ -14,7 +20,8 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class PayerClaimsReportComponent implements OnInit {
   payers: { id: string[] | string, name: string }[];
-
+  claimStatusSummaryData: any;
+  minDate: any;
   filtterStatuses: string[] = []
   statuses: { code: string, name: string }[] = [
     { code: 'Accepted,failed', name: 'Ready for Submission' },
@@ -29,59 +36,175 @@ export class PayerClaimsReportComponent implements OnInit {
     { code: 'SUBMITTED_OUTSIDE_WASEEL', name: 'Submitted Outside Waseel' }
 
   ];
+  page: number;
+  pageSize: number;
+  tempPage = 0;
+  tempPageSize = 10; 
+  manualPage = null;
 
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
+  paginatorPageSizeOptions = [10, 20, 50, 100];
   PayerClaimsReportForm: FormGroup;
-  searchedClaim: SearchedClaim []=[]
-  constructor(public commen: SharedServices, private formBuilder: FormBuilder, private searchService: SearchService) { }
+  searchedClaim: SearchedClaim[] = []
+
+
+  paginatorPagesNumbers: number[];
+
+
+
+  datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false, dateInputFormat: 'DD/MM/YYYY' };
+  constructor(
+    public commen: SharedServices, 
+    private formBuilder: FormBuilder, 
+    private searchService: SearchService,
+    // private location: Location,
+    private downloadService: DownloadService
+    ) {
+        this.page = 0;
+      this.pageSize = 10;
+    }
+  submitted = false;
+  errorMessage=null;
+  detailTopActionIcon = 'ic-download.svg';
+  lastDownloadSubscriptions: Subscription;
 
   ngOnInit() {
     this.payers = [];
 
     this.PayerClaimsReportForm = this.formBuilder.group({
-      Provider: ['', Validators.required],
+      providerId: ['', Validators.required],
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       payerId: ['', Validators.required],
       summaryCriteria: ['', Validators.required],
     });
-    this.commen.getPayersList().map(value => {
-      this.payers.push({
-        id: `${value.id}`,
-        name: value.name
-      });
-    });
+    // this.commen.getPayersList().map(value => {
+    //   this.payers.push({
+    //     id: `${value.id}`,
+    //     name: value.name
+    //   });
+    // });
 
   }
 
+  get formCn() { return this.PayerClaimsReportForm.controls; }
+
+  paginatorAction(event) {
+    this.manualPage = event['pageIndex'];
+    this.paginationChange(event);
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.search();
+  }
+
+  paginationChange(event) {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    // this.resetURL();
+    this.search();
+  }
+  updateManualPage(index) {
+    this.manualPage = index;
+    this.paginator.pageIndex = index;
+    this.paginatorAction({
+      previousPageIndex: this.paginator.pageIndex,
+      pageIndex: index,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length
+    });
+  }
+  get paginatorLength() {
+    if (this.searchedClaim != null) {
+      return this.searchedClaim;
+    } else {
+      return 0;
+    }
+  }
+
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.PayerClaimsReportForm.value.toDate).format('YYYY-MM-DD');
+      if (startDate > endDate) {
+        this.PayerClaimsReportForm.controls['toDate'].patchValue('');
+      }
+    }
+    this.minDate = new Date(event);
+
+  }
   search() {
- 
+    this.submitted = true;
     this.filtterStatuses = [];
+    this.detailTopActionIcon = 'ic-download.svg';
+    // if (this.lastDownloadSubscriptions != null && !this.lastDownloadSubscriptions.closed) {
+    //   this.lastDownloadSubscriptions.unsubscribe();
+    // }
+    this.errorMessage = null;
     if (this.PayerClaimsReportForm.valid) {
       this.commen.loadingChanged.next(true);
-      let Provider = this.PayerClaimsReportForm.controls['Provider'].value
+      let Provider = this.PayerClaimsReportForm.controls['providerId'].value
       let fromDate = moment(this.PayerClaimsReportForm.controls['fromDate'].value).format('YYYY-MM-DD');
       let toDate = moment(this.PayerClaimsReportForm.controls['toDate'].value).format('YYYY-MM-DD');
       let payerId = this.PayerClaimsReportForm.controls['payerId'].value
+    
+     
 
-      this.PayerClaimsReportForm.controls['summaryCriteria'].value.forEach(element => {
-        this.filtterStatuses = this.filtterStatuses.concat(element.split(",", 3));
+    this.PayerClaimsReportForm.controls['summaryCriteria'].value.forEach(element => {
+      this.filtterStatuses = this.filtterStatuses.concat(element.split(",", 3));
 
-      });
+    });
 
-      this.searchService.getClaimSearchResults(Provider, payerId, this.filtterStatuses, fromDate, toDate).subscribe((event) => {
-        if (event instanceof HttpResponse) {
+    this.searchService.getPayerClaimReportResults(Provider, payerId, this.filtterStatuses, fromDate, toDate).subscribe((event) => {
+      if (event instanceof HttpResponse) {
 
-          this.searchedClaim=event.body["content"] as SearchedClaim[];
-          this.commen.loadingChanged.next(false);
-           
+        this.searchedClaim = event.body["content"] as SearchedClaim[];
+          if (this.searchedClaim.length == 0) {
+        this.errorMessage = 'No Results Found';
+      }
+        this.commen.loadingChanged.next(false);
+
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == '4') {
+          this.errorMessage = 'Access Denied.';
+        } else if ((error.status / 100).toFixed() == '5') {
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
         }
+      }
+      this.commen.loadingChanged.next(false);
+    });
 
-      });
+  }}
 
-    }
+  // download() {
+  //   if (this.detailTopActionIcon == 'ic-check-circle.svg') {
+  //     return;
+  //   }
+  //   const fromDate = moment(this.PayerClaimsReportForm.value.fromDate).format('YYYY-MM-DD');
+  //   const toDate = moment(this.PayerClaimsReportForm.value.toDate).format('YYYY-MM-DD');
+  //   const criteriaType = this.PayerClaimsReportForm.value.summaryCriteria.toString() === 'uploaddate' ? 'extraction' : 'claim';
+  //   this.lastDownloadSubscriptions = this.downloadService
+  //     .startGeneratingDownloadFile(this.reportService
+  //       .downloadMedicalRejectionReport(
+  //         this.commen.providerId,
+  //         fromDate,
+  //         toDate,
+  //         this.medicalRejectionReportForm.value.payerId,
+  //         criteriaType
+  //       ))
+  //     .subscribe(status => {
+  //       if (status != DownloadStatus.ERROR) {
+  //         this.detailTopActionIcon = 'ic-check-circle.svg';
+  //       } else {
+  //         this.detailTopActionIcon = 'ic-download.svg';
+  //       }
+  //     });
+  // }
 
 
-
-
-  }
 }
+
+

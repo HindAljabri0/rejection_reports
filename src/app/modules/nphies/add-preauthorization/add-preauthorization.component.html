@@ -8,6 +8,7 @@
       <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
 
 
+
         <h5 class="form-title pt-0">Beneficary Info</h5>
         <div class="d-flex">
           <div class="form-group flex-grow-1"
@@ -32,7 +33,7 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId"
               color="primary">Create New Beneficiary</button>
           </div>
         </div>
@@ -175,7 +176,6 @@
             </div>
           </div>
         </div>
-
 
         <div [ngClass]="{'text-danger': IsCareTeamRequired}">
           <h5 class="form-title">
@@ -328,7 +328,7 @@
           <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
             <h5 class="d-flex align-items-center mb-3">
               <strong class="medium">Lens Specifications</strong>
-              <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+              <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
                 <mat-icon>add</mat-icon>
               </button>
             </h5>
@@ -346,7 +346,7 @@
                     <th>Back Curve</th>
                     <th>Diameter</th>
                     <th>Prism</th>
-                    <th width="10"></th>
+                    <th *ngIf="!claimReuseId" width="10"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -362,7 +362,7 @@
                     <td>{{visionSpecification.lensDiameter}}</td>
                     <td>{{visionSpecification.prismAmount}}<span
                         *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
-                    <td class="actions">
+                    <td *ngIf="!claimReuseId" class="actions">
                       <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
                         matTooltip="Edit" class="text-primary">
                         <mat-icon>create</mat-icon>
@@ -522,6 +522,7 @@
             </div>
           </div>
         </div>
+
 
         <div [ngClass]="{'text-danger': IsItemRequired}">
           <h5 class="form-title">
@@ -730,14 +731,16 @@
         <hr class="hr spaced" />
 
         <div class="form-group">
-          <button type="submit" mat-flat-button color="primary">Request Authorization</button>
+          <button type="submit" mat-flat-button color="primary">
+            <span>Request Authorization</span>
+          </button>
         </div>
 
       </form>
     </div>
   </ng-container>
 
-  <ng-container *ngIf="IsJSONPosted && detailsModel">
+  <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
     <div class="block-header has-border">
       <div class="d-flex align-items-center">
         <p>Authorization - {{detailsModel.providertransactionlogId}}</p>
