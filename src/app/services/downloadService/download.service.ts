@@ -14,18 +14,22 @@ export class DownloadService {
 
   lastAttachedOverlay: ComponentPortal<DownloadOverlayComponent>;
 
-  private _downloads: DownloadRequest[] = [];
-  downloads: Subject<DownloadRequest[]> = new Subject();
+  private _providerDownloads: DownloadRequest[] = [];
+  providerDownloads: Subject<DownloadRequest[]> = new Subject();
+
+  private _adminDownloads: DownloadRequest[] = [];
+  adminDownloads: Subject<DownloadRequest[]> = new Subject();
 
   constructor(
     private overlay: Overlay,
     private _injector: Injector) {
-    this.downloads.subscribe(downloads => this._downloads = downloads);
+    this.providerDownloads.subscribe(downloads => this._providerDownloads = downloads);
+    this.adminDownloads.subscribe(downloads => this._adminDownloads = downloads);
   }
 
   startDownload(request: Observable<HttpEvent<unknown>>) {
     const downloadRequest = new DownloadRequest();
-    this.downloads.next([...this._downloads, downloadRequest]);
+    this.providerDownloads.next([...this._providerDownloads, downloadRequest]);
     downloadRequest.status$.next(DownloadStatus.INIT);
     request.subscribe(event => {
       if (event instanceof HttpHeaderResponse) {
@@ -81,10 +85,15 @@ export class DownloadService {
     return downloadRequest.status$.asObservable();
   }
 
-  startGeneratingDownloadFile(request: Observable<HttpEvent<unknown>>) {
+  startGeneratingDownloadFile(request: Observable<HttpEvent<unknown>>, isAdminFile = false) {
     const downloadRequest = new DownloadRequest();
-    this._downloads.unshift(downloadRequest);
-    this.downloads.next(this._downloads);
+    if (!isAdminFile) {
+      this._providerDownloads.unshift(downloadRequest);
+      this.providerDownloads.next(this._providerDownloads);
+    } else {
+      this._adminDownloads.unshift(downloadRequest);
+      this.adminDownloads.next(this._adminDownloads);
+    }
     downloadRequest.status$.next(DownloadStatus.INIT);
 
     request.subscribe(event => {
