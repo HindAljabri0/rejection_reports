@@ -400,4 +400,12 @@ export class SearchService {
     return this.http.request(request);
   }
 
+  //
+  generatePayerClaimsReport(providerId: string, payerId: string, fromDate: string, toDate: string,statuses?:string[]){
+    const requestUrl =`/admin/payer-report?providerId=${providerId}&payerId=${payerId}&fromDate=${fromDate}&toDate= ${toDate}&statuses=${statuses}`;
+
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl,'', { responseType: 'text', reportProgress: true});
+    return this.http.request(request);
+  }
+
 }

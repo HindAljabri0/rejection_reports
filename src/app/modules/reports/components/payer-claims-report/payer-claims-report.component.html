@@ -90,7 +90,7 @@
           (page)="paginatorAction($event)">
         </mat-paginator>
       </div>
-      <button matRipple type="button" class="action-btn ml-2" matTooltip="Download">
+      <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
         <img src="./assets/{{detailTopActionIcon}}" />
       </button>
     </div>
