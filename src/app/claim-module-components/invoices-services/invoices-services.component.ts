@@ -221,10 +221,30 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-  invoiceHasError(index: Number) {
-    return this.errors.filter(x => Number(x.code) == index).length > 0 ? true : false
-  }
+  invoiceHasError(index: Invoice) {
+    let check = 0;
+    let invoicesError = this.errors.filter(x => Number(x.code) == index.invoiceId);
+    if (invoicesError.length > 0) {
+      check = 1;
+      return true
+    } else {
+      this.errors.forEach(x => {
+        var serviceId = Number(x.code.replace(/\D+/g, ''))
+        for (let service of index.service) {
 
+          if (service.serviceId == serviceId) {
+            check = 1
+            return true;
+          }
+        }
+      })
+      if (check == 0) {
+        return false
+      } else {
+        return true
+      }
+    }
+  }
   invoice: Invoice[] = [];
 
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
@@ -234,9 +254,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
     this.invoice = claim.invoice.slice().sort((inv1, inv2) => {
 
-      if (this.invoiceHasError(inv2.invoiceId) && !this.invoiceHasError(inv1.invoiceId)) {
+      if (this.invoiceHasError(inv2) && !this.invoiceHasError(inv1)) {
         return 1;
-      } else if (!this.invoiceHasError(inv2.invoiceId) && this.invoiceHasError(inv1.invoiceId)) {
+      } else if (!this.invoiceHasError(inv2) && this.invoiceHasError(inv1)) {
         return -1;
       } else {
         return 0;
