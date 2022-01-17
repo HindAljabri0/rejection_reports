@@ -406,11 +406,16 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent, dialogConfig);
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
-              if (!communicationId && notificationId) {
-                this.processedTransactions.getProcessedTransactions();
-              } else if (communicationId && notificationId) {
-                this.communicationRequests.getCommunicationRequests();
+              if (result.openReUse) {
+                this.OpenReuseApprovalModal(requestId, responseId);
+              } else {
+                if (!communicationId && notificationId) {
+                  this.processedTransactions.getProcessedTransactions();
+                } else if (communicationId && notificationId) {
+                  this.communicationRequests.getCommunicationRequests();
+                }
               }
+
             }
           }, error => { });
         }
