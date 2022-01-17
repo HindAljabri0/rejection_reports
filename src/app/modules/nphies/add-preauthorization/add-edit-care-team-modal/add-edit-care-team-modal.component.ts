@@ -190,8 +190,8 @@ export class AddEditCareTeamModalComponent implements OnInit {
       model.practitionerRole = this.FormCareTeam.controls.practitionerRole.value.value;
       model.careTeamRole = this.FormCareTeam.controls.careTeamRole.value.value;
       model.speciality = this.FormCareTeam.controls.speciality.value.speciallityName;
-      model.specialityCode = this.FormCareTeam.controls.speciality.value.specialityCode;
-
+      model.specialityCode = this.FormCareTeam.controls.speciality.value.speciallityCode;
+      model.qualificationCode = this.FormCareTeam.controls.speciality.value.speciallityCode;
       model.practitionerRoleName = this.FormCareTeam.controls.practitionerRole.value.name;
       model.careTeamRoleName = this.FormCareTeam.controls.careTeamRole.value.name;
       this.dialogRef.close(model);
