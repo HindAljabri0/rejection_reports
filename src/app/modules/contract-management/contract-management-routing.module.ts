@@ -6,8 +6,8 @@ import { ContractsComponent } from './contracts/contracts.component';
 const routes: Routes = [
   { path: '', component: ContractsComponent },
   { path: 'add', component: AddEditViewContractComponent },
-  { path: 'edit', component: AddEditViewContractComponent },
-  { path: 'view', component: AddEditViewContractComponent }
+  { path: 'edit/:contractId', component: AddEditViewContractComponent },
+  { path: 'view/:contractId', component: AddEditViewContractComponent }
 ];
 
 @NgModule({

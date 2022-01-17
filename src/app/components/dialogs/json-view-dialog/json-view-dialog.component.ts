@@ -41,7 +41,7 @@ export class JsonViewDialogComponent implements OnInit {
   clickCopy(title) {
     this.copyText = 'Copied';
     let tabs;
-    this.data.tabs.filter(tabData => tabData.title == title).every(tabData => { tabs = tabData.json; });
+    this.data.tabs.filter(tabData => tabData.title == title).forEach(tabData => { tabs = tabData.json; });
     this.clipboardService.copy(JSON.stringify(tabs));
     setTimeout(() => {
       this.copyText = 'Copy JSON';
