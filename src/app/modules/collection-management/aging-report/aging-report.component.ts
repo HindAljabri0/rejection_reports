@@ -24,7 +24,7 @@ export class AgingReportComponent implements OnInit {
   selectedDate: Date;
 
   getPreviousDate() {
-    this.selectedDate = new Date(this.date.value)
+    this.selectedDate = new Date(this.date.value);
 
     return this.datePipe.transform(new Date(this.selectedDate.getFullYear() - 1, this.selectedDate.getMonth(), this.selectedDate.getDate()), 'yyyy-MM-dd');
   }
@@ -42,12 +42,12 @@ export class AgingReportComponent implements OnInit {
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
   public barChartOptions: ChartOptions = {
-    
+
     responsive: true,
     scales: {
       xAxes: [{
         gridLines: {
-          
+
           display: false
         },
         ticks: {
@@ -57,7 +57,7 @@ export class AgingReportComponent implements OnInit {
       }],
       yAxes: [{
         ticks: {
-          
+
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           beginAtZero: true
@@ -65,7 +65,7 @@ export class AgingReportComponent implements OnInit {
       }],
     },
     legend: {
-      
+
       display: false
     },
     tooltips: {
@@ -73,7 +73,7 @@ export class AgingReportComponent implements OnInit {
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily
     },
-    
+
   };
   public barChartLabels: Label[] = ['1-30', '31-60', '61-90', '91-120', '121-150', '151-180', '181-365', '> 365'];
   public barChartType: ChartType = 'bar';
@@ -86,18 +86,6 @@ export class AgingReportComponent implements OnInit {
 
   constructor(public commen: SharedServices, private datePipe: DatePipe, public superAdminService: SuperAdminService) { }
 
-
-  getPayerName(payerId: number) {
-
-    this.commen.getPayersList().forEach(data => {
-
-      if (data.id == payerId) {
-
-        this.payerName = data.name;
-      }
-    });
-    return this.payerName;
-  }
   ngOnInit() {
     this.search();
 
@@ -107,6 +95,7 @@ export class AgingReportComponent implements OnInit {
     this.currentDetailsOpen = (this.currentDetailsOpen == index) ? -1 : index;
 
   }
+
   search() {
     this.errorMessage = null;
     this.commen.loadingChanged.next(true);
@@ -116,12 +105,14 @@ export class AgingReportComponent implements OnInit {
       if (data instanceof HttpResponse) {
         if (data.status == 204) {
 
-          this.errorMessage = "No payment contract exists to show Aging Report";;
-          this.commen.loadingChanged.next(false)
-          return
+          this.errorMessage = "No payment contract exists to show Aging Report";
+          this.commen.loadingChanged.next(false);
+          return;
         }
         this.agingReportResponseModel = data.body as AgingReportResponseModel[];
-
+        this.agingReportResponseModel.forEach(x => {
+          x.payerName = this.commen.getPayersList().filter(y => y.id == x.payerId)[0] ? this.commen.getPayersList().filter(y => y.id == x.payerId)[0].name : '';
+        });
         this.commen.loadingChanged.next(false);
       }
 
@@ -171,7 +162,7 @@ export class AgingReportComponent implements OnInit {
             data: [Number(((this.data.aged1to30 / this.data.sum) * 100).toFixed()), Number(((this.data.aged31to60 / this.data.sum) * 100).toFixed()), Number(((this.data.aged61to90 / this.data.sum) * 100).toFixed()), Number(((this.data.aged91to120 / this.data.sum) * 100).toFixed()), Number(((this.data.aged121to150 / this.data.sum) * 100).toFixed()),
             Number(((this.data.aged151to180 / this.data.sum) * 100).toFixed()), Number(((this.data.aged181to365 / this.data.sum) * 100).toFixed()), Number(((this.data.aged365 / this.data.sum) * 100).toFixed())],
             backgroundColor: '#3060AA',
-            label:'%',    
+            label: '%',
 
             hoverBackgroundColor: '#3060AA',
             datalabels: {
