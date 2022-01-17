@@ -47,6 +47,7 @@ export class SearchBeneficiaryComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.beneficiaries = [];
+         
         this.beneficiaries = event.body["content"] as BeneficiarySearch[];
         this.length = event.body["totalElements"]
       }
