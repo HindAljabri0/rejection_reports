@@ -26,4 +26,5 @@ export const environment = {
   providerNphiesApproval: `${host}/approvals`,
   nphiesClaimUploader: `${host}/upload-v2`,
   nphiesPollManagement: `${host}/poll-management`,
+  contractManagementService: `${host}/contract-billing`
 };
