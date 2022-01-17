@@ -14,6 +14,7 @@ export class UploadCardData {
     invalid: number;
     downloadable: number;
     submitted_outside_waseel: number;
+    duplicate:number;
     isManualUpload?: boolean = false;
 
 }

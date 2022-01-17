@@ -40,7 +40,7 @@ export class CommunicationRequestsComponent implements OnInit {
   getCommunicationRequests() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId, this.page, this.pageSize).subscribe((event: any) => {
+    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId, 'approval', this.page, this.pageSize).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
