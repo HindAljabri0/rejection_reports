@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.username.value, this.password.value).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.authService.isUserNameUpdated.subscribe(updated => {
-          if (updated) {
+          if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {
             const lastVisitedPath = localStorage.getItem('lastVisitedPath');
             if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
               this.router.navigate(lastVisitedPath.split('/'));

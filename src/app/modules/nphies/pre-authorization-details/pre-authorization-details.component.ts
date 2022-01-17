@@ -18,7 +18,10 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
 
-  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices, private sanitizer: DomSanitizer, private dialog: MatDialog) { }
+  constructor(
+    private sharedDataService: SharedDataService,
+    private sharedServices: SharedServices,
+    private sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.readNotification();

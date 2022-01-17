@@ -41,6 +41,7 @@ import { TagInputModule } from 'ngx-chips';
 import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
 import { AddCommunicationDialogComponent } from '../nphies/add-communication-dialog/add-communication-dialog.component';
 import { CancelReasonModalComponent } from '../nphies/preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
+import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-transactions.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { CancelReasonModalComponent } from '../nphies/preauthorization-transacti
   imports: [
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
+      { path: 'transactions', component: ClaimTransactionsComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
       { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent },
     ]),

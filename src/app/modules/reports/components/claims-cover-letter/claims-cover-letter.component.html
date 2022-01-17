@@ -6,13 +6,15 @@
         <form [formGroup]="FormClaimCover" (ngSubmit)="onSubmit()">
             <div class="row small-gutter">
                 <div class="col-3">
-                    <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')}">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('tpaORpayer').hasError('required')}">
                         <label class="control-label">TPA or Payer</label>
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select formControlName="tpaORpayer">
                                 <mat-option value="">Select TPA or Payer</mat-option>
                                 <mat-optgroup *ngFor="let group of groups" [label]="group.name">
-                                    <mat-option *ngFor="let option of group.options" [value]="option.id" (onSelectionChange)="selectChange($event,group.name)">
+                                    <mat-option *ngFor="let option of group.options" [value]="option.id"
+                                        (onSelectionChange)="selectChange($event,group.name)">
                                         {{option.name}}
                                     </mat-option>
                                 </mat-optgroup>
@@ -24,10 +26,12 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
                         <label class="control-label">Month</label>
                         <div class="date-picker">
-                            <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" formControlName="month" placeholder="Select month"
+                            <input autocomplete="off" class="form-control date-picker" bsDatepicker
+                                [bsConfig]="datePickerConfig" formControlName="month" placeholder="Select month"
                                 (onShown)="onOpenCalendar($event)" />
                         </div>
                         <div *ngIf="isSubmitted && FormClaimCover.get('month').hasError('required')">
@@ -50,9 +54,10 @@
                 <img src="./assets/{{detailTopActionIcon}}" />
             </button>
         </div>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="claimCoverList.length > 0">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="errorMessage == null">
             <div class="fixed-height">
-                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0"
+                    *ngIf="claimCoverList.length > 0">
                     <thead>
                         <tr>
                             <th>Description</th>
@@ -66,7 +71,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let claimCover of claimCoverList">
-                            <td>{{getPayerName(claimCover.payerId)}}</td>
+                            <td>{{claimCover.description}}</td>
                             <td>{{claimCover.gross}}<span class="currency"> SR</span></td>
                             <td>{{claimCover.discount}}<span class="currency"> SR</span></td>
                             <td>{{claimCover.patientShare}}<span class="currency"> SR</span></td>
@@ -85,9 +90,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <app-empty-state *ngIf="claimCoverList.length == 0" class="claim-list-empty-state"
+                    icon="ic-empty-search.svg" message='Select criteria to generate cover letter'>
+                </app-empty-state>
             </div>
         </ng-scrollbar>
-        <app-empty-state *ngIf="claimCoverList.length == 0" class="claim-list-empty-state" icon="ic-empty-search.svg" message='Select criteria to generate cover letter'>
-        </app-empty-state>
+        <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+            <p class="error-card m-0">{{errorMessage}}</p>
+        </div>
     </div>
 </div>

@@ -23,6 +23,7 @@ import { ReportsComponent } from 'src/app/pages/reports/reports-page.component';
 import { GeneralSummaryStatementReportComponent } from 'src/app/pages/reports/general-summary-statement-report/general-summary-statement-report.component';
 import { RejectionComparisonReportComponent } from './components/rejection-comparison-report/rejection-comparison-report.component';
 import { ClaimsCoverLetterComponent } from './components/claims-cover-letter/claims-cover-letter.component';
+import { PayerClaimsReportComponent } from './components/payer-claims-report/payer-claims-report.component';
 
 
 
@@ -50,6 +51,7 @@ const routes: Routes = [
   { path: 'submission-report', component: ReportsComponent },
   { path: 'claims-cover-letter', component: ClaimsCoverLetterComponent },
   { path: 'general-summary-statement-report', component: GeneralSummaryStatementReportComponent },
+  { path: 'payer-claims-report', component: PayerClaimsReportComponent },
 ];
 
 @NgModule({
