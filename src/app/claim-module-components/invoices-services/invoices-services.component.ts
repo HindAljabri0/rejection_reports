@@ -240,8 +240,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       }
     });
 
-
-
     this.invoice.forEach(invoice => {
       this.addInvoice(false);
       const index = this.controllers.length - 1;
