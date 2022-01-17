@@ -77,6 +77,10 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     }
   }
 
+  OpenReuseModal() {
+    this.dialogRef.close({ openReUse: true });
+  }
+
   closeDialog() {
     this.dialogRef.close(true);
   }

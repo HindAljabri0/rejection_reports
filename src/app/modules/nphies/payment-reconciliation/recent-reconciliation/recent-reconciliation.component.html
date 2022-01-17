@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let pr of paymentReconciliations">
+          <tr *ngFor="let pr of paymentReconciliations" [ngClass]="{'text-warning light-bg-warning': pr.notificationStatus !== 'read'}">
             <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">
               {{pr.reconciliationId}}</td>
             <td class="row-click" (click)="RedirectToDetails(pr.reconciliationId, pr.notificationStatus, pr.notificationId)">

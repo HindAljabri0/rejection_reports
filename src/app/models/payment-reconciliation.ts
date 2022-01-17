@@ -17,6 +17,8 @@ export class PaymentReconciliation extends Paginateable {
   providerNphiesId: number;
   paymentNoticeStatus: string;
   issuerName: string;
+  notificationId: number;
+  notificationStatus: string;
 
   constructor(body: {}) {
     super(body);
@@ -34,5 +36,7 @@ export class PaymentReconciliation extends Paginateable {
     this.reconciliationIdentifierUrl = body["reconciliationIdentifierUrl"];
     this.providerNphiesId = body["providerNphiesId"];
     this.paymentNoticeStatus = body["paymentNoticeStatus"];
+    this.notificationId =  body["notificationId"];
+    this.notificationStatus =  body["notificationStatus"];
   }
 }
