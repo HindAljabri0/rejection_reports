@@ -306,6 +306,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .brand-header .right-block>div,.brand-header .right-block>button,.brand-header .right-block>.language-switch{margin-right: 4px;}
 .brand-header .right-block>div:last-child,.brand-header .right-block>button:last-child,.brand-header .right-block>.language-switch:last-child{margin-right: 0;}
 .brand-header .icon-btn.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 24px;left: 16px;}
+span.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 36px;right: 17px;}
 .brand-header .icon-btn .innerIcon {position: absolute;top: 9px;left: 7.5px;font-size: 16px;color: #3060AA;font-weight: bold;}
 .brand-header .user-info {font-size: 12px;line-height: 18px; background-color: rgba(255, 255, 255, 0.08);padding: 14px 12px 14px 16px;display: flex;margin-left: 8px;align-items: center;}
 .brand-header .logout{background-color: #2958a0;margin-left: 8px;}
