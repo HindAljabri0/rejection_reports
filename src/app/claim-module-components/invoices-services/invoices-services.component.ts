@@ -221,9 +221,28 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
+  invoiceHasError(index: Number) {
+    return this.errors.filter(x => Number(x.code) == index).length > 0 ? true : false
+  }
+  invoice: Invoice[] = [];
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
+    this.invoice=[];
     this.controllers = [];
-    claim.invoice.forEach(invoice => {
+    this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
+
+    this.invoice = claim.invoice.slice().sort((inv1, inv2) => {
+
+      if (this.invoiceHasError(inv2.invoiceId) && !this.invoiceHasError(inv1.invoiceId)) {
+        return 1;
+      } else if (!this.invoiceHasError(inv2.invoiceId) && this.invoiceHasError(inv1.invoiceId)) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+   
+    this.invoice.forEach(invoice => {
       this.addInvoice(false);
       const index = this.controllers.length - 1;
       this.controllers[index].invoice = invoice;
