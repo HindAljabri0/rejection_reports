@@ -101,8 +101,8 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
-    const requestURL = `/providers/${providerId}/payments/${paymentReference}`;
+  downloadPaymentClaimSummaryAsCSV(providerId: string,  payerId, fromDate, toDate) {
+    const requestURL = `/providers/${providerId}/payments?fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
     // tslint:disable-next-line:max-line-length
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
@@ -110,7 +110,7 @@ export class ReportsService {
 
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
-    const requestURL = `/providers/${providerId}/submissions?` + `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
+    const requestURL = `/providers/${providerId}/submissions/download?` + `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
     // tslint:disable-next-line:max-line-length
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);

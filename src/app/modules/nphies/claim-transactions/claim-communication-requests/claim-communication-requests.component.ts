@@ -1,21 +1,22 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { ProcessedTransaction } from 'src/app/models/processed-transaction';
-import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
-import { SharedServices } from 'src/app/services/shared.services';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { MatPaginator } from '@angular/material';
+import { PaginatedResult } from 'src/app/models/paginatedResult';
+import { CommunicationRequest } from 'src/app/models/communication-request';
+import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-processed-transactions',
-  templateUrl: './processed-transactions.component.html',
-  styles: []
+  selector: 'app-claim-communication-requests',
+  templateUrl: './claim-communication-requests.component.html',
+  styleUrls: ['./claim-communication-requests.component.css']
 })
-export class ProcessedTransactionsComponent implements OnInit {
+export class ClaimCommunicationRequestsComponent implements OnInit {
 
   @Input() payersList: any;
   @Output() openDetailsDialogEvent = new EventEmitter<any>();
+
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
 
   paginatorPagesNumbers: number[];
@@ -24,8 +25,9 @@ export class ProcessedTransactionsComponent implements OnInit {
   page: number;
   pageSize: number;
 
-  processedTransactionModel: PaginatedResult<ProcessedTransaction>;
-  processedTransactions = [];
+  communicationRequestModel: PaginatedResult<CommunicationRequest>;
+  communicationRequests = [];
+
 
   constructor(
     private sharedServices: SharedServices,
@@ -36,26 +38,25 @@ export class ProcessedTransactionsComponent implements OnInit {
   ngOnInit() {
   }
 
-  getProcessedTransactions() {
+
+  getCommunicationRequests() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId, 'approval', this.page, this.pageSize).subscribe((event: any) => {
+    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId, 'claim', this.page, this.pageSize).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          // this.sharedServices.unReadProcessedCount = 0;
-          // this.sharedServices.markAsRead();
-          this.processedTransactionModel = new PaginatedResult(body, ProcessedTransaction);
-          this.processedTransactions = this.processedTransactionModel.content;
-          this.processedTransactions.forEach(x => {
+          this.communicationRequestModel = new PaginatedResult(body, CommunicationRequest);
+          this.communicationRequests = this.communicationRequestModel.content;
+          this.communicationRequests.forEach(x => {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
           });
-          const pages = Math.ceil((this.processedTransactionModel.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.communicationRequestModel.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.processedTransactionModel.number;
-          this.paginator.pageIndex = this.processedTransactionModel.number;
-          this.paginator.pageSize = this.processedTransactionModel.numberOfElements;
+          this.manualPage = this.communicationRequestModel.number;
+          this.paginator.pageIndex = this.communicationRequestModel.number;
+          this.paginator.pageSize = this.communicationRequestModel.numberOfElements;
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -73,7 +74,6 @@ export class ProcessedTransactionsComponent implements OnInit {
     });
   }
 
-
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
@@ -90,7 +90,7 @@ export class ProcessedTransactionsComponent implements OnInit {
     this.paginationChange(event);
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.getProcessedTransactions();
+    this.getCommunicationRequests();
   }
 
   paginationChange(event) {
@@ -98,18 +98,19 @@ export class ProcessedTransactionsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId, responseId, notificationId, notificationStatus) {
-    if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
-      this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
-    }
-    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
+  openDetailsDialog(requestId, communicationId, notificationId, notificationStatus) {
+    // if (this.communicationRequests.filter(x => x.notificationId === notificationId)[0]) {
+    //   this.communicationRequests.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
+    // }
+    // this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId, 'notificationStatus': notificationStatus });
   }
 
   get paginatorLength() {
-    if (this.processedTransactionModel != null) {
-      return this.processedTransactionModel.totalElements;
+    if (this.communicationRequestModel != null) {
+      return this.communicationRequestModel.totalElements;
     } else {
       return 0;
     }
   }
+
 }

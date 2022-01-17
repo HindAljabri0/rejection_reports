@@ -83,12 +83,16 @@ export class SidebarComponent implements OnInit {
   }
 
   get NewAuthTransactions() {
-    // if (this.sharedServices.unReadProcessedCount > 0 || this.sharedServices.unReadComunicationRequestCount > 0) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
     const transCount = this.sharedServices.unReadProcessedCount + this.sharedServices.unReadComunicationRequestCount;
+    return transCount;
+  }
+
+  get RecentReconciliations() {
+    return this.sharedServices.unReadRecentCount;
+  }
+
+  get NewClaimTransactions() {
+    const transCount = this.sharedServices.unReadClaimProcessedCount + this.sharedServices.unReadClaimComunicationRequestCount;
     return transCount;
   }
 }

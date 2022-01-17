@@ -88,10 +88,21 @@
 
 <!-- payment info start -->
 <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, -->
-<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14" *ngIf="data.responseDecision">
+<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14" *ngIf="data.responseDecision && data.responseDecision.claimResDecisionCategories">
   <h5 class="align-self-center medium pb-2 text-primary">Total</h5>
   <div class="row">
-    <div class="col-auto">
+
+    <div class="col-auto" *ngFor="let res of data.responseDecision.claimResDecisionCategories">
+      <div class="inline-label-table auto-width">
+        <label>{{res.category}}:</label>
+        <p class="text-primary">
+          <span>{{res.categoryValue}} <span
+              class="currency">SR</span></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- <div class="col-auto">
       <div class="inline-label-table auto-width">
         <label>Benefit Amount:</label>
         <p class="text-primary">
@@ -170,7 +181,7 @@
           <span *ngIf="!data.responseDecision.taxTotalValue">-</span>
         </p>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>
@@ -304,11 +315,22 @@
         </tr>
         <tr *ngIf="currentSelectedItem == i">
           <td colspan="9">
-            <div class="box mb-2" *ngIf="item.itemDecision">
+            <div class="box mb-2" *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
               <h5 class="align-self-center medium pb-2">Adjudication</h5>
               <div class="row">
                 <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
-                <div class="col-2">
+
+                <div class="col-2" *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                  <div class="inline-label-table auto-width">
+                    <label>{{res.category}}:</label>
+                    <p class="text-primary">
+                      <span>{{res.categoryValue}} <span
+                          class="currency">SR</span></span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- <div class="col-2">
                   <div class="inline-label-table auto-width">
                     <label>Benefit Amount:</label>
                     <p class="text-primary">
@@ -427,7 +449,8 @@
                       <span *ngIf="!item.itemDecision.approvedQuantityValue">-</span>
                     </p>
                   </div>
-                </div>
+                </div> -->
+
               </div>
             </div>
             <div class="box mb-2">

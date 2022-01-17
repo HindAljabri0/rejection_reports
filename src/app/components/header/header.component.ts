@@ -3,15 +3,13 @@ import { SharedServices } from '../../services/shared.services';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadRequest, DownloadStatus } from 'src/app/models/downloadRequest';
+import { DownloadRequest } from 'src/app/models/downloadRequest';
 import { MatMenuTrigger } from '@angular/material';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { HttpRequest, HttpResponse } from '@angular/common/http';
-import { Renderer2 } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-declare function initFreshChat(): any;
 
 @Component({
   selector: 'app-header',
@@ -21,6 +19,7 @@ declare function initFreshChat(): any;
 export class HeaderComponent implements OnInit {
   collapsed = true;
   userName: string;
+  authUsername: string;
   providerName: string;
   providerId: string;
 
@@ -31,7 +30,8 @@ export class HeaderComponent implements OnInit {
   notificationIconClasses = 'mat-icon-button mat-button-base ';
 
   thereIsActiveDownloads = false;
-  downloads: DownloadRequest[] = [];
+  providerDownloads: DownloadRequest[] = [];
+  adminDownloads: DownloadRequest[] = [];
   watchingProcessed = false;
   showWhatsAppSupport = false;
 
@@ -39,7 +39,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private sharedServices: SharedServices,
-    private renderer: Renderer2,
     public router: Router,
     public authService: AuthService,
     private downloadService: DownloadService,
@@ -62,6 +61,7 @@ export class HeaderComponent implements OnInit {
 
   getUserData() {
     this.userName = this.authService.getUserName();
+    this.authUsername = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
     this.providerId = this.authService.getProviderId();
   }
@@ -85,23 +85,35 @@ export class HeaderComponent implements OnInit {
     this.watchPreAuthorizationChanges();
 
 
-    this.downloadService.downloads.subscribe(downloads => {
-      this.downloads.unshift(...downloads);
-      this.thereIsActiveDownloads = downloads.length > 0;
+    this.downloadService.providerDownloads.subscribe(downloads => {
+      this.providerDownloads.unshift(...downloads);
+      setTimeout(() => this.downloadMenuRef.openMenu(), 500);
+    });
+    this.downloadService.adminDownloads.subscribe(downloads => {
+      this.adminDownloads.unshift(...downloads);
       setTimeout(() => this.downloadMenuRef.openMenu(), 500);
     });
 
-    this.reportsService.getAllDownloadsForProvider(this.providerId, null, null).subscribe(downloads => {
-      this.downloads = []
-      if (downloads instanceof HttpResponse) {
+    if (this.isProvider) {
+      this.reportsService.getAllDownloadsForProvider(this.providerId, null, null).subscribe(downloads => {
+        this.providerDownloads = [];
+        if (downloads instanceof HttpResponse) {
+          this.providerDownloads = downloads.body['content'] as DownloadRequest[];
+        }
+      });
+    }
+    if (this.isAdmin) {
+      this.reportsService.getAllDownloadsForProvider(this.authUsername, null, null).subscribe(downloads => {
+        this.adminDownloads = [];
+        if (downloads instanceof HttpResponse) {
+          this.adminDownloads = downloads.body['content'] as DownloadRequest[];
+        }
+      });
+    }
+  }
 
-        this.downloads = downloads.body['content'] as DownloadRequest[];
-        this.thereIsActiveDownloads = this.downloads.length > 0;
-
-      }
-    });
-
-
+  get isThereAreActiveDownloads() {
+    return this.providerDownloads.length > 0 || this.adminDownloads.length > 0;
   }
 
   setNewNotificationIndecater(show: boolean) {
@@ -150,23 +162,24 @@ export class HeaderComponent implements OnInit {
 
       if (splitedValue[0] === 'approval-notifications') {
         this.sharedServices.getProcessedCount();
-        // const model: any = {};
-        // // tslint:disable-next-line:radix
-        // model.notificationId = parseInt(splitedValue[2]);
-        // // tslint:disable-next-line:radix
-        // model.responseId = parseInt(splitedValue[1]);
-        // this.sharedServices.addProcessedNotifications(model);
       }
 
-      if (splitedValue[0] === 'communication-request-notification') {
+      if (splitedValue[0] === 'approval-communication-request-notification') {
         this.sharedServices.getCommunicationRequestCount();
-        // const model: any = {};
-        // // tslint:disable-next-line:radix
-        // model.notificationId = parseInt(splitedValue[2]);
-        // // tslint:disable-next-line:radix
-        // model.communicationId = parseInt(splitedValue[1]);
-        // this.sharedServices.addCommunicationRequestNotifications(model);
       }
+
+      if (splitedValue[0] === 'payment-reconciliation-notification') {
+        this.sharedServices.getRecentReconciliationCount();
+      }
+
+      if (splitedValue[0] === 'claim-notifications') {
+        this.sharedServices.getClaimProcessedCount();
+      }
+
+      if (splitedValue[0] === 'claim-communication-request-notification') {
+        this.sharedServices.getClaimCommunicationRequestCount();
+      }
+
 
     });
   }
@@ -179,12 +192,20 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  get hasNewDownload(){
-    return this.downloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
+  get hasNewProviderDownload() {
+    return this.providerDownloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
+  }
+
+  get hasNewAdminDownload() {
+    return this.adminDownloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
   }
 
   get isProvider() {
     return this.sharedServices.isProvider;
+  }
+
+  get isAdmin() {
+    return this.sharedServices.isAdmin;
   }
 
 }

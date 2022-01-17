@@ -42,6 +42,10 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
 import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
+import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
+import { ClaimProcessedTransactionsComponent } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
+import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
+import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 
 
 @NgModule({
@@ -63,7 +67,6 @@ import { RecentReconciliationComponent } from './payment-reconciliation/recent-r
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
-  
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
@@ -75,10 +78,10 @@ import { RecentReconciliationComponent } from './payment-reconciliation/recent-r
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
     RecentReconciliationComponent,
-
-  
-   
-    
+    ClaimTransactionsComponent,
+    ClaimProcessedTransactionsComponent,
+    ClaimCommunicationRequestsComponent,
+    ReuseApprovalModalComponent,
   ],
   imports: [
     CommonModule,
@@ -91,7 +94,6 @@ import { RecentReconciliationComponent } from './payment-reconciliation/recent-r
     SmoothScrollModule,
     NphiesRoutingModule,
     CarouselModule,
-    
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
@@ -106,7 +108,7 @@ import { RecentReconciliationComponent } from './payment-reconciliation/recent-r
     AddCommunicationDialogComponent,
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
-   
+    ReuseApprovalModalComponent
   ],
   exports: [
     ApiErrorsDialogComponent

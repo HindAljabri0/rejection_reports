@@ -186,7 +186,9 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.onPayeeTypeChange();
           if (this.claimId && this.uploadId) {
             this.pageMode = 'VIEW';
-            this.getCommunications();
+            if (this.responseId) {
+              this.getCommunications();
+            }
             this.disableControls();
             this.getClaimDetails();
           } else {
@@ -416,8 +418,8 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.practitionerRole = result.practitionerRole;
               x.careTeamRole = result.careTeamRole;
               x.speciality = result.speciality;
-              x.speciallityCode = result.speciallityCode;
-              x.qualificationCode = result.speciallityCode;
+              x.specialityCode = result.specialityCode;
+              x.qualificationCode = result.specialityCode;
               x.practitionerRoleName = result.practitionerRoleName;
               x.careTeamRoleName = result.careTeamRoleName;
             }
@@ -1001,8 +1003,8 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.practitionerRole = x.practitionerRole;
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
-        model.specialityCode = x.speciallityCode;
-        model.qualificationCode = x.speciallityCode;
+        model.specialityCode = x.specialityCode;
+        model.qualificationCode = x.qualificationCode;
         return model;
       });
 
@@ -1044,7 +1046,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
+          model.isPackage = x.isPackage === 1 ? true : false;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1082,7 +1084,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
+          model.isPackage = x.isPackage === 1 ? true : false;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1651,7 +1653,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.practitionerRole = x.practitionerRole;
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
-        model.specialityCode = x.speciallityCode;
+        model.specialityCode = x.specialityCode;
         // tslint:disable-next-line:max-line-length
         model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
         // tslint:disable-next-line:max-line-length
@@ -1781,7 +1783,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   setBeneficiary(res) {
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, 'Priya Dalal').subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
