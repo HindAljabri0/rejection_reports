@@ -134,7 +134,7 @@ export class ReportsService {
 
   saveBupaRejectionReport(providerId: string, data: CreditReportQueryModel) {
     const body = { ...data };
-    Object.keys(body).some(key => {
+    Object.keys(body).forEach(key => {
       if (body[key].toString().includes('%')) {
         body[key] = +body[key].replace(/%/g, '');
       }
