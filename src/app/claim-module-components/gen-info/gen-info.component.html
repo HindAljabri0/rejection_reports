@@ -272,7 +272,7 @@
     </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
         <div class="form-group" [class.has-error]="fieldHasError('CASETYP')" [matTooltip]="getFieldError('CASETYP')">
-            <label class="control-label">Case Type</label>
+            <label class="control-label">Claim Type</label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedCaseType"
                     (selectionChange)="selectedCaseType = $event.value; updateClaim('caseType');"
