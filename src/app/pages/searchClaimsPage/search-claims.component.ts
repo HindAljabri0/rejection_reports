@@ -417,7 +417,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       || name === ClaimStatus.PAID.toLowerCase()
       || name === ClaimStatus.Under_Processing.toLowerCase()
       || name === ClaimStatus.Under_Submision.toLowerCase()
-      || name === ClaimStatus.DUPLICATE.toLowerCase()
+      || (name === ClaimStatus.DUPLICATE.toLowerCase()&& !this.commen.isAdmin)
       || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
     this.isPBMValidationVisible = this.apiPBMValidationEnabled
       && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
