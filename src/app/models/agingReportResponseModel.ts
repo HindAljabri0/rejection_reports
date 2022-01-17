@@ -1,5 +1,6 @@
 export class AgingReportResponseModel {
     payerId: number;
+    payerName: string;
     outstandingAmount: string;
     totalAmount: string;
     aged1to30 = 0;
