@@ -148,11 +148,13 @@
                                                     </mat-icon>
                                                 </td>
                                                 <td class="row-click" (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
-                                                    <mat-icon *ngIf="serviceHasErrors(i+(currentInvoicesPage*currentInvoicesSize), j)">
-                                                        error</mat-icon>
+                                                    <mat-icon class="mr-1" *ngIf="serviceHasError(service)" [class.text-danger]="serviceHasError(service)">
+                                                        error</mat-icon> 
+                                                    <!-- <mat-icon *ngIf="serviceHasErrors(i+(currentInvoicesPage*currentInvoicesSize), j)">
+                                                        error</mat-icon> -->
                                                 </td>
                                                 <td class="row-click" (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
-                                                    {{(j+1)}}</td>
+                                                   {{(j+1)}}</td>
                                                 <td class="row-click" (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     {{service.serviceCode.value}}</td>
                                                 <td class="row-click" (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
