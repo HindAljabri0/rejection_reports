@@ -53,7 +53,7 @@ export class ClaimDataComponent implements OnInit {
     this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
     this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getClaimObjectErrors).subscribe(errors => this.errors = errors);
-    this.store.select(getCaseType).subscribe(type => this.isInpatientClaim = (type == 'INPATIENT'));
+    this.store.select(getCaseType).subscribe(type => this.isInpatientClaim = (type == 'INPATIENT')||(type == 'OUTPATIENT'));
     this.store.select(getClaim).subscribe(claim => this.claim = claim);
     this.store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     this.getPBMValidation();
