@@ -1,21 +1,22 @@
 <div class="row">
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('ADMDT')" [matTooltip]="getFieldError('ADMDT')">
-            <label class="control-label">Admission Date & Time<span class="asterisk">*</span></label>
+            <label class="control-label">Admission Date & Time<span 
+                *ngIf='isInpatientClaim' class="asterisk">*</span></label>
             <input type="datetime-local" class="form-control" placeholder="Select addmission date & time" [formControl]="admissionDateController"
                 (change)="updateClaim('admissionDate')">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('DISCHARGEDT')" [matTooltip]="getFieldError('DISCHARGEDT')">
-            <label class="control-label">Discharge Date & Time<span class="asterisk">*</span></label>
+            <label class="control-label">Discharge Date & Time<span   *ngIf='isInpatientClaim' class="asterisk">*</span></label>
             <input type="datetime-local" placeholder="Select discharge date & time" [formControl]="dischargeDateController" (change)="updateClaim('dischargeDate')"
                 class="form-control">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('ESTLENSTAY')" [matTooltip]="getFieldError('ESTLENSTAY')">
-            <label class="control-label">Length of Stay<span class="asterisk">*</span></label>
+            <label class="control-label">Length of Stay<span   *ngIf='isInpatientClaim' class="asterisk">*</span></label>
             <input type="number" placeholder="Enter length of stay" [formControl]="lengthOfStayController" (change)="updateClaim('lengthOfStay')" class="form-control">
         </div>
     </div>
@@ -37,13 +38,13 @@
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('RoomNo')" [matTooltip]="getFieldError('RoomNo')">
-            <label class="control-label">Room Number<span class="asterisk">*</span></label>
+            <label class="control-label">Room Number<span   *ngIf='isInpatientClaim' class="asterisk">*</span></label>
             <input placeholder="Enter room number" [formControl]="roomNumberController" (change)="updateClaim('roomNumber')" class="form-control">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('BedNo')" [matTooltip]="getFieldError('BedNo')">
-            <label class="control-label">Bed Number<span class="asterisk">*</span></label>
+            <label class="control-label">Bed Number<span   *ngIf='isInpatientClaim' class="asterisk">*</span></label>
             <input placeholder="Enter bed number" [formControl]="bedNumberController" (change)="updateClaim('bedNumber')" class="form-control">
         </div>
     </div>
