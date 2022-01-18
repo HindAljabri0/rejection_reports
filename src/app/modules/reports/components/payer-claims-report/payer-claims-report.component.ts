@@ -12,6 +12,8 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { MatPaginator } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
 @Component({
   selector: 'app-payer-claims-report',
@@ -19,7 +21,7 @@ import { DatePipe } from '@angular/common';
   styles: []
 })
 export class PayerClaimsReportComponent implements OnInit {
-  payers: { id: string, name: string }[];
+  payers = [];
   claimStatusSummaryData: any;
   payerId = '';
   fromDate = new FormControl();
@@ -59,6 +61,9 @@ export class PayerClaimsReportComponent implements OnInit {
     private searchService: SearchService,
     private downloadService: DownloadService,
     public datepipe: DatePipe,
+    private sharedServices: SharedServices,
+    private superAdmin: SuperAdminService,
+    private dbMappingService: DbMappingService
   ) {
     this.page = 0;
     this.pageSize = 10;
@@ -68,9 +73,12 @@ export class PayerClaimsReportComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   lastDownloadSubscriptions: Subscription;
 
-  ngOnInit() {
-    this.payers = [];
+  providers: any[] = [];
+  filteredProviders: any[] = [];
+  selectedProvider: string;
+  providerLoader = false;
 
+  ngOnInit() {
     this.PayerClaimsReportForm = this.formBuilder.group({
       providerId: ['', Validators.required],
       fromDate: ['', Validators.required],
@@ -78,6 +86,9 @@ export class PayerClaimsReportComponent implements OnInit {
       payerId: ['', Validators.required],
       summaryCriteria: ['', Validators.required],
     });
+
+    this.getProviders();
+
     // this.commen.getPayersList().map(value => {
     //   this.payers.push({
     //     id: `${value.id}`,
@@ -85,6 +96,56 @@ export class PayerClaimsReportComponent implements OnInit {
     //   });
     // });
 
+  }
+
+  getProviders() {
+    this.sharedServices.loadingChanged.next(true);
+    this.providerLoader = true;
+    this.superAdmin.getProviders().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.providers = event.body;
+          this.filteredProviders = this.providers;
+          this.sharedServices.loadingChanged.next(false);
+          this.providerLoader = false;
+        }
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      this.providerLoader = false;
+      console.log(error);
+    });
+  }
+
+  updateFilter() {
+    // tslint:disable-next-line:max-line-length
+    this.filteredProviders = this.providers.filter(provider => `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.PayerClaimsReportForm.controls.providerId.value.toLowerCase())
+    );
+  }
+
+  selectProvider(providerId: string = null) {
+    if (providerId !== null) {
+      this.selectedProvider = providerId;
+    } else {
+      // tslint:disable-next-line:no-shadowed-variable
+      const providerId = this.PayerClaimsReportForm.controls.providerId.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
+    this.getPayers();
+  }
+
+  getPayers() {
+    if (this.selectedProvider == null || this.selectedProvider == '') { return; }
+    this.sharedServices.loadingChanged.next(true);
+    this.dbMappingService.getPayerMapping(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.payers = event.body['mappingList'];
+        this.payers = this.payers.filter(x => x.enabled === true);
+      }
+      this.sharedServices.loadingChanged.next(false);
+    }, err => {
+      this.sharedServices.loadingChanged.next(false);
+    });
   }
 
   get formCn() { return this.PayerClaimsReportForm.controls; }
@@ -131,18 +192,19 @@ export class PayerClaimsReportComponent implements OnInit {
     this.errorMessage = null;
     if (this.PayerClaimsReportForm.valid) {
       this.commen.loadingChanged.next(true);
-      let Provider = this.PayerClaimsReportForm.controls['providerId'].value
-      let fromDate = moment(this.PayerClaimsReportForm.controls['fromDate'].value).format('YYYY-MM-DD');
-      let toDate = moment(this.PayerClaimsReportForm.controls['toDate'].value).format('YYYY-MM-DD');
-      let payerId = this.PayerClaimsReportForm.controls['payerId'].value
+
+      const providerId = this.selectedProvider;
+      const fromDate = moment(this.PayerClaimsReportForm.controls.fromDate.value).format('YYYY-MM-DD');
+      const toDate = moment(this.PayerClaimsReportForm.controls.toDate.value).format('YYYY-MM-DD');
+      const payerId = this.PayerClaimsReportForm.controls.payerId.value;
 
       this.PayerClaimsReportForm.controls['summaryCriteria'].value.forEach(element => {
         this.filtterStatuses = this.filtterStatuses.concat(element.split(",", 3));
-
       });
 
 
-      this.searchService.getPayerClaimReportResults(Provider, payerId, this.filtterStatuses, fromDate, toDate, this.page, this.pageSize).subscribe((event) => {
+      // tslint:disable-next-line:max-line-length
+      this.searchService.getPayerClaimReportResults(providerId, payerId, this.filtterStatuses, fromDate, toDate, this.page, this.pageSize).subscribe((event) => {
         if (event instanceof HttpResponse) {
 
           this.searchedClaim = event.body["content"] as SearchedClaim[];
@@ -196,9 +258,8 @@ export class PayerClaimsReportComponent implements OnInit {
         }
       });
   }
+
+  get isLoading() {
+    return this.sharedServices.loading;
+  }
 }
-
-
-
-
-
