@@ -240,6 +240,21 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         }
         return check==1?true:false
       }
+
+      serviceHasError(service) {
+        let iaHasError = false;
+        this.errors.forEach(x => {
+          var serviceId = Number(x.code.replace(/\D+/g, ''))
+          if (service.serviceId == serviceId) {
+    
+            iaHasError = true;
+          }
+    
+        })
+        return iaHasError;
+      }
+
+      
   invoice: Invoice[] = [];
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
     this.invoice=[];
