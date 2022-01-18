@@ -1,6 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Add Contract</p>
+        <p *ngIf="addMode">  Add Contract</p>
+        <p *ngIf="EditMode">  Edit Contract</p>
     </div>
     <div class="p-14 bg-white">
         <h5 class="form-title pt-0">
