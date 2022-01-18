@@ -2,71 +2,99 @@
   <div class="block-header has-border">
     <p>Payer Claims Report</p>
   </div>
-  <div class="block-filter-panel has-border" [formGroup]="PayerClaimsReportForm">
-    <div class="row small-gutter">
-      <div class="col-md">
-        <div class="form-group" [class.has-error]="submitted && formCn.providerId.errors">
-          <label class="control-label">Provider</label>
-          <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" />
-        </div>
-        <div *ngIf="submitted && formCn.providerId.errors">
-            <span class="error-text" *ngIf="formCn.payerId.errors.required">Please select a Provider</span>
-          </div>
-      </div>
-      <div class="col-md">
-        <div class="form-group" [class.has-error]="submitted && formCn.payerId.errors">
-          <label class="control-label">Payer</label>
-          <input type="text" class="form-control" placeholder="Select Payer" formControlName="payerId" />
-        </div>
-        <div *ngIf="submitted && formCn.payerId.errors">
-            <span class="error-text" *ngIf="formCn.payerId.errors.required">Please select a Payer</span>
-          </div>
-      </div>
-      <div class="col-md">
-        <div class="form-group"  [class.has-error]="submitted && formCn.summaryCriteria.errors">
-          <label class="control-label">Status</label>
-          <mat-form-field class="form-control custom-select-control">
-            <mat-select multiple formControlName="summaryCriteria">
-              <mat-option *ngFor="let statuse of statuses" [value]="statuse.code">
-                {{statuse.name}}
+  <div class="block-filter-panel has-border">
+    <form [formGroup]="PayerClaimsReportForm" (ngSubmit)="search()">
+      <div class="row small-gutter">
+        <div class="col-md">
+          <div class="form-group"
+            [class.has-error]="submitted && PayerClaimsReportForm.get('providerId').hasError('required')">
+            <label class="control-label">Provider</label>
+            <!-- <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" /> -->
+            <input [readonly]="isLoading" type="text" class="form-control" [matAutocomplete]="auto"
+              formControlName="providerId" (input)="updateFilter()" (keyup.enter)="selectProvider()"
+              placeholder="Select provider">
+            <mat-autocomplete autoActiveFirstOption #auto>
+              <mat-option *ngFor="let provider of filteredProviders"
+                [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                (click)="selectProvider(provider.switchAccountId)">
+                {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
               </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div *ngIf="submitted && formCn.summaryCriteria.errors">
-            <span class="error-text" *ngIf="formCn.summaryCriteria.errors.required">Please select a Statuse</span>
+            </mat-autocomplete>
+            <div *ngIf="submitted && PayerClaimsReportForm.get('providerId').hasError('required')">
+              <span class="error-text">Please select a Provider</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md">
+          <div class="form-group"
+            [class.has-error]="submitted && PayerClaimsReportForm.get('payerId').hasError('required')">
+            <label class="control-label">Payer</label>
+            <!-- <input type="text" class="form-control" placeholder="Select Payer" formControlName="payerId" /> -->
+            <mat-form-field class="form-control custom-select-control">
+              <!-- <mat-label>Select payer</mat-label> -->
+              <mat-select formControlName="payerId" required>
+                <mat-option value="">Select payer</mat-option>
+                <mat-option *ngFor="let payer of payers" [value]="payer.payerId">
+                  {{payer.payerName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="submitted && PayerClaimsReportForm.get('payerId').hasError('required')">
+              <span class="error-text">Please select a Payer</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md">
+          <div class="form-group"
+            [class.has-error]="submitted && PayerClaimsReportForm.get('summaryCriteria').hasError('required')">
+            <label class="control-label">Status</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select multiple formControlName="summaryCriteria">
+                <mat-option *ngFor="let statuse of statuses" [value]="statuse.code">
+                  {{statuse.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="submitted && PayerClaimsReportForm.get('summaryCriteria').hasError('required')">
+              <span class="error-text">Please select a Statuse</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-group"
+            [class.has-error]="submitted && PayerClaimsReportForm.get('fromDate').hasError('required')">
+            <label class="control-label">From Date</label>
+            <div class="date-picker">
+              <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
+                [bsConfig]="datePickerConfig" placeholder="Select From Date" required [maxDate]="PayerClaimsReportForm.controls.toDate.value"
+                (bsValueChange)="dateValidation($event)" />
+            </div>
+            <div *ngIf="submitted && PayerClaimsReportForm.get('fromDate').hasError('required')">
+              <span class="error-text">Please select from date</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-group"
+            [class.has-error]="submitted && PayerClaimsReportForm.get('toDate').hasError('required')">
+            <label class="control-label">To Date</label>
+            <div class="date-picker">
+              <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
+                [bsConfig]="datePickerConfig" [minDate]="PayerClaimsReportForm.controls.fromDate.value" placeholder="Select To Date" required />
+            </div>
+            <div *ngIf="submitted && PayerClaimsReportForm.get('toDate').hasError('required')">
+              <span class="error-text">Please select to date</span>
+            </div>
           </div>
         </div>
       </div>
-       <div class="col-md">
-         <div class="form-group" [class.has-error]="submitted && formCn.fromDate.errors">
-          <label class="control-label">From Date</label>
-          <div class="date-picker">
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
-              [bsConfig]="datePickerConfig" placeholder="Select From Date" required
-              (bsValueChange)="dateValidation($event)" />
-          </div>
-          <div *ngIf="submitted && formCn.fromDate.errors">
-            <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a date</span>
-          </div>
-        </div>
-    </div> 
-      <div class="col-md">
-        <div class="form-group"  [class.has-error]="submitted && formCn.toDate.errors">
-          <label class="control-label">To Date</label>
-          <div class="date-picker">
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
-              [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required 
-              (bsValueChange)="dateValidation($event)" />
-          </div>
-          <div *ngIf="submitted && formCn.toDate.errors">
-            <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
-          </div>
-        </div>
+      <div class="form-group">
+        <button type="submit" mat-flat-button color="primary">Search</button>
       </div>
-    </div>
-    <div class="form-group">
-      <button type="button" mat-flat-button color="primary" (click)='search()'>Search</button>
-    </div>
+    </form>
+
   </div>
   <div class="bg-white">
     <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
@@ -95,8 +123,8 @@
       </button>
     </div>
 
-    <div class="bg-white" *ngIf='errorMessage==null'>
-      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+    <div class="bg-white">
+      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchedClaim && searchedClaim.length > 0">
         <div class="fixed-height">
           <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
             <thead>
@@ -114,10 +142,10 @@
             <tbody>
               <tr *ngFor="let data of searchedClaim">
                 <th>{{data.providerClaimNumber}}</th>
-                <th>{{data.drName}}</th>
+                <th>{{data.physicianname}}</th>
                 <th>{{data.memberId}}</th>
                 <th>{{data.patientFileNumber}}</th>
-                <th>{{data.claimDate}}</th>
+                <th>{{data.visitDate}}</th>
                 <th>{{data.netAmount}}</th>
                 <th>{{data.status}}</th>
                 <th>{{data.statusDetail}}</th>
@@ -126,8 +154,10 @@
           </table>
         </div>
       </ng-scrollbar>
+      <app-empty-state *ngIf="searchedClaim && searchedClaim.length === 0" message='No records found!'>
+      </app-empty-state>
     </div>
-    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+    <!-- <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
       <p class="error-card m-0">{{errorMessage}}</p>
-    </div>
+    </div> -->
   </div>
