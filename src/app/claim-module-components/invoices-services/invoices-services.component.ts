@@ -221,16 +221,16 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-  invoiceHasError(index: Invoice) {
+  invoiceHasError(invoice: Invoice) {
 let check =0;
-    let invoicesError = this.errors.filter(x => Number(x.code) == index.invoiceId);
+    let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
     if (invoicesError.length > 0) {
       check++;
       return true
     } else {
       this.errors.forEach(x => {
         var serviceId = Number(x.code.replace(/\D+/g, ''))
-        for (let service of index.service) {
+        for (let service of invoice.service) {
 
           if (service.serviceId == serviceId) {
             check++;
@@ -240,6 +240,21 @@ let check =0;
       })
     }
     return check==1?true:false
+  }
+
+
+
+  serviceHasError(service) {
+    let iaHasError = false;
+    this.errors.forEach(x => {
+      var serviceId = Number(x.code.replace(/\D+/g, ''))
+      if (service.serviceId == serviceId) {
+
+        iaHasError = true;
+      }
+
+    })
+    return iaHasError;
   }
   invoice: Invoice[] = [];
 
