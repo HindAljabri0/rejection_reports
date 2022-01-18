@@ -1280,6 +1280,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 --------------------------------------------------------------------------------------------------------*/
 .download-progress-view-panel {width: 440px;max-width: none !important;}
 .download-progress-view-panel .mat-menu-content:not(:empty){padding: 0;background: #fff;}
+.download-progress-view-panel .primary-tab .mat-tab-label{-ms-flex-preferred-size: 0;flex-basis: 0;-ms-flex-positive: 1;flex-grow: 1;}
 .download-progress-view {display: flex;border-bottom: 1px solid #e1e1e1;}
 .download-progress-view:last-child{border-bottom:0;}
 .download-progress-view>.left{display: flex;justify-content: center;flex-basis: 88px;max-width: 88px;flex-grow: 0;flex-shrink: 0;min-height: 88px;border-right: 1px solid #e1e1e1;padding-top: 20px;position: relative;}
