@@ -145,6 +145,8 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .primary-menu .mat-menu-item{height:auto;line-height: 20px;padding: 10px 16px;}
 .primary-menu.primary-menu-items .mat-menu-item{white-space: normal;}
 .primary-menu .menu-title{color: #707070;padding: 4px 10px;}
+.primary-menu .mat-menu-item .title{font-size: 16px;line-height: 22px;display: block;font-weight: 500;}
+.download-menu.mat-menu-panel{max-width: 350px;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
 .primary-link{color:#3060AA;text-decoration: none;cursor: pointer;}
 .primary-link.disabled{color:#8d8d8d;text-decoration: none;cursor: unset;}
