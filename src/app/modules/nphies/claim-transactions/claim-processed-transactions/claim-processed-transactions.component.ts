@@ -1,11 +1,14 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatDialogRef, MatDialog } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { ProcessedTransaction } from 'src/app/models/processed-transaction';
+import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CreateClaimNphiesComponent } from '../../create-claim-nphies/create-claim-nphies.component';
 
 @Component({
   selector: 'app-claim-processed-transactions',
@@ -27,14 +30,20 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
   processedTransactionModel: PaginatedResult<ProcessedTransaction>;
   processedTransactions = [];
 
+  params: SearchPageQueryParams = new SearchPageQueryParams();
+  claimDialogRef: MatDialogRef<any, any>;
+
   constructor(
+    public dialog: MatDialog,
     private sharedServices: SharedServices,
     private dialogService: DialogService,
+    public router: Router,
+    public routeActive: ActivatedRoute,
     private providerNphiesSearchService: ProviderNphiesSearchService,
   ) { }
 
   ngOnInit() {
-    
+
   }
 
   getProcessedTransactions() {
@@ -99,11 +108,45 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId, responseId, notificationId, notificationStatus) {
-    // if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
-    //   this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
-    // }
-    // this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
+  showClaim(claimId: string, uploadId: string, claimResponseId: string, notificationId: string, notificationStatus: string) {
+
+    if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
+      this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
+    }
+
+    this.readNotification(notificationStatus, notificationId);
+
+    this.params.claimId = claimId;
+    this.params.uploadId = uploadId;
+    this.params.claimResponseId = claimResponseId;
+    this.resetURL();
+    this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+      autoFocus: false, data: { claimId }
+    });
+
+    this.claimDialogRef.afterClosed().subscribe(result => {
+      this.claimDialogRef = null;
+      this.params.claimId = null;
+      this.params.editMode = null;
+      this.resetURL();
+    });
+  }
+
+  readNotification(notificationStatus: string, notificationId: string) {
+    if (notificationStatus === 'unread') {
+      this.sharedServices.unReadRecentCount = this.sharedServices.unReadRecentCount - 1;
+      if (notificationId) {
+        this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+      }
+    }
+  }
+
+  resetURL() {
+    this.router.navigate([], {
+      relativeTo: this.routeActive,
+      queryParams: { ...this.params, editMode: null, size: null }
+    });
   }
 
   get paginatorLength() {

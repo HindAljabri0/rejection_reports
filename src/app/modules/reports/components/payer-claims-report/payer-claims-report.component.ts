@@ -238,14 +238,14 @@ export class PayerClaimsReportComponent implements OnInit {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') {
       return;
     }
-    let ProviderId = this.PayerClaimsReportForm.controls['providerId'].value
-    let fromDate = moment(this.PayerClaimsReportForm.controls['fromDate'].value).format('YYYY-MM-DD');
-    let toDate = moment(this.PayerClaimsReportForm.controls['toDate'].value).format('YYYY-MM-DD');
-    let payerId = this.PayerClaimsReportForm.controls['payerId'].value
+    const providerId = this.selectedProvider;
+    const fromDate = moment(this.PayerClaimsReportForm.controls.fromDate.value).format('YYYY-MM-DD');
+    const toDate = moment(this.PayerClaimsReportForm.controls.toDate.value).format('YYYY-MM-DD');
+    const payerId = this.PayerClaimsReportForm.controls.payerId.value;
 
     this.lastDownloadSubscriptions = this.downloadService
       .startGeneratingDownloadFile(this.searchService.generatePayerClaimsReport(
-        ProviderId,
+        providerId,
         payerId,
         fromDate, toDate,
         this.filtterStatuses
