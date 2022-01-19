@@ -9,6 +9,9 @@ export class CommunicationRequest extends Paginateable {
   notificationId: number;
   notificationStatus: string;
 
+  uploadId: number;
+  responseId: number;
+
   constructor(body: {}) {
     super(body);
     this.communicationId = body['communicationId'];
@@ -18,5 +21,7 @@ export class CommunicationRequest extends Paginateable {
     this.payerNphiesId = body['payerNphiesId'];
     this.notificationId = body['notificationId'];
     this.notificationStatus = body['notificationStatus'];
+    this.uploadId = body['uploadId'];
+    this.responseId = body['responseId'];
   }
 }
