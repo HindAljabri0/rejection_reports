@@ -221,6 +221,11 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
+  invoiceHasDuplicateService(invoice: Invoice){
+    let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId &&x.error.includes('We found duplicate services in Invoice') );
+    return invoicesHasDuplicateService.length>0?true:false
+  }
+  
   invoiceHasError(invoice: Invoice) {
     let check = 0;
     let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
