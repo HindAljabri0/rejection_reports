@@ -29,7 +29,6 @@ export class DownloadRequest {
     downloadAttempts$: Subject<string>;
     private _downloadAttempts: string;
 
-
     constructor() {
         this.fileId$ = new Subject();
         this.fileId$.subscribe(fileId => this._fileId = fileId);
