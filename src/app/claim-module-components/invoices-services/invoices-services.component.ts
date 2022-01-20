@@ -221,8 +221,16 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
+  invoiceHasDuplicateService(invoice: Invoice) {
+    let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId && x.error.includes('We found duplicate services in Invoice'));
+    return invoicesHasDuplicateService.length > 0 ? true : false
+  }
+
+
+
+
   invoiceHasError(invoice: Invoice) {
-let check =0;
+    let check = 0;
     let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
     if (invoicesError.length > 0) {
       check++;
@@ -239,7 +247,7 @@ let check =0;
         }
       })
     }
-    return check==1?true:false
+    return check == 1 ? true : false
   }
 
 
@@ -594,10 +602,10 @@ let check =0;
 
   createInvoiceFromControl(i: number) {
     const invoice: Invoice = new Invoice();
-    if(this.controllers[i].invoice!=null){
+    if (this.controllers[i].invoice != null) {
       invoice.invoiceId = this.controllers[i].invoice.invoiceId;
     }
-    
+
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
     invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
@@ -642,7 +650,7 @@ let check =0;
     const netVat = this.calcNetVat(service, net);
     const patientShareVATamount = this.calcPatientVatRate(service);
     const newService: Service = {
-      serviceId:service.serviceId,
+      serviceId: service.serviceId,
       serviceNumber: service.serviceNumber,
       serviceType: service.serviceType.value,
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
