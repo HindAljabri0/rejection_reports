@@ -27,9 +27,11 @@ export class AdmissionComponent implements OnInit {
   errors: FieldError[] = [];
 
   constructor(private store: Store, private datePipe: DatePipe) { }
+
   isInpatientClaim:boolean
   ngOnInit() {
     this.store.select(getCaseType).subscribe(type => this.isInpatientClaim = (type == 'INPATIENT'))
+
     this.store.select(getPageMode).pipe(
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))

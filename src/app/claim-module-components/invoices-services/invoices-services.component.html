@@ -60,7 +60,7 @@
                         <mat-icon *ngIf="invoiceHasErrors(i+(currentInvoicesPage*currentInvoicesSize))">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
-                        <mat-icon class="mr-1"
+       <mat-icon class="mr-1"
                             *ngIf="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)"
                             [class.text-danger]="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)">
                             error</mat-icon>
@@ -71,6 +71,7 @@
                             error</mat-icon>
                         {{(i+1+(currentInvoicesPage*currentInvoicesSize))}}
                     </td>
+
                     <td width="200">
                         <div class="form-group mt-n1 mb-n1"
                             [class.has-error]="fieldHasError('INVDATE', invoice?.invoice?.invoiceId) "
@@ -107,6 +108,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+                        
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
                         {{invoice?.invoice?.invoiceGDPN?.net?.value}}</td>
@@ -171,6 +173,7 @@
                                                     <mat-icon *ngIf="service.isOpen" class="size-21">expand_more
                                                     </mat-icon>
                                                 </td>
+
                                                 <td class="row-click"
                                                     (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     <mat-icon class="mr-1" *ngIf="serviceHasError(service)"
@@ -184,6 +187,7 @@
                                                     {{(j+1)}}</td>
                                                 <td class="row-click"
                                                     (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
+
                                                     {{service.serviceCode.value}}</td>
                                                 <td class="row-click"
                                                     (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">

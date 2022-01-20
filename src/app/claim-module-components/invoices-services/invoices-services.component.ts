@@ -215,7 +215,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   ngOnDestroy() {
     this._onDestroy.next();
     this._onDestroy.complete();
@@ -266,9 +265,11 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
   }
   invoice: Invoice[] = [];
 
+
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
+    this.invoice=[];
     this.controllers = [];
-    this.invoice = [];
+
     this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
 
     this.invoice = claim.invoice.slice().sort((inv1, inv2) => {
@@ -602,9 +603,11 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
   createInvoiceFromControl(i: number) {
     const invoice: Invoice = new Invoice();
+
     if (this.controllers[i].invoice != null) {
       invoice.invoiceId = this.controllers[i].invoice.invoiceId;
     }
+
 
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
     invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
@@ -650,7 +653,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     const netVat = this.calcNetVat(service, net);
     const patientShareVATamount = this.calcPatientVatRate(service);
     const newService: Service = {
+
       serviceId: service.serviceId,
+
       serviceNumber: service.serviceNumber,
       serviceType: service.serviceType.value,
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddEditCareTeamModalComponent } from './add-edit-care-team-modal/add-edit-care-team-modal.component';
@@ -23,6 +23,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -30,6 +31,10 @@ import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-d
   styles: []
 })
 export class AddPreauthorizationComponent implements OnInit {
+
+  @Input() claimReuseId: number;
+  @Input() data: any;
+  paymentAmount = 0;
 
   beneficiarySearchController = new FormControl();
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
@@ -99,7 +104,11 @@ export class AddPreauthorizationComponent implements OnInit {
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
-    private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
+    private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private sharedServices: SharedServices,
+    private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) {
@@ -110,6 +119,132 @@ export class AddPreauthorizationComponent implements OnInit {
     this.getPayees();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
+    if (this.claimReuseId) {
+      this.setReuseValues();
+    }
+  }
+
+  setReuseValues() {
+    const date = moment(this.data.preAuthorizationInfo.dateOrdered, 'DD-MM-YYYY').format('YYYY-MM-DD');
+    // tslint:disable-next-line:max-line-length
+    this.FormPreAuthorization.controls.dateOrdered.setValue(date);
+    if (this.data.preAuthorizationInfo.payeeType) {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] ? this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] : '');
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
+    }
+    // tslint:disable-next-line:max-line-length
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
+    switch (this.data.preAuthorizationInfo.type) {
+      case 'institutional':
+        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
+        break;
+      case 'professional':
+      case 'vision':
+      case 'pharmacy':
+      case 'oral':
+        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
+        break;
+    }
+    if (this.data.preAuthorizationInfo.subType != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
+    }
+    if (this.data.preAuthorizationInfo.eligibilityOfflineId != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.eligibilityOfflineId.setValue(this.data.preAuthorizationInfo.eligibilityOfflineId);
+    }
+    if (this.data.preAuthorizationInfo.eligibilityOfflineDate != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.eligibilityOfflineDate.setValue(this.data.preAuthorizationInfo.eligibilityOfflineDate);
+    }
+    if (this.data.preAuthorizationInfo.eligibilityResponseId != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.eligibilityResponseId.setValue(this.data.preAuthorizationInfo.eligibilityResponseId);
+    }
+    if (this.data.accident) {
+      if (this.data.accident.accidentType) {
+        // tslint:disable-next-line:max-line-length
+        this.FormPreAuthorization.controls.accidentType.setValue(this.sharedDataService.accidentTypeList.filter(x => x.value === this.data.accident.accidentType)[0]);
+      }
+      if (this.data.accident.streetName) {
+        this.FormPreAuthorization.controls.streetName.setValue(this.data.accident.streetName);
+      }
+      if (this.data.accident.city) {
+        this.FormPreAuthorization.controls.city.setValue(this.data.accident.city);
+      }
+      if (this.data.accident.state) {
+        this.FormPreAuthorization.controls.state.setValue(this.data.accident.state);
+      }
+      if (this.data.accident.country) {
+        this.FormPreAuthorization.controls.country.setValue(this.data.accident.country);
+      }
+      // this.FormPreAuthorization.controls.countryName.setValue(this.data.beneficiary.beneficiaryName);
+      if (this.data.accident.date) {
+        this.FormPreAuthorization.controls.date.setValue(this.data.accident.date);
+      }
+    }
+    this.Diagnosises = this.data.diagnosis;
+    this.SupportingInfo = this.data.supportingInfo;
+    this.CareTeams = this.data.careTeam;
+    if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
+      this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
+      this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
+      this.VisionSpecifications = this.data.visionPrescription.lensSpecifications;
+    }
+
+    this.Items = this.data.items;
+    this.setBeneficiary(this.data);
+  }
+
+  setBeneficiary(res) {
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        if (body instanceof Array) {
+          this.beneficiariesSearchResult = body;
+          this.selectedBeneficiary = body[0];
+          this.FormPreAuthorization.patchValue({
+            beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
+            beneficiaryId: res.beneficiary.beneficiaryId
+          });
+          this.FormPreAuthorization.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
+        }
+
+        // this.disableFields();
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
+  }
+
+  disableFields() {
+    this.FormPreAuthorization.controls.beneficiaryName.disable();
+    this.FormPreAuthorization.controls.beneficiaryId.disable();
+    this.FormPreAuthorization.controls.insurancePlanId.disable();
+    this.FormPreAuthorization.controls.dateOrdered.disable();
+    this.FormPreAuthorization.controls.payee.disable();
+    this.FormPreAuthorization.controls.payeeType.disable();
+    this.FormPreAuthorization.controls.type.disable();
+    this.FormPreAuthorization.controls.subType.disable();
+    this.FormPreAuthorization.controls.accidentType.disable();
+    this.FormPreAuthorization.controls.streetName.disable();
+    this.FormPreAuthorization.controls.city.disable();
+    this.FormPreAuthorization.controls.state.disable();
+    this.FormPreAuthorization.controls.country.disable();
+    this.FormPreAuthorization.controls.countryName.disable();
+    this.FormPreAuthorization.controls.date.disable();
+    this.FormPreAuthorization.controls.dateWritten.disable();
+    this.FormPreAuthorization.controls.prescriber.disable();
+    this.FormPreAuthorization.controls.eligibilityOfflineDate.disable();
+    this.FormPreAuthorization.controls.eligibilityOfflineId.disable();
+    this.FormPreAuthorization.controls.eligibilityResponseId.disable();
   }
 
   getPayees() {
@@ -294,8 +429,8 @@ export class AddPreauthorizationComponent implements OnInit {
               x.practitionerRole = result.practitionerRole;
               x.careTeamRole = result.careTeamRole;
               x.speciality = result.speciality;
-              x.speciallityCode = result.speciallityCode;
-              x.qualificationCode = result.speciallityCode;
+              x.specialityCode = result.specialityCode;
+              x.qualificationCode = result.specialityCode;
               x.practitionerRoleName = result.practitionerRoleName;
               x.careTeamRoleName = result.careTeamRoleName;
             }
@@ -827,6 +962,9 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.FormPreAuthorization.valid) {
 
       this.model = {};
+      if(this.claimReuseId){
+        this.model.claimReuseId = this.claimReuseId;
+      }
       this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
@@ -903,8 +1041,8 @@ export class AddPreauthorizationComponent implements OnInit {
         model.practitionerRole = x.practitionerRole;
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
-        model.specialityCode = x.speciallityCode;
-        model.qualificationCode = x.speciallityCode;
+        model.specialityCode = x.specialityCode;
+        model.qualificationCode = x.qualificationCode;
         return model;
       });
 
@@ -948,7 +1086,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
+          model.isPackage = x.isPackage === 1 ? true : false;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -986,7 +1124,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
+          model.isPackage = x.isPackage === 1 ? true : false;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1165,6 +1303,28 @@ export class AddPreauthorizationComponent implements OnInit {
         filename: item.attachmentName, attachment: item.byteArray
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
+  }
+
+
+
+  getImageOfBlob(attachmentName, attachment) {
+    const fileExt = attachmentName.split('.').pop();
+    if (fileExt.toLowerCase() === 'pdf') {
+      const objectURL = `data:application/pdf;base64,` + attachment;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else {
+      const objectURL = `data:image/${fileExt};base64,` + attachment;
+      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
+  }
+
+
+  get period() {
+    if (this.data.period) {
+      return this.data.period.replace('P', '').replace('D', ' Days').replace('M', ' Months').replace('Y', ' Years');
+    } else {
+      return this.data.period;
+    }
   }
 
 }

@@ -137,6 +137,7 @@ export class AuthService {
           localStorage.setItem('cchi_id', event.body['cchiId']);
           localStorage.setItem('provider_id', event.body['providerId']);
           localStorage.setItem('user_name', event.body['fullName']);
+          localStorage.setItem('auth_username', event.body['username']);
           localStorage.setItem('provider_name', event.body['providerName']);
           const payers = event.body['payers'];
           let payersStr = '';
@@ -166,6 +167,9 @@ export class AuthService {
   }
   getUserName() {
     return localStorage.getItem('user_name');
+  }
+  getAuthUsername() {
+    return localStorage.getItem('auth_username');
   }
   getProviderName() {
     return localStorage.getItem('provider_name');

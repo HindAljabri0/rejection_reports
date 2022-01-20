@@ -412,6 +412,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.isAllCards = false;
     }
 
+    // get canBeDeleted() {
+    //   return (this.sharedServices.isAdmin && this.sharedServices.isProvider)
+    //     || (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
+    // }
     const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLowerCase();
     this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID.toLowerCase()
       || name === ClaimStatus.PAID.toLowerCase()

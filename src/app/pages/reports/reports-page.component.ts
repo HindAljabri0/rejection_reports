@@ -218,20 +218,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.resetURL();
   }
 
-  download() {
-    if (this.actionIcon == 'ic-check-circle.svg') {
-      return;
-    }
-    this.downloadService.startDownload(this.reportsService.downloadPaymentClaimSummaryAsCSV(
-      this.providerId, this.paymentReference)).subscribe(status => {
-        if (status == DownloadStatus.ERROR) {
-          this.actionIcon = 'ic-download.svg';
-        } else {
-          this.actionIcon = 'ic-check-circle.svg';
-        }
-      });
-  }
-
   resetURL() {
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);

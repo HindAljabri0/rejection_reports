@@ -145,6 +145,8 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .primary-menu .mat-menu-item{height:auto;line-height: 20px;padding: 10px 16px;}
 .primary-menu.primary-menu-items .mat-menu-item{white-space: normal;}
 .primary-menu .menu-title{color: #707070;padding: 4px 10px;}
+.primary-menu .mat-menu-item .title{font-size: 16px;line-height: 22px;display: block;font-weight: 500;}
+.download-menu.mat-menu-panel{max-width: 350px;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
 .primary-link{color:#3060AA;text-decoration: none;cursor: pointer;}
 .primary-link.disabled{color:#8d8d8d;text-decoration: none;cursor: unset;}
@@ -306,6 +308,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .brand-header .right-block>div,.brand-header .right-block>button,.brand-header .right-block>.language-switch{margin-right: 4px;}
 .brand-header .right-block>div:last-child,.brand-header .right-block>button:last-child,.brand-header .right-block>.language-switch:last-child{margin-right: 0;}
 .brand-header .icon-btn.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 24px;left: 16px;}
+span.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 36px;right: 17px;}
 .brand-header .icon-btn .innerIcon {position: absolute;top: 9px;left: 7.5px;font-size: 16px;color: #3060AA;font-weight: bold;}
 .brand-header .user-info {font-size: 12px;line-height: 18px; background-color: rgba(255, 255, 255, 0.08);padding: 14px 12px 14px 16px;display: flex;margin-left: 8px;align-items: center;}
 .brand-header .logout{background-color: #2958a0;margin-left: 8px;}
@@ -1277,6 +1280,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 --------------------------------------------------------------------------------------------------------*/
 .download-progress-view-panel {width: 440px;max-width: none !important;}
 .download-progress-view-panel .mat-menu-content:not(:empty){padding: 0;background: #fff;}
+.download-progress-view-panel .primary-tab .mat-tab-label{-ms-flex-preferred-size: 0;flex-basis: 0;-ms-flex-positive: 1;flex-grow: 1;}
 .download-progress-view {display: flex;border-bottom: 1px solid #e1e1e1;}
 .download-progress-view:last-child{border-bottom:0;}
 .download-progress-view>.left{display: flex;justify-content: center;flex-basis: 88px;max-width: 88px;flex-grow: 0;flex-shrink: 0;min-height: 88px;border-right: 1px solid #e1e1e1;padding-top: 20px;position: relative;}

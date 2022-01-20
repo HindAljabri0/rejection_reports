@@ -27,6 +27,8 @@ export class SearchedClaim extends Paginateable {
   batchNumber: number;
   statusApproval: string;
   descApproval: string;
+  visitDate: string;
+  physicianname: string;
   constructor(body: {}) {
     super(body);
     if (body != null) {
@@ -56,6 +58,8 @@ export class SearchedClaim extends Paginateable {
       this.statusApproval = body['statusApproval'];
       this.descApproval = body['descApproval'];
       this.processingStatus = body['processingStatus'];
+      this.visitDate = body['visitDate'];
+      this.physicianname = body['physicianname'];
     }
   }
 }

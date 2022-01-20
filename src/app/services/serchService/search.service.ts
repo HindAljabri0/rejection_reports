@@ -394,9 +394,17 @@ export class SearchService {
     return this.http.request(request);
   }
 
-  getClaimSearchResults(providerId: string, payer: string, statuses: string[],fromDate: string, toDate: string , page?:Number,pageSize?:Number ) {
-    const requestUrl = `/providers/${providerId}/claims/details?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&status=${statuses}`;
+  getPayerClaimReportResults(providerId: string, payer: string, statuses: string[],fromDate: string, toDate: string , page:Number=0,pageSize:Number=10 ) {
+    const requestUrl = `/admin/payer-report?payerId=${payer}&fromDate=${fromDate}&toDate=${toDate}&statuses=${statuses}&providerId=${providerId}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+    return this.http.request(request);
+  }
+
+  //
+  generatePayerClaimsReport(providerId: string, payerId: string, fromDate: string, toDate: string,statuses?:string[]){
+    const requestUrl =`/admin/payer-report?providerId=${providerId}&payerId=${payerId}&fromDate=${fromDate}&toDate= ${toDate}&statuses=${statuses}`;
+
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl,'', { responseType: 'text', reportProgress: true});
     return this.http.request(request);
   }
 
