@@ -46,7 +46,7 @@ export class EditClaimComponent implements OnInit, OnDestroy {
   isViewOnly: boolean = false;
 
   routerSubscription: Subscription;
-
+  isEdit=null;
   constructor(
     private dialogRef: MatDialogRef<EditClaimComponent>,
     private store: Store,
@@ -197,7 +197,6 @@ export class EditClaimComponent implements OnInit, OnDestroy {
   
 
 
-  isEdit = null;
   save() {
     this.isEdit = 'true'
     if (this.isLoading) { return; }

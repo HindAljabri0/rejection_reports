@@ -219,10 +219,15 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     this._onDestroy.next();
     this._onDestroy.complete();
   }
-  invoiceHasDuplicateService(invoice: Invoice){
-    let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId &&x.error.includes('We found duplicate services in Invoice') );
-    return invoicesHasDuplicateService.length>0?'Duplicate services in Invoice':false
+
+  invoiceHasDuplicateService(invoice: Invoice) {
+    let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId && x.error.includes('We found duplicate services in Invoice'));
+    return invoicesHasDuplicateService.length > 0 ? true : false
   }
+
+
+
+
   invoiceHasError(invoice: Invoice) {
     let check = 0;
     let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
@@ -244,6 +249,8 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     return check == 1 ? true : false
   }
 
+
+
   serviceHasError(service) {
     let iaHasError = false;
     this.errors.forEach(x => {
@@ -256,11 +263,13 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     })
     return iaHasError;
   }
-
   invoice: Invoice[] = [];
+
+
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
     this.invoice=[];
     this.controllers = [];
+
     this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
 
     this.invoice = claim.invoice.slice().sort((inv1, inv2) => {
@@ -273,6 +282,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         return 0;
       }
     });
+
 
     this.invoice.forEach(invoice => {
       this.addInvoice(false);
@@ -594,10 +604,11 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
   createInvoiceFromControl(i: number) {
     const invoice: Invoice = new Invoice();
 
-    if(this.controllers[i].invoice!=null){
-
+    if (this.controllers[i].invoice != null) {
       invoice.invoiceId = this.controllers[i].invoice.invoiceId;
     }
+
+
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
     invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;

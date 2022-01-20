@@ -60,8 +60,7 @@
                         <mat-icon *ngIf="invoiceHasErrors(i+(currentInvoicesPage*currentInvoicesSize))">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
-
-                        <mat-icon class="mr-1"
+       <mat-icon class="mr-1"
                             *ngIf="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)"
                             [class.text-danger]="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)">
                             error</mat-icon>
@@ -189,7 +188,6 @@
                                                 <td class="row-click"
                                                     (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
 
-                                                  
                                                     {{service.serviceCode.value}}</td>
                                                 <td class="row-click"
                                                     (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
