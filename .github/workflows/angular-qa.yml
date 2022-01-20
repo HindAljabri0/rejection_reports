@@ -34,7 +34,7 @@ jobs:
     - name: npm install and npm run build
       run: |
         npm install -s
-        ng build --configuration=oci_qa-en
+        ./node_modules/@angular/cli/bin/ng build --configuration=oci_qa-en
         npm run post-build -- en
 
     - name: docker login
