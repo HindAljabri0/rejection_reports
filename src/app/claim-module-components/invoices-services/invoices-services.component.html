@@ -55,8 +55,12 @@
                         <mat-icon *ngIf="invoiceHasErrors(i+(currentInvoicesPage*currentInvoicesSize))">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
-                        <mat-icon class="mr-1" *ngIf="invoiceHasError(invoice.invoice)" [class.text-danger]="invoiceHasError(invoice.invoice)">
-                            error</mat-icon>  {{(i+1+(currentInvoicesPage*currentInvoicesSize))}}</td>
+                        <mat-icon class="mr-1" *ngIf="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)" [class.text-danger]="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)" >
+                            error</mat-icon>  
+                            <mat-icon class="mr-1" *ngIf="invoiceHasError(invoice.invoice)&&invoiceHasDuplicateService(invoice.invoice)" [class.text-danger]="invoiceHasDuplicateService(invoice.invoice)&&invoiceHasError(invoice.invoice)" matTooltip="Duplicate services in Invoice">
+                                error</mat-icon>  
+                            {{(i+1+(currentInvoicesPage*currentInvoicesSize))}}</td>
+                            
                     <td width="200">
                         <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDATE', invoice?.invoice?.invoiceId) "
                             [matTooltip]="getFieldError('INVDATE', invoice?.invoice?.invoiceId)">
