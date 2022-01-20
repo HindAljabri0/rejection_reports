@@ -57,7 +57,7 @@
                     <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
                         <mat-icon class="mr-1" *ngIf="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)" [class.text-danger]="invoiceHasError(invoice.invoice)&&!invoiceHasDuplicateService(invoice.invoice)" >
                             error</mat-icon>  
-                            <mat-icon class="mr-1" *ngIf="invoiceHasError(invoice.invoice)&&invoiceHasDuplicateService(invoice.invoice)" [class.text-danger]="invoiceHasDuplicateService(invoice.invoice)&&invoiceHasError(invoice.invoice)" matTooltip="Duplicate services in Invoice">
+                            <mat-icon class="mr-1" *ngIf="invoiceHasError(invoice.invoice)&&invoiceHasDuplicateService(invoice.invoice)!=false" [class.text-danger]="invoiceHasDuplicateService(invoice.invoice)&&invoiceHasError(invoice.invoice)!=false" [matTooltip]="invoiceHasDuplicateService(invoice.invoice)">
                                 error</mat-icon>  
                             {{(i+1+(currentInvoicesPage*currentInvoicesSize))}}</td>
                             
