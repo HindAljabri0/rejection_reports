@@ -8,6 +8,7 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import * as moment from 'moment';
+
 @Component({
   selector: 'app-provider-contract',
   templateUrl: './provider-contract.component.html',
@@ -25,10 +26,13 @@ export class ProviderContractComponent implements OnInit {
   providerLoader = false;
   paymentData: any[] = [];
   payersList: { id: number; name: string; arName: string; }[];
-  associatedPayers: { switchAccountId: number; name: string; arabicName: string; category: string; hasAssociatedPriceList: boolean; }[];
+  associatedPayers = [];
   activePayments: any = [];
   inActivePayments: any = [];
-  constructor(private dialog: MatDialog, private sharedServices: SharedServices, private superAdmin: SuperAdminService) { }
+  constructor(
+    private dialog: MatDialog,
+    private sharedServices: SharedServices,
+    private superAdmin: SuperAdminService) { }
 
   ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
@@ -60,7 +64,6 @@ export class ProviderContractComponent implements OnInit {
           isEditData,
           editData: item,
           selectedProvider: this.selectedProvider,
-          associatedPayers: this.associatedPayers
         }
       });
     dialogRef.afterClosed().subscribe(result => {

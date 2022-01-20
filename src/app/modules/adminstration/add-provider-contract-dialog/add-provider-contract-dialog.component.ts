@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 @Component({
   selector: 'app-add-provider-contract-dialog',
   templateUrl: './add-provider-contract-dialog.component.html',
@@ -39,7 +40,8 @@ export class AddProviderContractDialogComponent implements OnInit {
     private superAdmin: SuperAdminService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogService: DialogService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private dbMappingService: DbMappingService
   ) { }
 
   ngOnInit() {
@@ -246,21 +248,43 @@ export class AddProviderContractDialogComponent implements OnInit {
   getAssociatedPayers() {
     if (this.selectedProvider == null || this.selectedProvider == '') { return; }
     this.sharedServices.loadingChanged.next(true);
-    this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
+    this.dbMappingService.getPayerMapping(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
-        if (event.body instanceof Array) {
-          this.associatedPayers = event.body;
-          this.isProviderDisabled = false;
-          if (this.data.isEditData) {
-            this.isPayerSelected = false;
-            this.paymentProviderContractModel.payerid = parseInt(this.data.editData.payerId, 10);
-          }
+        // this.sharedServices.loadingChanged.next(false);
+        this.associatedPayers = event.body['mappingList'];
+        this.associatedPayers = this.associatedPayers.filter(x => x.enabled === true);
+         // enabled: true
+          // mappingName: "TCS"
+          // payerId: 313
+          // payerName: "TCS"
+          // providerId: "601"
+
+        this.isProviderDisabled = false;
+        if (this.data.isEditData) {
+          this.isPayerSelected = false;
+          this.paymentProviderContractModel.payerid = parseInt(this.data.editData.payerId, 10);
         }
-        this.sharedServices.loadingChanged.next(false);
       }
+      this.sharedServices.loadingChanged.next(false);
     }, err => {
       this.sharedServices.loadingChanged.next(false);
     });
+
+    // this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
+    //   if (event instanceof HttpResponse) {
+    //     if (event.body instanceof Array) {
+    //       this.associatedPayers = event.body;
+    //       this.isProviderDisabled = false;
+    //       if (this.data.isEditData) {
+    //         this.isPayerSelected = false;
+    //         this.paymentProviderContractModel.payerid = parseInt(this.data.editData.payerId, 10);
+    //       }
+    //     }
+    //     this.sharedServices.loadingChanged.next(false);
+    //   }
+    // }, err => {
+    //   this.sharedServices.loadingChanged.next(false);
+    // });
   }
   payerSelection(event) {
     if (event.value !== '') {

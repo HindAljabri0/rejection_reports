@@ -84,16 +84,18 @@
             </button>
             <div class="right-block">
                 <div class="actions">
-                    <mat-menu #downloadMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items">
+                    <mat-menu #downloadMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items download-menu">
                         <button mat-menu-item (click)="downloadWaseelFormat()">
-                            <span>Download CSV</span>
+                            <span class="title">Single-Sheet Format</span>
+                            <span class="text-grey d-block">Recommended for claims with small number of (invoices, services, labs, diagnosis</span>
                         </button>
                         <button mat-menu-item (click)="downloadSheetFormat()">
-                            <span>Download Multiple Spreadsheet (Excel Format)</span>
+                            <span class="title">Multi-Sheet Format</span>
+                            <span class="text-grey d-block">Recommended for claims with large number of (invoices, services, labs, diagnosis</span>
                         </button>
                         <button mat-menu-item (click)="downloadPayerFormat()"
                             *ngIf="summaries[selectedCardKey].statuses.length == 1 && (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))">
-                            <span>Download in Payer Format</span>
+                            <span class="title">Download in Payer Format</span>
                         </button>
                     </mat-menu>
                     <mat-menu #moreMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items">

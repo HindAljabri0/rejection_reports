@@ -23,6 +23,7 @@ import { ProcessedTransactionsComponent } from './processed-transactions/process
 import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
 import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ReuseApprovalModalComponent } from './reuse-approval-modal/reuse-approval-modal.component';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -405,11 +406,16 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent, dialogConfig);
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
-              if (!communicationId && notificationId) {
-                this.processedTransactions.getProcessedTransactions();
-              } else if (communicationId && notificationId) {
-                this.communicationRequests.getCommunicationRequests();
+              if (result.openReUse) {
+                this.OpenReuseApprovalModal(requestId, responseId);
+              } else {
+                if (!communicationId && notificationId) {
+                  this.processedTransactions.getProcessedTransactions();
+                } else if (communicationId && notificationId) {
+                  this.communicationRequests.getCommunicationRequests();
+                }
               }
+
             }
           }, error => { });
         }
@@ -509,6 +515,57 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         }
       }
     });
+  }
+
+  OpenReuseApprovalModal(requestId: number, responseId: number) {
+    this.sharedServices.loadingChanged.next(true);
+
+    let action: any;
+    action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+
+    // tslint:disable-next-line:max-line-length
+    action.subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+
+          const dialogConfig = new MatDialogConfig();
+          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+          dialogConfig.data = {
+            // tslint:disable-next-line:max-line-length
+            claimReuseId: requestId,
+            detailsModel: body
+          };
+
+          const dialogRef = this.dialog.open(ReuseApprovalModalComponent, dialogConfig);
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+
+            }
+          }, error => { });
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          if (error.error && error.error.errors) {
+            // tslint:disable-next-line:max-line-length
+            this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
+          }
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+
+
   }
 
   get NewTransactionProcessed() {

@@ -273,8 +273,12 @@ export class PaymentReferenceReportComponent implements OnInit {
     if (this.actionIcon === 'ic-check-circle.svg') {
       return;
     }
+
+    const fromDate = moment(this.fromDateControl.value).format('YYYY-MM-DD');
+    const toDate = moment(this.toDateControl.value).format('YYYY-MM-DD');
+
     this.downloadService.startGeneratingDownloadFile(this.reportService.downloadPaymentClaimSummaryAsCSV(
-      this.commen.providerId, this.paymentReference)).subscribe(status => {
+      this.commen.providerId, this.payerIdControl.value, fromDate, toDate)).subscribe(status => {
         if (status === DownloadStatus.ERROR) {
           this.actionIcon = 'ic-download.svg';
         } else {

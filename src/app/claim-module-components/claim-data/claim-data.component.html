@@ -33,6 +33,7 @@
             </ng-template>
             <claim-vital-signs></claim-vital-signs>
         </mat-tab>
+       
         <mat-tab *ngIf="isInpatientClaim">
             <ng-template mat-tab-label>
                 <mat-icon class="mr-1" *ngIf="admissionTabHasErrors()" [class.text-danger]="admissionTabHasErrors()">
