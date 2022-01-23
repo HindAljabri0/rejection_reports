@@ -49,6 +49,9 @@ import { ReuseApprovalModalComponent } from './preauthorization-transactions/reu
 import { UploadClaimComponent } from './upload-claim/upload-claim.component';
 import { MultiSheetFileUploadComponent } from './upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
 import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary/nphies-claim-summary.component';
+import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
+
+
 
 
 @NgModule({
@@ -85,6 +88,7 @@ import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary
     ClaimProcessedTransactionsComponent,
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
+    UploadsHistoryComponent,
   ],
   imports: [
     CommonModule,
