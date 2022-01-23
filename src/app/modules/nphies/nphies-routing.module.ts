@@ -13,7 +13,6 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { UploadClaimComponent } from './upload-claim/upload-claim.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 
-
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
   { path: 'eligibility-transactions', component: EligibilityTransactionsComponent },
@@ -29,6 +28,8 @@ const routes: Routes = [
   { path: 'uploads', component: NphiesUploadsComponent},
   { path: 'upload-claim', component: UploadClaimComponent},
   { path: 'upload/history', component:UploadsHistoryComponent },
+
+
 ];
 
 @NgModule({
