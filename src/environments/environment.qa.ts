@@ -27,7 +27,7 @@ export const environment = {
   nphiesClaimUploader: `${host}/upload-v2`,
 
   nphiesPollManagement: `${host}/poll-management`,
-  contractManagementService: `${host}/contract-billing`
+  contractManagementService: `${host}/contract-billing`,
 
   claimsDownloadsService: `${host}/downloads`
 
