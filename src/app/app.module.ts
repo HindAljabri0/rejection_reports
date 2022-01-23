@@ -197,6 +197,7 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
     MonacoEditorModule.forRoot(),
     ClaimModule,
 
+
   ],
   providers: [
     ThemeService,
