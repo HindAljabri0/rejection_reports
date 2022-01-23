@@ -98,6 +98,9 @@ import { NphiesModule } from './modules/nphies/nphies.module';
 import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-claims/nphies-search-claims.component';
 import { CertificateConfigurationComponent } from './pages/certificate-configuration/certificate-configuration.component';
 import { CertificateConfigurationModelComponent } from './pages/certificate-configuration-model/certificate-configuration-model.component';
+import { UploadClaimComponent } from './modules/nphies/upload-claim/upload-claim.component';
+import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphies-claim-summary/nphies-claim-summary.component';
+import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
 
 
 
@@ -164,7 +167,10 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
     ConfirmationAlertDialogComponent,
     NphiesSearchClaimsComponent,
     CertificateConfigurationComponent,
-    CertificateConfigurationModelComponent
+    CertificateConfigurationModelComponent,
+    UploadClaimComponent,
+    MultiSheetFileUploadComponent,
+    NphiesClaimSummaryComponent
   ],
   imports: [
     AppRoutingModule,
@@ -190,7 +196,7 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
     ClipboardModule,
     MonacoEditorModule.forRoot(),
     ClaimModule,
-    
+
   ],
   providers: [
     ThemeService,
