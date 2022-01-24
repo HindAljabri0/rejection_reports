@@ -121,7 +121,7 @@
                         <!-- (pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') &&  -->
                         <button type="button" class="delete-btn text-danger"
                             (click)="onDeleteInvoiceClick(i+(currentInvoicesPage*currentInvoicesSize))"
-                            *ngIf="controllers.length > 1">
+                            *ngIf="controllers.length > 1 && pageMode != 'VIEW'">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                     </td>
