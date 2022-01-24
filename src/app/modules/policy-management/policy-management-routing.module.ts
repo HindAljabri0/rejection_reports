@@ -7,8 +7,8 @@ import { PoliciesComponent } from './policies/policies.component';
 const routes: Routes = [
   { path: '', component: PoliciesComponent },
   { path: 'add', component: AddEditViewPolicyComponent },
-  { path: 'edit', component: AddEditViewPolicyComponent },
-  { path: 'view', component: AddEditViewPolicyComponent },
+  { path: 'edit/:policyId', component: AddEditViewPolicyComponent },
+  { path: 'view/:policyId', component: AddEditViewPolicyComponent },
   { path: 'class-management', component: ClassesComponent }
 ];
 
