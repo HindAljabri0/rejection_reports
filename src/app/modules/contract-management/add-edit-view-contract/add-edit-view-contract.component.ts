@@ -36,7 +36,7 @@ export class AddEditViewContractComponent implements OnInit {
 
 
   d = new Date();
-  oneyear = this.d.setDate(this.d.getDate() + 364);//new Date(this.d.setFullYear(this.d.getFullYear()+1),this.d.getMonth(),this.d.getDay());
+  oneyear = this.d.setDate(this.d.getDate() + 364);
   InsCompCodeController: FormControl = new FormControl();
   ContractIdController: FormControl = new FormControl();
   ContractNoController: FormControl = new FormControl();
