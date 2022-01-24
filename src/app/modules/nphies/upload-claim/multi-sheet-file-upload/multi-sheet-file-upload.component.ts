@@ -8,6 +8,7 @@ import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidati
 import * as XLSX from 'xlsx';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 type AOA = any[][];
 
 @Component({
@@ -32,7 +33,7 @@ export class MultiSheetFileUploadComponent implements OnInit {
 
   isVertical = true;
   constructor(
-    public uploadService: UploadService, public common: SharedServices,
+    public uploadService: NphiesClaimUploaderService, public common: SharedServices,
     private dialogService: DialogService, private adminService: AdminService,
     private fileValidationService: ClaimFilesValidationService) { }
 
@@ -44,7 +45,7 @@ export class MultiSheetFileUploadComponent implements OnInit {
     if (!this.checkfile()) {
       this.currentFileUpload = undefined;
     }
-    this.readFile();
+   // this.readFile();
   }
 
   readFile() {
@@ -77,7 +78,7 @@ export class MultiSheetFileUploadComponent implements OnInit {
         if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
           data.map(row => this.payerIdsFromCurrentFile.push(row['PAYERID']));
           this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(this.onlyUnique);
-          this.checkServiceCodeRestriction();
+          // this.checkServiceCodeRestriction();
         } else {
           this.showError(`Invalid file selected! It doesn't have 'PAYERID' column\n`);
         }
@@ -103,101 +104,102 @@ export class MultiSheetFileUploadComponent implements OnInit {
     }
   }
 
-  checkServiceCodeRestriction() {
-    const payersWithValidationOff = this.payerIdsFromCurrentFile.filter(id => this.serviceCodeValidationDisabledMessages.includes(id));
-    let count = payersWithValidationOff.length;
-    if (count == 0) {
-      this.common.loadingChanged.next(false);
-      this.checkPriceList();
-    }
-    payersWithValidationOff.forEach(payerId => {
-      this.common.loadingChanged.next(true);
-      if (payerId != undefined) {
-        this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.common.providerId, payerId).subscribe(event => {
-          if (event instanceof HttpResponse) {
-            const setting = JSON.parse(JSON.stringify(event.body));
-            if (setting.hasOwnProperty('value') && setting['value'] == 1) {
-              const index = this.serviceCodeValidationDisabledMessages.findIndex(id => id == payerId);
-              if (index != -1) {
-                this.serviceCodeValidationDisabledMessages.splice(index, 1);
-              }
-            }
-            count--;
-            if (count <= 0) {
-              this.common.loadingChanged.next(false);
-              this.checkPriceList();
-            }
-          }
-        }, errorEvent => {
-          if (errorEvent instanceof HttpErrorResponse) {
-            if (errorEvent.status == 404) {
-              this.serviceCodeValidationDisabledMessages.push(payerId);
-            }
-            count--;
-            if (count <= 0) {
-              this.common.loadingChanged.next(false);
-              this.checkPriceList();
-            }
-          }
-        });
-      }
-    });
-  }
+  // checkServiceCodeRestriction() {
+  //   const payersWithValidationOff = this.payerIdsFromCurrentFile.filter(id => this.serviceCodeValidationDisabledMessages.includes(id));
+  //   let count = payersWithValidationOff.length;
+  //   if (count == 0) {
+  //     this.common.loadingChanged.next(false);
+  //     this.checkPriceList();
+  //   }
+  //   payersWithValidationOff.forEach(payerId => {
+  //     this.common.loadingChanged.next(true);
+  //     if (payerId != undefined) {
+  //       this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.common.providerId, payerId).subscribe(event => {
+  //         if (event instanceof HttpResponse) {
+  //           const setting = JSON.parse(JSON.stringify(event.body));
+  //           if (setting.hasOwnProperty('value') && setting['value'] == 1) {
+  //             const index = this.serviceCodeValidationDisabledMessages.findIndex(id => id == payerId);
+  //             if (index != -1) {
+  //               this.serviceCodeValidationDisabledMessages.splice(index, 1);
+  //             }
+  //           }
+  //           count--;
+  //           if (count <= 0) {
+  //             this.common.loadingChanged.next(false);
+  //             this.checkPriceList();
+  //           }
+  //         }
+  //       }, errorEvent => {
+  //         if (errorEvent instanceof HttpErrorResponse) {
+  //           if (errorEvent.status == 404) {
+  //             this.serviceCodeValidationDisabledMessages.push(payerId);
+  //           }
+  //           count--;
+  //           if (count <= 0) {
+  //             this.common.loadingChanged.next(false);
+  //             this.checkPriceList();
+  //           }
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
-  checkPriceList() {
-    this.priceListDoesNotExistMessages = [];
-    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined &&
-      !this.serviceCodeValidationDisabledMessages.includes(id));
-    let count = this.payerIdsFromCurrentFile.length;
-    this.payerIdsFromCurrentFile.forEach(payerId => {
-      this.common.loadingChanged.next(true);
-      this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          count--;
-          if (count <= 0) {
-            this.common.loadingChanged.next(false);
-          }
-        }
-      }, errorEvent => {
-        if (errorEvent instanceof HttpErrorResponse) {
-          count--;
-          this.priceListDoesNotExistMessages.push(payerId);
-          if (count <= 0) {
-            this.common.loadingChanged.next(false);
-          }
-        }
-      });
-    });
-  }
+  // checkPriceList() {
+  //   this.priceListDoesNotExistMessages = [];
+  //   this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined &&
+  //     !this.serviceCodeValidationDisabledMessages.includes(id));
+  //   let count = this.payerIdsFromCurrentFile.length;
+  //   this.payerIdsFromCurrentFile.forEach(payerId => {
+  //     this.common.loadingChanged.next(true);
+  //     this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
+  //       if (event instanceof HttpResponse) {
+  //         count--;
+  //         if (count <= 0) {
+  //           this.common.loadingChanged.next(false);
+  //         }
+  //       }
+  //     }, errorEvent => {
+  //       if (errorEvent instanceof HttpErrorResponse) {
+  //         count--;
+  //         this.priceListDoesNotExistMessages.push(payerId);
+  //         if (count <= 0) {
+  //           this.common.loadingChanged.next(false);
+  //         }
+  //       }
+  //     });
+  //   });
+  // }
 
   upload() {
     if (this.common.loading || this.uploading) {
       return;
     }
-    const isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
-    const isServiceCodeVaildationDisabled = this.serviceCodeValidationDisabledMessages.length > 0;
+    // const isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
+    // const isServiceCodeVaildationDisabled = this.serviceCodeValidationDisabledMessages.length > 0;
 
-    if (isPriseListDoesntExist || isServiceCodeVaildationDisabled) {
-      this.dialogService.openMessageDialog({
-        title: 'Caution!',
-        // tslint:disable-next-line:max-line-length
-        message: (isServiceCodeVaildationDisabled ? `Service code validation is disabled in our system between you and the payer(s): ${this.serviceCodeValidationDisabledMessages.toString()}. ` : '')
-          // tslint:disable-next-line:max-line-length
-          + (isPriseListDoesntExist ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
-          + 'Do you wish to continue?',
-        isError: false,
-        withButtons: true,
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel'
-      }).subscribe(value => {
-        if (value) {
-          this.startUpload();
-        }
-      });
-    } else {
-      this.startUpload();
-    }
+    // if (isPriseListDoesntExist || isServiceCodeVaildationDisabled) {
+    //   this.dialogService.openMessageDialog({
+    //     title: 'Caution!',
+    //     // tslint:disable-next-line:max-line-length
+    //     message: (isServiceCodeVaildationDisabled ? `Service code validation is disabled in our system between you and the payer(s): ${this.serviceCodeValidationDisabledMessages.toString()}. ` : '')
+    //       // tslint:disable-next-line:max-line-length
+    //       + (isPriseListDoesntExist ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
+    //       + 'Do you wish to continue?',
+    //     isError: false,
+    //     withButtons: true,
+    //     confirmButtonText: 'Confirm',
+    //     cancelButtonText: 'Cancel'
+    //   }).subscribe(value => {
+    //     if (value) {
+    //       this.startUpload();
+    //     }
+    //   });
+    // } else {
+    //   this.startUpload();
+    // }
 
+    this.startUpload();
   }
 
   startUpload() {
