@@ -3,6 +3,7 @@ import { UploadService } from 'src/app/services/claimfileuploadservice/upload.se
 import { SharedServices } from 'src/app/services/shared.services';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Location } from '@angular/common';
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Component({
   selector: 'app-upload-claim',
@@ -13,7 +14,7 @@ export class UploadClaimComponent implements OnInit {
 
   uploadingObs = false;
   constructor(
-    private uploadService: UploadService,
+    private uploadService: NphiesClaimUploaderService,
     public location: Location,
     private commen: SharedServices,
   ) {
