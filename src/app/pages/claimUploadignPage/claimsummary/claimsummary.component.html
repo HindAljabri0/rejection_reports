@@ -1,5 +1,5 @@
 <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel" [class.fixed-card]="cardCount<4">
-    <ng-template [id]="'1'" carouselSlide *ngIf='uploadService.summary.noOfUploadedClaims != 0'>
+    <ng-template [id]="'1'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfUploadedClaims != 0'>
         <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title"
             [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()"
             class="primary-card">

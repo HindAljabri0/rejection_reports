@@ -25,6 +25,12 @@ export class NphiesClaimUploaderService {
     return this.http.request(request);
   }
 
+  updateNphiesClaim(providerId: string, claimId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/claims/${claimId}`;
+    const request = new HttpRequest('PUT', environment.nphiesClaimUploader + requestUrl, body);
+    return this.http.request(request);
+  }
+
 
   getUploadSummaries(providerId: string, page?: number, size?: number) {
     if (page == null) {
@@ -34,6 +40,27 @@ export class NphiesClaimUploaderService {
       size = 10;
     }
     const requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
+
+  getUploadedSummary(providerId: string, uploadId: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}?`;
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
+
+  getUploadedClaimsDetails(providerId: string, uploadId: number, status?: string, page?: number, pageSize?: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}/details?` + (status != null ? `status=${status}&` : '')
+      + (page != null ? `page=${page}&` : '') + (pageSize != null ? `size=${pageSize}` : '');
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
+
+
+  getClaimsErrorByFieldName(providerId: string, uploadId: number, status?: string, page?: number, pageSize?: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}/details/` + status
+      + (page != null ? `?page=${page}&` : '') + (pageSize != null ? `size=${pageSize}` : '');
     const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
     return this.http.request(request);
   }
