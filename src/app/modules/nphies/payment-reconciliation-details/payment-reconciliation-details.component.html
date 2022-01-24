@@ -25,7 +25,7 @@
       </div>
       <div class="col-4">
         <div class="form-group form-group-static">
-          <label class="control-label">Payment Date</label>
+          <label class="control-label">Reconciliation Date</label>
           <span class="form-control-static">{{reconciliationDetails.paymentDate | date : 'dd/MM/yyyy'}}</span>
         </div>
       </div>
@@ -115,6 +115,15 @@
                       <div class="form-group form-group-static">
                         <label class="control-label">Payee</label>
                         <span class="form-control-static">{{pd.payeeId ? pd.payeeId : '-'}}</span>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group form-group-static">
+                        <label class="control-label">Payment Date</label>
+                        <span class="form-control-static">
+                          <span *ngIf="pd.paymentDate">{{pd.paymentDate | date : 'dd/MM/yyyy'}}</span>
+                          <span *ngIf="!pd.paymentDate">-</span>
+                        </span>
                       </div>
                     </div>
                   </div>
