@@ -101,6 +101,7 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
 import { UploadClaimComponent } from './modules/nphies/upload-claim/upload-claim.component';
 import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
+import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 
 
@@ -202,6 +203,7 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
   providers: [
     ThemeService,
     UploadService,
+    NphiesClaimUploaderService,
     ClipboardService,
     // {
     //   provide: ApmService,

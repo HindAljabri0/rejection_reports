@@ -19,6 +19,7 @@ import { UploadSummary } from 'src/app/models/uploadSummary';
 // tslint:disable-next-line:max-line-length
 import { UploadSummaryDialogComponent } from 'src/app/pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { Location } from '@angular/common';
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Component({
   selector: 'app-nphies-claim-summary',
@@ -106,7 +107,8 @@ export class NphiesClaimSummaryComponent implements OnInit {
 
   constructor(
     public location: Location,
-    public uploadService: UploadService,
+    public uploadService: NphiesClaimUploaderService,
+    // public uploadService: UploadService,
     public commen: SharedServices,
     private router: Router,
     private routeActive: ActivatedRoute,
@@ -217,7 +219,7 @@ export class NphiesClaimSummaryComponent implements OnInit {
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
       if (!this.router.url.includes('id')) {
         // this.summary = value;
-        this.location.go('/summary?id=' + value.uploadSummaryID);
+        this.location.go('/nphies/summary?id=' + value.uploadSummaryID);
         this.getResults();
       }
       // this.router.navigate(['/summary']);

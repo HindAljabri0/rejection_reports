@@ -44,6 +44,27 @@ export class NphiesClaimUploaderService {
     return this.http.request(request);
   }
 
+  getUploadedSummary(providerId: string, uploadId: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}?`;
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
+
+  getUploadedClaimsDetails(providerId: string, uploadId: number, status?: string, page?: number, pageSize?: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}/details?` + (status != null ? `status=${status}&` : '')
+      + (page != null ? `page=${page}&` : '') + (pageSize != null ? `size=${pageSize}` : '');
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
+
+
+  getClaimsErrorByFieldName(providerId: string, uploadId: number, status?: string, page?: number, pageSize?: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}/details/` + status
+      + (page != null ? `?page=${page}&` : '') + (pageSize != null ? `size=${pageSize}` : '');
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
+
   pushFileToStorage(providerID: string, file: File) {
     if (this.uploading) { return; }
     this.uploading = true;
