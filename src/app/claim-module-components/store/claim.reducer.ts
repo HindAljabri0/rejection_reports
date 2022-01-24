@@ -642,20 +642,20 @@ const _claimReducer = createReducer(
         let GDPN: GDPN;
         if (recalculateClaimGDPN) {
             GDPN = {
-                discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-                gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-                net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                discount: { value: invoices.map(invoice => (invoice.invoiceGDPN != null ? invoice.invoiceGDPN.discount.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                gross: { value: invoices.map(invoice => (invoice.invoiceGDPN.gross != null ? invoice.invoiceGDPN.gross.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                net: { value: invoices.map(invoice => (invoice.invoiceGDPN.net != null ? invoice.invoiceGDPN.net.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
                 netVATamount: {
-                    value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur),
+                    value: invoices.map(invoice => (invoice.invoiceGDPN.netVATamount != null ? invoice.invoiceGDPN.netVATamount.value : 0)).reduce((pre, cur) => pre + cur),
                     type: 'SAR'
                 },
                 netVATrate: null,
                 patientShare: {
-                    value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur),
+                    value: invoices.map(invoice => (invoice.invoiceGDPN.patientShare != null ? invoice.invoiceGDPN.patientShare.value : 0)).reduce((pre, cur) => pre + cur),
                     type: 'SAR'
                 },
                 patientShareVATamount: {
-                    value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur),
+                    value: invoices.map(invoice => (invoice.invoiceGDPN.patientShareVATamount != null ? invoice.invoiceGDPN.patientShareVATamount.value : 0)).reduce((pre, cur) => pre + cur),
                     type: 'SAR'
                 },
                 patientShareVATrate: null,
