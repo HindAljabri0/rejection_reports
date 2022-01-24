@@ -1849,12 +1849,18 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.FormNphiesClaim.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
         }
         this.sharedServices.loadingChanged.next(false);
+        if (this.activatedRoute.snapshot.fragment.includes('edit')) {
+          this.toEditMode()
+        }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
 
       }
       this.sharedServices.loadingChanged.next(false);
+      if (this.activatedRoute.snapshot.fragment.includes('edit')) {
+        this.toEditMode()
+      }
     });
   }
 

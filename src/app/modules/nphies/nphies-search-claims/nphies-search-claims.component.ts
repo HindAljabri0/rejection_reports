@@ -675,7 +675,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
 
-  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit?: boolean) {
+  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false) {
     this.params.claimId = claimId;
     this.params.claimResponseId = claimResponseId;
     if (edit) {
@@ -1246,13 +1246,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (selectedCardKey == 0) {
       return false;
     }
-    status = status.toLowerCase();
+    status = status.trim().toLowerCase();
     const validStatus = ['accepted', 'notaccepted', 'batched'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {
       return true;
     }
+  }
+
+  claimIsEditable(status: string) {
+    return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
   }
 
 }
