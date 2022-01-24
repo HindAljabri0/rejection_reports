@@ -65,7 +65,7 @@ export class ContractsComponent implements OnInit {
     this.search.providerId = this.sharedServices.providerId;
     this.search.page = this.pageIndex;
     this.search.size = this.pageSize;
-    console.log(JSON.stringify(this.search));
+    
   }
   searchByCriteria() {
     this.fillSearchData();

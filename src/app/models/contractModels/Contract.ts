@@ -1,6 +1,4 @@
 
-import { DepartmentModel } from "./DepartmentModel";
-import { ServiceModel } from "./ServiceModel";
 
 export class Contract {
     contractId: number;
