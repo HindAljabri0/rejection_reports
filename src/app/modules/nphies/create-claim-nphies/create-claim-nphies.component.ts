@@ -23,7 +23,6 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import * as moment from 'moment';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
-import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 
@@ -149,7 +148,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.queryParams.claimId) {
-      this.isLoading = true;
+      // this.isLoading = true;
       // tslint:disable-next-line:radix
       this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
 
@@ -174,6 +173,23 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
+  }
+
+  toEditMode() {
+    this.pageMode = 'EDIT';
+    this.selectBeneficiary({
+      documentId: this.otherDataModel.beneficiary.documentId,
+      documentType: this.otherDataModel.beneficiary.documentType,
+      id: this.otherDataModel.beneficiary.id,
+      name: this.otherDataModel.beneficiary.beneficiaryName,
+      plans: []
+    })
+    this.enableControls();
+  }
+
+  cancelEdit() {
+    this.pageMode = 'VIEW';
+    this.disableControls();
   }
 
   getPayees() {
@@ -244,6 +260,43 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.eligibilityOfflineDate.disable();
     this.FormNphiesClaim.controls.eligibilityResponseId.disable();
     this.FormNphiesClaim.controls.preAuthOfflineDate.disable();
+    // this.FormNphiesClaim.controls.preAuthResponseId.disable();
+  }
+
+  enableControls() {
+    this.FormNphiesClaim.controls.beneficiaryName.disable();
+    this.FormNphiesClaim.controls.beneficiaryId.disable();
+    this.FormNphiesClaim.controls.patientFileNumber.enable();
+    this.FormNphiesClaim.controls.insurancePlanId.disable();
+    this.FormNphiesClaim.controls.dateOrdered.enable();
+    this.FormNphiesClaim.controls.payeeType.enable();
+    this.FormNphiesClaim.controls.payee.enable();
+    this.FormNphiesClaim.controls.type.disable();
+    this.FormNphiesClaim.controls.subType.disable();
+    this.FormNphiesClaim.controls.accidentType.enable();
+    this.FormNphiesClaim.controls.streetName.enable();
+    this.FormNphiesClaim.controls.city.enable();
+    this.FormNphiesClaim.controls.state.enable();
+    this.FormNphiesClaim.controls.country.enable();
+    this.FormNphiesClaim.controls.countryName.enable();
+    this.FormNphiesClaim.controls.date.enable();
+    this.FormNphiesClaim.controls.dateWritten.enable();
+    this.FormNphiesClaim.controls.prescriber.enable();
+    this.FormNphiesClaim.controls.status.enable();
+    this.FormNphiesClaim.controls.encounterClass.enable();
+    this.FormNphiesClaim.controls.serviceType.enable();
+    this.FormNphiesClaim.controls.priority.enable();
+    this.FormNphiesClaim.controls.startDate.enable();
+    this.FormNphiesClaim.controls.periodEnd.enable();
+    this.FormNphiesClaim.controls.origin.enable();
+    this.FormNphiesClaim.controls.adminSource.enable();
+    this.FormNphiesClaim.controls.reAdmission.enable();
+    this.FormNphiesClaim.controls.dischargeDispotion.enable();
+    this.FormNphiesClaim.controls.serviceProvider.enable();
+    this.FormNphiesClaim.controls.eligibilityOfflineId.enable();
+    this.FormNphiesClaim.controls.eligibilityOfflineDate.enable();
+    this.FormNphiesClaim.controls.eligibilityResponseId.enable();
+    this.FormNphiesClaim.controls.preAuthOfflineDate.enable();
     // this.FormNphiesClaim.controls.preAuthResponseId.disable();
   }
 
@@ -1878,6 +1931,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         filename: item.attachmentName, attachment: item.byteArray
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
+  }
+
+  get claimIsEditable() {
+    return this.otherDataModel != null && this.otherDataModel.status != null && ['accepted', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
 }
