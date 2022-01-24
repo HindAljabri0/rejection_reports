@@ -215,36 +215,51 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   ngOnDestroy() {
     this._onDestroy.next();
     this._onDestroy.complete();
   }
+  invoiceHasDuplicateService(invoice: Invoice){
+    let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId &&x.error.includes('We found duplicate services in Invoice') );
+    return invoicesHasDuplicateService.length>0?'Duplicate services in Invoice':false
+  }
+  invoiceHasError(invoice: Invoice) {
+    let check = 0;
+    let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
+    if (invoicesError.length > 0) {
+      check++;
+      return true
+    } else {
+      this.errors.forEach(x => {
+        var serviceId = Number(x.code.replace(/\D+/g, ''))
+        for (let service of invoice.service) {
 
-  invoiceHasError(index: Invoice) {
-    let check =0;
-        let invoicesError = this.errors.filter(x => Number(x.code) == index.invoiceId);
-        if (invoicesError.length > 0) {
-          check++;
-          return true
-        } else {
-          this.errors.forEach(x => {
-            var serviceId = Number(x.code.replace(/\D+/g, ''))
-            for (let service of index.service) {
-    
-              if (service.serviceId == serviceId) {
-                check++;
-                return true;
-              }
-            }
-          })
+          if (service.serviceId == serviceId) {
+            check++;
+            return true;
+          }
         }
-        return check==1?true:false
+      })
+    }
+    return check == 1 ? true : false
+  }
+
+  serviceHasError(service) {
+    let iaHasError = false;
+    this.errors.forEach(x => {
+      var serviceId = Number(x.code.replace(/\D+/g, ''))
+      if (service.serviceId == serviceId) {
+
+        iaHasError = true;
       }
- 
+
+    })
+    return iaHasError;
+  }
 
   invoice: Invoice[] = [];
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
+    this.invoice=[];
     this.controllers = [];
     this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
 
@@ -578,7 +593,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
   createInvoiceFromControl(i: number) {
     const invoice: Invoice = new Invoice();
+
     if(this.controllers[i].invoice!=null){
+
       invoice.invoiceId = this.controllers[i].invoice.invoiceId;
     }
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
@@ -625,7 +642,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     const netVat = this.calcNetVat(service, net);
     const patientShareVATamount = this.calcPatientVatRate(service);
     const newService: Service = {
-      serviceId:service.serviceId,
+
+      serviceId: service.serviceId,
+
       serviceNumber: service.serviceNumber,
       serviceType: service.serviceType.value,
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),

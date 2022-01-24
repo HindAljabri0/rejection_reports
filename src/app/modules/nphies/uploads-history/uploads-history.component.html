@@ -1,0 +1,20 @@
+<div class="inner-loader-wrapper animate__animated animate__faster animate__fadeIn">
+    <div class="inner-loader" *ngIf="loading">
+        <mat-spinner diameter="48"></mat-spinner>
+    </div>
+    <app-detailscard title="Claims History" class="uploaded-card-all">
+        <!-- <reusable-search-bar class="reusable-search" inHeader searchBy="Upload Name">
+        </reusable-search-bar> -->
+        <div class="scroll-block" *ngIf="uploadsMapKeys.length>0" scrollable (scrollPosition)="scrollHandler($event)">
+            <ng-container *ngFor="let key of uploadsMapKeys">
+                <h4 class="month">{{key}}</h4>
+                <div class="row small-gutter">
+                    <div class="col-xl-4 col-md-6" *ngFor="let uploadCardDate of uploadsMap.get(key)">
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <app-empty-state *ngIf="!loading && currentPage == 0"></app-empty-state>
+        <p class="info-block" *ngIf="currentPage >= maxPages">There is no more data</p>
+    </app-detailscard>
+</div>

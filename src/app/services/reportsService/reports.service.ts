@@ -123,9 +123,9 @@ export class ReportsService {
     } else if (criteria == '2') {
       queryType = 'claim';
     }
-    const requestURL = `/providers/${providerId}/rejections?` +
+    const requestURL = `/providers/${providerId}/rejections/download?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}`;
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', {
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', {
       responseType: 'text',
       reportProgress: true
     });

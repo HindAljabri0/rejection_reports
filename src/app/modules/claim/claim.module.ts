@@ -69,7 +69,6 @@ import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-t
       { path: 'transactions', component: ClaimTransactionsComponent },
       { path: 'nphies-claim', component: CreateClaimNphiesComponent },
       { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent },
-
     ]),
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),

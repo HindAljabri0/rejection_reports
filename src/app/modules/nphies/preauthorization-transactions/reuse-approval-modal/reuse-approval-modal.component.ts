@@ -151,7 +151,8 @@ export class ReuseApprovalModalComponent implements OnInit {
 
         // tslint:disable-next-line:max-line-length
         x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
-        x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
+        x.startDate = moment(x.startDate).format('YYYY-MM-DD');
+
 
         // x.supportingInfoSequence = x.supportingInfoSequence ? x.supportingInfoSequence.toString() : '-';
         // x.careTeamSequence = x.careTeamSequence ? x.careTeamSequence.toString() : '';
