@@ -25,6 +25,12 @@ export class NphiesClaimUploaderService {
     return this.http.request(request);
   }
 
+  updateNphiesClaim(providerId: string, claimId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/claims/${claimId}`;
+    const request = new HttpRequest('PUT', environment.nphiesClaimUploader + requestUrl, body);
+    return this.http.request(request);
+  }
+
 
   getUploadSummaries(providerId: string, page?: number, size?: number) {
     if (page == null) {
