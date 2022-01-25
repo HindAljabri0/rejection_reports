@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Location } from '@angular/common';
-import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { NphiesClaimUploaderService, UploadSummary } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Component({
   selector: 'app-upload-claim',
