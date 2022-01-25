@@ -10,3 +10,5 @@ export const changePageTitle = createAction('[ Main ] change the title that appe
 
 export const showSnackBarMessage = createAction('[ Main ] show a message in snack bar at the bottom of the screen',
   props<{ message: string }>());
+
+export const evaluateUserPrivileges = createAction('[ Main ] evaluate user privileges from local storage');
