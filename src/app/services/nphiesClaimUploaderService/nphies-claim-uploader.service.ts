@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { UploadSummary } from 'src/app/models/uploadSummary';
 
 @Injectable({
   providedIn: 'root'
@@ -97,15 +98,4 @@ export class NphiesClaimUploaderService {
       }
     });
   }
-}
-
-export class UploadSummary {
-  transactionId: number;
-  message: string;
-  uploadSummaryID: number;
-  uploadName: string;
-  uploadDate: Date;
-  noOfUploadedClaims: number;
-  netAmountOfUploadedClaims: number;
-  noOfNotUploadedClaims: number;
 }
