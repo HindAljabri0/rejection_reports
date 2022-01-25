@@ -24,7 +24,13 @@ export class NphiesClaimUploaderService {
     const request = new HttpRequest('POST', environment.nphiesClaimUploader + requestUrl, body);
     return this.http.request(request);
   }
+// //History
+//   getUploadHistory(providerId:string,page?: number,pageSize?: number ){
 
+//     const requestUrl = `/providers/${providerId}/history/?page=${page}&size=${pageSize}`;
+//     const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+//     return this.http.request(request);
+//   }
 
   getUploadSummaries(providerId: string, page?: number, size?: number) {
     if (page == null) {
@@ -71,4 +77,7 @@ export class NphiesClaimUploaderService {
       }
     });
   }
+
+
+
 }
