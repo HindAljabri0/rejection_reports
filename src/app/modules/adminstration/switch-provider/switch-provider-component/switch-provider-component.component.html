@@ -5,7 +5,7 @@
     <div class="bg-white p-14">
         <div class="form-group mb-0">
             <label class="control-label">Select Provider</label>
-            <input [matAutocomplete]="auto" class="form-control" placeholder="Search provider here..." [formControl]="providerController" (input)="updateFilter()"
+            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..." [formControl]="providerController" (input)="updateFilter()"
                 (keyup.enter)="selectProvider()" [readonly]="isLoading">
             <mat-autocomplete autoActiveFirstOption #auto>
                 <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"

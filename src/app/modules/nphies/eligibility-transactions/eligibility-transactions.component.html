@@ -10,13 +10,11 @@
             [ngClass]="{'has-error' : (isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')}">
             <label class="control-label">From Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                formControlName="fromDate">
+              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
               <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
               <mat-datepicker #filterFromDate></mat-datepicker>
             </div>
-            <div
-              *ngIf="(isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')">
+            <div *ngIf="(isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')">
               <span class="error-text">Please select From Date</span>
             </div>
           </div>
@@ -31,8 +29,7 @@
               <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
               <mat-datepicker #filterToDate></mat-datepicker>
             </div>
-            <div
-              *ngIf="(isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')">
+            <div *ngIf="(isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')">
               <span class="error-text">Please select To Date</span>
             </div>
           </div>
@@ -58,11 +55,10 @@
         <div class="col-4 col-xxl-3">
           <div class="form-group">
             <label class="control-label">Select a Beneficiary</label>
-            <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
-              formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+              [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
-                (click)="selectBeneficiary(beneficiary)">
+              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
                 {{beneficiary.name}} ({{beneficiary.documentId}})
               </mat-option>
             </mat-autocomplete>
@@ -131,8 +127,7 @@
       </mat-form-field>
     </div>
     <div class="material-paginator">
-      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-        (page)="paginatorAction($event)">
+      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
       </mat-paginator>
     </div>
   </div>
