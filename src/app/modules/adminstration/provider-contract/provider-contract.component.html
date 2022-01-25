@@ -6,13 +6,11 @@
         <div class="form-group">
             <!--  -->
             <label class="control-label">Provider</label>
-            <input [readonly]="isLoading" type="text" class="form-control" [matAutocomplete]="auto"
-                [formControl]="providerController" (input)="updateFilter()" (keyup.enter)="selectProvider()"
-                placeholder="Select provider">
+            <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
+                (keyup.enter)="selectProvider()" placeholder="Select provider">
 
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders"
-                    [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                     (click)="selectProvider(provider.switchAccountId)">
                     {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                 </mat-option>
@@ -87,21 +85,18 @@
                                 <td>{{item.numberOfDays}}</td>
                                 <td>
                                     <span *ngIf="item.agreementCopy">
-                                        <a href="#" title="View" class="primary-link"
-                                            (click)="viewAttachment($event,item)">View</a>
+                                        <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,item)">View</a>
                                     </span>
                                 </td>
                                 <td class="actions">
-                                    <button type="button" mat-icon-button class="text-primary"
-                                        (click)="openAddContractDialog(item)">
+                                    <button type="button" mat-icon-button class="text-primary" (click)="openAddContractDialog(item)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="7" class="p-0">
-                                    <app-empty-state *ngIf="activePayments == null || activePayments.length == 0"
-                                        class="claim-list-empty-state" message='No records found!'>
+                                    <app-empty-state *ngIf="activePayments == null || activePayments.length == 0" class="claim-list-empty-state" message='No records found!'>
                                     </app-empty-state>
                                 </td>
                             </tr>
@@ -134,21 +129,18 @@
                                 <td>{{item.numberOfDays}}</td>
                                 <td>
                                     <span *ngIf="item.agreementCopy">
-                                        <a href="#" title="View" class="primary-link"
-                                            (click)="viewAttachment($event,item)">View</a>
+                                        <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,item)">View</a>
                                     </span>
                                 </td>
                                 <td class="actions">
-                                    <button type="button" mat-icon-button class="text-primary"
-                                        (click)="openAddContractDialog(item)">
+                                    <button type="button" mat-icon-button class="text-primary" (click)="openAddContractDialog(item)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="7" class="p-0">
-                                    <app-empty-state *ngIf="inActivePayments == null || inActivePayments.length == 0"
-                                        class="claim-list-empty-state" message='No records found!'>
+                                    <app-empty-state *ngIf="inActivePayments == null || inActivePayments.length == 0" class="claim-list-empty-state" message='No records found!'>
                                     </app-empty-state>
                                 </td>
                             </tr>

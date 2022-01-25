@@ -10,11 +10,10 @@
                 <div class="form-group">
                     <!-- [readonly]="isLoading" -->
                     <label class="control-label">Provider</label>
-                    <input type="text" class="form-control" [matAutocomplete]="auto" [formControl]="providerController"
-                        (input)="updateFilter()" placeholder="Select provider" [readonly]="data.isEditData">
+                    <input type="text" class="form-control search-box" [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
+                        placeholder="Select provider" [readonly]="data.isEditData">
                     <mat-autocomplete autoActiveFirstOption #auto>
-                        <mat-option *ngFor="let provider of filteredProviders"
-                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                        <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                             (click)="selectProvider(provider.switchAccountId)">
                             {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                         </mat-option>
@@ -29,13 +28,11 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group"
-                    [ngClass]="{'has-error' : providerContractForm.submitted && !paymentProviderContractModel.payerid}">
+                <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && !paymentProviderContractModel.payerid}">
                     <label class="control-label">Payer</label>
                     <mat-form-field class="form-control custom-select-control">
                         <!-- <mat-label>Select payer</mat-label> -->
-                        <mat-select [(ngModel)]="paymentProviderContractModel.payerid" #payerid='ngModel'
-                            [disabled]="isProviderDisabled ||data.isEditData" name='payerid'
+                        <mat-select [(ngModel)]="paymentProviderContractModel.payerid" #payerid='ngModel' [disabled]="isProviderDisabled ||data.isEditData" name='payerid'
                             (selectionChange)="payerSelection($event)" required>
                             <mat-option value="">Select payer</mat-option>
                             <mat-option *ngFor="let payer of associatedPayers" [value]="payer.payerId">
@@ -49,14 +46,11 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group"
-                    [ngClass]="{'has-error' : providerContractForm.submitted && effectiveDate.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && effectiveDate.invalid}">
                     <label class="control-label">Effective Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="effectiveDates" class="form-control"
-                            [(ngModel)]='paymentProviderContractModel.effectiveDate' #effectiveDate='ngModel'
-                            name='effectiveDate' required placeholder="Select effective date"
-                            [disabled]="isPayerSelected" />
+                        <input [matDatepicker]="effectiveDates" class="form-control" [(ngModel)]='paymentProviderContractModel.effectiveDate' #effectiveDate='ngModel'
+                            name='effectiveDate' required placeholder="Select effective date" [disabled]="isPayerSelected" />
                         <mat-datepicker-toggle [for]="effectiveDates"></mat-datepicker-toggle>
                         <mat-datepicker #effectiveDates></mat-datepicker>
                     </div>
@@ -66,13 +60,11 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group"
-                    [ngClass]="{'has-error' : providerContractForm.submitted && expiryDate.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && expiryDate.invalid}">
                     <label class="control-label">Expiry Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="expiryDates" class="form-control" placeholder="Select expiry date"
-                            [(ngModel)]='paymentProviderContractModel.expiryDate' #expiryDate='ngModel'
-                            [disabled]="isPayerSelected" name="expiryDate" />
+                        <input [matDatepicker]="expiryDates" class="form-control" placeholder="Select expiry date" [(ngModel)]='paymentProviderContractModel.expiryDate'
+                            #expiryDate='ngModel' [disabled]="isPayerSelected" name="expiryDate" />
                         <mat-datepicker-toggle [for]="expiryDates"></mat-datepicker-toggle>
                         <mat-datepicker #expiryDates></mat-datepicker>
                         <div *ngIf="providerContractForm.submitted && expiryDate.invalid">
@@ -82,12 +74,10 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group"
-                    [ngClass]="{'has-error' : providerContractForm.submitted && modePayment.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && modePayment.invalid}">
                     <label class="control-label">Mode of Payment</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="" [(ngModel)]='paymentProviderContractModel.modePayment'
-                            #modePayment='ngModel' name="modePayment" [disabled]="isPayerSelected" required
+                        <mat-select value="" [(ngModel)]='paymentProviderContractModel.modePayment' #modePayment='ngModel' name="modePayment" [disabled]="isPayerSelected" required
                             (selectionChange)="modeOfPayment()">
                             <mat-option value="" selected>Select Mode of Payment</mat-option>
                             <mat-option value="Prompt Payment">Prompt Payment</mat-option>
@@ -100,12 +90,10 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group"
-                    [ngClass]="{'has-error' : providerContractForm.submitted && numberOfDays.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && numberOfDays.invalid}">
                     <label class="control-label">No. of Days</label>
-                    <input class="form-control" placeholder="Select no. of days" [disabled]="isPayerSelected"
-                        [(ngModel)]='paymentProviderContractModel.numberOfDays' #numberOfDays='ngModel'
-                        name="numberOfDays" required />
+                    <input class="form-control" placeholder="Select no. of days" [disabled]="isPayerSelected" [(ngModel)]='paymentProviderContractModel.numberOfDays'
+                        #numberOfDays='ngModel' name="numberOfDays" required />
                     <div *ngIf="providerContractForm.submitted && numberOfDays.invalid">
                         <span class="error-text">Please choose number of days</span>
                     </div>
@@ -116,24 +104,21 @@
                     <label class="control-label">Upload Agreement Copy</label>
                     <div class="file-upload-wrapper">
                         <div class="content">
-                            <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag"
-                                [disabled]="isPayerSelected">
+                            <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag" [disabled]="isPayerSelected">
                                 Choose File
                             </button>
                             <div class="uploaded-file-name" *ngIf="fileUploadFlag">
                                 <span>{{currentFileUpload.name}}</span>
-                                <button type="button" class="icon" (click)="deleteFile()" matRipple
-                                    title="Delete File?">
+                                <button type="button" class="icon" (click)="deleteFile()" matRipple title="Delete File?">
                                     <mat-icon class="size-20">close</mat-icon>
                                 </button>
                             </div>
                             <p class="error-text pt-1" *ngIf="error">{{error}}</p>
                         </div>
                         <ng-container *ngIf="!fileUploadFlag">
-                            <input type="file" accept="application/pdf"
-                                [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
-                                name="agreementCopy" [disabled]="isPayerSelected" class="file-upload-control"
-                                (change)="selectFile($event)" [required]="paymentProviderContractModel.modePayment && paymentProviderContractModel.modePayment === 'Prompt Payment'" />
+                            <input type="file" accept="application/pdf" [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel' name="agreementCopy"
+                                [disabled]="isPayerSelected" class="file-upload-control" (change)="selectFile($event)"
+                                [required]="paymentProviderContractModel.modePayment && paymentProviderContractModel.modePayment === 'Prompt Payment'" />
                             <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
                                 <span class="error-text">Please choose a file</span>
                             </div>
@@ -144,8 +129,7 @@
             <div class="col-6" *ngIf="data.isEditData">
                 <div class="form-group">
                     <label class="control-label">Is Active?</label>
-                    <mat-radio-group class="radio-group inline" [(ngModel)]='paymentProviderContractModel.isActive'
-                        #isActive='ngModel' name="isActive">
+                    <mat-radio-group class="radio-group inline" [(ngModel)]='paymentProviderContractModel.isActive' #isActive='ngModel' name="isActive">
                         <mat-radio-button value="1" color="primary">Yes</mat-radio-button>
                         <mat-radio-button value="0" color="primary">No</mat-radio-button>
                     </mat-radio-group>
@@ -156,8 +140,7 @@
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Cancel</button>
-            <button mat-flat-button color="primary" type="submit"
-                [disabled]="isPayerSelected">{{data.isEditData?'Update Contract':'Add Contract'}}</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="isPayerSelected">{{data.isEditData?'Update Contract':'Add Contract'}}</button>
         </div>
     </div>
 </form>
