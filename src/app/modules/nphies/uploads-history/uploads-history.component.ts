@@ -1,3 +1,4 @@
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { UploadSummary } from 'src/app/models/uploadSummary';
@@ -28,7 +29,7 @@ export class UploadsHistoryComponent implements OnInit {
 
   inCenter = false;
 
-  constructor(private uploadService: UploadService, private commen: SharedServices, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private uploadService: NphiesClaimUploaderService, private commen: SharedServices, @Inject(LOCALE_ID) private locale: string) { }
 
   ngOnInit() {
     this.fetchDate();
@@ -85,33 +86,33 @@ export class UploadsHistoryComponent implements OnInit {
     const textQuery = this.queries.find(query => query.type == QueryType.TEXT);
     const fromQuery = this.queries.find(query => query.type == QueryType.DATEFROM);
     const toQuery = this.queries.find(query => query.type == QueryType.DATETO);
-    this.uploadService.searchUploadSummaries(this.commen.providerId,
-      textQuery != null ? textQuery.content : null,
-      fromQuery != null ? this.toServerDate(fromQuery.content) : null,
-      toQuery != null ? this.toServerDate(toQuery.content) : null,
-      this.currentPage, 9)
-      .subscribe(event => {
-        if (event instanceof HttpResponse) {
-          this.maxPages = event.body['totalPages'];
-          this.currentPage++;
-          event.body['content'].forEach((upload: UploadSummary) => {
-            upload.uploadDate = new Date(upload.uploadDate);
-            const key = formatDate(upload.uploadDate, 'MMM, yyyy', this.locale);
-            if (this.uploadsMap.has(key)) {
-              this.uploadsMap.get(key).push(upload);
-            } else {
-              this.uploadsMap.set(key, [upload]);
-              this.uploadsMapKeys.push(key);
-            }
-          });
-          this.commen.loadingChanged.next(false);
-        }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          this.commen.loadingChanged.next(false);
-          console.log(error);
-        }
-      });
+    // this.uploadService.searchUploadSummaries(this.commen.providerId,
+    //   textQuery != null ? textQuery.content : null,
+    //   fromQuery != null ? this.toServerDate(fromQuery.content) : null,
+    //   toQuery != null ? this.toServerDate(toQuery.content) : null,
+    //   this.currentPage, 9)
+    //   .subscribe(event => {
+    //     if (event instanceof HttpResponse) {
+    //       this.maxPages = event.body['totalPages'];
+    //       this.currentPage++;
+    //       event.body['content'].forEach((upload: UploadSummary) => {
+    //         upload.uploadDate = new Date(upload.uploadDate);
+    //         const key = formatDate(upload.uploadDate, 'MMM, yyyy', this.locale);
+    //         if (this.uploadsMap.has(key)) {
+    //           this.uploadsMap.get(key).push(upload);
+    //         } else {
+    //           this.uploadsMap.set(key, [upload]);
+    //           this.uploadsMapKeys.push(key);
+    //         }
+    //       });
+    //       this.commen.loadingChanged.next(false);
+    //     }
+    //   }, error => {
+    //     if (error instanceof HttpErrorResponse) {
+    //       this.commen.loadingChanged.next(false);
+    //       console.log(error);
+    //     }
+    //   });
   }
 
   onQueryRemoved(query: Query) {

@@ -3,14 +3,15 @@
         <mat-spinner diameter="48"></mat-spinner>
     </div>
     <app-detailscard title="Claims History" class="uploaded-card-all">
-        <!-- <reusable-search-bar class="reusable-search" inHeader searchBy="Upload Name" [queries]="queries" (onSearch)="search($event)" (onQueryRemoved)="onQueryRemoved($event)">
-        </reusable-search-bar> -->
+        <reusable-search-bar class="reusable-search" inHeader searchBy="Upload Name" [queries]="queries" (onSearch)="search($event)" (onQueryRemoved)="onQueryRemoved($event)">
+        </reusable-search-bar>
         <div class="scroll-block" *ngIf="uploadsMapKeys.length>0" scrollable (scrollPosition)="scrollHandler($event)">
             <ng-container *ngFor="let key of uploadsMapKeys">
                 <h4 class="month">{{key}}</h4>
                 <div class="row small-gutter">
                     <div class="col-xl-4 col-md-6" *ngFor="let uploadCardDate of uploadsMap.get(key)">
-
+                        <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="inCenter" [fromRightSideBar]='false'>
+                        </app-upload-history-card>
                     </div>
                 </div>
             </ng-container>

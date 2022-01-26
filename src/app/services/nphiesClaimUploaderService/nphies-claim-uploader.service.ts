@@ -25,21 +25,18 @@ export class NphiesClaimUploaderService {
     return this.http.request(request);
   }
 // //History
-//   getUploadHistory(providerId:string,page?: number,pageSize?: number ){
+ getUploadHistory(providerId:string,page?: number,pageSize?: number ){
+  const requestUrl = `/providers/${providerId}/history/?page=${page}&size=${pageSize}`;
+  const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+       return this.http.request(request);
+   }
 
-<<<<<<< HEAD
-//     const requestUrl = `/providers/${providerId}/history/?page=${page}&size=${pageSize}`;
-//     const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
-//     return this.http.request(request);
-//   }
-=======
   updateNphiesClaim(providerId: string, claimId: string, body: any) {
     const requestUrl = `/providers/${providerId}/claims/${claimId}`;
     const request = new HttpRequest('PUT', environment.nphiesClaimUploader + requestUrl, body);
     return this.http.request(request);
   }
 
->>>>>>> f1e454b61af109760f1de40c6e958e7a5c9df13a
 
   getUploadSummaries(providerId: string, page?: number, size?: number) {
     if (page == null) {
