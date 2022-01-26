@@ -24,11 +24,19 @@ export class UploadHistoryCardComponent implements OnInit {
   }
 
   hideCenter() {
+
     this.commen.showUploadsCenterChange.next(false);
     if (this.fromRightSideBar) {
       this.router.navigateByUrl(this.providerId + '/claims?uploadId=' + this.data.uploadSummaryID);
-    } else {
+    } else if (typeof this.data.uploadSummaryID != "undefined") {
       this.router.navigateByUrl('summary?id=' + this.data.uploadSummaryID);
+    } else {
+      this.router.navigateByUrl('nphies/summary?id=' + this.data.uploadId);
     }
+  }
+
+  isNan(value) {
+
+    return !isNaN(value) ? value : -1;
   }
 }
