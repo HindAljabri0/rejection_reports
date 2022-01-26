@@ -1,5 +1,4 @@
-<div class="bg-white block-body create-claim-body p-0"
-  *ngIf="pageMode && pageMode == 'VIEW' && otherDataModel && otherDataModel.claimId">
+<div class="bg-white block-body create-claim-body p-0" *ngIf="pageMode && pageMode == 'VIEW' && otherDataModel && otherDataModel.claimId">
   <div class="primary-dialog-header has-border">
     <h5 class="primary-dialog-title">View Claim</h5>
     <button type="button" (click)="close()" class="dialog-close" matRipple></button>
@@ -25,12 +24,9 @@
       <p>
         <span>Payment Date:</span>&nbsp;
         <strong>
-          <span
-            *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.paymentDate"
+          <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.paymentDate"
             class="value">{{otherDataModel.paymentReconciliationDetails.paymentDate | date: 'dd-MM-yyyy'}} </span>
-          <span
-            *ngIf="!otherDataModel.paymentReconciliationDetails || !otherDataModel.paymentReconciliationDetails.paymentDate"
-            class="value">-</span>
+          <span *ngIf="!otherDataModel.paymentReconciliationDetails || !otherDataModel.paymentReconciliationDetails.paymentDate" class="value">-</span>
         </strong>
       </p>
     </div>
@@ -38,8 +34,8 @@
   <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
 
     <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-     {{res.category}}:<span class="value">{{res.categoryValue}} </span>
-     <span class="currency">SR</span>
+      {{res.category}}:<span class="value">{{res.categoryValue}} </span>
+      <span class="currency">SR</span>
     </li>
 
     <!-- <li>
@@ -368,16 +364,13 @@
         <div class="col-4 col-xxl-3">
           <div class="form-group"
             [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
-            <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
-                class="asterisk">*</span></label>
+            <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
-                formControlName="dateWritten">
+              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
               <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
               <mat-datepicker #visionWrittenDate></mat-datepicker>
             </div>
-            <div
-              *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
+            <div *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
               <span class="error-text">Please select Date Written</span>
             </div>
           </div>
@@ -394,8 +387,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div
-              *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
+            <div *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
               <span class="error-text">Please select a Prescriber</span>
             </div>
           </div>
@@ -434,15 +426,13 @@
                 <td>{{visionSpecification.lensPower}}</td>
                 <td>{{visionSpecification.lensBackCurve}}</td>
                 <td>{{visionSpecification.lensDiameter}}</td>
-                <td>{{visionSpecification.prismAmount}}<span
-                    *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
+                <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0"
-          message='No Lens Specifications found!'>
+        <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" message='No Lens Specifications found!'>
         </app-empty-state>
       </div>
     </mat-tab>
@@ -585,8 +575,7 @@
           <tbody>
             <ng-container *ngFor="let item of Items; let i = index">
               <tr>
-                <td class="text-primary text-center row-click" width="10"
-                  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
                   <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline
                   </mat-icon>
@@ -615,8 +604,7 @@
                         <div class="inline-label-table auto-width">
                           <label>{{res.category}}:</label>
                           <p class="text-primary">
-                            <span>{{res.categoryValue}} <span
-                                class="currency">SR</span></span>
+                            <span>{{res.categoryValue}} <span class="currency">SR</span></span>
                           </p>
                         </div>
                       </div>
@@ -794,19 +782,16 @@
                             </tr>
                             <tr>
                               <td class="label">Tax</td>
-                              <td>{{item.tax !=null?item.tax:"-"}} <span class="currency"
-                                  *ngIf="item.tax !=null">SR</span></td>
+                              <td>{{item.tax !=null?item.tax:"-"}} <span class="currency" *ngIf="item.tax !=null">SR</span></td>
                             </tr>
                             <tr>
                               <td class="label">Patient Share</td>
-                              <td>{{item.patientShare !=null?item.patientShare:"-"}} <span class="currency"
-                                  *ngIf="item.patientShare!=null">SR</span>
+                              <td>{{item.patientShare !=null?item.patientShare:"-"}} <span class="currency" *ngIf="item.patientShare!=null">SR</span>
                               </td>
                             </tr>
                             <tr>
                               <td class="label">Payer Share</td>
-                              <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency"
-                                  *ngIf="item.payerShare!=null">SR</span></td>
+                              <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency" *ngIf="item.payerShare!=null">SR</span></td>
                             </tr>
                             <tr>
                               <td class="label">Sub Site</td>
@@ -996,8 +981,7 @@
       </ng-template>
       <div class="communication-wrapper">
         <h5 class="form-title px-14 py-0 mb-0">
-          <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-            (click)="openAddCommunicationDialog()">
+          <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true" (click)="openAddCommunicationDialog()">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
@@ -1008,15 +992,13 @@
               <div class="header-block">
                 <div class="message">
                   <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0"
-                      class="primary-grid manual-row-color horizontal-borders">
+                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
                           <tr *ngIf="payload.payloadValue">
                             <td class="px-0">{{payload.payloadValue}}</td>
                           </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
@@ -1028,8 +1010,7 @@
                               </ul>
                             </td>
                           </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
@@ -1050,8 +1031,7 @@
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
                 <div class="ml-auto">
-                  <button type="button" class="action-btn"
-                    (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                  <button type="button" class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
                   </button>
@@ -1061,15 +1041,13 @@
                 <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
                   <div class="message size-sm">
                     <div class="table-responsive pb-2">
-                      <table cellspacing="0" cellpadding="0" border="0"
-                        class="primary-grid manual-row-color horizontal-borders">
+                      <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
                         <tbody>
                           <ng-container *ngFor="let payload of reply.payloadList">
                             <tr *ngIf="payload.payloadValue">
                               <td class="px-0">{{payload.payloadValue}}</td>
                             </tr>
-                            <tr
-                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                            <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
@@ -1081,8 +1059,7 @@
                                 </ul>
                               </td>
                             </tr>
-                            <tr
-                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                            <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
@@ -1110,15 +1087,13 @@
               <div class="header-block sent">
                 <div class="message">
                   <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0"
-                      class="primary-grid manual-row-color horizontal-borders">
+                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
                           <tr *ngIf="payload.payloadValue">
                             <td class="px-0">{{payload.payloadValue}}</td>
                           </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
@@ -1130,8 +1105,7 @@
                               </ul>
                             </td>
                           </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
@@ -1157,8 +1131,7 @@
     </mat-tab>
     <mat-tab [label]="'Errors'">
       <div class="table-responsive" *ngIf="otherDataModel.errors">
-        <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0"
-          border="0">
+        <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
               <th class="light-bg-danger text-danger">Code</th>
@@ -1225,8 +1198,7 @@
         <mat-tab-group [dynamicHeight]="true" class="primary-tab">
           <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true"
-                [class.text-danger]="checkErrorClaimInfo === true">
+              <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
                 error</mat-icon>
               <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
             </ng-template>
@@ -1235,16 +1207,14 @@
               <div class="form-group flex-grow-1"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
                 <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
-                  formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+                  [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
-                    (click)="selectBeneficiary(beneficiary)">
+                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
                     {{beneficiary.name}} ({{beneficiary.documentId}})
                   </mat-option>
                 </mat-autocomplete>
-                <div
-                  *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
                   <span class="error-text">Please select a Beneficiary</span>
                 </div>
               </div>
@@ -1254,8 +1224,7 @@
               </div>
               <div [hidden]="pageMode === 'EDIT'" class="form-group">
                 <label class="control-label">&nbsp;</label>
-                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
-                  color="primary">Create New Beneficiary</button>
+                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
               </div>
             </div>
 
@@ -1274,8 +1243,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
                     <span class="error-text">Please select an Insurance Plan</span>
                   </div>
                 </div>
@@ -1296,20 +1264,17 @@
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
                   <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
                   <div class="date-picker">
-                    <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
-                      [max]="today" formControlName="dateOrdered">
+                    <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today" formControlName="dateOrdered">
                     <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
                     <mat-datepicker #dateOrderedCtrl></mat-datepicker>
                   </div>
-                  <div
-                    *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
                     <span class="error-text">Please enter Date Ordered</span>
                   </div>
                 </div>
               </div>
               <div class="col-4 col-xxl-3">
-                <div class="form-group"
-                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')}">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')}">
                   <label class="control-label">Type<span class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
@@ -1318,8 +1283,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="(isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')">
                     <span class="error-text">Please select a Type</span>
                   </div>
                 </div>
@@ -1358,15 +1322,13 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
                     <span class="error-text">Please select Payee Type</span>
                   </div>
                 </div>
               </div>
               <div class="col-4 col-xxl-3">
-                <div class="form-group"
-                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
                   <label class="control-label">Payee<span class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="payee">
@@ -1376,8 +1338,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
                     <span class="error-text">Please select payee</span>
                   </div>
                 </div>
@@ -1385,16 +1346,14 @@
               <div class="col-4 col-lg-3">
                 <div class="form-group">
                   <label class="control-label">Offline Eligibility ID</label>
-                  <input class="form-control" placeholder="Enter Offline Eligibility ID"
-                    formControlName="eligibilityOfflineId">
+                  <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
                 </div>
               </div>
               <div class="col-4 col-xxl-3">
                 <div class="form-group">
                   <label class="control-label">Offline Eligibility Date</label>
                   <div class="date-picker">
-                    <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
-                      placeholder="Select Offline Eligibility Date" [max]="today"
+                    <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
                       formControlName="eligibilityOfflineDate">
                     <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl">
                     </mat-datepicker-toggle>
@@ -1405,16 +1364,15 @@
               <div class="col-4 col-lg-3">
                 <div class="form-group">
                   <label class="control-label">Eligibility Response ID</label>
-                  <input class="form-control" placeholder="Eligibility Response ID"
-                    formControlName="eligibilityResponseId">
+                  <input class="form-control" placeholder="Eligibility Response ID" formControlName="eligibilityResponseId">
                 </div>
               </div>
               <div class="col-4 col-xxl-3">
                 <div class="form-group">
                   <label class="control-label">Offline Approval Date</label>
                   <div class="date-picker">
-                    <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control"
-                      placeholder="Select Offline Approval Date" [max]="today" formControlName="preAuthOfflineDate">
+                    <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
+                      formControlName="preAuthOfflineDate">
                     <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                     <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                   </div>
@@ -1467,12 +1425,10 @@
                       {{careTeam.speciality}}
                     </td>
                     <td class="actions">
-                      <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)"
-                        class="text-primary">
+                      <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Delete"
-                        (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                      <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
                     </td>
@@ -1482,8 +1438,7 @@
             </div>
             <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
             </app-empty-state>
-            <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}"
-              *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
+            <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}" *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
             </app-empty-state>
           </mat-tab>
           <mat-tab>
@@ -1494,8 +1449,7 @@
             </ng-template>
             <h5 class="form-title pt-0">
               <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
-              <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()"
-                [disabled]="!FormNphiesClaim.controls.type.value">
+              <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
                 <mat-icon>add</mat-icon>
               </button>
             </h5>
@@ -1521,12 +1475,10 @@
                       {{diagnosis.onAdmissionName ? diagnosis.onAdmissionName :"-"}}
                     </td>
                     <td class="actions">
-                      <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)"
-                        class="text-primary">
+                      <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
-                        (click)="deleteDiagnosis(diagnosis.sequence, i)">
+                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
                     </td>
@@ -1536,12 +1488,10 @@
             </div>
             <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
             </app-empty-state>
-            <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}"
-              *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
+            <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
             </app-empty-state>
           </mat-tab>
-          <mat-tab
-            *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
+          <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
             <ng-template mat-tab-label>
               <mat-icon class="mr-1" *ngIf="checkErrorVision === true" [class.text-danger]="checkErrorVision === true">
                 error</mat-icon>
@@ -1554,16 +1504,13 @@
               <div class="col-4 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
-                  <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
-                      class="asterisk">*</span></label>
+                  <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
                   <div class="date-picker">
-                    <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
-                      formControlName="dateWritten">
+                    <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
                     <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                     <mat-datepicker #visionWrittenDate></mat-datepicker>
                   </div>
-                  <div
-                    *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
+                  <div *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
                     <span class="error-text">Please select Date Written</span>
                   </div>
                 </div>
@@ -1571,8 +1518,7 @@
               <div class="col-8 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))}">
-                  <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
-                      class="asterisk">*</span></label>
+                  <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="prescriber">
                       <mat-option value="">Select Prescriber</mat-option>
@@ -1582,8 +1528,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
+                  <div *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
                     <span class="error-text">Please select a Prescriber</span>
                   </div>
                 </div>
@@ -1626,16 +1571,13 @@
                       <td>{{visionSpecification.lensPower}}</td>
                       <td>{{visionSpecification.lensBackCurve}}</td>
                       <td>{{visionSpecification.lensDiameter}}</td>
-                      <td>{{visionSpecification.prismAmount}}<span
-                          *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
+                      <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
                       </td>
                       <td class="actions">
-                        <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
-                          matTooltip="Edit" class="text-primary">
+                        <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit" class="text-primary">
                           <mat-icon>create</mat-icon>
                         </button>
-                        <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete"
-                          class="text-primary">
+                        <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete" class="text-primary">
                           <mat-icon>delete_outline</mat-icon>
                         </button>
                       </td>
@@ -1643,11 +1585,9 @@
                   </tbody>
                 </table>
               </div>
-              <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0"
-                message='No Lens Specifications found!'>
+              <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" message='No Lens Specifications found!'>
               </app-empty-state>
-              <app-empty-state [ngClass]="{'text-danger': IsLensSpecificationRequired}"
-                *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
+              <app-empty-state [ngClass]="{'text-danger': IsLensSpecificationRequired}" *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
                 message='Lens Specifications reqired!'>
               </app-empty-state>
             </div>
@@ -1702,12 +1642,10 @@
                       {{s.reasonName ? s.reasonName:"-"}}
                     </td>
                     <td class="actions">
-                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                        (click)="openAddEditSupportInfoDialog(s)">
+                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
-                        (click)="deleteSupportingInfo(s.sequence, i)">
+                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(s.sequence, i)">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
                     </td>
@@ -1720,8 +1658,7 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon class="mr-1" *ngIf="checkErrorAccident === true"
-                [class.text-danger]="checkErrorAccident === true">
+              <mat-icon class="mr-1" *ngIf="checkErrorAccident === true" [class.text-danger]="checkErrorAccident === true">
                 error</mat-icon>
               <span [class.text-danger]="checkErrorAccident === true">Accident</span>
             </ng-template>
@@ -1729,8 +1666,7 @@
               <div class="col-4 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
-                  <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired"
-                      class="asterisk">*</span></label>
+                  <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="accidentType">
                       <mat-option value="">Select Accident Type</mat-option>
@@ -1738,8 +1674,7 @@
                         {{type.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))">
+                  <div *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))">
                     <span class="error-text">Please select an Accident Type</span>
                   </div>
                 </div>
@@ -1766,12 +1701,9 @@
                 <div class="form-group">
                   <label class="control-label">Country</label>
                   <mat-form-field class="form-control custom-select-control">
-                    <mat-select [value]="selectedCountry" formControlName="country"
-                      (selectionChange)="selectedCountry = $event.value;" #Country>
+                    <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
                       <mat-option>
-                        <ngx-mat-select-search placeholderLabel="Select Country"
-                          noEntriesFoundLabel="No nationalities found" formControlName="countryName"
-                          name='selectedCountry'>
+                        <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
                         </ngx-mat-select-search>
                       </mat-option>
                       <mat-option value="">Select Country</mat-option>
@@ -1786,13 +1718,11 @@
                   [ngClass]="{'has-error' : IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
                   <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
                   <div class="date-picker">
-                    <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
-                      formControlName="date">
+                    <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
                     <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
                     <mat-datepicker #accidentDate></mat-datepicker>
                   </div>
-                  <div
-                    *ngIf="IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
+                  <div *ngIf="IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
                     <span class="error-text">Please enter date</span>
                   </div>
                 </div>
@@ -1830,8 +1760,7 @@
                 <tbody>
                   <ng-container *ngFor="let item of Items; let i = index">
                     <tr>
-                      <td class="text-primary text-center row-click" width="10"
-                        (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                         <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline
                         </mat-icon>
                         <mat-icon *ngIf="currentOpenItem==i" class="size-21">
@@ -1850,16 +1779,14 @@
                       <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                         {{item.nonStandardCode ? item.nonStandardCode:"-"}}</td>
                       <td class="actions text-nowrap">
-                        <button *ngIf="item.isPackage" mat-icon-button type="button" matTooltip="Add Details"
-                          class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
+                        <button *ngIf="item.isPackage" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
+                          (click)="openAddEditItemDetailsDialog(item.sequence)">
                           <mat-icon>add</mat-icon>
                         </button>
-                        <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                          (click)="openAddEditItemDialog(item)">
+                        <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
                           <mat-icon>create</mat-icon>
                         </button>
-                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
-                          (click)="deleteItem(i)">
+                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
                           <mat-icon>delete_outline</mat-icon>
                         </button>
                       </td>
@@ -1919,14 +1846,12 @@
                                   </tr>
                                   <tr>
                                     <td class="label">Tax</td>
-                                    <td>{{item.tax !=null?item.tax:"-"}} <span class="currency"
-                                        *ngIf="item.tax !=null">SR</span></td>
+                                    <td>{{item.tax !=null?item.tax:"-"}} <span class="currency" *ngIf="item.tax !=null">SR</span></td>
                                   </tr>
                                   <tr>
                                     <td class="label">Patient Share</td>
                                     <td>{{item.patientShare
-                                      !=null?item.patientShare:"-"}} <span class="currency"
-                                        *ngIf="item.patientShare!=null">SR</span>
+                                      !=null?item.patientShare:"-"}} <span class="currency" *ngIf="item.patientShare!=null">SR</span>
                                     </td>
                                   </tr>
                                   <tr>
@@ -2004,12 +1929,10 @@
                                 <td class="row-click">{{d.display ? d.display :"-"}}
                                 </td>
                                 <td class="actions text-nowrap">
-                                  <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                                    (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                  <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                     <mat-icon>create</mat-icon>
                                   </button>
-                                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
-                                    (click)="deleteItemDetails(item.sequence, di)">
+                                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
                                     <mat-icon>delete_outline</mat-icon>
                                   </button>
                                 </td>
@@ -2032,8 +1955,7 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true"
-                [class.text-danger]="checkErrorEncounter === true">
+              <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
                 error</mat-icon>
               <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
             </ng-template>
@@ -2049,8 +1971,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))">
+                  <div *ngIf="IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))">
                     <span class="error-text">Please select status</span>
                   </div>
                 </div>
@@ -2067,8 +1988,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    *ngIf="IsClassRequired && ((isSubmitted || FormNphiesClaim.get('encounterClass').touched) && FormNphiesClaim.get('encounterClass').hasError('required'))">
+                  <div *ngIf="IsClassRequired && ((isSubmitted || FormNphiesClaim.get('encounterClass').touched) && FormNphiesClaim.get('encounterClass').hasError('required'))">
                     <span class="error-text">Please select Class</span>
                   </div>
                 </div>
@@ -2088,8 +2008,7 @@
               <div class="col-4 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))}">
-                  <label class="control-label">Service Provider<span *ngIf="IsServiceProviderRequired"
-                      class="asterisk">*</span></label>
+                  <label class="control-label">Service Provider<span *ngIf="IsServiceProviderRequired" class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="serviceProvider">
                       <mat-option value="">Select service provider</mat-option>
@@ -2122,16 +2041,16 @@
                   <div class="row small-gutter">
                     <div class="col-6">
                       <div class="date-picker">
-                        <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date"
-                          formControlName="startDate" [max]="FormNphiesClaim.controls.periodEnd.value">
+                        <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date" formControlName="startDate"
+                          [max]="FormNphiesClaim.controls.periodEnd.value">
                         <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
                         <mat-datepicker #periodStartDate></mat-datepicker>
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="date-picker">
-                        <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date"
-                          formControlName="periodEnd" [min]="FormNphiesClaim.controls.startDate.value">
+                        <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date" formControlName="periodEnd"
+                          [min]="FormNphiesClaim.controls.startDate.value">
                         <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
                         <mat-datepicker #periodEndDate></mat-datepicker>
                       </div>

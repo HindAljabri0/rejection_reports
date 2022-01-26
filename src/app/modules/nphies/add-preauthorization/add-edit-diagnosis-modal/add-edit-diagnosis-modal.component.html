@@ -8,19 +8,17 @@
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
 
-        <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('description').touched) && FormDiagnosis.get('description').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('description').touched) && FormDiagnosis.get('description').hasError('required')}">
           <label class="control-label">Code-Description<span class="asterisk">*</span></label>
-          <input type="text" class="form-control" placeholder="Search diagnosis code here..."
-            formControlName="description" [matAutocomplete]="auto" (keyup)="searchICDCodes()">
+          <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..." formControlName="description" [matAutocomplete]="auto"
+            (keyup)="searchICDCodes()">
           <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
               {{option.diagnosisCode}} | {{option.diagnosisDescription}}
             </mat-option>
           </mat-autocomplete>
-          <div
-            *ngIf="(isSubmitted || FormDiagnosis.get('description').touched) && FormDiagnosis.get('description').hasError('required')">
+          <div *ngIf="(isSubmitted || FormDiagnosis.get('description').touched) && FormDiagnosis.get('description').hasError('required')">
             <span class="error-text">Please select a Code-Description</span>
           </div>
         </div>
@@ -28,8 +26,7 @@
       </div>
 
       <div class="col-4 col-lg-3">
-        <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('type').touched) && FormDiagnosis.get('type').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('type').touched) && FormDiagnosis.get('type').hasError('required')}">
           <label class="control-label">Type<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="type">
@@ -37,8 +34,7 @@
               <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div
-            *ngIf="(isSubmitted || FormDiagnosis.get('type').touched) && FormDiagnosis.get('type').hasError('required')">
+          <div *ngIf="(isSubmitted || FormDiagnosis.get('type').touched) && FormDiagnosis.get('type').hasError('required')">
             <span class="error-text">Please select a Type</span>
           </div>
         </div>
@@ -54,8 +50,7 @@
               <mat-option *ngFor="let a of onAdmissionList" [value]="a">{{a.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div
-            *ngIf="IsOnAdmissionRequired && ((isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required'))">
+          <div *ngIf="IsOnAdmissionRequired && ((isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required'))">
             <span class="error-text">Please select a On Admission </span>
           </div>
         </div>

@@ -71,6 +71,14 @@ export class SearchWithAdvanceComponent implements OnInit {
     });
   }
 
+  get isClaimUser() {
+    return this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser;
+  }
+
+  get hasNphiesClaims() {
+    return this.commen.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.commen.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim;
+  }
+
   dateToText(date: Moment) {
     if (date != null) {
       return date.format('DD/MM/yyyy');

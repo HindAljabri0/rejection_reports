@@ -6,16 +6,13 @@
     <form [formGroup]="PayerClaimsReportForm" (ngSubmit)="search()">
       <div class="row small-gutter">
         <div class="col-md">
-          <div class="form-group"
-            [class.has-error]="submitted && PayerClaimsReportForm.get('providerId').hasError('required')">
+          <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('providerId').hasError('required')">
             <label class="control-label">Provider</label>
             <!-- <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" /> -->
-            <input [readonly]="isLoading" type="text" class="form-control" [matAutocomplete]="auto"
-              formControlName="providerId" (input)="updateFilter()" (keyup.enter)="selectProvider()"
-              placeholder="Select provider">
+            <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto" formControlName="providerId" (input)="updateFilter()"
+              (keyup.enter)="selectProvider()" placeholder="Select provider">
             <mat-autocomplete autoActiveFirstOption #auto>
-              <mat-option *ngFor="let provider of filteredProviders"
-                [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+              <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                 (click)="selectProvider(provider.switchAccountId)">
                 {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
               </mat-option>
@@ -27,8 +24,7 @@
 
         </div>
         <div class="col-md">
-          <div class="form-group"
-            [class.has-error]="submitted && PayerClaimsReportForm.get('payerId').hasError('required')">
+          <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('payerId').hasError('required')">
             <label class="control-label">Payer</label>
             <!-- <input type="text" class="form-control" placeholder="Select Payer" formControlName="payerId" /> -->
             <mat-form-field class="form-control custom-select-control">
@@ -47,8 +43,7 @@
 
         </div>
         <div class="col-md">
-          <div class="form-group"
-            [class.has-error]="submitted && PayerClaimsReportForm.get('summaryCriteria').hasError('required')">
+          <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('summaryCriteria').hasError('required')">
             <label class="control-label">Status</label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select multiple formControlName="summaryCriteria">
@@ -63,13 +58,11 @@
           </div>
         </div>
         <div class="col-md">
-          <div class="form-group"
-            [class.has-error]="submitted && PayerClaimsReportForm.get('fromDate').hasError('required')">
+          <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('fromDate').hasError('required')">
             <label class="control-label">From Date</label>
             <div class="date-picker">
-              <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
-                [bsConfig]="datePickerConfig" placeholder="Select From Date" required [maxDate]="PayerClaimsReportForm.controls.toDate.value"
-                (bsValueChange)="dateValidation($event)" />
+              <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="datePickerConfig" placeholder="Select From Date"
+                required [maxDate]="PayerClaimsReportForm.controls.toDate.value" (bsValueChange)="dateValidation($event)" />
             </div>
             <div *ngIf="submitted && PayerClaimsReportForm.get('fromDate').hasError('required')">
               <span class="error-text">Please select from date</span>
@@ -77,12 +70,11 @@
           </div>
         </div>
         <div class="col-md">
-          <div class="form-group"
-            [class.has-error]="submitted && PayerClaimsReportForm.get('toDate').hasError('required')">
+          <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('toDate').hasError('required')">
             <label class="control-label">To Date</label>
             <div class="date-picker">
-              <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
-                [bsConfig]="datePickerConfig" [minDate]="PayerClaimsReportForm.controls.fromDate.value" placeholder="Select To Date" required />
+              <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig"
+                [minDate]="PayerClaimsReportForm.controls.fromDate.value" placeholder="Select To Date" required />
             </div>
             <div *ngIf="submitted && PayerClaimsReportForm.get('toDate').hasError('required')">
               <span class="error-text">Please select to date</span>
@@ -114,8 +106,7 @@
         </mat-form-field>
       </div>
       <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-          (page)="paginatorAction($event)">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
         </mat-paginator>
       </div>
       <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
