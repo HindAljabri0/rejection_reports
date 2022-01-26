@@ -11,8 +11,8 @@
         <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
         </button> -->
-        <div class="search-btns">
-            <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search()">
+        <div class="search-btns" *ngIf="isClaimUser && hasNphiesClaims">
+            <button  type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search()">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
             </button>

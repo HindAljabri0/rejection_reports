@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,9 +17,10 @@ export class SidebarComponent implements OnInit {
   providerId: string;
   envProd = false;
   envStaging = false;
-  isRevenueVisible = false;
 
-  constructor(private auth: AuthService, private uploadService: UploadService, private sharedServices: SharedServices) {
+  userPrivileges: UserPrivileges = initState.userPrivileges;
+
+  constructor(private auth: AuthService, private uploadService: UploadService, private sharedServices: SharedServices, private store: Store) {
     this.auth.isUserNameUpdated.subscribe(updated => {
       this.init();
     });
@@ -24,19 +28,13 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.init();
+    this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
     this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
     this.envStaging = (environment.name == 'oci_staging' || environment.name == 'staging');
   }
 
   init() {
     this.providerId = this.auth.getProviderId();
-    const providerId = localStorage.getItem('provider_id');
-    try {
-      const userPrivileges = localStorage.getItem(`${providerId}101`);
-      this.isRevenueVisible = userPrivileges.split('|').includes('24.0') || userPrivileges.split('|').includes('24.1');
-    } catch (error) {
-    }
-
   }
 
   get uploadProgress(): number {
@@ -47,41 +45,15 @@ export class SidebarComponent implements OnInit {
     return this.uploadService.summary.uploadSummaryID != null;
   }
 
+  get hasAnyNphiesPrivilege() {
+    const keys = Object.keys(this.userPrivileges.ProviderPrivileges.NPHIES);
+    return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
+  }
+
   toggleNav() {
     document.body.classList.remove('nav-open');
     document.getElementsByTagName('html')[0].classList.remove('nav-open');
   }
-
-
-  get isAdmin() {
-    return this.sharedServices.isAdmin;
-  }
-  get isProvider() {
-    return this.sharedServices.isProvider;
-  }
-  get isProviderAdmin() {
-    return this.sharedServices.isAdminOfProvider;
-  }
-  get isRcmUser() {
-    return this.sharedServices.isRcmUser;
-  }
-  get hasAllNphiesPrivilege() {
-    return this.sharedServices.hasAllNphiesPrivilege;
-  }
-  get hasNphiesBeneficiaryPrivilege() {
-    return this.sharedServices.hasNphiesBeneficiaryPrivilege;
-  }
-  get hasAnyNphiesPrivilege() {
-    return this.hasAllNphiesPrivilege || this.hasNphiesBeneficiaryPrivilege;
-  }
-  get hasRcmPrivilege(){
-    return this.sharedServices.hasRcmPrivilege;
-
-  }
-  get hasGSSPrivilege(){
-    return this.sharedServices.hasGSSPrivilege;
-  }
-
   get NewAuthTransactions() {
     const transCount = this.sharedServices.unReadProcessedCount + this.sharedServices.unReadComunicationRequestCount;
     return transCount;
