@@ -3,6 +3,8 @@ import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { evaluateUserPrivileges } from 'src/app/store/mainStore.actions';
 // import { ApmService } from '@elastic/apm-rum-angular';
 
 @Injectable({
@@ -18,7 +20,7 @@ export class AuthService {
   onCancelPendingHttpRequests = () => this.onCancelPendingHttpRequests$.asObservable();
   // amp;
 
-  constructor(private httpClient: HttpClient, private router: Router) {
+  constructor(private httpClient: HttpClient, private router: Router, private store: Store) {
     // this.amp = apmService.init({
     //   serviceName: 'angular-app',
     //   serverUrl: 'https://apm-server-sample-elastic.apps.okd.waseel.com:443',
@@ -85,6 +87,10 @@ export class AuthService {
     return isLogged;
   }
 
+  evaluateUserPrivileges() {
+    this.store.dispatch(evaluateUserPrivileges());
+  }
+
 
   refreshCurrentToken() {
     const requestURL = '/refresh';
@@ -146,6 +152,7 @@ export class AuthService {
           }
           localStorage.setItem('payers', payersStr.substr(0, payersStr.length - 1));
           this.isUserNameUpdated.next(true);
+          this.store.dispatch(evaluateUserPrivileges());
         } else {
           this.logout(false, true);
         }
@@ -178,4 +185,39 @@ export class AuthService {
     return localStorage.getItem('cchi_id');
   }
 
+  static getPayersList(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
+    if (globMed == null) {
+      globMed = false;
+    }
+    const payers: { id: number, name: string, arName: string, payerCategory: string }[] = [];
+    const payersStr = localStorage.getItem('payers');
+    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
+      const payersStrSplitted = payersStr.split('|');
+      payersStrSplitted
+        .map(value => payers.push({
+          id: Number.parseInt(value.split(':')[0], 10),
+          name: value.split(':')[1].split(',')[0],
+          arName: value.split(':')[1].split(',')[1],
+          payerCategory: value.split(':')[1].split(',')[2]
+        }));
+    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
+      return [{
+        id: Number.parseInt(payersStr.split(':')[0], 10),
+        name: payersStr.split(':')[1].split(',')[0],
+        arName: payersStr.split(':')[1].split(',')[1],
+        payerCategory: payersStr.split(':')[1].split(',')[2]
+      }];
+    }
+
+    return payers;
+  }
+
+  static hasPrivilege(source: string, destination: string, transaction: string) {
+    try {
+      const privilege = localStorage.getItem(`${source}${destination}`);
+      return privilege != null && (privilege.includes(`|${transaction}`) || privilege.startsWith(`${transaction}`));
+    } catch (error) {
+      return false;
+    }
+  }
 }

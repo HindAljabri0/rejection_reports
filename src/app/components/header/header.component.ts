@@ -9,6 +9,8 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Store } from '@ngrx/store';
+import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 
 
 @Component({
@@ -35,6 +37,8 @@ export class HeaderComponent implements OnInit {
   watchingProcessed = false;
   showWhatsAppSupport = false;
 
+  userPrivileges: UserPrivileges = initState.userPrivileges;
+
   @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
   constructor(
@@ -43,7 +47,8 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private downloadService: DownloadService,
     private notificationService: NotificationsService,
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    private store: Store
   ) {
     this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
@@ -57,9 +62,11 @@ export class HeaderComponent implements OnInit {
       }
     }
     );
+    this.store.select(getUserPrivileges).subscribe(privileges => { this.userPrivileges = privileges; this.fetchDownloads(); });
   }
 
   getUserData() {
+    this.authService.evaluateUserPrivileges();
     this.userName = this.authService.getUserName();
     this.authUsername = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
@@ -94,6 +101,10 @@ export class HeaderComponent implements OnInit {
       setTimeout(() => this.downloadMenuRef.openMenu(), 500);
     });
 
+    this.fetchDownloads();
+  }
+
+  fetchDownloads() {
     if (this.isProvider) {
       this.reportsService.getAllDownloadsForProvider(this.providerId, null, null).subscribe(downloads => {
         this.providerDownloads = [];
@@ -102,7 +113,7 @@ export class HeaderComponent implements OnInit {
         }
       });
     }
-    if (this.isAdmin) {
+    if (this.userPrivileges.WaseelPrivileges.isPAM || this.userPrivileges.WaseelPrivileges.isRCM) {
       this.reportsService.getAllDownloadsForProvider(this.authUsername, null, null).subscribe(downloads => {
         this.adminDownloads = [];
         if (downloads instanceof HttpResponse) {
@@ -116,6 +127,9 @@ export class HeaderComponent implements OnInit {
     return this.providerDownloads.length > 0 || this.adminDownloads.length > 0;
   }
 
+  get isProvider() {
+    return this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim;
+  }
   setNewNotificationIndecater(show: boolean) {
     if (show) {
       this.notificationIconClasses = 'mat-icon-button mat-button-base hasNotifications';
@@ -199,13 +213,4 @@ export class HeaderComponent implements OnInit {
   get hasNewAdminDownload() {
     return this.adminDownloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
   }
-
-  get isProvider() {
-    return this.sharedServices.isProvider;
-  }
-
-  get isAdmin() {
-    return this.sharedServices.isAdmin;
-  }
-
 }

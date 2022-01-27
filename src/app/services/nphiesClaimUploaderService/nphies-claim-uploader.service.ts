@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -23,6 +24,13 @@ export class NphiesClaimUploaderService {
     const request = new HttpRequest('POST', environment.nphiesClaimUploader + requestUrl, body);
     return this.http.request(request);
   }
+//History
+ getUploadHistory(providerId:string,page?: number,pageSize?: number ){
+  const requestUrl = `/providers/${providerId}/history?page=${page}&pageSize=${pageSize}`;
+  const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+       return this.http.request(request);
+   }
+
 
   updateNphiesClaim(providerId: string, claimId: string, body: any) {
     const requestUrl = `/providers/${providerId}/claims/${claimId}`;
@@ -97,15 +105,7 @@ export class NphiesClaimUploaderService {
       }
     });
   }
-}
 
-export class UploadSummary {
-  transactionId: number;
-  message: string;
-  uploadSummaryID: number;
-  uploadName: string;
-  uploadDate: Date;
-  noOfUploadedClaims: number;
-  netAmountOfUploadedClaims: number;
-  noOfNotUploadedClaims: number;
+
+
 }
