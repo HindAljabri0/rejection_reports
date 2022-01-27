@@ -37,7 +37,7 @@ export class UploadClaimComponent implements OnInit {
   }
 
   get summaryDate(): string {
-    if (this.summary.uploadSummaryID != undefined) {
+    if (this.summary.uploadId != undefined) {
       if (!(this.summary.uploadDate instanceof Date)) {
         this.summary.uploadDate = new Date(this.summary.uploadDate);
       }

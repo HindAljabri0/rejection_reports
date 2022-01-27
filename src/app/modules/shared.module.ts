@@ -8,13 +8,15 @@ import { DetailscardComponent } from '../components/reusables/detailscard/detail
 import { MaterialModule } from './material/material.module';
 import { CommonModule } from '@angular/common';
 import { EmptyStateComponent } from '../components/reusables/empty-state/empty-state.component';
+import { ScrollableDirective } from '../directives/scrollable/scrollable.directive';
 
 @NgModule({
   declarations: [
     DetailscardComponent,
     EmptyStateComponent,
     ReusableSearchBarComponent,
-    UploadHistoryCardComponent
+    UploadHistoryCardComponent,
+    ScrollableDirective
   ],
   imports: [
     MaterialModule,
@@ -29,7 +31,8 @@ import { EmptyStateComponent } from '../components/reusables/empty-state/empty-s
     FormsModule,
     ReactiveFormsModule,
     ReusableSearchBarComponent,
-    UploadHistoryCardComponent
+    UploadHistoryCardComponent,
+    ScrollableDirective
   ]
 })
 export class SharedModule { }

@@ -31,7 +31,7 @@ export const environment = {
   providerNphiesEligibility: `${host}:8022`,
   providerNphiesSearch: `${host}:8090`,
   providerNphiesApproval: `${host}:8025`,
-  nphiesClaimUploader: `${host}:8088`,
+  nphiesClaimUploader: `http://192.168.1.177:8088`,
   claimsDownloadsService: `${host}:8052`,
   nphiesPollManagement: `${host}:9991`,
   contractManagementService: `${host}:8099`

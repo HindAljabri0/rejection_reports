@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ClaimStatus } from '../models/claimStatus';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { NotificationsService } from './notificationService/notifications.service';
 import { AnnouncementsService } from './announcementService/announcements.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +11,6 @@ import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { SearchService } from './serchService/search.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ReportsService } from './reportsService/reports.service';
 import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from '../store/mainStore.reducer';
 
@@ -81,6 +79,9 @@ export class SharedServices {
 
   getUploadId: any;
   helper = new JwtHelperService();
+
+  shadesOfDangerColor = ['#faeded', '#f0c8c8', '#e6a4a4', '#dc8080', '#d25b5b', '#b94242', '#903333', '#672525', '#3d1616', '#140707'];
+  shadesOfSuccessColor = ['#eef9ed', '#cdecca', '#ace0a7', '#8bd484', '#6ac761', '#50ae47', '#3e8737', '#2d6128', '#1b3a18', '#091308'];
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -420,7 +421,7 @@ export class SharedServices {
     return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
   }
 
-  
+
 
   getPayersListWithoutTPA(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
 
@@ -620,7 +621,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -638,7 +639,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
@@ -710,7 +711,23 @@ export class SharedServices {
     return bytes.buffer;
   }
 
-
+  getColorsFromShades(numberOfColors: number, shade: string) {
+    let colorGroup: string[];
+    if (shade === 'danger') {
+      colorGroup = this.shadesOfDangerColor;
+    } else if (shade === 'success') {
+      colorGroup = this.shadesOfSuccessColor;
+    }
+    if (numberOfColors > colorGroup.length) {
+      return this.getAnalogousColor(numberOfColors);
+    } else if (numberOfColors === colorGroup.length) {
+      return colorGroup;
+    } else {
+      let startPosition = (colorGroup.length / 2) - (numberOfColors / 2);
+      startPosition = (Number.isInteger(startPosition)) ? startPosition : Math.trunc(startPosition);
+      return colorGroup.slice(startPosition, startPosition + numberOfColors);
+    }
+  }
 }
 
 export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';

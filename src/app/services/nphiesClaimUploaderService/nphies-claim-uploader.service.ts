@@ -17,7 +17,17 @@ export class NphiesClaimUploaderService {
   uploadingObs: Subject<boolean> = new Subject<boolean>();
   error: string;
   errorChange: Subject<string> = new Subject();
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.http = http;
+    this.summary = new UploadSummary();
+    this.summaryChange.subscribe((value) => {
+      this.summary = value;
+    });
+    this.progressChange.subscribe(value => {
+      this.progress = value;
+    });
+    this.errorChange.subscribe(value => this.error = value);
+   }
 
   createNphisClaim(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/claim/upload`;
