@@ -219,7 +219,7 @@ export class NphiesClaimSummaryComponent implements OnInit {
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
       if (!this.router.url.includes('id')) {
         // this.summary = value;
-        this.location.go('/nphies/summary?id=' + value.uploadSummaryID);
+        this.location.go('/nphies/summary?id=' + value.uploadId);
         this.getResults();
       }
       // this.router.navigate(['/summary']);
@@ -240,16 +240,18 @@ export class NphiesClaimSummaryComponent implements OnInit {
 
   getResults() {
     const value = this.summary;
-    if (value.noOfUploadedClaims != 0) {
-      this.card0Action();
-    } else if (value.noOfAcceptedClaims != 0) {
-      this.card1Action();
-    } else if (value.noOfNotAcceptedClaims != 0) {
-      this.card2Action();
-    } else if (value.noOfNotUploadedClaims != 0) {
-      this.card3Action();
-    } else if (value.noOfDownloadableClaims != 0) {
-      this.card4Action();
+    if (value) {
+      if (value.noOfUploadedClaims != 0) {
+        this.card0Action();
+      } else if (value.noOfAcceptedClaims != 0) {
+        this.card1Action();
+      } else if (value.noOfNotAcceptedClaims != 0) {
+        this.card2Action();
+      } else if (value.noOfNotUploadedClaims != 0) {
+        this.card3Action();
+      } else if (value.noOfDownloadableClaims != 0) {
+        this.card4Action();
+      }
     }
   }
 
@@ -261,7 +263,7 @@ export class NphiesClaimSummaryComponent implements OnInit {
     }
     this.uploadService.getUploadedClaimsDetails(
       this.commen.providerId,
-      this.uploadService.summary.uploadSummaryID,
+      this.uploadService.summary.uploadId,
       status,
       page,
       pageSize
@@ -314,13 +316,13 @@ export class NphiesClaimSummaryComponent implements OnInit {
     return this.commen.getCardAccentColor(status);
   }
   viewClaims() {
-    this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } });
+    this.router.navigate([this.providerId, 'claims', 'nphies-search-claim'], { queryParams: { uploadId: this.summary.uploadId } });
   }
 
   openUploadSummaryDialog(data: any) {
     this.commen.loadingChanged.next(true);
     this.uploadService.getClaimsErrorByFieldName(this.commen.providerId,
-      this.uploadService.summary.uploadSummaryID,
+      this.uploadService.summary.uploadId,
       data.fieldName).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);

@@ -13,16 +13,12 @@
               </tr>
               <tr>
                   <th>Total Net</th>
-                  <th>Total Net Vat</th>
               </tr>
               <tr>
                   <td class="text-{{card0AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netAmountOfUploadedClaims}}</span><span
+                          class="dashboard-numbers">{{summary.totalAmtOfUploadedClaims}}</span><span
                           class="currency">
                           SR</span></td>
-                  <td class="text-{{card0AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netVATAmountOfUploadedClaims}}</span><span
-                          class="currency"> SR</span></td>
               </tr>
           </table>
       </app-abstractcard>
@@ -32,8 +28,8 @@
           [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()"
           class="primary-card">
           <div class="card-progress text-{{card1AccentColor}}">
-              <span class="value">{{summary.ratioForAccepted}}%</span>
-              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioForAccepted"
+              <span class="value">{{summary.ratioOfAccepted}}%</span>
+              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioOfAccepted"
                   diameter="48">
               </mat-progress-spinner>
           </div>
@@ -47,16 +43,12 @@
               </tr>
               <tr>
                   <th>Total Net</th>
-                  <th>Total Net Vat</th>
               </tr>
               <tr>
                   <td class="text-{{card1AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netAmountOfAcceptedClaims}}</span><span
+                          class="dashboard-numbers">{{summary.totalAmtOfAcceptedClaims}}</span><span
                           class="currency">
                           SR</span></td>
-                  <td class="text-{{card1AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span
-                          class="currency"> SR</span></td>
               </tr>
           </table>
       </app-abstractcard>
@@ -66,8 +58,8 @@
           [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()"
           class="primary-card">
           <div class="card-progress text-{{card2AccentColor}}">
-              <span class="value">{{summary.ratioForNotAccepted}}%</span>
-              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioForNotAccepted"
+              <span class="value">{{summary.ratioOfNotAccepted}}%</span>
+              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioOfNotAccepted"
                   diameter="48">
               </mat-progress-spinner>
           </div>
@@ -81,14 +73,10 @@
               </tr>
               <tr>
                   <th>Total Net</th>
-                  <th>Total Net Vat</th>
               </tr>
               <tr>
                   <td class="text-{{card2AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span
-                          class="currency"> SR</span></td>
-                  <td class="text-{{card2AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span
+                          class="dashboard-numbers">{{summary.totalAmtOfNotAcceptedClaims}}</span><span
                           class="currency"> SR</span></td>
               </tr>
           </table>
@@ -112,39 +100,6 @@
                           claims will not be saved in the
                           system</span>
                   </td>
-              </tr>
-          </table>
-      </app-abstractcard>
-  </ng-template>
-  <ng-template [id]="'5'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfDownloadableClaims != 0'>
-      <app-abstractcard [clickable]="uploadService.summary.noOfDownloadableClaims != 0" [title]="card4Title"
-          [actionText]="card4ActionText" [accentColor]="card4AccentColor" (action)="card4Action()"
-          class="primary-card">
-          <div class="card-progress text-{{card4AccentColor}}">
-              <span class="value">{{summary.ratioForDownloadable}}%</span>
-              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioForDownloadable"
-                  diameter="48">
-              </mat-progress-spinner>
-          </div>
-          <table>
-              <tr>
-                  <th colspan="2">No. of Claims</th>
-              </tr>
-              <tr>
-                  <td colspan="2" class="pb-2 text-{{card4AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.noOfDownloadableClaims}}</span></td>
-              </tr>
-              <tr>
-                  <th>Total Net</th>
-                  <th>Total Net Vat</th>
-              </tr>
-              <tr>
-                  <td class="text-{{card4AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netAmountOfDownloadableClaims}}</span><span
-                          class="currency"> SR</span></td>
-                  <td class="text-{{card4AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.netVATAmountOfDownloadableClaims}}</span><span
-                          class="currency"> SR</span></td>
               </tr>
           </table>
       </app-abstractcard>
@@ -234,7 +189,7 @@
       </div>
       <div class="right-block btn-list">
           <!-- <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button> -->
-          <button *ngIf="summary.uploadSummaryID != undefined" (click)="viewClaims()" mat-flat-button
+          <button *ngIf="summary.uploadId != undefined" (click)="viewClaims()" mat-flat-button
               color="primary">View Claims</button>
       </div>
   </div>

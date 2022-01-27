@@ -51,6 +51,7 @@ import { MultiSheetFileUploadComponent } from './upload-claim/multi-sheet-file-u
 import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusable-search-bar/reusable-search-bar.component';
+import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.directive';
 
 
 
@@ -89,8 +90,7 @@ import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusabl
     ClaimProcessedTransactionsComponent,
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
-    UploadsHistoryComponent,
-
+    UploadsHistoryComponent
   ],
   imports: [
     CommonModule,

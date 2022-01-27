@@ -100,6 +100,7 @@ import { UploadClaimComponent } from './modules/nphies/upload-claim/upload-claim
 import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
 import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
 
 
 
@@ -136,7 +137,7 @@ import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderServic
     RejectionReportClaimDialogComponent,
     UploadsCenterComponent,
     UploadsHistoryComponent,
-    ScrollableDirective,
+    // ScrollableDirective,
     RejectionReportComponent,
     LanguageSwitcherComponent,
     SearchCriteriaComponent,
@@ -167,7 +168,7 @@ import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderServic
     CertificateConfigurationModelComponent,
     UploadClaimComponent,
     MultiSheetFileUploadComponent,
-    NphiesClaimSummaryComponent,
+    NphiesClaimSummaryComponent
   ],
   imports: [
     AppRoutingModule,

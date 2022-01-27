@@ -7,7 +7,7 @@ export class UploadSummary {
       this.uploadName = json.uploadname ? json.uploadname : '';
       this.uploadDate = json.uploaddate ? new Date(json.uploaddate) : null;
       this.uploadSummaryID = json.uploadid ? json.uploadid : '';
-      this.uploadId=json.uploadid ? json.uploadid : '';
+      this.uploadId = json.uploadid ? json.uploadid : '';
       this.noOfUploadedClaims = json.noOfUploadedClaims ? json.noOfUploadedClaims : 0;
       this.netAmountOfUploadedClaims = json.netAmountOfUploadedClaims ? json.netAmountOfUploadedClaims : 0;
       this.netVATAmountOfUploadedClaims = json.netVATAmountOfUploadedClaims ? json.netVATAmountOfUploadedClaims : 0;
@@ -24,6 +24,12 @@ export class UploadSummary {
       this.ratioForAccepted = json.ratioForAccepted ? json.ratioForAccepted : 0;
       this.ratioForNotAccepted = json.ratioForNotAccepted ? json.ratioForNotAccepted : 0;
       this.ratioForDownloadable = json.ratioForDownloadable ? json.ratioForDownloadable : 0;
+
+      this.totalAmtOfUploadedClaims = json.totalAmtOfUploadedClaims ? json.totalAmtOfUploadedClaims : 0;
+      this.totalAmtOfAcceptedClaims = json.totalAmtOfAcceptedClaims ? json.totalAmtOfAcceptedClaims : 0;
+      this.totalAmtOfNotAcceptedClaims = json.totalAmtOfNotAcceptedClaims ? json.totalAmtOfNotAcceptedClaims : 0;
+      this.ratioOfAccepted = json.ratioOfAccepted ? json.ratioOfAccepted : 0;
+      this.ratioOfNotAccepted = json.ratioOfNotAccepted ? json.ratioOfNotAccepted : 0;
     }
   }
   // static fromnaphisSummaryresponse(data: any): UploadSummary {
@@ -49,7 +55,7 @@ export class UploadSummary {
 
   // }
   uploadSummaryID: number;
-  uploadId:number;
+  uploadId: number;
   uploadName: string;
   uploadDate: Date;
 
@@ -77,4 +83,10 @@ export class UploadSummary {
   ratioForAccepted = 0;
   ratioForNotAccepted = 0;
   ratioForDownloadable = 0;
+
+  totalAmtOfUploadedClaims = 0;
+  totalAmtOfAcceptedClaims = 0;
+  totalAmtOfNotAcceptedClaims = 0;
+  ratioOfAccepted = 0;
+  ratioOfNotAccepted = 0;
 }
