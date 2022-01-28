@@ -53,9 +53,17 @@
     <div class="inline-label-table">
       <label>Sub Type</label>
       <p class="text-primary">
-        <span
-          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
+      </p>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Related PreAuth Request ID</label>
+      <p class="text-primary">
+        <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}} ({{data.claimReuseRelation}})</span>
+        <span *ngIf="!data.claimReuseId || !data.claimReuseRelation">-</span>
       </p>
     </div>
   </div>
@@ -96,8 +104,7 @@
       <div class="inline-label-table auto-width">
         <label>{{res.category}}:</label>
         <p class="text-primary">
-          <span>{{res.categoryValue}} <span
-              class="currency">SR</span></span>
+          <span>{{res.categoryValue}} <span class="currency">SR</span></span>
         </p>
       </div>
     </div>
@@ -305,12 +312,9 @@
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
           <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)"><span
-              *ngIf="item.itemDecision">{{item.itemDecision.benefitValue}} </span> <span class="currency">SR</span></td>
-          <td class="row-click" (click)="toggleItem(i)"><span
-              *ngIf="item.itemDecision">{{item.itemDecision.status}}</span></td>
-          <td class="row-click" (click)="toggleItem(i)"><span
-              *ngIf="item.itemDecision">{{item.itemDecision.benefitReason}}</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.benefitValue}} </span> <span class="currency">SR</span></td>
+          <td class="row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span></td>
+          <td class="row-click" (click)="toggleItem(i)"><span *ngIf="item.itemDecision">{{item.itemDecision.benefitReason}}</span></td>
           <td class="row-click" (click)="toggleItem(i)">-</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
@@ -324,8 +328,7 @@
                   <div class="inline-label-table auto-width">
                     <label>{{res.category}}:</label>
                     <p class="text-primary">
-                      <span>{{res.categoryValue}} <span
-                          class="currency">SR</span></span>
+                      <span>{{res.categoryValue}} <span class="currency">SR</span></span>
                     </p>
                   </div>
                 </div>
@@ -705,19 +708,16 @@
             <td>{{visionSpecification.lensPower}}</td>
             <td>{{visionSpecification.lensBackCurve}}</td>
             <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}<span
-                *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
+            <td>{{visionSpecification.lensDuration}}<span *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
             <td>{{visionSpecification.lensColor}}</td>
             <td>{{visionSpecification.lensBrand}}</td>
-            <td>{{visionSpecification.prismAmount}}<span
-                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+            <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
             <td class="actions text-center">
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
                 <span *ngIf="!visionSpecification.lensNote">-</span>
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
-                [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>

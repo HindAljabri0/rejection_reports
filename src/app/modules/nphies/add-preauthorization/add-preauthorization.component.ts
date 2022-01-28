@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddEditCareTeamModalComponent } from './add-edit-care-team-modal/add-edit-care-team-modal.component';
@@ -34,6 +34,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   @Input() claimReuseId: number;
   @Input() data: any;
+  @Output() closeEvent = new EventEmitter();
   paymentAmount = 0;
 
   beneficiarySearchController = new FormControl();
@@ -962,10 +963,10 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.FormPreAuthorization.valid) {
 
       this.model = {};
-      if(this.claimReuseId){
+      if (this.claimReuseId) {
         this.model.claimReuseId = this.claimReuseId;
       }
-      this.sharedServices.loadingChanged.next(true);
+
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
@@ -1163,7 +1164,7 @@ export class AddPreauthorizationComponent implements OnInit {
       });
 
       console.log('Model', this.model);
-
+      this.sharedServices.loadingChanged.next(true);
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
@@ -1188,7 +1189,11 @@ export class AddPreauthorizationComponent implements OnInit {
 
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-                this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
+                if (this.claimReuseId) {
+                  this.closeEvent.emit({ IsReuse: true });
+                } else {
+                  this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
+                }
               }
             }
           }

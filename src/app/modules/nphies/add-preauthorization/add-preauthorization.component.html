@@ -699,9 +699,10 @@
 
   <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
     <div class="block-header has-border">
-      <div class="d-flex align-items-center">
-        <p>Authorization - {{detailsModel.providertransactionlogId}}</p>
-      </div>
+      <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization -
+        {{detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
+      <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction -
+        {{detailsModel.providertransactionlogId}}</h5>
     </div>
     <div class="bg-white p-14">
       <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
