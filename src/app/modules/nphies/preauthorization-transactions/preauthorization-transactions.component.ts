@@ -539,8 +539,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
           const dialogRef = this.dialog.open(ReuseApprovalModalComponent, dialogConfig);
           dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-
+            if (result.IsReuse) {
+              this.onSubmit();
             }
           }, error => { });
         }

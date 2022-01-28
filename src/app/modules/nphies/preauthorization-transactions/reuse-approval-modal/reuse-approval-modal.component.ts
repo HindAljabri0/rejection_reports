@@ -142,7 +142,7 @@ export class ReuseApprovalModalComponent implements OnInit {
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
             // tslint:disable-next-line:max-line-length
-            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name: '';
+            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name : '';
             y.itemCode = y.code;
             y.itemDescription = y.description;
             y.display = y.nonStandardDesc;
@@ -192,7 +192,11 @@ export class ReuseApprovalModalComponent implements OnInit {
     this.IsDescriptionLoaded = true;
   }
 
-  closeDialog() {
-    this.dialogRef.close(true);
+  closeDialog($event = null) {
+    if ($event.IsReuse) {
+      this.dialogRef.close($event);
+    } else {
+      this.dialogRef.close(true);
+    }
   }
 }
