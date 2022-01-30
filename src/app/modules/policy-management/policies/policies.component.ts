@@ -7,7 +7,7 @@ import { ContractSearchModel } from 'src/app/models/contractModels/ContractSearc
 import { Policy } from 'src/app/models/contractModels/PolicyModels/Policy';
 import { PolicySearchModel } from 'src/app/models/contractModels/PolicyModels/PolicySearchModel';
 import { ContractService } from 'src/app/services/contractService/contract.service';
-import { PolicyService } from 'src/app/services/policyService/policyService';
+import { PolicyService } from 'src/app/services/policyService/policyService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({

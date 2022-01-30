@@ -1,15 +1,18 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { classRequest } from 'src/app/models/contractModels/classModels/classRequest';
+import { classResponseTemplate } from 'src/app/models/contractModels/classModels/classResponseTemplate';
 import { Contract } from 'src/app/models/contractModels/Contract';
 import { ContractSearchModel } from 'src/app/models/contractModels/ContractSearchModel';
 import { Policy } from 'src/app/models/contractModels/PolicyModels/Policy';
 import { PolicySearchModel } from 'src/app/models/contractModels/PolicyModels/PolicySearchModel';
+import { ContractClassService } from 'src/app/services/classService/contractClassService.service';
 import { ContractService } from 'src/app/services/contractService/contract.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { PolicyService } from 'src/app/services/policyService/policyService';
+import { PolicyService } from 'src/app/services/policyService/policyService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { AddEditViewClassComponent } from '../add-edit-view-class/add-edit-view-class.component';
 
@@ -21,6 +24,15 @@ import { AddEditViewClassComponent } from '../add-edit-view-class/add-edit-view-
 export class AddEditViewPolicyComponent implements OnInit {
   contracts:Contract[];
   policy:Policy;
+  classes:classResponseTemplate[];
+  search:classRequest;
+
+  length = 100;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [10, 50, 100];
+  showFirstLastButtons = true;
+
 
   d = new Date();
   oneyear = this.d.setDate(this.d.getDate() + 364);
@@ -53,7 +65,8 @@ export class AddEditViewPolicyComponent implements OnInit {
     private sharedServices :SharedServices,
     private policyService:PolicyService,
     private dialogService:DialogService,
-    private contractService: ContractService
+    private contractService: ContractService,
+    private classService:ContractClassService
   ) { }
 
   ngOnInit() {
@@ -70,8 +83,35 @@ export class AddEditViewPolicyComponent implements OnInit {
     else {
       this.getPolicy(this.param)
       this.EditMode = true;
-
+      this.LoadPolicyClasses(this.param.policyId);
     }
+  }
+  fillSearchData(PolicyId) {
+    this.search = new classRequest();
+    this.search.policyId = PolicyId;
+    this.search.providerId = this.sharedServices.providerId;
+    this.search.page = this.pageIndex;
+    this.search.size = this.pageSize;
+    this.search.Withpagenation = true;
+    
+  }
+  LoadPolicyClasses(PolicyId) {
+    this.fillSearchData(PolicyId);
+    this.classService.getClassBySearchParam(this.search).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        console.log(event.body);
+        if (event.body != null && event.body instanceof Array)
+          this.classes = event.body;
+        //this.length = event.body["totalElements"]
+      }
+    }
+      , err => {
+
+        if (err instanceof HttpErrorResponse) {
+          console.log(err.message)
+          this.classes = null;
+        }
+      });
   }
   getPolicy(param) {
     this.policyService.getPolicyBySearchParam(param).subscribe(event => {
@@ -87,6 +127,15 @@ export class AddEditViewPolicyComponent implements OnInit {
 
       }
     });
+  }
+  handlePageEvent(event: PageEvent) {
+
+    this.length = event.length;
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    localStorage.setItem('pagesize', event.pageSize + '');
+    this.LoadPolicyClasses(this.PolicyIdController.value);
+
   }
   fillEditData(result) {
     this.ContractController.setValue(result.contractId);
