@@ -1,30 +1,30 @@
 <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadSummaryID}" (click)="hideCenter()">
-    <p class="medium text-primary">{{data.uploadName}}</p>
-    <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</span>
-    <ng-container *ngIf='!fromRightSideBar'>
-        <hr class="hr separator">
-        <p class="small-label">Total Number of Claims</p>
-        <p class="dashboard-numbers text-primary">
-            {{data.noOfAcceptedClaims + data.noOfNotAcceptedClaims + data.noOfNotUploadedClaims + isNan(data.noOfDownloadableClaims)}}
-        </p>
-        <hr class="hr separator">
-        <div class="row small-gutter">
-            <div class="col-6 pb-2">
-                <p class="small-label">Ready for Submission</p>
-                <p class="dashboard-numbers text-ready-submission">{{data.noOfAcceptedClaims}}</p>
-            </div>
-            <div class="col-6 pb-2">
-                <p class="small-label">Rejected By Waseel</p>
-                <p class="dashboard-numbers text-rejected-waseel">{{data.noOfNotAcceptedClaims}}</p>
-            </div>
-            <div class="col-6">
-                <p class="small-label">Not Uploaded</p>
-                <p class="dashboard-numbers text-not-saved">{{data.noOfNotUploadedClaims}}</p>
-            </div>
-            <div class="col-6" *ngIf="!isUploadSummaryIdUndefined()">
-                <p class="small-label">Downloadable</p>
-                <p class="dashboard-numbers text-ready-submission">{{data.noOfDownloadableClaims||0}}</p>
-            </div>
-        </div>
-    </ng-container>
+  <p class="medium text-primary">{{data.uploadName}}</p>
+  <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</span>
+  <ng-container *ngIf='!fromRightSideBar'>
+    <hr class="hr separator">
+    <p class="small-label">Total Number of Claims</p>
+    <p class="dashboard-numbers text-primary">
+      {{data.noOfAcceptedClaims + data.noOfNotAcceptedClaims + data.noOfNotUploadedClaims + isNan(data.noOfDownloadableClaims)}}
+    </p>
+    <hr class="hr separator">
+    <div class="row small-gutter">
+      <div class="col-6 pb-2">
+        <p class="small-label">Ready for Submission</p>
+        <p class="dashboard-numbers text-ready-submission">{{data.noOfAcceptedClaims}}</p>
+      </div>
+      <div class="col-6 pb-2">
+        <p class="small-label">Rejected By Waseel</p>
+        <p class="dashboard-numbers text-rejected-waseel">{{data.noOfNotAcceptedClaims}}</p>
+      </div>
+      <div class="col-6">
+        <p class="small-label">Not Uploaded</p>
+        <p class="dashboard-numbers text-not-saved">{{data.noOfNotUploadedClaims}}</p>
+      </div>
+      <div class="col-6" *ngIf="!isUploadSummaryIdUndefined()">
+        <p class="small-label">Downloadable</p>
+        <p class="dashboard-numbers text-ready-submission">{{data.noOfDownloadableClaims||0}}</p>
+      </div>
+    </div>
+  </ng-container>
 </div>
