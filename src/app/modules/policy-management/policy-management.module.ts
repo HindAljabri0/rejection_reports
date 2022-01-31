@@ -30,7 +30,7 @@ import { ClassesComponent } from './classes/classes.component';
     PolicyManagementRoutingModule
   ],
   entryComponents: [
-    AddEditViewClassComponent
+    //AddEditViewClassComponent
   ]
 })
 export class PolicyManagementModule { }
