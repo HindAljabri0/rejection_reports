@@ -4,39 +4,44 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-upload-history-card',
-  templateUrl: './upload-history-card.component.html',
-  styles: []
+    selector: 'app-upload-history-card',
+    templateUrl: './upload-history-card.component.html',
+    styles: []
 })
 export class UploadHistoryCardComponent implements OnInit {
 
-  @Input() data: UploadSummary;
-  @Input() isUploadHistroyCenter: boolean;
-  @Input() fromRightSideBar = false;
+    @Input() data: UploadSummary;
+    @Input() isUploadHistroyCenter: boolean;
+    @Input() fromRightSideBar = false;
 
-  constructor(private commen: SharedServices, private router: Router) { }
+    constructor(private commen: SharedServices, private router: Router) { }
 
-  ngOnInit() {
-  }
-
-  get providerId() {
-    return this.commen.providerId;
-  }
-
-  hideCenter() {
-
-    this.commen.showUploadsCenterChange.next(false);
-    if (this.fromRightSideBar) {
-      this.router.navigateByUrl(this.providerId + '/claims?uploadId=' + this.data.uploadSummaryID);
-    } else if (typeof this.data.uploadSummaryID != "undefined") {
-      this.router.navigateByUrl('summary?id=' + this.data.uploadSummaryID);
-    } else {
-      this.router.navigateByUrl('nphies/summary?id=' + this.data.uploadId);
+    ngOnInit() {
     }
-  }
 
-  isNan(value) {
+    get providerId() {
+        return this.commen.providerId;
+    }
 
-    return !isNaN(value) ? value : -1;
-  }
+    hideCenter() {
+
+        this.commen.showUploadsCenterChange.next(false);
+        if (this.fromRightSideBar) {
+            this.router.navigateByUrl(this.providerId + '/claims?uploadId=' + this.data.uploadSummaryID);
+        } else if (typeof this.data.uploadSummaryID != "undefined") {
+            this.router.navigateByUrl('summary?id=' + this.data.uploadSummaryID);
+        } else {
+            this.router.navigateByUrl('nphies/summary?id=' + this.data.uploadId);
+        }
+    }
+
+    isNan(value) {
+        return typeof this.data.uploadSummaryID != "undefined" ? value : 0
+
+    }
+
+    isUploadSummaryIdUndefined() {
+        return typeof this.data.uploadSummaryID != "undefined" ? false : true
+
+    }
 }
