@@ -127,7 +127,9 @@ export class AddEditViewClassComponent implements OnInit {
 
         if (value != null && this.policyList != null) {
             //this.contractId = value;
+            this.PolicyController.setValue(value);
             let policy: Policy[] = this.policyList.filter(x => x.policyId == value);
+            console.log("policy = " + value);
             this.contractId = policy[0].contractId;
             console.log("contractId = " + this.contractId);
             this.fillData(null);
@@ -164,8 +166,11 @@ export class AddEditViewClassComponent implements OnInit {
 
             this.updateContractId(contractclass.policyId);
             this.policyId = contractclass.policyId;
-            console.log("policyId = " + this.PolicyController.value);
-        }
+            console.log("if policyId = " + this.PolicyController.value);
+        } /*else {
+            console.log("else policyId = " + this.PolicyController.value);
+            this.PolicyController.setValue(this.policyId);
+        }*/
         console.log("PolicyController = " + this.PolicyController.value);
         if (this.PolicyController.value != 0) {
             this.classService.getContractDeparmentsByProviderId(this.sharedServices.providerId, this.contractId, this.ClassIdController.value == null ? 0 : this.ClassIdController.value).subscribe(event => {
@@ -214,7 +219,7 @@ export class AddEditViewClassComponent implements OnInit {
                     departmentName: dept.departmentName,
                     benefitId: dept.benefitId,
                     maxLimitController: new FormControl(dept.maxLimit),
-                    isExcludedController: new FormControl(dept.isExcluded == 'Y' ? true : false),
+                    isExcludedController: new FormControl((dept.isExcluded == null || dept.isExcluded == 'Y') ? true : false),
                     contractDeptId: dept.contractDeptId
                 }
             )
@@ -224,6 +229,7 @@ export class AddEditViewClassComponent implements OnInit {
         this.subbenefits = [];
         //console.log(this.departments);
         for (let serv of this.contract_services) {
+            console.log(" isExcluded = " + serv.isExcluded);
             this.subbenefits.push(
                 {
                     subId: serv.subId,
@@ -234,10 +240,11 @@ export class AddEditViewClassComponent implements OnInit {
                     departmentId: serv.departmentId,
                     departmentName: serv.departmentName,
                     maxLimitController: new FormControl(serv.maxLimit),
-                    isExcludedController: new FormControl(serv.isExcluded == 'Y' ? true : false),
+                    isExcludedController: new FormControl((serv.isExcluded == null || serv.isExcluded == 'Y') ? true : false),
                 }
             )
         }
+        //this.IncludeServ();
     }
     getPolicyList() {
         this.policyLoad.withpagenation = false;
@@ -245,11 +252,12 @@ export class AddEditViewClassComponent implements OnInit {
         this.policyService.getPolicyBySearchParam(this.policyLoad).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
-                if (event.body != null && event.body instanceof Array)
+                if (event.body != null && event.body instanceof Array) {
                     this.policyList = event.body;
-                this.PolicyController.setValue(this.policyId);
-                this.updateContractId(this.policyId);
-                //this.length = event.body["totalElements"]
+                    //this.PolicyController.setValue(this.policyId);
+
+                    this.updateContractId(this.policyId);
+                }//this.length = event.body["totalElements"]
             }
         }
             , err => {
