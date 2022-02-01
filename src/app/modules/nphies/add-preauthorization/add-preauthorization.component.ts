@@ -212,6 +212,12 @@ export class AddPreauthorizationComponent implements OnInit {
             beneficiaryId: res.beneficiary.beneficiaryId
           });
           this.FormPreAuthorization.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
+
+          if (this.claimReuseId) {
+            this.FormPreAuthorization.controls.beneficiaryName.disable();
+            this.FormPreAuthorization.controls.beneficiaryId.disable();
+            this.FormPreAuthorization.controls.insurancePlanId.disable();
+          }
         }
 
         // this.disableFields();
