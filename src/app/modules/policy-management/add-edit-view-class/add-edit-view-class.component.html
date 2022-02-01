@@ -14,8 +14,8 @@
             <div class="col-md-6">
                 <div class="form-group" [matTooltip]="errors.policyId" [class.has-error]="errors.policyId!=null&&errors.policyId.trim().length>0">
                     <label class="control-label">Policy <span class="asterisk">*</span></label>
-                    <mat-form-field class="form-control custom-select-control" [formControl]="PolicyController">
-                        <mat-select [value]="PolicyController.value" (selectionChange)="updateContractId($event.value)">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="PolicyController.value" [formControl]="PolicyController" (selectionChange)="updateContractId($event.value)">
                             <mat-option [value]="0">Select Policy</mat-option>
                             <mat-option *ngFor="let policy of policyList" [value]="policy.policyId">
                                 {{policy.policyNo}}

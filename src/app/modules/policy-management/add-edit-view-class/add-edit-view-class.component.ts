@@ -124,11 +124,12 @@ export class AddEditViewClassComponent implements OnInit {
             });
     }
     updateContractId(value) {
-        console.log("value = " + value);
+
         if (value != null && this.policyList != null) {
             //this.contractId = value;
             let policy: Policy[] = this.policyList.filter(x => x.policyId == value);
             this.contractId = policy[0].contractId;
+            console.log("contractId = " + this.contractId);
             this.fillData(null);
         }
     }
@@ -165,6 +166,7 @@ export class AddEditViewClassComponent implements OnInit {
             this.policyId = contractclass.policyId;
             console.log("policyId = " + this.PolicyController.value);
         }
+        console.log("PolicyController = " + this.PolicyController.value);
         if (this.PolicyController.value != 0) {
             this.classService.getContractDeparmentsByProviderId(this.sharedServices.providerId, this.contractId, this.ClassIdController.value == null ? 0 : this.ClassIdController.value).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -245,7 +247,7 @@ export class AddEditViewClassComponent implements OnInit {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
                     this.policyList = event.body;
-                //this.PolicyController.setValue(this.policyId);
+                this.PolicyController.setValue(this.policyId);
                 this.updateContractId(this.policyId);
                 //this.length = event.body["totalElements"]
             }
