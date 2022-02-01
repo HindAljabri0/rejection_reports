@@ -1,23 +1,23 @@
 export class contractClass {
-      classId:number;
+    classId: number;
 
-	  className:string;
+    className: string;
 
-	  visitThreshold:number;
+    visitThreshold: number;
 
-	  patientShare:number;
+    patientShare: number;
 
-	  shareType:string;
+    shareType: string;
 
-	  insCompCode:string;
+    insCompCode: string;
 
-	  maxLimit:number;
+    maxLimit: number;
 
-	  isActive:string;
-	  
-	  policyId:number;
+    isActive: string;
 
-	  policyNo:string;
-	  
-	  policyName:string;
+    policyId: string;
+
+    policyNo: string;
+
+    policyName: string;
 }
