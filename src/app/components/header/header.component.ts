@@ -88,6 +88,9 @@ export class HeaderComponent implements OnInit {
 
     this.sharedServices.getProcessedCount();
     this.sharedServices.getCommunicationRequestCount();
+    this.sharedServices.getRecentReconciliationCount();
+    this.sharedServices.getClaimProcessedCount();
+    this.sharedServices.getClaimCommunicationRequestCount();
 
     this.watchPreAuthorizationChanges();
 
