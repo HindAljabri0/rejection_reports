@@ -90,13 +90,16 @@ export class AddEditViewPolicyComponent implements OnInit {
         this.search = new classRequest();
         this.search.policyId = PolicyId;
         this.search.providerId = this.sharedServices.providerId;
+        this.search.className = "";
+        this.search.insuranceCompCode = null;
         this.search.page = this.pageIndex;
         this.search.size = this.pageSize;
-        this.search.Withpagenation = true;
+        this.search.withpagenation = true;
 
     }
     LoadPolicyClasses(PolicyId) {
         this.fillSearchData(PolicyId);
+        console.log(this.search);
         this.classService.getClassBySearchParam(this.search).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
@@ -146,12 +149,7 @@ export class AddEditViewPolicyComponent implements OnInit {
         this.EndDateController.setValue(result.endDate);
         this.IsActiveController.setValue(result.isActive == 'Y' ? true : false);
     }
-    openAddClassDialog() {
-        const dialogRef = this.dialog.open(AddEditViewClassComponent,
-            {
-                panelClass: ['primary-dialog', 'dialog-xl']
-            })
-    }
+
     checkError() {
         let thereIsError = false;
         this.errors.contractId = "";

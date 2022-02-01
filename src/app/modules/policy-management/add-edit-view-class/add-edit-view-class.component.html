@@ -6,8 +6,7 @@
     <div class="p-14 bg-white">
         <h5 class="form-title pt-0">
             <span>Class Info</span>
-            <mat-slide-toggle color="primary" class="ml-auto theme-success" checked="true" labelPosition="before"
-                [formControl]="IsActiveController">
+            <mat-slide-toggle color="primary" class="ml-auto theme-success" checked="true" labelPosition="before" [formControl]="IsActiveController">
                 Active
             </mat-slide-toggle>
         </h5>
@@ -16,20 +15,20 @@
                 <div class="form-group" [matTooltip]="errors.policyId" [class.has-error]="errors.policyId!=null&&errors.policyId.trim().length>0">
                     <label class="control-label">Policy <span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control" [formControl]="PolicyController">
-                        <mat-select  [value]="PolicyController.value" >
-                            <mat-option value="0">Select Policy</mat-option>
-                            <mat-option *ngFor="let policy of policyList" value="{{policy.policyId}}">
+                        <mat-select [value]="PolicyController.value" (selectionChange)="updateContractId($event.value)">
+                            <mat-option [value]="0">Select Policy</mat-option>
+                            <mat-option *ngFor="let policy of policyList" [value]="policy.policyId">
                                 {{policy.policyNo}}
                                 ({{policy.policyName}})</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-            
+
             <div class="col-md-6">
                 <div class="form-group" [matTooltip]="errors.className" [class.has-error]="errors.className!=null&&errors.className.trim().length>0">
                     <label class="control-label">Class Name / Category <span class="asterisk">*</span></label>
-                    <input type="text" placeholder="Enter class name" class="form-control" [formControl]="ClassNameController" >
+                    <input type="text" placeholder="Enter class name" class="form-control" [formControl]="ClassNameController">
                 </div>
             </div>
             <div class="col-md-3">
@@ -40,7 +39,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group" [matTooltip]="errors.patientShare" [class.has-error]="errors.patientShare!=null&&errors.patientShare.trim().length>0">
-                    <label class="control-label">Deductible / Patient Share  <span class="asterisk">*</span></label>
+                    <label class="control-label">Deductible / Patient Share <span class="asterisk">*</span></label>
                     <div class="row extra-small-gutter">
                         <div class="col">
                             <input type="text" placeholder="Enter deductible / patient share" class="form-control" [formControl]="PatientShareController">
@@ -68,8 +67,7 @@
             <span>Max Benefits Limit</span>
         </h5>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-            <table class="primary-grid sticky-header manual-row-color no-borders claim-view-table" cellpadding="0"
-                cellspacing="0" border="0">
+            <table class="primary-grid sticky-header manual-row-color no-borders claim-view-table" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th>Department</th>
@@ -83,24 +81,24 @@
                 </thead>
                 <tbody>
                     <tr class="align-middle" *ngFor="let ben of benefits">
-                            
+
                         <td>
                             {{ben.departmentName}}</td>
-                            <td>
-                                <div class="form-group my-n1"  [matTooltip]="errors.benefits" [class.has-error]="errors.benefits!=null&&errors.benefits.trim().length>0">
-                                    <input type="text" placeholder="Enter limit" class="form-control" [formControl]="ben.maxLimitController">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group my-n1">
-                                    <mat-radio-group class="radio-group inline" [formControl]="ben.isExcludedController">
-                                        <mat-radio-button color="primary" [value]="false">Included</mat-radio-button>
-                                        <mat-radio-button color="primary" [value]="true">Excluded</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                            </td>
+                        <td>
+                            <div class="form-group my-n1" [matTooltip]="errors.benefits" [class.has-error]="errors.benefits!=null&&errors.benefits.trim().length>0">
+                                <input type="text" placeholder="Enter limit" class="form-control" [formControl]="ben.maxLimitController">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group my-n1">
+                                <mat-radio-group class="radio-group inline" [formControl]="ben.isExcludedController">
+                                    <mat-radio-button color="primary" [value]="false">Included</mat-radio-button>
+                                    <mat-radio-button color="primary" [value]="true">Excluded</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </td>
                     </tr>
-                    
+
                 </tbody>
             </table>
         </ng-scrollbar>
@@ -113,8 +111,7 @@
             <span>Max Sub Benefit Limits</span>
         </h5>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-            <table class="primary-grid sticky-header manual-row-color claim-view-table no-borders" cellpadding="0"
-                cellspacing="0" border="0">
+            <table class="primary-grid sticky-header manual-row-color claim-view-table no-borders" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th>Service Code</th>
@@ -132,8 +129,8 @@
                         <td>{{sub.departmentId}}</td>
                         <td>{{sub.departmentName}}</td>
                         <td>
-                            <div class="form-group my-n1" [matTooltip]="errors.subbenefits" [class.has-error]="errors.subbenefits!=null&&errors.subbenefits.trim().length>0"><input type="text" class="form-control"
-                                    placeholder="Max sub benefit limit" [formControl]="sub.maxLimitController"/></div>
+                            <div class="form-group my-n1" [matTooltip]="errors.subbenefits" [class.has-error]="errors.subbenefits!=null&&errors.subbenefits.trim().length>0"><input
+                                    type="text" class="form-control" placeholder="Max sub benefit limit" [formControl]="sub.maxLimitController" /></div>
                         </td>
                         <td class="text-center">
                             <mat-checkbox color="primary" class="grid-checkbox" [formControl]="sub.isExcludedController"></mat-checkbox>

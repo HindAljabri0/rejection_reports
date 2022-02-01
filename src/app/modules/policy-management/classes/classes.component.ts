@@ -63,8 +63,8 @@ export class ClassesComponent implements OnInit {
         this.search.providerId = this.sharedServices.providerId;
         this.search.page = this.pageIndex;
         this.search.size = this.pageSize;
-        this.search.Withpagenation = true;
-
+        this.search.withpagenation = true;
+        console.log(this.search);
     }
     ResetOthers(value) {
         console.log("value = " + value);
