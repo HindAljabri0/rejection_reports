@@ -182,9 +182,9 @@ export class ReuseApprovalModalComponent implements OnInit {
           x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
         }
 
-        if (this.data.detailsModel.approvalResponseId) {
-          x.isPackage = x.isPackage === true ? 1 : 2;
-        }
+        // if (this.data.detailsModel.approvalResponseId) {
+        //   x.isPackage = x.isPackage === true ? 1 : 2;
+        // }
 
       });
     }
