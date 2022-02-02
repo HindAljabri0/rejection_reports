@@ -193,7 +193,7 @@ export class ReuseApprovalModalComponent implements OnInit {
   }
 
   closeDialog($event = null) {
-    if ($event.IsReuse) {
+    if ($event && $event.IsReuse) {
       this.dialogRef.close($event);
     } else {
       this.dialogRef.close(true);
