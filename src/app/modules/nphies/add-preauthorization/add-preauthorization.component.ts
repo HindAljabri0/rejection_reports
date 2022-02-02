@@ -212,6 +212,23 @@ export class AddPreauthorizationComponent implements OnInit {
             beneficiaryId: res.beneficiary.beneficiaryId
           });
           this.FormPreAuthorization.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
+
+          if (this.claimReuseId) {
+            this.FormPreAuthorization.controls.beneficiaryName.disable();
+            this.FormPreAuthorization.controls.beneficiaryId.disable();
+            this.FormPreAuthorization.controls.insurancePlanId.disable();
+            this.FormPreAuthorization.controls.type.disable();
+            this.FormPreAuthorization.controls.subType.disable();
+            this.FormPreAuthorization.controls.payee.disable();
+            this.FormPreAuthorization.controls.payeeType.disable();
+            this.FormPreAuthorization.controls.accidentType.disable();
+            this.FormPreAuthorization.controls.streetName.disable();
+            this.FormPreAuthorization.controls.city.disable();
+            this.FormPreAuthorization.controls.state.disable();
+            this.FormPreAuthorization.controls.country.disable();
+            this.FormPreAuthorization.controls.countryName.disable();
+            this.FormPreAuthorization.controls.date.disable();
+          }
         }
 
         // this.disableFields();
@@ -1087,7 +1104,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage === 1 ? true : false;
+          model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1125,7 +1142,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage === 1 ? true : false;
+          model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
