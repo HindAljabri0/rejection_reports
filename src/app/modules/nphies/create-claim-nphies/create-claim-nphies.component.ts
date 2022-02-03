@@ -1483,6 +1483,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
+    this.otherDataModel.submissionDate = response.submissionDate;
 
     //     componentEarlyFee: null
     // componentNphiesFee: null

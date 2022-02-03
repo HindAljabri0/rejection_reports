@@ -35,7 +35,7 @@ export class CertificateConfigurationComponent implements OnInit {
   notEditMode = true;
   isEdit = false;
   // pageMode: ClaimPageMode;
-  pageMode = ''
+  pageMode = '';
   claim: Claim;
   pageType: string;
   constructor(
@@ -73,9 +73,7 @@ export class CertificateConfigurationComponent implements OnInit {
     event.target.value = '';
   }
   updateFilter() {
-    this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
-    );
+    this.filteredProviders = this.providers.filter(provider => `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase()));
     this.selectedProvider = this.providerController.value === '' ? undefined : this.selectedProvider;
   }
   // close(result?) {
@@ -89,17 +87,16 @@ export class CertificateConfigurationComponent implements OnInit {
       return;
     }
     this.error = '';
-
-
-
     this.save();
   }
-  save() {
 
-    if (this.certificateConfigurationProvider.password == null || this.certificateConfigurationProvider.password == '' && this.currentFileUplod == null || this.currentFileUplod == undefined) {
+  save() {
+    // tslint:disable-next-line:max-line-length
+    if (this.certificateConfigurationProvider.password === null || this.certificateConfigurationProvider.password === '' || this.currentFileUplod === null || this.currentFileUplod === undefined) {
       return this.dialogService.openMessageDialog(new MessageDialogData('', 'Please Make Sure Password is ENTER Or File is Uploded', true));
     }
     this.isEdit = false;
+    this.sharedServices.loadingChanged.next(true);
     this.settingsService.getSaveCertificateFileToProvider(
       this.selectedProvider,
       this.currentFileUplod,
@@ -113,9 +110,7 @@ export class CertificateConfigurationComponent implements OnInit {
           this.pageMode = 'EDIT';
           this.notEditMode = false;
           this.isEdit = false;
-
-
-          // this.closeDialog();
+          this.providerController.enable();
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -133,14 +128,6 @@ export class CertificateConfigurationComponent implements OnInit {
     this.fileSize = this.sharedServices.formatBytes(event.target.files[0].size);
     this.fileName = event.target.files[0].name;
     this.currentFileUplod = event.target.files[0];
-    //     if(event.target.files){
-    //  let reader =new FileReader();
-    //  reader.readAsDataURL(event.target.files[0])
-    //  reader.onload=(event:any)=>{
-    //    this.currentFileUplod=event.target.result
-    //  }
-
-    //     }
     const dialogRefrence = this.dialog.open(CertificateConfigurationModelComponent,
       {
         panelClass: ['primary-dialog'],
@@ -152,22 +139,17 @@ export class CertificateConfigurationComponent implements OnInit {
           password: this.certificateConfigurationProvider.password
         }
       });
+
     dialogRefrence.afterClosed().subscribe(result => {
       if (result) {
         if (!this.checkfile()) {
           event.target.files = [];
           this.currentFileUplod = undefined;
           return;
-        }
-        else {
+        } else {
           this.isFileUploded = true;
-
-
         }
-
       }
-
-
     }, error => {
 
     });
@@ -183,10 +165,9 @@ export class CertificateConfigurationComponent implements OnInit {
 
   selectProvider(providerId: string = null) {
     this.pageMode = 'EDIT';
-    if (providerId !== null)
+    if (providerId !== null) {
       this.selectedProvider = providerId;
-
-    else {
+    } else {
       const providerId = this.providerController.value.split('|')[0].trim();
       this.selectedProvider = providerId;
     }
@@ -195,26 +176,14 @@ export class CertificateConfigurationComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200 && event.body != null) {
           this.certificateConfigurationRespnse = event.body as CertificateConfigurationRespnse;
-
-
-
           this.fileName = this.certificateConfigurationRespnse.fileName;
           this.currentFileUplod = this.dataURLtoFile("data:text/plain;base64," + this.certificateConfigurationRespnse.uploadfile, this.fileName);
-
           this.isFileUploded = true;
           this.certificateConfigurationProvider.password = this.certificateConfigurationRespnse.password;
-
-
-
-
-
-
           this.sharedServices.loadingChanged.next(false);
         }
-
       }
     }, err => {
-
       if (err instanceof HttpErrorResponse) {
         if (err.status == 404) {
           this.notEditMode = true;
@@ -222,15 +191,7 @@ export class CertificateConfigurationComponent implements OnInit {
           this.pageMode = 'save';
         }
       }
-
-
-
-
-
-
     });
-
-
   }
 
   dataURLtoFile(dataurl, filename) {
@@ -254,6 +215,7 @@ export class CertificateConfigurationComponent implements OnInit {
     this.error = error;
     this.sharedServices.loadingChanged.next(false);
   }
+
   checkfile() {
     const validExts = new Array('.p12');
     let fileExt = this.fileName;
@@ -278,14 +240,12 @@ export class CertificateConfigurationComponent implements OnInit {
     this.isEdit = true;
     this.pageMode = 'save';
     this.notEditMode = true;
-
-    //this.pageMode == 'EDIT';
-
+    this.providerController.disable();
   }
+
   deleteFile() {
     this.currentFileUplod = null;
     this.isFileUploded = false;
   }
-
 
 }
