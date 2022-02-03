@@ -37,11 +37,9 @@ import {
   RejectionReportClaimDialogComponent
 } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadsCenterComponent } from './components/uploads-center/uploads-center.component';
-import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
-import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MaterialModule } from './modules/material/material.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
@@ -101,6 +99,8 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
 import { UploadClaimComponent } from './modules/nphies/upload-claim/upload-claim.component';
 import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
+import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
 
 
 
@@ -136,11 +136,9 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
     SubmittedInvoicesComponent,
     RejectionReportClaimDialogComponent,
     UploadsCenterComponent,
-    UploadHistoryCardComponent,
     UploadsHistoryComponent,
-    ScrollableDirective,
+    // ScrollableDirective,
     RejectionReportComponent,
-    ReusableSearchBarComponent,
     LanguageSwitcherComponent,
     SearchCriteriaComponent,
     NonSubmittedClaimsComponent,
@@ -180,8 +178,6 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
-    FormsModule,
     ScrollingModule,
     InfiniteScrollModule,
     MaterialModule,
@@ -202,6 +198,7 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
   providers: [
     ThemeService,
     UploadService,
+    NphiesClaimUploaderService,
     ClipboardService,
     // {
     //   provide: ApmService,

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Location } from '@angular/common';
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { UploadSummary } from 'src/app/models/uploadSummary';
 
 @Component({
   selector: 'app-upload-claim',
@@ -13,7 +13,7 @@ export class UploadClaimComponent implements OnInit {
 
   uploadingObs = false;
   constructor(
-    private uploadService: UploadService,
+    private uploadService: NphiesClaimUploaderService,
     public location: Location,
     private commen: SharedServices,
   ) {
@@ -37,7 +37,7 @@ export class UploadClaimComponent implements OnInit {
   }
 
   get summaryDate(): string {
-    if (this.summary.uploadSummaryID != undefined) {
+    if (this.summary.uploadId != undefined) {
       if (!(this.summary.uploadDate instanceof Date)) {
         this.summary.uploadDate = new Date(this.summary.uploadDate);
       }

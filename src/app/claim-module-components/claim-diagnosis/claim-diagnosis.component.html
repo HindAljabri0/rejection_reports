@@ -1,6 +1,7 @@
 <div class="form-group" *ngIf="pageMode != 'VIEW'">
     <label class="control-label">Add Diagnosis</label>
-    <input type="text" class="form-control" placeholder="Search diagnosis code here..." [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()">
+    <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..." [formControl]="diagnosisController" [matAutocomplete]="auto"
+        (keyup)="searchICDCodes()">
     <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">

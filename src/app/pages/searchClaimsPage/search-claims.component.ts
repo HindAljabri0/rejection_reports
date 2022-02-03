@@ -421,7 +421,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       || name === ClaimStatus.PAID.toLowerCase()
       || name === ClaimStatus.Under_Processing.toLowerCase()
       || name === ClaimStatus.Under_Submision.toLowerCase()
-      || (name === ClaimStatus.DUPLICATE.toLowerCase()&& !this.commen.isAdmin)
+      || (name === ClaimStatus.DUPLICATE.toLowerCase()&& !this.commen.userPrivileges.WaseelPrivileges.isPAM)
       || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
     this.isPBMValidationVisible = this.apiPBMValidationEnabled
       && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
@@ -1328,7 +1328,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all'));
   }
   deleteClaimByUploadid() {
-    if (this.commen.isAdmin && this.commen.isProvider && this.isAllCards) {
+    if (this.commen.userPrivileges.WaseelPrivileges.isPAM && this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser && this.isAllCards) {
       this.dialogService.openConfirmAdminDeleteDialog().subscribe(action => {
         switch (action) {
           case 'deleteAll':

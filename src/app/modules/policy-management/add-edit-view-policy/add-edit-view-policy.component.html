@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p *ngIf="addMode">  Add Policy</p>
-        <p *ngIf="EditMode">  Edit Policy</p>
+        <p *ngIf="addMode"> Add Policy</p>
+        <p *ngIf="EditMode"> Edit Policy</p>
     </div>
     <div class="p-14 bg-white">
         <h5 class="form-title pt-0">
@@ -27,7 +27,7 @@
             <div class="col-md-4">
                 <div class="form-group" [matTooltip]="errors.PolicyNo" [class.has-error]="errors.PolicyNo!=null&&errors.PolicyNo.trim().length>0">
                     <label class="control-label">Policy No. <span class="asterisk">*</span></label>
-                    <input type="text" placeholder="Enter policy no." [formControl]="PolicyNoController"  class="form-control">
+                    <input type="text" placeholder="Enter policy no." [formControl]="PolicyNoController" class="form-control">
                 </div>
             </div>
             <div class="col-md-4">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group"  [matTooltip]="errors.EndDate" [class.has-error]="errors.EndDate!=null&&errors.EndDate.trim().length>0">
+                <div class="form-group" [matTooltip]="errors.EndDate" [class.has-error]="errors.EndDate!=null&&errors.EndDate.trim().length>0">
                     <label class="control-label">End Date <span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input [matDatepicker]="endDate" class="form-control" [formControl]="EndDateController" placeholder="Select end date">
@@ -58,98 +58,49 @@
             </div>
         </div>
 
-        <h5 class="form-title">
+        <h5 class="form-title" [hidden]="addMode">
             <span>Policy Classes</span>
-            <button type="button" (click)="openAddClassDialog()" class="btn-icon btn-primary ml-auto">
+            <button type="button" [hidden]="addMode" routerLink="/policy-management/class-management/add/{{PolicyIdController.value}}" class="btn-icon btn-primary ml-auto">
                 <mat-icon>add</mat-icon>
             </button>
         </h5>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-            <div class="fixed-height">
+        <ng-scrollbar [hidden]="addMode" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <div class="fixed-height" *ngIf="classes && classes.length>0">
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                     <thead>
                         <tr>
-                            <th>Class Name</th>
-                            <th>Threshold Limit</th>
-                            <th>Patient Share</th>
-                            <th>Patient Share Type</th>
+                            <th>Policy No.</th>
+                            <th>Policy Name</th>
+                            <th>Insurance Company</th>
+                            <th>Class Name / Category</th>
+                            <th>Visit Preapproval Limit / Threshold</th>
+                            <th>Deductible / Patient Share</th>
                             <th>Max Episode Limit</th>
                             <th class="text-center">Active</th>
                             <th width="10"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="row-click" (click)="openAddClassDialog()">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
-                            <td class="row-click" (click)="openAddClassDialog()">3198511</td>
-                            <td class="row-click" (click)="openAddClassDialog()">1459</td>
-                            <td class="row-click" (click)="openAddClassDialog()">Percentage</td>
-                            <td class="row-click" (click)="openAddClassDialog()">419153</td>
-                            <td class="text-center">
-                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                            </td>
+                        <tr *ngFor="let cl of classes">
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.policyNo}}</td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.policyName}}</td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.insCompCode}}</td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.className}}</td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.visitThreshold}}</td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.patientShare}}<span class="currency">{{cl.contract_class.shareType}}</span></td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.maxLimit}}</td>
+                            <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                {{cl.contract_class.isActive}}</td>
                             <td class="actions">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                    <mat-icon>create</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="row-click" (click)="openAddClassDialog()">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
-                            <td class="row-click" (click)="openAddClassDialog()">1143920</td>
-                            <td class="row-click" (click)="openAddClassDialog()">3796</td>
-                            <td class="row-click" (click)="openAddClassDialog()">Amount</td>
-                            <td class="row-click" (click)="openAddClassDialog()">95706</td>
-                            <td class="text-center">
-                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                            </td>
-                            <td class="actions">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                    <mat-icon>create</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="row-click" (click)="openAddClassDialog()">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
-                            <td class="row-click" (click)="openAddClassDialog()">581632</td>
-                            <td class="row-click" (click)="openAddClassDialog()">4381</td>
-                            <td class="row-click" (click)="openAddClassDialog()">Percentage</td>
-                            <td class="row-click" (click)="openAddClassDialog()">102000</td>
-                            <td class="text-center">
-                                <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                            </td>
-                            <td class="actions">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                    <mat-icon>create</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="row-click" (click)="openAddClassDialog()">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
-                            <td class="row-click" (click)="openAddClassDialog()">4191997</td>
-                            <td class="row-click" (click)="openAddClassDialog()">1555</td>
-                            <td class="row-click" (click)="openAddClassDialog()">Amount</td>
-                            <td class="row-click" (click)="openAddClassDialog()">280572</td>
-                            <td class="text-center">
-                                <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                            </td>
-                            <td class="actions">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                    <mat-icon>create</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="row-click" (click)="openAddClassDialog()">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
-                            <td class="row-click" (click)="openAddClassDialog()">2548758</td>
-                            <td class="row-click" (click)="openAddClassDialog()">2248</td>
-                            <td class="row-click" (click)="openAddClassDialog()">Amount</td>
-                            <td class="row-click" (click)="openAddClassDialog()">436180</td>
-                            <td class="text-center">
-                                <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                            </td>
-                            <td class="actions">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                                    routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
                                     <mat-icon>create</mat-icon>
                                 </button>
                             </td>
@@ -157,7 +108,16 @@
                     </tbody>
                 </table>
             </div>
+            <app-empty-state *ngIf="!classes" message='No Classes found!'>
+            </app-empty-state>
         </ng-scrollbar>
+        <div class="block-footer sticky-bottom" [hidden]="addMode">
+            <div class="left-block">
+                <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                    [pageIndex]="pageIndex">
+                </mat-paginator>
+            </div>
+        </div>
     </div>
     <div class="block-footer sticky-bottom">
         <div class="right-block btn-list">

@@ -50,6 +50,8 @@ import { UploadClaimComponent } from './upload-claim/upload-claim.component';
 import { MultiSheetFileUploadComponent } from './upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
 import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
+import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusable-search-bar/reusable-search-bar.component';
+import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.directive';
 
 
 
@@ -88,7 +90,7 @@ import { UploadsHistoryComponent } from './uploads-history/uploads-history.compo
     ClaimProcessedTransactionsComponent,
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
-    UploadsHistoryComponent,
+    UploadsHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -101,6 +103,7 @@ import { UploadsHistoryComponent } from './uploads-history/uploads-history.compo
     SmoothScrollModule,
     NphiesRoutingModule,
     CarouselModule,
+
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,

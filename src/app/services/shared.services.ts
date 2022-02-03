@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ClaimStatus } from '../models/claimStatus';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { NotificationsService } from './notificationService/notifications.service';
 import { AnnouncementsService } from './announcementService/announcements.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +11,8 @@ import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { SearchService } from './serchService/search.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ReportsService } from './reportsService/reports.service';
+import { Store } from '@ngrx/store';
+import { getUserPrivileges, initState, UserPrivileges } from '../store/mainStore.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -75,16 +75,20 @@ export class SharedServices {
   uploadsListLoading: boolean = false;
   uploadsListLoadingChange: Subject<boolean> = new Subject();
 
-
+  userPrivileges: UserPrivileges = initState.userPrivileges;
 
   getUploadId: any;
   helper = new JwtHelperService();
+
+  shadesOfDangerColor = ['#faeded', '#f0c8c8', '#e6a4a4', '#dc8080', '#d25b5b', '#b94242', '#903333', '#672525', '#3d1616', '#140707'];
+  shadesOfSuccessColor = ['#eef9ed', '#cdecca', '#ace0a7', '#8bd484', '#6ac761', '#50ae47', '#3e8737', '#2d6128', '#1b3a18', '#091308'];
   constructor(
     public authService: AuthService,
     private router: Router,
     private notifications: NotificationsService,
     private announcements: AnnouncementsService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private store: Store
   ) {
 
 
@@ -160,77 +164,11 @@ export class SharedServices {
     this.unReadClaimComunicationRequestCountChange.subscribe(value => {
       this.unReadClaimComunicationRequestCount = value;
     });
+    this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
   }
 
-  get isAdmin() {
-    const privilege = localStorage.getItem('101101');
-    return privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
-  }
-
-  get isProvider() {
-    const providerId = localStorage.getItem('provider_id');
-    return this.getPayersList().some(payer => {
-      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
-      return userPrivileges != null && (userPrivileges.includes('|3') || userPrivileges.startsWith('3'));
-    });
-  }
-
-  get isAdminOfProvider() {
-    const providerId = localStorage.getItem('provider_id');
-    try {
-      const userPrivileges = localStorage.getItem(`${providerId}101`);
-      return userPrivileges != null && (userPrivileges.includes('|3.0') || userPrivileges.startsWith('3.0'));
-    } catch (error) {
-      return false;
-    }
-  }
-  get isRcmUser() {
-    const privilege = localStorage.getItem('101101');
-    return privilege != null && (privilege.includes('|24') || privilege.startsWith('24'));
-  }
-
-  get hasRcmPrivilege() {
-    const providerId = localStorage.getItem('provider_id');
-    try {
-      const userPrivileges = localStorage.getItem(`${providerId}101`);
-      // tslint:disable-next-line:max-line-length
-      return userPrivileges != null && (userPrivileges.includes('|24.0') || userPrivileges.startsWith('24.0') || userPrivileges.includes('|24.1') || userPrivileges.startsWith('24.1'));
-    } catch (error) {
-      return false;
-    }
-  }
-
-  get hasGSSPrivilege() {
-    const providerId = localStorage.getItem('provider_id');
-    try {
-      const userPrivileges = localStorage.getItem(`${providerId}101`);
-      // tslint:disable-next-line:max-line-length
-      return userPrivileges != null && (userPrivileges.includes('|24.0') || userPrivileges.startsWith('24.0') || userPrivileges.includes('|24.3') || userPrivileges.startsWith('24.3'));
-    } catch (error) {
-      return false;
-    }
-  }
-
-  get hasAllNphiesPrivilege() {
-    const providerId = localStorage.getItem('provider_id');
-    try {
-      const userPrivileges = localStorage.getItem(`${providerId}101`);
-      return userPrivileges != null && (userPrivileges.includes('|25.0') || userPrivileges.startsWith('25.0'));
-    } catch (error) {
-      return false;
-    }
-  }
-  get hasNphiesBeneficiaryPrivilege() {
-    const providerId = localStorage.getItem('provider_id');
-    try {
-      const userPrivileges = localStorage.getItem(`${providerId}101`);
-      return userPrivileges != null && (userPrivileges.includes('|25.1') || userPrivileges.startsWith('25.1'));
-    } catch (error) {
-      return false;
-    }
-  }
   getNotifications() {
-    if (!this.isProvider) { return; }
+    if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
@@ -256,7 +194,7 @@ export class SharedServices {
   }
 
   getAnnouncements() {
-    if (!this.isProvider) { return; }
+    if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.payers = this.getPayersList();
     this.payerids = this.payers.map(item => item.id);
     this.announcements.getAnnouncementsCount(this.providerId, this.payerids).subscribe(event => {
@@ -284,7 +222,7 @@ export class SharedServices {
   }
 
   getUploads() {
-    if (!this.isProvider) { return; }
+    if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.uploadsListLoadingChange.next(true);
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -475,35 +413,15 @@ export class SharedServices {
   }
 
   getPayersList(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
-    if (globMed == null) {
-      globMed = false;
-    }
-    const payers: { id: number, name: string, arName: string, payerCategory: string }[] = [];
-    const payersStr = localStorage.getItem('payers');
-    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
-      const payersStrSplitted = payersStr.split('|');
-      payersStrSplitted
-        // As globemed is not integrated with us so comment this below lines
-        // .filter(value =>
-        //   (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
-        //   || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
-        .map(value => payers.push({
-          id: Number.parseInt(value.split(':')[0], 10),
-          name: value.split(':')[1].split(',')[0],
-          arName: value.split(':')[1].split(',')[1],
-          payerCategory: value.split(':')[1].split(',')[2]
-        }));
-    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
-      return [{
-        id: Number.parseInt(payersStr.split(':')[0], 10),
-        name: payersStr.split(':')[1].split(',')[0],
-        arName: payersStr.split(':')[1].split(',')[1],
-        payerCategory: payersStr.split(':')[1].split(',')[2]
-      }];
-    }
-
-    return payers;
+    return AuthService.getPayersList(globMed);
   }
+
+  get hasAnyNphiesPrivilege() {
+    const keys = Object.keys(this.userPrivileges.ProviderPrivileges.NPHIES);
+    return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
+  }
+
+
 
   getPayersListWithoutTPA(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
 
@@ -793,7 +711,23 @@ export class SharedServices {
     return bytes.buffer;
   }
 
-
+  getColorsFromShades(numberOfColors: number, shade: string) {
+    let colorGroup: string[];
+    if (shade === 'danger') {
+      colorGroup = this.shadesOfDangerColor;
+    } else if (shade === 'success') {
+      colorGroup = this.shadesOfSuccessColor;
+    }
+    if (numberOfColors > colorGroup.length) {
+      return this.getAnalogousColor(numberOfColors);
+    } else if (numberOfColors === colorGroup.length) {
+      return colorGroup;
+    } else {
+      let startPosition = (colorGroup.length / 2) - (numberOfColors / 2);
+      startPosition = (Number.isInteger(startPosition)) ? startPosition : Math.trunc(startPosition);
+      return colorGroup.slice(startPosition, startPosition + numberOfColors);
+    }
+  }
 }
 
 export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
