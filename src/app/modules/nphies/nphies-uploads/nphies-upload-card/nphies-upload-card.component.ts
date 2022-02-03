@@ -24,7 +24,7 @@ export class NphiesUploadCardComponent implements OnInit {
   }
 
   get canBeDeleted() {
-    return (this.sharedServices.isAdmin && this.sharedServices.isProvider)
+    return (this.sharedServices.userPrivileges.WaseelPrivileges.isPAM && (this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim))
       || (this.data.readyForSubmission + this.data.rejectedByWaseel) > 0;
   }
 

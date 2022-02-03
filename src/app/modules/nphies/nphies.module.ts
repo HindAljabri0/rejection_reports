@@ -46,6 +46,14 @@ import { ClaimTransactionsComponent } from './claim-transactions/claim-transacti
 import { ClaimProcessedTransactionsComponent } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
 import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
 import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
+import { UploadClaimComponent } from './upload-claim/upload-claim.component';
+import { MultiSheetFileUploadComponent } from './upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
+import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary/nphies-claim-summary.component';
+import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
+import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusable-search-bar/reusable-search-bar.component';
+import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.directive';
+
+
 
 
 @NgModule({
@@ -82,6 +90,7 @@ import { ReuseApprovalModalComponent } from './preauthorization-transactions/reu
     ClaimProcessedTransactionsComponent,
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
+    UploadsHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -94,6 +103,7 @@ import { ReuseApprovalModalComponent } from './preauthorization-transactions/reu
     SmoothScrollModule,
     NphiesRoutingModule,
     CarouselModule,
+
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,

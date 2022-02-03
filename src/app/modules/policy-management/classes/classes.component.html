@@ -7,46 +7,49 @@
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Class Name / Category</label>
-                    <input placeholder="Enter class name / category" class="form-control">
+                    <input placeholder="Enter class name / category" class="form-control" [formControl]="classNameController" (keyup)="ResetOthers(1)">
                 </div>
+            </div>
+            <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
             </div>
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Insurance Company</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Company</mat-option>
-                            <mat-option value="Company 1">Company 1</mat-option>
-                            <mat-option value="Company 2">Company 2</mat-option>
-                            <mat-optgroup label="TPA 1">
-                                <mat-option value="TPA Company 1">TPA Company 1</mat-option>
-                                <mat-option value="TPA Company 2">TPA Company 2</mat-option>
-                                <mat-option value="TPA Company 3">TPA Company 3</mat-option>
-                            </mat-optgroup>
-                            <mat-option value="Company 4">Company 4</mat-option>
+                        <mat-select [formControl]="insuranceCompanyController" (selectionChange)="ResetOthers(2)">
+                            <mat-option value="0">Select Payer</mat-option>
+                            <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
+                                ({{payer.arabicName}})</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">Policy No.</label>
-                    <input placeholder="Enter policy no." class="form-control">
-                </div>
+            <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
             </div>
             <div class="col-md">
                 <div class="form-group">
-                    <label class="control-label">Policy Name</label>
-                    <input placeholder="Enter policy name" class="form-control">
+                    <label class="control-label">Policy </label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [formControl]="PolicyController" (selectionChange)="ResetOthers(3)">
+                            <mat-option value="0">Select Policy</mat-option>
+                            <mat-option *ngFor="let policy of policyList" value="{{policy.policyId}}">
+                                {{policy.policyNo}}
+                                ({{policy.policyName}})</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Search</button>
+            <button type="button" mat-flat-button color="primary" (click)="searchByCriteria()">Search</button>
         </div>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
+        <div class="fixed-height" *ngIf="classes && classes.length>0">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -62,70 +65,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>4202</td>
-                        <td>Adipisicing elit. praesentium </td>
-                        <td>Adipisicing elit. praesentium </td>
-                        <td>Adipisicing elit. praesentium </td>
-                        <td>8</td>
-                        <td>909 <span class="currency">SR</span></td>
-                        <td>2</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" class="grid-checkbox" checked></mat-checkbox>
-                        </td>
+                    <tr *ngFor="let cl of classes">
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.policyNo}}</td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.policyName}}</td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.insCompCode}}</td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.className}}</td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.visitThreshold}}</td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.patientShare}}<span class="currency">{{cl.contract_class.shareType}}</span></td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.maxLimit}}</td>
+                        <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                            {{cl.contract_class.isActive}}</td>
                         <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2522</td>
-                        <td>Ullam deserunt, rerum maxime </td>
-                        <td>Ullam deserunt, rerum maxime </td>
-                        <td>Ullam deserunt, rerum maxime </td>
-                        <td>5</td>
-                        <td>497 <span class="currency">SR</span></td>
-                        <td>1</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" class="grid-checkbox" checked></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2307</td>
-                        <td>Beatae commodi explicabo</td>
-                        <td>Beatae commodi explicabo</td>
-                        <td>Beatae commodi explicabo</td>
-                        <td>6</td>
-                        <td>855 <span class="currency">SR</span></td>
-                        <td>9</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>7953</td>
-                        <td>Minima suscipit! ad, maiores.</td>
-                        <td>Minima suscipit! ad, maiores.</td>
-                        <td>Minima suscipit! ad, maiores.</td>
-                        <td>5</td>
-                        <td>292 <span class="currency">SR</span></td>
-                        <td>7</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddClassDialog()">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                                routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
                                 <mat-icon>create</mat-icon>
                             </button>
                         </td>
@@ -133,8 +92,17 @@
                 </tbody>
             </table>
         </div>
+        <app-empty-state *ngIf="!classes" message='No Classes found!'>
+        </app-empty-state>
     </ng-scrollbar>
-    <button mat-fab color="primary" class="page-fab" (click)="openAddClassDialog()">
+    <div class="block-footer sticky-bottom">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
+            </mat-paginator>
+        </div>
+    </div>
+    <button mat-fab color="primary" class="page-fab" routerLink="/policy-management/class-management/add/0">
         <mat-icon>add</mat-icon>
     </button>
 </div>

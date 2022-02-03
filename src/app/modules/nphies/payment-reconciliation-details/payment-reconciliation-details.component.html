@@ -25,15 +25,19 @@
       </div>
       <div class="col-4">
         <div class="form-group form-group-static">
-          <label class="control-label">Payment Date</label>
+          <label class="control-label">
+            <span class="d-flex align-items-center">
+              <span class="pr-2">Payment Date</span>
+              <mat-icon class="material-icons-outlined size-20" matTooltip="The date of payment as indicated on the financial instrument.">info</mat-icon>
+            </span>
+          </label>
           <span class="form-control-static">{{reconciliationDetails.paymentDate | date : 'dd/MM/yyyy'}}</span>
         </div>
       </div>
       <div class="col-4">
         <div class="form-group form-group-static">
           <label class="control-label">Payment Amount</label>
-          <span class="form-control-static">{{reconciliationDetails.paymentAmount}} <span
-              class="currency">SR</span></span>
+          <span class="form-control-static">{{reconciliationDetails.paymentAmount}} <span class="currency">SR</span></span>
         </div>
       </div>
       <div class="col-4">
@@ -47,8 +51,7 @@
   </div>
   <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
     <div class="fixed-height fixed-height-lg">
-      <table *ngIf="reconciliationDetails" class="primary-grid manual-row-color horizontal-borders no-borders" cellpadding="0" cellspacing="0"
-        border="0">
+      <table *ngIf="reconciliationDetails" class="primary-grid manual-row-color horizontal-borders no-borders" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
             <th width="10"></th>
@@ -106,7 +109,7 @@
                       <div class="form-group form-group-static">
                         <label class="control-label">Claim Response Date</label>
                         <span class="form-control-static">
-                          <span *ngIf="pd.cliamResponseDate">{{pd.cliamResponseDate | date : 'dd/MM/yyyy'}}</span>
+                          <span *ngIf="pd.cliamResponseDate">{{pd.paymentDate | date : 'dd/MM/yyyy'}}</span>
                           <span *ngIf="!pd.cliamResponseDate">-</span>
                         </span>
                       </div>

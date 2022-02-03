@@ -4,69 +4,81 @@
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
+
             <div class="col-md">
                 <div class="form-group">
-                    <label class="control-label">Insurance Company</label>
+                    <label class="control-label">Contracts</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Company</mat-option>
-                            <mat-option value="Company 1">Company 1</mat-option>
-                            <mat-option value="Company 2">Company 2</mat-option>
-                            <mat-optgroup label="TPA 1">
-                                <mat-option value="TPA Company 1">TPA Company 1</mat-option>
-                                <mat-option value="TPA Company 2">TPA Company 2</mat-option>
-                                <mat-option value="TPA Company 3">TPA Company 3</mat-option>
-                            </mat-optgroup>
-                            <mat-option value="Company 4">Company 4</mat-option>
+                        <mat-select [formControl]="ContractController" value="0" (selectionChange)="OptionChanged(1)">
+                            <mat-option value="0">Select Contract</mat-option>
+                            <mat-option *ngFor="let contract of contracts" [value]="contract.contractId">
+                                {{contract.contractNo}}
+                                ({{contract.contractName}})</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
+            </div>
+            <!--div class="col-md">
                 <div class="form-group">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" [formControl]="StartDateController" (keyup)="OptionChanged(2)">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterFromDate></mat-datepicker>
                     </div>
                 </div>
-            </div>
+            </div-->
             <div class="col-md">
                 <div class="form-group">
-                    <label class="control-label">To Date</label>
+                    <label class="control-label">Policy Name </label>
+                    <input placeholder="Enter class name / category" class="form-control" [formControl]="PolicyController" (keyup)="OptionChanged(3)">
+                </div>
+            </div>
+
+            <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
+            </div>
+
+            <div class="col-md">
+                <div class="form-group">
+                    <label class="control-label">Ends Before ?</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select End date" [formControl]="EndDateController" (dateChange)="OptionChanged(2)">
                         <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterToDate></mat-datepicker>
                     </div>
                 </div>
             </div>
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">Policy No.</label>
-                    <input placeholder="Enter policy no." class="form-control">
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="form-group">
-                    <label class="control-label">Policy Name</label>
-                    <input placeholder="Enter policy name" class="form-control">
-                </div>
-            </div>
+            <!--div class="form-group flex-grow-1">
+                <label class="control-label">Select Policy</label>
+                <input type="text" class="form-control" placeholder="Search for policy by name or policy No.."
+                    [formControl]="PolicyController" [matAutocomplete]="auto" (keyup)="filterOptions()"
+                    [disabled]="purposeRadioButton != '3'">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let policy of policyList" (click)="selectPolicy(policy)">
+                        {{policy.policyNo}}
+                        ({{policy.policyName}})
+                    </mat-option>
+                </mat-autocomplete>
+            </div-->
         </div>
         <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Search</button>
+            <button type="button" mat-flat-button color="primary" (click)="searchByCriteria()">Search</button>
         </div>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
+        <div class="fixed-height" *ngIf="policies && policies.length>0">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th>Insurance Company</th>
                         <th>Policy No.</th>
                         <th>Policy Name</th>
+                        <th>Contract Name</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th class="text-center">Active</th>
@@ -74,92 +86,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-click" routerLink="/policy-management/view">Tawuniya</td>
-                        <td class="row-click" routerLink="/policy-management/view">2210284</td>
-                        <td class="row-click" routerLink="/policy-management/view">Lorem ipsum dolor sit amet consectetur.</td>
-                        <td class="row-click" routerLink="/policy-management/view">28/4/2108</td>
-                        <td class="row-click" routerLink="/policy-management/view">4/5/2121</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                        </td>
+                    <tr *ngFor="let policy of policies">
+
+                        <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
+                            {{policy.policyNo}}</td>
+                        <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
+                            {{policy.policyName}}</td>
+                        <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
+                            {{policy.contractName}}</td>
+                        <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
+                            {{policy.startDate}}</td>
+                        <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
+                            {{policy.endDate}}</td>
+                        <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
+                            {{policy.isActive}}</td>
                         <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/policy-management/view">Tawuniya</td>
-                        <td class="row-click" routerLink="/policy-management/view">2413206</td>
-                        <td class="row-click" routerLink="/policy-management/view">ipsum dolor sit amet consectetur.</td>
-                        <td class="row-click" routerLink="/policy-management/view">1/2/2056</td>
-                        <td class="row-click" routerLink="/policy-management/view">17/10/2114</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/policy-management/view">Tawuniya</td>
-                        <td class="row-click" routerLink="/policy-management/view">1449629</td>
-                        <td class="row-click" routerLink="/policy-management/view">Lorem ipsum dolor sit amet consectetur.</td>
-                        <td class="row-click" routerLink="/policy-management/view">10/7/2087</td>
-                        <td class="row-click" routerLink="/policy-management/view">6/9/2075</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/policy-management/view">Tawuniya</td>
-                        <td class="row-click" routerLink="/policy-management/view">2933323</td>
-                        <td class="row-click" routerLink="/policy-management/view">Lorem ipsum dolor sit amet consectetur.</td>
-                        <td class="row-click" routerLink="/policy-management/view">23/4/2053</td>
-                        <td class="row-click" routerLink="/policy-management/view">26/9/2096</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/policy-management/view">Tawuniya</td>
-                        <td class="row-click" routerLink="/policy-management/view">3340314</td>
-                        <td class="row-click" routerLink="/policy-management/view">0Lorem ipsum dolor sit amet consectetur.</td>
-                        <td class="row-click" routerLink="/policy-management/view">3/10/2094</td>
-                        <td class="row-click" routerLink="/policy-management/view">2/11/2070</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/policy-management/view">Tawuniya</td>
-                        <td class="row-click" routerLink="/policy-management/view">1141605</td>
-                        <td class="row-click" routerLink="/policy-management/view">Lorem ipsum dolor sit amet consectetur.</td>
-                        <td class="row-click" routerLink="/policy-management/view">28/9/2112</td>
-                        <td class="row-click" routerLink="/policy-management/view">6/9/2117</td>
-                        <td class="text-center">
-                            <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit/{{policy.policyId}}">
                                 <mat-icon>create</mat-icon>
                             </button>
                         </td>
@@ -167,7 +109,16 @@
                 </tbody>
             </table>
         </div>
+        <app-empty-state *ngIf="!policies" message='No Policies found!'>
+        </app-empty-state>
     </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
+            </mat-paginator>
+        </div>
+    </div>
     <button mat-fab color="primary" class="page-fab" routerLink="/policy-management/add">
         <mat-icon>add</mat-icon>
     </button>

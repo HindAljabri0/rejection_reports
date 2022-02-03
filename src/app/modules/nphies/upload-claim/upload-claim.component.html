@@ -1,0 +1,11 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+  <div class="block-header">
+      <p>Upload Name: {{summary.uploadName}}</p><span class="spacer"></span>
+      <p>{{summaryDate}}</p>
+  </div>
+  <div class="block-body">
+      <app-nphies-claim-summary></app-nphies-claim-summary>
+      <app-multi-sheet-file-upload *ngIf="summary.uploadId == undefined">
+      </app-multi-sheet-file-upload>
+  </div>
+</div>

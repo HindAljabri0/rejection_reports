@@ -243,6 +243,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .whatsapp-chat-btn>img{display: block;height: 26px;width: 26px;}
 #fc_frame, #fc_frame.fc-widget-small{left: 85px;right: auto!important;z-index: 2!important;bottom: 8px!important;}
 .badge-danger{background: #CD4949;}
+.search-illustration{display: block;margin: 64px auto;max-height: 360px;max-width: 100%;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -390,6 +391,7 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 .form-group{margin-bottom: 14px;}
 .form-group.form-group-lg{margin-bottom: 24px;}
 .form-control,.form-control[readonly],.form-control:disabled{border:1px solid #d3e0f5;height:40px;background-color: #EFF5FF;padding: 4px 12px;color: #3060AA;border-radius: 8px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: none;caret-color: #3060AA;font-size:14px;line-height: 20px;}
+.form-control.search-box,.form-control.search-box[readonly],.form-control.search-box:disabled{background-image: url('./assets/ic-search.svg');background-size: 24px 24px;background-position:right 6px center;background-repeat: no-repeat;padding-right: 38px;}
 select.form-control{cursor: pointer;}
 textarea.form-control,textarea.form-control:disabled,textarea.form-control[readonly]{min-height: 40px;resize: vertical;padding-top: 9px;padding-bottom: 9px;height:auto;}
 .form-control:focus,.form-control[readonly]:focus,.form-control.custom-select-control.mat-form-field.mat-focused{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
@@ -768,11 +770,10 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-wrapper>.left-block{display: flex;flex-direction: column;padding: 48px 16px 40px;}
 .login-wrapper .right-block{background-color: rgba(48, 96, 170,0.08);padding: 24px 22px;color: #3060aa;display: flex;flex-direction: column;}
 .login-wrapper.national-day .right-block{color: #006C32;background-color: rgba(0, 108, 50, 0.08);}
-.login-wrapper .upper-art,.login-wrapper .lower-art{display: block;width: 100%;margin: 0 auto;max-height: 202px;}
+.login-wrapper .upper-art,.login-wrapper .lower-art{display: block;width: 100%;margin: 0 auto;max-height: 132px;}
 .login-wrapper.national-day .lower-art{width: calc(100% + 44px);margin: 0 -22px -24px -22px;}
-.login-wrapper .logo{display: block;margin: 0 auto 24px;width: 164px;height: 110px;}
+.login-wrapper .logo{display: block;margin: 0 auto 56px;width: 164px;height: 110px;}
 .login-wrapper.national-day .logo{width: 200px;}
-.login-wrapper .right-block h2{font-size: 32px;line-height: 40px;font-weight: 500;padding-bottom: 40px;text-align: center;}
 .login-wrapper .right-block .middle{padding: 56px 0 48px;margin: auto 0;}
 .login-wrapper .login-contact{display: flex;justify-content: center;}
 .login-wrapper .login-contact li:not(:last-child){padding-right: 65px;position: relative;}
@@ -1211,8 +1212,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .form-group>.checkbox-group{padding-top: 9px;display: block;}
 .checkbox-group .mat-checkbox{display: block;margin-bottom: 8px;}
 .checkbox-group.inline .mat-checkbox{margin-right: 16px;display: inline-block;vertical-align: top;}
-.mat-checkbox .mat-checkbox-inner-container{background-color: #fff;}
-.mat-checkbox .mat-checkbox-frame{border-color:#8c8c8c;border-width:1px;}
+.mat-checkbox .mat-checkbox-inner-container{background-color: #fff;height: 18px;width: 18px;}
+.mat-checkbox .mat-checkbox-frame{border-color:#909090;border-width:1px;}
+.mat-checkbox .mat-checkbox-frame,.mat-checkbox .mat-checkbox-background{border-radius: 4px;}
+.mat-checkbox.mat-checkbox-disabled{cursor: not-allowed;}
 
 /* bootstrap tabs
 --------------------------------------------------------------------------------------------------------*/
@@ -1269,7 +1272,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* account receivable breakdown
 --------------------------------------------------------------------------------------------------------*/
-.ar-report-body{padding: 14px 14px 0;background: #fff;}
+.ar-report-body{background: #fff;padding: 14px;}
 .ar-report-body .section-card{border-radius: 4px;padding: 14px;border:1px solid #D8E7FF;height: calc(100% - 14px);margin-bottom: 14px;}
 .ar-report-body .section-card .empty-state{min-height: calc(100vh - 480px);}
 .ar-report-body .section-card.half{height: auto;}

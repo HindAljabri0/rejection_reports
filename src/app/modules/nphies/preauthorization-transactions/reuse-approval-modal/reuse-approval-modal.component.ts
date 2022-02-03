@@ -142,7 +142,7 @@ export class ReuseApprovalModalComponent implements OnInit {
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
             // tslint:disable-next-line:max-line-length
-            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name: '';
+            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name : '';
             y.itemCode = y.code;
             y.itemDescription = y.description;
             y.display = y.nonStandardDesc;
@@ -151,7 +151,8 @@ export class ReuseApprovalModalComponent implements OnInit {
 
         // tslint:disable-next-line:max-line-length
         x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
-        x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
+        x.startDate = moment(x.startDate).format('YYYY-MM-DD');
+
 
         // x.supportingInfoSequence = x.supportingInfoSequence ? x.supportingInfoSequence.toString() : '-';
         // x.careTeamSequence = x.careTeamSequence ? x.careTeamSequence.toString() : '';
@@ -181,9 +182,9 @@ export class ReuseApprovalModalComponent implements OnInit {
           x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
         }
 
-        if (this.data.detailsModel.approvalResponseId) {
-          x.isPackage = x.isPackage === true ? 1 : 2;
-        }
+        // if (this.data.detailsModel.approvalResponseId) {
+        //   x.isPackage = x.isPackage === true ? 1 : 2;
+        // }
 
       });
     }
@@ -191,7 +192,11 @@ export class ReuseApprovalModalComponent implements OnInit {
     this.IsDescriptionLoaded = true;
   }
 
-  closeDialog() {
-    this.dialogRef.close(true);
+  closeDialog($event = null) {
+    if ($event && $event.IsReuse) {
+      this.dialogRef.close($event);
+    } else {
+      this.dialogRef.close(true);
+    }
   }
 }

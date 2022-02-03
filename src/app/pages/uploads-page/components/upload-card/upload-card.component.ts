@@ -31,7 +31,7 @@ export class UploadCardComponent implements OnInit {
   }
 
   get canBeDeleted() {
-    return (this.sharedServices.isAdmin && this.sharedServices.isProvider)
+    return (this.sharedServices.userPrivileges.WaseelPrivileges.isPAM && this.sharedServices.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser)
       || (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
   }
 
@@ -40,7 +40,7 @@ export class UploadCardComponent implements OnInit {
       return;
     }
 
-    if (this.sharedServices.isAdmin && this.sharedServices.isProvider) {
+    if (this.sharedServices.userPrivileges.WaseelPrivileges.isPAM && this.sharedServices.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) {
       this.dialogService.openConfirmAdminDeleteDialog().subscribe(action => {
         switch (action) {
           case 'deleteAll':

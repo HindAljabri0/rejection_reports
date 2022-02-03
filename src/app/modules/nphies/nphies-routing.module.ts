@@ -10,12 +10,13 @@ import { PaymentReconciliationComponent } from './payment-reconciliation/payment
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
 import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.component';
-
+import { UploadClaimComponent } from './upload-claim/upload-claim.component';
+import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
   { path: 'eligibility-transactions', component: EligibilityTransactionsComponent },
-  { path: 'beneficiary/:beneficiaryId/edit' ,component: BeneficiaryComponent },
+  { path: 'beneficiary/:beneficiaryId/edit', component: BeneficiaryComponent },
   { path: 'beneficiary/:beneficiaryId', component: BeneficiaryComponent },
   { path: 'beneficiary/add', component: BeneficiaryComponent },
   { path: 'add-preauthorization', component: AddPreauthorizationComponent },
@@ -24,7 +25,10 @@ const routes: Routes = [
   { path: 'payment-reconciliation', component: PaymentReconciliationComponent },
   { path: 'payment-reconciliation-details/:reconciliationId', component: PaymentReconciliationDetailsComponent },
   { path: 'beneficiary', component: SearchBeneficiaryComponent },
-  { path: 'uploads', component: NphiesUploadsComponent},
+  { path: 'uploads', component: NphiesUploadsComponent },
+  { path: 'upload-claim', component: UploadClaimComponent },
+  { path: 'upload/history', component: UploadsHistoryComponent },
+  { path: 'summary', component: UploadClaimComponent },
 
 ];
 

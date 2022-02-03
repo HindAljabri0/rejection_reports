@@ -37,11 +37,9 @@ import {
   RejectionReportClaimDialogComponent
 } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadsCenterComponent } from './components/uploads-center/uploads-center.component';
-import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
-import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MaterialModule } from './modules/material/material.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
@@ -98,6 +96,11 @@ import { NphiesModule } from './modules/nphies/nphies.module';
 import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-claims/nphies-search-claims.component';
 import { CertificateConfigurationComponent } from './pages/certificate-configuration/certificate-configuration.component';
 import { CertificateConfigurationModelComponent } from './pages/certificate-configuration-model/certificate-configuration-model.component';
+import { UploadClaimComponent } from './modules/nphies/upload-claim/upload-claim.component';
+import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphies-claim-summary/nphies-claim-summary.component';
+import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
+import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
 
 
 
@@ -133,11 +136,9 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
     SubmittedInvoicesComponent,
     RejectionReportClaimDialogComponent,
     UploadsCenterComponent,
-    UploadHistoryCardComponent,
     UploadsHistoryComponent,
-    ScrollableDirective,
+    // ScrollableDirective,
     RejectionReportComponent,
-    ReusableSearchBarComponent,
     LanguageSwitcherComponent,
     SearchCriteriaComponent,
     NonSubmittedClaimsComponent,
@@ -164,7 +165,10 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
     ConfirmationAlertDialogComponent,
     NphiesSearchClaimsComponent,
     CertificateConfigurationComponent,
-    CertificateConfigurationModelComponent
+    CertificateConfigurationModelComponent,
+    UploadClaimComponent,
+    MultiSheetFileUploadComponent,
+    NphiesClaimSummaryComponent
   ],
   imports: [
     AppRoutingModule,
@@ -174,8 +178,6 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
-    FormsModule,
     ScrollingModule,
     InfiniteScrollModule,
     MaterialModule,
@@ -190,11 +192,13 @@ import { CertificateConfigurationModelComponent } from './pages/certificate-conf
     ClipboardModule,
     MonacoEditorModule.forRoot(),
     ClaimModule,
-    
+
+
   ],
   providers: [
     ThemeService,
     UploadService,
+    NphiesClaimUploaderService,
     ClipboardService,
     // {
     //   provide: ApmService,
