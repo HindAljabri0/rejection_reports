@@ -16,8 +16,10 @@
       <p><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo ? (otherDataModel.batchInfo.batchId ?
           otherDataModel.batchInfo.batchId : '-') : '-'}}</strong></p>
       <p>
-        <span>Submission Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate ?
-          otherDataModel.submissionDate : '-' | date: 'dd-MM-yyyy'}}</strong>
+        <span>Submission Date:</span>&nbsp;<strong>
+          <span *ngIf="otherDataModel.submissionDate">{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</span>
+          <span *ngIf="!otherDataModel.submissionDate">-</span>
+        </strong>
       </p>
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
