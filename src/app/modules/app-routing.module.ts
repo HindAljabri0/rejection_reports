@@ -15,86 +15,93 @@ import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.compone
 import { MainClaimPageComponent } from '../claim-module-components/main-claim-page/main-claim-page.component';
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot([
-      { path: 'login', component: LoginComponent },
-      {
-        path: '',
-        component: MainLayoutComponent,
-        children: [
-          { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
-          { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
-          { path: 'claims/:id', component: MainClaimPageComponent, canActivate: [RouteCanActiveService] },
-          { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
-          { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
-          { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-          { path: 'uploads', component: UploadsPageComponent, canActivate: [RouteCanActiveService] },
-          { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
-          { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-          { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
-          { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
-          {
-            path: 'configurations',
-            loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
-            canLoad: [RouteCanActiveService]
-          },
-          {
-            path: 'administration',
-            loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),
-            canLoad: [RouteCanActiveService]
-          },
-          {
-            path: ':providerId/claims',
-            loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
-            canActivate: [RouteCanActiveService]
-          },
+    imports: [
+        RouterModule.forRoot([
+            { path: 'login', component: LoginComponent },
+            {
+                path: '',
+                component: MainLayoutComponent,
+                children: [
+                    { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
+                    { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
+                    { path: 'claims/:id', component: MainClaimPageComponent, canActivate: [RouteCanActiveService] },
+                    { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
+                    { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
+                    { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+                    { path: 'uploads', component: UploadsPageComponent, canActivate: [RouteCanActiveService] },
+                    { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
+                    { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+                    { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
+                    { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
+                    {
+                        path: 'configurations',
+                        loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
+                        canLoad: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'administration',
+                        loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),
+                        canLoad: [RouteCanActiveService]
+                    },
+                    {
+                        path: ':providerId/claims',
+                        loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
+                        canActivate: [RouteCanActiveService]
+                    },
 
-          {
-            path: 'reports',
-            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: 'reports/:providerId',
-            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: ':providerId/reports',
-            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: 'collection-management',
-            loadChildren: () => import('./collection-management/collection-management.module').then(m => m.CollectionManagementModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: 'nphies',
-            loadChildren: () => import('./nphies/nphies.module').then(m => m.NphiesModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: 'contract-management',
-            loadChildren: () => import('./contract-management/contract-management.module').then(m => m.ContractManagementModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: 'policy-management',
-            loadChildren: () => import('./policy-management/policy-management.module').then(m => m.PolicyManagementModule),
-            canActivate: [RouteCanActiveService]
-          },
-          {
-            path: 'billing-management',
-            loadChildren: () => import('./billing-management/billing-management.module').then(m => m.BillingManagementModule),
-            canActivate: [RouteCanActiveService]
-          }
-        ]
-      }
-    ])
-  ],
-  exports: [
-    RouterModule
-  ]
+                    {
+                        path: 'reports',
+                        loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'reports/:providerId',
+                        loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: ':providerId/reports',
+                        loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'collection-management',
+                        loadChildren: () =>
+                            import('./collection-management/collection-management.module').then(m => m.CollectionManagementModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'nphies',
+                        loadChildren: () => import('./nphies/nphies.module').then(m => m.NphiesModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'contract-management',
+                        loadChildren: () =>
+                            import('./contract-management/contract-management.module').then(m => m.ContractManagementModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'policy-management',
+                        loadChildren: () => import('./policy-management/policy-management.module').then(m => m.PolicyManagementModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'billing-management',
+                        loadChildren: () => import('./billing-management/billing-management.module').then(m => m.BillingManagementModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
+                        path: 'claim-scrubbing',
+                        loadChildren: () => import('./claim-scrubbing/claim-scrubbing.module').then(m => m.ClaimScrubbingModule),
+                        canActivate: [RouteCanActiveService]
+                    }
+                ]
+            }
+        ])
+    ],
+    exports: [
+        RouterModule
+    ]
 })
 export class AppRoutingModule { }
