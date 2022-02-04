@@ -105,7 +105,7 @@ export class CertificateConfigurationComponent implements OnInit {
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
+          this.dialogService.openMessageDialog(new MessageDialogData('', 'Provider certificate configured successfully', false));
           this.closeStatus = true;
           this.pageMode = 'EDIT';
           this.notEditMode = false;
@@ -160,7 +160,17 @@ export class CertificateConfigurationComponent implements OnInit {
     this.certificateConfigurationProvider.password = '';
     this.fileName = '';
     this.isFileUploded = false;
-    this.currentFileUplod == null;
+    this.currentFileUplod = null;
+  }
+
+  clearFields() {
+    this.pageMode = '';
+    this.providerController.enable();
+    this.providerController.reset();
+    this.certificateConfigurationProvider.password = '';
+    this.fileName = '';
+    this.isFileUploded = false;
+    this.currentFileUplod = null;
   }
 
   selectProvider(providerId: string = null) {
