@@ -408,4 +408,14 @@ export class SearchService {
         return this.http.request(request);
     }
 
+    getClaimAlerts() {
+        const providerId = localStorage.getItem('provider_id');
+        if (providerId != null && providerId != '101') {
+            const requestUrl = `/providers/${providerId}/claims/alerts`;
+            const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+            return this.http.request(request);
+        }
+        return null;
+    }
+
 }
