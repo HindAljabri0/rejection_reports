@@ -387,7 +387,7 @@ export class SearchService {
         return this.http.request(request);
     }
     downloadGssReport(providerId: string, payer: string[], fromDate: string, toDate: string) {
-        const requestUrl = `/providers/${providerId}/gss/download/pdf?payer=${payer.join(',')}&fromDate=${fromDate}&toDate=${toDate}`;
+        const requestUrl = `/providers/${providerId}/gss/pdf?payer=${payer.join(',')}&fromDate=${fromDate}&toDate=${toDate}`;
         const headers: HttpHeaders = new HttpHeaders('Content-Type: application/pdf');
         // tslint:disable-next-line:max-line-length
         const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl, '', { responseType: 'text', reportProgress: true, headers: headers });
