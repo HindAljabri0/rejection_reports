@@ -28,7 +28,7 @@ import { AlertDialogComponent } from 'src/app/components/dialogs/alert-dialog/al
 })
 export class DialogService {
 
-    onClaimDialogClose: Subject<any> = new Subject;
+    onClaimDialogClose: Subject<any> = new Subject();
 
     constructor(
         private commenServices: SharedServices,
@@ -68,7 +68,8 @@ export class DialogService {
                 if (errorEvent.status == 404) {
                     this.openMessageDialog(new MessageDialogData('', 'Claim was not found!', true));
                 } else {
-                    this.openMessageDialog(new MessageDialogData('', 'Could not reach the server at the moment. Please try again later.', true));
+                    this.openMessageDialog(new MessageDialogData('',
+                        'Could not reach the server at the moment. Please try again later.', true));
                 }
             }
             this.commenServices.loadingChanged.next(false);
@@ -148,9 +149,11 @@ export class DialogService {
 
     showAlerts(messages: string[]) {
         if (messages != null && messages.length > 0) {
-            let message = messages.pop();
+            const message = messages.pop();
             const dialogRef = this.dialog.open(AlertDialogComponent, {
-                data: message
+                data: message,
+                panelClass: ['primary-dialog'],
+                autoFocus: false
             });
             dialogRef.afterClosed().subscribe(() => this.showAlerts(messages));
         }

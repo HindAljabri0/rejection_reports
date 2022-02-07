@@ -153,8 +153,8 @@ export class AuthService {
                     }
                     localStorage.setItem('payers', payersStr.substr(0, payersStr.length - 1));
                     this.isUserNameUpdated.next(true);
-                    this.store.dispatch(evaluateUserPrivileges());
-                    this.store.dispatch(checkAlerts());
+                    // this.store.dispatch(evaluateUserPrivileges());
+                    // this.store.dispatch(checkAlerts());
                 } else {
                     this.logout(false, true);
                 }
