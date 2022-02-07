@@ -13,15 +13,13 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Department</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select department</mat-option>
-                            <mat-option value="Department 1">Department 1</mat-option>
-                            <mat-option value="Department 2">Department 2</mat-option>
-                            <mat-option value="Department 3">Department 3</mat-option>
+                        <mat-select placeholder="Select Department" [formControl]="billingController" [(value)]="selectedDepartment">
+                            <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
