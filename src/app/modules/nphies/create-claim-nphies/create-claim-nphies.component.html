@@ -23,14 +23,14 @@
       </p>
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-      <p>
+      <!-- <p>
         <span>Payment Date:</span>&nbsp;
         <strong>
           <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.paymentDate"
             class="value">{{otherDataModel.paymentReconciliationDetails.paymentDate | date: 'dd-MM-yyyy'}} </span>
           <span *ngIf="!otherDataModel.paymentReconciliationDetails || !otherDataModel.paymentReconciliationDetails.paymentDate" class="value">-</span>
         </strong>
-      </p>
+      </p> -->
     </div>
   </div>
   <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
@@ -1172,6 +1172,35 @@
         </table>
       </div>
       <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
+      </app-empty-state>
+    </mat-tab>
+    <mat-tab [label]="'Payments'">
+      <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Early Fee</th>
+              <th>Nphies Fee</th>
+              <th>Payment</th>
+              <th>Payment Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pay of otherDataModel.paymentReconciliationDetails">
+              <td>{{pay.type}}</td>
+              <td>{{pay.componentEarlyFee ? pay.componentEarlyFee : '-'}} <span *ngIf="pay.componentEarlyFee" class="currency">SR</span></td>
+              <td>{{pay.componentNphiesFee ? pay.componentNphiesFee : '-'}} <span *ngIf="pay.componentNphiesFee" class="currency">SR</span></td>
+              <td>{{pay.componentPayment ? pay.componentPayment : '-'}} <span *ngIf="pay.componentPayment" class="currency">SR</span></td>
+              <td>
+                <span *ngIf="pay.paymentDate">{{pay.paymentDate | date: 'dd-MM-yyyy'}}</span>
+                <span *ngIf="!pay.paymentDate">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0" message='No Payments found!'>
       </app-empty-state>
     </mat-tab>
   </mat-tab-group>
