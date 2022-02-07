@@ -124,7 +124,7 @@
         <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
       </ng-template>
 
-      <div *ngIf="otherDataModel && otherDataModel.payeeName" class="row">
+      <div *ngIf="otherDataModel" class="row">
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
@@ -155,7 +155,7 @@
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Payee</div>
-            <p class="form-control-static">{{otherDataModel.payeeName}}</p>
+            <p class="form-control-static">{{otherDataModel.payeeName ? otherDataModel.payeeName : '-'}}</p>
           </div>
         </div>
         <div class="col-4">
