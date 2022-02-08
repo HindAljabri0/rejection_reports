@@ -16,19 +16,21 @@
       <p><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo ? (otherDataModel.batchInfo.batchId ?
           otherDataModel.batchInfo.batchId : '-') : '-'}}</strong></p>
       <p>
-        <span>Submission Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate ?
-          otherDataModel.submissionDate : '-'}}</strong>
+        <span>Submission Date:</span>&nbsp;<strong>
+          <span *ngIf="otherDataModel.submissionDate">{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</span>
+          <span *ngIf="!otherDataModel.submissionDate">-</span>
+        </strong>
       </p>
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-      <p>
+      <!-- <p>
         <span>Payment Date:</span>&nbsp;
         <strong>
           <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.paymentDate"
             class="value">{{otherDataModel.paymentReconciliationDetails.paymentDate | date: 'dd-MM-yyyy'}} </span>
           <span *ngIf="!otherDataModel.paymentReconciliationDetails || !otherDataModel.paymentReconciliationDetails.paymentDate" class="value">-</span>
         </strong>
-      </p>
+      </p> -->
     </div>
   </div>
   <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
@@ -122,7 +124,7 @@
         <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
       </ng-template>
 
-      <div *ngIf="otherDataModel && otherDataModel.payeeName" class="row">
+      <div *ngIf="otherDataModel" class="row">
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
@@ -153,7 +155,7 @@
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Payee</div>
-            <p class="form-control-static">{{otherDataModel.payeeName}}</p>
+            <p class="form-control-static">{{otherDataModel.payeeName ? otherDataModel.payeeName : '-'}}</p>
           </div>
         </div>
         <div class="col-4">
@@ -233,7 +235,7 @@
         </div>
       </div>
 
-      <h5 class="form-title">Beneficary Details</h5>
+      <h5 class="form-title">Beneficiary Details</h5>
       <div class="row" *ngIf="otherDataModel && otherDataModel.beneficiary">
         <div class="col-4">
           <div class="form-group form-group-static">
@@ -244,7 +246,7 @@
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Document</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.documentType}}
+            <p class="form-control-static">{{otherDataModel.beneficiary.documentTypeName}}
               ({{otherDataModel.beneficiary.documentId}})</p>
           </div>
         </div>
@@ -362,34 +364,43 @@
       </h5>
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
-            <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
-            <div class="date-picker">
+          <div class="form-group">
+            <label class="control-label">Date Written</label>
+            <label>
+              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd-MM-yyyy'}}
+            </label>
+            <!-- <div class="date-picker">
               <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
               <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
               <mat-datepicker #visionWrittenDate></mat-datepicker>
             </div>
             <div *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
               <span class="error-text">Please select Date Written</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="col-8 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))}">
-            <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+          <div class="form-group">
+            <label class="control-label">Prescriber</label>
+            <ng-container *ngFor="let pre of CareTeams">
+              <label *ngIf="pre.sequence === FormNphiesClaim.controls.prescriber.value">
+                {{pre.physicianCode}} -
+                {{pre.practitionerName}}
+              </label>
+            </ng-container>
+            <!--
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="prescriber">
                 <mat-option value="">Select Prescriber</mat-option>
-                <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
+                <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">
+                  {{pre.physicianCode}} -
                   {{pre.practitionerName}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <div *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
               <span class="error-text">Please select a Prescriber</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -1121,7 +1132,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm
+                    aa'}}</span>
                 </div>
               </div>
             </ng-container>
@@ -1171,10 +1183,39 @@
       <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
       </app-empty-state>
     </mat-tab>
+    <mat-tab [label]="'Payments'">
+      <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Early Fee</th>
+              <th>Nphies Fee</th>
+              <th>Payment</th>
+              <th>Payment Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pay of otherDataModel.paymentReconciliationDetails">
+              <td>{{pay.type}}</td>
+              <td>{{pay.componentEarlyFee ? pay.componentEarlyFee : '-'}} <span *ngIf="pay.componentEarlyFee" class="currency">SR</span></td>
+              <td>{{pay.componentNphiesFee ? pay.componentNphiesFee : '-'}} <span *ngIf="pay.componentNphiesFee" class="currency">SR</span></td>
+              <td>{{pay.componentPayment ? pay.componentPayment : '-'}} <span *ngIf="pay.componentPayment" class="currency">SR</span></td>
+              <td>
+                <span *ngIf="pay.paymentDate">{{pay.paymentDate | date: 'dd-MM-yyyy'}}</span>
+                <span *ngIf="!pay.paymentDate">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0" message='No Payments found!'>
+      </app-empty-state>
+    </mat-tab>
   </mat-tab-group>
   <div class="block-footer sticky-bottom" *ngIf="!isLoading && claimIsEditable">
     <div class="right-block btn-list">
-      <button  mat-flat-button color="primary" (click)="toEditMode()">Edit</button>
+      <button mat-flat-button color="primary" (click)="toEditMode()">Edit</button>
     </div>
   </div>
 </div>

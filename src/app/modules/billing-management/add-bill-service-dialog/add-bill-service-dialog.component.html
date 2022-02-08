@@ -5,7 +5,24 @@
 <div class="primary-dialog-body pb-0">
     <div class="form-group">
         <label class="control-label">Select Service</label>
-        <input type="text" class="form-control" placeholder="Search service name or service code">
+        <!-- <input type="text" class="form-control" placeholder="Search service name or service code"> -->
+
+        <!-- <input type="text" class="form-control" placeholder="Search service name or service code..." [formControl]="addBillServiceController" [matAutocomplete]="auto"
+            (keyup)="searchServices()">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let service of serviceSearchModel">
+                (click)="selectService(service)">
+                {{service.serviceName}} ({{service.serviceId}})
+            </mat-option>
+        </mat-autocomplete> -->
+        <div class="form-group" [matTooltip]="errors.ServiceCode" [class.has-error]="errors.ServiceCode!=null&&errors.ServiceCode.trim().length>0">
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select placeholder="Select Service" [formControl]="addBillServiceController" [(value)]="selectedService">
+                    <mat-option *ngFor="let service of serviceSearchModel" [value]="service.serviceId">{{service.serviceName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
     </div>
 </div>
 <div class="primary-dialog-footer has-border">

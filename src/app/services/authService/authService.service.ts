@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { evaluateUserPrivileges } from 'src/app/store/mainStore.actions';
+import { checkAlerts, evaluateUserPrivileges } from 'src/app/store/mainStore.actions';
 // import { ApmService } from '@elastic/apm-rum-angular';
 
 @Injectable({
@@ -89,6 +89,7 @@ export class AuthService {
 
     evaluateUserPrivileges() {
         this.store.dispatch(evaluateUserPrivileges());
+        this.store.dispatch(checkAlerts());
     }
 
 
@@ -152,7 +153,8 @@ export class AuthService {
                     }
                     localStorage.setItem('payers', payersStr.substr(0, payersStr.length - 1));
                     this.isUserNameUpdated.next(true);
-                    this.store.dispatch(evaluateUserPrivileges());
+                    // this.store.dispatch(evaluateUserPrivileges());
+                    // this.store.dispatch(checkAlerts());
                 } else {
                     this.logout(false, true);
                 }

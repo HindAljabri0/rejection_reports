@@ -1,7 +1,7 @@
 <div class="sidebar animate__animated animate__fadeIn animate__faster">
     <div class="inner">
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
-            <div class="list-container" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser">
+            <div class="list-container" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
                 <div class="list-title primary">
                     Waseel
                 </div>
@@ -314,7 +314,12 @@
                     </mat-expansion-panel>
                     <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>Claims</mat-panel-title>
+                            <mat-panel-title>
+                                <span class="d-flex align-items-center">
+                                    <span>Claims</span>
+                                    <span *ngIf="NewClaimTransactions > 0" class="alert-marker ml-auto alert-count">{{NewClaimTransactions}}</span>
+                                </span>
+                            </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ul class="nav-list">
                             <li *ngIf="!envProd && !envStaging">
