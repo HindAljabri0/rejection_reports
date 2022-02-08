@@ -17,6 +17,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   @Input() data: any;
   currentSelectedItem = -1;
   paymentAmount = 0;
+  beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -51,6 +52,12 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   }
 
   setDescriptions() {
+
+
+    if (this.data.beneficiary && this.data.beneficiary.documentType) {
+      // tslint:disable-next-line:max-line-length
+      this.data.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.data.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.data.beneficiary.documentType)[0].name : '-';
+    }
 
     if (this.data.accident && this.data.accident.date) {
       this.data.accident.date = moment(this.data.accident.date).format('DD-MM-YYYY');
@@ -170,7 +177,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
             // tslint:disable-next-line:max-line-length
-            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name: '';
+            y.typeName = this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0] ? this.sharedDataService.itemTypeList.filter(z => z.value === y.type)[0].name : '';
             y.itemCode = y.code;
             y.itemDescription = y.description;
             y.display = y.nonStandardDesc;

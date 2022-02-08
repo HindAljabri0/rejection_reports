@@ -91,6 +91,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   encounterAdminSourceList = this.sharedDataService.encounterAdminSourceList;
   encounterReAdmissionList = this.sharedDataService.encounterReAdmissionList;
   encounterDischargeDispositionList = this.sharedDataService.encounterDischargeDispositionList;
+  beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
 
   VisionSpecifications = [];
   SupportingInfo = [];
@@ -258,8 +259,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.country.disable();
     this.FormNphiesClaim.controls.countryName.disable();
     this.FormNphiesClaim.controls.date.disable();
-    this.FormNphiesClaim.controls.dateWritten.disable();
-    this.FormNphiesClaim.controls.prescriber.disable();
+    // this.FormNphiesClaim.controls.dateWritten.disable();
+    // this.FormNphiesClaim.controls.prescriber.disable();
     this.FormNphiesClaim.controls.status.disable();
     this.FormNphiesClaim.controls.encounterClass.disable();
     this.FormNphiesClaim.controls.serviceType.disable();
@@ -1497,6 +1498,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.insurer = response.insurer;
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.beneficiary = response.beneficiary;
+    if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0].name : '-';
+    }
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.insurancePlan = response.coverageType;
     this.otherDataModel.provClaimNo = response.provClaimNo;
@@ -1506,8 +1511,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.preAuthRefNo = response.preAuthDetails;
     this.otherDataModel.responseDecision = response.responseDecision;
     this.otherDataModel.providertransactionlogId = response.providertransactionlogId;
-    this.otherDataModel.payerNphiesId = response.payerNphiesId
-    this.otherDataModel.memberCardId = response.memberCardId
+    this.otherDataModel.payerNphiesId = response.payerNphiesId;
+    this.otherDataModel.memberCardId = response.memberCardId;
     this.otherDataModel.relationWithSubscriber = response.relationWithSubscriber;
     // this.otherDataModel.totalAmount = response.totalAmount;
 
@@ -1882,7 +1887,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
         this.sharedServices.loadingChanged.next(false);
         if (location.href.includes('#edit')) {
-          this.toEditMode()
+          this.toEditMode();
         }
       }
     }, errorEvent => {
@@ -1891,7 +1896,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
       this.sharedServices.loadingChanged.next(false);
       if (location.href.includes('#edit')) {
-        this.toEditMode()
+        this.toEditMode();
       }
     });
   }
