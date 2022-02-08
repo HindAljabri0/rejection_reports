@@ -1,7 +1,7 @@
 <div class="sidebar animate__animated animate__fadeIn animate__faster">
     <div class="inner">
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
-            <div class="list-container" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser">
+            <div class="list-container" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
                 <div class="list-title primary">
                     Waseel
                 </div>
@@ -400,7 +400,8 @@
                     </ul>
                 </ng-container>
             </div>
-            <ng-container *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isRCM)">
+            <ng-container
+                *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isRCM)">
                 <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
                     <hr>
                 </div>
@@ -472,7 +473,8 @@
                     </ul>
                 </mat-expansion-panel>
             </div>
-            <ng-container *ngIf="userPrivileges.WaseelPrivileges.isRCM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
+            <ng-container
+                *ngIf="userPrivileges.WaseelPrivileges.isRCM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
                 <div class="list-title">
                     <hr>
                 </div>
