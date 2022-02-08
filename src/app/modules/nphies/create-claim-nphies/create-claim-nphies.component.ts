@@ -541,7 +541,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       itemTypes: this.Diagnosises.map(x => {
         return x.type;
       }),
-      type: this.FormNphiesClaim.controls.type.value ? this.FormNphiesClaim.controls.type.value.value : ''
+      type: this.FormNphiesClaim.controls.type.value ? this.FormNphiesClaim.controls.type.value.value : '',
+      pageMode: this.pageMode
     };
 
     const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);

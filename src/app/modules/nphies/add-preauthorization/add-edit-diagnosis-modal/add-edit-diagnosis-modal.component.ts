@@ -57,6 +57,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   primaryValidationMsg = '';
   IsOnAdmissionRequired = false;
+  pageMode = '';
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -64,6 +65,9 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     private formBuilder: FormBuilder, private adminService: AdminService) { }
 
   ngOnInit() {
+    if (this.data && this.data.pageMode) {
+      this.pageMode = this.data.pageMode;
+    }
     if (this.data.item && this.data.item.diagnosisCode) {
       this.FormDiagnosis.patchValue({
         code: this.data.item.diagnosisCode,
@@ -73,15 +77,20 @@ export class AddEditDiagnosisModalComponent implements OnInit {
       });
     }
 
-    if (this.data.type && this.data.type === 'institutional') {
-      this.FormDiagnosis.controls.onAdmission.setValidators([Validators.required]);
-      this.FormDiagnosis.controls.onAdmission.updateValueAndValidity();
-      this.IsOnAdmissionRequired = true;
+    if (this.pageMode !== 'EDIT') {
+      if (this.data.type && this.data.type === 'institutional') {
+        this.FormDiagnosis.controls.onAdmission.setValidators([Validators.required]);
+        this.FormDiagnosis.controls.onAdmission.updateValueAndValidity();
+        this.IsOnAdmissionRequired = true;
+      } else {
+        this.FormDiagnosis.controls.onAdmission.clearValidators();
+        this.FormDiagnosis.controls.onAdmission.updateValueAndValidity();
+        this.IsOnAdmissionRequired = false;
+      }
     } else {
-      this.FormDiagnosis.controls.onAdmission.clearValidators();
-      this.FormDiagnosis.controls.onAdmission.updateValueAndValidity();
-      this.IsOnAdmissionRequired = false;
+      this.IsOnAdmissionRequired = true;
     }
+
   }
 
   searchICDCodes() {

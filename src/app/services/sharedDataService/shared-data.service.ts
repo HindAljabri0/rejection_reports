@@ -224,6 +224,14 @@ export class SharedDataService {
     { value: 'other', name: 'Other' },
   ];
 
+  beneficiaryTypeList = [
+    { value: 'PRC', name: 'Resident Card' },
+    { value: 'PPN', name: 'Passport' },
+    { value: 'VS', name: 'GCC ID' },
+    { value: 'NI', name: 'National Card' },
+    { value: 'NI', name: 'Border Number' },
+  ];
+
   constructor(private adminService: AdminService) { }
 
   getCodeName(category) {

@@ -1,905 +1,916 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <ng-container *ngIf=' addMode'>
-        <div class="block-header has-border">
-            <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
+  <ng-container *ngIf=' addMode'>
+    <div class="block-header has-border">
+      <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
+    </div>
+    <div class="block-filter-panel">
+      <h5 class="form-title pt-0">Personal Information</h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+            <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="firstNameController" [(ngModel)]="fullName">
+          </div>
         </div>
-        <div class="block-filter-panel">
-            <h5 class="form-title pt-0">Personal Information</h5>
-            <div class="row small-gutter">
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">First Name</label>
-                        <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="firstNameController" [(ngModel)]="fullName">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Second Name</label>
-                        <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="secondNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Third Name</label>
-                        <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="thirdNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Family Name</label>
-                        <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="familyNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
-                        <label class="control-label">Full Name<span class="asterisk">*</span></label>
-                        <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()" [formControl]="fullNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Beneficiary File ID</label>
-                        <input placeholder="Enter beneficiary file ID" class="form-control" [formControl]="beneficiaryFileIdController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
-                        <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
-                        <div class="date-picker">
-                            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
-                            <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
-                            <mat-datepicker #dateOfBirth></mat-datepicker>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
-                        <label class="control-label">Gender<span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value;">
-                                <mat-option value="">Select Gender</mat-option>
-                                <mat-option value="MALE">Male</mat-option>
-                                <mat-option value="FEMALE">Female</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.documentType" [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
-                        <label class="control-label">Document Type<span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedDocumentType" (selectionChange)="selectedDocumentType = $event.value;">
-                                <mat-option value="">Select Document Type</mat-option>
-                                <mat-option value="RESIDENT_CARD">Resident Card</mat-option>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Second Name</label>
+            <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="secondNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Third Name</label>
+            <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="thirdNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Family Name</label>
+            <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="familyNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
+            <label class="control-label">Full Name<span class="asterisk">*</span></label>
+            <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()" [formControl]="fullNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Beneficiary File ID</label>
+            <input placeholder="Enter beneficiary file ID" class="form-control" [formControl]="beneficiaryFileIdController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
+            <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
+            <div class="date-picker">
+              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
+              <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
+              <mat-datepicker #dateOfBirth></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
+            <label class="control-label">Gender<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value;">
+                <mat-option value="">Select Gender</mat-option>
+                <mat-option value="MALE">Male</mat-option>
+                <mat-option value="FEMALE">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.documentType" [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
+            <label class="control-label">Document Type<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedDocumentType" (selectionChange)="selectedDocumentType = $event.value;">
+                <mat-option value="">Select Document Type</mat-option>
+                <!-- <mat-option value="RESIDENT_CARD">Resident Card</mat-option>
                                 <mat-option value="PASSPORT">Passport</mat-option>
                                 <mat-option value="GCC_ID">GCC ID</mat-option>
                                 <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">National Card</mat-option>
-                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
-                        <label class="control-label">Document ID<span class="asterisk">*</span></label>
-                        <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">E-Health ID</label>
-                        <input placeholder="Enter E-Health ID" class="form-control" [formControl]="EHealthIdNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Nationality</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;" #nationalitySelect>
-                                <mat-option>
-                                    <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
-                                        name='searchedNationality'>
-                                    </ngx-mat-select-search>
-                                </mat-option>
-                                <mat-option value="">Select Nationality</mat-option>
-                                <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
-                                    {{nationality.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Residency Type</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
-                                <mat-option value="">Select Residency Type</mat-option>
-                                <mat-option value="VISITOR">Visitor</mat-option>
-                                <mat-option value="DEPENDENT">Dependent</mat-option>
-                                <mat-option value="CITIZEN_OR_RESIDENT">Citizen or Resident</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Contact Number</label>
-                        <input placeholder="Enter contact number" class="form-control" [formControl]="contactNumberController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Marital Status</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;" required #maritalStatusSelect>
+                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option> -->
+                <mat-option value="PRC">Resident Card</mat-option>
+                <mat-option value="PPN">Passport</mat-option>
+                <mat-option value="VS">GCC ID</mat-option>
+                <mat-option value="NI">National Card</mat-option>
+                <mat-option value="NI">Border Number</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
+            <label class="control-label">Document ID<span class="asterisk">*</span></label>
+            <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">E-Health ID</label>
+            <input placeholder="Enter E-Health ID" class="form-control" [formControl]="EHealthIdNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Nationality</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;" #nationalitySelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                    name='searchedNationality'>
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option value="">Select Nationality</mat-option>
+                <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
+                  {{nationality.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Residency Type</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
+                <mat-option value="">Select Residency Type</mat-option>
+                <mat-option value="VISITOR">Visitor</mat-option>
+                <mat-option value="DEPENDENT">Dependent</mat-option>
+                <mat-option value="CITIZEN_OR_RESIDENT">Citizen or Resident</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Contact Number</label>
+            <input placeholder="Enter contact number" class="form-control" [formControl]="contactNumberController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Marital Status</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;" required #maritalStatusSelect>
 
-                                <mat-option value="">Select Marital Status</mat-option>
-                                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
-                                    {{MaritalStatusValue.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Blood Group</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
-                                <mat-option value="">Select Blood Group</mat-option>
-                                <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
-                                    {{bloodTybe.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Preferred Language</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedLanguages" (selectionChange)="selectedLanguages = $event.value;" #Language>
-                                <mat-option value="">Select Preferred Language</mat-option>
-                                <mat-option value="EN">English</mat-option>
-                                <mat-option value="AR">Arabic</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Emergency Phone Number</label>
-                        <input placeholder="Enter emergency phone number" class="form-control" [formControl]="emergencyPhoneNumberController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Email</label>
-                        <input placeholder="Enter email" class="form-control" [formControl]="emailController">
-                    </div>
-                </div>
-            </div>
+                <mat-option value="">Select Marital Status</mat-option>
+                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+                  {{MaritalStatusValue.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Blood Group</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
+                <mat-option value="">Select Blood Group</mat-option>
+                <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
+                  {{bloodTybe.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Preferred Language</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedLanguages" (selectionChange)="selectedLanguages = $event.value;" #Language>
+                <mat-option value="">Select Preferred Language</mat-option>
+                <mat-option value="EN">English</mat-option>
+                <mat-option value="AR">Arabic</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Emergency Phone Number</label>
+            <input placeholder="Enter emergency phone number" class="form-control" [formControl]="emergencyPhoneNumberController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Email</label>
+            <input placeholder="Enter email" class="form-control" [formControl]="emailController">
+          </div>
+        </div>
+      </div>
 
-            <h5 class="form-title">
-                <span>Address</span>
-                <!-- <button type="button" (click)="addAddress()" class="btn-icon btn-primary ml-auto">
+      <h5 class="form-title">
+        <span>Address</span>
+        <!-- <button type="button" (click)="addAddress()" class="btn-icon btn-primary ml-auto">
                     <mat-icon>add</mat-icon>
                 </button> -->
-            </h5>
-            <!-- *ngIf="addresses.length==0" [message]="'No addresses found!'" -->
-            <!-- <app-empty-state [className]="'mb-2'" > -->
-            <!-- </app-empty-state> -->
-            <!-- *ngIf="addresses.length>0  -->
-            <div class="table-responsive ">
-                <table class="primary-grid manual-row-color claim-view-table no-borders">
-                    <thead>
-                        <tr>
-                            <th>House No./Appartment</th>
-                            <th>Street Name</th>
-                            <th>City</th>
-                            <th>State/Province</th>
-                            <th>Country</th>
-                            <th>Postal Code</th>
-                            <th width="10"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+      </h5>
+      <!-- *ngIf="addresses.length==0" [message]="'No addresses found!'" -->
+      <!-- <app-empty-state [className]="'mb-2'" > -->
+      <!-- </app-empty-state> -->
+      <!-- *ngIf="addresses.length>0  -->
+      <div class="table-responsive ">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>House No./Appartment</th>
+              <th>Street Name</th>
+              <th>City</th>
+              <th>State/Province</th>
+              <th>Country</th>
+              <th>Postal Code</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
 
-                        <tr class="align-middle">
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
-                            </td>
-                            <td>
+            <tr class="align-middle">
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
+              </td>
+              <td>
 
-                                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
+                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
 
-                            </td>
-                            <td>
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
-                                        <mat-option>
-                                            <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found"
-                                                [formControl]="nationalityFilterCtrl" name='selectedCountry'>
-                                            </ngx-mat-select-search>
-                                        </mat-option>
-                                        <mat-option value="">Select Country</mat-option>
-                                        <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Code">
-                                            {{nationality.Name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
-                            </td>
-                            <!-- <td class="actions">
+              </td>
+              <td>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                        name='selectedCountry'>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="">Select Country</mat-option>
+                    <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Code">
+                      {{nationality.Name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
+              </td>
+              <!-- <td class="actions">
                                 <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteAddress(i)">
                                     <mat-icon>delete_outline</mat-icon>
                                 </button>
                             </td> -->
-                        </tr>
+            </tr>
 
-                    </tbody>
-                </table>
-            </div>
-
-
-            <h5 class="form-title">
-                <span>Insurance Plans</span>
-                <button type="button" (click)="addInsurancePlan()" class="btn-icon btn-primary ml-auto">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </h5>
-            <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'"></app-empty-state>
-            <div class="table-responsive" *ngIf="insurancePlans.length>0">
-                <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
-                    <table class="primary-grid manual-row-color claim-view-table no-borders">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Set Primary?</th>
-                                <th>Payer<span class="asterisk">*</span></th>
-                                <th>Expiry Date</th>
-                                <th>Member Card ID<span class="asterisk">*</span></th>
-                                <th>Relation with Subscriber<span class="asterisk">*</span></th>
-                                <th>Coverage Type<span class="asterisk">*</span></th>
-                                <th width="10"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
-                                <td class="text-center">
-                                    <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="((i+''==setPrimary && addMode) || insurancePlans.length===0)">
-                                    </mat-radio-button>
-                                </td>
+          </tbody>
+        </table>
+      </div>
 
 
-                                <td>
-                                    <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
-                                        [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
-                                                <mat-option [value]="insurancePlan.selectePayer">{{editMode?
-                                                    selectedPayer(insurancePlan.selectePayer):"Select payer"}}
-                                                </mat-option>
-                                                <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
-                                                    {{payer.englistName}}({{payer.arabicName}})</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-130">
-                                        <div class="date-picker">
-                                            <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
-                                                [formControl]="insurancePlan.expiryDateController">
-                                            <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
-                                            <mat-datepicker #expiryDate></mat-datepicker>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
-                                        [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
-                                        <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-160" [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
-                                                (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;" #selecteSubscriberRelationship>
-                                                <mat-option value="">Select Relation with Subscriber</mat-option>
-                                                <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
-                                                    {{subscriberRelationship.Name}}</mat-option>
+      <h5 class="form-title">
+        <span>Insurance Plans</span>
+        <button type="button" (click)="addInsurancePlan()" class="btn-icon btn-primary ml-auto">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'"></app-empty-state>
+      <div class="table-responsive" *ngIf="insurancePlans.length>0">
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
+          <table class="primary-grid manual-row-color claim-view-table no-borders">
+            <thead>
+              <tr>
+                <th class="text-center">Set Primary?</th>
+                <th>Payer<span class="asterisk">*</span></th>
+                <th>Expiry Date</th>
+                <th>Member Card ID<span class="asterisk">*</span></th>
+                <th>Relation with Subscriber<span class="asterisk">*</span></th>
+                <th>Coverage Type<span class="asterisk">*</span></th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
 
-                                            </mat-select>
+              <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
+                <td class="text-center">
+                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="((i+''==setPrimary && addMode) || insurancePlans.length===0)">
+                  </mat-radio-button>
+                </td>
 
-                                        </mat-form-field>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-160" [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;"
-                                                #selecteCoverageType>
-                                                <mat-option value="">Select Coverage Type</mat-option>
-                                                <mat-option value="EHCPOL">Extended healthcare</mat-option>
-                                                <mat-option value="PUBLICPOL">Public healthcare</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                </td>
-                                <td class="actions">
-                                    <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
-                                </td>
-                            </tr>
 
-                        </tbody>
+                <td>
+                  <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
+                    [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                        <mat-option [value]="insurancePlan.selectePayer">{{editMode?
+                          selectedPayer(insurancePlan.selectePayer):"Select payer"}}
+                        </mat-option>
+                        <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
+                          {{payer.englistName}}({{payer.arabicName}})</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-130">
+                    <div class="date-picker">
+                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" [formControl]="insurancePlan.expiryDateController">
+                      <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                      <mat-datepicker #expiryDate></mat-datepicker>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
+                    [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160"
+                    [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship" (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
+                        #selecteSubscriberRelationship>
+                        <mat-option value="">Select Relation with Subscriber</mat-option>
+                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
+                          {{subscriberRelationship.Name}}</mat-option>
 
-                    </table>
-                </mat-radio-group>
-            </div>
-            <hr class="hr spaced">
-            <div class="form-group btn-list">
-                <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save()">Add
-                    Beneficiary</button>
-                <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="updateDate()">Save</button>
-                <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
-            </div>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160"
+                    [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                        <mat-option value="">Select Coverage Type</mat-option>
+                        <mat-option value="EHCPOL">Extended healthcare</mat-option>
+                        <mat-option value="PUBLICPOL">Public healthcare</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td class="actions">
+                  <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </mat-radio-group>
+      </div>
+      <hr class="hr spaced">
+      <div class="form-group btn-list">
+        <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save()">Add
+          Beneficiary</button>
+        <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="updateDate()">Save</button>
+        <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="viewMode ||editMode">
+    <div class="block-header has-border align-items-center">
+      <div class="left-block">
+        <div class="d-flex align-items-center">
+          <div class="actions mr-2 my-n2 ml-n1">
+            <button matRipple type="button" (click)="viewMode=false" class="action-btn" routerLink="/nphies/beneficiary">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
+          <p>{{beneficiaryinfo.fullName}}</p>
         </div>
-    </ng-container>
+      </div>
+
+      <div *ngIf="viewMode" class="right-block">
+        <button type="button" class="size-sm mt-n1 mb-n1" mat-flat-button color="primary" (click)="changeMode()">Edit</button>
+      </div>
+    </div>
 
 
-    <ng-container *ngIf="viewMode ||editMode">
-        <div class="block-header has-border align-items-center">
-            <div class="left-block">
-                <div class="d-flex align-items-center">
-                    <div class="actions mr-2 my-n2 ml-n1">
-                        <button matRipple type="button" (click)="viewMode=false" class="action-btn" routerLink="/nphies/beneficiary">
-                            <mat-icon>arrow_back</mat-icon>
-                        </button>
-                    </div>
-                    <p>{{beneficiaryinfo.fullName}}</p>
-                </div>
-            </div>
 
-            <div *ngIf="viewMode" class="right-block">
-                <button type="button" class="size-sm mt-n1 mb-n1" mat-flat-button color="primary" (click)="changeMode()">Edit</button>
-            </div>
+    <div *ngIf="editMode" class="block-filter-panel">
+      <h5 class="form-title pt-0">Personal Information</h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+            <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="firstNameController" [(ngModel)]="fullName">
+          </div>
         </div>
-
-
-
-        <div *ngIf="editMode" class="block-filter-panel">
-            <h5 class="form-title pt-0">Personal Information</h5>
-            <div class="row small-gutter">
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">First Name</label>
-                        <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="firstNameController" [(ngModel)]="fullName">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Second Name</label>
-                        <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="secondNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Third Name</label>
-                        <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="thirdNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Family Name</label>
-                        <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="familyNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
-                        <label class="control-label">Full Name<span class="asterisk">*</span></label>
-                        <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()" [formControl]="fullNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Beneficiary File ID</label>
-                        <input placeholder="Enter beneficiary file ID" class="form-control" [formControl]="beneficiaryFileIdController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
-                        <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
-                        <div class="date-picker">
-                            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
-                            <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
-                            <mat-datepicker #dateOfBirth></mat-datepicker>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
-                        <label class="control-label">Gender<span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value;">
-                                <mat-option value="">Select Gender</mat-option>
-                                <mat-option value="MALE">Male</mat-option>
-                                <mat-option value="FEMALE">Female</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.documentType" [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
-                        <label class="control-label">Document Type<span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedDocumentType" (selectionChange)="selectedDocumentType = $event.value;">
-                                <mat-option value="">Select Document Type</mat-option>
-                                <mat-option value="RESIDENT_CARD">Resident Card</mat-option>
-                                <mat-option value="PASSPORT">Passport</mat-option>
-                                <mat-option value="GCC_ID">GCC ID</mat-option>
-                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">National Card</mat-option>
-                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group" [matTooltip]="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
-                        <label class="control-label">Document ID<span class="asterisk">*</span></label>
-                        <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">E-Health ID</label>
-                        <input placeholder="Enter E-Health ID" class="form-control" [formControl]="EHealthIdNameController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Nationality</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;" #nationalitySelect>
-                                <mat-option>
-                                    <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
-                                        name='searchedNationality'>
-                                    </ngx-mat-select-search>
-                                </mat-option>
-                                <mat-option value="">Select Nationality</mat-option>
-                                <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
-                                    {{nationality.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Residency Type</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
-                                <mat-option value="">Select Residency Type</mat-option>
-                                <mat-option value="VISITOR">Visitor</mat-option>
-                                <mat-option value="DEPENDENT">Dependent</mat-option>
-                                <mat-option value="CITIZEN_OR_RESIDENT">Citizen or Resident</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Contact Number</label>
-                        <input placeholder="Enter contact number" class="form-control" [formControl]="contactNumberController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Marital Status</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;" required #maritalStatusSelect>
-
-                                <mat-option value="">Select Marital Status</mat-option>
-                                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
-                                    {{MaritalStatusValue.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Blood Group</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
-                                <mat-option value="">Select Blood Group</mat-option>
-                                <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
-                                    {{bloodTybe.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Preferred Language</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedLanguages" (selectionChange)="selectedLanguages = $event.value;" #Language>
-                                <mat-option value="">Select Preferred Language</mat-option>
-                                <mat-option value="EN">English</mat-option>
-                                <mat-option value="AR">Arabic</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Emergency Phone Number</label>
-                        <input placeholder="Enter emergency phone number" class="form-control" [formControl]="emergencyPhoneNumberController">
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Email</label>
-                        <input placeholder="Enter email" class="form-control" [formControl]="emailController">
-                    </div>
-                </div>
-            </div>
-
-            <h5 class="form-title">
-                <span>Address</span>
-
-            </h5>
-
-            <div class="table-responsive ">
-                <table class="primary-grid manual-row-color claim-view-table no-borders">
-                    <thead>
-                        <tr>
-                            <th>House No./Appartment</th>
-                            <th>Street Name</th>
-                            <th>City</th>
-                            <th>State/Province</th>
-                            <th>Country</th>
-                            <th>Postal Code</th>
-                            <th width="10"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr class="align-middle">
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
-                            </td>
-                            <td>
-
-                                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
-
-                            </td>
-                            <td>
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
-                                        <mat-option>
-                                            <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found"
-                                                [formControl]="nationalityFilterCtrl" name='selectedCountry'>
-                                            </ngx-mat-select-search>
-                                        </mat-option>
-                                        <mat-option value="">Select Country</mat-option>
-                                        <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Code">
-                                            {{nationality.Name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-
-            <h5 class="form-title">
-                <span>Insurance Plans</span>
-                <button type="button" (click)="addInsurancePlan()" class="btn-icon btn-primary ml-auto">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </h5>
-            <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'"></app-empty-state>
-            <div class="table-responsive" *ngIf="insurancePlans.length>0">
-                <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
-                    <table class="primary-grid manual-row-color claim-view-table no-borders">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Set Primary?</th>
-                                <th>Payer<span class="asterisk">*</span></th>
-                                <th>Expiry Date</th>
-                                <th>Member Card ID<span class="asterisk">*</span></th>
-                                <th>Relation with Subscriber<span class="asterisk">*</span></th>
-                                <th>Coverage Type<span class="asterisk">*</span></th>
-                                <th width="10"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
-                                <td class="text-center">
-                                    <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode) ||insurancePlan.iSPrimary">
-                                    </mat-radio-button>
-                                </td>
-
-
-                                <td>
-                                    <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
-                                        [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
-                                                <mat-option [value]="insurancePlan.selectePayer">{{editMode && selectedPayer(insurancePlan.selectePayer)!=null?
-                                                    selectedPayer(insurancePlan.selectePayer):"Select payer"}}
-                                                </mat-option>
-                                                <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
-                                                    {{payer.englistName}}({{payer.arabicName}})</mat-option>
-
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-130">
-                                        <div class="date-picker">
-                                            <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
-                                                [formControl]="insurancePlan.expiryDateController">
-                                            <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
-                                            <mat-datepicker #expiryDate></mat-datepicker>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
-                                        [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
-                                        <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-160"  [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
-                                                (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;" #selecteSubscriberRelationship>
-                                                <mat-option value="">Select Relation with Subscriber</mat-option>
-                                                <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
-                                                    {{subscriberRelationship.Name}}</mat-option>
-
-                                            </mat-select>
-
-                                        </mat-form-field>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group m-0 w-160"  [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;"
-                                                #selecteCoverageType>
-                                                <mat-option value="">Select Coverage Type</mat-option>
-                                                <mat-option value="EHCPOL">Extended healthcare</mat-option>
-                                                <mat-option value="PUBLICPOL">Public healthcare</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                </td>
-                                <td class="actions">
-                                    <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-                </mat-radio-group>
-            </div>
-            <hr class="hr spaced">
-            <div class="form-group btn-list">
-                <button type="button" mat-flat-button color="primary" (click)=" updateDate()">Save</button>
-                <button type="button" mat-flat-button (click)="changeMode()">Cancel</button>
-            </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Second Name</label>
+            <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="secondNameController">
+          </div>
         </div>
-
-
-
-
-        <div *ngIf="viewMode" class="block-filter-panel">
-            <h5 class="semibold pb-2 mb-3 border-bottom">Personal Information</h5>
-            <div class="row small-gutter">
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">First Name</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.firstName)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Second Name</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.middleName)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Third Name</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.lastName)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Family Name</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.familyName)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Full Name</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.fullName)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Beneficiary File ID</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.beneficiaryFileld)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Date of Birth</label>
-                        <span class="form-control-static">{{beneficiaryinfo.dob}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">E-Health ID</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.eHealthId)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Nationality</label>
-                        <span class="form-control-static">{{isNull(getNationalitiesName(beneficiaryinfo.nationality))}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Residency Type</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.residencyType)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Document Type</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.documentType)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Document ID</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.documentId)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Contact Number</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.contactNumber)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Marital Status</label>
-                        <span class="form-control-static">{{isNull(getMaritalStatusName(beneficiaryinfo.martialStatus))}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Gender</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.gender)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Blood Group</label>
-                        <span class="form-control-static">{{isNull(getBloodTypeName(beneficiaryinfo.bloodGroup))}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Preferred Language</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.preferredLanguage) =='EN' ? 'English'
-                            :'Arabic'}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Emergency Phone Number</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.emergencyNumber)}}</span>
-                    </div>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Email</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.email)}}</span>
-                    </div>
-                </div>
-            </div>
-
-            <h5 class="form-title">Address</h5>
-            <div class="table-responsive">
-                <table class="primary-grid manual-row-color claim-view-table no-borders">
-                    <thead>
-                        <tr>
-                            <th>House No./Appartment</th>
-                            <th>Street Name</th>
-                            <th>City</th>
-                            <th>State/Province</th>
-                            <th>Country</th>
-                            <th>Postal Code</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{isNull(beneficiaryinfo.addressLine)}}</td>
-                            <td>{{isNull(beneficiaryinfo.streetLine)}}</td>
-                            <td>{{isNull(beneficiaryinfo.city)}}</td>
-                            <td>{{isNull(beneficiaryinfo.state)}}</td>
-                            <td>{{isNull(getNationalitiesName(beneficiaryinfo.country))}}</td>
-                            <td>{{isNull(beneficiaryinfo.postalCode)}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-
-            <h5 class="form-title">Insurance Plans</h5>
-            <div class="table-responsive">
-                <table class="primary-grid manual-row-color claim-view-table no-borders">
-                    <thead>
-                        <tr>
-                            <th class="text-center text-nowrap" width="10">Set Primary?</th>
-                            <th>Payer</th>
-                            <th>Expiry Date</th>
-                            <th>Member Card ID</th>
-                            <th>Relation with Subscriber</th>
-                            <th>Coverage Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
-                            <td class="text-center align-middle">
-                                <mat-icon class="text-primary">{{isPrimary(insurancePlans.isPrimary)?'done':''}}
-                                </mat-icon>
-                            </td>
-                            <td>{{getPayerName(insurancePlans.payerId)}}</td>
-                            <td>{{isNull(insurancePlans.expiryDate)}}</td>
-                            <td>{{insurancePlans.memberCardId}}</td>
-                            <td>{{isNull(getSubscriberRelationshipName(insurancePlans.relationWithSubscriber))}}</td>
-                            <td>{{isNull(getCoverageTypeName(insurancePlans.coverageType))}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <hr class="hr spaced">
-            <div class="form-group">
-                <button type="button" mat-flat-button color="primary" routerLink="/nphies/beneficiary">Back to
-                    Search</button>
-            </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Third Name</label>
+            <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="thirdNameController">
+          </div>
         </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Family Name</label>
+            <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="familyNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
+            <label class="control-label">Full Name<span class="asterisk">*</span></label>
+            <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()" [formControl]="fullNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Beneficiary File ID</label>
+            <input placeholder="Enter beneficiary file ID" class="form-control" [formControl]="beneficiaryFileIdController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
+            <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
+            <div class="date-picker">
+              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
+              <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
+              <mat-datepicker #dateOfBirth></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
+            <label class="control-label">Gender<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value;">
+                <mat-option value="">Select Gender</mat-option>
+                <mat-option value="MALE">Male</mat-option>
+                <mat-option value="FEMALE">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.documentType" [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
+            <label class="control-label">Document Type<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedDocumentType" (selectionChange)="selectedDocumentType = $event.value;">
+                <mat-option value="">Select Document Type</mat-option>
+                <!-- <mat-option value="RESIDENT_CARD">Resident Card</mat-option>
+                <mat-option value="PASSPORT">Passport</mat-option>
+                <mat-option value="GCC_ID">GCC ID</mat-option>
+                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">National Card</mat-option>
+                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option> -->
+                <mat-option value="PRC">Resident Card</mat-option>
+                <mat-option value="PPN">Passport</mat-option>
+                <mat-option value="VS">GCC ID</mat-option>
+                <mat-option value="NI">National Card</mat-option>
+                <mat-option value="NI">Border Number</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [matTooltip]="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
+            <label class="control-label">Document ID<span class="asterisk">*</span></label>
+            <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">E-Health ID</label>
+            <input placeholder="Enter E-Health ID" class="form-control" [formControl]="EHealthIdNameController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Nationality</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;" #nationalitySelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                    name='searchedNationality'>
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option value="">Select Nationality</mat-option>
+                <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
+                  {{nationality.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Residency Type</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
+                <mat-option value="">Select Residency Type</mat-option>
+                <mat-option value="VISITOR">Visitor</mat-option>
+                <mat-option value="DEPENDENT">Dependent</mat-option>
+                <mat-option value="CITIZEN_OR_RESIDENT">Citizen or Resident</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Contact Number</label>
+            <input placeholder="Enter contact number" class="form-control" [formControl]="contactNumberController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Marital Status</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;" required #maritalStatusSelect>
 
-    </ng-container>
+                <mat-option value="">Select Marital Status</mat-option>
+                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+                  {{MaritalStatusValue.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Blood Group</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
+                <mat-option value="">Select Blood Group</mat-option>
+                <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
+                  {{bloodTybe.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Preferred Language</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedLanguages" (selectionChange)="selectedLanguages = $event.value;" #Language>
+                <mat-option value="">Select Preferred Language</mat-option>
+                <mat-option value="EN">English</mat-option>
+                <mat-option value="AR">Arabic</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Emergency Phone Number</label>
+            <input placeholder="Enter emergency phone number" class="form-control" [formControl]="emergencyPhoneNumberController">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Email</label>
+            <input placeholder="Enter email" class="form-control" [formControl]="emailController">
+          </div>
+        </div>
+      </div>
+
+      <h5 class="form-title">
+        <span>Address</span>
+
+      </h5>
+
+      <div class="table-responsive ">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>House No./Appartment</th>
+              <th>Street Name</th>
+              <th>City</th>
+              <th>State/Province</th>
+              <th>Country</th>
+              <th>Postal Code</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="align-middle">
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
+              </td>
+              <td>
+
+                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
+
+              </td>
+              <td>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                        name='selectedCountry'>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="">Select Country</mat-option>
+                    <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Code">
+                      {{nationality.Name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+      <h5 class="form-title">
+        <span>Insurance Plans</span>
+        <button type="button" (click)="addInsurancePlan()" class="btn-icon btn-primary ml-auto">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'"></app-empty-state>
+      <div class="table-responsive" *ngIf="insurancePlans.length>0">
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
+          <table class="primary-grid manual-row-color claim-view-table no-borders">
+            <thead>
+              <tr>
+                <th class="text-center">Set Primary?</th>
+                <th>Payer<span class="asterisk">*</span></th>
+                <th>Expiry Date</th>
+                <th>Member Card ID<span class="asterisk">*</span></th>
+                <th>Relation with Subscriber<span class="asterisk">*</span></th>
+                <th>Coverage Type<span class="asterisk">*</span></th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
+                <td class="text-center">
+                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode) ||insurancePlan.iSPrimary">
+                  </mat-radio-button>
+                </td>
+
+
+                <td>
+                  <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
+                    [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                        <mat-option [value]="insurancePlan.selectePayer">{{editMode && selectedPayer(insurancePlan.selectePayer)!=null?
+                          selectedPayer(insurancePlan.selectePayer):"Select payer"}}
+                        </mat-option>
+                        <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
+                          {{payer.englistName}}({{payer.arabicName}})</mat-option>
+
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-130">
+                    <div class="date-picker">
+                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" [formControl]="insurancePlan.expiryDateController">
+                      <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                      <mat-datepicker #expiryDate></mat-datepicker>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
+                    [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
+                    <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160"
+                    [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship" (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
+                        #selecteSubscriberRelationship>
+                        <mat-option value="">Select Relation with Subscriber</mat-option>
+                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
+                          {{subscriberRelationship.Name}}</mat-option>
+
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160"
+                    [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                        <mat-option value="">Select Coverage Type</mat-option>
+                        <mat-option value="EHCPOL">Extended healthcare</mat-option>
+                        <mat-option value="PUBLICPOL">Public healthcare</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td class="actions">
+                  <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </mat-radio-group>
+      </div>
+      <hr class="hr spaced">
+      <div class="form-group btn-list">
+        <button type="button" mat-flat-button color="primary" (click)=" updateDate()">Save</button>
+        <button type="button" mat-flat-button (click)="changeMode()">Cancel</button>
+      </div>
+    </div>
+
+
+
+
+    <div *ngIf="viewMode" class="block-filter-panel">
+      <h5 class="semibold pb-2 mb-3 border-bottom">Personal Information</h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">First Name</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.firstName)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Second Name</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.middleName)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Third Name</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.lastName)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Family Name</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.familyName)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Full Name</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.fullName)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Beneficiary File ID</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.beneficiaryFileld)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Date of Birth</label>
+            <span class="form-control-static">{{beneficiaryinfo.dob}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">E-Health ID</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.eHealthId)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Nationality</label>
+            <span class="form-control-static">{{isNull(getNationalitiesName(beneficiaryinfo.nationality))}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Residency Type</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.residencyType)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Document Type</label>
+            <!-- <span class="form-control-static">{{isNull(beneficiaryinfo.documentType)}}</span> -->
+            <span class="form-control-static">{{isNull(beneficiaryinfo.documentTypeName)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Document ID</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.documentId)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Contact Number</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.contactNumber)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Marital Status</label>
+            <span class="form-control-static">{{isNull(getMaritalStatusName(beneficiaryinfo.martialStatus))}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Gender</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.gender)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Blood Group</label>
+            <span class="form-control-static">{{isNull(getBloodTypeName(beneficiaryinfo.bloodGroup))}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Preferred Language</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.preferredLanguage) =='EN' ? 'English'
+              :'Arabic'}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Emergency Phone Number</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.emergencyNumber)}}</span>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Email</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.email)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="form-title">Address</h5>
+      <div class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>House No./Appartment</th>
+              <th>Street Name</th>
+              <th>City</th>
+              <th>State/Province</th>
+              <th>Country</th>
+              <th>Postal Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{isNull(beneficiaryinfo.addressLine)}}</td>
+              <td>{{isNull(beneficiaryinfo.streetLine)}}</td>
+              <td>{{isNull(beneficiaryinfo.city)}}</td>
+              <td>{{isNull(beneficiaryinfo.state)}}</td>
+              <td>{{isNull(getNationalitiesName(beneficiaryinfo.country))}}</td>
+              <td>{{isNull(beneficiaryinfo.postalCode)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h5 class="form-title">Insurance Plans</h5>
+      <div class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th class="text-center text-nowrap" width="10">Set Primary?</th>
+              <th>Payer</th>
+              <th>Expiry Date</th>
+              <th>Member Card ID</th>
+              <th>Relation with Subscriber</th>
+              <th>Coverage Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
+              <td class="text-center align-middle">
+                <mat-icon class="text-primary">{{isPrimary(insurancePlans.isPrimary)?'done':''}}
+                </mat-icon>
+              </td>
+              <td>{{getPayerName(insurancePlans.payerId)}}</td>
+              <td>{{isNull(insurancePlans.expiryDate)}}</td>
+              <td>{{insurancePlans.memberCardId}}</td>
+              <td>{{isNull(getSubscriberRelationshipName(insurancePlans.relationWithSubscriber))}}</td>
+              <td>{{isNull(getCoverageTypeName(insurancePlans.coverageType))}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr class="hr spaced">
+      <div class="form-group">
+        <button type="button" mat-flat-button color="primary" routerLink="/nphies/beneficiary">Back to
+          Search</button>
+      </div>
+    </div>
+
+  </ng-container>
 </div>
