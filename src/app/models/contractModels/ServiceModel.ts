@@ -15,4 +15,6 @@ export class ServiceModel {
     needApproval: string;
 
     isCovered: string;
+
+    contractServId: number;
 }
