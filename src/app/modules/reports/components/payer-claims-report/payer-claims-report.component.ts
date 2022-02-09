@@ -34,7 +34,7 @@ export class PayerClaimsReportComponent implements OnInit {
         { code: 'paid', name: 'Paid' },
         { code: 'notaccepted', name: 'Rejected By Waseel' },
         { code: 'invalid', name: 'Invalid' },
-        { code: 'outstatanding', name: 'Under Processing' },
+        { code: 'outstanding,under_process', name: 'Under Processing' },
         { code: 'partially_paid', name: 'Partially Paid' },
         { code: 'downloadable', name: 'Downloadable' },
         { code: 'submitted_outside_waseel', name: 'Submitted Outside Waseel' }
