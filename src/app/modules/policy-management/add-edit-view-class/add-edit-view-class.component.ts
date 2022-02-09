@@ -367,11 +367,7 @@ export class AddEditViewClassComponent implements OnInit {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null) {
-                    this.dialogService.openMessageDialog({
-                        title: '',
-                        message: `Class Saved successfully`,
-                        isError: false
-                    }).subscribe(event => { window.location.reload(); });
+                    this.dialogService.showMessage('Success', 'Class Saved Successfully', 'success', true, 'OK');
                     this.sharedServices.loadingChanged.next(false);
                 }
             }
@@ -386,12 +382,7 @@ export class AddEditViewClassComponent implements OnInit {
                         this.messageError = err.message;
                     }
 
-                    this.dialogService.openMessageDialog({
-                        title: '',
-
-                        message: this.messageError,
-                        isError: true
-                    });
+                    this.dialogService.showMessage(err.error.message, '', 'alert', true, 'OK', err.error.errors);
                     this.sharedServices.loadingChanged.next(false);
                 }
             });
