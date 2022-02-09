@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminUploadsComponent } from './components/admin-uploads/admin-uploads.component';
+import { UploadsAssigningComponent } from './components/uploads-assigning/uploads-assigning.component';
 
 const routes: Routes = [
-    { path: 'admin-uploads', component: AdminUploadsComponent },
+    { path: 'uploads', component: UploadsAssigningComponent },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class ClaimScrubbingRoutingModule { }
+export class ClaimReviewRoutingModule { }

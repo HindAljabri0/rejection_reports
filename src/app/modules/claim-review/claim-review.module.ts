@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminUploadsComponent } from './components/admin-uploads/admin-uploads.component';
-import { ClaimScrubbingRoutingModule } from './claim-scrubbing-routing.module';
+import { UploadsAssigningComponent } from './components/uploads-assigning/uploads-assigning.component';
+import { ClaimReviewRoutingModule } from './claim-review-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { MaterialModule } from '../material/material.module';
@@ -10,16 +10,16 @@ import { SharedModule } from '../shared.module';
 
 
 @NgModule({
-    declarations: [AdminUploadsComponent],
+    declarations: [UploadsAssigningComponent],
     imports: [
         CommonModule,
         SharedModule,
         MaterialModule,
         FormsModule,
         ReactiveFormsModule,
-        ClaimScrubbingRoutingModule,
+        ClaimReviewRoutingModule,
         NgScrollbarModule,
         SmoothScrollModule
     ]
 })
-export class ClaimScrubbingModule { }
+export class ClaimReviewModule { }
