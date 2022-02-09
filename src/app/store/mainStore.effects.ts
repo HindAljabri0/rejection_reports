@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
@@ -18,7 +19,8 @@ export class MainStoreEffects {
         private titleService: Title,
         private snackBar: MatSnackBar,
         private dialogService: DialogService,
-        private searchService: SearchService
+        private searchService: SearchService,
+        private datePipe: DatePipe
     ) {
         interval(3000)
             .subscribe(() => {
@@ -41,18 +43,24 @@ export class MainStoreEffects {
     onCheckingAlerts$ = createEffect(() => this.actions$.pipe(
         ofType(checkAlerts),
         tap(() => {
-            const alerts$ = this.searchService.getClaimAlerts();
-            if (alerts$ != null && alerts$ instanceof Observable) {
-                alerts$.subscribe(event => {
+            const providerId = localStorage.getItem('provider_id');
+            if (providerId != null && providerId != '101') {
+                const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
+                let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+                if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay) {
+                    return null;
+                }
+                this.searchService.getClaimAlerts(providerId).subscribe(event => {
                     if (event instanceof HttpResponse) {
                         const body = event.body;
                         if (body instanceof Array) {
                             this.dialogService.showAlerts(body);
+                            localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
                         }
                     }
-                })
+                });
             }
         })
-    ), { dispatch: false })
+    ), { dispatch: false });
 
 }

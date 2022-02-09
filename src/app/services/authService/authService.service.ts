@@ -13,7 +13,7 @@ import { checkAlerts, evaluateUserPrivileges } from 'src/app/store/mainStore.act
 
 export class AuthService {
 
-    toKeepStorageValues: { key: string, value?: string }[] = [{ key: 'defaultDashboardPayer' }, { key: 'defaultDashboardSectionsOrder' }];
+    toKeepStorageValues: { key: string, value?: string }[] = [{ key: 'defaultDashboardPayer' }, { key: 'defaultDashboardSectionsOrder' }, { key: 'lastDateAlertAppeared:{}' }];
 
     isUserNameUpdated: Subject<boolean> = new Subject();
     onCancelPendingHttpRequests$: Subject<void> = new Subject();
@@ -53,12 +53,13 @@ export class AuthService {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('expires_in');
+        const providerId = localStorage.getItem('provider_id');
         localStorage.removeItem('provider_id');
-        this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key));
+        this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
         localStorage.clear();
         this.toKeepStorageValues.filter(storageValue =>
             storageValue.value != null).forEach((storageValue) =>
-                localStorage.setItem(storageValue.key, storageValue.value));
+                localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
         let promise: Promise<boolean>;
         if (expired != null && expired) {
             promise = this.router.navigate(['login'], { queryParams: { expired } });
