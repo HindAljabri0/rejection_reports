@@ -246,7 +246,7 @@
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Document</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.documentType}}
+            <p class="form-control-static">{{otherDataModel.beneficiary.documentTypeName}}
               ({{otherDataModel.beneficiary.documentId}})</p>
           </div>
         </div>
@@ -364,34 +364,43 @@
       </h5>
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
-            <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
-            <div class="date-picker">
+          <div class="form-group">
+            <label class="control-label">Date Written</label>
+            <label>
+              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd-MM-yyyy'}}
+            </label>
+            <!-- <div class="date-picker">
               <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
               <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
               <mat-datepicker #visionWrittenDate></mat-datepicker>
             </div>
             <div *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
               <span class="error-text">Please select Date Written</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="col-8 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))}">
-            <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+          <div class="form-group">
+            <label class="control-label">Prescriber</label>
+            <ng-container *ngFor="let pre of CareTeams">
+              <label *ngIf="pre.sequence === FormNphiesClaim.controls.prescriber.value">
+                {{pre.physicianCode}} -
+                {{pre.practitionerName}}
+              </label>
+            </ng-container>
+            <!--
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="prescriber">
                 <mat-option value="">Select Prescriber</mat-option>
-                <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
+                <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">
+                  {{pre.physicianCode}} -
                   {{pre.practitionerName}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <div *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
               <span class="error-text">Please select a Prescriber</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -1283,7 +1292,7 @@
               <div class="col-md-8">
                 <div class="form-group">
                   <label class="control-label">Preauthorization Reference No</label>
-                  <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Response Id'">
+                  <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'">
                   </tag-input>
                 </div>
               </div>

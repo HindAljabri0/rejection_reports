@@ -8,9 +8,17 @@ export interface UserPrivileges {
         isRCM: boolean
     };
     ProviderPrivileges: {
+        Contract_Bill: {
+            isAdmin: false,
+            canAccessContract: false,
+            canAccessPolicy: false,
+            canAccessClass: false,
+            canAccessBilling: false,
+        },
         WASEEL_CLAIMS: {
             isAdmin: boolean,
-            isClaimUser: boolean
+            isClaimUser: boolean,
+
         }
         RCM: {
             isAdmin: boolean,
@@ -41,9 +49,17 @@ export const initState: MainState = {
             isRCM: false
         },
         ProviderPrivileges: {
+            Contract_Bill: {
+                isAdmin: false,
+                canAccessContract: false,
+                canAccessPolicy: false,
+                canAccessClass: false,
+                canAccessBilling: false,
+            },
             WASEEL_CLAIMS: {
                 isAdmin: false,
-                isClaimUser: false,
+                isClaimUser: false
+
             },
             RCM: {
                 isAdmin: false,
@@ -75,6 +91,13 @@ const _mainReducer = createReducer(
                 isRCM: AuthService.hasPrivilege('101', '101', '24')
             },
             ProviderPrivileges: {
+                Contract_Bill: {
+                    isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '3.0'),
+                    canAccessContract: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),
+                    canAccessPolicy: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '28'),
+                    canAccessClass: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '29'),
+                    canAccessBilling: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '30'),
+                },
                 WASEEL_CLAIMS: {
                     isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '3.0'),
                     isClaimUser: providerId != '101' && payerIds.some(payerId => AuthService.hasPrivilege(providerId, payerId, '3')),
