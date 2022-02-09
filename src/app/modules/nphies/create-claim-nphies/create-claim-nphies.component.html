@@ -883,9 +883,7 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
-          error</mat-icon>
-        <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
+        <span>Encounter</span>
       </ng-template>
       <app-empty-state *ngIf="!otherDataModel.claimEncounter " message='No Encounter found!'>
       </app-empty-state>
@@ -1996,11 +1994,13 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
+              <!-- <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
                 error</mat-icon>
-              <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
+              <span [class.text-danger]="checkErrorEncounter === true">Encounter</span> -->
+              <span>Encounter</span>
             </ng-template>
             <div class="row small-gutter">
+
               <div class="col-4 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))}">
