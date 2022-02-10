@@ -24,4 +24,26 @@ export class Upload {
 
     isLoading: boolean;
 
+    static fromBackendResponse(incomingUpload): Upload {
+        return {
+            id: incomingUpload.id,
+            name: incomingUpload.name,
+            date: new Date(incomingUpload.date),
+            totalClaims: incomingUpload.totalClaims,
+            assignedDoctor: {
+                id: incomingUpload.assignedDoctorId,
+                name: incomingUpload.assignedDoctorName
+            },
+            pendingClaimsOfDoctor: incomingUpload.pendingClaimsOfDoctor,
+            reviewedClaimsOfDoctor: incomingUpload.reviewedClaimsOfDoctor,
+            assignedCoder: {
+                id: incomingUpload.assignedCoderId,
+                name: incomingUpload.assignedCoderName
+            },
+            pendingClaimsOfCoder: incomingUpload.pendingClaimsOfCoder,
+            reviewedClaimsOfCoder: incomingUpload.reviewedClaimsOfCoder,
+            isLoading: false
+        }
+    }
+
 }

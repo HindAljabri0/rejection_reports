@@ -21,8 +21,17 @@ export class UploadsPage {
     }
 
     static fromBackendResponse(response: HttpResponse<any>) {
-
-        return new UploadsPage(0, 10);
+        const body = response.body;
+        const pageNumber = body.number;
+        const pageSize = body.size;
+        let uploadsPage = new UploadsPage(pageNumber, pageSize);
+        uploadsPage.pageControls.totalPages = body.totalPages;
+        uploadsPage.pageControls.totalUploads = body.totalElements;
+        const content = body.content;
+        if (content instanceof Array) {
+            uploadsPage.uploads = content.map(incomingUpload => Upload.fromBackendResponse(incomingUpload));
+        }
+        return uploadsPage;
     }
 }
 

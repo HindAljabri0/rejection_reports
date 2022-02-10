@@ -1,7 +1,6 @@
-import { MatTabChangeEvent, PageEvent } from "@angular/material";
+import { PageEvent } from "@angular/material";
 import { createAction, props } from "@ngrx/store";
 import { UploadsPage } from "../models/claimReviewState.model";
-import { Upload } from "../models/upload.model";
 
 
 export const uploadsReviewPageAction = createAction("[ Claims Review ] page changing action in uploads page", props<PageEvent>());

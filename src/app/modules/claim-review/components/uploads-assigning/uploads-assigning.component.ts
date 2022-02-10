@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTabChangeEvent, PageEvent } from '@angular/material';
+import { MatTabChangeEvent } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UploadsPage } from '../../models/claimReviewState.model';
-import { loadUploadsUnderReviewOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from '../../store/claimReview.actions';
+import { loadUploadsUnderReviewOfSelectedTab, uploadsReviewTabAction } from '../../store/claimReview.actions';
 import { completedClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, newClaimsUnderReviewPage } from '../../store/claimReview.reducer';
 
 @Component({
