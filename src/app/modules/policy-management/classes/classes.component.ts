@@ -83,7 +83,7 @@ export class ClassesComponent implements OnInit {
     searchByCriteria() {
 
         this.fillSearchData();
-        this.classService.getClassBySearchParam(this.search).subscribe(event => {
+        this.classService.getClassBySearchParam(this.search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
@@ -116,7 +116,7 @@ export class ClassesComponent implements OnInit {
     getPolicyList() {
         this.policyLoad.withpagenation = false;
         this.policyLoad.providerId = this.sharedServices.providerId;
-        this.policyService.getPolicyBySearchParam(this.policyLoad).subscribe(event => {
+        this.policyService.getPolicyBySearchParam(this.policyLoad, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)

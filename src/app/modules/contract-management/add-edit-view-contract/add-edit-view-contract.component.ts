@@ -151,7 +151,7 @@ export class AddEditViewContractComponent implements OnInit {
 
     }
     getContract(param) {
-        this.contractService.getContractById(param).subscribe(event => {
+        this.contractService.getContractById(param, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 const body = event.body;
                 if (body instanceof Array) {
@@ -414,7 +414,7 @@ export class AddEditViewContractComponent implements OnInit {
         //End of set data
         //console.log(JSON.stringify(this.contractTemplate));
 
-        this.contractService.ManipulateContract(this.contractTemplate).subscribe(event => {
+        this.contractService.ManipulateContract(this.contractTemplate, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null) {
