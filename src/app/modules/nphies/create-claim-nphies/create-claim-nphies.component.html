@@ -2004,9 +2004,9 @@
                     </mat-tab>
                     <mat-tab>
                         <ng-template mat-tab-label>
-                            <!-- <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
-                error</mat-icon>
-              <span [class.text-danger]="checkErrorEncounter === true">Encounter</span> -->
+                            <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
+                                error</mat-icon>
+                            <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
                             <span>Encounter</span>
                         </ng-template>
                         <div class="row small-gutter">
@@ -2168,9 +2168,80 @@
 
                         </div>
                     </mat-tab>
+                    <mat-tab [label]="'Errors'">
+                        <div class="table-responsive" *ngIf="otherDataModel.errors">
+                            <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
+                                <thead>
+                                    <tr>
+                                        <th class="light-bg-danger text-danger">Code</th>
+                                        <th class="light-bg-danger text-danger">Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let err of otherDataModel.errors">
+                                        <td>{{err.code}}</td>
+                                        <td>{{err.error}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <app-empty-state *ngIf="!otherDataModel.errors" message='No Errors found!'>
+                        </app-empty-state>
+                    </mat-tab>
+                    <mat-tab [label]="'Process Notes'">
+                        <div *ngIf="otherDataModel.processNotes" class="table-responsive">
+                            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                                <thead>
+                                    <tr>
+                                        <th>Number</th>
+                                        <th>Type</th>
+                                        <th>Text</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let note of otherDataModel.processNotes">
+                                        <td>{{note.number}}</td>
+                                        <td>{{note.type}}</td>
+                                        <td>{{note.text}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
+                        </app-empty-state>
+                    </mat-tab>
+                    <mat-tab [label]="'Payments'">
+                        <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+                            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Early Fee</th>
+                                        <th>Nphies Fee</th>
+                                        <th>Payment</th>
+                                        <th>Payment Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let pay of otherDataModel.paymentReconciliationDetails">
+                                        <td>{{pay.type}}</td>
+                                        <td>{{pay.componentEarlyFee ? pay.componentEarlyFee : '-'}} <span *ngIf="pay.componentEarlyFee" class="currency">SR</span></td>
+                                        <td>{{pay.componentNphiesFee ? pay.componentNphiesFee : '-'}} <span *ngIf="pay.componentNphiesFee" class="currency">SR</span></td>
+                                        <td>{{pay.componentPayment ? pay.componentPayment : '-'}} <span *ngIf="pay.componentPayment" class="currency">SR</span></td>
+                                        <td>
+                                            <span *ngIf="pay.paymentDate">{{pay.paymentDate | date: 'dd-MM-yyyy'}}</span>
+                                            <span *ngIf="!pay.paymentDate">-</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0"
+                            message='No Payments found!'>
+                        </app-empty-state>
+                    </mat-tab>
                 </mat-tab-group>
             </div>
-
         </div>
 
         <div class="block-footer sticky-bottom">

@@ -1116,7 +1116,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage === 1 ? true : false;
+          model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1154,7 +1154,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage === 1 ? true : false;
+          model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1224,6 +1224,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             const body: any = event.body;
             if (body.isError) {
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
+              if (this.pageMode == 'CREATE') {
+                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+              }
             } else {
               this.reset();
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
