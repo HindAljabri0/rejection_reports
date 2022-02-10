@@ -184,8 +184,12 @@ export class ProviderNphiesSearchService {
         let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims/details?`;
 
 
-        if (claimSearchCriteriaModel.page == null) { claimSearchCriteriaModel.page = 0; }
-        if (claimSearchCriteriaModel.pageSize == null) { claimSearchCriteriaModel.pageSize = 10; }
+        if (claimSearchCriteriaModel.page == null) {
+            claimSearchCriteriaModel.page = 0;
+        }
+        if (claimSearchCriteriaModel.pageSize == null) {
+            claimSearchCriteriaModel.pageSize = 10;
+        }
         if (claimSearchCriteriaModel.payerIds != null) {
             requestURL += `payerIds=${claimSearchCriteriaModel.payerIds}`;
         }
@@ -206,6 +210,10 @@ export class ProviderNphiesSearchService {
         }
         if (claimSearchCriteriaModel.claimSubTypes != null) {
             requestURL += `claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`
+        }
+        if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
+            requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
+
         }
 
         requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
