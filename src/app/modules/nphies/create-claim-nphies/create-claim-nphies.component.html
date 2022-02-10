@@ -16,8 +16,10 @@
       <p><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo ? (otherDataModel.batchInfo.batchId ?
           otherDataModel.batchInfo.batchId : '-') : '-'}}</strong></p>
       <p>
-        <span>Submission Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate ?
-          otherDataModel.submissionDate : '-'}}</strong>
+        <span>Submission Date:</span>&nbsp;<strong>
+          <span *ngIf="otherDataModel.submissionDate">{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</span>
+          <span *ngIf="!otherDataModel.submissionDate">-</span>
+        </strong>
       </p>
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
@@ -233,7 +235,7 @@
         </div>
       </div>
 
-      <h5 class="form-title">Beneficary Details</h5>
+      <h5 class="form-title">Beneficiary Details</h5>
       <div class="row" *ngIf="otherDataModel && otherDataModel.beneficiary">
         <div class="col-4">
           <div class="form-group form-group-static">
@@ -1121,7 +1123,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm
+                    aa'}}</span>
                 </div>
               </div>
             </ng-container>
@@ -1174,7 +1177,7 @@
   </mat-tab-group>
   <div class="block-footer sticky-bottom" *ngIf="!isLoading && claimIsEditable">
     <div class="right-block btn-list">
-      <button  mat-flat-button color="primary" (click)="toEditMode()">Edit</button>
+      <button mat-flat-button color="primary" (click)="toEditMode()">Edit</button>
     </div>
   </div>
 </div>

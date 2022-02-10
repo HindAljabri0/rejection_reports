@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
-import { MatPaginator, MatDialogRef, MatDialog } from '@angular/material';
+import { MatPaginator, MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
@@ -9,6 +9,7 @@ import { ProcessedTransaction } from 'src/app/models/processed-transaction';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateClaimNphiesComponent } from '../../create-claim-nphies/create-claim-nphies.component';
+import { CancelReasonModalComponent } from '../../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 
 @Component({
   selector: 'app-claim-processed-transactions',
@@ -146,6 +147,24 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, size: null }
+    });
+  }
+
+  openReasonModal(requestId: number, responseId: number, reqType: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      approvalRequestId: requestId,
+      approvalResponseId: responseId,
+      type: reqType
+    };
+
+    const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getProcessedTransactions();
+      }
     });
   }
 
