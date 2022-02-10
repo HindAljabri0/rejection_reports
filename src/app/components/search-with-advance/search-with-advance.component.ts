@@ -83,6 +83,10 @@ export class SearchWithAdvanceComponent implements OnInit {
         return this.commen.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.commen.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim;
     }
 
+    get selectedCriteriaIsUsedInBoth() {
+        return ['claimRefNo', 'memberId', 'payer&date', 'batchId', 'patientFileNo', 'nationalId'].includes(this.selectedSearchMode);
+    }
+
     dateToText(date: Moment) {
         if (date != null) {
             return date.format('DD/MM/yyyy');
