@@ -348,6 +348,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                         summary.statuses.push('all');
                         summary.statuses.push('All');
                         summary.statuses.push('ALL');
+                    } else {
+                        summary.statuses = statuses;
                     }
                     this.summaries.push(summary);
                 }
