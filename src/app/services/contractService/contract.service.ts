@@ -12,14 +12,14 @@ import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTe
 export class ContractService {
 
     constructor(private httpClient: HttpClient) { }
-    getContractBySearchParam(reqParam: ContractSearchModel) {
-        const requestUrl = `/contract/getAllContract`;
+    getContractBySearchParam(reqParam: ContractSearchModel, providerId: string) {
+        const requestUrl = `/contract/${providerId}/getAllContract`;
         let body: any = { ...reqParam };
         const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
         return this.httpClient.request(httpRequest);
     }
-    getContractById(reqParam: ContractSearchModel) {
-        const requestUrl = `/contract/search`;
+    getContractById(reqParam: ContractSearchModel, providerId: string) {
+        const requestUrl = `/contract/${providerId}/search`;
         let body: any = { ...reqParam };
         const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
         return this.httpClient.request(httpRequest);
@@ -34,8 +34,8 @@ export class ContractService {
         const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
         return this.httpClient.request(request);
     }
-    ManipulateContract(contract: ContractTemplate) {
-        const requestUrl = `/contract/manipulate`;
+    ManipulateContract(contract: ContractTemplate, providerId: string) {
+        const requestUrl = `/contract/${providerId}/manipulate`;
         let body: any = { ...contract };
         const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
         return this.httpClient.request(httpRequest);
