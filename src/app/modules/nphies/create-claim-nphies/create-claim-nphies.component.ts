@@ -1224,6 +1224,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             const body: any = event.body;
             if (body.isError) {
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
+              if (this.pageMode == 'CREATE') {
+                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+              }
             } else {
               this.reset();
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
