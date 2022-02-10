@@ -322,7 +322,7 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ul class="nav-list">
-                            <li *ngIf="!envProd && !envStaging">
+                            <li>
                                 <a routerLink="/nphies/upload-claim" routerLinkActive="is-active">
                                     <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
                                     <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" />
@@ -343,7 +343,7 @@
                                     <span class="text">Uploads</span>
                                 </a>
                             </li>
-                            <li *ngIf="!envProd && !envStaging">
+                            <li>
                                 <a routerLink="/nphies/upload/history" routerLinkActive="is-active" #claimHistory="routerLinkActive">
                                     <img src="assets/ic-claim-history.svg" alt="Claims History" class="default-icon" />
                                     <img src="assets/ic-claim-history-active.svg" alt="Claims History" class="active-icon" />
@@ -414,7 +414,7 @@
                 </ul>
             </div>
             <ng-container
-                *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isRCM)">
+                *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder))">
                 <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
                     <hr>
                 </div>
@@ -487,15 +487,22 @@
                 </mat-expansion-panel>
             </div>
             <ng-container
-                *ngIf="userPrivileges.WaseelPrivileges.isRCM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
+                *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
                 <div class="list-title">
                     <hr>
                 </div>
                 <div class="list-title">
-                    RCM Configurations
+                    RCM
                 </div>
             </ng-container>
-            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isRCM">
+            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin">
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/review/uploads" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+                            <span class="text">Claims Scrubbing</span>
+                        </a>
+                    </li>
+                </ul>
                 <mat-accordion displayMode="flat">
                     <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
                         <mat-expansion-panel-header>
@@ -511,7 +518,7 @@
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
-            <ng-container *ngIf="userPrivileges.WaseelPrivileges.isRCM || userPrivileges.WaseelPrivileges.isPAM">
+            <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
                 <ul class="nav-list">
                     <li>
                         <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
