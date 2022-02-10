@@ -5,7 +5,11 @@ import * as actions from './mainStore.actions';
 export interface UserPrivileges {
     WaseelPrivileges: {
         isPAM: boolean,
-        isRCM: boolean
+        RCM: {
+            isAdmin: boolean,
+            isDoctor: boolean,
+            isCoder: boolean
+        }
     };
     ProviderPrivileges: {
         Contract_Bill: {
@@ -46,7 +50,11 @@ export const initState: MainState = {
     userPrivileges: {
         WaseelPrivileges: {
             isPAM: false,
-            isRCM: false
+            RCM: {
+                isAdmin: false,
+                isCoder: false,
+                isDoctor: false
+            }
         },
         ProviderPrivileges: {
             Contract_Bill: {
@@ -88,7 +96,11 @@ const _mainReducer = createReducer(
         const userPrivileges = {
             WaseelPrivileges: {
                 isPAM: AuthService.hasPrivilege('101', '101', '22'),
-                isRCM: AuthService.hasPrivilege('101', '101', '24')
+                RCM: {
+                    isAdmin: AuthService.hasPrivilege('101', '101', '24.0'),
+                    isDoctor: AuthService.hasPrivilege('101', '101', '24.?'),
+                    isCoder: AuthService.hasPrivilege('101', '101', '24.?')
+                }
             },
             ProviderPrivileges: {
                 Contract_Bill: {
