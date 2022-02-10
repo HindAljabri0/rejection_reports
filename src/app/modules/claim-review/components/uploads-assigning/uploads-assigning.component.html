@@ -1,45 +1,24 @@
-<div class="inner-loader-wrapper">
-    <div class="inner-loader" *ngIf="pageControls.isLoading">
-        <mat-spinner diameter="48"></mat-spinner>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Uploads</p>
     </div>
-    <div class="animate__animated animate__faster animate__fadeIn">
-        <div *ngIf="pageControls != null && pageControls.errorMessage != null" class="p-3 bg-white">
-            <p class="error-card mb-0">{{pageControls.errorMessage}}</p>
-        </div>
-        <div class="block-header has-border">
-            <p>Uploads</p>
-        </div>
-        <div class="block-body primary">
-            <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
-                <mat-tab [label]="'New'">
-                    <app-empty-state *ngIf="(newUploads$|async) != null && (newUploads$|async).length == 0" message='No new uploads found!'>
-                    </app-empty-state>
-                    <div class="row small-gutter">
-                        <app-upload-assigning-card class="col-lg-6" *ngFor="let upload of newUploads$|async" [data]="upload"></app-upload-assigning-card>
-                    </div>
-                </mat-tab>
-                <mat-tab [label]="'In Progress'">
-                    <app-empty-state *ngIf="(inProgressUploads$|async) != null && (inProgressUploads$|async).length == 0" message='No in progress uploads found!'>
-                    </app-empty-state>
-                    <div class="row small-gutter">
-                        <app-upload-assigning-card class="col-lg-6" *ngFor="let upload of inProgressUploads$|async" [data]="upload"></app-upload-assigning-card>
-                    </div>
-                </mat-tab>
-                <mat-tab [label]="'Completed'">
-                    <app-empty-state *ngIf="(completedUploads$|async) != null && (completedUploads$|async).length == 0" message='No completed uploads found!'>
-                    </app-empty-state>
-                    <div class="row small-gutter">
-                        <app-upload-assigning-card class="col-lg-6" *ngFor="let upload of completedUploads$|async" [data]="upload"></app-upload-assigning-card>
-                    </div>
-                </mat-tab>
-            </mat-tab-group>
-        </div>
-        <div class="block-footer sticky-bottom">
-            <div class="left-block">
-                <mat-paginator #paginator class="primary-paginator" aria-label="Select page" (page)="dispatchPageEvent($event)" [length]="pageControls.totalUploads"
-                    [pageSize]="pageControls.pageSize" [pageSizeOptions]="[10, 50, 100]" [pageIndex]="pageControls.pageNumber">
-                </mat-paginator>
-            </div>
-        </div>
+    <div class="block-body primary">
+        <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
+            <mat-tab [label]="'New'">
+                <ng-container *ngIf="(newUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+            <mat-tab [label]="'In Progress'">
+                <ng-container *ngIf="(inProgressUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [page]="(inProgressUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+            <mat-tab [label]="'Completed'">
+                <ng-container *ngIf="(completedUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [page]="(completedUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 </div>

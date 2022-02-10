@@ -1,3 +1,4 @@
+import { HttpResponse } from "@angular/common/http";
 import { Upload } from "./upload.model";
 
 export interface ClaimReviewState {
@@ -14,9 +15,14 @@ export class UploadsPage {
     pageControls: PageControls;
     uploads: Upload[];
 
-    constructor() {
-        this.pageControls = new PageControls();
+    constructor(pageNumber: number, pageSize: number) {
+        this.pageControls = new PageControls(pageNumber, pageSize);
         this.uploads = [];
+    }
+
+    static fromBackendResponse(response: HttpResponse<any>) {
+
+        return new UploadsPage(0, 10);
     }
 }
 
@@ -28,9 +34,9 @@ export class PageControls {
     isLoading: boolean;
     errorMessage: string;
 
-    constructor() {
-        this.pageNumber = 0;
-        this.pageSize = 0;
+    constructor(pageNumber: number, pageSize: number) {
+        this.pageNumber = pageNumber;
+        this.pageSize = pageSize;
         this.totalPages = 0;
         this.totalUploads = 0;
         this.isLoading = false;

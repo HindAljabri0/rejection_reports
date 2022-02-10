@@ -11,11 +11,12 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { claimReviewReducer } from './store/claimReview.reducer';
 import { ClaimReviewEffects } from './store/claimReview.effects';
+import { UploadsAssigningTabContentComponent } from './components/uploads-assigning-tab-content/uploads-assigning-tab-content.component';
 
 
 
 @NgModule({
-    declarations: [UploadsAssigningComponent, UploadAssigningCardComponent],
+    declarations: [UploadsAssigningComponent, UploadAssigningCardComponent, UploadsAssigningTabContentComponent],
     imports: [
         CommonModule,
         SharedModule,
