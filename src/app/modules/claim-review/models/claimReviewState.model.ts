@@ -6,17 +6,27 @@ export interface ClaimReviewState {
         inProgress: UploadsPage,
         completed: UploadsPage
     }
+    selectedUploadsTab: 'new' | 'inProgress' | 'completed'
 }
 
 
 export class UploadsPage {
+    pageControls: PageControls;
+    uploads: Upload[];
+
+    constructor() {
+        this.pageControls = new PageControls();
+        this.uploads = [];
+    }
+}
+
+export class PageControls {
     pageNumber: number;
     pageSize: number;
     totalPages: number;
     totalUploads: number;
     isLoading: boolean;
     errorMessage: string;
-    uploads: Upload[];
 
     constructor() {
         this.pageNumber = 0;
@@ -25,6 +35,5 @@ export class UploadsPage {
         this.totalUploads = 0;
         this.isLoading = false;
         this.errorMessage = null;
-        this.uploads = [];
     }
 }

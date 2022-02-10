@@ -1,61 +1,66 @@
 <div class="claim-scrubbing-upload-card">
-    <div class="head">
-        <div class="content">
-            <p>{{data.name || 'Unknown Extraction Name'}}</p>
-            <span>{{data.date | date: 'EEEE, dd MMMM, yyyy | hh:mm a'}}</span>
+    <div class="inner-loader-wrapper">
+        <div class="inner-loader" *ngIf="data.isLoading">
+            <mat-spinner diameter="48"></mat-spinner>
         </div>
-        <button type="button" class="btn-action text-primary" matRipple>
-            <mat-icon class="material-icons-outlined">delete</mat-icon>
-        </button>
-    </div>
-    <div class="row">
-        <div class="col-6 doctor-info">
-            <div class="name">
-                <div class="content">
-                    <span>Doctor</span>
-                    <p>{{data.assignedDoctor != null? data.assignedDoctor.name:'Not Assigned Yet'}}</p>
-                </div>
-                <button *ngIf="data.assignedDoctor == null" type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditDoctorCoderMenu">
-                    <mat-icon class="material-icons-outlined">add_circle_outline</mat-icon>
-                </button>
+        <div class="head">
+            <div class="content">
+                <p>{{data.name || 'Unknown Extraction Name'}}</p>
+                <span>{{data.date | date: 'EEEE, dd MMMM, yyyy | hh:mm a'}}</span>
             </div>
-            <div class="row claim-numbers extra-small-gutter">
-                <div class="col-4">
-                    <p>{{data.totalClaims||0}}</p>
-                    <span>Total</span>
-                </div>
-                <div class="col-4">
-                    <p>{{data.pendingClaimsOfDoctor||0}}</p>
-                    <span>Pending</span>
-                </div>
-                <div class="col-4">
-                    <p>{{data.reviewedClaimsOfDoctor||0}}</p>
-                    <span>Reviewed</span>
-                </div>
-            </div>
+            <button type="button" class="btn-action text-primary" matRipple>
+                <mat-icon class="material-icons-outlined">delete</mat-icon>
+            </button>
         </div>
-        <div class="col-6 coder-info">
-            <div class="name">
-                <div class="content">
-                    <span>Coder</span>
-                    <p>{{data.assignedCoder != null? data.assignedCoder.name:'Not Assigned Yet'}}</p>
+        <div class="row">
+            <div class="col-6 doctor-info">
+                <div class="name">
+                    <div class="content">
+                        <span>Doctor</span>
+                        <p>{{data.assignedDoctor != null? data.assignedDoctor.name:'Not Assigned Yet'}}</p>
+                    </div>
+                    <button *ngIf="data.assignedDoctor == null" type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditDoctorCoderMenu">
+                        <mat-icon class="material-icons-outlined">add_circle_outline</mat-icon>
+                    </button>
                 </div>
-                <button *ngIf="data.assignedCoder == null" type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditDoctorCoderMenu">
-                    <mat-icon class="material-icons-outlined">add_circle_outline</mat-icon>
-                </button>
+                <div class="row claim-numbers extra-small-gutter">
+                    <div class="col-4">
+                        <p>{{data.totalClaims||0}}</p>
+                        <span>Total</span>
+                    </div>
+                    <div class="col-4">
+                        <p>{{data.pendingClaimsOfDoctor||0}}</p>
+                        <span>Pending</span>
+                    </div>
+                    <div class="col-4">
+                        <p>{{data.reviewedClaimsOfDoctor||0}}</p>
+                        <span>Reviewed</span>
+                    </div>
+                </div>
             </div>
-            <div class="row claim-numbers extra-small-gutter">
-                <div class="col-4">
-                    <p>{{data.totalClaims||0}}</p>
-                    <span>Total</span>
+            <div class="col-6 coder-info">
+                <div class="name">
+                    <div class="content">
+                        <span>Coder</span>
+                        <p>{{data.assignedCoder != null? data.assignedCoder.name:'Not Assigned Yet'}}</p>
+                    </div>
+                    <button *ngIf="data.assignedCoder == null" type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditDoctorCoderMenu">
+                        <mat-icon class="material-icons-outlined">add_circle_outline</mat-icon>
+                    </button>
                 </div>
-                <div class="col-4">
-                    <p>{{data.pendingClaimsOfCoder||0}}</p>
-                    <span>Pending</span>
-                </div>
-                <div class="col-4">
-                    <p>{{data.reviewedClaimsOfCoder||0}}</p>
-                    <span>Reviewed</span>
+                <div class="row claim-numbers extra-small-gutter">
+                    <div class="col-4">
+                        <p>{{data.totalClaims||0}}</p>
+                        <span>Total</span>
+                    </div>
+                    <div class="col-4">
+                        <p>{{data.pendingClaimsOfCoder||0}}</p>
+                        <span>Pending</span>
+                    </div>
+                    <div class="col-4">
+                        <p>{{data.reviewedClaimsOfCoder||0}}</p>
+                        <span>Reviewed</span>
+                    </div>
                 </div>
             </div>
         </div>
