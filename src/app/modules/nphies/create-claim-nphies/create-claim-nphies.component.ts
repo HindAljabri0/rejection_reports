@@ -1116,7 +1116,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage === 1 ? true : false;
+          model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1154,7 +1154,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage === 1 ? true : false;
+          model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -1224,6 +1224,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             const body: any = event.body;
             if (body.isError) {
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
+              if (this.pageMode == 'CREATE') {
+                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+              }
             } else {
               this.reset();
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
@@ -1591,7 +1594,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       if (response.claimEncounter.encounterClass != null) {
-        this.FormNphiesClaim.controls.status.setValue(response.claimEncounter.encounterClass);
+        this.FormNphiesClaim.controls.encounterClass.setValue(response.claimEncounter.encounterClass);
         // tslint:disable-next-line:max-line-length
         this.otherDataModel.claimEncounter.encounterClassName = this.encounterClassList.filter(x => x.value === response.claimEncounter.encounterClass)[0] ? this.encounterClassList.filter(x => x.value === response.claimEncounter.encounterClass)[0].name : '';
       }
@@ -1643,7 +1646,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       if (response.claimEncounter.priority != null) {
         // tslint:disable-next-line:max-line-length
-        this.FormNphiesClaim.controls.priority.setValue(this.sharedDataService.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0] ? this.sharedDataService.encounterDischargeDispositionList.filter(x => x.value === response.claimEncounter.priority)[0] : '');
+        // this.FormNphiesClaim.controls.priority.setValue(this.sharedDataService.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0] ? this.sharedDataService.encounterDischargeDispositionList.filter(x => x.value === response.claimEncounter.priority)[0] : '');
+        this.FormNphiesClaim.controls.priority.setValue(response.claimEncounter.priority);
         // tslint:disable-next-line:max-line-length
         this.otherDataModel.claimEncounter.priorityName = this.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0] ? this.encounterPriorityList.filter(x => x.value === response.claimEncounter.priority)[0].name : '';
 
@@ -1776,7 +1780,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.lensDurationUnit = x.lensDurationUnit;
           model.lensColor = x.lensColor;
           model.lensBrand = x.lensBrand;
-          model.lensNote = x.model;
+          model.lensNote = x.lensNote;
           // tslint:disable-next-line:max-line-length
           model.productName = this.sharedDataService.productList.filter(y => y.value === x.product)[0] ? this.sharedDataService.productList.filter(y => y.value === x.product)[0].name : '';
           // tslint:disable-next-line:max-line-length
@@ -1794,8 +1798,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.Items = response.items.map(x => {
       const model: any = {};
 
+      model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+
+      model.subSite = x.subSite;
       // tslint:disable-next-line:max-line-length
       model.subSiteName = this.sharedDataService.getSubSite(response.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(response.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
       if (x.itemDetails && x.itemDetails.length > 0) {

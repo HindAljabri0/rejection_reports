@@ -108,7 +108,7 @@ export class PoliciesComponent implements OnInit {
         this.search.size = this.pageSize;
         this.search.withpagenation = true;
         console.log(this.search);
-        this.policyService.getPolicyBySearchParam(this.search).subscribe(event => {
+        this.policyService.getPolicyBySearchParam(this.search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 //console.log(event.body);
                 if (event.body != null && event.body instanceof Array) {
@@ -131,7 +131,7 @@ export class PoliciesComponent implements OnInit {
         _search.providerId = this.sharedServices.providerId;
         _search.withPagination = false;
         console.log(_search);
-        this.contractService.getContractBySearchParam(_search).subscribe(event => {
+        this.contractService.getContractBySearchParam(_search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 //console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
@@ -157,7 +157,7 @@ export class PoliciesComponent implements OnInit {
     getPolicyList() {
         this.policyLoad.withpagenation = false;
         this.policyLoad.providerId = this.sharedServices.providerId;
-        this.policyService.getPolicyBySearchParam(this.policyLoad).subscribe(event => {
+        this.policyService.getPolicyBySearchParam(this.policyLoad, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
