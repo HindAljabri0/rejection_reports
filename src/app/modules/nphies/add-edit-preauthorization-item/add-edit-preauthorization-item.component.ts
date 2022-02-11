@@ -235,33 +235,35 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   getItemList() {
-    this.sharedServices.loadingChanged.next(true);
-    this.IsItemLoading = true;
-    this.FormItem.controls.item.disable();
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.itemList = event.body;
-        if (this.data.item && this.data.item.itemCode) {
-          this.FormItem.patchValue({
-            item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
-          });
+    if (this.FormItem.controls.type.value) {
+      this.sharedServices.loadingChanged.next(true);
+      this.IsItemLoading = true;
+      this.FormItem.controls.item.disable();
+      // tslint:disable-next-line:max-line-length
+      this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.itemList = event.body;
+          if (this.data.item && this.data.item.itemCode) {
+            this.FormItem.patchValue({
+              item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
+            });
+          }
+          this.filteredItem.next(this.itemList.slice());
+          this.IsItemLoading = false;
+          this.FormItem.controls.item.enable();
+          this.FormItem.controls.itemFilter.valueChanges
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(() => {
+              this.filterItem();
+            });
+          this.sharedServices.loadingChanged.next(false);
         }
-        this.filteredItem.next(this.itemList.slice());
-        this.IsItemLoading = false;
-        this.FormItem.controls.item.enable();
-        this.FormItem.controls.itemFilter.valueChanges
-          .pipe(takeUntil(this.onDestroy))
-          .subscribe(() => {
-            this.filterItem();
-          });
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        console.log(error);
-      }
-    });
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          console.log(error);
+        }
+      });
+    }
   }
 
   filterItem() {
