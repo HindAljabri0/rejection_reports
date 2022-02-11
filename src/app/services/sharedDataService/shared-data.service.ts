@@ -200,15 +200,15 @@ export class SharedDataService {
   ];
 
   itemTypeList = [
-    { value: 'medicalDevices', name: 'Medical Devices' },
-    { value: 'medicationCode', name: 'Medication Codes' },
-    { value: 'transportationService', name: 'Transportation SRCA' },
-    { value: 'imagingService', name: 'Imaging' },
+    { value: 'medical-devices', name: 'Medical Devices' },
+    { value: 'medication-codes', name: 'Medication Codes' },
+    { value: 'transportation-srca', name: 'Transportation SRCA' },
+    { value: 'imaging', name: 'Imaging' },
     { value: 'procedures', name: 'Procedures' },
     { value: 'services', name: 'Services' },
     { value: 'laboratory', name: 'Laboratory' },
-    { value: 'oralHealthOp', name: 'Oral Health OP' },
-    { value: 'oralHealthIp', name: 'Oral Health IP' },
+    { value: 'oral-health-ip', name: 'Oral Health OP' },
+    { value: 'oral-health-op', name: 'Oral Health IP' },
   ];
 
 

@@ -1228,13 +1228,14 @@ export class CreateClaimNphiesComponent implements OnInit {
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               }
             } else {
-              this.reset();
-              this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-
               if (this.pageMode == 'CREATE') {
+                this.reset();
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               } else {
-                location.reload();
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
+                this.ngOnInit();
+                // location.reload();
               }
             }
           }
@@ -1243,28 +1244,29 @@ export class CreateClaimNphiesComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
           } else if (error.status === 404) {
             const errors: any[] = [];
             if (error.error.errors) {
               error.error.errors.forEach(x => {
                 errors.push(x);
               });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
             } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
             }
           } else if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', null, true);
           } else if (error.status === 503) {
             const errors: any[] = [];
             if (error.error.errors) {
               error.error.errors.forEach(x => {
                 errors.push(x);
               });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
             } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
             }
           }
           this.sharedServices.loadingChanged.next(false);
