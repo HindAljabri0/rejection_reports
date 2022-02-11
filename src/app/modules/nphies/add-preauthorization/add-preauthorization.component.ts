@@ -852,7 +852,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   checkItemsCodeForSupportingInfo() {
     // tslint:disable-next-line:max-line-length
-    if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medicationCode').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+    if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
       // tslint:disable-next-line:max-line-length
       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
       return false;
