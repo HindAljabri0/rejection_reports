@@ -1698,7 +1698,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       model.onAdmissionName = this.sharedDataService.onAdmissionList.filter(y => y.value === x.onAdmission)[0] ? this.sharedDataService.onAdmissionList.filter(y => y.value === x.onAdmission)[0].name : '';
       return model;
-    });
+    }).sort((a, b) => a.sequence - b.sequence);
 
     this.SupportingInfo = response.supportingInfo.map(x => {
 
@@ -1738,7 +1738,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.byteArray = x.attachment;
       return model;
 
-    });
+    }).sort((a, b) => a.sequence - b.sequence);
 
     if (response.careTeam) {
       this.CareTeams = response.careTeam.map(x => {
@@ -1755,7 +1755,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         model.careTeamRoleName = this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0] ? this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0].name : '';
         return model;
-      });
+      }).sort((a, b) => a.sequence - b.sequence);
     }
 
     if (response.visionPrescription) {
@@ -1791,7 +1791,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.prismBaseName = this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0] ? this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0].name : '';
           return model;
 
-        });
+        }).sort((a, b) => a.sequence - b.sequence);
       }
 
     }
@@ -1875,7 +1875,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       //   x.isPackage = x.isPackage === true ? 1 : 2;
       // }
       return model;
-    });
+    }).sort((a, b) => a.sequence - b.sequence);
 
     this.setBeneficiary(response);
   }
