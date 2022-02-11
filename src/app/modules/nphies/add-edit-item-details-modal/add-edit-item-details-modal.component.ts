@@ -72,17 +72,17 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     switch (type) {
       case 'vision':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
+          { value: 'medical-devices', name: 'Medical Devices' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' }
         ];
         break;
       case 'professional':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' },
-          { value: 'transporationService', name: 'Transportation SRCA' },
-          { value: 'imagingService', name: 'Imaging' },
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' },
+          { value: 'transportation-srca', name: 'Transportation SRCA' },
+          { value: 'imaging', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' }
@@ -90,32 +90,32 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         break;
       case 'oral':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' },
-          { value: 'transporationService', name: 'Transportation SRCA' },
-          { value: 'imagingService', name: 'Imaging' },
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' },
+          { value: 'transportation-srca', name: 'Transportation SRCA' },
+          { value: 'imaging', name: 'Imaging' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oralHealthOp', name: 'Oral Health OP' },
-          { value: 'oralHealthIp', name: 'Oral Health IP' }
+          { value: 'oral-health-op', name: 'Oral Health OP' },
+          { value: 'oral-health-ip', name: 'Oral Health IP' }
         ];
         break;
       case 'institutional':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' },
-          { value: 'transporationService', name: 'Transportation SRCA' },
-          { value: 'imagingService', name: 'Imaging' },
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' },
+          { value: 'transportation-srca', name: 'Transportation SRCA' },
+          { value: 'imaging', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oralHealthIp', name: 'Oral Health IP' }
+          { value: 'oral-health-ip', name: 'Oral Health IP' }
         ];
         break;
       case 'pharmacy':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' }
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' }
         ];
         break;
     }
