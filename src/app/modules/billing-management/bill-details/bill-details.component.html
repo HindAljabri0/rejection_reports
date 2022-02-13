@@ -153,7 +153,7 @@
                 </tbody>
             </table>
         </ng-scrollbar>
-        <app-empty-state [className]="'mb-2'" *ngIf="serviceSearchModel.length==0" [message]="'No Services found Please Add and try again!'"></app-empty-state>
+        <app-empty-state [className]="'mb-2'" *ngIf="_services.length==0" [message]="'No Services found Please Add and try again!'"></app-empty-state>
 
         <h5 class="form-title p-14 mb-0">
             <span>Totals</span>

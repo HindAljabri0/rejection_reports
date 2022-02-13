@@ -1,4 +1,5 @@
-import { DateFormatterFn } from "ngx-bootstrap/chronos/types";
+import { BillServiceList } from "./BillServiceList";
+
 
 export class BillTemplate {
 
@@ -10,4 +11,5 @@ export class BillTemplate {
     additionalDiscountPercent: number;
     netAmount: number;
     isInvoiced: string;
+    billServices: Array<BillServiceList>;
 }
