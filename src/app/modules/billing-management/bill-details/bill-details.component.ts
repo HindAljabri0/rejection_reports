@@ -102,7 +102,7 @@ export class BillDetailsComponent implements OnInit {
                 if (this._services.find(x => x.serviceId === result[0].serviceId)) {
                     //() => console.log('typeof ' + (typeof this.serviceSearchModel));
 
-                    alert("serviceExists");
+                    //alert("serviceExists");
                     this.dialogService.openMessageDialog({
                         title: '',
                         message: `Service Already Existing in Table`,
@@ -156,7 +156,15 @@ export class BillDetailsComponent implements OnInit {
             this.tableInsShareAmount = Number.parseFloat(element.insShareAmount.toPrecision(element.insShareAmount.toFixed().length + 2)) + Number.parseFloat(this.tableInsShareAmount.toPrecision(this.tableInsShareAmount.toFixed().length + 2));
             this.tablePatientShareAmount = Number.parseFloat(element.patientShareAmount.toPrecision(element.patientShareAmount.toFixed().length + 2)) + Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2));
             this.tableNetAmount = Number.parseFloat(element.netShareAmount.toPrecision(element.netShareAmount.toFixed().length + 2)) + Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2));
+
+
             //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
+            Number.parseFloat(this.tableGrossAmount.toPrecision(this.tableGrossAmount.toFixed().length + 2))
+            Number.parseFloat(this.tableDiscountAmount.toPrecision(this.tableDiscountAmount.toFixed().length + 2))
+            Number.parseFloat(this.tableInsShareAmount.toPrecision(this.tableInsShareAmount.toFixed().length + 2))
+            Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2))
+            Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2))
+
             console.log("typeof  :: " + typeof (element.quantity));
 
             if (element.quantity == null || element.quantity == undefined) {
@@ -175,18 +183,18 @@ export class BillDetailsComponent implements OnInit {
             //type == null? service.discountTypeController.value : type;
             //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
             if (serviceId == service.serviceId) {
-                console.log("Inside serviceId == service.serviceId " + JSON.stringify(serviceId));
-                console.log(Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)));
+                //console.log("Inside serviceId == service.serviceId " + JSON.stringify(serviceId));
+                //console.log(Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)));
                 service.grossAmount = 0;
                 service.serviceDiscountAmount = 0;
                 service.netShareAmount = 0;
-                service.patientShareAmount =
-                    service.insShareAmount = 0;
+                service.patientShareAmount = 0;
+                service.insShareAmount = 0;
 
+                //service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)) * Number.parseFloat(service.quantity.value);
+                service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)) * Number.parseInt(service.quantity.value);
+                service.grossAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2))
 
-
-
-                service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)) * Number.parseFloat(service.quantity.value);
                 service.quantity = service.quantity.value;
 
                 //New Calculations
@@ -198,6 +206,8 @@ export class BillDetailsComponent implements OnInit {
 
                 //service.netShareAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2)) - Number.parseFloat(service.serviceDiscountAmount.toPrecision(service.serviceDiscountAmount.toFixed().length + 2));
                 service.netShareAmount = service.grossAmount - service.serviceDiscountAmount;
+                service.netShareAmount = Number.parseFloat(service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2))
+
 
                 if (service.shareType == "%") {
                     service.patientShareAmount = this.calculatePercentage(service.patientShare, service.netShareAmount);
@@ -206,11 +216,11 @@ export class BillDetailsComponent implements OnInit {
                 }
 
                 //service.insShareAmount = Number.parseFloat(service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2)) - Number.parseFloat(service.patientShareAmount.toPrecision(service.patientShareAmount.toFixed().length + 2));
+                //console.log("Inside insShareAmount :: service.netShareAmount" + JSON.stringify(service.netShareAmount));
+                //console.log("Inside insShareAmount :: service.patientShareAmount" + JSON.stringify(service.patientShareAmount));
                 service.insShareAmount = service.netShareAmount - service.patientShareAmount;
-                //service.quantity = new FormControl(service.quantity);
+                service.insShareAmount = Number.parseFloat(service.insShareAmount.toPrecision(service.insShareAmount.toFixed().length + 2))
 
-                console.log("Inside service.serviceDiscountAmount " + JSON.stringify(service.quantity));
-                console.log("Inside serviceId == service.serviceId " + JSON.stringify(service));
             }
         }
         this.calculateTableAmounts();
@@ -234,8 +244,37 @@ export class BillDetailsComponent implements OnInit {
         this.billTemplate.discountAmount = this.tableDiscountAmount;
         this.billTemplate.additionalDiscount = 0;
         this.billTemplate.additionalDiscountPercent = 0;
-        console.log('this.billTemplate ' + JSON.stringify(this.billTemplate));
-        console.log('End ');
+
+
+        this.billTemplate.billServices = this._services.filter(function (obj) {
+            return obj.quantity.value != null;
+        }).map(service => ({
+            serviceId: service.serviceId,
+            isActiveServiceList: service.isActiveServiceList,
+            cashAmount: service.cashAmount,
+            grossAmount: service.grossAmount,
+            departmentId: service.departmentId,
+            serviceName: service.serviceName,
+            providerId: service.providerId,
+            serviceCode: service.serviceCode,
+            insServiceCode: service.insServiceCode,
+            insServiceName: service.insServiceName,
+            insDiscountAmount: service.insDiscountAmount,
+            insDiscountType: service.insDiscountType,
+            quantity: service.quantity.value,
+            deptDepartmentName: service.deptDepartmentName,
+            deptDiscountType: service.deptDiscountType,
+            deptDiscountAmount: service.deptDiscountAmount,
+            patientShare: service.patientShare,
+            shareType: service.shareType,
+            serviceDiscountAmount: service.serviceDiscountAmount,
+            patientShareAmount: service.patientShareAmount,
+            insShareAmount: service.insShareAmount,
+            netShareAmount: service.netShareAmount
+
+
+        }));
+
         this.contractService.createBill(this.billTemplate).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
@@ -271,17 +310,3 @@ export class BillDetailsComponent implements OnInit {
     }
 
 }
-    // searchBeneficiaries() {
-    //   this.contractService.servicesFullTextSearch(this.sharedServices.providerId, this.billingDetailsController.value).subscribe(event => {
-    //     if (event instanceof HttpResponse) {
-    //       const body = event.body;
-    //       if (body instanceof Array) {
-    //         this.serviceSearchModel = body;
-    //       }
-    //     }
-    //   }, errorEvent => {
-    //     if (errorEvent instanceof HttpErrorResponse) {
-
-    //     }
-    //   })
-    // }
