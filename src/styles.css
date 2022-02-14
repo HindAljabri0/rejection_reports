@@ -507,7 +507,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}
 .view-claim .block-footer{border-radius: 0;}
 .view-claim .block-body.create-claim-body{min-height: calc(100vh - 132px);padding: 0;}
-.nphies-claim-view-body{min-height: calc(100vh - 165px);}
+.mat-dialog-container .nphies-claim-tab{min-height: calc(100vh - 165px);}
+.mat-dialog-container .block-body.create-claim-body.nphies-claim{padding: 0;}
+.mat-dialog-container .block-header{min-height: 55px;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/

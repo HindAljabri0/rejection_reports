@@ -280,7 +280,7 @@ export class BeneficiaryComponent implements OnInit {
           selectePayer: insurancePlans.payerId.trim(),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
-          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber,
+          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber ? insurancePlans.relationWithSubscriber.toUpperCase() : insurancePlans.relationWithSubscriber,
           selecteCoverageType: insurancePlans.coverageType,
           payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
         }
