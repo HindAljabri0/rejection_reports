@@ -39,8 +39,7 @@ export class AddBillServiceDialogComponent implements OnInit {
         //this.serviceSearchModel = <ServiceSearchModel[]>[];
         this.searchServiceList();
     }
-
-    closeDialog() {
+    addServiceAndCloseDialog() {
         if (this.checkError()) { return }
         this.closeStatus = true;
 
@@ -49,6 +48,10 @@ export class AddBillServiceDialogComponent implements OnInit {
         })
         //alert("filterObj  " + JSON.stringify(selectedServiceFromPopup));
         this.dialogRef.close(selectedServiceFromPopup);
+    }
+
+    closeDialog() {
+        this.dialogRef.close();
     }
 
     checkError() {

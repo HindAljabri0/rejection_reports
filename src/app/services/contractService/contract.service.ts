@@ -55,6 +55,12 @@ export class ContractService {
         return this.httpClient.request(httpRequest);
     }
 
+    getBillList(providerId: string) {
+        const requestUrl = `/billing/searchBill/${providerId}`;
+        const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
+        return this.httpClient.request(request);
+    }
+
     // beneficiaryFullTextSearch( query: string) {
     //   const requestUrl = `/providers/${providerId}/beneficiaries?query=${query}`;
     //   const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
