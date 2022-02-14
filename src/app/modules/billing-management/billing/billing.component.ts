@@ -14,6 +14,7 @@ import { FormControl } from '@angular/forms';
 })
 export class BillingComponent implements OnInit {
     departmentList = [];
+    billList = [];
     selectedDepartment: string;
     dialogRef: MatDialog;
 
@@ -34,6 +35,7 @@ export class BillingComponent implements OnInit {
 
     ngOnInit() {
         this.getDepartmentList();
+        this.getBillList();
     }
 
     openSearchPatientDialog() {
@@ -42,6 +44,21 @@ export class BillingComponent implements OnInit {
         })
     }
 
+
+    getBillList() {
+        this.contractService.getBillList(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                const body = event.body;
+                if (body instanceof Array) {
+                    this.billList = body;
+                }
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
+    }
 
     getDepartmentList() {
         this.contractService.getDeparmentsByProviderId(this.sharedServices.providerId).subscribe(event => {

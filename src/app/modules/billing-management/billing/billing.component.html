@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Department</label>
@@ -54,13 +54,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-click" routerLink="/billing-management/bill-details">56</td>
-                        <td class="row-click" routerLink="/billing-management/bill-details">7/11/19</td>
-                        <td class="row-click" routerLink="/billing-management/bill-details">219.78 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details">106.58 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details">473.85 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details">630.44 <span class="currency">SR</span></td>
+                    <tr *ngFor="let bill of billList">
+                        <td class="row-click" routerLink="/billing-management/bill-details">{{ bill.bill_No }}</td>
+                        <td class="row-click" routerLink="/billing-management/bill-details">{{bill.bill_Date}}</td>
+                        <td class="row-click" routerLink="/billing-management/bill-details">{{bill.gross_Amount}} <span class="currency">SR</span></td>
+                        <td class="row-click" routerLink="/billing-management/bill-details">{{bill.discount_Amount}} <span class="currency">SR</span></td>
+                        <td class="row-click" routerLink="/billing-management/bill-details">{{bill.additional_Discount}} <span class="currency">SR</span></td>
+                        <td class="row-click" routerLink="/billing-management/bill-details">{{bill.net_Amount}} <span class="currency">SR</span></td>
                         <td class="row-click" routerLink="/billing-management/bill-details" class="text-center">
                             <mat-icon class="size21 text-primary">done</mat-icon>
                         </td>
@@ -73,7 +73,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="row-click" routerLink="/billing-management/bill-details">788</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">3/4/16</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">948.55 <span class="currency">SR</span></td>
@@ -91,8 +91,8 @@
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td class="row-click" routerLink="/billing-management/bill-details">10</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">2/11/12</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">739.65 <span class="currency">SR</span></td>
@@ -110,8 +110,8 @@
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td class="row-click" routerLink="/billing-management/bill-details">9689</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">9/23/16</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">767.50 <span class="currency">SR</span></td>
@@ -128,8 +128,8 @@
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td class="row-click" routerLink="/billing-management/bill-details">102</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">10/6/13</td>
                         <td class="row-click" routerLink="/billing-management/bill-details">105.55 <span class="currency">SR</span></td>
@@ -146,7 +146,7 @@
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>

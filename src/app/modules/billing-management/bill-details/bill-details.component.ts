@@ -165,7 +165,7 @@ export class BillDetailsComponent implements OnInit {
             Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2))
             Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2))
 
-            console.log("typeof  :: " + typeof (element.quantity));
+            //console.log("typeof  :: " + typeof (element.quantity));
 
             if (element.quantity == null || element.quantity == undefined) {
                 element.quantity = new FormControl(1);
@@ -271,10 +271,9 @@ export class BillDetailsComponent implements OnInit {
             patientShareAmount: service.patientShareAmount,
             insShareAmount: service.insShareAmount,
             netShareAmount: service.netShareAmount
-
-
         }));
 
+        console.log("Yes");
         this.contractService.createBill(this.billTemplate).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
