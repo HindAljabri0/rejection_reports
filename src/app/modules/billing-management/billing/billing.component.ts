@@ -7,6 +7,7 @@ import { ContractService } from 'src/app/services/contractService/contract.servi
 import { SharedServices } from 'src/app/services/shared.services';
 import { FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { PageEvent } from '@angular/material';
 
 @Component({
     selector: 'app-billing',
@@ -42,6 +43,17 @@ export class BillingComponent implements OnInit {
         this.getDepartmentList();
         this.getBillList();
         this.getDoctorList();
+    }
+
+    handlePageEvent(event: PageEvent) {
+
+        this.length = event.length;
+        this.pageSize = event.pageSize;
+        this.pageIndex = event.pageIndex;
+
+        localStorage.setItem('pagesize', event.pageSize + '');
+        this.getBillList();
+
     }
 
     openSearchPatientDialog() {

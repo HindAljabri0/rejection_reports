@@ -9,6 +9,7 @@ import { ServiceSearchModel } from 'src/app/models/contractModels/BillingModels/
 import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTemplate';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
+import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
     selector: 'app-bill-details',
@@ -63,7 +64,8 @@ export class BillDetailsComponent implements OnInit {
         private dialog: MatDialog,
         private sharedServices: SharedServices,
         private contractService: ContractService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private adminService: AdminService
     ) { }
 
     length = 100;
@@ -139,7 +141,7 @@ export class BillDetailsComponent implements OnInit {
     }
 
     getDoctorList() {
-        this.contractService.getDoctorsByProviderId(this.sharedServices.providerId).subscribe(event => {
+        this.adminService.getPractitionerList(this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 const body = event.body;
                 if (body instanceof Array) {

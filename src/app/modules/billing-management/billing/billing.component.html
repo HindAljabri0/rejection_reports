@@ -173,6 +173,13 @@
             </table>
         </div>
     </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
+            </mat-paginator>
+        </div>
+    </div>
     <button mat-fab color="primary" class="page-fab" routerLink="/billing-management/bill-details">
         <mat-icon>add</mat-icon>
     </button>
