@@ -259,8 +259,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.country.disable();
     this.FormNphiesClaim.controls.countryName.disable();
     this.FormNphiesClaim.controls.date.disable();
-    // this.FormNphiesClaim.controls.dateWritten.disable();
-    // this.FormNphiesClaim.controls.prescriber.disable();
+    this.FormNphiesClaim.controls.dateWritten.disable();
+    this.FormNphiesClaim.controls.prescriber.disable();
     this.FormNphiesClaim.controls.status.disable();
     this.FormNphiesClaim.controls.encounterClass.disable();
     this.FormNphiesClaim.controls.serviceType.disable();
@@ -991,10 +991,15 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
 
-      const now = new Date(Date.now());
-      // tslint:disable-next-line:max-line-length
-      this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
 
+
+      if (this.pageMode === 'EDIT') {
+        this.model.provClaimNo = this.otherDataModel.provClaimNo;
+      } else if (this.pageMode === 'CREATE') {
+        const now = new Date(Date.now());
+        // tslint:disable-next-line:max-line-length
+        this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+      }
       this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
       this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
       this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
@@ -1245,6 +1250,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
+            if (this.pageMode == "EDIT") {
+              this.ngOnInit();
+            }
           } else if (error.status === 404) {
             const errors: any[] = [];
             if (error.error.errors) {
