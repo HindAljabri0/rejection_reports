@@ -44,25 +44,9 @@ export class AddEditCareTeamModalComponent implements OnInit {
   isSubmitted = false;
 
   practitionerRoleList = this.sharedDataService.practitionerRoleList;
-  // [
-  //   { value: 'doctor', name: 'Doctor' },
-  //   { value: 'nurse', name: 'Nurse' },
-  //   { value: 'pharmacist', name: 'Pharmacist' },
-  //   { value: 'researcher', name: 'Researcher' },
-  //   { value: 'teacher', name: 'Teacher/educator' },
-  //   { value: 'dentist', name: 'Dentist' },
-  //   { value: 'physio', name: 'Physiotherapist' },
-  //   { value: 'speech', name: 'Speechtherapist' },
-  //   { value: 'ict', name: 'ICT professional' },
-  // ];
-
   careTeamRoleList = this.sharedDataService.careTeamRoleList;
-  // [
-  //   { value: 'primary', name: 'Primary provider' },
-  //   { value: 'assist', name: 'Assisting Provider' },
-  //   { value: 'supervisor', name: 'Supervising Provider' },
-  //   { value: 'other', name: 'Other' },
-  // ];
+
+  pName = '';
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -95,9 +79,21 @@ export class AddEditCareTeamModalComponent implements OnInit {
       if (event instanceof HttpResponse) {
         this.practitionerList = event.body;
         if (this.data.item && this.data.item.practitionerName) {
-          this.FormCareTeam.patchValue({
-            practitioner: this.practitionerList.filter(x => x.name === this.data.item.practitionerName)[0]
-          });
+          if (this.practitionerList.filter(x => x.name === this.data.item.practitionerName)[0]) {
+            this.FormCareTeam.patchValue({
+              practitioner: this.practitionerList.filter(x => x.name === this.data.item.practitionerName)[0]
+            });
+
+            this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
+
+          } else {
+            this.FormCareTeam.patchValue({
+              practitioner: ''
+            });
+            this.pName = this.data.item.practitionerName;
+            this.FormCareTeam.controls.practitioner.clearValidators();
+            this.FormCareTeam.controls.practitioner.updateValueAndValidity();
+          }
         }
         this.filteredPractitioner.next(this.practitionerList.slice());
         this.IsPractitionerLading = false;
@@ -122,10 +118,16 @@ export class AddEditCareTeamModalComponent implements OnInit {
     this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.specialityList = event.body;
-        if (this.data.item && this.data.item.practitionerName) {
-          this.FormCareTeam.patchValue({
-            speciality: this.specialityList.filter(x => x.speciallityName === this.data.item.speciality)[0]
-          });
+        if (this.data.item && this.data.item.speciality) {
+          if (this.specialityList.filter(x => x.speciallityName === this.data.item.speciality)[0]) {
+            this.FormCareTeam.patchValue({
+              speciality: this.specialityList.filter(x => x.speciallityName === this.data.item.speciality)[0]
+            });
+          } else {
+            this.FormCareTeam.patchValue({
+              speciality: ''
+            });
+          }
         }
         this.filteredSpeciality.next(this.specialityList.slice());
         this.IsSpecialityLading = false;
@@ -181,12 +183,16 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-
     if (this.FormCareTeam.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;
-      model.practitionerName = this.FormCareTeam.controls.practitioner.value.name;
-      model.physicianCode = this.FormCareTeam.controls.practitioner.value.physicianId.physicianCode;
+      if (this.pName) {
+        model.practitionerName = this.pName;
+        model.physicianCode = this.data.item.physicianCode;
+      } else {
+        model.practitionerName = this.FormCareTeam.controls.practitioner.value.name;
+        model.physicianCode = this.FormCareTeam.controls.practitioner.value.physicianId.physicianCode;
+      }
       model.practitionerRole = this.FormCareTeam.controls.practitionerRole.value.value;
       model.careTeamRole = this.FormCareTeam.controls.careTeamRole.value.value;
       model.speciality = this.FormCareTeam.controls.speciality.value.speciallityName;
