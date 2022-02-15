@@ -10,6 +10,8 @@ import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTe
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
 
 @Component({
     selector: 'app-bill-details',
@@ -20,8 +22,10 @@ export class BillDetailsComponent implements OnInit {
 
     departmentList = [];
     doctorList = [];
+    beneficiaries = [];
     selectedDepartment: string;
     selectedDoctor: string;
+    selectedPatient: string;
     serviceSearchModel: ServiceSearchModel[] = [];
     billTemplate: BillTemplate;
     tableGrossAmount: number = 0;
@@ -65,7 +69,8 @@ export class BillDetailsComponent implements OnInit {
         private sharedServices: SharedServices,
         private contractService: ContractService,
         private dialogService: DialogService,
-        private adminService: AdminService
+        private adminService: AdminService,
+        private providerNphiesSearchService: ProviderNphiesSearchService
     ) { }
 
     length = 100;
@@ -76,10 +81,12 @@ export class BillDetailsComponent implements OnInit {
 
     billingDetailsControllerDepartment: FormControl = new FormControl();
     billingDetailsControllerDoctor: FormControl = new FormControl();
+    billingDetailsControllerPatient: FormControl = new FormControl();
 
     ngOnInit() {
         this.getDepartmentList();
         this.getDoctorList();
+        this.getBeneList();
     }
 
     openAddServiceDialog() {
@@ -294,6 +301,10 @@ export class BillDetailsComponent implements OnInit {
             netShareAmount: service.netShareAmount
         }));
 
+        this.billTemplate.departmentNo = this.billingDetailsControllerDepartment.value;
+        this.billTemplate.patientId = this.billingDetailsControllerPatient.value;
+        this.billTemplate.doctorId = this.billingDetailsControllerDoctor.value;
+
         console.log("Yes");
         this.contractService.createBill(this.billTemplate).subscribe(event => {
             if (event instanceof HttpResponse) {
@@ -327,6 +338,22 @@ export class BillDetailsComponent implements OnInit {
                     this.sharedServices.loadingChanged.next(false);
                 }
             });
+    }
+
+    getBeneList() {
+        this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null, 0, 10).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                if (event.body != null && event.body instanceof Array)
+                    this.beneficiaries = [];
+
+                this.beneficiaries = event.body["content"] as BeneficiarySearch[];
+                this.length = event.body["totalElements"]
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
     }
 
 }

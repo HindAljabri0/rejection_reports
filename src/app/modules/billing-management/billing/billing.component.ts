@@ -8,6 +8,8 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { PageEvent } from '@angular/material';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
 
 @Component({
     selector: 'app-billing',
@@ -18,7 +20,9 @@ export class BillingComponent implements OnInit {
     departmentList = [];
     doctorList = [];
     billList = [];
+    beneficiaries = [];
     selectedDepartment: string;
+    selectedPatient: string;
     selectedDoctor: string;
     dialogRef: MatDialog;
 
@@ -27,7 +31,8 @@ export class BillingComponent implements OnInit {
         private sharedServices: SharedServices,
         private contractService: ContractService,
         private beneficiaryService: ProvidersBeneficiariesService,
-        private adminService: AdminService
+        private adminService: AdminService,
+        private providerNphiesSearchService: ProviderNphiesSearchService
     ) { }
 
     length = 100;
@@ -38,11 +43,13 @@ export class BillingComponent implements OnInit {
 
     billingControllerDepartment: FormControl = new FormControl();
     billingControllerDoctor: FormControl = new FormControl();
+    billingControllerPatient: FormControl = new FormControl();
 
     ngOnInit() {
         this.getDepartmentList();
         this.getBillList();
         this.getDoctorList();
+        this.getBeneList();
     }
 
     handlePageEvent(event: PageEvent) {
@@ -108,4 +115,19 @@ export class BillingComponent implements OnInit {
         });
     }
 
+    getBeneList() {
+        this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null, 0, 10).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                if (event.body != null && event.body instanceof Array)
+                    this.beneficiaries = [];
+
+                this.beneficiaries = event.body["content"] as BeneficiarySearch[];
+                this.length = event.body["totalElements"]
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
+    }
 }
