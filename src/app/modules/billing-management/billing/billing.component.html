@@ -8,27 +8,10 @@
                 <div class="form-group">
                     <label class="control-label">Patient</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select Patient">
-                            <mat-option value="Option 1">Priya Dalal</mat-option>
-                            <mat-option value="Option 2">bea qeq</mat-option>
-                            <mat-option value="Option 1">Test1 Test1</mat-option>
-                            <mat-option value="Option 1">Test2 Test1</mat-option>
-                            <mat-option value="Option 1">Test3 Test1</mat-option>
-                            <mat-option value="Option 1">Test4 Test1</mat-option>
-                            <mat-option value="Option 1">Test5 Test1</mat-option>
-                            <mat-option value="Option 1">Test6 Test1</mat-option>
-                            <mat-option value="Option 1">Test7 Test1</mat-option>
-                            <mat-option value="Option 1">Test8 Test1</mat-option>
-                            <mat-option value="Option 1">Test9 Test1</mat-option>
-                            <mat-option value="Option 1">Sara Ahmed</mat-option>
-                            <mat-option value="Option 1">Logan 01</mat-option>
-                            <mat-option value="Option 1">Logan 02</mat-option>
+                        <mat-select placeholder="Select Department" [formControl]="billingControllerPatient" [(value)]="selectedPatient">
+                            <mat-option *ngFor="let patient of beneficiaries" [value]="patient.documentId">{{patient.fullName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <!-- <div class="btn-in-textbox">
-                        <input placeholder="Click here to select patient" class="form-control" readonly>
-                        <button type="button" mat-stroked-button color="primary" class="btn-sm" (click)="openSearchPatientDialog()">Select</button>
-                    </div> -->
                 </div>
             </div>
 
@@ -47,7 +30,7 @@
                     <label class="control-label">Doctor</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select Doctor" [formControl]="billingControllerDoctor" [(value)]="selectedDoctor">
-                            <mat-option *ngFor="let doctor of doctorList" [value]="doctor.name">{{doctor.name}}</mat-option>
+                            <mat-option *ngFor="let doctor of doctorList" [value]="doctor.physicianId.physicianCode">{{doctor.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -173,6 +156,13 @@
             </table>
         </div>
     </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
+            </mat-paginator>
+        </div>
+    </div>
     <button mat-fab color="primary" class="page-fab" routerLink="/billing-management/bill-details">
         <mat-icon>add</mat-icon>
     </button>
