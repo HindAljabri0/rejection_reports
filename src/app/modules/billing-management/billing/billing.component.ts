@@ -14,8 +14,10 @@ import { FormControl } from '@angular/forms';
 })
 export class BillingComponent implements OnInit {
     departmentList = [];
+    doctorList = [];
     billList = [];
     selectedDepartment: string;
+    selectedDoctor: string;
     dialogRef: MatDialog;
 
     constructor(
@@ -31,11 +33,13 @@ export class BillingComponent implements OnInit {
     pageSizeOptions = [10, 50, 100];
     showFirstLastButtons = true;
 
-    billingController: FormControl = new FormControl();
+    billingControllerDepartment: FormControl = new FormControl();
+    billingControllerDoctor: FormControl = new FormControl();
 
     ngOnInit() {
         this.getDepartmentList();
         this.getBillList();
+        this.getDoctorList();
     }
 
     openSearchPatientDialog() {
@@ -66,6 +70,21 @@ export class BillingComponent implements OnInit {
                 const body = event.body;
                 if (body instanceof Array) {
                     this.departmentList = body;
+                }
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
+    }
+
+    getDoctorList() {
+        this.contractService.getDoctorsByProviderId(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                const body = event.body;
+                if (body instanceof Array) {
+                    this.doctorList = body;
                 }
             }
         }, errorEvent => {
