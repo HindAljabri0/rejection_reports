@@ -468,6 +468,9 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         case 'vital-sign-height':
           model.unit = 'cm';
           break;
+        case 'days-supply':
+          model.unit = 'd';
+          break;
       }
 
 

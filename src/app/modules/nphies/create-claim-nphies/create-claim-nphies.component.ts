@@ -1742,7 +1742,26 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0] ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name : '';
       model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
       model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
-      model.unit = this.sharedDataService.durationUnitList.filter(y => y.value === x.unit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.unit)[0].name : '';
+
+      switch (model.category) {
+        case 'vital-sign-weight':
+          model.unit = 'kg';
+          break;
+        case 'vital-sign-systolic':
+        case 'vital-sign-diastolic':
+          model.unit = 'mm[Hg]';
+          break;
+        case 'icu-hours':
+        case 'ventilation-hours':
+          model.unit = 'h';
+          break;
+        case 'vital-sign-height':
+          model.unit = 'cm';
+          break;
+        case 'days-supply':
+          model.unit = 'd';
+          break;
+      }
       model.byteArray = x.attachment;
       return model;
 
