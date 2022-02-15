@@ -6,6 +6,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ContractService } from 'src/app/services/contractService/contract.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { FormControl } from '@angular/forms';
+import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
     selector: 'app-billing',
@@ -25,6 +26,7 @@ export class BillingComponent implements OnInit {
         private sharedServices: SharedServices,
         private contractService: ContractService,
         private beneficiaryService: ProvidersBeneficiariesService,
+        private adminService: AdminService
     ) { }
 
     length = 100;
@@ -80,7 +82,7 @@ export class BillingComponent implements OnInit {
     }
 
     getDoctorList() {
-        this.contractService.getDoctorsByProviderId(this.sharedServices.providerId).subscribe(event => {
+        this.adminService.getPractitionerList(this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 const body = event.body;
                 if (body instanceof Array) {
