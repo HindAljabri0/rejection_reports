@@ -7,10 +7,28 @@
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Patient</label>
-                    <div class="btn-in-textbox">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select Patient">
+                            <mat-option value="Option 1">Priya Dalal</mat-option>
+                            <mat-option value="Option 2">bea qeq</mat-option>
+                            <mat-option value="Option 1">Test1 Test1</mat-option>
+                            <mat-option value="Option 1">Test2 Test1</mat-option>
+                            <mat-option value="Option 1">Test3 Test1</mat-option>
+                            <mat-option value="Option 1">Test4 Test1</mat-option>
+                            <mat-option value="Option 1">Test5 Test1</mat-option>
+                            <mat-option value="Option 1">Test6 Test1</mat-option>
+                            <mat-option value="Option 1">Test7 Test1</mat-option>
+                            <mat-option value="Option 1">Test8 Test1</mat-option>
+                            <mat-option value="Option 1">Test9 Test1</mat-option>
+                            <mat-option value="Option 1">Sara Ahmed</mat-option>
+                            <mat-option value="Option 1">Logan 01</mat-option>
+                            <mat-option value="Option 1">Logan 02</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <div class="btn-in-textbox">
                         <input placeholder="Click here to select patient" class="form-control" readonly>
                         <button type="button" mat-stroked-button color="primary" class="btn-sm" (click)="openSearchPatientDialog()">Select</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -18,7 +36,7 @@
                 <div class="form-group">
                     <label class="control-label">Department</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select Department" [formControl]="billingController" [(value)]="selectedDepartment">
+                        <mat-select placeholder="Select Department" [formControl]="billingControllerDepartment" [(value)]="selectedDepartment">
                             <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -27,7 +45,11 @@
             <div class="col-md">
                 <div class="form-group">
                     <label class="control-label">Doctor</label>
-                    <input placeholder="Search doctor name or code" class="form-control">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select Doctor" [formControl]="billingControllerDoctor" [(value)]="selectedDoctor">
+                            <mat-option *ngFor="let doctor of doctorList" [value]="doctor.name">{{doctor.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <div class="col-md-auto">
@@ -62,7 +84,7 @@
                         <td class="row-click" routerLink="/billing-management/bill-details">{{bill.additional_Discount}} <span class="currency">SR</span></td>
                         <td class="row-click" routerLink="/billing-management/bill-details">{{bill.net_Amount}} <span class="currency">SR</span></td>
                         <td class="row-click" routerLink="/billing-management/bill-details" class="text-center">
-                            <mat-icon class="size21 text-primary">done</mat-icon>
+                            <!-- <mat-icon class="size21 text-primary">done</mat-icon> -->
                         </td>
                         <td class="actions">
                             <button routerLink="/billing-management/bill-details" mat-icon-button type="button" matTooltip="Edit" class="text-primary">

@@ -18,7 +18,9 @@ import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 export class BillDetailsComponent implements OnInit {
 
     departmentList = [];
+    doctorList = [];
     selectedDepartment: string;
+    selectedDoctor: string;
     serviceSearchModel: ServiceSearchModel[] = [];
     billTemplate: BillTemplate;
     tableGrossAmount: number = 0;
@@ -70,10 +72,12 @@ export class BillDetailsComponent implements OnInit {
     pageSizeOptions = [10, 50, 100];
     showFirstLastButtons = true;
 
-    billingDetailsController: FormControl = new FormControl();
+    billingDetailsControllerDepartment: FormControl = new FormControl();
+    billingDetailsControllerDoctor: FormControl = new FormControl();
 
     ngOnInit() {
         this.getDepartmentList();
+        this.getDoctorList();
     }
 
     openAddServiceDialog() {
@@ -125,6 +129,21 @@ export class BillDetailsComponent implements OnInit {
                 const body = event.body;
                 if (body instanceof Array) {
                     this.departmentList = body;
+                }
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
+    }
+
+    getDoctorList() {
+        this.contractService.getDoctorsByProviderId(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                const body = event.body;
+                if (body instanceof Array) {
+                    this.doctorList = body;
                 }
             }
         }, errorEvent => {

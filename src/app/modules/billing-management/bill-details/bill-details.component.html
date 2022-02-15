@@ -15,14 +15,31 @@
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Patient</label>
-                        <span class="form-control-static">Esther Howard - 258GF5</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Patient">
+                                <mat-option value="Option 1">Priya Dalal</mat-option>
+                                <mat-option value="Option 2">bea qeq</mat-option>
+                                <mat-option value="Option 1">Test1 Test1</mat-option>
+                                <mat-option value="Option 1">Test2 Test1</mat-option>
+                                <mat-option value="Option 1">Test3 Test1</mat-option>
+                                <mat-option value="Option 1">Test4 Test1</mat-option>
+                                <mat-option value="Option 1">Test5 Test1</mat-option>
+                                <mat-option value="Option 1">Test6 Test1</mat-option>
+                                <mat-option value="Option 1">Test7 Test1</mat-option>
+                                <mat-option value="Option 1">Test8 Test1</mat-option>
+                                <mat-option value="Option 1">Test9 Test1</mat-option>
+                                <mat-option value="Option 1">Sara Ahmed</mat-option>
+                                <mat-option value="Option 1">Logan 01</mat-option>
+                                <mat-option value="Option 1">Logan 02</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Department</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select placeholder="Select Department" [formControl]="billingDetailsController" [(value)]="selectedDepartment">
+                            <mat-select placeholder="Select Department" [formControl]="billingDetailsControllerDepartment" [(value)]="selectedDepartment">
                                 <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -31,13 +48,17 @@
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Doctor / Physician</label>
-                        <span class="form-control-static">Dr. Theresa Webb</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Doctor" [formControl]="billingDetailsControllerDoctor" [(value)]="selectedDoctor">
+                                <mat-option *ngFor="let doctor of doctorList" [value]="doctor.name">{{doctor.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Eligibility Status</label>
-                        <span class="form-control-static semibold text-success">Approved</span>
+                        <span class="form-control-static semibold text-success">Eligible</span>
                     </div>
                 </div>
             </div>
