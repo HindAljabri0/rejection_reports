@@ -15,25 +15,37 @@
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Patient</label>
-                        <span class="form-control-static">Esther Howard - 258GF5</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Department" [formControl]="billingDetailsControllerPatient" [(value)]="selectedPatient">
+                                <mat-option *ngFor="let patient of beneficiaries" [value]="patient.documentId">{{patient.fullName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Department</label>
-                        <span class="form-control-static">Dental</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Department" [formControl]="billingDetailsControllerDepartment" [(value)]="selectedDepartment">
+                                <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Doctor / Physician</label>
-                        <span class="form-control-static">Dr. Theresa Webb</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Doctor" [formControl]="billingDetailsControllerDoctor" [(value)]="selectedDoctor">
+                                <mat-option *ngFor="let doctor of doctorList" [value]="doctor.physicianId.physicianCode">{{doctor.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Eligibility Status</label>
-                        <span class="form-control-static semibold text-success">Approved</span>
+                        <span class="form-control-static semibold text-success">Eligible</span>
                     </div>
                 </div>
             </div>
@@ -78,14 +90,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let sev of _services" class="align-middle">
                         <td>
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
-                        <td class="text-nowrap">76700-003</td>
-                        <td>U/S ABDOMAN FULL</td>
-                        <td class="text-nowrap">76700-003</td>
-                        <td>U/S ABDOMAN FULL</td>
+                        <td class="text-nowrap">{{sev.serviceCode}}</td>
+                        <td>{{sev.serviceName}}</td>
+                        <td class="text-nowrap">{{sev.insServiceCode}}</td>
+                        <td>{{sev.insServiceName}}</td>
                         <td>
                             <div class="form-group m-0">
                                 <mat-form-field class="form-control custom-select-control">
@@ -102,160 +114,55 @@
                         <td></td>
                         <td>
                             <div class="form-group m-0">
-                                <input type="text" value="1" class="form-control">
+                                <input type="text" class="form-control" placeholder="Enter Quantity" (change)="calculateAllPrices($event,sev.serviceId)"
+                                    [formControl]="sev.quantity">
+                                <!--<input type="text" class="form-control" placeholder="Insurance discount amount" (change)="changeAmount($event,sev.serviceId)" [formControl]="sev.discountAmountController" />-->
                             </div>
                         </td>
-                        <td>
-                            <div class="form-group m-0">
-                                <input type="text" value="27" class="form-control">
-                            </div>
+                        <td>{{sev.cashAmount}}<span class="currency">SR</span>
+                            <!-- <div class="form-group m-0">
+                                <input type="text" value={{sev.cashAmount}} class="form-control">
+                            </div> -->
                         </td>
-                        <td class="text-nowrap">27 <span class="currency">SR</span></td>
+                        <td class="text-nowrap">{{sev.grossAmount}}<span class="currency">SR</span></td>
                         <td class="text-nowrap">
-                            2.16 <span class="currency">SR</span>
-                            <p class="text-grey">8%</p>
+                            {{sev.serviceDiscountAmount}} <span class="currency">SR</span>
+                            <p class="text-grey">{{sev.insDiscountAmount}}{{sev.insDiscountType}}</p>
                         </td>
                         <td class="text-nowrap">
-                            22.356 <span class="currency">SR</span>
-                            <p class="text-grey">90%</p>
+                            {{sev.insShareAmount}} <span class="currency">SR</span>
+                            <p class="text-grey"></p>
                         </td>
                         <td class="text-nowrap">
                             0 <span class="currency">SR</span>
                             <p class="text-grey">0%</p>
                         </td>
                         <td class="text-nowrap">
-                            2.484 <span class="currency">SR</span>
-                            <p class="text-grey">10%</p>
+                            {{sev.patientShareAmount}} <span class="currency">SR</span>
+                            <p class="text-grey">{{sev.patientShare}}{{sev.shareType}}</p>
                         </td>
                         <td class="text-nowrap">
                             0 <span class="currency">SR</span>
                             <p class="text-grey">0%</p>
                         </td>
-                        <td class="text-nowrap">24.84 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="text-nowrap">85027-001</td>
-                        <td>Complete Blood Count (CBC)</td>
-                        <td class="text-nowrap">85027-001</td>
-                        <td>Complete Blood Count (CBC)</td>
-                        <td>
-                            <div class="form-group m-0">
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select value="">
-                                        <mat-option value="">Select</mat-option>
-                                        <mat-option value="Option 1">Option 1</mat-option>
-                                        <mat-option value="Option 2">Option 2</mat-option>
-                                        <mat-option value="Option 3">Option 3</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <div class="form-group m-0">
-                                <input type="text" value="1" class="form-control">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group m-0">
-                                <input type="text" value="12" class="form-control">
-                            </div>
-                        </td>
-                        <td class="text-nowrap">12 <span class="currency">SR</span></td>
-                        <td class="text-nowrap">
-                            0.96 <span class="currency">SR</span>
-                            <p class="text-grey">8%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            9.236 <span class="currency">SR</span>
-                            <p class="text-grey">90%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            0 <span class="currency">SR</span>
-                            <p class="text-grey">0%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            1.104 <span class="currency">SR</span>
-                            <p class="text-grey">10%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            0 <span class="currency">SR</span>
-                            <p class="text-grey">0%</p>
-                        </td>
-                        <td class="text-nowrap">13.04 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="text-nowrap">99201-004</td>
-                        <td>FIRST CONSULTATION - SPECIALIST</td>
-                        <td class="text-nowrap">99201-004</td>
-                        <td>FIRST CONSULTATION - SPECIALIST</td>
-                        <td>
-                            <div class="form-group m-0">
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select value="">
-                                        <mat-option value="">Select</mat-option>
-                                        <mat-option value="Option 1">Option 1</mat-option>
-                                        <mat-option value="Option 2">Option 2</mat-option>
-                                        <mat-option value="Option 3">Option 3</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <div class="form-group m-0">
-                                <input type="text" value="1" class="form-control">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group m-0">
-                                <input type="text" value="15" class="form-control">
-                            </div>
-                        </td>
-                        <td class="text-nowrap">15 <span class="currency">SR</span></td>
-                        <td class="text-nowrap">
-                            0.75 <span class="currency">SR</span>
-                            <p class="text-grey">5%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            12.825 <span class="currency">SR</span>
-                            <p class="text-grey">90%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            0 <span class="currency">SR</span>
-                            <p class="text-grey">0%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            1.423 <span class="currency">SR</span>
-                            <p class="text-grey">10%</p>
-                        </td>
-                        <td class="text-nowrap">
-                            0 <span class="currency">SR</span>
-                            <p class="text-grey">0%</p>
-                        </td>
-                        <td class="text-nowrap">14.25 <span class="currency">SR</span></td>
+
+                        <td class="text-nowrap">{{sev.netShareAmount}}<span class="currency">SR</span></td>
                     </tr>
                     <tr>
                         <td colspan="10" class="text-right border-top bold">Total</td>
-                        <td class="text-nowrap bold border-top">54 <span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">3.87 <span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">12.825 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableGrossAmount? tableGrossAmount : "0"}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableDiscountAmount? tableDiscountAmount : "0"}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableInsShareAmount? tableInsShareAmount : "0"}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">1.423 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tablePatientShareAmount? tablePatientShareAmount : "0"}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">14.25 <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableNetAmount? tableNetAmount : "0"}} <span class="currency">SR</span></td>
                     </tr>
                 </tbody>
             </table>
         </ng-scrollbar>
+        <app-empty-state [className]="'mb-2'" *ngIf="_services.length==0" [message]="'No Services found Please Add and try again!'"></app-empty-state>
+
         <h5 class="form-title p-14 mb-0">
             <span>Totals</span>
         </h5>
@@ -264,13 +171,13 @@
                 <div class="col-xxl col-md-4">
                     <div class="form-group">
                         <label class="control-label">Gross Amount</label>
-                        <input type="text" class="form-control" value="82" placeholder="Enter gross amount">
+                        <input type="text" class="form-control" placeholder="Enter gross amount" value="{{tableGrossAmount}}">
                     </div>
                 </div>
                 <div class="col-xxl col-md-4">
                     <div class="form-group">
                         <label class="control-label">Discount Amount</label>
-                        <input type="text" class="form-control" value="6.11" placeholder="Enter discount amount">
+                        <input type="text" class="form-control" placeholder="Enter discount amount" value="{{tableDiscountAmount}}">
                     </div>
                 </div>
                 <div class="col-xxl col-md-4">
@@ -288,14 +195,14 @@
                 <div class="col-xxl col-md-4">
                     <div class="form-group">
                         <label class="control-label">Net Amount</label>
-                        <input type="text" class="form-control" value="75.89" placeholder="Enter net amount">
+                        <input type="text" class="form-control" placeholder="Enter net amount" value="{{tableNetAmount}}">
                     </div>
                 </div>
             </div>
         </div>
         <div class="block-footer has-border">
             <div class="btn-list right-block">
-                <button mat-flat-button color="primary">Save</button>
+                <button type="button" color="primary" mat-flat-button (click)="createBill()">Save</button>
                 <button mat-flat-button color="primary" routerLink="/billing-management/generate-bill-invoice">Generate Invoice</button>
             </div>
         </div>

@@ -507,6 +507,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}
 .view-claim .block-footer{border-radius: 0;}
 .view-claim .block-body.create-claim-body{min-height: calc(100vh - 132px);padding: 0;}
+.mat-dialog-container .nphies-claim-tab{min-height: calc(100vh - 165px);}
+.mat-dialog-container .block-body.create-claim-body.nphies-claim{padding: 0;}
+.mat-dialog-container .block-header{min-height: 55px;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/
@@ -677,6 +680,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
 .error-dialog .mat-dialog-container{background-color: #fae9e9;}
 .json-dialog .primary-dialog-body.fixed-body{max-height: calc(100vh - 241px);}
+.alert-dialog{padding: 48px 16px 32px;}
+.alert-dialog .illustration{display: block;height: 88px;width: 88px;margin: 0 auto 16px;}
+.alert-dialog .dialog-text{font-size: 18px;line-height: 26px;text-align: center;}
 
 /* primary button toggle
 --------------------------------------------------------------------------------------------------------*/

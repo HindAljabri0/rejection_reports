@@ -1,4 +1,6 @@
 export class Department {
+    contractDeptId: number;
+
     departmentId: number;
 
     departmentName: string;
@@ -8,8 +10,8 @@ export class Department {
     isActive: string;
 
     discountType: string;
-    
+
     discountAmount: number;
-    
-    insCompanyId:string;
+
+    insCompanyId: string;
 }

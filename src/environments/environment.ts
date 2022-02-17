@@ -34,7 +34,8 @@ export const environment = {
     nphiesClaimUploader: `${host}:8088`,
     claimsDownloadsService: `${host}:8052`,
     nphiesPollManagement: `${host}:9991`,
-    contractManagementService: `${host}:8099`
+    contractManagementService: `${host}:8099`,
+    claimReviewService: `${host}:8100`
 };
 
 /*

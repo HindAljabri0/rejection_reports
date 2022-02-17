@@ -1,223 +1,272 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ProviderNphiesSearchService {
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  getSpecialityList(providerId: string) {
-    const requestURL = '/providers/' + providerId + '/speciallity/fetch';
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
-    return this.http.request(request);
-  }
-
-  NphisBeneficiarySearchByCriteria(
-    providerId: string, nationality: string, fullName: string, memberCardId: string, fileId: string,
-    contactNumber: string, page: number, size: number) {
-
-    let requestURL = `/providers/${providerId}/beneficiaries/criteria?`;
-
-    if (nationality != null && nationality.trim().length > 0) {
-      requestURL += `nationality=${nationality}&`;
-    }
-    if (fullName != null && fullName.trim().length > 0) {
-      requestURL += `fullName=${fullName}&`;
-    }
-    if (memberCardId != null && memberCardId.trim().length > 0) {
-      requestURL += `memberCardId=${memberCardId}&`;
-    }
-    if (contactNumber != null && contactNumber.trim().length > 0) {
-      requestURL += `contactNumber=${contactNumber}&`;
-    }
-    if (fileId != null && fileId.trim().length > 0) {
-      requestURL += `fileId=${fileId}&`;
-    }
-    if (page != null) {
-      requestURL += `page=${page}&`;
-    }
-    if (size != null) {
-      requestURL += `size=${size}&`;
+    getSpecialityList(providerId: string) {
+        const requestURL = '/providers/' + providerId + '/speciallity/fetch';
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+        return this.http.request(request);
     }
 
-    const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
-    return this.http.request(httpRequest);
-  }
+    NphisBeneficiarySearchByCriteria(
+        providerId: string, nationality: string, fullName: string, memberCardId: string, fileId: string,
+        contactNumber: string, page: number, size: number) {
 
-  beneficiaryFullTextSearch(providerId: string, query: string) {
-    const requestUrl = `/providers/${providerId}/beneficiaries?query=${query}`;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
+        let requestURL = `/providers/${providerId}/beneficiaries/criteria?`;
 
-  getCodeDescriptionList(providerId: string, itemType: string) {
-    const requestURL = '/providers/' + providerId + '/approval/itemcodes?itemType=' + itemType;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
-    return this.http.request(request);
-  }
+        if (nationality != null && nationality.trim().length > 0) {
+            requestURL += `nationality=${nationality}&`;
+        }
+        if (fullName != null && fullName.trim().length > 0) {
+            requestURL += `fullName=${fullName}&`;
+        }
+        if (memberCardId != null && memberCardId.trim().length > 0) {
+            requestURL += `memberCardId=${memberCardId}&`;
+        }
+        if (contactNumber != null && contactNumber.trim().length > 0) {
+            requestURL += `contactNumber=${contactNumber}&`;
+        }
+        if (fileId != null && fileId.trim().length > 0) {
+            requestURL += `fileId=${fileId}&`;
+        }
+        if (page != null) {
+            requestURL += `page=${page}&`;
+        }
+        if (size != null) {
+            requestURL += `size=${size}&`;
+        }
 
-  searchTransactionsLog(
-    transactionId?: string,
-    providerId?: string,
-    payerId?: string,
-    type?: string,
-    fromDate?: string,
-    toDate?: string,
-    page?: number,
-    size?: number) {
-    let requestUrl = '/transactions?';
-
-    if (transactionId != null) {
-      requestUrl += `transactionId=${transactionId}`;
+        const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+        return this.http.request(httpRequest);
     }
 
-    if (providerId != null) {
-      requestUrl += `&providerId=${providerId}`;
+    beneficiaryFullTextSearch(providerId: string, query: string) {
+        const requestUrl = `/providers/${providerId}/beneficiaries?query=${query}`;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(request);
     }
 
-    if (payerId != null) {
-      requestUrl += `&payerId=${payerId}`;
+    getCodeDescriptionList(providerId: string, itemType: string) {
+        const requestURL = '/providers/' + providerId + '/approval/itemcodes?itemType=' + itemType;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+        return this.http.request(request);
     }
 
-    if (type != null) {
-      requestUrl += `&type=${type}`;
+    searchTransactionsLog(
+        transactionId?: string,
+        providerId?: string,
+        payerId?: string,
+        type?: string,
+        fromDate?: string,
+        toDate?: string,
+        page?: number,
+        size?: number) {
+        let requestUrl = '/transactions?';
+
+        if (transactionId != null) {
+            requestUrl += `transactionId=${transactionId}`;
+        }
+
+        if (providerId != null) {
+            requestUrl += `&providerId=${providerId}`;
+        }
+
+        if (payerId != null) {
+            requestUrl += `&payerId=${payerId}`;
+        }
+
+        if (type != null) {
+            requestUrl += `&type=${type}`;
+        }
+
+        if (fromDate != null) {
+            requestUrl += `&fromDate=${fromDate}`;
+        }
+
+        if (toDate != null) {
+            requestUrl += `&toDate=${toDate}`;
+        }
+
+        if (page != null) {
+            requestUrl += `&page=${page}`;
+        }
+
+        if (size != null) {
+            requestUrl += `&size=${size}`;
+        }
+
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(request);
     }
 
-    if (fromDate != null) {
-      requestUrl += `&fromDate=${fromDate}`;
+    getPayers() {
+        const requestUrl = `/lovs/payers`;
+        const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(httpRequest);
     }
 
-    if (toDate != null) {
-      requestUrl += `&toDate=${toDate}`;
+    getTransactionTypes() {
+        const requestUrl = `/lovs/transactionTypes`;
+        const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(httpRequest);
     }
 
-    if (page != null) {
-      requestUrl += `&page=${page}`;
+    getProcessedTransaction(providerId: string, claimType: string, page?: number, pageSize?: number) {
+        if (page == null) {
+            page = 0;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
+        const requestUrl = `/providers/${providerId}/approvals/processed?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(request);
     }
 
-    if (size != null) {
-      requestUrl += `&size=${size}`;
+    getCommunicationRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
+        if (page == null) {
+            page = 0;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
+        const requestUrl = `/providers/${providerId}/approvals/communication-requests?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(request);
     }
 
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
+    getCommunications(providerId: string, responseId: number) {
+        const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(request);
+    }
+    getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
+        let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims?`;
+        if (claimSearchCriteriaModel.payerIds != null) {
+            requestURL += `payerIds=${claimSearchCriteriaModel.payerIds}`;
+        }
+        if (claimSearchCriteriaModel.batchId != null) {
+            requestURL += `batchId=${claimSearchCriteriaModel.batchId}`
+        }
+        if (claimSearchCriteriaModel.memberId != null) {
+            requestURL += `memberId=${claimSearchCriteriaModel.memberId}`
+        }
+        if (claimSearchCriteriaModel.documentId != null) {
+            requestURL += `documentId=${claimSearchCriteriaModel.documentId}`
+        }
+        if (claimSearchCriteriaModel.claimDate != null) {
+            requestURL += `claimDate=${claimSearchCriteriaModel.claimDate}`
+        }
+        if (claimSearchCriteriaModel.uploadId != null) {
+            requestURL += `uploadId=${claimSearchCriteriaModel.uploadId}`
+        }
+        if (claimSearchCriteriaModel.claimSubTypes != null) {
+            requestURL += `claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`
+        }
+        if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
+            requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
 
-  getPayers() {
-    const requestUrl = `/lovs/payers`;
-    const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(httpRequest);
-  }
+        }
+        requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+        return this.http.request(request);
+    }
+    getClaimResults(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
+        let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims/details?`;
 
-  getTransactionTypes() {
-    const requestUrl = `/lovs/transactionTypes`;
-    const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(httpRequest);
-  }
 
-  getProcessedTransaction(providerId: string, claimType: string, page?: number, pageSize?: number) {
-    if (page == null) {
-      page = 0;
-    }
-    if (pageSize == null) {
-      pageSize = 10;
-    }
-    const requestUrl = `/providers/${providerId}/approvals/processed?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
+        if (claimSearchCriteriaModel.page == null) {
+            claimSearchCriteriaModel.page = 0;
+        }
+        if (claimSearchCriteriaModel.pageSize == null) {
+            claimSearchCriteriaModel.pageSize = 10;
+        }
+        if (claimSearchCriteriaModel.payerIds != null) {
+            requestURL += `payerIds=${claimSearchCriteriaModel.payerIds}`;
+        }
+        if (claimSearchCriteriaModel.batchId != null) {
+            requestURL += `batchId=${claimSearchCriteriaModel.batchId}`
+        }
+        if (claimSearchCriteriaModel.memberId != null) {
+            requestURL += `memberId=${claimSearchCriteriaModel.memberId}`
+        }
+        if (claimSearchCriteriaModel.documentId != null) {
+            requestURL += `documentId=${claimSearchCriteriaModel.documentId}`
+        }
+        if (claimSearchCriteriaModel.claimDate != null) {
+            requestURL += `claimDate=${claimSearchCriteriaModel.claimDate}`
+        }
+        if (claimSearchCriteriaModel.uploadId != null) {
+            requestURL += `uploadId=${claimSearchCriteriaModel.uploadId}`
+        }
+        if (claimSearchCriteriaModel.claimSubTypes != null) {
+            requestURL += `claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`
+        }
+        if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
+            requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
 
-  getCommunicationRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
-    if (page == null) {
-      page = 0;
-    }
-    if (pageSize == null) {
-      pageSize = 10;
-    }
-    const requestUrl = `/providers/${providerId}/approvals/communication-requests?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
+        }
 
-  getCommunications(providerId: string, responseId: number) {
-    const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
-  getClaimSummary(providerId: string, uploadId: string, statuses?: string[]) {
-    let requestUrl = `/providers/${providerId}/claims?uploadId=${uploadId}`;
-    if (statuses != null) {
-      requestUrl += `&status=${statuses}`;
-    }
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
-  getClaimResults(
-    providerId: string,
-    uploadId?: string,
-    statuses?: string[],
-    page?: number,
-    pageSize?: number) {
-    if (page == null) { page = 0; }
-    if (pageSize == null) { pageSize = 10; }
-    let requestURL = `/providers/${providerId}/claims/details?`;
-
-    if (uploadId != null) {
-      requestURL += `uploadId=${uploadId}`;
-    }
-    requestURL += (statuses != null ? `&status=${statuses.toString()}` : '') + '&page=' + page + '&size=' + pageSize;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
-    return this.http.request(request);
-  }
-
-  getPaymentReconciliation(providerId: string, body: any) {
-    let requestUrl = `/providers/${providerId}/payment-reconciliation?`;
-    if (body.fromDate) {
-      requestUrl += `fromDate=${body.fromDate}&`;
-    }
-    if (body.toDate) {
-      requestUrl += `toDate=${body.toDate}&`;
-    }
-    if (body.issuerId) {
-      requestUrl += `issuerId=${body.issuerId}&`;
+        requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+        return this.http.request(request);
     }
 
-    if (body.page !== undefined && body.page !== null) {
-      requestUrl += `page=${body.page}&`;
+
+    getPaymentReconciliation(providerId: string, body: any) {
+        let requestUrl = `/providers/${providerId}/payment-reconciliation?`;
+        if (body.fromDate) {
+            requestUrl += `fromDate=${body.fromDate}&`;
+        }
+        if (body.toDate) {
+            requestUrl += `toDate=${body.toDate}&`;
+        }
+        if (body.issuerId) {
+            requestUrl += `issuerId=${body.issuerId}&`;
+        }
+
+        if (body.page !== undefined && body.page !== null) {
+            requestUrl += `page=${body.page}&`;
+        }
+        if (body.pageSize) {
+            requestUrl += `pageSize=${body.pageSize}&`;
+        }
+
+        requestUrl = requestUrl.slice(0, requestUrl.length - 1);
+
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
+        return this.http.request(request);
     }
-    if (body.pageSize) {
-      requestUrl += `pageSize=${body.pageSize}&`;
+
+    getProcessedPaymentReconciliation(providerId: string, body: any) {
+        let requestUrl = `/providers/${providerId}/payment-reconciliation/processed?`;
+
+        if (body.page !== undefined && body.page !== null) {
+            requestUrl += `page=${body.page}&`;
+        }
+        if (body.pageSize) {
+            requestUrl += `pageSize=${body.pageSize}&`;
+        }
+
+        requestUrl = requestUrl.slice(0, requestUrl.length - 1);
+
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
+        return this.http.request(request);
     }
 
-    requestUrl = requestUrl.slice(0, requestUrl.length - 1);
-
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
-    return this.http.request(request);
-  }
-
-  getProcessedPaymentReconciliation(providerId: string, body: any) {
-    let requestUrl = `/providers/${providerId}/payment-reconciliation/processed?`;
-
-    if (body.page !== undefined && body.page !== null) {
-      requestUrl += `page=${body.page}&`;
+    getPaymentReconciliationDetails(providerId: string, reconciliationId: number) {
+        const requestUrl = `/providers/${providerId}/reconciliationDetails/fetch?reconciliationId=${reconciliationId}`;
+        const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+        return this.http.request(request);
     }
-    if (body.pageSize) {
-      requestUrl += `pageSize=${body.pageSize}&`;
-    }
-
-    requestUrl = requestUrl.slice(0, requestUrl.length - 1);
-
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
-    return this.http.request(request);
-  }
-
-  getPaymentReconciliationDetails(providerId: string, reconciliationId: number) {
-    const requestUrl = `/providers/${providerId}/reconciliationDetails/fetch?reconciliationId=${reconciliationId}`;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
-    return this.http.request(request);
-  }
 
 }

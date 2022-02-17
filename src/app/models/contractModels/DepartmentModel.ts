@@ -4,8 +4,10 @@ export class DepartmentModel {
     providerId: string;
 
     discountType: string;
-    
+
     discountAmount: number;
-    
-    insCompCode:string;
+
+    insCompCode: string;
+
+    contractDeptId: number;
 }

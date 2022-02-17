@@ -15,6 +15,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-beneficiary',
@@ -116,6 +117,8 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'OTHER', Name: 'Other' },
   ];
 
+  beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
+
   changeMode() {
     this.viewMode = !this.viewMode;
     this.editMode = !this.editMode;
@@ -192,6 +195,8 @@ export class BeneficiaryComponent implements OnInit {
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
+        // tslint:disable-next-line:max-line-length
+        this.beneficiaryinfo.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0].name : '-';
         this.setDateforView(this.beneficiaryinfo);
 
       }
@@ -275,7 +280,7 @@ export class BeneficiaryComponent implements OnInit {
           selectePayer: insurancePlans.payerId.trim(),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
-          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber,
+          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber ? insurancePlans.relationWithSubscriber.toUpperCase() : insurancePlans.relationWithSubscriber,
           selecteCoverageType: insurancePlans.coverageType,
           payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
         }
@@ -287,7 +292,7 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService, private sharedDataService: SharedDataService) { }
   ngOnInit() {
 
     this.providersBeneficiariesService.getPayers().subscribe(event => {

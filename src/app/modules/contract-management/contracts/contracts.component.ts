@@ -36,7 +36,7 @@ export class ContractsComponent implements OnInit {
         this.insuranceCompanyController.setValue("0");
         this.fillSearchData();
         this.getPayerList();
-        this.contractService.getContractBySearchParam(this.search).subscribe(event => {
+        this.contractService.getContractBySearchParam(this.search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 if (event.body != null && event.body instanceof Array)
                     this.contracts = event.body;
@@ -71,7 +71,7 @@ export class ContractsComponent implements OnInit {
     }
     searchByCriteria() {
         this.fillSearchData();
-        this.contractService.getContractBySearchParam(this.search).subscribe(event => {
+        this.contractService.getContractBySearchParam(this.search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)

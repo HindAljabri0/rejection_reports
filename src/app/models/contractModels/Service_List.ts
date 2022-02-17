@@ -25,9 +25,11 @@ export class Service_List {
 
     insServiceName: string;
 
-    netAmount:number;
+    netAmount: number;
 
-    needApproval:string;
+    needApproval: string;
 
-    isCovered:string;
+    isCovered: string;
+
+    contractServId: number;
 }

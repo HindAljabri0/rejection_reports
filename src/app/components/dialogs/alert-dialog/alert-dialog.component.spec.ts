@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminUploadsComponent } from './admin-uploads.component';
+import { AlertDialogComponent } from './alert-dialog.component';
 
-describe('AdminUploadsComponent', () => {
-  let component: AdminUploadsComponent;
-  let fixture: ComponentFixture<AdminUploadsComponent>;
+describe('AlertDialogComponent', () => {
+  let component: AlertDialogComponent;
+  let fixture: ComponentFixture<AlertDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminUploadsComponent ]
+      declarations: [ AlertDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminUploadsComponent);
+    fixture = TestBed.createComponent(AlertDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

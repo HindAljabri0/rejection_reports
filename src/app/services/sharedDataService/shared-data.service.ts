@@ -200,15 +200,15 @@ export class SharedDataService {
   ];
 
   itemTypeList = [
-    { value: 'medicalDevices', name: 'Medical Devices' },
-    { value: 'medicationCode', name: 'Medication Codes' },
-    { value: 'transportationService', name: 'Transportation SRCA' },
-    { value: 'imagingService', name: 'Imaging' },
+    { value: 'medical-devices', name: 'Medical Devices' },
+    { value: 'medication-codes', name: 'Medication Codes' },
+    { value: 'transportation-srca', name: 'Transportation SRCA' },
+    { value: 'imaging', name: 'Imaging' },
     { value: 'procedures', name: 'Procedures' },
     { value: 'services', name: 'Services' },
     { value: 'laboratory', name: 'Laboratory' },
-    { value: 'oralHealthOp', name: 'Oral Health OP' },
-    { value: 'oralHealthIp', name: 'Oral Health IP' },
+    { value: 'oral-health-ip', name: 'Oral Health OP' },
+    { value: 'oral-health-op', name: 'Oral Health IP' },
   ];
 
 
@@ -222,6 +222,14 @@ export class SharedDataService {
     // { value: 'subscriber', name: 'Subscriber' },
     { value: 'provider', name: 'Provider' },
     { value: 'other', name: 'Other' },
+  ];
+
+  beneficiaryTypeList = [
+    { value: 'PRC', name: 'Resident Card' },
+    { value: 'PPN', name: 'Passport' },
+    { value: 'VS', name: 'GCC ID' },
+    { value: 'NI', name: 'National Card' },
+    { value: 'NI', name: 'Border Number' },
   ];
 
   constructor(private adminService: AdminService) { }

@@ -100,7 +100,7 @@ export class AddEditViewPolicyComponent implements OnInit {
     LoadPolicyClasses(PolicyId) {
         this.fillSearchData(PolicyId);
         console.log(this.search);
-        this.classService.getClassBySearchParam(this.search).subscribe(event => {
+        this.classService.getClassBySearchParam(this.search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
@@ -117,7 +117,7 @@ export class AddEditViewPolicyComponent implements OnInit {
             });
     }
     getPolicy(param) {
-        this.policyService.getPolicyBySearchParam(param).subscribe(event => {
+        this.policyService.getPolicyBySearchParam(param, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 const body = event.body;
 
@@ -196,17 +196,13 @@ export class AddEditViewPolicyComponent implements OnInit {
         this.policy.startDate = this.StartDateController.value;
         this.policy.endDate = this.EndDateController.value;
         this.policy.isActive = this.IsActiveController.value ? "Y" : "N";
-
-        this.policyService.ManipulatePolicy(this.policy).subscribe(event => {
+        console.log(this.policy);
+        this.policyService.ManipulatePolicy(this.policy, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null) {
-                    this.dialogService.openMessageDialog({
-                        title: '',
-                        message: `Policy Saved successfully`,
-                        isError: false
-                    }).subscribe(event => { window.location.reload(); });
                     this.sharedServices.loadingChanged.next(false);
+                    this.dialogService.showMessage('Success', 'Policy Saved Successfully', 'success', true, 'OK');
                 }
             }
         }
@@ -220,12 +216,7 @@ export class AddEditViewPolicyComponent implements OnInit {
                         this.messageError = err.message;
                     }
 
-                    this.dialogService.openMessageDialog({
-                        title: '',
-
-                        message: this.messageError,
-                        isError: true
-                    });
+                    this.dialogService.showMessage(err.error.message, '', 'alert', true, 'OK', err.error.errors);
                     this.sharedServices.loadingChanged.next(false);
                 }
             });
@@ -234,7 +225,7 @@ export class AddEditViewPolicyComponent implements OnInit {
         let _search = new ContractSearchModel();
         _search.providerId = this.sharedServices.providerId;
         _search.withPagination = false;
-        this.contractService.getContractBySearchParam(_search).subscribe(event => {
+        this.contractService.getContractBySearchParam(_search, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
