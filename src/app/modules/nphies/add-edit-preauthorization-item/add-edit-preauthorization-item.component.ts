@@ -165,7 +165,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     switch (type) {
       case 'vision':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
+          { value: 'medical-devices', name: 'Medical Devices' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' }
         ];
@@ -175,10 +175,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         break;
       case 'professional':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' },
-          { value: 'transporationService', name: 'Transportation SRCA' },
-          { value: 'imagingService', name: 'Imaging' },
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' },
+          { value: 'transportation-srca', name: 'Transportation SRCA' },
+          { value: 'imaging', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' }
@@ -189,14 +189,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         break;
       case 'oral':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' },
-          { value: 'transporationService', name: 'Transportation SRCA' },
-          { value: 'imagingService', name: 'Imaging' },
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' },
+          { value: 'transportation-srca', name: 'Transportation SRCA' },
+          { value: 'imaging', name: 'Imaging' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oralHealthOp', name: 'Oral Health OP' },
-          { value: 'oralHealthIp', name: 'Oral Health IP' }
+          { value: 'oral-health-op', name: 'Oral Health OP' },
+          { value: 'oral-health-ip', name: 'Oral Health IP' }
         ];
         this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
         this.FormItem.controls.careTeamSequence.updateValueAndValidity();
@@ -204,14 +204,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         break;
       case 'institutional':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' },
-          { value: 'transporationService', name: 'Transportation SRCA' },
-          { value: 'imagingService', name: 'Imaging' },
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' },
+          { value: 'transportation-srca', name: 'Transportation SRCA' },
+          { value: 'imaging', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oralHealthIp', name: 'Oral Health IP' }
+          { value: 'oral-health-ip', name: 'Oral Health IP' }
         ];
         this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
         this.FormItem.controls.careTeamSequence.updateValueAndValidity();
@@ -219,8 +219,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         break;
       case 'pharmacy':
         this.typeList = [
-          { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'Medication Codes' }
+          { value: 'medical-devices', name: 'Medical Devices' },
+          { value: 'medication-codes', name: 'Medication Codes' }
         ];
         this.FormItem.controls.careTeamSequence.clearValidators();
         this.FormItem.controls.careTeamSequence.updateValueAndValidity();
@@ -235,33 +235,35 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   getItemList() {
-    this.sharedServices.loadingChanged.next(true);
-    this.IsItemLoading = true;
-    this.FormItem.controls.item.disable();
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.itemList = event.body;
-        if (this.data.item && this.data.item.itemCode) {
-          this.FormItem.patchValue({
-            item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
-          });
+    if (this.FormItem.controls.type.value) {
+      this.sharedServices.loadingChanged.next(true);
+      this.IsItemLoading = true;
+      this.FormItem.controls.item.disable();
+      // tslint:disable-next-line:max-line-length
+      this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.itemList = event.body;
+          if (this.data.item && this.data.item.itemCode) {
+            this.FormItem.patchValue({
+              item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
+            });
+          }
+          this.filteredItem.next(this.itemList.slice());
+          this.IsItemLoading = false;
+          this.FormItem.controls.item.enable();
+          this.FormItem.controls.itemFilter.valueChanges
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(() => {
+              this.filterItem();
+            });
+          this.sharedServices.loadingChanged.next(false);
         }
-        this.filteredItem.next(this.itemList.slice());
-        this.IsItemLoading = false;
-        this.FormItem.controls.item.enable();
-        this.FormItem.controls.itemFilter.valueChanges
-          .pipe(takeUntil(this.onDestroy))
-          .subscribe(() => {
-            this.filterItem();
-          });
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        console.log(error);
-      }
-    });
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          console.log(error);
+        }
+      });
+    }
   }
 
   filterItem() {

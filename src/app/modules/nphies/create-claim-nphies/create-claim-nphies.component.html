@@ -1,4 +1,4 @@
-<div class="bg-white block-body create-claim-body p-0" *ngIf="pageMode && pageMode == 'VIEW' && otherDataModel && otherDataModel.claimId">
+<div class="bg-white block-body create-claim-body p-0 nphies-claim" *ngIf="pageMode && pageMode == 'VIEW' && otherDataModel && otherDataModel.claimId">
   <div class="primary-dialog-header has-border">
     <h5 class="primary-dialog-title">View Claim</h5>
     <button type="button" (click)="close()" class="dialog-close" matRipple></button>
@@ -23,14 +23,7 @@
       </p>
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-      <p>
-        <span>Payment Date:</span>&nbsp;
-        <strong>
-          <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.paymentDate"
-            class="value">{{otherDataModel.paymentReconciliationDetails.paymentDate | date: 'dd-MM-yyyy'}} </span>
-          <span *ngIf="!otherDataModel.paymentReconciliationDetails || !otherDataModel.paymentReconciliationDetails.paymentDate" class="value">-</span>
-        </strong>
-      </p>
+
     </div>
   </div>
   <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
@@ -40,83 +33,9 @@
       <span class="currency">SR</span>
     </li>
 
-    <!-- <li>
-      Benefit Amount:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.benefitTotalValue ?
-        otherDataModel.responseDecision.benefitTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.benefitTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Submitted Amount:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.submittedTotalValue ?
-        otherDataModel.responseDecision.submittedTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.submittedTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Eligible Amount:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.eligibleTotalValue ?
-        otherDataModel.responseDecision.eligibleTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.eligibleTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Eligible %:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.eligpercentTotalValue ?
-        otherDataModel.responseDecision.eligpercentTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.eligpercentTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Patient Co-Payment:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.copayTotalValue ?
-        otherDataModel.responseDecision.copayTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.copayTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Deductible:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.deductibleTotalValue ?
-        otherDataModel.responseDecision.deductibleTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.deductibleTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Unallocated Deductible:<span class="value">{{otherDataModel.responseDecision ?
-        (otherDataModel.responseDecision.unallocdeductTotalValue ?
-        otherDataModel.responseDecision.unallocdeductTotalValue : '-') : '-'}} </span> <span
-        *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.unallocdeductTotalValue"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Tax:<span class="value">{{otherDataModel.responseDecision ? (otherDataModel.responseDecision.taxTotalValue ?
-        otherDataModel.responseDecision.taxTotalValue : '-') :
-        '-'}} </span> <span *ngIf="otherDataModel.responseDecision && otherDataModel.responseDecision.taxTotalValue"
-        class="currency">SR</span>
-    </li>
-
-    <li>
-      Early Fee:<span class="value">{{otherDataModel.paymentReconciliationDetails ? (otherDataModel.paymentReconciliationDetails.componentEarlyFee ?
-        otherDataModel.paymentReconciliationDetails.componentEarlyFee : '-') :
-        '-'}} </span> <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.componentEarlyFee"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Nphies Fee:<span class="value">{{otherDataModel.paymentReconciliationDetails ? (otherDataModel.paymentReconciliationDetails.componentNphiesFee ?
-        otherDataModel.paymentReconciliationDetails.componentNphiesFee : '-') :
-        '-'}} </span> <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.componentNphiesFee"
-        class="currency">SR</span>
-    </li>
-    <li>
-      Payment:<span class="value">{{otherDataModel.paymentReconciliationDetails ? (otherDataModel.paymentReconciliationDetails.componentPayment ?
-        otherDataModel.paymentReconciliationDetails.componentPayment : '-') :
-        '-'}} </span> <span *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.componentPayment"
-        class="currency">SR</span>
-    </li> -->
   </ul>
 
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab">
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -124,7 +43,7 @@
         <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
       </ng-template>
 
-      <div *ngIf="otherDataModel && otherDataModel.payeeName" class="row">
+      <div *ngIf="otherDataModel" class="row">
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
@@ -155,7 +74,7 @@
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Payee</div>
-            <p class="form-control-static">{{otherDataModel.payeeName}}</p>
+            <p class="form-control-static">{{otherDataModel.payeeName ? otherDataModel.payeeName : '-'}}</p>
           </div>
         </div>
         <div class="col-4">
@@ -246,7 +165,7 @@
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Document</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.documentType}}
+            <p class="form-control-static">{{otherDataModel.beneficiary.documentTypeName}}
               ({{otherDataModel.beneficiary.documentId}})</p>
           </div>
         </div>
@@ -290,6 +209,7 @@
         <table class="primary-grid no-borders">
           <thead>
             <tr>
+              <th>Sequence No.</th>
               <th>Practitioner</th>
               <th>Practitioner Role</th>
               <th>Care Team Role</th>
@@ -298,6 +218,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let careTeam of CareTeams; let i = index">
+              <td>
+                {{careTeam.sequence}}
+              </td>
               <td>
                 {{careTeam.practitionerName}}
               </td>
@@ -330,6 +253,7 @@
         <table class="primary-grid no-borders">
           <thead>
             <tr>
+              <th>Sequence No.</th>
               <th>Code - Description</th>
               <th>Type</th>
               <th>On Admission</th>
@@ -337,6 +261,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let diagnosis of Diagnosises; let i = index">
+              <td>
+                {{diagnosis.sequence}}
+              </td>
               <td>
                 {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
               </td>
@@ -364,34 +291,43 @@
       </h5>
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
-            <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
-            <div class="date-picker">
+          <div class="form-group">
+            <label class="control-label">Date Written</label>
+            <label>
+              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd-MM-yyyy'}}
+            </label>
+            <!-- <div class="date-picker">
               <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
               <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
               <mat-datepicker #visionWrittenDate></mat-datepicker>
             </div>
             <div *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
               <span class="error-text">Please select Date Written</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="col-8 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))}">
-            <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+          <div class="form-group">
+            <label class="control-label">Prescriber</label>
+            <ng-container *ngFor="let pre of CareTeams">
+              <label *ngIf="pre.sequence === FormNphiesClaim.controls.prescriber.value">
+                {{pre.physicianCode}} -
+                {{pre.practitionerName}}
+              </label>
+            </ng-container>
+            <!--
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="prescriber">
                 <mat-option value="">Select Prescriber</mat-option>
-                <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
+                <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">
+                  {{pre.physicianCode}} -
                   {{pre.practitionerName}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <div *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
               <span class="error-text">Please select a Prescriber</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -404,6 +340,7 @@
           <table class="primary-grid manual-row-color no-borders">
             <thead>
               <tr>
+                <th>Sequence No.</th>
                 <th>Product</th>
                 <th>Eye</th>
                 <th>Sphere</th>
@@ -418,6 +355,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
+                <td>{{visionSpecification.sequence}}</td>
                 <td>{{visionSpecification.productName}}</td>
                 <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span>
                 </td>
@@ -446,6 +384,7 @@
         <table class="primary-grid no-borders">
           <thead>
             <tr>
+              <th>Sequence No.</th>
               <th>Category</th>
               <!-- <th>Attachment</th> -->
               <th>Code</th>
@@ -457,6 +396,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let s of SupportingInfo; let i = index">
+              <td>
+                {{s.sequence}}
+              </td>
               <td>
                 {{s.categoryName}}
               </td>
@@ -540,11 +482,7 @@
           <div class="form-group form-group-static">
             <label class="control-label">Date</label>
             <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              (FormNphiesClaim.controls.startDate.value | date: 'dd-MM-yyyy') : ""}} -
-              {{this.otherDataModel
-              &&
-              this.otherDataModel.accident ?
-              (FormNphiesClaim.controls.periodEnd.value | date: 'dd-MM-yyyy') : ""}}</p>
+              (FormNphiesClaim.controls.date.value | date: 'dd-MM-yyyy') : '-'}}</p>
           </div>
         </div>
       </div>
@@ -566,6 +504,7 @@
           <thead>
             <tr>
               <th width="10"></th>
+              <th>Sequence No.</th>
               <th>Type</th>
               <th>Code - Description</th>
               <th>Quantity</th>
@@ -582,6 +521,8 @@
                   <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline
                   </mat-icon>
                 </td>
+                <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                  {{item.sequence}}</td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.typeName}}</td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -611,127 +552,6 @@
                         </div>
                       </div>
 
-                      <!-- <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Benefit Amount:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.benefitValue">{{item.itemDecision.benefitValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.benefitValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Submitted Amount:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.submittedValue">{{item.itemDecision.submittedValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.submittedValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Eligible Amount:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.eligibleValue">{{item.itemDecision.eligibleValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.eligibleValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Eligible %:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.eligpercentValue">{{item.itemDecision.eligpercentValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.eligpercentValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Patient Co-Payment:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.copayValue">{{item.itemDecision.copayValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.copayValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Deductible:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.deductibleValue">{{item.itemDecision.deductibleValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.deductibleValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Unallocated Deductible:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.unallocdeductValue">{{item.itemDecision.unallocdeductValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.unallocdeductValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Tax:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.taxValue">{{item.itemDecision.taxValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.taxValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Rejected:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.rejectedValue">{{item.itemDecision.rejectedValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.rejectedValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Patient Share:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.patientShareValue">{{item.itemDecision.patientShareValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.patientShareValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Discount:</label>
-                          <p class="text-primary">
-                            <span *ngIf="item.itemDecision.discountValue">{{item.itemDecision.discountValue}}
-                              <span class="currency">SR</span></span>
-                            <span *ngIf="!item.itemDecision.discountValue">-</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-2">
-                        <div class="inline-label-table auto-width">
-                          <label>Approved Quantity:</label>
-                          <p class="text-primary">
-                            <span
-                              *ngIf="item.itemDecision.approvedQuantityValue">{{item.itemDecision.approvedQuantityValue}}
-                            </span>
-                            <span *ngIf="!item.itemDecision.approvedQuantityValue">-</span>
-                          </p>
-                        </div>
-                      </div> -->
                     </div>
                   </div>
                   <div class="box mb-2">
@@ -842,7 +662,7 @@
                     <table class="primary-grid manual-row-color claim-view-table no-borders">
                       <thead>
                         <tr>
-                          <th>Seq.</th>
+                          <th>Sequence No.</th>
                           <th>Type</th>
                           <th>Code - Description</th>
                           <th>Non Standard Code</th>
@@ -874,9 +694,7 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
-          error</mat-icon>
-        <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
+        <span>Encounter</span>
       </ng-template>
       <app-empty-state *ngIf="!otherDataModel.claimEncounter " message='No Encounter found!'>
       </app-empty-state>
@@ -1123,7 +941,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm
+                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date :
+                    'dd/MM/yyyy hh:mm
                     aa'}}</span>
                 </div>
               </div>
@@ -1174,6 +993,35 @@
       <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
       </app-empty-state>
     </mat-tab>
+    <mat-tab [label]="'Payments'">
+      <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Early Fee</th>
+              <th>Nphies Fee</th>
+              <th>Payment</th>
+              <th>Payment Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pay of otherDataModel.paymentReconciliationDetails">
+              <td>{{pay.type}}</td>
+              <td>{{pay.componentEarlyFee ? pay.componentEarlyFee : '-'}} <span *ngIf="pay.componentEarlyFee" class="currency">SR</span></td>
+              <td>{{pay.componentNphiesFee ? pay.componentNphiesFee : '-'}} <span *ngIf="pay.componentNphiesFee" class="currency">SR</span></td>
+              <td>{{pay.componentPayment ? pay.componentPayment : '-'}} <span *ngIf="pay.componentPayment" class="currency">SR</span></td>
+              <td>
+                <span *ngIf="pay.paymentDate">{{pay.paymentDate | date: 'dd-MM-yyyy'}}</span>
+                <span *ngIf="!pay.paymentDate">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0" message='No Payments found!'>
+      </app-empty-state>
+    </mat-tab>
   </mat-tab-group>
   <div class="block-footer sticky-bottom" *ngIf="!isLoading && claimIsEditable">
     <div class="right-block btn-list">
@@ -1195,6 +1043,38 @@
     <div class="block-header" *ngIf="pageMode == 'EDIT'">
       <p>Edit Claim</p>
     </div>
+
+    <div *ngIf="pageMode == 'EDIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
+      <div class="summary">
+        <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
+            otherDataModel.provClaimNo : '-'}}</strong></p>
+        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimId ? otherDataModel.claimId : '-'}}</strong>
+        </p>
+        <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
+            otherDataModel.claimRefNo : '-'}}</strong></p>
+        <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
+            otherDataModel.providertransactionlogId : '-'}}</strong></p>
+        <p><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo ? (otherDataModel.batchInfo.batchId ?
+            otherDataModel.batchInfo.batchId : '-') : '-'}}</strong></p>
+        <p>
+          <span>Submission Date:</span>&nbsp;<strong>
+            <span *ngIf="otherDataModel.submissionDate">{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</span>
+            <span *ngIf="!otherDataModel.submissionDate">-</span>
+          </strong>
+        </p>
+        <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
+        <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
+
+      </div>
+    </div>
+    <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
+
+      <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+        {{res.category}}:<span class="value">{{res.categoryValue}} </span>
+        <span class="currency">SR</span>
+      </li>
+
+    </ul>
 
     <div class="block-body create-claim-body">
       <div class="bg-white">
@@ -1254,7 +1134,7 @@
               <div class="col-md-8">
                 <div class="form-group">
                   <label class="control-label">Preauthorization Reference No</label>
-                  <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Response Id'">
+                  <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'">
                   </tag-input>
                 </div>
               </div>
@@ -1406,6 +1286,7 @@
               <table class="primary-grid no-borders">
                 <thead>
                   <tr>
+                    <th>Sequence No.</th>
                     <th>Practitioner</th>
                     <th>Practitioner Role</th>
                     <th>Care Team Role</th>
@@ -1415,6 +1296,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let careTeam of CareTeams; let i = index">
+                    <td>
+                      {{careTeam.sequence}}
+                    </td>
                     <td>
                       {{careTeam.practitionerName}}
                     </td>
@@ -1460,6 +1344,7 @@
               <table class="primary-grid no-borders">
                 <thead>
                   <tr>
+                    <th>Sequence No.</th>
                     <th>Code - Description</th>
                     <th>Type</th>
                     <th>On Admission</th>
@@ -1468,6 +1353,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let diagnosis of Diagnosises; let i = index">
+                    <td>
+                      {{diagnosis.sequence}}
+                    </td>
                     <td>
                       {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
                     </td>
@@ -1549,6 +1437,7 @@
                 <table class="primary-grid manual-row-color no-borders">
                   <thead>
                     <tr>
+                      <th>Sequence No.</th>
                       <th>Product</th>
                       <th>Eye</th>
                       <th>Sphere</th>
@@ -1564,6 +1453,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
+                      <td>{{visionSpecification.sequence}}</td>
                       <td>{{visionSpecification.productName}}</td>
                       <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span>
                       </td>
@@ -1606,6 +1496,7 @@
               <table class="primary-grid no-borders">
                 <thead>
                   <tr>
+                    <th>Sequence No.</th>
                     <th>Category</th>
                     <!-- <th>Attachment</th> -->
                     <th>Code</th>
@@ -1617,6 +1508,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let s of SupportingInfo; let i = index">
+                    <td>
+                      {{s.sequence}}
+                    </td>
                     <td>
                       {{s.categoryName}}
                     </td>
@@ -1637,7 +1531,7 @@
                         <!-- {{s.attachment}} -->
                         <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
                       </span>
-                      <span *ngIf="s.category!='attachment'">
+                      <span *ngIf="s.category != 'attachment'">
                         {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
                       </span>
                     </td>
@@ -1751,6 +1645,7 @@
                 <thead>
                   <tr>
                     <th width="10"></th>
+                    <th>Sequence No.</th>
                     <th>Type</th>
                     <th>Code - Description</th>
                     <th>Quantity</th>
@@ -1769,6 +1664,8 @@
                         <mat-icon *ngIf="currentOpenItem==i" class="size-21">
                           remove_circle_outline</mat-icon>
                       </td>
+                      <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                        {{item.sequence}}</td>
                       <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                         {{item.typeName}}</td>
                       <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -1913,7 +1810,7 @@
                           <table class="primary-grid manual-row-color claim-view-table no-borders">
                             <thead>
                               <tr>
-                                <th>Seq.</th>
+                                <th>Sequence No.</th>
                                 <th>Type</th>
                                 <th>Code - Description</th>
                                 <th>Non Standard Code</th>
@@ -1963,6 +1860,7 @@
               <span [class.text-danger]="checkErrorEncounter === true">Encounter</span>
             </ng-template>
             <div class="row small-gutter">
+
               <div class="col-4 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsStatusRequired && ((isSubmitted || FormNphiesClaim.get('status').touched) && FormNphiesClaim.get('status').hasError('required'))}">
@@ -2119,9 +2017,79 @@
 
             </div>
           </mat-tab>
+          <mat-tab [label]="'Errors'" *ngIf="pageMode == 'EDIT'">
+            <div class="table-responsive" *ngIf="otherDataModel.errors">
+              <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th class="light-bg-danger text-danger">Code</th>
+                    <th class="light-bg-danger text-danger">Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let err of otherDataModel.errors">
+                    <td>{{err.code}}</td>
+                    <td>{{err.error}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <app-empty-state *ngIf="!otherDataModel.errors" message='No Errors found!'>
+            </app-empty-state>
+          </mat-tab>
+          <mat-tab [label]="'Process Notes'" *ngIf="pageMode == 'EDIT'">
+            <div *ngIf="otherDataModel.processNotes" class="table-responsive">
+              <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Number</th>
+                    <th>Type</th>
+                    <th>Text</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let note of otherDataModel.processNotes">
+                    <td>{{note.number}}</td>
+                    <td>{{note.type}}</td>
+                    <td>{{note.text}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
+            </app-empty-state>
+          </mat-tab>
+          <mat-tab [label]="'Payments'" *ngIf="pageMode == 'EDIT'">
+            <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+              <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Early Fee</th>
+                    <th>Nphies Fee</th>
+                    <th>Payment</th>
+                    <th>Payment Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pay of otherDataModel.paymentReconciliationDetails">
+                    <td>{{pay.type}}</td>
+                    <td>{{pay.componentEarlyFee ? pay.componentEarlyFee : '-'}} <span *ngIf="pay.componentEarlyFee" class="currency">SR</span></td>
+                    <td>{{pay.componentNphiesFee ? pay.componentNphiesFee : '-'}} <span *ngIf="pay.componentNphiesFee" class="currency">SR</span></td>
+                    <td>{{pay.componentPayment ? pay.componentPayment : '-'}} <span *ngIf="pay.componentPayment" class="currency">SR</span></td>
+                    <td>
+                      <span *ngIf="pay.paymentDate">{{pay.paymentDate | date: 'dd-MM-yyyy'}}</span>
+                      <span *ngIf="!pay.paymentDate">-</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0" message='No Payments found!'>
+            </app-empty-state>
+          </mat-tab>
         </mat-tab-group>
       </div>
-
     </div>
 
     <div class="block-footer sticky-bottom">

@@ -10,3 +10,5 @@ export const showSnackBarMessage = createAction('[ Main ] show a message in snac
     props<{ message: string }>());
 
 export const evaluateUserPrivileges = createAction('[ Main ] evaluate user privileges from local storage');
+
+export const checkAlerts = createAction('[ Main ] check if there are alerts')

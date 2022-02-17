@@ -1,10 +1,14 @@
+import { DatePipe } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { interval } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { changePageTitle, showSnackBarMessage } from './mainStore.actions';
+import { DialogService } from '../services/dialogsService/dialog.service';
+import { SearchService } from '../services/serchService/search.service';
+import { changePageTitle, checkAlerts, showSnackBarMessage } from './mainStore.actions';
 
 @Injectable({ providedIn: 'root' })
 export class MainStoreEffects {
@@ -14,6 +18,9 @@ export class MainStoreEffects {
         private actions$: Actions,
         private titleService: Title,
         private snackBar: MatSnackBar,
+        private dialogService: DialogService,
+        private searchService: SearchService,
+        private datePipe: DatePipe
     ) {
         interval(3000)
             .subscribe(() => {
@@ -31,6 +38,29 @@ export class MainStoreEffects {
     onShowSnackBarMessage$ = createEffect(() => this.actions$.pipe(
         ofType(showSnackBarMessage),
         tap(data => this.messages.push(data.message))
+    ), { dispatch: false });
+
+    onCheckingAlerts$ = createEffect(() => this.actions$.pipe(
+        ofType(checkAlerts),
+        tap(() => {
+            const providerId = localStorage.getItem('provider_id');
+            if (providerId != null && providerId != '101') {
+                const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
+                let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+                if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay) {
+                    return null;
+                }
+                this.searchService.getClaimAlerts(providerId).subscribe(event => {
+                    if (event instanceof HttpResponse) {
+                        const body = event.body;
+                        if (body instanceof Array) {
+                            this.dialogService.showAlerts(body);
+                            localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
+                        }
+                    }
+                });
+            }
+        })
     ), { dispatch: false });
 
 }

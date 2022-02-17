@@ -46,12 +46,14 @@ export class AddEditViewContractComponent implements OnInit {
     IsActiveController: FormControl = new FormControl(true);
 
     _departments: {
+        contractDeptId: number;
         departmentId: number,
         departmentName: string,
         discountController: FormControl,
         discountTypeController: FormControl
     }[] = [];
     _services: {
+        contractServId: number;
         serviceId: number,
         serviceName: string,
         serviceCode: string,
@@ -110,6 +112,7 @@ export class AddEditViewContractComponent implements OnInit {
         let template = result;
         let contract = template.contract;
         this.departments = template.departments.map(dep => ({
+            contractDeptId: dep.contractDeptId,
             departmentId: dep.departmentId,
             departmentName: dep.departmentName,
             providerId: this.sharedServices.providerId,
@@ -121,6 +124,7 @@ export class AddEditViewContractComponent implements OnInit {
         this.SetDepartmentData();
 
         this.services = template.services.map(serv => ({
+            contractServId: serv.contractServId,
             serviceId: serv.serviceId,
             serviceName: serv.serviceName,
             serviceCode: serv.serviceCode,
@@ -147,7 +151,7 @@ export class AddEditViewContractComponent implements OnInit {
 
     }
     getContract(param) {
-        this.contractService.getContractById(param).subscribe(event => {
+        this.contractService.getContractById(param, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 const body = event.body;
                 if (body instanceof Array) {
@@ -205,6 +209,7 @@ export class AddEditViewContractComponent implements OnInit {
         for (let dept of this.departments) {
             this._departments.push(
                 {
+                    contractDeptId: dept.contractDeptId,
                     departmentId: dept.departmentId,
                     departmentName: dept.departmentName,
                     discountController: new FormControl(dept.discountAmount),
@@ -229,7 +234,8 @@ export class AddEditViewContractComponent implements OnInit {
                     discountAmount: service.cashAmount - service.netAmount,
                     NetAmount: service.netAmount,
                     NeedApproval: new FormControl(service.needApproval ? true : false),
-                    IsCovered: new FormControl(service.isCovered ? true : false)
+                    IsCovered: new FormControl(service.isCovered ? true : false),
+                    contractServId: service.contractServId
                 }
             )
         }
@@ -262,13 +268,14 @@ export class AddEditViewContractComponent implements OnInit {
             if (dept.discountController.value != null) {
                 for (let service of this._services) {
                     if (service.departmentId == dept.departmentId) {
+                        let IsValid: Boolean = dept.discountTypeController.value != null && dept.discountController.value != 0 && dept.discountController.value != "";
                         service.discountTypeController.setValue(dept.discountTypeController.value);
-                        service.InsServiceCode.setValue(service.serviceCode);
-                        service.InsServiceName.setValue(service.serviceName);
+                        service.InsServiceCode.setValue(IsValid ? service.serviceCode : "");
+                        service.InsServiceName.setValue(IsValid ? service.serviceName : "");
                         service.discountAmountController.setValue(dept.discountController.value);
                         service.discountAmount = (dept.discountTypeController.value != null && dept.discountTypeController.value == "SR" ? dept.discountController.value : (service.cashAmount * dept.discountController.value / 100));
                         service.NetAmount = service.cashAmount - (dept.discountTypeController.value != null && dept.discountTypeController.value == "SR" ? dept.discountController.value : (service.cashAmount * dept.discountController.value / 100));
-                        service.IsCovered.setValue(true);
+                        service.IsCovered.setValue(IsValid);
                     }
                 }
             }
@@ -331,6 +338,27 @@ export class AddEditViewContractComponent implements OnInit {
             this.errors.serviceNames = "You must Enter Insurance Service Name for service"
             thereIsError = true;
         }
+        this._departments.forEach(element => {
+            //console.log("Discount val = " + element.discountController.value + " less than 1 = " + (Number(element.discountController.value) < 0));
+            if (element.discountController != null && (element.discountController.value < 0 || isNaN(Number(element.discountController.value)))) {
+                this.errors.departments = "Discount value for department must be greater than 1"
+                thereIsError = true;
+                return;
+            }
+        });
+        this._services.forEach(element => {
+            //console.log("Discount val = " + element.discountController.value + " less than 1 = " + (Number(element.discountController.value) < 0));
+            if (element.discountAmountController != null && (element.discountAmountController.value < 0 || isNaN(Number(element.discountAmountController.value)))) {
+                this.errors.services = "Discount value for service must be greater than 1"
+                thereIsError = true;
+                return;
+            }
+            if (element.discountAmount < 0 || element.NetAmount < 0) {
+                this.errors.services = "Discount Amount/Net Amount value for service must be greater than 1"
+                thereIsError = true;
+                return;
+            }
+        });
         return thereIsError;
 
     }
@@ -358,8 +386,9 @@ export class AddEditViewContractComponent implements OnInit {
         this.contractTemplate.contract = this.contract;
 
         this.contractTemplate.departments = this._departments.filter(function (obj) {
-            return obj.discountController.value != null;
+            return obj.discountController.value != null && obj.discountController.value != "" && obj.discountController.value != 0;
         }).map(dep => ({
+            contractDeptId: dep.contractDeptId,
             departmentId: dep.departmentId,
             providerId: this.sharedServices.providerId,
             insCompCode: this.InsCompCodeController.value,
@@ -368,9 +397,9 @@ export class AddEditViewContractComponent implements OnInit {
         }));
 
         this.contractTemplate.services = this._services.filter(function (obj) {
-            return obj.discountAmountController.value != null;
+            return obj.discountAmountController.value != null && obj.discountAmountController.value != "" && obj.discountAmountController.value != 0;
         }).map(service => ({
-
+            contractServId: service.contractServId,
             serviceId: service.serviceId,
             insDiscountAmount: service.discountAmountController.value,
             netAmount: service.NetAmount,
@@ -385,15 +414,11 @@ export class AddEditViewContractComponent implements OnInit {
         //End of set data
         //console.log(JSON.stringify(this.contractTemplate));
 
-        this.contractService.ManipulateContract(this.contractTemplate).subscribe(event => {
+        this.contractService.ManipulateContract(this.contractTemplate, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null) {
-                    this.dialogService.openMessageDialog({
-                        title: '',
-                        message: `Contract Saved successfully`,
-                        isError: false
-                    }).subscribe(event => { window.location.reload(); });
+                    this.dialogService.showMessage('Success', 'Contract Saved Successfully', 'success', true, 'OK');
                     this.sharedServices.loadingChanged.next(false);
                 }
             }
@@ -408,12 +433,7 @@ export class AddEditViewContractComponent implements OnInit {
                         this.messageError = err.message;
                     }
 
-                    this.dialogService.openMessageDialog({
-                        title: '',
-
-                        message: this.messageError,
-                        isError: true
-                    });
+                    this.dialogService.showMessage(err.error.message, '', 'alert', true, 'OK', err.error.errors);
                     this.sharedServices.loadingChanged.next(false);
                 }
             });

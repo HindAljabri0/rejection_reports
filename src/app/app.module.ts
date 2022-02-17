@@ -34,7 +34,7 @@ import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
 import {
-  RejectionReportClaimDialogComponent
+    RejectionReportClaimDialogComponent
 } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadsCenterComponent } from './components/uploads-center/uploads-center.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
@@ -70,7 +70,7 @@ import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import {
-  UploadSummaryDialogComponent
+    UploadSummaryDialogComponent
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
@@ -101,152 +101,156 @@ import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphie
 import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
 import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
+import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-dialog.component';
 
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ClaimfileuploadComponent,
-    SidebarComponent,
-    HeaderComponent,
-    ClaimsummaryComponent,
-    UploadSummaryDialogComponent,
-    ClaimpageComponent,
-    AbstractcardComponent,
-    DragdropDirective,
-    SearchBarComponent,
-    SearchClaimsComponent,
-    MessageDialogComponent,
-    NotificationCenterComponent,
-    NotificationCardComponent,
-    AnnouncementCenterComponent,
-    AnnouncementCardComponent,
-    ClaimDialogComponent,
-    NotificationsPageComponent,
-    AnnouncementsPageComponent,
-    LoginComponent,
-    ReportsComponent,
-    DashboardComponent,
-    SearchWithAdvanceComponent,
-    PaymentReferenceReportComponent,
-    GeneralSummaryStatementReportComponent,
-    PaymentClaimDetailDailogComponent,
-    PaymentClaimSummaryReportComponent,
-    SubmittedInvoicesComponent,
-    RejectionReportClaimDialogComponent,
-    UploadsCenterComponent,
-    UploadsHistoryComponent,
-    // ScrollableDirective,
-    RejectionReportComponent,
-    LanguageSwitcherComponent,
-    SearchCriteriaComponent,
-    NonSubmittedClaimsComponent,
-    SubmittedClaimsComponent,
-    TopFiveRejectionsComponent,
-    RejectionCardComponent,
-    ClaimAttachmentsManagementComponent,
-    ImageToolTipDirective,
-    ImageTooltipComponent,
-    SummaryComponent,
-    GmReportsPageComponent,
-    ChangeLogDialogComponent,
-    MainLayoutComponent,
-    AttachmentViewDialogComponent,
-    ConfiguartionModalComponent,
-    UploadsPageComponent,
-    UploadCardComponent,
-    JsonViewDialogComponent,
-    DownloadOverlayComponent,
-    DownloadProgressViewComponent,
-    ConfirmAdminDeleteDialogComponent,
-    XmlViewDialogComponent,
-    EditClaimComponent,
-    ConfirmationAlertDialogComponent,
-    NphiesSearchClaimsComponent,
-    CertificateConfigurationComponent,
-    CertificateConfigurationModelComponent,
-    UploadClaimComponent,
-    MultiSheetFileUploadComponent,
-    NphiesClaimSummaryComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer, searchState: searchReducer }),
-    EffectsModule.forRoot([DashboardEffects, MainStoreEffects, SearchEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ScrollingModule,
-    InfiniteScrollModule,
-    MaterialModule,
-    SharedModule,
-    ChartsModule,
-    CarouselModule,
-    NgScrollbarModule,
-    SmoothScrollModule,
-    GuidedTourModule,
-    BsDatepickerModule.forRoot(),
-    NgxJsonViewerModule,
-    ClipboardModule,
-    MonacoEditorModule.forRoot(),
-    ClaimModule,
+    declarations: [
+        AppComponent,
+        ClaimfileuploadComponent,
+        SidebarComponent,
+        HeaderComponent,
+        ClaimsummaryComponent,
+        UploadSummaryDialogComponent,
+        ClaimpageComponent,
+        AbstractcardComponent,
+        DragdropDirective,
+        SearchBarComponent,
+        SearchClaimsComponent,
+        MessageDialogComponent,
+        NotificationCenterComponent,
+        NotificationCardComponent,
+        AnnouncementCenterComponent,
+        AnnouncementCardComponent,
+        ClaimDialogComponent,
+        NotificationsPageComponent,
+        AnnouncementsPageComponent,
+        LoginComponent,
+        ReportsComponent,
+        DashboardComponent,
+        SearchWithAdvanceComponent,
+        PaymentReferenceReportComponent,
+        GeneralSummaryStatementReportComponent,
+        PaymentClaimDetailDailogComponent,
+        PaymentClaimSummaryReportComponent,
+        SubmittedInvoicesComponent,
+        RejectionReportClaimDialogComponent,
+        UploadsCenterComponent,
+        UploadsHistoryComponent,
+        // ScrollableDirective,
+        RejectionReportComponent,
+        LanguageSwitcherComponent,
+        SearchCriteriaComponent,
+        NonSubmittedClaimsComponent,
+        SubmittedClaimsComponent,
+        TopFiveRejectionsComponent,
+        RejectionCardComponent,
+        ClaimAttachmentsManagementComponent,
+        ImageToolTipDirective,
+        ImageTooltipComponent,
+        SummaryComponent,
+        GmReportsPageComponent,
+        ChangeLogDialogComponent,
+        MainLayoutComponent,
+        AttachmentViewDialogComponent,
+        ConfiguartionModalComponent,
+        UploadsPageComponent,
+        UploadCardComponent,
+        JsonViewDialogComponent,
+        DownloadOverlayComponent,
+        DownloadProgressViewComponent,
+        ConfirmAdminDeleteDialogComponent,
+        XmlViewDialogComponent,
+        EditClaimComponent,
+        ConfirmationAlertDialogComponent,
+        NphiesSearchClaimsComponent,
+        CertificateConfigurationComponent,
+        CertificateConfigurationModelComponent,
+        UploadClaimComponent,
+        MultiSheetFileUploadComponent,
+        NphiesClaimSummaryComponent,
+        AlertDialogComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer, searchState: searchReducer }),
+        EffectsModule.forRoot([DashboardEffects, MainStoreEffects, SearchEffects]),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+        BrowserModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ScrollingModule,
+        InfiniteScrollModule,
+        MaterialModule,
+        SharedModule,
+        ChartsModule,
+        CarouselModule,
+        NgScrollbarModule,
+        SmoothScrollModule,
+        GuidedTourModule,
+        BsDatepickerModule.forRoot(),
+        NgxJsonViewerModule,
+        ClipboardModule,
+        MonacoEditorModule.forRoot(),
+        ClaimModule,
 
 
-  ],
-  providers: [
-    ThemeService,
-    UploadService,
-    NphiesClaimUploaderService,
-    ClipboardService,
-    // {
-    //   provide: ApmService,
-    //   useClass: ApmService,
-    //   deps: [Router]
-    // },
-    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
-    {
-      provide: 'RouteCanActiveService',
-      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
-    },
-    GuidedTourService
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: ApmErrorHandler
-    // }
-  ],
-  bootstrap: [AppComponent],
-  exports: [
-    MessageDialogComponent,
-    ClaimDialogComponent,
-    PaymentClaimDetailDailogComponent,
-    RejectionReportClaimDialogComponent,
-    TopFiveRejectionsComponent,
-    DownloadOverlayComponent,
-    ConfirmAdminDeleteDialogComponent
-  ],
-  entryComponents: [
-    MessageDialogComponent,
-    ClaimDialogComponent,
-    PaymentClaimDetailDailogComponent,
-    RejectionReportClaimDialogComponent,
-    NonSubmittedClaimsComponent,
-    SubmittedClaimsComponent,
-    TopFiveRejectionsComponent,
-    ImageTooltipComponent,
-    UploadSummaryDialogComponent,
-    ChangeLogDialogComponent,
-    AttachmentViewDialogComponent,
-    JsonViewDialogComponent,
-    ConfiguartionModalComponent,
-    DownloadOverlayComponent,
-    ConfirmAdminDeleteDialogComponent,
-    XmlViewDialogComponent,
-    EditClaimComponent,
-    ConfirmationAlertDialogComponent,
-    CertificateConfigurationModelComponent
-  ],
+    ],
+    providers: [
+        ThemeService,
+        UploadService,
+        NphiesClaimUploaderService,
+        ClipboardService,
+        // {
+        //   provide: ApmService,
+        //   useClass: ApmService,
+        //   deps: [Router]
+        // },
+        { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
+        {
+            provide: 'RouteCanActiveService',
+            useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
+        },
+        GuidedTourService
+        // {
+        //   provide: ErrorHandler,
+        //   useClass: ApmErrorHandler
+        // }
+    ],
+    bootstrap: [AppComponent],
+    exports: [
+        MessageDialogComponent,
+        ClaimDialogComponent,
+        PaymentClaimDetailDailogComponent,
+        RejectionReportClaimDialogComponent,
+        TopFiveRejectionsComponent,
+        DownloadOverlayComponent,
+        ConfirmAdminDeleteDialogComponent,
+        AlertDialogComponent
+    ],
+    entryComponents: [
+        MessageDialogComponent,
+        ClaimDialogComponent,
+        AlertDialogComponent,
+        PaymentClaimDetailDailogComponent,
+        RejectionReportClaimDialogComponent,
+        NonSubmittedClaimsComponent,
+        SubmittedClaimsComponent,
+        TopFiveRejectionsComponent,
+        ImageTooltipComponent,
+        UploadSummaryDialogComponent,
+        ChangeLogDialogComponent,
+        AttachmentViewDialogComponent,
+        JsonViewDialogComponent,
+        ConfiguartionModalComponent,
+        DownloadOverlayComponent,
+        ConfirmAdminDeleteDialogComponent,
+        XmlViewDialogComponent,
+        EditClaimComponent,
+        ConfirmationAlertDialogComponent,
+        CertificateConfigurationModelComponent
+    ],
 })
 export class AppModule { }
 // platformBrowserDynamic().bootstrapModule(AppModule);

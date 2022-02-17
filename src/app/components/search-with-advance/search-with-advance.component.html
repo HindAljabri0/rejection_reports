@@ -7,23 +7,32 @@
         </mat-select>
     </mat-form-field>
     <div class="input-wrapper">
-        <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [readonly]="selectedSearchMode == 'payer&date'" (keyup.enter)="search()">
+        <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [readonly]="selectedSearchMode == 'payer&date'"
+            (keyup.enter)="search(true)">
         <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
         </button> -->
-        <div class="search-btns" *ngIf="isClaimUser && hasNphiesClaims">
-            <button  type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search()">
+        <div class="search-btns" *ngIf="isClaimUser && hasNphiesClaims && selectedCriteriaIsUsedInBoth else showOnlySearchIcon">
+            <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
             </button>
             <span class="separator"></span>
-            <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn">
+            <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(false)">
                 <mat-icon>search</mat-icon>
                 <span>NPHIES</span>
             </button>
         </div>
 
-        <mat-chip-list #chipList (keyup.enter)="search()">
+        <ng-template #showOnlySearchIcon>
+            <div class="search-btns">
+                <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+        <mat-chip-list #chipList (keyup.enter)="search(true)">
             <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'">
                 <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu" *ngIf="selectedSearchMode == 'payer&date'">
                     <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedPayer != null? selectedPayer.name : 'Select Payer'}}</span>

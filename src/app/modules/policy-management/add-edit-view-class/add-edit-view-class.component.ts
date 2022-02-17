@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Console } from 'console';
 import { benefit } from 'src/app/models/contractModels/classModels/benefit';
 import { classCrudRequest } from 'src/app/models/contractModels/classModels/classCrudRequest';
 import { classRequest } from 'src/app/models/contractModels/classModels/classRequest';
@@ -107,7 +106,7 @@ export class AddEditViewClassComponent implements OnInit {
 
     getClass(param) {
 
-        this.classService.getClassBySearchParam(param).subscribe(event => {
+        this.classService.getClassBySearchParam(param, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 //console.log(event.body);
                 if (event.body != null && event.body instanceof Array)
@@ -249,7 +248,7 @@ export class AddEditViewClassComponent implements OnInit {
     getPolicyList() {
         this.policyLoad.withpagenation = false;
         this.policyLoad.providerId = this.sharedServices.providerId;
-        this.policyService.getPolicyBySearchParam(this.policyLoad).subscribe(event => {
+        this.policyService.getPolicyBySearchParam(this.policyLoad, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null && event.body instanceof Array) {
@@ -363,15 +362,11 @@ export class AddEditViewClassComponent implements OnInit {
         //End of set data
         console.log(JSON.stringify(this.classTemplate));
 
-        this.classService.ManipulateClass(this.classTemplate).subscribe(event => {
+        this.classService.ManipulateClass(this.classTemplate, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
                 if (event.body != null) {
-                    this.dialogService.openMessageDialog({
-                        title: '',
-                        message: `Class Saved successfully`,
-                        isError: false
-                    }).subscribe(event => { window.location.reload(); });
+                    this.dialogService.showMessage('Success', 'Class Saved Successfully', 'success', true, 'OK');
                     this.sharedServices.loadingChanged.next(false);
                 }
             }
@@ -386,12 +381,7 @@ export class AddEditViewClassComponent implements OnInit {
                         this.messageError = err.message;
                     }
 
-                    this.dialogService.openMessageDialog({
-                        title: '',
-
-                        message: this.messageError,
-                        isError: true
-                    });
+                    this.dialogService.showMessage(err.error.message, '', 'alert', true, 'OK', err.error.errors);
                     this.sharedServices.loadingChanged.next(false);
                 }
             });

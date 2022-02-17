@@ -245,6 +245,7 @@
                         </ul>
                     </mat-expansion-panel>
                 </mat-accordion>
+
                 <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
                     <li i18n="@@configurations">
                         <a routerLink="/configurations" routerLinkActive="is-active">
@@ -252,39 +253,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav-list" *ngIf="!envProd && !envStaging">
-                    <li>
-                        <a routerLink="/contract-management" routerLinkActive="is-active">
-                            <span class="text">Contract Management</span>
-                        </a>
-                    </li>
-                </ul>
-                <mat-accordion displayMode="flat" *ngIf="!envProd && !envStaging">
-                    <mat-expansion-panel hideToggle>
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>Policy Management</mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <ul class="nav-list">
-                            <li>
-                                <a routerLink="/policy-management" routerLinkActive="is-active">
-                                    <span class="text">Policies</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/policy-management/class-management" routerLinkActive="is-active">
-                                    <span class="text">Classes</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </mat-expansion-panel>
-                </mat-accordion>
-                <ul class="nav-list" *ngIf="!envProd && !envStaging">
-                    <li>
-                        <a routerLink="/billing-management" routerLinkActive="is-active">
-                            <span class="text">Billing Management</span>
-                        </a>
-                    </li>
-                </ul>
+
 
 
                 <ng-container *ngIf="hasAnyNphiesPrivilege">
@@ -345,7 +314,12 @@
                     </mat-expansion-panel>
                     <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>Claims</mat-panel-title>
+                            <mat-panel-title>
+                                <span class="d-flex align-items-center">
+                                    <span>Claims</span>
+                                    <span *ngIf="NewClaimTransactions > 0" class="alert-marker ml-auto alert-count">{{NewClaimTransactions}}</span>
+                                </span>
+                            </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ul class="nav-list">
                             <li>
@@ -400,8 +374,47 @@
                     </ul>
                 </ng-container>
             </div>
+            <div class="list-container" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
+                <div class="list-title primary">
+                    Contract & Billing
+                </div>
+                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
+                    <li>
+                        <a routerLink="/contract-management" routerLinkActive="is-active">
+                            <span class="text">Contract Management</span>
+                        </a>
+                    </li>
+                </ul>
+                <mat-accordion displayMode="flat"
+                    *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessClass">
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Policy Management</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="nav-list">
+                            <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy">
+                                <a routerLink="/policy-management" routerLinkActive="is-active">
+                                    <span class="text">Policies</span>
+                                </a>
+                            </li>
+                            <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessClass">
+                                <a routerLink="/policy-management/class-management" routerLinkActive="is-active">
+                                    <span class="text">Classes</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                    <li>
+                        <a routerLink="/billing-management" routerLinkActive="is-active">
+                            <span class="text">Billing Management</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <ng-container
-                *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isRCM)">
+                *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder))">
                 <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
                     <hr>
                 </div>
@@ -474,15 +487,22 @@
                 </mat-expansion-panel>
             </div>
             <ng-container
-                *ngIf="userPrivileges.WaseelPrivileges.isRCM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
+                *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
                 <div class="list-title">
                     <hr>
                 </div>
                 <div class="list-title">
-                    RCM Configurations
+                    RCM
                 </div>
             </ng-container>
-            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isRCM">
+            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin">
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/review/uploads" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+                            <span class="text">Claims Scrubbing</span>
+                        </a>
+                    </li>
+                </ul>
                 <mat-accordion displayMode="flat">
                     <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
                         <mat-expansion-panel-header>
@@ -498,7 +518,7 @@
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
-            <ng-container *ngIf="userPrivileges.WaseelPrivileges.isRCM || userPrivileges.WaseelPrivileges.isPAM">
+            <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
                 <ul class="nav-list">
                     <li>
                         <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">

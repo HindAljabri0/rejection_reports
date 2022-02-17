@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -405,6 +405,12 @@ export class SearchService {
         const requestUrl = `/admin/payer-report?providerId=${providerId}&payerId=${payerId}&fromDate=${fromDate}&toDate= ${toDate}&statuses=${statuses}`;
 
         const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl, '', { responseType: 'text', reportProgress: true });
+        return this.http.request(request);
+    }
+
+    getClaimAlerts(providerId: string) {
+        const requestUrl = `/providers/${providerId}/claims/alerts`;
+        const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
         return this.http.request(request);
     }
 

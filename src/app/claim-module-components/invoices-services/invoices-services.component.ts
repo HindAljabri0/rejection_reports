@@ -192,7 +192,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             }
         });
 
-
         this.actions.pipe(
             takeUntil(this._onDestroy),
             ofType(saveInvoices_Services)
@@ -219,15 +218,10 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         this._onDestroy.next();
         this._onDestroy.complete();
     }
-
     invoiceHasDuplicateService(invoice: Invoice) {
         let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId && x.error.includes('We found duplicate services in Invoice'));
-        return invoicesHasDuplicateService.length > 0 ? true : false
+        return invoicesHasDuplicateService.length > 0 ? 'Duplicate services in Invoice' : false
     }
-
-
-
-
     invoiceHasError(invoice: Invoice) {
         let check = 0;
         let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
@@ -249,8 +243,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         return check == 1 ? true : false
     }
 
-
-
     serviceHasError(service) {
         let iaHasError = false;
         this.errors.forEach(x => {
@@ -263,13 +255,11 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         })
         return iaHasError;
     }
+
     invoice: Invoice[] = [];
-
-
     setData(claim: Claim, claimProps: RetrievedClaimProps) {
         this.invoice = [];
         this.controllers = [];
-
         this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
 
         this.invoice = claim.invoice.slice().sort((inv1, inv2) => {
@@ -283,7 +273,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             }
         });
 
-
         this.invoice.forEach(invoice => {
             this.addInvoice(false);
             const index = this.controllers.length - 1;
@@ -291,6 +280,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
             this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
             this.controllers[index].invoiceDepartment.setValue(invoice.invoiceDepartment);
+            console.log(invoice.invoiceDepartment);
             invoice.service.forEach(service => {
                 this.addService(index, false);
                 const serviceIndex = this.controllers[index].services.length - 1;
@@ -605,10 +595,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         const invoice: Invoice = new Invoice();
 
         if (this.controllers[i].invoice != null) {
+
             invoice.invoiceId = this.controllers[i].invoice.invoiceId;
         }
-
-
         invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
         invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
         invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
