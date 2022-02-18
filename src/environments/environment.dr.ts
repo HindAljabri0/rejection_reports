@@ -29,5 +29,5 @@ export const environment = {
     claimsDownloadsService: `${host}/downloads`,
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
-    claimReviewService: `${host}/claims-review`
+    claimReviewService: `${host}/review`
 };

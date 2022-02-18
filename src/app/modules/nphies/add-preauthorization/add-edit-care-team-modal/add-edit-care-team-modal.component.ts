@@ -39,14 +39,62 @@ export class AddEditCareTeamModalComponent implements OnInit {
     careTeamRole: ['', Validators.required],
     speciality: ['', Validators.required],
     specialityFilter: [''],
+    practitionerName: [''],
+    practitionerId: ['']
   });
 
   isSubmitted = false;
 
   practitionerRoleList = this.sharedDataService.practitionerRoleList;
   careTeamRoleList = this.sharedDataService.careTeamRoleList;
+  IsPractitionerRequired = true;
+  IsPractitionerNameRequired = false;
 
-  pName = '';
+  PractitionerNameChange() {
+    if (this.FormCareTeam.controls.practitionerName.value || this.FormCareTeam.controls.practitionerId.value) {
+      this.FormCareTeam.controls.practitioner.clearValidators();
+      this.FormCareTeam.controls.practitioner.updateValueAndValidity();
+      this.FormCareTeam.controls.practitioner.setValue('');
+      this.IsPractitionerRequired = false;
+
+      this.FormCareTeam.controls.practitionerName.setValidators(Validators.required);
+      this.FormCareTeam.controls.practitionerName.updateValueAndValidity();
+      this.FormCareTeam.controls.practitionerId.setValidators(Validators.required);
+      this.FormCareTeam.controls.practitionerId.updateValueAndValidity();
+      this.IsPractitionerNameRequired = true;
+    } else {
+      this.FormCareTeam.controls.practitionerName.clearValidators();
+      this.FormCareTeam.controls.practitionerName.updateValueAndValidity();
+      this.FormCareTeam.controls.practitionerName.setValue('');
+
+      this.FormCareTeam.controls.practitionerId.clearValidators();
+      this.FormCareTeam.controls.practitionerId.updateValueAndValidity();
+      this.FormCareTeam.controls.practitionerId.setValue('');
+      this.IsPractitionerNameRequired = false;
+
+      this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
+      this.FormCareTeam.controls.practitioner.updateValueAndValidity();
+      this.FormCareTeam.controls.practitioner.setValue('');
+      this.IsPractitionerRequired = true;
+    }
+  }
+
+  PractitionerChange() {
+    if (this.FormCareTeam.controls.practitioner.value) {
+      this.FormCareTeam.controls.practitionerName.clearValidators();
+      this.FormCareTeam.controls.practitionerName.updateValueAndValidity();
+      this.FormCareTeam.controls.practitionerName.setValue('');
+
+      this.FormCareTeam.controls.practitionerId.clearValidators();
+      this.FormCareTeam.controls.practitionerId.updateValueAndValidity();
+      this.FormCareTeam.controls.practitionerId.setValue('');
+      this.IsPractitionerNameRequired = false;
+
+      this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
+      this.FormCareTeam.controls.practitioner.updateValueAndValidity();
+      this.IsPractitionerRequired = true;
+    }
+  }
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -86,11 +134,20 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
             this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
 
+            this.FormCareTeam.controls.practitioner.clearValidators();
+            this.FormCareTeam.controls.practitioner.updateValueAndValidity();
+
+            this.FormCareTeam.controls.practitionerName.clearValidators();
+            this.FormCareTeam.controls.practitionerId.updateValueAndValidity();
           } else {
             this.FormCareTeam.patchValue({
-              practitioner: ''
+              practitionerName: this.data.item.practitionerName,
+              practitionerId: this.data.item.physicianCode,
             });
-            this.pName = this.data.item.practitionerName;
+
+            this.FormCareTeam.controls.practitionerName.setValidators(Validators.required);
+            this.FormCareTeam.controls.practitionerId.setValidators(Validators.required);
+
             this.FormCareTeam.controls.practitioner.clearValidators();
             this.FormCareTeam.controls.practitioner.updateValueAndValidity();
           }
@@ -186,9 +243,9 @@ export class AddEditCareTeamModalComponent implements OnInit {
     if (this.FormCareTeam.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;
-      if (this.pName) {
-        model.practitionerName = this.pName;
-        model.physicianCode = this.data.item.physicianCode;
+      if (this.FormCareTeam.controls.practitionerName.value) {
+        model.practitionerName = this.FormCareTeam.controls.practitionerName.value;
+        model.physicianCode = this.FormCareTeam.controls.practitionerId.value;
       } else {
         model.practitionerName = this.FormCareTeam.controls.practitioner.value.name;
         model.physicianCode = this.FormCareTeam.controls.practitioner.value.physicianId.physicianCode;
@@ -207,5 +264,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
+
+
 
 }
