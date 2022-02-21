@@ -76,7 +76,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     }
 
     get isClaimUser() {
-        return this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser;
+        return this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin;
     }
 
     get hasNphiesClaims() {
