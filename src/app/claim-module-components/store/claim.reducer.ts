@@ -642,7 +642,8 @@ const _claimReducer = createReducer(
         let GDPN: GDPN;
         if (recalculateClaimGDPN) {
             GDPN = {
-                discount: { value: invoices.map(invoice => (invoice.invoiceGDPN != null ? invoice.invoiceGDPN.discount.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
+
+                discount: { value: invoices.map(invoice => (invoice.invoiceGDPN != null && invoice.invoiceGDPN.discount != null ? invoice.invoiceGDPN.discount.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
                 gross: { value: invoices.map(invoice => (invoice.invoiceGDPN.gross != null ? invoice.invoiceGDPN.gross.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
                 net: { value: invoices.map(invoice => (invoice.invoiceGDPN.net != null ? invoice.invoiceGDPN.net.value : 0)).reduce((pre, cur) => pre + cur), type: 'SAR' },
                 netVATamount: {
