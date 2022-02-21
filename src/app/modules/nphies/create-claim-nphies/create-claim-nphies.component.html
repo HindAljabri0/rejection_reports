@@ -1037,10 +1037,10 @@
 
 
   <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
-    <div class="block-header" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
+    <div class="block-header has-border" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
       <p>Create Claim</p>
     </div>
-    <div class="block-header" *ngIf="pageMode == 'EDIT'">
+    <div class="block-header has-border" *ngIf="pageMode == 'EDIT'">
       <p>Edit Claim</p>
     </div>
 
@@ -1076,70 +1076,24 @@
 
     </ul>
 
-    <div class="block-body create-claim-body">
+    <div class="block-body create-claim-body nphies-claim">
       <div class="bg-white">
-        <mat-tab-group [dynamicHeight]="true" class="primary-tab">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
+                error</mat-icon>
+              <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
+            </ng-template>
+            <app-beneficiary-tab [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormNphiesClaim" [(selectedBeneficiary)]="selectedBeneficiary"
+              (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
+          </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
               <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
                 error</mat-icon>
               <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
             </ng-template>
-            <h5 class="form-title pt-0">Beneficary Info</h5>
-            <div class="d-flex">
-              <div class="form-group flex-grow-1"
-                [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
-                <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-                <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
-                  [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
-                    {{beneficiary.name}} ({{beneficiary.documentId}})
-                  </mat-option>
-                </mat-autocomplete>
-                <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
-                  <span class="error-text">Please select a Beneficiary</span>
-                </div>
-              </div>
-              <div [hidden]="pageMode === 'EDIT'" class="form-group pl-3 pr-3">
-                <label class="control-label">&nbsp;</label>
-                <span class="pt-2 d-block semibold">OR</span>
-              </div>
-              <div [hidden]="pageMode === 'EDIT'" class="form-group">
-                <label class="control-label">&nbsp;</label>
-                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
-              </div>
-            </div>
-
-
-            <div class="row small-gutter" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
-              <div class="col-md-4">
-                <div class="form-group" [matTooltip]="selectedPlanIdError"
-                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
-                  <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
-                  <mat-form-field class="form-control custom-select-control">
-                    <mat-select formControlName="insurancePlanId">
-                      <mat-option value="">Select Insurance Plan</mat-option>
-                      <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId">
-                        {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
-                        ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
-                    <span class="error-text">Please select an Insurance Plan</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8">
-                <div class="form-group">
-                  <label class="control-label">Preauthorization Reference No</label>
-                  <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'">
-                  </tag-input>
-                </div>
-              </div>
-            </div>
-
             <h5 class="form-title">Claim Info</h5>
             <div class="row small-gutter">
               <div class="col-4 col-xxl-3">
@@ -1259,6 +1213,13 @@
                     <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                     <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                   </div>
+                </div>
+              </div>
+              <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                  <label class="control-label">Preauthorization Reference No</label>
+                  <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'">
+                  </tag-input>
                 </div>
               </div>
               <!-- <div class="col-4 col-lg-3">
