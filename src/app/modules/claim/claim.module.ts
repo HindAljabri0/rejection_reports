@@ -42,6 +42,7 @@ import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphi
 import { AddCommunicationDialogComponent } from '../nphies/add-communication-dialog/add-communication-dialog.component';
 import { CancelReasonModalComponent } from '../nphies/preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-transactions.component';
+import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-t
     ClaimErrorsComponent,
     LabResultsComponent,
     PbmCommentsComponent,
-    CreateClaimNphiesComponent
+    CreateClaimNphiesComponent,
+    BeneficiaryTabComponent
   ],
   imports: [
     RouterModule.forChild([
