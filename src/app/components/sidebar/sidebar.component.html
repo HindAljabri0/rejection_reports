@@ -373,46 +373,52 @@
                         </li>
                     </ul>
                 </ng-container>
+
+                <ng-container *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
+                    <div class="list-title">
+                        <hr>
+                    </div>
+                    <div class="list-title primary">
+                        Contract & Billing
+                    </div>
+                    <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
+                        <li>
+                            <a routerLink="/contract-management" routerLinkActive="is-active">
+                                <span class="text">Contract Management</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <mat-accordion displayMode="flat"
+                        *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessClass">
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Policy Management</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ul class="nav-list">
+                                <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy">
+                                    <a routerLink="/policy-management" routerLinkActive="is-active">
+                                        <span class="text">Policies</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessClass">
+                                    <a routerLink="/policy-management/class-management" routerLinkActive="is-active">
+                                        <span class="text">Classes</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                        <li>
+                            <a routerLink="/billing-management" routerLinkActive="is-active">
+                                <span class="text">Billing Management</span>
+                            </a>
+                        </li>
+                    </ul>
+                </ng-container>
+
             </div>
-            <div class="list-container" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
-                <div class="list-title primary">
-                    Contract & Billing
-                </div>
-                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
-                    <li>
-                        <a routerLink="/contract-management" routerLinkActive="is-active">
-                            <span class="text">Contract Management</span>
-                        </a>
-                    </li>
-                </ul>
-                <mat-accordion displayMode="flat"
-                    *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessClass">
-                    <mat-expansion-panel hideToggle>
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>Policy Management</mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <ul class="nav-list">
-                            <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy">
-                                <a routerLink="/policy-management" routerLinkActive="is-active">
-                                    <span class="text">Policies</span>
-                                </a>
-                            </li>
-                            <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessClass">
-                                <a routerLink="/policy-management/class-management" routerLinkActive="is-active">
-                                    <span class="text">Classes</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </mat-expansion-panel>
-                </mat-accordion>
-                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
-                    <li>
-                        <a routerLink="/billing-management" routerLinkActive="is-active">
-                            <span class="text">Billing Management</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
             <ng-container
                 *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder))">
                 <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
