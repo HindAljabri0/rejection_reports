@@ -1,0 +1,366 @@
+<ng-container *ngIf="FormNphiesClaim && pageMode">
+  <form [formGroup]="FormNphiesClaim">
+    <h5 class="form-title pt-0">Beneficary Info</h5>
+    <div class="d-flex">
+      <div class="form-group flex-grow-1"
+        [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
+        <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
+        <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
+          (keyup)="searchBeneficiaries()">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+            {{beneficiary.name}} ({{beneficiary.documentId}})
+          </mat-option>
+        </mat-autocomplete>
+        <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
+          <span class="error-text">Please select a Beneficiary</span>
+        </div>
+      </div>
+      <div [hidden]="pageMode === 'EDIT'" class="form-group pl-3 pr-3">
+        <label class="control-label">&nbsp;</label>
+        <span class="pt-2 d-block semibold">OR</span>
+      </div>
+      <div [hidden]="pageMode === 'EDIT'" class="form-group">
+        <label class="control-label">&nbsp;</label>
+        <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+      </div>
+    </div>
+
+
+    <div class="row small-gutter" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
+      <div class="col-md-4">
+        <div class="form-group" [matTooltip]="selectedPlanIdError"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
+          <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="insurancePlanId" (selectionChange)="selectPlan($event)">
+              <mat-option value="">Select Insurance Plan</mat-option>
+              <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId">
+                {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
+                ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
+            <span class="error-text">Please select an Insurance Plan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-filter-panel">
+      <h5 class="form-title pt-0">Personal Information</h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+            <input placeholder="Enter first name" class="form-control" formControlName="firstName">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Second Name</label>
+            <input placeholder="Enter second name" class="form-control" formControlName="middleName">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Third Name</label>
+            <input placeholder="Enter third name" class="form-control" formControlName="lastName">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Family Name</label>
+            <input placeholder="Enter family name" class="form-control" formControlName="familyName">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')}">
+            <label class="control-label">Full Name<span class="asterisk">*</span></label>
+            <input placeholder="Enter full name" class="form-control" formControlName="fullName">
+            <div *ngIf="(isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')">
+              <span class="error-text">Please enter full name</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Beneficiary File ID</label>
+            <input placeholder="Enter beneficiary file ID" class="form-control" formControlName="beneficiaryFileld">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')}">
+            <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
+            <div class="date-picker">
+              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" formControlName="dob">
+              <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
+              <mat-datepicker #dateOfBirth></mat-datepicker>
+            </div>
+            <div *ngIf="(isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')">
+              <span class="error-text">Please select Dob</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')}">
+            <label class="control-label">Gender<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="gender">
+                <mat-option value="">Select Gender</mat-option>
+                <mat-option value="MALE">Male</mat-option>
+                <mat-option value="FEMALE">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="(isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')">
+              <span class="error-text">Please select Gender</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')}">
+            <label class="control-label">Document Type<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="documentType">
+                <mat-option value="">Select Document Type</mat-option>
+                <mat-option value="PRC">Resident Card</mat-option>
+                <mat-option value="PPN">Passport</mat-option>
+                <mat-option value="VS">GCC ID</mat-option>
+                <mat-option value="NI">National Card</mat-option>
+                <mat-option value="NI">Border Number</mat-option>
+              </mat-select>
+              <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')">
+                <span class="error-text">Please select Document Type</span>
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')}">
+            <label class="control-label">Document ID<span class="asterisk">*</span></label>
+            <input placeholder="Enter document ID" class="form-control" formControlName="documentId">
+            <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')">
+              <span class="error-text">Please select Document Id</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">E-Health ID</label>
+            <input placeholder="Enter E-Health ID" class="form-control" formControlName="eHealthId">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Nationality</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [value]="selectedNationality" formControlName="nationality" (selectionChange)="selectedNationality = $event.value;" #Nationality>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Select Nationality" noEntriesFoundLabel="No nationalities found" formControlName="nationalityName"
+                    name='selectedNationality'>
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option value="">Select Nationality</mat-option>
+                <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Name">
+                  {{nationality.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Residency Type</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="residencyType">
+                <mat-option value="">Select Residency Type</mat-option>
+                <mat-option value="VISITOR">Visitor</mat-option>
+                <mat-option value="DEPENDENT">Dependent</mat-option>
+                <mat-option value="CITIZEN_OR_RESIDENT">Citizen or Resident</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Contact Number</label>
+            <input placeholder="Enter contact number" class="form-control" formControlName="contactNumber">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Marital Status</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="martialStatus">
+                <mat-option value="">Select Marital Status</mat-option>
+                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+                  {{MaritalStatusValue.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Blood Group</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formGroupName="bloodGroup">
+                <mat-option value="">Select Blood Group</mat-option>
+                <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
+                  {{bloodTybe.Name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Preferred Language</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formGroupName="preferredLanguage">
+                <mat-option value="">Select Preferred Language</mat-option>
+                <mat-option value="EN">English</mat-option>
+                <mat-option value="AR">Arabic</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Emergency Phone Number</label>
+            <input placeholder="Enter emergency phone number" class="form-control" formControlName="emergencyNumber">
+          </div>
+        </div>
+        <div class="col-4 col-lg-3">
+          <div class="form-group">
+            <label class="control-label">Email</label>
+            <input placeholder="Enter email" class="form-control" formControlName="email">
+          </div>
+        </div>
+      </div>
+
+      <h5 class="form-title">
+        <span>Address</span>
+      </h5>
+
+      <div class="table-responsive ">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>House No./Appartment</th>
+              <th>Street Name</th>
+              <th>City</th>
+              <th>State/Province</th>
+              <th>Country</th>
+              <th>Postal Code</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="align-middle">
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" formControlName="addressLine" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter Street Name" formControlName="streetLine" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter City" formControlName="bcity" />
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter State/Province" formControlName="bstate" />
+              </td>
+              <td>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select [value]="selectedCountry" formControlName="bcountry" (selectionChange)="selectedCountry = $event.value;" #Country>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="bcountryName" name='selectedCountry'>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="">Select Country</mat-option>
+                    <mat-option *ngFor="let nationality of filteredCountry | async " [value]="nationality.Name">
+                      {{nationality.Name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td>
+                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" formControlName="postalCode" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h5 class="form-title">
+        <span>Insurance Plan</span>
+      </h5>
+
+      <div class="table-responsive" *ngIf="insurancePlans.length > 0">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>Payer<span class="asterisk">*</span></th>
+              <th>Expiry Date</th>
+              <th>Member Card ID<span class="asterisk">*</span></th>
+              <th>Relation with Subscriber<span class="asterisk">*</span></th>
+              <th>Coverage Type<span class="asterisk">*</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
+              <td>
+                <div class="form-group m-0 w-260">
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="insurancePlanPayerId">
+                      <mat-option value="">Select Payer</mat-option>
+                      <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
+                        {{payer.englistName}}({{payer.arabicName}})</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="form-group m-0 w-130">
+                  <div class="date-picker">
+                    <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" formControlName="insurancePlanExpiryDate">
+                    <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                    <mat-datepicker #expiryDate></mat-datepicker>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="form-group m-0 w-160">
+                  <input type="text" class="form-control" placeholder="Enter member card ID" formControlName="insurancePlanMemberCardId" />
+                </div>
+              </td>
+              <td>
+                <div class="form-group m-0 w-160">
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="insurancePlanRelationWithSubscriber">
+                      <mat-option value="">Select Relation with Subscriber</mat-option>
+                      <mat-option *ngFor="let subscriber of subscriberRelationship" [value]="subscriber.Code">
+                        {{subscriber.Name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="form-group m-0 w-160">
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="insurancePlanCoverageType">
+                      <mat-option value="">Select Coverage Type</mat-option>
+                      <mat-option value="EHCPOL">Extended healthcare</mat-option>
+                      <mat-option value="PUBLICPOL">Public healthcare</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length == 0" [message]="'No insurance plans found!'"></app-empty-state>
+    </div>
+  </form>
+</ng-container>

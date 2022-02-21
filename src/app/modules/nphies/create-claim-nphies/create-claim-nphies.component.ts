@@ -76,7 +76,40 @@ export class CreateClaimNphiesComponent implements OnInit {
     adminSource: [''],
     reAdmission: [''],
     dischargeDispotion: [''],
-    serviceProvider: ['']
+    serviceProvider: [''],
+
+    firstName: [''],
+    middleName: [''],
+    lastName: [''],
+    familyName: [''],
+    fullName: ['', Validators.required],
+    beneficiaryFileld: [''],
+    dob: ['', Validators.required],
+    gender: ['', Validators.required],
+    documentType: ['', Validators.required],
+    documentId: ['', Validators.required],
+    eHealthId: [''],
+    nationality: [''],
+    nationalityName: [''],
+    residencyType: [''],
+    contactNumber: [''],
+    martialStatus: [''],
+    bloodGroup: [''],
+    preferredLanguage: [''],
+    emergencyNumber: [''],
+    email: [''],
+    addressLine: [''],
+    streetLine: [''],
+    bcity: [''],
+    bstate: [''],
+    bcountry: [''],
+    bcountryName: [''],
+    postalCode: [''],
+    insurancePlanPayerId: [''],
+    insurancePlanExpiryDate: [''],
+    insurancePlanMemberCardId: [''],
+    insurancePlanRelationWithSubscriber: [''],
+    insurancePlanCoverageType: [''],
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -374,42 +407,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  searchBeneficiaries() {
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormNphiesClaim.controls.beneficiaryName.value).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
-          // TODO: causing build issues
-          // if (name) {
-          //   this.selectBeneficiary(this.selectedBeneficiary);
-          // }
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-
-      }
-    });
-  }
-
-  selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
-    this.selectedBeneficiary = beneficiary;
-    this.FormNphiesClaim.patchValue({
-      beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
-      beneficiaryId: beneficiary.id
-    });
-  }
-
-  isPlanExpired(date: Date) {
-    if (date != null) {
-      if (!(date instanceof Date)) {
-        date = new Date(date);
-      }
-      return date.getTime() > Date.now() ? ' (Active)' : ' (Expired)';
-    }
-    return '';
+  selectedBenificiaryChange($event) {
+    this.selectedBeneficiary = $event;
   }
 
   openAddEditVisionLensDialog(visionSpecification: any = null) {
@@ -1302,10 +1301,23 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.isSubmitted = false;
   }
 
-  get checkErrorClaimInfo() {
-    if (this.isSubmitted && (!this.FormNphiesClaim.controls.beneficiaryName.value ||
+  get checkErrorBeneficiaryInfo() {
+    if (this.isSubmitted && (
+      !this.FormNphiesClaim.controls.beneficiaryName.value ||
       !this.FormNphiesClaim.controls.insurancePlanId.value ||
-      !this.FormNphiesClaim.controls.dateOrdered.value ||
+      !this.FormNphiesClaim.controls.fullName.value ||
+      !this.FormNphiesClaim.controls.dob.value ||
+      !this.FormNphiesClaim.controls.gender.value ||
+      !this.FormNphiesClaim.controls.documentType.value ||
+      !this.FormNphiesClaim.controls.documentId.value)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  get checkErrorClaimInfo() {
+    if (this.isSubmitted && (!this.FormNphiesClaim.controls.dateOrdered.value ||
       !this.FormNphiesClaim.controls.type.value)) {
 
       // this.hasErrorClaimInfo = true;
@@ -1315,6 +1327,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       return false;
     }
   }
+
 
   get checkErrorAccident() {
     let hasError = false;
