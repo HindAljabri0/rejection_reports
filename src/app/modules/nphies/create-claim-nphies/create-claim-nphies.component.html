@@ -1666,7 +1666,7 @@
                                   </tr>
                                   <tr>
                                     <td class="label">Discount(%)</td>
-                                    <td>{{item.discount!=null?item.discount +"
+                                    <td>{{item.discountPercent!=null?item.discountPercent +"
                                       %":"-"}}</td>
                                   </tr>
                                   <tr>
@@ -1702,8 +1702,8 @@
                                     <td>{{item.unitPrice}} <span class="currency">SR</span></td>
                                   </tr>
                                   <tr>
-                                    <td class="label">Factor</td>
-                                    <td>{{item.factor}}</td>
+                                    <td class="label">Discount Amount</td>
+                                    <td>{{item.discount!=null?item.discount:"-"}} <span class="currency" *ngIf="item.discount !=null">SR</span></td>
                                   </tr>
                                   <tr>
                                     <td class="label">Tax</td>
@@ -1725,6 +1725,10 @@
                                     <td class="label">Sub Site</td>
                                     <td>{{item.subSiteName ? item.subSiteName :"-"}}
                                     </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="label">Factor</td>
+                                    <td>{{item.factor}}</td>
                                   </tr>
                                 </tbody>
                               </table>
