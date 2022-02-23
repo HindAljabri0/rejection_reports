@@ -6,7 +6,8 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p>Bill Details</p>
+            <p *ngIf="addMode"> Add Bill Details</p>
+            <p *ngIf="EditMode"> Edit Bill Details</p>
         </div>
     </div>
     <div class="bg-white">
@@ -119,18 +120,16 @@
                                 <!--<input type="text" class="form-control" placeholder="Insurance discount amount" (change)="changeAmount($event,sev.serviceId)" [formControl]="sev.discountAmountController" />-->
                             </div>
                         </td>
-                        <td>{{sev.cashAmount}}<span class="currency">SR</span>
+                        <td>{{sev.cashAmount | number : '1.2-2'}}<span class="currency">SR</span>
                             <!-- <div class="form-group m-0">
                                 <input type="text" value={{sev.cashAmount}} class="form-control">
                             </div> -->
                         </td>
-                        <td class="text-nowrap">{{sev.grossAmount}}<span class="currency">SR</span></td>
-                        <td class="text-nowrap">
-                            {{sev.serviceDiscountAmount}} <span class="currency">SR</span>
-                            <p class="text-grey">{{sev.insDiscountAmount}}{{sev.insDiscountType}}</p>
+                        <td class="text-nowrap">{{sev.grossAmount | number : '1.2-2'}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap">{{sev.serviceDiscountAmount | number : '1.2-2'}} <span class="currency">SR</span>
+                            <p class="text-grey">{{sev.insDiscountAmount | number : '1.2-2'}}{{sev.insDiscountType}}</p>
                         </td>
-                        <td class="text-nowrap">
-                            {{sev.insShareAmount}} <span class="currency">SR</span>
+                        <td class="text-nowrap">{{sev.insShareAmount | number : '1.2-2'}} <span class="currency">SR</span>
                             <p class="text-grey"></p>
                         </td>
                         <td class="text-nowrap">
@@ -150,9 +149,9 @@
                     </tr>
                     <tr>
                         <td colspan="10" class="text-right border-top bold">Total</td>
-                        <td class="text-nowrap bold border-top">{{tableGrossAmount? tableGrossAmount : "0"}}<span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">{{tableDiscountAmount? tableDiscountAmount : "0"}} <span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">{{tableInsShareAmount? tableInsShareAmount : "0"}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableGrossAmount? tableGrossAmount : "0" | number : '1.2-2'}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableDiscountAmount? tableDiscountAmount : "0"| number : '1.2-2'}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableInsShareAmount? tableInsShareAmount : "0"| number : '1.2-2'}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">{{tablePatientShareAmount? tablePatientShareAmount : "0"}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
@@ -202,7 +201,7 @@
         </div>
         <div class="block-footer has-border">
             <div class="btn-list right-block">
-                <button type="button" color="primary" mat-flat-button (click)="createBill()">Save</button>
+                <button type="button" color="primary" mat-flat-button (click)="createOrUpdateBill()">{{ addMode == true ? 'Save' : 'Update' }}</button>
                 <button mat-flat-button color="primary" routerLink="/billing-management/generate-bill-invoice">Generate Invoice</button>
             </div>
         </div>

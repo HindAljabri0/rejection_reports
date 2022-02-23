@@ -55,6 +55,13 @@ export class ContractService {
         return this.httpClient.request(httpRequest);
     }
 
+    updateBill(contract: BillTemplate) {
+        const requestUrl = `/billing/updateBill`;
+        let body: any = { ...contract };
+        const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
+        return this.httpClient.request(httpRequest);
+    }
+
     getBillList(providerId: string) {
         const requestUrl = `/billing/searchBill/${providerId}`;
         const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
@@ -63,6 +70,12 @@ export class ContractService {
 
     getDoctorsByProviderId(providerId: string) {
         const requestUrl = `/billing/searchDoctor/${providerId}`;
+        const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
+        return this.httpClient.request(request);
+    }
+
+    getBillDetailsByBillId(billId: string) {
+        const requestUrl = `/billing/billDetails/${billId}`;
         const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
         return this.httpClient.request(request);
     }
