@@ -1,132 +1,132 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-  <div class="block-header has-border">
-    <div class="d-flex align-items-center">
-      <div class="actions mr-2 my-n2 ml-n1">
-        <button matRipple type="button" (click)="goBack()" class="action-btn">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </div>
-      <p>Reconciliation Details</p>
+    <div class="block-header has-border">
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" (click)="goBack()" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p>Reconciliation Details</p>
+        </div>
     </div>
-  </div>
-  <div class="p-14 bg-white" *ngIf="reconciliationDetails">
-    <div class="row small-gutter">
-      <div class="col-4">
-        <div class="form-group form-group-static">
-          <label class="control-label">Payment Issuer</label>
-          <span class="form-control-static">{{reconciliationDetails.paymentIssuer ? reconciliationDetails.paymentIssuer : '-'}}</span>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="form-group form-group-static">
-          <label class="control-label">Disposition</label>
-          <span class="form-control-static">{{reconciliationDetails.disposition ? reconciliationDetails.disposition : '-'}}</span>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="form-group form-group-static">
-          <label class="control-label">
-            <span class="d-flex align-items-center">
-              <span class="pr-2">Payment Date</span>
-              <mat-icon class="material-icons-outlined size-20" matTooltip="The date of payment as indicated on the financial instrument.">info</mat-icon>
-            </span>
-          </label>
-          <span class="form-control-static">{{reconciliationDetails.paymentDate | date : 'dd/MM/yyyy'}}</span>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="form-group form-group-static">
-          <label class="control-label">Payment Amount</label>
-          <span class="form-control-static">{{reconciliationDetails.paymentAmount}} <span class="currency">SR</span></span>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="form-group form-group-static">
-          <label class="control-label">Payment Identifier</label>
-          <span class="form-control-static">{{reconciliationDetails.paymentIdentifierId ? reconciliationDetails.paymentIdentifierId : '-'}}</span>
-        </div>
-      </div>
-    </div>
-    <h5 class="form-title no-border pt-3">Payment Distribution</h5>
-  </div>
-  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-    <div class="fixed-height fixed-height-lg">
-      <table *ngIf="reconciliationDetails" class="primary-grid manual-row-color horizontal-borders no-borders" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr>
-            <th width="10"></th>
-            <th>ID</th>
-            <th>Claim ID</th>
-            <th>Payment</th>
-            <th>Early Fee</th>
-            <th>NPHIES Fee</th>
-            <th>Total Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let pd of reconciliationDetails.reconciliationDetails">
-            <tr>
-              <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
-                <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
-                <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
-              </td>
-              <td class="row-click" (click)="toggleRow(0)">{{pd.reconciliationDetailId}}</td>
-              <td class="row-click" (click)="showClaim(pd.claimRequestId, pd.uploadId, pd.claimResponseId)">{{pd.claimRequestId}}</td>
-              <td class="row-click" (click)="toggleRow(0)">{{pd.componentPayment}} <span class="currency">SR</span></td>
-              <td class="row-click" (click)="toggleRow(0)">
-                <span *ngIf="pd.componentEarlyFee">{{pd.componentEarlyFee}} <span class="currency">SR</span></span>
-                <span *ngIf="!pd.componentEarlyFee">-</span>
-              </td>
-              <td class="row-click" (click)="toggleRow(0)">
-                <span *ngIf="pd.componentNphiesFee">{{pd.componentNphiesFee}} <span class="currency">SR</span></span>
-                <span *ngIf="!pd.componentNphiesFee">-</span>
-              </td>
-              <td class="row-click" (click)="toggleRow(0)">{{pd.amount}} <span class="currency">SR</span></td>
-            </tr>
-            <tr *ngIf="currentOpenRecord==0">
-              <td colspan="7">
-                <div class="box pb-0">
-                  <div class="row small-gutter">
-                    <div class="col-4">
-                      <div class="form-group form-group-static">
-                        <label class="control-label">Predecessor</label>
-                        <span class="form-control-static">{{pd.detailPredecessorId ? pd.detailPredecessorId : '-'}}</span>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group form-group-static">
-                        <label class="control-label">Type</label>
-                        <span class="form-control-static">{{pd.type | titlecase}}</span>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group form-group-static">
-                        <label class="control-label">Claim Response ID</label>
-                        <span class="form-control-static">{{pd.responseNphiesId ? pd.responseNphiesId : '-'}}</span>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group form-group-static">
-                        <label class="control-label">Claim Response Date</label>
-                        <span class="form-control-static">
-                          <span *ngIf="pd.cliamResponseDate">{{pd.paymentDate | date : 'dd/MM/yyyy'}}</span>
-                          <span *ngIf="!pd.cliamResponseDate">-</span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group form-group-static">
-                        <label class="control-label">Payee</label>
-                        <span class="form-control-static">{{pd.payeeId ? pd.payeeId : '-'}}</span>
-                      </div>
-                    </div>
-                  </div>
+    <div class="p-14 bg-white" *ngIf="reconciliationDetails">
+        <div class="row small-gutter">
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Issuer</label>
+                    <span class="form-control-static">{{reconciliationDetails.paymentIssuer ? reconciliationDetails.paymentIssuer : '-'}}</span>
                 </div>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Disposition</label>
+                    <span class="form-control-static">{{reconciliationDetails.disposition ? reconciliationDetails.disposition : '-'}}</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">
+                        <span class="d-flex align-items-center">
+                            <span class="pr-1">Payment Date</span>
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="The date of payment as indicated on the financial instrument.">info</mat-icon>
+                        </span>
+                    </label>
+                    <span class="form-control-static">{{reconciliationDetails.paymentDate | date : 'dd/MM/yyyy'}}</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Amount</label>
+                    <span class="form-control-static">{{reconciliationDetails.paymentAmount}} <span class="currency">SR</span></span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payment Identifier</label>
+                    <span class="form-control-static">{{reconciliationDetails.paymentIdentifierId ? reconciliationDetails.paymentIdentifierId : '-'}}</span>
+                </div>
+            </div>
+        </div>
+        <h5 class="form-title no-border pt-3">Payment Distribution</h5>
     </div>
-  </ng-scrollbar>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height fixed-height-lg">
+            <table *ngIf="reconciliationDetails" class="primary-grid manual-row-color horizontal-borders no-borders" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th width="10"></th>
+                        <th>ID</th>
+                        <th>Claim ID</th>
+                        <th>Payment</th>
+                        <th>Early Fee</th>
+                        <th>NPHIES Fee</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let pd of reconciliationDetails.reconciliationDetails">
+                        <tr>
+                            <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
+                                <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
+                                <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
+                            </td>
+                            <td class="row-click" (click)="toggleRow(0)">{{pd.reconciliationDetailId}}</td>
+                            <td class="row-click" (click)="showClaim(pd.claimRequestId, pd.uploadId, pd.claimResponseId)">{{pd.claimRequestId}}</td>
+                            <td class="row-click" (click)="toggleRow(0)">{{pd.componentPayment}} <span class="currency">SR</span></td>
+                            <td class="row-click" (click)="toggleRow(0)">
+                                <span *ngIf="pd.componentEarlyFee">{{pd.componentEarlyFee}} <span class="currency">SR</span></span>
+                                <span *ngIf="!pd.componentEarlyFee">-</span>
+                            </td>
+                            <td class="row-click" (click)="toggleRow(0)">
+                                <span *ngIf="pd.componentNphiesFee">{{pd.componentNphiesFee}} <span class="currency">SR</span></span>
+                                <span *ngIf="!pd.componentNphiesFee">-</span>
+                            </td>
+                            <td class="row-click" (click)="toggleRow(0)">{{pd.amount}} <span class="currency">SR</span></td>
+                        </tr>
+                        <tr *ngIf="currentOpenRecord==0">
+                            <td colspan="7">
+                                <div class="box pb-0">
+                                    <div class="row small-gutter">
+                                        <div class="col-4">
+                                            <div class="form-group form-group-static">
+                                                <label class="control-label">Predecessor</label>
+                                                <span class="form-control-static">{{pd.detailPredecessorId ? pd.detailPredecessorId : '-'}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group form-group-static">
+                                                <label class="control-label">Type</label>
+                                                <span class="form-control-static">{{pd.type | titlecase}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group form-group-static">
+                                                <label class="control-label">Claim Response ID</label>
+                                                <span class="form-control-static">{{pd.responseNphiesId ? pd.responseNphiesId : '-'}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group form-group-static">
+                                                <label class="control-label">Claim Response Date</label>
+                                                <span class="form-control-static">
+                                                    <span *ngIf="pd.cliamResponseDate">{{pd.paymentDate | date : 'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="!pd.cliamResponseDate">-</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group form-group-static">
+                                                <label class="control-label">Payee</label>
+                                                <span class="form-control-static">{{pd.payeeId ? pd.payeeId : '-'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
 </div>

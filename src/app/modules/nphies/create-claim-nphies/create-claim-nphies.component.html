@@ -599,7 +599,12 @@
                               <td>{{item.unitPrice}} <span class="currency">SR</span></td>
                             </tr>
                             <tr>
-                              <td class="label">Factor</td>
+                              <td class="label">
+                                <div class="d-flex align-items-center">
+                                  <span class="pr-1">Factor</span>
+                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                </div>
+                              </td>
                               <td>{{item.factor}}</td>
                             </tr>
                             <tr>
@@ -1222,6 +1227,16 @@
                   </tag-input>
                 </div>
               </div>
+              <div class="col-4 col-lg-3">
+                <div class="form-group"
+                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeNo').touched) && FormNphiesClaim.get('episodeNo').hasError('required')}">
+                  <label class="control-label">Episode No.</label>
+                  <input class="form-control" placeholder="Episode No" formControlName="episodeNo">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeNo').touched) && FormNphiesClaim.get('episodeNo').hasError('required')">
+                    <span class="error-text">Please enter Episode No</span>
+                  </div>
+                </div>
+              </div>
               <!-- <div class="col-4 col-lg-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
@@ -1703,7 +1718,8 @@
                                   </tr>
                                   <tr>
                                     <td class="label">Discount Amount</td>
-                                    <td>{{item.discount!=null?item.discount:"-"}} <span class="currency" *ngIf="item.discount !=null">SR</span></td>
+                                    <td>{{item.discount!=null?item.discount:"-"}} <span class="currency" *ngIf="item.discount !=null">SR</span>
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td class="label">Tax</td>
@@ -1727,7 +1743,13 @@
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td class="label">Factor</td>
+                                    <td class="label">
+                                      <div class="d-flex align-items-center">
+                                        <span class="pr-1">Factor</span>
+                                        <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info
+                                        </mat-icon>
+                                      </div>
+                                    </td>
                                     <td>{{item.factor}}</td>
                                   </tr>
                                 </tbody>

@@ -56,6 +56,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
     preAuthOfflineDate: [''],
+    episodeNo: ['', Validators.required],
     // preAuthResponseId: [''],
     accidentType: [''],
     streetName: [''],
@@ -651,6 +652,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+              x.invoiceNo = result.invoiceNo;
 
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -987,10 +989,9 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
+      this.model.episodeNo = this.FormNphiesClaim.controls.episodeNo.value;
       this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
-
-
 
       if (this.pageMode === 'EDIT') {
         this.model.provClaimNo = this.otherDataModel.provClaimNo;
@@ -1137,6 +1138,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
+          model.invoiceNo = x.invoiceNo;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
@@ -1175,6 +1177,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
+          model.invoiceNo = x.invoiceNo;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
@@ -1882,6 +1885,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.supportingInfoSequence = x.supportingInfoSequence;
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
+      model.invoiceNo = x.invoiceNo;
       // tslint:disable-next-line:max-line-length
       model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
 
