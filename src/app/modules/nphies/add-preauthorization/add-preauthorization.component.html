@@ -1,99 +1,101 @@
 <div class="animate__animated animate__faster animate__fadeIn">
 
-  <ng-container *ngIf="!IsJSONPosted">
-    <div class="block-header has-border">
-      <p>Request Pre Authorization</p>
-    </div>
-    <div class="block-filter-panel">
-      <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
-
-
-
-        <h5 class="form-title pt-0">Beneficary Info</h5>
-        <div class="d-flex">
-          <div class="form-group flex-grow-1"
-            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
-            <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
-              [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
-                {{beneficiary.name}} ({{beneficiary.documentId}})
-              </mat-option>
-            </mat-autocomplete>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
-              <span class="error-text">Please select a Beneficiary</span>
-            </div>
-          </div>
-          <div class="form-group pl-3 pr-3">
-            <label class="control-label">&nbsp;</label>
-            <span class="pt-2 d-block semibold">OR</span>
-          </div>
-          <div class="form-group">
-            <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New Beneficiary</button>
-          </div>
+    <ng-container *ngIf="!IsJSONPosted">
+        <div class="block-header has-border">
+            <p>Request Pre Authorization</p>
         </div>
+        <div class="block-filter-panel">
+            <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
 
-        <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
-          <div class="col-md-4">
-            <div class="form-group" [matTooltip]="selectedPlanIdError"
-              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
-              <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="insurancePlanId">
-                  <mat-option value="">Select Insurance Plan</mat-option>
-                  <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId">
-                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
-                    ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
-                <span class="error-text">Please select an Insurance Plan</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <h5 class="form-title">Pre Authorization Info</h5>
-        <div class="row small-gutter">
-          <div class="col-4 col-xxl-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
-              <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
-              <div class="date-picker">
-                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today" formControlName="dateOrdered">
-                <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
-                <mat-datepicker #dateOrderedCtrl></mat-datepicker>
-              </div>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
-                <span class="error-text">Please enter Date Ordered</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
-              <label class="control-label">Type<span class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
-                  <mat-option value="">Select Type</mat-option>
-                  <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
-                <span class="error-text">Please select a Type</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Sub Type</label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="subType">
-                  <mat-option value="">Select Sub Type</mat-option>
-                  <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
-                  <!-- <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
+
+                <h5 class="form-title pt-0">Beneficary Info</h5>
+                <div class="d-flex">
+                    <div class="form-group flex-grow-1"
+                        [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
+                        <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
+                        <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+                            [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                                {{beneficiary.name}} ({{beneficiary.documentId}})
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+                            <span class="error-text">Please select a Beneficiary</span>
+                        </div>
+                    </div>
+                    <div class="form-group pl-3 pr-3">
+                        <label class="control-label">&nbsp;</label>
+                        <span class="pt-2 d-block semibold">OR</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+                            Beneficiary</button>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
+                    <div class="col-md-4">
+                        <div class="form-group" [matTooltip]="selectedPlanIdError"
+                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
+                            <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="insurancePlanId">
+                                    <mat-option value="">Select Insurance Plan</mat-option>
+                                    <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId">
+                                        {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
+                                        ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+                                <span class="error-text">Please select an Insurance Plan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="form-title">Pre Authorization Info</h5>
+                <div class="row small-gutter">
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
+                            <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today" formControlName="dateOrdered">
+                                <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
+                                <mat-datepicker #dateOrderedCtrl></mat-datepicker>
+                            </div>
+                            <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+                                <span class="error-text">Please enter Date Ordered</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+                            <label class="control-label">Type<span class="asterisk">*</span></label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
+                                    <mat-option value="">Select Type</mat-option>
+                                    <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+                                <span class="error-text">Please select a Type</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Sub Type</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="subType">
+                                    <mat-option value="">Select Sub Type</mat-option>
+                                    <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
+                                    <!-- <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
                   </mat-option>
                   <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
                 FormPreAuthorization.controls.type.value === 'oral' ||
@@ -101,615 +103,623 @@
                 FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
                   <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency
                   </mat-option> -->
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-4 col-lg-3">
-            <div class="form-group">
-              <label class="control-label">Eligibility Response ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityResponseId">
-            </div>
-          </div>
-
-          <div class="col-4 col-lg-3">
-            <div class="form-group">
-              <label class="control-label">Offline Eligibility ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Offline Eligibility Date</label>
-              <div class="date-picker">
-                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
-                  formControlName="eligibilityOfflineDate">
-                <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
-                <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-4 col-xxl-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
-              <label class="control-label">Payee Type<span class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
-                  <mat-option value="">Select Payee Type</mat-option>
-                  <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
-                <span class="error-text">Please select Payee Type</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
-              <label class="control-label">Payee<span class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="payee">
-                  <mat-option value="">Select Payee</mat-option>
-                  <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
-                <span class="error-text">Please select payee</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div [ngClass]="{'text-danger': IsCareTeamRequired}">
-          <h5 class="form-title">
-            <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
-              <mat-icon>add</mat-icon>
-            </button>
-          </h5>
-          <div *ngIf="CareTeams.length > 0" class="table-responsive">
-            <table class="primary-grid no-borders">
-              <thead>
-                <tr>
-                  <th>Practitioner</th>
-                  <th>Practitioner Role</th>
-                  <th>Care Team Role</th>
-                  <th>Qualification</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let careTeam of CareTeams; let i = index">
-                  <td>
-                    {{careTeam.practitionerName}}
-                  </td>
-                  <td>
-                    {{careTeam.practitionerRoleName}}
-                  </td>
-                  <td>
-                    {{careTeam.careTeamRoleName}}
-                  </td>
-                  <td>
-                    {{careTeam.speciality}}
-                  </td>
-                  <td class="actions">
-                    <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
-                      <mat-icon>create</mat-icon>
-                    </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
-                      <mat-icon>delete_outline</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='No Care Team found!'>
-          </app-empty-state>
-          <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='Care Team required!'>
-          </app-empty-state>
-        </div>
-
-        <div [ngClass]="{'text-danger': IsDiagnosisRequired}">
-          <h5 class="form-title">
-            <span>Diagnosis<span class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
-              <mat-icon>add</mat-icon>
-            </button>
-          </h5>
-          <div *ngIf="Diagnosises.length > 0" class="table-responsive">
-            <table class="primary-grid no-borders">
-              <thead>
-                <tr>
-                  <th>Code - Description</th>
-                  <th>Type</th>
-                  <th>On Admission</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let diagnosis of Diagnosises; let i = index">
-                  <td>
-                    {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
-                  </td>
-                  <td>
-                    {{diagnosis.typeName}}
-                  </td>
-                  <td>
-                    {{diagnosis.onAdmissionName}}
-                  </td>
-                  <td class="actions">
-                    <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
-                      <mat-icon>create</mat-icon>
-                    </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
-                      <mat-icon>delete_outline</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='No Diagnosis found!'>
-          </app-empty-state>
-          <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='Diagnosis required!'>
-          </app-empty-state>
-        </div>
-
-        <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
-          <h5 class="form-title">
-            Vision Prescription
-          </h5>
-          <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-              <div class="form-group"
-                [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
-                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
-                <div class="date-picker">
-                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
-                  <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
-                  <mat-datepicker #visionWrittenDate></mat-datepicker>
-                </div>
-                <div
-                  *ngIf="IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))">
-                  <span class="error-text">Please select Date Written</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-8 col-xxl-3">
-              <div class="form-group"
-                [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
-                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
-                <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="prescriber">
-                    <mat-option value="">Select Prescriber</mat-option>
-                    <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
-                      {{pre.practitionerName}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <div
-                  *ngIf="IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))">
-                  <span class="error-text">Please select a Prescriber</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
-            <h5 class="d-flex align-items-center mb-3">
-              <strong class="medium">Lens Specifications</strong>
-              <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-              </button>
-            </h5>
-            <div *ngIf="VisionSpecifications" class="table-responsive">
-              <table class="primary-grid manual-row-color no-borders">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Eye</th>
-                    <th>Sphere</th>
-                    <th>Cylinder</th>
-                    <th>Axis</th>
-                    <th>Add</th>
-                    <th>Power</th>
-                    <th>Back Curve</th>
-                    <th>Diameter</th>
-                    <th>Prism</th>
-                    <th *ngIf="!claimReuseId" width="10"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
-                    <td>{{visionSpecification.productName}}</td>
-                    <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span></td>
-                    <td>{{visionSpecification.sphere}}</td>
-                    <td>{{visionSpecification.cylinder}}</td>
-                    <td>{{visionSpecification.axis}}</td>
-                    <td>{{visionSpecification.multifocalPower}}</td>
-                    <td>{{visionSpecification.lensPower}}</td>
-                    <td>{{visionSpecification.lensBackCurve}}</td>
-                    <td>{{visionSpecification.lensDiameter}}</td>
-                    <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
-                    <td *ngIf="!claimReuseId" class="actions">
-                      <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit" class="text-primary">
-                        <mat-icon>create</mat-icon>
-                      </button>
-                      <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete" class="text-primary">
-                        <mat-icon>delete_outline</mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='No Lens Specifications found!'>
-            </app-empty-state>
-            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='Lens Specifications reqired!'>
-            </app-empty-state>
-          </div>
-        </ng-container>
-
-        <h5 class="form-title">
-          <span>Supporting Info</span>
-          <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
-            <mat-icon>add</mat-icon>
-          </button>
-        </h5>
-        <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
-          <table class="primary-grid no-borders">
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Attachment</th>
-                <th>Code</th>
-                <th>Timing</th>
-                <th>Value</th>
-                <th>Reason</th>
-                <th width="10"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let s of SupportingInfo; let i = index">
-                <td>
-                  {{s.categoryName}}
-                </td>
-                <td>
-                  {{s.attachment}}
-                </td>
-                <td>
-                  {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
-                  <!-- {{s.codeName}} -->
-                </td>
-                <td>
-                  <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
-                  <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
-                </td>
-                <td>
-                  <span *ngIf="s.category=='attachment'">
-                    <!-- {{s.attachment}} -->
-                    <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
-                  </span>
-                  <span *ngIf="s.category!='attachment'">
-                    {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
-                  </span>
-                </td>
-                <td>
-                  {{s.reasonName}}
-                </td>
-                <td class="actions">
-                  <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(s.sequence, i)">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <app-empty-state *ngIf="SupportingInfo.length === 0" [className]="'size-sm'" message='No Supporting Info found!'>
-        </app-empty-state>
-
-        <h5 class="form-title">Accident</h5>
-        <div class="row small-gutter">
-          <div class="col-4 col-xxl-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))}">
-              <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="accidentType">
-                  <mat-option value="">Select Accident Type</mat-option>
-                  <mat-option *ngFor="let type of accidentTypeList" [value]="type">{{type.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div
-                *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))">
-                <span class="error-text">Please select an Accident Type</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Street Name</label>
-              <input placeholder="Enter street name" class="form-control" formControlName="streetName">
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">City</label>
-              <input placeholder="Enter city" class="form-control" formControlName="city">
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">State/Province</label>
-              <input placeholder="Enter state/province" class="form-control" formControlName="state">
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Country</label>
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
-                  <mat-option>
-                    <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
-                    </ngx-mat-select-search>
-                  </mat-option>
-                  <mat-option value="">Select Country</mat-option>
-                  <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Name">
-                    {{nationality.Name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
-              <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
-              <div class="date-picker">
-                <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
-                <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
-                <mat-datepicker #accidentDate></mat-datepicker>
-              </div>
-              <div *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
-                <span class="error-text">Please enter date</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div [ngClass]="{'text-danger': IsItemRequired}">
-          <h5 class="form-title">
-            <span>Items<span class="asterisk">*</span></span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-              [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
-              <mat-icon>add</mat-icon>
-            </button>
-          </h5>
-          <div *ngIf="Items.length > 0" class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-              <thead>
-                <tr>
-                  <th width="10"></th>
-                  <th>Type</th>
-                  <th>Code - Description</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
-                  <th>Net</th>
-                  <th>Non Standard Code</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let item of Items; let i = index">
-                  <tr>
-                    <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
-                      <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
-                    </td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
-                    </td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
-                      - {{item.itemDescription}}</td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
-                    </td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.unitPrice}} <span class="currency">SR</span></td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.net}} <span class="currency">SR</span></td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.nonStandardCode}}</td>
-                    <td class="actions text-nowrap">
-                      <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
-                        (click)="openAddEditItemDetailsDialog(item.sequence)">
-                        <mat-icon>add</mat-icon>
-                      </button>
-                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
-                        <mat-icon>create</mat-icon>
-                      </button>
-                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
-                        <mat-icon>delete_outline</mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr *ngIf="currentOpenItem==i">
-                    <td colspan="9">
-                      <div class="box mb-2">
-                        <h5 class="align-self-center medium pb-2">Item Info</h5>
-                        <div class="row">
-                          <div class="col-4">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                  <td class="label">Quantity</td>
-                                  <td>{{item.quantity}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Discount(%)</td>
-                                  <td>{{item.discount}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Tax(%)</td>
-                                  <td>{{item.taxPercent}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Patient Share(%)</td>
-                                  <td>{{item.patientShare}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Is Package?</td>
-                                  <td>
-                                    <span *ngIf="item.isPackage">Yes</span>
-                                    <span *ngIf="!item.isPackage">No</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Body Site</td>
-                                  <td>{{item.bodySiteName}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div class="col-4">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                  <td class="label">Unit Price</td>
-                                  <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Factor</td>
-                                  <td>{{item.factor}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Tax</td>
-                                  <td>{{item.tax}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Patient Share</td>
-                                  <td>{{item.patientShare}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Payer Share</td>
-                                  <td>{{item.payerShare}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Sub Site</td>
-                                  <td>{{item.subSiteName}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div class="col-4">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                  <td class="label">Start Date</td>
-                                  <td>{{item.startDateStr}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Non Standard Code</td>
-                                  <td>{{item.nonStandardCode}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Display</td>
-                                  <td>{{item.display}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Supporting Info</td>
-                                  <td>{{item.supportingInfoNames}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Diagnosis</td>
-                                  <td>{{item.diagnosisNames}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Care Teams</td>
-                                  <td>{{item.careTeamNames}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
-                      </div>
+                    </div>
 
-                      <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                        <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                        <table class="primary-grid manual-row-color claim-view-table no-borders">
-                          <thead>
-                            <tr>
-                              <th>Seq.</th>
-                              <th>Type</th>
-                              <th>Code - Description</th>
-                              <th>Non Standard Code</th>
-                              <th>Display</th>
-                              <th width="10"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let d of item.itemDetails; let di = index">
-                              <td class="row-click">{{d.sequence}}</td>
-                              <td class="row-click">{{d.typeName}}</td>
-                              <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
-                              <td class="row-click">{{d.nonStandardCode}}</td>
-                              <td class="row-click">{{d.display}}</td>
-                              <td class="actions text-nowrap">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                  <mat-icon>create</mat-icon>
-                                </button>
-                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
-                                  <mat-icon>delete_outline</mat-icon>
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
+                    <div class="col-4 col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Eligibility Response ID</label>
+                            <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityResponseId">
+                        </div>
+                    </div>
+
+                    <div class="col-4 col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Offline Eligibility ID</label>
+                            <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Offline Eligibility Date</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
+                                    formControlName="eligibilityOfflineDate">
+                                <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                                <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
+                            <label class="control-label">Payee Type<span class="asterisk">*</span></label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
+                                    <mat-option value="">Select Payee Type</mat-option>
+                                    <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
+                                <span class="error-text">Please select Payee Type</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
+                            <label class="control-label">Payee<span class="asterisk">*</span></label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="payee">
+                                    <mat-option value="">Select Payee</mat-option>
+                                    <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
+                                <span class="error-text">Please select payee</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div [ngClass]="{'text-danger': IsCareTeamRequired}">
+                    <h5 class="form-title">
+                        <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
+                        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </h5>
+                    <div *ngIf="CareTeams.length > 0" class="table-responsive">
+                        <table class="primary-grid no-borders">
+                            <thead>
+                                <tr>
+                                    <th>Practitioner</th>
+                                    <th>Practitioner Role</th>
+                                    <th>Care Team Role</th>
+                                    <th>Qualification</th>
+                                    <th width="10"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let careTeam of CareTeams; let i = index">
+                                    <td>
+                                        {{careTeam.practitionerName}}
+                                    </td>
+                                    <td>
+                                        {{careTeam.practitionerRoleName}}
+                                    </td>
+                                    <td>
+                                        {{careTeam.careTeamRoleName}}
+                                    </td>
+                                    <td>
+                                        {{careTeam.speciality}}
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                                            <mat-icon>create</mat-icon>
+                                        </button>
+                                        <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
-                      </div>
-                    </td>
-                  </tr>
+                    </div>
+                    <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='No Care Team found!'>
+                    </app-empty-state>
+                    <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='Care Team required!'>
+                    </app-empty-state>
+                </div>
+
+                <div [ngClass]="{'text-danger': IsDiagnosisRequired}">
+                    <h5 class="form-title">
+                        <span>Diagnosis<span class="asterisk">*</span></span>
+                        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </h5>
+                    <div *ngIf="Diagnosises.length > 0" class="table-responsive">
+                        <table class="primary-grid no-borders">
+                            <thead>
+                                <tr>
+                                    <th>Code - Description</th>
+                                    <th>Type</th>
+                                    <th>On Admission</th>
+                                    <th width="10"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let diagnosis of Diagnosises; let i = index">
+                                    <td>
+                                        {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
+                                    </td>
+                                    <td>
+                                        {{diagnosis.typeName}}
+                                    </td>
+                                    <td>
+                                        {{diagnosis.onAdmissionName}}
+                                    </td>
+                                    <td class="actions">
+                                        <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
+                                            <mat-icon>create</mat-icon>
+                                        </button>
+                                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='No Diagnosis found!'>
+                    </app-empty-state>
+                    <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='Diagnosis required!'>
+                    </app-empty-state>
+                </div>
+
+                <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
+                    <h5 class="form-title">
+                        Vision Prescription
+                    </h5>
+                    <div class="row small-gutter">
+                        <div class="col-4 col-xxl-3">
+                            <div class="form-group"
+                                [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
+                                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
+                                <div class="date-picker">
+                                    <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
+                                    <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #visionWrittenDate></mat-datepicker>
+                                </div>
+                                <div
+                                    *ngIf="IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))">
+                                    <span class="error-text">Please select Date Written</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-xxl-3">
+                            <div class="form-group"
+                                [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
+                                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+                                <mat-form-field class="form-control custom-select-control">
+                                    <mat-select formControlName="prescriber">
+                                        <mat-option value="">Select Prescriber</mat-option>
+                                        <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
+                                            {{pre.practitionerName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div
+                                    *ngIf="IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))">
+                                    <span class="error-text">Please select a Prescriber</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
+                        <h5 class="d-flex align-items-center mb-3">
+                            <strong class="medium">Lens Specifications</strong>
+                            <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </h5>
+                        <div *ngIf="VisionSpecifications" class="table-responsive">
+                            <table class="primary-grid manual-row-color no-borders">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Eye</th>
+                                        <th>Sphere</th>
+                                        <th>Cylinder</th>
+                                        <th>Axis</th>
+                                        <th>Add</th>
+                                        <th>Power</th>
+                                        <th>Back Curve</th>
+                                        <th>Diameter</th>
+                                        <th>Prism</th>
+                                        <th *ngIf="!claimReuseId" width="10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
+                                        <td>{{visionSpecification.productName}}</td>
+                                        <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span></td>
+                                        <td>{{visionSpecification.sphere}}</td>
+                                        <td>{{visionSpecification.cylinder}}</td>
+                                        <td>{{visionSpecification.axis}}</td>
+                                        <td>{{visionSpecification.multifocalPower}}</td>
+                                        <td>{{visionSpecification.lensPower}}</td>
+                                        <td>{{visionSpecification.lensBackCurve}}</td>
+                                        <td>{{visionSpecification.lensDiameter}}</td>
+                                        <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+                                        <td *ngIf="!claimReuseId" class="actions">
+                                            <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit" class="text-primary">
+                                                <mat-icon>create</mat-icon>
+                                            </button>
+                                            <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete" class="text-primary">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='No Lens Specifications found!'>
+                        </app-empty-state>
+                        <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='Lens Specifications reqired!'>
+                        </app-empty-state>
+                    </div>
                 </ng-container>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
-          </app-empty-state>
-          <app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
-          </app-empty-state>
+
+                <h5 class="form-title">
+                    <span>Supporting Info</span>
+                    <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </h5>
+                <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
+                    <table class="primary-grid no-borders">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Attachment</th>
+                                <th>Code</th>
+                                <th>Timing</th>
+                                <th>Value</th>
+                                <th>Reason</th>
+                                <th width="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let s of SupportingInfo; let i = index">
+                                <td>
+                                    {{s.categoryName}}
+                                </td>
+                                <td>
+                                    {{s.attachment}}
+                                </td>
+                                <td>
+                                    {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
+                                    <!-- {{s.codeName}} -->
+                                </td>
+                                <td>
+                                    <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
+                                    <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
+                                </td>
+                                <td>
+                                    <span *ngIf="s.category=='attachment'">
+                                        <!-- {{s.attachment}} -->
+                                        <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
+                                    </span>
+                                    <span *ngIf="s.category!='attachment'">
+                                        {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    {{s.reasonName}}
+                                </td>
+                                <td class="actions">
+                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
+                                        <mat-icon>create</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(s.sequence, i)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <app-empty-state *ngIf="SupportingInfo.length === 0" [className]="'size-sm'" message='No Supporting Info found!'>
+                </app-empty-state>
+
+                <h5 class="form-title">Accident</h5>
+                <div class="row small-gutter">
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))}">
+                            <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="accidentType">
+                                    <mat-option value="">Select Accident Type</mat-option>
+                                    <mat-option *ngFor="let type of accidentTypeList" [value]="type">{{type.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div
+                                *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))">
+                                <span class="error-text">Please select an Accident Type</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Street Name</label>
+                            <input placeholder="Enter street name" class="form-control" formControlName="streetName">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">City</label>
+                            <input placeholder="Enter city" class="form-control" formControlName="city">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">State/Province</label>
+                            <input placeholder="Enter state/province" class="form-control" formControlName="state">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Country</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
+                                    <mat-option>
+                                        <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName"
+                                            name='selectedCountry'>
+                                        </ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option value="">Select Country</mat-option>
+                                    <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Name">
+                                        {{nationality.Name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
+                            <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+                                <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
+                                <mat-datepicker #accidentDate></mat-datepicker>
+                            </div>
+                            <div *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
+                                <span class="error-text">Please enter date</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div [ngClass]="{'text-danger': IsItemRequired}">
+                    <h5 class="form-title">
+                        <span>Items<span class="asterisk">*</span></span>
+                        <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
+                            [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </h5>
+                    <div *ngIf="Items.length > 0" class="table-responsive">
+                        <table class="primary-grid manual-row-color claim-view-table no-borders">
+                            <thead>
+                                <tr>
+                                    <th width="10"></th>
+                                    <th>Type</th>
+                                    <th>Code - Description</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Net</th>
+                                    <th>Non Standard Code</th>
+                                    <th width="10"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let item of Items; let i = index">
+                                    <tr>
+                                        <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                                            <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
+                                            <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
+                                        </td>
+                                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
+                                        </td>
+                                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
+                                            - {{item.itemDescription}}</td>
+                                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
+                                        </td>
+                                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                                            {{item.unitPrice}} <span class="currency">SR</span></td>
+                                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                                            {{item.net}} <span class="currency">SR</span></td>
+                                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                                            {{item.nonStandardCode}}</td>
+                                        <td class="actions text-nowrap">
+                                            <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
+                                                (click)="openAddEditItemDetailsDialog(item.sequence)">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
+                                                <mat-icon>create</mat-icon>
+                                            </button>
+                                            <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="currentOpenItem==i">
+                                        <td colspan="9">
+                                            <div class="box mb-2">
+                                                <h5 class="align-self-center medium pb-2">Item Info</h5>
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <table class="inline-label-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="label">Quantity</td>
+                                                                    <td>{{item.quantity}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Discount(%)</td>
+                                                                    <td>{{item.discount}} %</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Tax(%)</td>
+                                                                    <td>{{item.taxPercent}} %</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Patient Share(%)</td>
+                                                                    <td>{{item.patientShare}} %</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Is Package?</td>
+                                                                    <td>
+                                                                        <span *ngIf="item.isPackage">Yes</span>
+                                                                        <span *ngIf="!item.isPackage">No</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Body Site</td>
+                                                                    <td>{{item.bodySiteName}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <table class="inline-label-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="label">Unit Price</td>
+                                                                    <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <span class="pr-1">Factor</span>
+                                                                            <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>{{item.factor}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Tax</td>
+                                                                    <td>{{item.tax}} <span class="currency">SR</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Patient Share</td>
+                                                                    <td>{{item.patientShare}} <span class="currency">SR</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Payer Share</td>
+                                                                    <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Sub Site</td>
+                                                                    <td>{{item.subSiteName}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <table class="inline-label-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="label">Start Date</td>
+                                                                    <td>{{item.startDateStr}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Non Standard Code</td>
+                                                                    <td>{{item.nonStandardCode}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Display</td>
+                                                                    <td>{{item.display}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Supporting Info</td>
+                                                                    <td>{{item.supportingInfoNames}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Diagnosis</td>
+                                                                    <td>{{item.diagnosisNames}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="label">Care Teams</td>
+                                                                    <td>{{item.careTeamNames}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                                                <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                                <table class="primary-grid manual-row-color claim-view-table no-borders">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Seq.</th>
+                                                            <th>Type</th>
+                                                            <th>Code - Description</th>
+                                                            <th>Non Standard Code</th>
+                                                            <th>Display</th>
+                                                            <th width="10"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let d of item.itemDetails; let di = index">
+                                                            <td class="row-click">{{d.sequence}}</td>
+                                                            <td class="row-click">{{d.typeName}}</td>
+                                                            <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
+                                                            <td class="row-click">{{d.nonStandardCode}}</td>
+                                                            <td class="row-click">{{d.display}}</td>
+                                                            <td class="actions text-nowrap">
+                                                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                                                                    (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                                                    <mat-icon>create</mat-icon>
+                                                                </button>
+                                                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
+                                                                    (click)="deleteItemDetails(item.sequence, di)">
+                                                                    <mat-icon>delete_outline</mat-icon>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                    <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
+                    </app-empty-state>
+                    <app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
+                    </app-empty-state>
+                </div>
+
+                <hr class="hr spaced" />
+
+                <div class="form-group">
+                    <button type="submit" mat-flat-button color="primary">
+                        <span>Request Authorization</span>
+                    </button>
+                </div>
+
+            </form>
         </div>
+    </ng-container>
 
-        <hr class="hr spaced" />
-
-        <div class="form-group">
-          <button type="submit" mat-flat-button color="primary">
-            <span>Request Authorization</span>
-          </button>
+    <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
+        <div class="block-header has-border">
+            <h5 class="primary-dialog-title">Authorization -
+                {{detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
+            <h5 class="primary-dialog-title ml-auto">Transaction -
+                {{detailsModel.providertransactionlogId}}</h5>
         </div>
-
-      </form>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
-    <div class="block-header has-border">
-      <h5 class="primary-dialog-title">Authorization -
-        {{detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
-      <h5 class="primary-dialog-title ml-auto">Transaction -
-        {{detailsModel.providertransactionlogId}}</h5>
-    </div>
-    <div class="bg-white p-14">
-      <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
-      </app-pre-authorization-details>
-    </div>
-    <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New
-      Authorization</button>
-  </ng-container>
+        <div class="bg-white p-14">
+            <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
+            </app-pre-authorization-details>
+        </div>
+        <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New
+            Authorization</button>
+    </ng-container>
 
 </div>
