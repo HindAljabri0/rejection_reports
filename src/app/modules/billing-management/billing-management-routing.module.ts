@@ -5,13 +5,14 @@ import { BillingComponent } from './billing/billing.component';
 import { GenerateBillInvoiceComponent } from './generate-bill-invoice/generate-bill-invoice.component';
 
 const routes: Routes = [
-  { path: '', component: BillingComponent },
-  { path: 'bill-details', component: BillDetailsComponent },
-  { path: 'generate-bill-invoice', component: GenerateBillInvoiceComponent }
+    { path: '', component: BillingComponent },
+    { path: 'bill-details/add', component: BillDetailsComponent },
+    { path: 'bill-details/edit/:billId', component: BillDetailsComponent },
+    { path: 'generate-bill-invoice', component: GenerateBillInvoiceComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class BillingManagementRoutingModule { }

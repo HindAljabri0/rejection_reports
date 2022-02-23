@@ -15,4 +15,6 @@ export class BillTemplate {
     patientId: string;
     departmentNo: string;
     doctorId: string
+
+    services: Array<BillServiceList>;
 }
