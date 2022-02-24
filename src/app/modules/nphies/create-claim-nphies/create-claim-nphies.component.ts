@@ -1885,7 +1885,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.supportingInfoSequence = x.supportingInfoSequence;
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
-      model.invoiceNo = x.invoiceNo;
+      // model.invoiceNo = x.invoiceNo;
       // tslint:disable-next-line:max-line-length
       model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
 
