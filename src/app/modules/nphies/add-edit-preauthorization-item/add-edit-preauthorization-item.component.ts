@@ -95,7 +95,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
-        discountPercent: (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice),
+        discountPercent: this.data.item.discountPercent,
+        // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
         // dp = d * 100 / (qty * up)
         factor: this.data.item.factor ? this.data.item.factor : 1,
         taxPercent: this.data.item.taxPercent,
