@@ -75,6 +75,7 @@
                         <th colspan="2" class="text-center">Insurance Share</th>
                         <th colspan="2" class="text-center">Patient Share</th>
                         <th rowspan="2">Net Amount</th>
+                        <th rowspan="2">Delete</th>
                     </tr>
                     <tr>
                         <th></th>
@@ -91,7 +92,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let sev of _services" class="align-middle">
+                    <tr *ngFor="let sev of _services; let i = index" class="align-middle">
                         <td>
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
@@ -146,6 +147,12 @@
                         </td>
 
                         <td class="text-nowrap">{{sev.netShareAmount}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap">
+                            <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteServiceFromBill(i)">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </td>
+
                     </tr>
                     <tr>
                         <td colspan="10" class="text-right border-top bold">Total</td>
@@ -156,6 +163,7 @@
                         <td class="text-nowrap bold border-top">{{tablePatientShareAmount? tablePatientShareAmount : "0"}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">{{tableNetAmount? tableNetAmount : "0"}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top"></td>
                     </tr>
                 </tbody>
             </table>

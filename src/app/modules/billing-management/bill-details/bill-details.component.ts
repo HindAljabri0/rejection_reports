@@ -338,7 +338,6 @@ export class BillDetailsComponent implements OnInit {
         this.billTemplate.patientId = this.billingDetailsControllerPatient.value;
         this.billTemplate.doctorId = this.billingDetailsControllerDoctor.value;
 
-        console.log("Yes");
         if (this.updateBillNo != null) {
             this.billTemplate.billNo = this.updateBillNo;
 
@@ -475,8 +474,12 @@ export class BillDetailsComponent implements OnInit {
 
         }));
         this.calculateTableAmounts();
-
         console.log("Do you work ?");
+    }
+
+    deleteServiceFromBill(index: number) {
+        this._services.splice(index, 1);
+        this.calculateTableAmounts();
     }
 
 
