@@ -217,6 +217,31 @@ export class CreateClaimNphiesComponent implements OnInit {
       documentType: this.otherDataModel.beneficiary.documentType,
       id: this.otherDataModel.beneficiary.id,
       name: this.otherDataModel.beneficiary.beneficiaryName,
+
+      firstName: this.otherDataModel.beneficiary.firstName,
+      secondName: this.otherDataModel.beneficiary.secondName,
+      thirdName: this.otherDataModel.beneficiary.thirdName,
+      familyName: this.otherDataModel.beneficiary.familyName,
+      fullName: this.otherDataModel.beneficiary.fullName,
+      fileId: this.otherDataModel.beneficiary.fileId,
+      dob: this.otherDataModel.beneficiary.dob,
+      gender: this.otherDataModel.beneficiary.gender,
+      eHealthId: this.otherDataModel.beneficiary.eHealthId,
+      nationality: this.otherDataModel.beneficiary.nationality,
+      residencyType: this.otherDataModel.beneficiary.residencyType,
+      contactNumber: this.otherDataModel.beneficiary.contactNumber,
+      maritalStatus: this.otherDataModel.beneficiary.maritalStatus,
+      bloodGroup: this.otherDataModel.beneficiary.bloodGroup,
+      preferredLanguage: this.otherDataModel.beneficiary.preferredLanguage,
+      emergencyPhoneNumber: this.otherDataModel.beneficiary.emergencyPhoneNumber,
+      email: this.otherDataModel.beneficiary.email,
+      addressLine: this.otherDataModel.beneficiary.addressLine,
+      streetLine: this.otherDataModel.beneficiary.streetLine,
+      city: this.otherDataModel.beneficiary.city,
+      state: this.otherDataModel.beneficiary.state,
+      country: this.otherDataModel.beneficiary.country,
+      postalCode: this.otherDataModel.beneficiary.postalCode,
+
       plans: [{
         payerNphiesId: this.otherDataModel.payerNphiesId,
         payerName: this.otherDataModel.insurer,
@@ -989,8 +1014,47 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
+
+      this.model.beneficiary = {};
+
+      this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
+      this.model.beneficiary.middleName = this.FormNphiesClaim.controls.middleName.value;
+      this.model.beneficiary.lastName = this.FormNphiesClaim.controls.lastName.value;
+      this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
+      this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
+      this.model.beneficiary.beneficiaryFileld = this.FormNphiesClaim.controls.beneficiaryFileld.value;
+      this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
+      this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
+      this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
+      this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
+      this.model.beneficiary.eHealthId = this.FormNphiesClaim.controls.eHealthId.value;
+      this.model.beneficiary.nationality = this.FormNphiesClaim.controls.nationality.value;
+      this.model.beneficiary.nationalityName = this.FormNphiesClaim.controls.nationalityName.value;
+      this.model.beneficiary.residencyType = this.FormNphiesClaim.controls.residencyType.value;
+      this.model.beneficiary.contactNumber = this.FormNphiesClaim.controls.contactNumber.value;
+      this.model.beneficiary.martialStatus = this.FormNphiesClaim.controls.martialStatus.value;
+      this.model.beneficiary.bloodGroup = this.FormNphiesClaim.controls.bloodGroup.value;
+      this.model.beneficiary.preferredLanguage = this.FormNphiesClaim.controls.preferredLanguage.value;
+      this.model.beneficiary.emergencyNumber = this.FormNphiesClaim.controls.emergencyNumber.value;
+      this.model.beneficiary.email = this.FormNphiesClaim.controls.email.value;
+      this.model.beneficiary.addressLine = this.FormNphiesClaim.controls.addressLine.value;
+      this.model.beneficiary.streetLine = this.FormNphiesClaim.controls.streetLine.value;
+      this.model.beneficiary.bcity = this.FormNphiesClaim.controls.bcity.value;
+      this.model.beneficiary.bstate = this.FormNphiesClaim.controls.bstate.value;
+      this.model.beneficiary.bcountry = this.FormNphiesClaim.controls.bcountry.value;
+      this.model.beneficiary.bcountryName = this.FormNphiesClaim.controls.bcountryName.value;
+      this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
+
+      this.model.insurancePlan = {};
+
+      this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+      this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+      this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
+      this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
+      this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+
       this.model.episodeNo = this.FormNphiesClaim.controls.episodeNo.value;
-      this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
+      // this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
 
       if (this.pageMode === 'EDIT') {
@@ -1000,11 +1064,11 @@ export class CreateClaimNphiesComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
       }
-      this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
-      this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
-      this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
-      // tslint:disable-next-line:max-line-length
-      this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
+      // this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
+      // this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
+      // this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+      // // tslint:disable-next-line:max-line-length
+      // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       if (this.FormNphiesClaim.controls.preAuthRefNo.value) {
         this.model.preAuthRefNo = this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
@@ -1885,7 +1949,14 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.supportingInfoSequence = x.supportingInfoSequence;
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
-      model.invoiceNo = x.invoiceNo;
+
+      x.discount = parseFloat(x.discount);
+      x.quantity = parseFloat(x.quantity);
+      x.unitPrice = parseFloat(x.unitPrice);
+
+      model.discountPercent = ((x.discount * 100) / (x.quantity * x.unitPrice)).toFixed(2);
+      model.discountPercent = parseFloat(model.discountPercent);
+      // model.invoiceNo = x.invoiceNo;
       // tslint:disable-next-line:max-line-length
       model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
 
