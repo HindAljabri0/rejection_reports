@@ -28,9 +28,8 @@ export class AdmissionComponent implements OnInit {
 
   constructor(private store: Store, private datePipe: DatePipe) { }
 
-  isInpatientClaim :boolean
+  isInpatientClaim:boolean
   ngOnInit() {
-
     this.store.select(getCaseType).subscribe(type => this.isInpatientClaim = (type == 'INPATIENT'))
 
     this.store.select(getPageMode).pipe(
