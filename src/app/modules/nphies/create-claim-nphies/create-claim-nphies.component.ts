@@ -45,7 +45,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
     patientFileNumber: [''],
-    insurancePlanId: ['', Validators.required],
     preAuthRefNo: [''],
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
@@ -106,11 +105,15 @@ export class CreateClaimNphiesComponent implements OnInit {
     bcountry: [''],
     bcountryName: [''],
     postalCode: [''],
+    insurancePlanId: ['', Validators.required],
     insurancePlanPayerId: [''],
     insurancePlanExpiryDate: [''],
     insurancePlanMemberCardId: [''],
     insurancePlanRelationWithSubscriber: [''],
     insurancePlanCoverageType: [''],
+    insurancePlanPayerName: [''],
+    insurancePrimary: [''],
+    insurancePayerNphiesId: ['']
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -211,7 +214,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   toEditMode() {
-    this.pageMode = 'EDIT';
+    this.pageMode = true ? 'EDIT' : 'ReSubmit';
     this.selectedBeneficiary = {
       documentId: this.otherDataModel.beneficiary.documentId,
       documentType: this.otherDataModel.beneficiary.documentType,
@@ -1020,33 +1023,32 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary = {};
 
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
-      this.model.beneficiary.middleName = this.FormNphiesClaim.controls.middleName.value;
-      this.model.beneficiary.lastName = this.FormNphiesClaim.controls.lastName.value;
+      this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
+      this.model.beneficiary.thirdName = this.FormNphiesClaim.controls.lastName.value;
       this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
       this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
-      this.model.beneficiary.beneficiaryFileld = this.FormNphiesClaim.controls.beneficiaryFileld.value;
+      this.model.beneficiary.fileId = this.FormNphiesClaim.controls.beneficiaryFileld.value;
       this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
       this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
       this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
       this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
       this.model.beneficiary.eHealthId = this.FormNphiesClaim.controls.eHealthId.value;
       this.model.beneficiary.nationality = this.FormNphiesClaim.controls.nationality.value;
-      this.model.beneficiary.nationalityName = this.FormNphiesClaim.controls.nationalityName.value;
+      // this.model.beneficiary.nationalityName = this.FormNphiesClaim.controls.nationalityName.value;
       this.model.beneficiary.residencyType = this.FormNphiesClaim.controls.residencyType.value;
       this.model.beneficiary.contactNumber = this.FormNphiesClaim.controls.contactNumber.value;
-      this.model.beneficiary.martialStatus = this.FormNphiesClaim.controls.martialStatus.value;
+      this.model.beneficiary.maritalStatus = this.FormNphiesClaim.controls.martialStatus.value;
       this.model.beneficiary.bloodGroup = this.FormNphiesClaim.controls.bloodGroup.value;
       this.model.beneficiary.preferredLanguage = this.FormNphiesClaim.controls.preferredLanguage.value;
-      this.model.beneficiary.emergencyNumber = this.FormNphiesClaim.controls.emergencyNumber.value;
+      this.model.beneficiary.emergencyPhoneNumber = this.FormNphiesClaim.controls.emergencyNumber.value;
       this.model.beneficiary.email = this.FormNphiesClaim.controls.email.value;
       this.model.beneficiary.addressLine = this.FormNphiesClaim.controls.addressLine.value;
       this.model.beneficiary.streetLine = this.FormNphiesClaim.controls.streetLine.value;
-      this.model.beneficiary.bcity = this.FormNphiesClaim.controls.bcity.value;
-      this.model.beneficiary.bstate = this.FormNphiesClaim.controls.bstate.value;
-      this.model.beneficiary.bcountry = this.FormNphiesClaim.controls.bcountry.value;
-      this.model.beneficiary.bcountryName = this.FormNphiesClaim.controls.bcountryName.value;
+      this.model.beneficiary.city = this.FormNphiesClaim.controls.bcity.value;
+      this.model.beneficiary.state = this.FormNphiesClaim.controls.bstate.value;
+      this.model.beneficiary.country = this.FormNphiesClaim.controls.bcountry.value;
+      // this.model.beneficiary.countryName = this.FormNphiesClaim.controls.bcountryName.value;
       this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
-
       this.model.insurancePlan = {};
 
       this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
@@ -1057,7 +1059,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       this.model.episodeNo = this.FormNphiesClaim.controls.episodeNo.value;
       // this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
-      this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
+      // this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
 
       if (this.pageMode === 'EDIT') {
         this.model.provClaimNo = this.otherDataModel.provClaimNo;
@@ -1581,24 +1583,91 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
     this.otherDataModel.submissionDate = response.submissionDate;
-
-    //     componentEarlyFee: null
-    // componentNphiesFee: null
-    // componentPayment: 40.25
-    // paymentDate: "2021-12-07T21:30:00.000+03:00"
-    // type: "payment"
     this.otherDataModel.claimId = response.claimId;
     this.otherDataModel.outcome = response.outcome;
     this.otherDataModel.disposition = response.disposition;
     this.otherDataModel.insurer = response.insurer;
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.beneficiary = response.beneficiary;
+
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0].name : '-';
     }
+
+
+    if (this.otherDataModel.beneficiary) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.firstName.setValue(this.otherDataModel.beneficiary.firstName);
+      this.FormNphiesClaim.controls.middleName.setValue(this.otherDataModel.beneficiary.secondName);
+      this.FormNphiesClaim.controls.lastName.setValue(this.otherDataModel.beneficiary.thirdName);
+      this.FormNphiesClaim.controls.familyName.setValue(this.otherDataModel.beneficiary.familyName);
+      this.FormNphiesClaim.controls.fullName.setValue(this.otherDataModel.beneficiary.fullName);
+      this.FormNphiesClaim.controls.beneficiaryFileld.setValue(this.otherDataModel.beneficiary.fileId);
+      this.FormNphiesClaim.controls.dob.setValue(this.otherDataModel.beneficiary.dob);
+      this.FormNphiesClaim.controls.gender.setValue(this.otherDataModel.beneficiary.gender);
+      this.FormNphiesClaim.controls.documentType.setValue(this.otherDataModel.beneficiary.documentType);
+      this.FormNphiesClaim.controls.documentId.setValue(this.otherDataModel.beneficiary.documentId);
+      this.FormNphiesClaim.controls.eHealthId.setValue(this.otherDataModel.beneficiary.eHealthId);
+      this.FormNphiesClaim.controls.nationality.setValue(this.otherDataModel.beneficiary.nationality);
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.nationalityName.setValue(nationalities.filter(x => x.Code === this.otherDataModel.beneficiary.nationality)[0] ? nationalities.filter(x => x.Code === this.otherDataModel.beneficiary.nationality)[0].Name : '');
+      this.FormNphiesClaim.controls.residencyType.setValue(this.otherDataModel.beneficiary.residencyType);
+      this.FormNphiesClaim.controls.contactNumber.setValue(this.otherDataModel.beneficiary.contactNumber);
+      this.FormNphiesClaim.controls.martialStatus.setValue(this.otherDataModel.beneficiary.maritalStatus);
+      this.FormNphiesClaim.controls.bloodGroup.setValue(this.otherDataModel.beneficiary.bloodGroup);
+      this.FormNphiesClaim.controls.preferredLanguage.setValue(this.otherDataModel.beneficiary.preferredLanguage);
+      this.FormNphiesClaim.controls.emergencyNumber.setValue(this.otherDataModel.beneficiary.emergencyPhoneNumber);
+      this.FormNphiesClaim.controls.email.setValue(this.otherDataModel.beneficiary.email);
+      this.FormNphiesClaim.controls.addressLine.setValue(this.otherDataModel.beneficiary.addressLine);
+      this.FormNphiesClaim.controls.streetLine.setValue(this.otherDataModel.beneficiary.streetLine);
+      this.FormNphiesClaim.controls.bcity.setValue(this.otherDataModel.beneficiary.city);
+      this.FormNphiesClaim.controls.bstate.setValue(this.otherDataModel.beneficiary.state);
+      this.FormNphiesClaim.controls.bcountry.setValue(this.otherDataModel.beneficiary.country);
+      if (this.otherDataModel.beneficiary.country) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.bcountryName.setValue(this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == this.otherDataModel.beneficiary.country.toLowerCase())[0].Name : '');
+      }
+      this.FormNphiesClaim.controls.postalCode.setValue(this.otherDataModel.beneficiary.postalCode);
+    }
+    if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.insurancePlan) {
+
+
+      if (this.otherDataModel.beneficiary.insurancePlan.coverageType) {
+        this.FormNphiesClaim.controls.insurancePlanCoverageType.setValue(this.otherDataModel.beneficiary.insurancePlan.coverageType);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.payerId) {
+        this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.payerId);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.memberCardId) {
+        this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(this.otherDataModel.beneficiary.insurancePlan.memberCardId);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
+        // tslint:disable-next-line:max-line-length
+        this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.expiryDate) {
+        this.FormNphiesClaim.controls.insurancePlanExpiryDate.setValue(this.otherDataModel.beneficiary.insurancePlan.expiryDate);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.primary) {
+        this.FormNphiesClaim.controls.insurancePrimary.setValue(this.otherDataModel.beneficiary.insurancePlan.primary);
+      }
+
+      this.otherDataModel.insurancePlan = this.otherDataModel.beneficiary.insurancePlan.coverageType;
+      this.otherDataModel.payerNphiesId = this.otherDataModel.beneficiary.insurancePlan.payerId;
+      this.otherDataModel.payerId = this.otherDataModel.beneficiary.insurancePlan.payerId;
+      this.otherDataModel.memberCardId = this.otherDataModel.beneficiary.insurancePlan.memberCardId;
+      this.otherDataModel.relationWithSubscriber = this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber;
+      this.otherDataModel.expiryDate = this.otherDataModel.beneficiary.insurancePlan.expiryDate;
+    }
+
+
     this.otherDataModel.accident = response.accident;
-    this.otherDataModel.insurancePlan = response.coverageType;
     this.otherDataModel.provClaimNo = response.provClaimNo;
     this.otherDataModel.claimRefNo = response.claimRefNo;
     this.otherDataModel.status = response.status;
@@ -1606,9 +1675,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.preAuthRefNo = response.preAuthDetails;
     this.otherDataModel.responseDecision = response.responseDecision;
     this.otherDataModel.providertransactionlogId = response.providertransactionlogId;
-    this.otherDataModel.payerNphiesId = response.payerNphiesId;
-    this.otherDataModel.memberCardId = response.memberCardId;
-    this.otherDataModel.relationWithSubscriber = response.relationWithSubscriber;
+
     // this.otherDataModel.totalAmount = response.totalAmount;
 
     if (response.preAuthDetails) {
@@ -1994,38 +2061,39 @@ export class CreateClaimNphiesComponent implements OnInit {
       return model;
     }).sort((a, b) => a.sequence - b.sequence);
 
-    this.setBeneficiary(response);
+    this.sharedServices.loadingChanged.next(false);
+    // this.setBeneficiary(response);
   }
 
-  setBeneficiary(res) {
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
-          this.selectedBeneficiary = body[0];
-          this.FormNphiesClaim.patchValue({
-            beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
-            beneficiaryId: res.beneficiary.beneficiaryId
-          });
-          this.FormNphiesClaim.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
-        }
-        this.sharedServices.loadingChanged.next(false);
-        if (location.href.includes('#edit')) {
-          this.toEditMode();
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+  // setBeneficiary(res) {
+  //   // tslint:disable-next-line:max-line-length
+  //   this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
+  //     if (event instanceof HttpResponse) {
+  //       const body = event.body;
+  //       if (body instanceof Array) {
+  //         this.beneficiariesSearchResult = body;
+  //         this.selectedBeneficiary = body[0];
+  //         this.FormNphiesClaim.patchValue({
+  //           beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
+  //           beneficiaryId: res.beneficiary.beneficiaryId
+  //         });
+  //         this.FormNphiesClaim.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
+  //       }
+  //       this.sharedServices.loadingChanged.next(false);
+  //       if (location.href.includes('#edit')) {
+  //         this.toEditMode();
+  //       }
+  //     }
+  //   }, errorEvent => {
+  //     if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-      this.sharedServices.loadingChanged.next(false);
-      if (location.href.includes('#edit')) {
-        this.toEditMode();
-      }
-    });
-  }
+  //     }
+  //     this.sharedServices.loadingChanged.next(false);
+  //     if (location.href.includes('#edit')) {
+  //       this.toEditMode();
+  //     }
+  //   });
+  // }
 
   get IsCareTeamRequired() {
     if (this.isSubmitted) {
