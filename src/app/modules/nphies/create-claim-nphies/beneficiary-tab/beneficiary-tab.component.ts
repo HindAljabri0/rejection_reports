@@ -65,7 +65,7 @@ export class BeneficiaryTabComponent implements OnInit {
     { Code: 'D', Name: 'Divorced' },
     { Code: 'L', Name: 'Legally Separated' },
     { Code: 'M', Name: 'Married' },
-    { Code: 'U', Name: 'Un Married' },
+    { Code: 'U', Name: 'Unmarried' },
     { Code: 'W', Name: 'Widowed' }];
 
   // bloodGroup: { Code: string, Name: string }[] = [
