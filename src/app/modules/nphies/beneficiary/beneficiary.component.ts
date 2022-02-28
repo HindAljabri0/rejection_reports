@@ -83,38 +83,65 @@ export class BeneficiaryComponent implements OnInit {
     selecteCoverageTypeErorr: string
   }[] = [];
 
+  // maritalStatuses: { Code: string, Name: string }[] = [
+  //   { Code: 'A', Name: 'Annulled' },
+  //   { Code: 'D', Name: 'Divorced' },
+  //   { Code: 'I', Name: 'Interlocutory' },
+  //   { Code: 'L', Name: 'Legally Separated' },
+  //   { Code: 'M', Name: 'Married' },
+  //   { Code: 'P', Name: 'Polygamous' },
+  //   { Code: 'S', Name: 'Never Married' },
+  //   { Code: 'T', Name: 'Domestic partner' },
+  //   { Code: 'U', Name: 'unmarried' },
+  //   { Code: 'W', Name: 'Widowed' }];
   maritalStatuses: { Code: string, Name: string }[] = [
-    { Code: 'A', Name: 'Annulled' },
     { Code: 'D', Name: 'Divorced' },
-    { Code: 'I', Name: 'Interlocutory' },
     { Code: 'L', Name: 'Legally Separated' },
     { Code: 'M', Name: 'Married' },
-    { Code: 'P', Name: 'Polygamous' },
-    { Code: 'S', Name: 'Never Married' },
-    { Code: 'T', Name: 'Domestic partner' },
-    { Code: 'U', Name: 'unmarried' },
-    { Code: 'W', Name: 'Widowed' },];
+    { Code: 'U', Name: 'Unmarried' },
+    { Code: 'W', Name: 'Widowed' }];
+
+  // bloodGroup: { Code: string, Name: string }[] = [
+  //   { Code: 'O_PLUS', Name: 'O+' },
+  //   { Code: 'O_MINUS', Name: 'O-' },
+  //   { Code: 'A_PLUS', Name: 'A+' },
+  //   { Code: 'A_MINUS', Name: 'A-' },
+  //   { Code: 'B_PLUS', Name: 'B+' },
+  //   { Code: 'B_MINUS', Name: 'B-' },
+  //   { Code: 'AB_PLUS', Name: 'AB+' },
+  //   { Code: 'AB_MINUS', Name: 'AB-' },
+  // ];
 
   bloodGroup: { Code: string, Name: string }[] = [
-    { Code: 'O_PLUS', Name: 'O+' },
-    { Code: 'O_MINUS', Name: 'O-' },
-    { Code: 'A_PLUS', Name: 'A+' },
-    { Code: 'A_MINUS', Name: 'A-' },
-    { Code: 'B_PLUS', Name: 'B+' },
-    { Code: 'B_MINUS', Name: 'B-' },
-    { Code: 'AB_PLUS', Name: 'AB+' },
-    { Code: 'AB_MINUS', Name: 'AB-' },
+    { Code: 'O+', Name: 'O+' },
+    { Code: 'O-', Name: 'O-' },
+    { Code: 'A+', Name: 'A+' },
+    { Code: 'A-', Name: 'A-' },
+    { Code: 'B+', Name: 'B+' },
+    { Code: 'B-', Name: 'B-' },
+    { Code: 'AB+', Name: 'AB+' },
+    { Code: 'AB-', Name: 'AB-' },
   ];
 
 
+  // SubscriberRelationship: { Code: string, Name: string }[] = [
+  //   { Code: 'CHILD', Name: 'Child' },
+  //   { Code: 'PARENT', Name: 'Parent' },
+  //   { Code: 'SPOUSE', Name: 'Spouse' },
+  //   { Code: 'COMMON', Name: 'Common Law Spouse' },
+  //   { Code: 'SELF', Name: 'Self' },
+  //   { Code: 'INJURED', Name: 'Injured Party' },
+  //   { Code: 'OTHER', Name: 'Other' },
+  // ];
+
   SubscriberRelationship: { Code: string, Name: string }[] = [
-    { Code: 'CHILD', Name: 'Child' },
-    { Code: 'PARENT', Name: 'Parent' },
-    { Code: 'SPOUSE', Name: 'Spouse' },
-    { Code: 'COMMON', Name: 'Common Law Spouse' },
-    { Code: 'SELF', Name: 'Self' },
-    { Code: 'INJURED', Name: 'Injured Party' },
-    { Code: 'OTHER', Name: 'Other' },
+    { Code: 'child', Name: 'Child' },
+    { Code: 'parent', Name: 'Parent' },
+    { Code: 'spouse', Name: 'Spouse' },
+    { Code: 'common', Name: 'Common Law Spouse' },
+    { Code: 'self', Name: 'Self' },
+    { Code: 'injured', Name: 'Injured Party' },
+    { Code: 'other', Name: 'Other' },
   ];
 
   beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
