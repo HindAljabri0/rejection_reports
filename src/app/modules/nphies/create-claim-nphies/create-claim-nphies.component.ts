@@ -41,228 +41,77 @@ export class CreateClaimNphiesComponent implements OnInit {
     isLoading = false;
     filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
-  FormNphiesClaim: FormGroup = this.formBuilder.group({
-    beneficiaryName: ['', Validators.required],
-    beneficiaryId: ['', Validators.required],
-    patientFileNumber: [''],
-    insurancePlanId: ['', Validators.required],
-    preAuthRefNo: [''],
-    dateOrdered: ['', Validators.required],
-    payee: ['', Validators.required],
-    payeeType: ['', Validators.required],
-    type: ['', Validators.required],
-    subType: [''],
-    eligibilityOfflineId: [''],
-    eligibilityOfflineDate: [''],
-    eligibilityResponseId: [''],
-    preAuthOfflineDate: [''],
-    episodeNo: ['', Validators.required],
-    // preAuthResponseId: [''],
-    accidentType: [''],
-    streetName: [''],
-    city: [''],
-    state: [''],
-    country: [''],
-    countryName: [''],
-    date: [''],
-    dateWritten: [''],
-    prescriber: [''],
-    status: [''],
-    encounterClass: [''],
-    serviceType: [''],
-    priority: [''],
-    startDate: [''],
-    periodEnd: [''],
-    origin: [''],
-    adminSource: [''],
-    reAdmission: [''],
-    dischargeDispotion: [''],
-    serviceProvider: [''],
+    FormNphiesClaim: FormGroup = this.formBuilder.group({
+        beneficiaryName: ['', Validators.required],
+        beneficiaryId: ['', Validators.required],
+        patientFileNumber: [''],
+        insurancePlanId: ['', Validators.required],
+        preAuthRefNo: [''],
+        dateOrdered: ['', Validators.required],
+        payee: ['', Validators.required],
+        payeeType: ['', Validators.required],
+        type: ['', Validators.required],
+        subType: [''],
+        eligibilityOfflineId: [''],
+        eligibilityOfflineDate: [''],
+        eligibilityResponseId: [''],
+        preAuthOfflineDate: [''],
+        episodeNo: ['', Validators.required],
+        // preAuthResponseId: [''],
+        accidentType: [''],
+        streetName: [''],
+        city: [''],
+        state: [''],
+        country: [''],
+        countryName: [''],
+        date: [''],
+        dateWritten: [''],
+        prescriber: [''],
+        status: [''],
+        encounterClass: [''],
+        serviceType: [''],
+        priority: [''],
+        startDate: [''],
+        periodEnd: [''],
+        origin: [''],
+        adminSource: [''],
+        reAdmission: [''],
+        dischargeDispotion: [''],
+        serviceProvider: [''],
 
-    firstName: [''],
-    middleName: [''],
-    lastName: [''],
-    familyName: [''],
-    fullName: ['', Validators.required],
-    beneficiaryFileld: [''],
-    dob: ['', Validators.required],
-    gender: ['', Validators.required],
-    documentType: ['', Validators.required],
-    documentId: ['', Validators.required],
-    eHealthId: [''],
-    nationality: [''],
-    nationalityName: [''],
-    residencyType: [''],
-    contactNumber: [''],
-    martialStatus: [''],
-    bloodGroup: [''],
-    preferredLanguage: [''],
-    emergencyNumber: [''],
-    email: [''],
-    addressLine: [''],
-    streetLine: [''],
-    bcity: [''],
-    bstate: [''],
-    bcountry: [''],
-    bcountryName: [''],
-    postalCode: [''],
-    insurancePlanPayerId: [''],
-    insurancePlanExpiryDate: [''],
-    insurancePlanMemberCardId: [''],
-    insurancePlanRelationWithSubscriber: [''],
-    insurancePlanCoverageType: [''],
-  });
-
-  typeList = this.sharedDataService.claimTypeList;
-  payeeTypeList = this.sharedDataService.payeeTypeList;
-  payeeList = [];
-  subTypeList = [];
-  accidentTypeList = this.sharedDataService.accidentTypeList;
-  encounterStatusList = this.sharedDataService.encounterStatusList;
-  encounterClassList = this.sharedDataService.encounterClassList;
-  encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
-  encounterPriorityList = this.sharedDataService.encounterPriorityList;
-  encounterAdminSourceList = this.sharedDataService.encounterAdminSourceList;
-  encounterReAdmissionList = this.sharedDataService.encounterReAdmissionList;
-  encounterDischargeDispositionList = this.sharedDataService.encounterDischargeDispositionList;
-  beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
-
-  VisionSpecifications = [];
-  SupportingInfo = [];
-  CareTeams = [];
-  Diagnosises = [];
-  Items = [];
-
-  model: any = {};
-  detailsModel: any = {};
-
-  isSubmitted = false;
-  IsLensSpecificationRequired = false;
-  IsDiagnosisRequired = false;
-  IsItemRequired = false;
-  IsDateWrittenRequired = false;
-  IsPrescriberRequired = false;
-
-  IsDateRequired = false;
-  IsAccidentTypeRequired = false;
-
-  today: Date;
-  nationalities = nationalities;
-  selectedCountry = '';
-
-  IsStatusRequired = false;
-  IsClassRequired = false;
-  IsServiceProviderRequired = false;
-
-  hasErrorClaimInfo = false;
-
-  claimId: number;
-  uploadId: number;
-  responseId: number;
-  pageMode = '';
-  currentOpenItem: number = null;
-  otherDataModel: any = {};
-
-  communications = [];
-
-  constructor(
-
-    private activatedRoute: ActivatedRoute,
-    private location: Location,
-    private dialogService: DialogService,
-    private sharedDataService: SharedDataService,
-    private sharedService: SharedServices,
-    private router: Router,
-    private providerNphiesApprovalService: ProviderNphiesApprovalService,
-    private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
-    private providerNphiesSearchService: ProviderNphiesSearchService,
-    private providersBeneficiariesService: ProvidersBeneficiariesService,
-    private nphiesClaimUploaderService: NphiesClaimUploaderService) {
-    this.today = new Date();
-  }
-
-  ngOnInit() {
-    if (this.activatedRoute.snapshot.queryParams.claimId) {
-      // this.isLoading = true;
-      // tslint:disable-next-line:radix
-      this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
-
-    } else {
-
-      this.pageMode = 'CREATE';
-      this.isLoading = false;
-
-    }
-
-    if (this.activatedRoute.snapshot.queryParams.uploadId) {
-      // tslint:disable-next-line:radix
-      this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
-    }
-
-    if (this.activatedRoute.snapshot.queryParams.claimResponseId) {
-      // tslint:disable-next-line:radix
-      this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
-    }
-
-    this.getPayees();
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    this.filteredNations.next(this.nationalities.slice());
-
-  }
-
-  toEditMode() {
-    this.pageMode = 'EDIT';
-    this.selectedBeneficiary = {
-      documentId: this.otherDataModel.beneficiary.documentId,
-      documentType: this.otherDataModel.beneficiary.documentType,
-      id: this.otherDataModel.beneficiary.id,
-      name: this.otherDataModel.beneficiary.beneficiaryName,
-
-      firstName: this.otherDataModel.beneficiary.firstName,
-      secondName: this.otherDataModel.beneficiary.secondName,
-      thirdName: this.otherDataModel.beneficiary.thirdName,
-      familyName: this.otherDataModel.beneficiary.familyName,
-      fullName: this.otherDataModel.beneficiary.fullName,
-      fileId: this.otherDataModel.beneficiary.fileId,
-      dob: this.otherDataModel.beneficiary.dob,
-      gender: this.otherDataModel.beneficiary.gender,
-      eHealthId: this.otherDataModel.beneficiary.eHealthId,
-      nationality: this.otherDataModel.beneficiary.nationality,
-      residencyType: this.otherDataModel.beneficiary.residencyType,
-      contactNumber: this.otherDataModel.beneficiary.contactNumber,
-      maritalStatus: this.otherDataModel.beneficiary.maritalStatus,
-      bloodGroup: this.otherDataModel.beneficiary.bloodGroup,
-      preferredLanguage: this.otherDataModel.beneficiary.preferredLanguage,
-      emergencyPhoneNumber: this.otherDataModel.beneficiary.emergencyPhoneNumber,
-      email: this.otherDataModel.beneficiary.email,
-      addressLine: this.otherDataModel.beneficiary.addressLine,
-      streetLine: this.otherDataModel.beneficiary.streetLine,
-      city: this.otherDataModel.beneficiary.city,
-      state: this.otherDataModel.beneficiary.state,
-      country: this.otherDataModel.beneficiary.country,
-      postalCode: this.otherDataModel.beneficiary.postalCode,
-
-      plans: [{
-        payerNphiesId: this.otherDataModel.payerNphiesId,
-        payerName: this.otherDataModel.insurer,
-        memberCardId: this.otherDataModel.memberCardId,
-        planId: null,
-        payerId: null,
-        coverageType: this.otherDataModel.insurancePlan,
-        expiryDate: null,
-        primary: null,
-        relationWithSubscriber: this.otherDataModel.relationWithSubscriber
-      }]
-    };
-    this.FormNphiesClaim.patchValue({
-      beneficiaryName: this.otherDataModel.beneficiary.beneficiaryName + ' (' + this.otherDataModel.beneficiary.documentId + ')',
-      beneficiaryId: this.otherDataModel.beneficiary.id
+        firstName: [''],
+        middleName: [''],
+        lastName: [''],
+        familyName: [''],
+        fullName: ['', Validators.required],
+        beneficiaryFileld: [''],
+        dob: ['', Validators.required],
+        gender: ['', Validators.required],
+        documentType: ['', Validators.required],
+        documentId: ['', Validators.required],
+        eHealthId: [''],
+        nationality: [''],
+        nationalityName: [''],
+        residencyType: [''],
+        contactNumber: [''],
+        martialStatus: [''],
+        bloodGroup: [''],
+        preferredLanguage: [''],
+        emergencyNumber: [''],
+        email: [''],
+        addressLine: [''],
+        streetLine: [''],
+        bcity: [''],
+        bstate: [''],
+        bcountry: [''],
+        bcountryName: [''],
+        postalCode: [''],
+        insurancePlanPayerId: [''],
+        insurancePlanExpiryDate: [''],
+        insurancePlanMemberCardId: [''],
+        insurancePlanRelationWithSubscriber: [''],
+        insurancePlanCoverageType: [''],
     });
-    if (this.otherDataModel.payerNphiesId) {
-      this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
-    }
-    this.enableControls();
-  }
 
     typeList = this.sharedDataService.claimTypeList;
     payeeTypeList = this.sharedDataService.payeeTypeList;
@@ -342,514 +191,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
             this.pageMode = 'CREATE';
             this.isLoading = false;
-            this.sharedServices.loadingChanged.next(false);
-          }
-        } else {
-          this.isLoading = false;
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }
-    }, err => {
-      if (err instanceof HttpErrorResponse) {
-        console.log('Error');
-        this.isLoading = false;
-        //  this.errorMessage=err.message
-        this.sharedServices.loadingChanged.next(false);
-      }
-    });
-  }
-
-  disableControls() {
-    this.FormNphiesClaim.controls.beneficiaryName.disable();
-    this.FormNphiesClaim.controls.beneficiaryId.disable();
-    this.FormNphiesClaim.controls.patientFileNumber.disable();
-    this.FormNphiesClaim.controls.insurancePlanId.disable();
-    this.FormNphiesClaim.controls.dateOrdered.disable();
-    this.FormNphiesClaim.controls.payeeType.disable();
-    this.FormNphiesClaim.controls.payee.disable();
-    this.FormNphiesClaim.controls.type.disable();
-    this.FormNphiesClaim.controls.subType.disable();
-    this.FormNphiesClaim.controls.accidentType.disable();
-    this.FormNphiesClaim.controls.streetName.disable();
-    this.FormNphiesClaim.controls.city.disable();
-    this.FormNphiesClaim.controls.state.disable();
-    this.FormNphiesClaim.controls.country.disable();
-    this.FormNphiesClaim.controls.countryName.disable();
-    this.FormNphiesClaim.controls.date.disable();
-    this.FormNphiesClaim.controls.dateWritten.disable();
-    this.FormNphiesClaim.controls.prescriber.disable();
-    this.FormNphiesClaim.controls.status.disable();
-    this.FormNphiesClaim.controls.encounterClass.disable();
-    this.FormNphiesClaim.controls.serviceType.disable();
-    this.FormNphiesClaim.controls.priority.disable();
-    this.FormNphiesClaim.controls.startDate.disable();
-    this.FormNphiesClaim.controls.periodEnd.disable();
-    this.FormNphiesClaim.controls.origin.disable();
-    this.FormNphiesClaim.controls.adminSource.disable();
-    this.FormNphiesClaim.controls.reAdmission.disable();
-    this.FormNphiesClaim.controls.dischargeDispotion.disable();
-    this.FormNphiesClaim.controls.serviceProvider.disable();
-    this.FormNphiesClaim.controls.eligibilityOfflineId.disable();
-    this.FormNphiesClaim.controls.eligibilityOfflineDate.disable();
-    this.FormNphiesClaim.controls.eligibilityResponseId.disable();
-    this.FormNphiesClaim.controls.preAuthOfflineDate.disable();
-    // this.FormNphiesClaim.controls.preAuthResponseId.disable();
-  }
-
-  enableControls() {
-    this.FormNphiesClaim.controls.beneficiaryName.disable();
-    this.FormNphiesClaim.controls.beneficiaryId.disable();
-    this.FormNphiesClaim.controls.patientFileNumber.enable();
-    this.FormNphiesClaim.controls.insurancePlanId.disable();
-    this.FormNphiesClaim.controls.dateOrdered.enable();
-    this.FormNphiesClaim.controls.payeeType.enable();
-    this.FormNphiesClaim.controls.payee.enable();
-    this.FormNphiesClaim.controls.type.disable();
-    this.FormNphiesClaim.controls.subType.disable();
-    this.FormNphiesClaim.controls.accidentType.enable();
-    this.FormNphiesClaim.controls.streetName.enable();
-    this.FormNphiesClaim.controls.city.enable();
-    this.FormNphiesClaim.controls.state.enable();
-    this.FormNphiesClaim.controls.country.enable();
-    this.FormNphiesClaim.controls.countryName.enable();
-    this.FormNphiesClaim.controls.date.enable();
-    this.FormNphiesClaim.controls.dateWritten.enable();
-    this.FormNphiesClaim.controls.prescriber.enable();
-    this.FormNphiesClaim.controls.status.enable();
-    this.FormNphiesClaim.controls.encounterClass.enable();
-    this.FormNphiesClaim.controls.serviceType.enable();
-    this.FormNphiesClaim.controls.priority.enable();
-    this.FormNphiesClaim.controls.startDate.enable();
-    this.FormNphiesClaim.controls.periodEnd.enable();
-    this.FormNphiesClaim.controls.origin.enable();
-    this.FormNphiesClaim.controls.adminSource.enable();
-    this.FormNphiesClaim.controls.reAdmission.enable();
-    this.FormNphiesClaim.controls.dischargeDispotion.enable();
-    this.FormNphiesClaim.controls.serviceProvider.enable();
-    this.FormNphiesClaim.controls.eligibilityOfflineId.enable();
-    this.FormNphiesClaim.controls.eligibilityOfflineDate.enable();
-    this.FormNphiesClaim.controls.eligibilityResponseId.enable();
-    this.FormNphiesClaim.controls.preAuthOfflineDate.enable();
-    // this.FormNphiesClaim.controls.preAuthResponseId.disable();
-  }
-
-  filterNationality() {
-
-    if (!this.nationalities) {
-      return;
-    }
-    // get the search keyword
-    let search = this.FormNphiesClaim.controls.nationalityFilterCtrl.value;
-    if (!search) {
-      this.filteredNations.next(this.nationalities.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the nations
-    this.filteredNations.next(
-      this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  onPayeeTypeChange() {
-    if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
-      // tslint:disable-next-line:max-line-length
-      this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
-    }
-    this.FormNphiesClaim.controls.payeeType.disable();
-    this.FormNphiesClaim.controls.payee.disable();
-  }
-
-  onStatusOrClassChange() {
-    if (this.FormNphiesClaim.controls.serviceProvider.value === '') {
-      this.FormNphiesClaim.controls.serviceProvider.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
-    }
-  }
-
-  onTypeChange($event) {
-    if ($event.value) {
-      switch ($event.value.value) {
-        case 'institutional':
-          this.subTypeList = [
-            { value: 'ip', name: 'InPatient' },
-            { value: 'emr', name: 'Emergency' },
-          ];
-          break;
-        case 'professional':
-        case 'vision':
-        case 'pharmacy':
-        case 'oral':
-          this.subTypeList = [
-            { value: 'op', name: 'OutPatient' },
-          ];
-          break;
-      }
-
-      this.Items = [];
-      this.VisionSpecifications = [];
-    }
-  }
-
-  selectedBenificiaryChange($event) {
-    this.selectedBeneficiary = $event;
-  }
-
-  openAddEditVisionLensDialog(visionSpecification: any = null) {
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
-    dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
-      Sequence: (visionSpecification !== null) ? visionSpecification.sequence : (this.VisionSpecifications.length === 0 ? 1 : (this.VisionSpecifications[this.VisionSpecifications.length - 1].sequence + 1)),
-      item: visionSpecification
-    };
-
-    const dialogRef = this.dialog.open(AddEditVisionLensSpecificationsComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.VisionSpecifications.find(x => x.sequence === result.sequence)) {
-          this.VisionSpecifications.map(x => {
-            if (x.sequence === result.sequence) {
-              x.product = result.product;
-              x.productName = result.productName;
-              x.eye = result.eye;
-              x.sphere = result.sphere;
-              x.cylinder = result.cylinder;
-              x.axis = result.axis;
-              x.prismAmount = result.prismAmount;
-              x.prismBase = result.prismBase;
-              x.multifocalPower = result.multifocalPower;
-              x.lensPower = result.lensPower;
-              x.lensBackCurve = result.lensBackCurve;
-              x.lensDiameter = result.lensDiameter;
-              x.lensDuration = result.lensDuration;
-              x.lensDurationUnit = result.lensDurationUnit;
-              x.lensDurationUnitName = result.lensDurationUnitName;
-              x.lensColor = result.lensColor;
-              x.lensBrand = result.lensBrand;
-              x.prismBaseName = result.prismBaseName;
-              x.lensNote = result.lensNote;
-            }
-          });
-        } else {
-          this.VisionSpecifications.push(result);
-        }
-      }
-    });
-  }
-
-  deleteVisionLens(index: number) {
-    this.VisionSpecifications.splice(index, 1);
-    if (this.VisionSpecifications.length === 0) {
-      this.FormNphiesClaim.controls.dateWritten.clearValidators();
-      this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
-      this.IsDateWrittenRequired = false;
-    }
-  }
-
-  openAddEditCareTeam(careTeam: any = null) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-sm'];
-    dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
-      Sequence: (careTeam !== null) ? careTeam.sequence : (this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1)),
-      item: careTeam
-    };
-
-    const dialogRef = this.dialog.open(AddEditCareTeamModalComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.CareTeams.find(x => x.sequence === result.sequence)) {
-          this.CareTeams.map(x => {
-            if (x.sequence === result.sequence) {
-              x.practitionerName = result.practitionerName;
-              x.physicianCode = result.physicianCode;
-              x.practitionerRole = result.practitionerRole;
-              x.careTeamRole = result.careTeamRole;
-              x.speciality = result.speciality;
-              x.specialityCode = result.specialityCode;
-              x.qualificationCode = result.specialityCode;
-              x.practitionerRoleName = result.practitionerRoleName;
-              x.careTeamRoleName = result.careTeamRoleName;
-            }
-          });
-        } else {
-          this.CareTeams.push(result);
-          // this.checkCareTeamValidation();
-        }
-      }
-    });
-  }
-
-  deleteCareTeam(sequence: number, index: number) {
-
-    if (this.Items.find(x => x.careTeamSequence && x.careTeamSequence.find(y => y === sequence))) {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog'];
-      dialogConfig.data = {
-        // tslint:disable-next-line:max-line-length
-        mainMessage: 'Are you sure you want to delete this Care Team?',
-        subMessage: 'This care team is referenced in some of the Items',
-        mode: 'warning',
-        hideNoButton: false
-      };
-
-      const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.Items.filter(x => x.careTeamSequence.find(y => y === sequence)).forEach(z => {
-            z.careTeamSequence.splice(z.careTeamSequence.indexOf(sequence), 1);
-          });
-          this.CareTeams.splice(index, 1);
-          // this.checkCareTeamValidation();
-        }
-      });
-    } else {
-      this.CareTeams.splice(index, 1);
-      // this.checkCareTeamValidation();
-    }
-  }
-
-  openAddEditDiagnosis(diagnosis: any = null) {
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
-    dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
-      Sequence: (diagnosis !== null) ? diagnosis.sequence : (this.Diagnosises.length === 0 ? 1 : (this.Diagnosises[this.Diagnosises.length - 1].sequence + 1)),
-      item: diagnosis,
-      itemTypes: this.Diagnosises.map(x => {
-        return x.type;
-      }),
-      type: this.FormNphiesClaim.controls.type.value ? this.FormNphiesClaim.controls.type.value.value : '',
-      pageMode: this.pageMode
-    };
-
-    const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.Diagnosises.find(x => x.sequence === result.sequence)) {
-          this.Diagnosises.map(x => {
-            if (x.sequence === result.sequence) {
-              x.diagnosisDescription = result.diagnosisDescription;
-              x.type = result.type;
-              x.onAdmission = result.onAdmission;
-              x.diagnosisCode = result.diagnosisCode;
-              x.typeName = result.typeName;
-              x.onAdmissionName = result.onAdmissionName;
-            }
-          });
-        } else {
-          this.Diagnosises.push(result);
-          this.checkDiagnosisValidation();
-        }
-      }
-    });
-  }
-  getClaimStatusColor(status: string) {
-    if (status != null) {
-      return this.sharedService.getCardAccentColor(status);
-    }
-    return 'all-claim';
-  }
-
-
-  deleteDiagnosis(sequence: number, index: number) {
-
-    if (this.Items.find(x => x.diagnosisSequence && x.diagnosisSequence.find(y => y === sequence))) {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog'];
-      dialogConfig.data = {
-        // tslint:disable-next-line:max-line-length
-        mainMessage: 'Are you sure you want to delete this Diagnosis?',
-        subMessage: 'This diagnosis is referenced in some of the Items',
-        mode: 'warning',
-        hideNoButton: false
-      };
-
-      const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.Items.filter(x => x.diagnosisSequence.find(y => y === sequence)).forEach(z => {
-            z.diagnosisSequence.splice(z.diagnosisSequence.indexOf(sequence), 1);
-          });
-          this.Diagnosises.splice(index, 1);
-          this.updateSequenceNames();
-          this.checkDiagnosisValidation();
-        }
-      });
-    } else {
-      this.Diagnosises.splice(index, 1);
-      this.checkDiagnosisValidation();
-    }
-  }
-
-  openAddEditItemDialog(itemModel: any = null) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
-    dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
-      Sequence: (itemModel !== null) ? itemModel.sequence : (this.Items.length === 0 ? 1 : (this.Items[this.Items.length - 1].sequence + 1)),
-      item: itemModel,
-      careTeams: this.CareTeams,
-      diagnosises: this.Diagnosises,
-      supportingInfos: this.SupportingInfo,
-      type: this.FormNphiesClaim.controls.type.value.value,
-      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value
-    };
-
-    const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.Items.find(x => x.sequence === result.sequence)) {
-          this.Items.map(x => {
-            if (x.sequence === result.sequence) {
-              x.type = result.type;
-              x.typeName = result.typeName,
-                x.itemCode = result.itemCode;
-              x.itemDescription = result.itemDescription;
-              x.nonStandardCode = result.nonStandardCode;
-              x.display = result.display;
-              x.isPackage = result.isPackage;
-              x.bodySite = result.bodySite;
-              x.bodySiteName = result.bodySiteName;
-              x.quantity = result.quantity;
-              x.unitPrice = result.unitPrice;
-              x.discount = result.discount;
-              x.factor = result.factor;
-              x.taxPercent = result.taxPercent;
-              x.patientSharePercent = result.patientSharePercent;
-              x.tax = result.tax;
-              x.net = result.net;
-              x.patientShare = result.patientShare;
-              x.payerShare = result.payerShare;
-              x.startDate = result.startDate;
-              x.startDateStr = result.startDateStr;
-              x.supportingInfoSequence = result.supportingInfoSequence;
-              x.careTeamSequence = result.careTeamSequence;
-              x.diagnosisSequence = result.diagnosisSequence;
-              x.invoiceNo = result.invoiceNo;
-
-              if (x.supportingInfoSequence) {
-                x.supportingInfoNames = '';
-                x.supportingInfoSequence.forEach(s => {
-                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
-                });
-                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
-              } else {
-                x.supportingInfoNames = '';
-              }
-
-              if (x.careTeamSequence) {
-                x.careTeamNames = '';
-                x.careTeamSequence.forEach(s => {
-                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
-                });
-                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
-              } else {
-                x.careTeamNames = '';
-              }
-
-              if (x.diagnosisSequence) {
-                x.diagnosisNames = '';
-                x.diagnosisSequence.forEach(s => {
-                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
-                });
-                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
-              } else {
-                x.diagnosisNames = '';
-              }
-
-              if (!x.isPackage) {
-                x.itemDetails = [];
-              }
-
-            }
-          });
-        } else {
-          this.Items.push(result);
-          this.Items.filter((x, i) => {
-            if (i === this.Items.length - 1) {
-
-              if (x.supportingInfoSequence) {
-                x.supportingInfoNames = '';
-                x.supportingInfoSequence.forEach(s => {
-                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
-                });
-                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
-              }
-
-              if (x.careTeamSequence) {
-                x.careTeamNames = '';
-                x.careTeamSequence.forEach(s => {
-                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
-                });
-                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
-              }
-
-              if (x.diagnosisSequence) {
-                x.diagnosisNames = '';
-                x.diagnosisSequence.forEach(s => {
-                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
-                });
-                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
-              }
-            }
-          });
-          this.checkItemValidation();
-        }
-      }
-    });
-  }
-
-  deleteItem(index: number) {
-    this.Items.splice(index, 1);
-    this.checkItemValidation();
-  }
-
-  openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
-
-    const item = this.Items.filter(x => x.sequence === itemSequence)[0];
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
-    dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
-      Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
-      item: itemModel,
-      type: this.FormNphiesClaim.controls.type.value.value
-    };
-
-    const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.Items.find(x => x.sequence === itemSequence)) {
-          this.Items.map(x => {
-            if (x.sequence === itemSequence) {
-              if (x.itemDetails.find(y => y.sequence === result.sequence)) {
-                x.itemDetails.map(y => {
-                  if (y.sequence === result.sequence) {
-                    y.type = result.type;
-                    y.typeName = result.typeName,
-                      y.itemCode = result.itemCode;
-                    y.itemDescription = result.itemDescription;
-                    y.nonStandardCode = result.nonStandardCode;
-                    y.display = result.display;
-                  }
-                });
-              } else {
-                x.itemDetails.push(result);
-              }
-            }
-          });
 
         }
 
@@ -863,80 +204,44 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
         }
 
-  deleteSupportingInfo(sequence: number, index: number) {
-    if (this.Items.find(x => x.supportingInfoSequence && x.supportingInfoSequence.find(y => y === sequence))) {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog'];
-      dialogConfig.data = {
-        // tslint:disable-next-line:max-line-length
-        mainMessage: 'Are you sure you want to delete this Supporting Info?',
-        subMessage: 'This supporting info is referenced in some of the Items',
-        mode: 'warning',
-        hideNoButton: false
-      };
-
-      const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.Items.filter(x => x.supportingInfoSequence.find(y => y === sequence)).forEach(z => {
-            z.supportingInfoSequence.splice(z.supportingInfoSequence.indexOf(sequence), 1);
-          });
-          this.SupportingInfo.splice(index, 1);
-          this.updateSequenceNames();
-        }
-      });
-    } else {
-      this.SupportingInfo.splice(index, 1);
-    }
-  }
-
-  // checkCareTeamValidation() {
-  //   if (this.CareTeams.length === 0) {
-  //     this.IsCareTeamRequired = true;
-  //   } else {
-  //     this.IsCareTeamRequired = false;
-  //   }
-  // }
-
-  checkDiagnosisValidation() {
-    if (this.Diagnosises.length === 0) {
-      this.IsDiagnosisRequired = true;
-    } else {
-      this.IsDiagnosisRequired = false;
-    }
-  }
-
-  checkItemValidation() {
-    if (this.Items.length === 0) {
-      this.IsItemRequired = true;
-    } else {
-      this.IsItemRequired = false;
-    }
-  }
-
-  checkItemCareTeams() {
-    if (this.Items.length > 0) {
-      if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
-        return true;
-      } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') {
-        if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
-          this.dialogService.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK', null, true);
-          return false;
-        } else {
-          return true;
-        }
-      }
+        this.getPayees();
+        this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+        this.filteredNations.next(this.nationalities.slice());
 
     }
 
     toEditMode() {
-        this.pageMode = true ? 'EDIT' : 'ReSubmit';
+        this.pageMode = 'EDIT';
         this.selectedBeneficiary = {
             documentId: this.otherDataModel.beneficiary.documentId,
             documentType: this.otherDataModel.beneficiary.documentType,
             id: this.otherDataModel.beneficiary.id,
             name: this.otherDataModel.beneficiary.beneficiaryName,
+
+            firstName: this.otherDataModel.beneficiary.firstName,
+            secondName: this.otherDataModel.beneficiary.secondName,
+            thirdName: this.otherDataModel.beneficiary.thirdName,
+            familyName: this.otherDataModel.beneficiary.familyName,
+            fullName: this.otherDataModel.beneficiary.fullName,
+            fileId: this.otherDataModel.beneficiary.fileId,
+            dob: this.otherDataModel.beneficiary.dob,
+            gender: this.otherDataModel.beneficiary.gender,
+            eHealthId: this.otherDataModel.beneficiary.eHealthId,
+            nationality: this.otherDataModel.beneficiary.nationality,
+            residencyType: this.otherDataModel.beneficiary.residencyType,
+            contactNumber: this.otherDataModel.beneficiary.contactNumber,
+            maritalStatus: this.otherDataModel.beneficiary.maritalStatus,
+            bloodGroup: this.otherDataModel.beneficiary.bloodGroup,
+            preferredLanguage: this.otherDataModel.beneficiary.preferredLanguage,
+            emergencyPhoneNumber: this.otherDataModel.beneficiary.emergencyPhoneNumber,
+            email: this.otherDataModel.beneficiary.email,
+            addressLine: this.otherDataModel.beneficiary.addressLine,
+            streetLine: this.otherDataModel.beneficiary.streetLine,
+            city: this.otherDataModel.beneficiary.city,
+            state: this.otherDataModel.beneficiary.state,
+            country: this.otherDataModel.beneficiary.country,
+            postalCode: this.otherDataModel.beneficiary.postalCode,
+
             plans: [{
                 payerNphiesId: this.otherDataModel.payerNphiesId,
                 payerName: this.otherDataModel.insurer,
@@ -953,7 +258,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             beneficiaryName: this.otherDataModel.beneficiary.beneficiaryName + ' (' + this.otherDataModel.beneficiary.documentId + ')',
             beneficiaryId: this.otherDataModel.beneficiary.id
         });
-        this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
+        if (this.otherDataModel.payerNphiesId) {
+            this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
+        }
         this.enableControls();
     }
 
@@ -962,336 +269,36 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.disableControls();
     }
 
-    // this.checkCareTeamValidation();
-    this.checkDiagnosisValidation();
-    this.checkItemValidation();
-
-    if (!this.checkItemCareTeams()) {
-      hasError = true;
-    }
-
-    if (hasError) {
-      return;
-    }
-
-    if (this.FormNphiesClaim.valid) {
-
-      this.model = {};
-      this.sharedServices.loadingChanged.next(true);
-
-      this.model.beneficiary = {};
-
-      this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
-      this.model.beneficiary.middleName = this.FormNphiesClaim.controls.middleName.value;
-      this.model.beneficiary.lastName = this.FormNphiesClaim.controls.lastName.value;
-      this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
-      this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
-      this.model.beneficiary.beneficiaryFileld = this.FormNphiesClaim.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
-      this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
-      this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
-      this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
-      this.model.beneficiary.eHealthId = this.FormNphiesClaim.controls.eHealthId.value;
-      this.model.beneficiary.nationality = this.FormNphiesClaim.controls.nationality.value;
-      this.model.beneficiary.nationalityName = this.FormNphiesClaim.controls.nationalityName.value;
-      this.model.beneficiary.residencyType = this.FormNphiesClaim.controls.residencyType.value;
-      this.model.beneficiary.contactNumber = this.FormNphiesClaim.controls.contactNumber.value;
-      this.model.beneficiary.martialStatus = this.FormNphiesClaim.controls.martialStatus.value;
-      this.model.beneficiary.bloodGroup = this.FormNphiesClaim.controls.bloodGroup.value;
-      this.model.beneficiary.preferredLanguage = this.FormNphiesClaim.controls.preferredLanguage.value;
-      this.model.beneficiary.emergencyNumber = this.FormNphiesClaim.controls.emergencyNumber.value;
-      this.model.beneficiary.email = this.FormNphiesClaim.controls.email.value;
-      this.model.beneficiary.addressLine = this.FormNphiesClaim.controls.addressLine.value;
-      this.model.beneficiary.streetLine = this.FormNphiesClaim.controls.streetLine.value;
-      this.model.beneficiary.bcity = this.FormNphiesClaim.controls.bcity.value;
-      this.model.beneficiary.bstate = this.FormNphiesClaim.controls.bstate.value;
-      this.model.beneficiary.bcountry = this.FormNphiesClaim.controls.bcountry.value;
-      this.model.beneficiary.bcountryName = this.FormNphiesClaim.controls.bcountryName.value;
-      this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
-
-      this.model.insurancePlan = {};
-
-      this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
-      this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
-      this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
-      this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
-      this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
-
-      this.model.episodeNo = this.FormNphiesClaim.controls.episodeNo.value;
-      // this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
-      this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
-
-      if (this.pageMode === 'EDIT') {
-        this.model.provClaimNo = this.otherDataModel.provClaimNo;
-      } else if (this.pageMode === 'CREATE') {
-        const now = new Date(Date.now());
-        // tslint:disable-next-line:max-line-length
-        this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-      }
-      // this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
-      // this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
-      // this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
-      // // tslint:disable-next-line:max-line-length
-      // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
-
-      if (this.FormNphiesClaim.controls.preAuthRefNo.value) {
-        this.model.preAuthRefNo = this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
-          return x.value;
-        });
-      }
-
-      const preAuthorizationModel: any = {};
-      preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
-      if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
-        // tslint:disable-next-line:max-line-length
-        preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
-      } else {
-        preAuthorizationModel.payeeId = this.FormNphiesClaim.controls.payee.value;
-      }
-      preAuthorizationModel.payeeType = this.FormNphiesClaim.controls.payeeType.value.value;
-      preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
-      preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
-      // tslint:disable-next-line:max-line-length
-      preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
-      preAuthorizationModel.eligibilityOfflineId = this.FormNphiesClaim.controls.eligibilityOfflineId.value;
-      preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
-      // tslint:disable-next-line:max-line-length
-      preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.preAuthOfflineDate.value, 'yyyy-MM-dd');
-      // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
-
-      this.model.preAuthorizationInfo = preAuthorizationModel;
-
-      this.model.supportingInfo = this.SupportingInfo.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.category = x.category;
-        model.code = x.code;
-        model.fromDate = x.fromDate;
-        model.toDate = x.toDate;
-        model.value = x.value;
-        model.reason = x.reason;
-        model.attachment = x.byteArray;
-        model.attachmentName = x.attachmentName;
-        model.attachmentType = x.attachmentType;
-        model.attachmentDate = x.attachmentDate;
-        return model;
-      });
-
-      this.model.diagnosis = this.Diagnosises.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.diagnosisDescription = x.diagnosisDescription;
-        model.type = x.type;
-        model.onAdmission = x.onAdmission;
-        model.diagnosisCode = x.diagnosisCode;
-        return model;
-      });
-
-      if (this.FormNphiesClaim.controls.accidentType.value.value) {
-        const accidentModel: any = {};
-        accidentModel.accidentType = this.FormNphiesClaim.controls.accidentType.value.value;
-        accidentModel.streetName = this.FormNphiesClaim.controls.streetName.value;
-        accidentModel.city = this.FormNphiesClaim.controls.city.value;
-        accidentModel.state = this.FormNphiesClaim.controls.state.value;
-        accidentModel.country = this.FormNphiesClaim.controls.country.value;
-        accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
-        this.model.accident = accidentModel;
-      }
-
-      this.model.careTeam = this.CareTeams.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.practitionerName = x.practitionerName;
-        model.physicianCode = x.physicianCode;
-        model.practitionerRole = x.practitionerRole;
-        model.careTeamRole = x.careTeamRole;
-        model.speciality = x.speciality;
-        model.specialityCode = x.specialityCode;
-        model.qualificationCode = x.qualificationCode;
-        return model;
-      });
-
-      if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
-        this.model.visionPrescription = {};
-        // tslint:disable-next-line:max-line-length
-        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormNphiesClaim.controls.dateWritten.value, 'yyyy-MM-dd');
-        this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
-        this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.product = x.product;
-          model.eye = x.eye;
-          model.sphere = x.sphere;
-          model.cylinder = x.cylinder;
-          model.axis = x.axis;
-          model.prismAmount = x.prismAmount;
-          model.prismBase = x.prismBase;
-          model.multifocalPower = x.multifocalPower;
-          model.lensPower = x.lensPower;
-          model.lensBackCurve = x.lensBackCurve;
-          model.lensDiameter = x.lensDiameter;
-          model.lensDuration = x.lensDuration;
-          model.lensDurationUnit = x.lensDurationUnit;
-          model.lensColor = x.lensColor;
-          model.lensBrand = x.lensBrand;
-          model.lensNote = x.lensNote;
-          return model;
-        });
-      }
-
-      this.model.items = this.Items.map(x => {
-        // tslint:disable-next-line:max-line-length
-        if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.type = x.type;
-          model.itemCode = x.itemCode.toString();
-          model.itemDescription = x.itemDescription;
-          model.nonStandardCode = x.nonStandardCode;
-          model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
-          model.bodySite = x.bodySite;
-          model.subSite = x.subSite;
-          model.quantity = x.quantity;
-          model.unitPrice = x.unitPrice;
-          model.discount = x.discount;
-          model.factor = x.factor;
-          model.taxPercent = x.taxPercent;
-          model.patientSharePercent = x.patientSharePercent;
-          model.tax = x.tax;
-          model.net = x.net;
-          model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
-          model.startDate = x.startDate;
-          model.supportingInfoSequence = x.supportingInfoSequence;
-          model.careTeamSequence = x.careTeamSequence;
-          model.diagnosisSequence = x.diagnosisSequence;
-          model.invoiceNo = x.invoiceNo;
-
-          model.itemDetails = x.itemDetails.map(y => {
-            const dmodel: any = {};
-            dmodel.sequence = y.sequence;
-            dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
-            dmodel.description = y.itemDescription;
-            dmodel.nonStandardCode = y.nonStandardCode;
-            dmodel.nonStandardDesc = y.display;
-            return dmodel;
-          });
-
-          return model;
-        } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.type = x.type;
-          model.itemCode = x.itemCode.toString();
-          model.itemDescription = x.itemDescription;
-          model.nonStandardCode = x.nonStandardCode;
-          model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
-          model.bodySite = x.bodySite;
-          model.subSite = x.subSite;
-          model.quantity = x.quantity;
-          model.unitPrice = x.unitPrice;
-          model.discount = x.discount;
-          model.factor = x.factor;
-          model.taxPercent = x.taxPercent;
-          model.patientSharePercent = x.patientSharePercent;
-          model.tax = x.tax;
-          model.net = x.net;
-          model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
-          model.startDate = x.startDate;
-          model.supportingInfoSequence = x.supportingInfoSequence;
-          model.careTeamSequence = x.careTeamSequence;
-          model.diagnosisSequence = x.diagnosisSequence;
-          model.invoiceNo = x.invoiceNo;
-
-          model.itemDetails = x.itemDetails.map(y => {
-            const dmodel: any = {};
-            dmodel.sequence = y.sequence;
-            dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
-            dmodel.description = y.itemDescription;
-            dmodel.nonStandardCode = y.nonStandardCode;
-            dmodel.nonStandardDesc = y.display;
-            return dmodel;
-          });
-
-          return model;
-        }
-      }).filter(x => x !== undefined);
-
-      this.model.totalNet = 0;
-      this.model.items.forEach((x) => {
-        this.model.totalNet += x.net;
-      });
-
-      if (this.FormNphiesClaim.controls.status.value) {
-        const encounterModel: any = {};
-        encounterModel.status = this.FormNphiesClaim.controls.status.value;
-        encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
-        encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
-        encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
-        encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
-        encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
-        encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
-        encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
-        encounterModel.dischargeDispotion = this.FormNphiesClaim.controls.dischargeDispotion.value;
-        encounterModel.priority = this.FormNphiesClaim.controls.priority.value;
-        encounterModel.serviceProvider = this.FormNphiesClaim.controls.serviceProvider.value;
-        this.model.claimEncounter = encounterModel;
-      }
-
-      console.log('Model', this.model);
-
-      let requestObservable: Observable<HttpEvent<any>>;
-      if (this.pageMode == 'CREATE') {
-        requestObservable = this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model);
-      } else if (this.pageMode == 'EDIT') {
-        requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
-      }
-
-
-      requestObservable.subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status === 200) {
-            const body: any = event.body;
-            if (body.isError) {
-              this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
-              if (this.pageMode == 'CREATE') {
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-              }
-            } else {
-              if (this.pageMode == 'CREATE') {
-                this.reset();
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-              } else {
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-                this.ngOnInit();
-                // location.reload();
-              }
+    getPayees() {
+        this.sharedServices.loadingChanged.next(true);
+        this.providersBeneficiariesService.getPayees().subscribe(event => {
+            if (event instanceof HttpResponse) {
+                if (event.body != null && event.body instanceof Array) {
+                    this.payeeList = event.body;
+                    this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+                    this.onPayeeTypeChange();
+                    if (this.claimId && this.uploadId) {
+                        this.pageMode = 'VIEW';
+                        if (this.responseId) {
+                            this.getCommunications();
+                        }
+                        this.disableControls();
+                        this.getClaimDetails();
+                    } else {
+                        this.isLoading = false;
+                        this.sharedServices.loadingChanged.next(false);
+                    }
+                } else {
+                    this.isLoading = false;
+                    this.sharedServices.loadingChanged.next(false);
+                }
             }
-          }
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
-            if (this.pageMode == 'EDIT') {
-              this.ngOnInit();
-            }
-          } else if (error.status === 404) {
-            const errors: any[] = [];
-            if (error.error.errors) {
-              error.error.errors.forEach(x => {
-                errors.push(x);
-              });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
-            } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
+        }, err => {
+            if (err instanceof HttpErrorResponse) {
+                console.log('Error');
+                this.isLoading = false;
+                //  this.errorMessage=err.message
+                this.sharedServices.loadingChanged.next(false);
             }
         });
     }
@@ -1313,8 +320,8 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.country.disable();
         this.FormNphiesClaim.controls.countryName.disable();
         this.FormNphiesClaim.controls.date.disable();
-        // this.FormNphiesClaim.controls.dateWritten.disable();
-        // this.FormNphiesClaim.controls.prescriber.disable();
+        this.FormNphiesClaim.controls.dateWritten.disable();
+        this.FormNphiesClaim.controls.prescriber.disable();
         this.FormNphiesClaim.controls.status.disable();
         this.FormNphiesClaim.controls.encounterClass.disable();
         this.FormNphiesClaim.controls.serviceType.disable();
@@ -1426,123 +433,10 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.Items = [];
             this.VisionSpecifications = [];
         }
-      });
-    }
-  }
-
-  reset() {
-    this.model = {};
-    this.detailsModel = {};
-    this.FormNphiesClaim.reset();
-    this.FormNphiesClaim.patchValue({
-      insurancePlanId: '',
-      type: '',
-      subType: '',
-      accidentType: '',
-      country: ''
-    });
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    this.CareTeams = [];
-    this.Diagnosises = [];
-    this.VisionSpecifications = [];
-    this.Items = [];
-    this.isSubmitted = false;
-  }
-
-  get checkErrorBeneficiaryInfo() {
-    if (this.isSubmitted && (
-      !this.FormNphiesClaim.controls.beneficiaryName.value ||
-      !this.FormNphiesClaim.controls.insurancePlanId.value ||
-      !this.FormNphiesClaim.controls.fullName.value ||
-      !this.FormNphiesClaim.controls.dob.value ||
-      !this.FormNphiesClaim.controls.gender.value ||
-      !this.FormNphiesClaim.controls.documentType.value ||
-      !this.FormNphiesClaim.controls.documentId.value)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  get checkErrorClaimInfo() {
-    if (this.isSubmitted && (!this.FormNphiesClaim.controls.dateOrdered.value ||
-      !this.FormNphiesClaim.controls.type.value)) {
-
-      // this.hasErrorClaimInfo = true;
-      return true;
-    } else {
-      // this.hasErrorClaimInfo = false;
-      return false;
-    }
-  }
-
-
-  get checkErrorAccident() {
-    let hasError = false;
-    if (this.isSubmitted) {
-
-      if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
-        this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
-        this.FormNphiesClaim.controls.date.updateValueAndValidity();
-        this.IsDateRequired = true;
-        hasError = true;
-      } else {
-        this.FormNphiesClaim.controls.date.clearValidators();
-        this.FormNphiesClaim.controls.date.updateValueAndValidity();
-        this.IsDateRequired = false;
-      }
-      if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
-        this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
-        this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
-        this.IsAccidentTypeRequired = true;
-        hasError = true;
-      } else {
-        this.FormNphiesClaim.controls.accidentType.clearValidators();
-        this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
-        this.IsAccidentTypeRequired = false;
-      }
-      if (!hasError) {
-        this.IsAccidentTypeRequired = false;
-        this.IsDateRequired = false;
-      }
     }
 
-    searchBeneficiaries() {
-        // tslint:disable-next-line:max-line-length
-        this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormNphiesClaim.controls.beneficiaryName.value).subscribe(event => {
-            if (event instanceof HttpResponse) {
-                const body = event.body;
-                if (body instanceof Array) {
-                    this.beneficiariesSearchResult = body;
-                    // TODO: causing build issues
-                    // if (name) {
-                    //   this.selectBeneficiary(this.selectedBeneficiary);
-                    // }
-                }
-            }
-        }, errorEvent => {
-            if (errorEvent instanceof HttpErrorResponse) {
-
-            }
-        });
-    }
-
-    selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
-        this.selectedBeneficiary = beneficiary;
-        this.FormNphiesClaim.patchValue({
-            beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
-            beneficiaryId: beneficiary.id
-        });
-    }
-
-    isPlanExpired(date: Date) {
-        if (date != null) {
-            if (!(date instanceof Date)) {
-                date = new Date(date);
-            }
-            return date.getTime() > Date.now() ? ' (Active)' : ' (Expired)';
-        }
-        return '';
+    selectedBenificiaryChange($event) {
+        this.selectedBeneficiary = $event;
     }
 
     openAddEditVisionLensDialog(visionSpecification: any = null) {
@@ -1601,7 +495,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     openAddEditCareTeam(careTeam: any = null) {
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.panelClass = ['primary-dialog'];
+        dialogConfig.panelClass = ['primary-dialog', 'dialog-sm'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
             Sequence: (careTeam !== null) ? careTeam.sequence : (this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1)),
@@ -1785,6 +679,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                             x.supportingInfoSequence = result.supportingInfoSequence;
                             x.careTeamSequence = result.careTeamSequence;
                             x.diagnosisSequence = result.diagnosisSequence;
+                            x.invoiceNo = result.invoiceNo;
 
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
@@ -1999,52 +894,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         } else {
             this.IsDiagnosisRequired = false;
         }
-      }
-
-      model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0] ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name : '';
-      model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
-      model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
-
-      switch (model.category) {
-        case 'vital-sign-weight':
-          model.unit = 'kg';
-          break;
-        case 'vital-sign-systolic':
-        case 'vital-sign-diastolic':
-          model.unit = 'mm[Hg]';
-          break;
-        case 'icu-hours':
-        case 'ventilation-hours':
-          model.unit = 'h';
-          break;
-        case 'vital-sign-height':
-          model.unit = 'cm';
-          break;
-        case 'days-supply':
-          model.unit = 'd';
-          break;
-      }
-      model.byteArray = x.attachment;
-      return model;
-
-    }).sort((a, b) => a.sequence - b.sequence);
-
-    if (response.careTeam) {
-      this.CareTeams = response.careTeam.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.practitionerName = x.practitionerName;
-        model.physicianCode = x.physicianCode;
-        model.practitionerRole = x.practitionerRole;
-        model.careTeamRole = x.careTeamRole;
-        model.speciality = x.speciality;
-        model.specialityCode = x.specialityCode;
-        // tslint:disable-next-line:max-line-length
-        model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
-        // tslint:disable-next-line:max-line-length
-        model.careTeamRoleName = this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0] ? this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0].name : '';
-        return model;
-      }).sort((a, b) => a.sequence - b.sequence);
     }
 
     checkItemValidation() {
@@ -2061,7 +910,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                 return true;
             } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') {
                 if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
-                    this.dialogService.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
+                    this.dialogService.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK', null, true);
                     return false;
                 } else {
                     return true;
@@ -2167,18 +1016,61 @@ export class CreateClaimNphiesComponent implements OnInit {
 
             this.model = {};
             this.sharedServices.loadingChanged.next(true);
-            this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
+
+            this.model.beneficiary = {};
+
+            this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
+            this.model.beneficiary.middleName = this.FormNphiesClaim.controls.middleName.value;
+            this.model.beneficiary.lastName = this.FormNphiesClaim.controls.lastName.value;
+            this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
+            this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
+            this.model.beneficiary.beneficiaryFileld = this.FormNphiesClaim.controls.beneficiaryFileld.value;
+            this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
+            this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
+            this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
+            this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
+            this.model.beneficiary.eHealthId = this.FormNphiesClaim.controls.eHealthId.value;
+            this.model.beneficiary.nationality = this.FormNphiesClaim.controls.nationality.value;
+            this.model.beneficiary.nationalityName = this.FormNphiesClaim.controls.nationalityName.value;
+            this.model.beneficiary.residencyType = this.FormNphiesClaim.controls.residencyType.value;
+            this.model.beneficiary.contactNumber = this.FormNphiesClaim.controls.contactNumber.value;
+            this.model.beneficiary.martialStatus = this.FormNphiesClaim.controls.martialStatus.value;
+            this.model.beneficiary.bloodGroup = this.FormNphiesClaim.controls.bloodGroup.value;
+            this.model.beneficiary.preferredLanguage = this.FormNphiesClaim.controls.preferredLanguage.value;
+            this.model.beneficiary.emergencyNumber = this.FormNphiesClaim.controls.emergencyNumber.value;
+            this.model.beneficiary.email = this.FormNphiesClaim.controls.email.value;
+            this.model.beneficiary.addressLine = this.FormNphiesClaim.controls.addressLine.value;
+            this.model.beneficiary.streetLine = this.FormNphiesClaim.controls.streetLine.value;
+            this.model.beneficiary.bcity = this.FormNphiesClaim.controls.bcity.value;
+            this.model.beneficiary.bstate = this.FormNphiesClaim.controls.bstate.value;
+            this.model.beneficiary.bcountry = this.FormNphiesClaim.controls.bcountry.value;
+            this.model.beneficiary.bcountryName = this.FormNphiesClaim.controls.bcountryName.value;
+            this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
+
+            this.model.insurancePlan = {};
+
+            this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+            this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+            this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
+            this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
+            this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+
+            this.model.episodeNo = this.FormNphiesClaim.controls.episodeNo.value;
+            // this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
             this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
 
-            const now = new Date(Date.now());
-            // tslint:disable-next-line:max-line-length
-            this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-
-            this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
-            this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
-            this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
-            // tslint:disable-next-line:max-line-length
-            this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
+            if (this.pageMode === 'EDIT') {
+                this.model.provClaimNo = this.otherDataModel.provClaimNo;
+            } else if (this.pageMode === 'CREATE') {
+                const now = new Date(Date.now());
+                // tslint:disable-next-line:max-line-length
+                this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+            }
+            // this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
+            // this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
+            // this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+            // // tslint:disable-next-line:max-line-length
+            // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
             if (this.FormNphiesClaim.controls.preAuthRefNo.value) {
                 this.model.preAuthRefNo = this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
@@ -2312,6 +1204,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     model.supportingInfoSequence = x.supportingInfoSequence;
                     model.careTeamSequence = x.careTeamSequence;
                     model.diagnosisSequence = x.diagnosisSequence;
+                    model.invoiceNo = x.invoiceNo;
 
                     model.itemDetails = x.itemDetails.map(y => {
                         const dmodel: any = {};
@@ -2350,6 +1243,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     model.supportingInfoSequence = x.supportingInfoSequence;
                     model.careTeamSequence = x.careTeamSequence;
                     model.diagnosisSequence = x.diagnosisSequence;
+                    model.invoiceNo = x.invoiceNo;
 
                     model.itemDetails = x.itemDetails.map(y => {
                         const dmodel: any = {};
@@ -2392,7 +1286,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             let requestObservable: Observable<HttpEvent<any>>;
             if (this.pageMode == 'CREATE') {
                 requestObservable = this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model);
-            } else if (this.pageMode == "EDIT") {
+            } else if (this.pageMode == 'EDIT') {
                 requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
             }
 
@@ -2424,6 +1318,9 @@ export class CreateClaimNphiesComponent implements OnInit {
                 if (error instanceof HttpErrorResponse) {
                     if (error.status === 400) {
                         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
+                        if (this.pageMode == 'EDIT') {
+                            this.ngOnInit();
+                        }
                     } else if (error.status === 404) {
                         const errors: any[] = [];
                         if (error.error.errors) {
@@ -2473,10 +1370,23 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.isSubmitted = false;
     }
 
-    get checkErrorClaimInfo() {
-        if (this.isSubmitted && (!this.FormNphiesClaim.controls.beneficiaryName.value ||
+    get checkErrorBeneficiaryInfo() {
+        if (this.isSubmitted && (
+            !this.FormNphiesClaim.controls.beneficiaryName.value ||
             !this.FormNphiesClaim.controls.insurancePlanId.value ||
-            !this.FormNphiesClaim.controls.dateOrdered.value ||
+            !this.FormNphiesClaim.controls.fullName.value ||
+            !this.FormNphiesClaim.controls.dob.value ||
+            !this.FormNphiesClaim.controls.gender.value ||
+            !this.FormNphiesClaim.controls.documentType.value ||
+            !this.FormNphiesClaim.controls.documentId.value)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    get checkErrorClaimInfo() {
+        if (this.isSubmitted && (!this.FormNphiesClaim.controls.dateOrdered.value ||
             !this.FormNphiesClaim.controls.type.value)) {
 
             // this.hasErrorClaimInfo = true;
@@ -2486,6 +1396,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             return false;
         }
     }
+
 
     get checkErrorAccident() {
         let hasError = false;
@@ -2913,7 +1824,26 @@ export class CreateClaimNphiesComponent implements OnInit {
             model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0] ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name : '';
             model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
             model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
-            model.unit = this.sharedDataService.durationUnitList.filter(y => y.value === x.unit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.unit)[0].name : '';
+
+            switch (model.category) {
+                case 'vital-sign-weight':
+                    model.unit = 'kg';
+                    break;
+                case 'vital-sign-systolic':
+                case 'vital-sign-diastolic':
+                    model.unit = 'mm[Hg]';
+                    break;
+                case 'icu-hours':
+                case 'ventilation-hours':
+                    model.unit = 'h';
+                    break;
+                case 'vital-sign-height':
+                    model.unit = 'cm';
+                    break;
+                case 'days-supply':
+                    model.unit = 'd';
+                    break;
+            }
             model.byteArray = x.attachment;
             return model;
 
@@ -3021,14 +1951,22 @@ export class CreateClaimNphiesComponent implements OnInit {
             model.supportingInfoSequence = x.supportingInfoSequence;
             model.careTeamSequence = x.careTeamSequence;
             model.diagnosisSequence = x.diagnosisSequence;
+
+            x.discount = parseFloat(x.discount);
+            x.quantity = parseFloat(x.quantity);
+            x.unitPrice = parseFloat(x.unitPrice);
+
+            model.discountPercent = ((x.discount * 100) / (x.quantity * x.unitPrice)).toFixed(2);
+            model.discountPercent = parseFloat(model.discountPercent);
+            // model.invoiceNo = x.invoiceNo;
             // tslint:disable-next-line:max-line-length
             model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
 
             if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {
-                    let categoryValue = response.supportingInfo.filter(y => y.sequence === s)[0].category;
-                    let categoryName = this.sharedDataService.categoryList.filter(x => x.value == categoryValue)[0] ? this.sharedDataService.categoryList.filter(x => x.value == categoryValue)[0].name : '';
+                    const categoryValue = response.supportingInfo.filter(y => y.sequence === s)[0].category;
+                    const categoryName = this.sharedDataService.categoryList.filter(x => x.value == categoryValue)[0] ? this.sharedDataService.categoryList.filter(x => x.value == categoryValue)[0].name : '';
                     x.supportingInfoNames += ', [' + categoryName + ']';
                 });
                 model.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
@@ -3087,113 +2025,18 @@ export class CreateClaimNphiesComponent implements OnInit {
                 this.toEditMode();
             }
         });
-      }
-      model.itemDecision = x.itemDecision;
-      model.itemDetails = x.itemDetails;
-      model.sequence = x.sequence;
-      model.type = x.type;
-      model.itemCode = x.itemCode.toString();
-      model.itemDescription = x.itemDescription;
-      model.nonStandardCode = x.nonStandardCode;
-      model.display = x.nonStandardDesc;
-      model.isPackage = x.isPackage;
-      model.quantity = x.quantity;
-      model.unitPrice = x.unitPrice;
-      model.discount = x.discount;
-      model.factor = x.factor;
-      model.taxPercent = x.taxPercent;
-      model.patientSharePercent = x.patientSharePercent;
-      model.tax = x.tax;
-      model.net = x.net;
-      model.patientShare = x.patientShare;
-      model.payerShare = x.payerShare;
-      model.startDate = x.startDate;
-      model.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
-      model.supportingInfoSequence = x.supportingInfoSequence;
-      model.careTeamSequence = x.careTeamSequence;
-      model.diagnosisSequence = x.diagnosisSequence;
+    }
 
-      x.discount = parseFloat(x.discount);
-      x.quantity = parseFloat(x.quantity);
-      x.unitPrice = parseFloat(x.unitPrice);
-
-      model.discountPercent = ((x.discount * 100) / (x.quantity * x.unitPrice)).toFixed(2);
-      model.discountPercent = parseFloat(model.discountPercent);
-      // model.invoiceNo = x.invoiceNo;
-      // tslint:disable-next-line:max-line-length
-      model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
-
-      if (x.supportingInfoSequence) {
-        x.supportingInfoNames = '';
-        x.supportingInfoSequence.forEach(s => {
-          const categoryValue = response.supportingInfo.filter(y => y.sequence === s)[0].category;
-          const categoryName = this.sharedDataService.categoryList.filter(x => x.value == categoryValue)[0] ? this.sharedDataService.categoryList.filter(x => x.value == categoryValue)[0].name : '';
-          x.supportingInfoNames += ', [' + categoryName + ']';
-        });
-        model.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
-      }
-
-      if (x.careTeamSequence) {
-        x.careTeamNames = '';
-        x.careTeamSequence.forEach(s => {
-          x.careTeamNames += ', [' + response.careTeam.filter(y => y.sequence === s)[0].practitionerName + ']';
-        });
-        model.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
-      }
-
-      if (x.diagnosisSequence) {
-        x.diagnosisNames = '';
-        x.diagnosisSequence.forEach(s => {
-          x.diagnosisNames += ', [' + response.diagnosis.filter(y => y.sequence === s)[0].diagnosisCode + ']';
-        });
-        model.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
-      }
-
-      // if (response.approvalResponseId) {
-      //   x.isPackage = x.isPackage === true ? 1 : 2;
-      // }
-      return model;
-    }).sort((a, b) => a.sequence - b.sequence);
-
-    this.setBeneficiary(response);
-  }
-
-  setBeneficiary(res) {
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
-          this.selectedBeneficiary = body[0];
-          this.FormNphiesClaim.patchValue({
-            beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
-            beneficiaryId: res.beneficiary.beneficiaryId
-          });
-          this.FormNphiesClaim.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
-        }
-        this.sharedServices.loadingChanged.next(false);
-        if (location.href.includes('#edit')) {
-          this.toEditMode();
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-
-      }
-      this.sharedServices.loadingChanged.next(false);
-      if (location.href.includes('#edit')) {
-        this.toEditMode();
-      }
-    });
-  }
-
-  get IsCareTeamRequired() {
-    if (this.isSubmitted) {
-      // tslint:disable-next-line:max-line-length
-      if (!this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy')) {
-        if (this.CareTeams.length === 0) {
-          return true;
+    get IsCareTeamRequired() {
+        if (this.isSubmitted) {
+            // tslint:disable-next-line:max-line-length
+            if (!this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy')) {
+                if (this.CareTeams.length === 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
             return false;
         }
