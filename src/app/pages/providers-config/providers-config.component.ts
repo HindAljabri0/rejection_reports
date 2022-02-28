@@ -880,7 +880,7 @@ export class ProvidersConfigComponent implements OnInit {
     get f() { return this.addDbConfigForm.controls; }
 
     onPayerMapSetting(payerData, event, index) {
-        //  console.log('kvjdjjbvdv' + event.checked);
+
         this.newPayerName[payerData.switchAccountId] = payerData.name;
         this.newPayerMappingEnable[payerData.switchAccountId] = event.checked
         if (event.checked && !this.addPayerMappingList.includes(payerData.switchAccountId)) {
@@ -922,6 +922,7 @@ export class ProvidersConfigComponent implements OnInit {
                     mapPayerName: this.newPayerMappingValue[id],
                     payerName: this.newPayerName[id],
                     enabled: this.newPayerMappingEnable[id]
+
                 };
                 selectedPayer.push(data);
             });
