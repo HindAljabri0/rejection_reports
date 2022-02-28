@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { Payer } from 'src/app/models/nphies/payer';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
@@ -8,6 +8,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-beneficiary-tab',
@@ -22,6 +23,8 @@ export class BeneficiaryTabComponent implements OnInit {
   @Input() selectedBeneficiary: BeneficiariesSearchResult;
   @Output() emitSelectedBenificiary = new EventEmitter();
 
+  // tslint:disable-next-line:variable-name
+  _onDestroy = new Subject<void>();
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedPlanId: string;
   selectedPlanIdError: string;
@@ -38,37 +41,53 @@ export class BeneficiaryTabComponent implements OnInit {
   insurancePlans = [];
 
   payersList: Payer[] = [];
+  // subscriberRelationship: { Code: string, Name: string }[] = [
+  //   { Code: 'CHILD', Name: 'Child' },
+  //   { Code: 'PARENT', Name: 'Parent' },
+  //   { Code: 'SPOUSE', Name: 'Spouse' },
+  //   { Code: 'COMMON', Name: 'Common Law Spouse' },
+  //   { Code: 'SELF', Name: 'Self' },
+  //   { Code: 'INJURED', Name: 'Injured Party' },
+  //   { Code: 'OTHER', Name: 'Other' },
+  // ];
+
   subscriberRelationship: { Code: string, Name: string }[] = [
-    { Code: 'CHILD', Name: 'Child' },
-    { Code: 'PARENT', Name: 'Parent' },
-    { Code: 'SPOUSE', Name: 'Spouse' },
-    { Code: 'COMMON', Name: 'Common Law Spouse' },
-    { Code: 'SELF', Name: 'Self' },
-    { Code: 'INJURED', Name: 'Injured Party' },
-    { Code: 'OTHER', Name: 'Other' },
+    { Code: 'child', Name: 'Child' },
+    { Code: 'parent', Name: 'Parent' },
+    { Code: 'spouse', Name: 'Spouse' },
+    { Code: 'common', Name: 'Common Law Spouse' },
+    { Code: 'self', Name: 'Self' },
+    { Code: 'injured', Name: 'Injured Party' },
+    { Code: 'other', Name: 'Other' },
   ];
 
   maritalStatuses: { Code: string, Name: string }[] = [
-    { Code: 'A', Name: 'Annulled' },
     { Code: 'D', Name: 'Divorced' },
-    { Code: 'I', Name: 'Interlocutory' },
     { Code: 'L', Name: 'Legally Separated' },
     { Code: 'M', Name: 'Married' },
-    { Code: 'P', Name: 'Polygamous' },
-    { Code: 'S', Name: 'Never Married' },
-    { Code: 'T', Name: 'Domestic partner' },
-    { Code: 'U', Name: 'unmarried' },
+    { Code: 'U', Name: 'Un Married' },
     { Code: 'W', Name: 'Widowed' }];
 
+  // bloodGroup: { Code: string, Name: string }[] = [
+  //   { Code: 'O_PLUS', Name: 'O+' },
+  //   { Code: 'O_MINUS', Name: 'O-' },
+  //   { Code: 'A_PLUS', Name: 'A+' },
+  //   { Code: 'A_MINUS', Name: 'A-' },
+  //   { Code: 'B_PLUS', Name: 'B+' },
+  //   { Code: 'B_MINUS', Name: 'B-' },
+  //   { Code: 'AB_PLUS', Name: 'AB+' },
+  //   { Code: 'AB_MINUS', Name: 'AB-' },
+  // ];
+
   bloodGroup: { Code: string, Name: string }[] = [
-    { Code: 'O_PLUS', Name: 'O+' },
-    { Code: 'O_MINUS', Name: 'O-' },
-    { Code: 'A_PLUS', Name: 'A+' },
-    { Code: 'A_MINUS', Name: 'A-' },
-    { Code: 'B_PLUS', Name: 'B+' },
-    { Code: 'B_MINUS', Name: 'B-' },
-    { Code: 'AB_PLUS', Name: 'AB+' },
-    { Code: 'AB_MINUS', Name: 'AB-' },
+    { Code: 'O+', Name: 'O+' },
+    { Code: 'O-', Name: 'O-' },
+    { Code: 'A+', Name: 'A+' },
+    { Code: 'A-', Name: 'A-' },
+    { Code: 'B+', Name: 'B+' },
+    { Code: 'B-', Name: 'B-' },
+    { Code: 'AB+', Name: 'AB+' },
+    { Code: 'AB-', Name: 'AB-' },
   ];
 
   constructor(
@@ -83,7 +102,31 @@ export class BeneficiaryTabComponent implements OnInit {
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
     this.allBloodType.next(this.bloodGroup.slice());
     this.allSubscriberRelationship.next(this.subscriberRelationship.slice());
+
+    if (this.pageMode === 'EDIT') {
+      const model: any = {};
+      model.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
+      model.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+      model.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+      model.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+      model.primary = this.FormNphiesClaim.controls.insurancePrimary.value;
+      model.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
+
+      this.insurancePlans.push(model);
+    }
     this.getPayers();
+
+    this.FormNphiesClaim.controls.nationality.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterNationality();
+      });
+
+    this.FormNphiesClaim.controls.bCountry.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCountry();
+      });
   }
 
   getPayers() {
@@ -122,33 +165,35 @@ export class BeneficiaryTabComponent implements OnInit {
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
 
-      firstName: beneficiary.firstName,
-      middleName: beneficiary.secondName,
-      lastName: beneficiary.thirdName,
-      familyName: beneficiary.familyName,
-      fullName: beneficiary.fullName,
-      beneficiaryFileld: beneficiary.fileId,
-      dob: beneficiary.dob,
-      gender: beneficiary.gender,
-      documentType: beneficiary.documentType,
-      documentId: beneficiary.documentId,
-      eHealthId: beneficiary.eHealthId,
-      nationality: beneficiary.nationality,
-      nationalityName: beneficiary.name,
-      residencyType: beneficiary.residencyType,
-      contactNumber: beneficiary.contactNumber,
-      martialStatus: beneficiary.maritalStatus,
-      bloodGroup: beneficiary.bloodGroup,
-      preferredLanguage: beneficiary.preferredLanguage,
-      emergencyNumber: beneficiary.emergencyPhoneNumber,
-      email: beneficiary.email,
-      addressLine: beneficiary.addressLine,
-      streetLine: beneficiary.streetLine,
-      bcity: beneficiary.city,
-      bstate: beneficiary.state,
-      bcountry: beneficiary.country,
-      bcountryName: beneficiary.name,
-      postalCode: beneficiary.postalCode,
+      firstName: beneficiary.firstName ? beneficiary.firstName : '',
+      middleName: beneficiary.secondName ? beneficiary.secondName : '',
+      lastName: beneficiary.thirdName ? beneficiary.thirdName : '',
+      familyName: beneficiary.familyName ? beneficiary.familyName : '',
+      fullName: beneficiary.fullName ? beneficiary.fullName : '',
+      beneficiaryFileld: beneficiary.fileId ? beneficiary.fileId : '',
+      dob: beneficiary.dob ? beneficiary.dob : '',
+      gender: beneficiary.gender ? beneficiary.gender : '',
+      documentType: beneficiary.documentType ? beneficiary.documentType : '',
+      documentId: beneficiary.documentId ? beneficiary.documentId : '',
+      eHealthId: beneficiary.eHealthId ? beneficiary.eHealthId : '',
+      nationality: beneficiary.nationality ? beneficiary.nationality : '',
+      // tslint:disable-next-line:max-line-length
+      nationalityName: beneficiary.nationality ? (nationalities.filter(x => x.Code === beneficiary.nationality)[0] ? nationalities.filter(x => x.Code === beneficiary.nationality)[0].Name : '') : '',
+      residencyType: beneficiary.residencyType ? beneficiary.residencyType : '',
+      contactNumber: beneficiary.contactNumber ? beneficiary.contactNumber : '',
+      martialStatus: beneficiary.maritalStatus ? beneficiary.maritalStatus : '',
+      bloodGroup: beneficiary.bloodGroup ? beneficiary.bloodGroup : '',
+      preferredLanguage: beneficiary.preferredLanguage ? beneficiary.preferredLanguage : '',
+      emergencyNumber: beneficiary.emergencyPhoneNumber ? beneficiary.emergencyPhoneNumber : '',
+      email: beneficiary.email ? beneficiary.email : '',
+      addressLine: beneficiary.addressLine ? beneficiary.addressLine : '',
+      streetLine: beneficiary.streetLine ? beneficiary.streetLine : '',
+      bcity: beneficiary.city ? beneficiary.city : '',
+      bstate: beneficiary.state ? beneficiary.state : '',
+      bcountry: beneficiary.country ? beneficiary.country : '',
+      // tslint:disable-next-line:max-line-length
+      bcountryName: beneficiary.country ? (this.nationalities.filter(x => x.Name.toLowerCase() === beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == beneficiary.country.toLowerCase())[0].Name : '') : '',
+      postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
     });
     this.emitSelectedBenificiary.emit(this.selectedBeneficiary);
   }
@@ -167,8 +212,9 @@ export class BeneficiaryTabComponent implements OnInit {
     this.insurancePlans = [];
     if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]) {
       this.insurancePlans.push(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]);
+
       this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(
-        parseInt(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerId, 10));
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId, 10);
       this.FormNphiesClaim.controls.insurancePlanExpiryDate.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].expiryDate);
       this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(
@@ -177,7 +223,7 @@ export class BeneficiaryTabComponent implements OnInit {
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber);
       this.FormNphiesClaim.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
-      this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
+      // this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
     }
   }
 
@@ -201,7 +247,7 @@ export class BeneficiaryTabComponent implements OnInit {
     if (!this.nationalities) {
       return;
     }
-    let search = this.FormNphiesClaim.controls.nationality.value;
+    let search = this.FormNphiesClaim.controls.bcountry.value;
     if (!search) {
       this.filteredCountry.next(this.nationalities.slice());
       return;
