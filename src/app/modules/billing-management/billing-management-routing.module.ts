@@ -8,6 +8,7 @@ const routes: Routes = [
     { path: '', component: BillingComponent },
     { path: 'bill-details/add', component: BillDetailsComponent },
     { path: 'bill-details/edit/:billId', component: BillDetailsComponent },
+    { path: 'bill-details/generate-bill-invoice/:billId', component: BillDetailsComponent },
     { path: 'generate-bill-invoice', component: GenerateBillInvoiceComponent }
 ];
 

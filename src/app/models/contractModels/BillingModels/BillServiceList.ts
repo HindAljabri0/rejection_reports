@@ -1,3 +1,5 @@
+import { FormControl } from "@angular/forms";
+
 export class BillServiceList {
 
     serviceId: number;
@@ -12,8 +14,8 @@ export class BillServiceList {
     insServiceName: string;
     insDiscountAmount: number;
     insDiscountType: string;
-    quantity: number;
-    //discountTypeController: number;
+    quantity: FormControl;
+    //discountTypeController: FormControl;
     deptDepartmentName: string;
     deptDiscountType: string;
     deptDiscountAmount: number;

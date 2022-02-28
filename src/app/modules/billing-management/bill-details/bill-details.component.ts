@@ -12,9 +12,12 @@ import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BillSearchModel } from 'src/app/models/contractModels/BillingModels/BillSearchModel';
 import { SEVEN } from '@angular/cdk/keycodes';
+import { SelectionModel } from '@angular/cdk/collections';
+import { BillServiceList } from 'src/app/models/contractModels/BillingModels/BillServiceList';
+import { SharedBillingService } from 'src/app/services/contractService/shared-billing.service';
 
 @Component({
     selector: 'app-bill-details',
@@ -40,7 +43,34 @@ export class BillDetailsComponent implements OnInit {
     selectedService: string
     updateBillNo: number;
 
-    _services: {
+
+    /*_services: {
+        serviceId: number;
+        isActiveServiceList: boolean;
+        cashAmount: number;
+        grossAmount: number;
+        departmentId: number;
+        serviceName: string;
+        providerId: number;
+        serviceCode: string;
+        insServiceCode: string;
+        insServiceName: string;
+        insDiscountAmount: number;
+        insDiscountType: string;
+        quantity: FormControl;
+        discountTypeController: FormControl;
+        deptDepartmentName: string;
+        deptDiscountType: string;
+        deptDiscountAmount: number;
+        patientShare: number;
+        shareType: string;
+        serviceDiscountAmount: number;
+        patientShareAmount: number;
+        insShareAmount: number;
+        netShareAmount: number;
+    }[] = [];*/
+
+    /*_generateInvoiceServices: {
         serviceId: number;
         isActiveServiceList: boolean;
         cashAmount: number;
@@ -64,7 +94,12 @@ export class BillDetailsComponent implements OnInit {
         patientShareAmount: number;
         insShareAmount: number;
         netShareAmount: number;
-    }[] = [];
+    }[] = [];*/
+
+    serviceListModel: BillServiceList[] = [];
+    selectedServicesForInvoice: BillServiceList[] = [];
+
+    //selectedServicesForInvoice = new SelectionModel<BillServiceList>(true, []);
 
     messageError = "";
 
@@ -76,7 +111,8 @@ export class BillDetailsComponent implements OnInit {
         private contractService: ContractService,
         private dialogService: DialogService,
         private adminService: AdminService,
-        private providerNphiesSearchService: ProviderNphiesSearchService
+        private providerNphiesSearchService: ProviderNphiesSearchService,
+        private sharedBilling: SharedBillingService
     ) { }
 
     length = 100;
@@ -93,6 +129,7 @@ export class BillDetailsComponent implements OnInit {
 
     addMode: boolean = false;
     EditMode: boolean = false;
+    generateInvoice: boolean = false;
 
     ngOnInit() {
 
@@ -100,6 +137,7 @@ export class BillDetailsComponent implements OnInit {
 
         this.param.billId = this.activatedRoute.snapshot.paramMap.get("billId")
         var url = this.router.url;
+
         //console.log("Contract Id= "+this.param.contractId);
 
         if (url.endsWith('add') || this.param.billId == null) {
@@ -108,7 +146,16 @@ export class BillDetailsComponent implements OnInit {
             this.getDoctorList();
             this.getBeneList();
         }
-        else {
+        else if (url.includes('generate-bill-invoice')) {
+            this.generateInvoice = true;
+            this.getDepartmentList();
+            this.getDoctorList();
+            this.getBeneList();
+            this.selectedServicesForInvoice = this.sharedBilling.getInvoiceServices;
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+            alert('generate-bill-invoice ');
+        }
+        else if (url.includes('edit')) {
             this.getBillDetails(this.param)
             this.EditMode = true;
             this.getDepartmentList();
@@ -140,7 +187,7 @@ export class BillDetailsComponent implements OnInit {
             if (result) {
                 //() => console.log('serviceExists ' + (typeof result[0].serviceId));
                 //() => console.log('serviceExists ' + (typeof this.serviceSearchModel[0].serviceId));
-                if (this._services.find(x => x.serviceId === result[0].serviceId)) {
+                if (this.serviceListModel.find(x => x.serviceId === result[0].serviceId)) {
                     //() => console.log('typeof ' + (typeof this.serviceSearchModel));
 
                     //alert("serviceExists");
@@ -153,8 +200,13 @@ export class BillDetailsComponent implements OnInit {
                     //alert("PUSHING " + JSON.stringify(this.serviceSearchModel));
                     //() => console.log('Push ' + JSON.stringify(this.serviceSearchModel));
                     //this.serviceSearchModel.push(result[0]);
-                    this._services.push(result[0]);
-                    this.calculateTableAmounts();
+                    this.serviceListModel.push(result[0]);
+                    if (this.addMode || this.EditMode) {
+                        this.calculateTableAmounts(this.serviceListModel);
+                    } else {
+                        this.calculateTableAmounts(this.selectedServicesForInvoice);
+                    }
+
                 }
             }
         });
@@ -191,7 +243,7 @@ export class BillDetailsComponent implements OnInit {
     }
 
 
-    calculateTableAmounts() {
+    calculateTableAmounts(model) {
 
         this.tableGrossAmount = 0;
         this.tableDiscountAmount = 0;
@@ -199,7 +251,7 @@ export class BillDetailsComponent implements OnInit {
         this.tablePatientShareAmount = 0;
         this.tableNetAmount = 0;
 
-        this._services.forEach(element => {
+        model.forEach(element => {
             // this.tableGrossAmount = Number((element.grossAmount + this.tableGrossAmount).toPrecision(2));
             // this.tableDiscountAmount = Number((element.serviceDiscountAmount + this.tableDiscountAmount).toPrecision(2));
             // this.tableInsShareAmount = Number((element.insShareAmount + this.tableInsShareAmount).toPrecision(2));
@@ -233,9 +285,9 @@ export class BillDetailsComponent implements OnInit {
         });
     }
 
-    calculateAllPrices(e, serviceId) {
+    calculateAllPrices(e, serviceId, model) {
 
-        for (let service of this._services) {
+        for (let service of model) {
             //type == null? service.discountTypeController.value : type;
             //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
             if (serviceId == service.serviceId) {
@@ -279,7 +331,12 @@ export class BillDetailsComponent implements OnInit {
 
             }
         }
-        this.calculateTableAmounts();
+        if (this.addMode || this.EditMode) {
+            this.calculateTableAmounts(this.serviceListModel);
+        } else {
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        //this.calculateTableAmounts();
 
     }
 
@@ -307,7 +364,7 @@ export class BillDetailsComponent implements OnInit {
         this.billTemplate.additionalDiscountPercent = 0;
 
 
-        this.billTemplate.billServices = this._services.filter(function (obj) {
+        this.billTemplate.billServices = this.serviceListModel.filter(function (obj) {
             return obj.quantity.value != null;
         }).map(service => ({
             serviceId: service.serviceId,
@@ -323,6 +380,7 @@ export class BillDetailsComponent implements OnInit {
             insDiscountAmount: service.insDiscountAmount,
             insDiscountType: service.insDiscountType,
             quantity: service.quantity.value,
+            //discountTypeController: 'aaa0',
             deptDepartmentName: service.deptDepartmentName,
             deptDiscountType: service.deptDiscountType,
             deptDiscountAmount: service.deptDiscountAmount,
@@ -448,7 +506,7 @@ export class BillDetailsComponent implements OnInit {
 
     fillEditData(result) {
 
-        this._services = result.billServiceList.map(serv => ({
+        this.serviceListModel = result.billServiceList.map(serv => ({
             serviceId: serv.serviceId,
             isActiveServiceList: serv.isActiveServiceList,
             quantity: serv.quantity,
@@ -473,13 +531,44 @@ export class BillDetailsComponent implements OnInit {
             netShareAmount: serv.netShareAmount,
 
         }));
-        this.calculateTableAmounts();
+        if (this.addMode || this.EditMode) {
+            this.calculateTableAmounts(this.serviceListModel);
+        } else {
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        //this.calculateTableAmounts();
         console.log("Do you work ?");
     }
 
     deleteServiceFromBill(index: number) {
-        this._services.splice(index, 1);
-        this.calculateTableAmounts();
+        this.serviceListModel.splice(index, 1);
+        if (this.addMode || this.EditMode) {
+            this.calculateTableAmounts(this.serviceListModel);
+        } else {
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        //this.calculateTableAmounts();
+    }
+
+    selectService(e, i: number, sev) {
+
+        console.log("Reached Method selectService");
+
+        console.log("index " + index);
+
+        if (e.checked) {
+            this.selectedServicesForInvoice.push(sev);
+        } else {
+            for (var index in this.selectedServicesForInvoice) {
+                console.log(index); // prints indexes: 0, 1, 2, 
+
+                if (this.selectedServicesForInvoice[index].serviceId === sev.serviceId) {
+                    this.selectedServicesForInvoice.splice(parseInt(index), 1);
+                }
+            }
+        }
+        console.log("Exit Method selectService");
+        this.sharedBilling.setInvoiceServices = this.selectedServicesForInvoice;
     }
 
 
