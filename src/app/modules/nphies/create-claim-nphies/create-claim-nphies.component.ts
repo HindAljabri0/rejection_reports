@@ -807,6 +807,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     x.itemDetails.splice(index, 1);
                 }
             });
+
         }
     }
 
@@ -903,6 +904,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.IsItemRequired = false;
         }
     }
+
 
     checkItemCareTeams() {
         if (this.Items.length > 0) {
@@ -1926,7 +1928,9 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.itemDescription = y.description;
                     y.display = y.nonStandardDesc;
                 });
+
             } 
+
             model.itemDecision = x.itemDecision;
             model.itemDetails = x.itemDetails;
             model.sequence = x.sequence;

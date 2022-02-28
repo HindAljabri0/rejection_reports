@@ -192,7 +192,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             }
         });
 
-
         this.actions.pipe(
             takeUntil(this._onDestroy),
             ofType(saveInvoices_Services)
