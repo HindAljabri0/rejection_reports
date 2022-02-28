@@ -258,7 +258,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       beneficiaryName: this.otherDataModel.beneficiary.beneficiaryName + ' (' + this.otherDataModel.beneficiary.documentId + ')',
       beneficiaryId: this.otherDataModel.beneficiary.id
     });
-    this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
+    if (this.otherDataModel.payerNphiesId) {
+      this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
+    }
     this.enableControls();
   }
 
