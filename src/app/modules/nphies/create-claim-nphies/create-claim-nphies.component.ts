@@ -1926,7 +1926,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.itemDescription = y.description;
                     y.display = y.nonStandardDesc;
                 });
-            } 
+            }
             model.itemDecision = x.itemDecision;
             model.itemDetails = x.itemDetails;
             model.sequence = x.sequence;
