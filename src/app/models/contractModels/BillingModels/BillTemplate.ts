@@ -12,4 +12,9 @@ export class BillTemplate {
     netAmount: number;
     isInvoiced: string;
     billServices: Array<BillServiceList>;
+    patientId: string;
+    departmentNo: string;
+    doctorId: string
+
+    services: Array<BillServiceList>;
 }

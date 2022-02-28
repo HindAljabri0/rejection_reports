@@ -6,7 +6,8 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p>Bill Details</p>
+            <p *ngIf="addMode"> Add Bill Details</p>
+            <p *ngIf="EditMode"> Edit Bill Details</p>
         </div>
     </div>
     <div class="bg-white">
@@ -15,14 +16,18 @@
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Patient</label>
-                        <span class="form-control-static">Esther Howard - 258GF5</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Department" [formControl]="billingDetailsControllerPatient" [(value)]="selectedPatient">
+                                <mat-option *ngFor="let patient of beneficiaries" [value]="patient.documentId">{{patient.fullName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Department</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select placeholder="Select Department" [formControl]="billingDetailsController" [(value)]="selectedDepartment">
+                            <mat-select placeholder="Select Department" [formControl]="billingDetailsControllerDepartment" [(value)]="selectedDepartment">
                                 <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -31,13 +36,17 @@
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Doctor / Physician</label>
-                        <span class="form-control-static">Dr. Theresa Webb</span>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select placeholder="Select Doctor" [formControl]="billingDetailsControllerDoctor" [(value)]="selectedDoctor">
+                                <mat-option *ngFor="let doctor of doctorList" [value]="doctor.physicianId.physicianCode">{{doctor.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group form-group-static">
                         <label class="control-label">Eligibility Status</label>
-                        <span class="form-control-static semibold text-success">Approved</span>
+                        <span class="form-control-static semibold text-success">Eligible</span>
                     </div>
                 </div>
             </div>
@@ -66,6 +75,7 @@
                         <th colspan="2" class="text-center">Insurance Share</th>
                         <th colspan="2" class="text-center">Patient Share</th>
                         <th rowspan="2">Net Amount</th>
+                        <th rowspan="2">Delete</th>
                     </tr>
                     <tr>
                         <th></th>
@@ -82,7 +92,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let sev of _services" class="align-middle">
+                    <tr *ngFor="let sev of _services; let i = index" class="align-middle">
                         <td>
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
@@ -111,18 +121,16 @@
                                 <!--<input type="text" class="form-control" placeholder="Insurance discount amount" (change)="changeAmount($event,sev.serviceId)" [formControl]="sev.discountAmountController" />-->
                             </div>
                         </td>
-                        <td>{{sev.cashAmount}}<span class="currency">SR</span>
+                        <td>{{sev.cashAmount | number : '1.2-2'}}<span class="currency">SR</span>
                             <!-- <div class="form-group m-0">
                                 <input type="text" value={{sev.cashAmount}} class="form-control">
                             </div> -->
                         </td>
-                        <td class="text-nowrap">{{sev.grossAmount}}<span class="currency">SR</span></td>
-                        <td class="text-nowrap">
-                            {{sev.serviceDiscountAmount}} <span class="currency">SR</span>
-                            <p class="text-grey">{{sev.insDiscountAmount}}{{sev.insDiscountType}}</p>
+                        <td class="text-nowrap">{{sev.grossAmount | number : '1.2-2'}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap">{{sev.serviceDiscountAmount | number : '1.2-2'}} <span class="currency">SR</span>
+                            <p class="text-grey">{{sev.insDiscountAmount | number : '1.2-2'}}{{sev.insDiscountType}}</p>
                         </td>
-                        <td class="text-nowrap">
-                            {{sev.insShareAmount}} <span class="currency">SR</span>
+                        <td class="text-nowrap">{{sev.insShareAmount | number : '1.2-2'}} <span class="currency">SR</span>
                             <p class="text-grey"></p>
                         </td>
                         <td class="text-nowrap">
@@ -139,16 +147,23 @@
                         </td>
 
                         <td class="text-nowrap">{{sev.netShareAmount}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap">
+                            <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteServiceFromBill(i)">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </td>
+
                     </tr>
                     <tr>
                         <td colspan="10" class="text-right border-top bold">Total</td>
-                        <td class="text-nowrap bold border-top">{{tableGrossAmount? tableGrossAmount : "0"}}<span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">{{tableDiscountAmount? tableDiscountAmount : "0"}} <span class="currency">SR</span></td>
-                        <td class="text-nowrap bold border-top">{{tableInsShareAmount? tableInsShareAmount : "0"}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableGrossAmount? tableGrossAmount : "0" | number : '1.2-2'}}<span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableDiscountAmount? tableDiscountAmount : "0"| number : '1.2-2'}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top">{{tableInsShareAmount? tableInsShareAmount : "0"| number : '1.2-2'}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">{{tablePatientShareAmount? tablePatientShareAmount : "0"}} <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">0 <span class="currency">SR</span></td>
                         <td class="text-nowrap bold border-top">{{tableNetAmount? tableNetAmount : "0"}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap bold border-top"></td>
                     </tr>
                 </tbody>
             </table>
@@ -194,7 +209,7 @@
         </div>
         <div class="block-footer has-border">
             <div class="btn-list right-block">
-                <button type="button" color="primary" mat-flat-button (click)="createBill()">Save</button>
+                <button type="button" color="primary" mat-flat-button (click)="createOrUpdateBill()">{{ addMode == true ? 'Save' : 'Update' }}</button>
                 <button mat-flat-button color="primary" routerLink="/billing-management/generate-bill-invoice">Generate Invoice</button>
             </div>
         </div>
