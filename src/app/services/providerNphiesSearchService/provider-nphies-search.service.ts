@@ -176,6 +176,9 @@ export class ProviderNphiesSearchService {
             requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
 
         }
+        if (claimSearchCriteriaModel.invoiceNo != null) {
+            requestURL += `invoiceNo=${claimSearchCriteriaModel.invoiceNo}`
+        }
         requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
         const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
         return this.http.request(request);
@@ -214,6 +217,9 @@ export class ProviderNphiesSearchService {
         if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
             requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
 
+        }
+        if (claimSearchCriteriaModel.invoiceNo != null) {
+            requestURL += `invoiceNo=${claimSearchCriteriaModel.invoiceNo}`
         }
 
         requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;

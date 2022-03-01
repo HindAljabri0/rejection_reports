@@ -60,6 +60,12 @@
                 <mat-option value="">Select Gender</mat-option>
                 <mat-option value="MALE">Male</mat-option>
                 <mat-option value="FEMALE">Female</mat-option>
+                <mat-option value="unknown">unknown</mat-option>
+                <mat-option value="U">Undetermined</mat-option>
+                <mat-option value="N">Undifferentiated </mat-option>
+                <mat-option value="A">Sex changed to Male</mat-option>
+                <mat-option value="B">Sex changed to female</mat-option>
+                <mat-option value="C">Not Completed </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -77,9 +83,8 @@
                                 <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option> -->
                 <mat-option value="PRC">Resident Card</mat-option>
                 <mat-option value="PPN">Passport</mat-option>
-                <mat-option value="VS">GCC ID</mat-option>
+                <mat-option value="VS">visa</mat-option>
                 <mat-option value="NI">National Card</mat-option>
-                <mat-option value="NI">Border Number</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -119,9 +124,9 @@
             <mat-form-field class="form-control custom-select-control">
               <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
                 <mat-option value="">Select Residency Type</mat-option>
-                <mat-option value="VISITOR">Visitor</mat-option>
-                <mat-option value="DEPENDENT">Dependent</mat-option>
-                <mat-option value="CITIZEN_OR_RESIDENT">Citizen or Resident</mat-option>
+                <mat-option value="visitor">Visitor</mat-option>
+                <mat-option value="dependent">Dependent</mat-option>
+                <mat-option value="citizen">Citizen or Resident</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

@@ -324,6 +324,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.claimSearchCriteriaModel.claimIds = this.params.claimId;
         this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
         this.claimSearchCriteriaModel.memberId = this.params.filter_memberId;
+        this.claimSearchCriteriaModel.documentId = this.params.nationalId;
+        this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
 
         event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
 
@@ -440,6 +442,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.claimSearchCriteriaModel.claimIds = this.params.claimId;
         this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
         this.claimSearchCriteriaModel.memberId = this.params.filter_memberId;
+        this.claimSearchCriteriaModel.documentId = this.params.nationalId;
+        this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
 
         this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
         ).subscribe((event) => {
