@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class BeneficiaryTabComponent implements OnInit {
 
+  @Input() otherDataModel: any;
   @Input() pageMode: string;
   @Input() isSubmitted = false;
   @Input() FormNphiesClaim: FormGroup;
@@ -41,15 +42,6 @@ export class BeneficiaryTabComponent implements OnInit {
   insurancePlans = [];
 
   payersList: Payer[] = [];
-  // subscriberRelationship: { Code: string, Name: string }[] = [
-  //   { Code: 'CHILD', Name: 'Child' },
-  //   { Code: 'PARENT', Name: 'Parent' },
-  //   { Code: 'SPOUSE', Name: 'Spouse' },
-  //   { Code: 'COMMON', Name: 'Common Law Spouse' },
-  //   { Code: 'SELF', Name: 'Self' },
-  //   { Code: 'INJURED', Name: 'Injured Party' },
-  //   { Code: 'OTHER', Name: 'Other' },
-  // ];
 
   subscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'child', Name: 'Child' },
@@ -68,17 +60,6 @@ export class BeneficiaryTabComponent implements OnInit {
     { Code: 'U', Name: 'Unmarried' },
     { Code: 'W', Name: 'Widowed' }];
 
-  // bloodGroup: { Code: string, Name: string }[] = [
-  //   { Code: 'O_PLUS', Name: 'O+' },
-  //   { Code: 'O_MINUS', Name: 'O-' },
-  //   { Code: 'A_PLUS', Name: 'A+' },
-  //   { Code: 'A_MINUS', Name: 'A-' },
-  //   { Code: 'B_PLUS', Name: 'B+' },
-  //   { Code: 'B_MINUS', Name: 'B-' },
-  //   { Code: 'AB_PLUS', Name: 'AB+' },
-  //   { Code: 'AB_MINUS', Name: 'AB-' },
-  // ];
-
   bloodGroup: { Code: string, Name: string }[] = [
     { Code: 'O+', Name: 'O+' },
     { Code: 'O-', Name: 'O-' },
@@ -90,6 +71,40 @@ export class BeneficiaryTabComponent implements OnInit {
     { Code: 'AB-', Name: 'AB-' },
   ];
 
+  genders: { Code: string, Name: string }[] = [
+    { Code: 'MALE', Name: 'Male' },
+    { Code: 'FEMALE', Name: 'Female' },
+    { Code: 'unknown', Name: 'unknown' },
+    { Code: 'U', Name: 'Undetermined' },
+    { Code: 'N', Name: 'Undifferentiated' },
+    { Code: 'A', Name: 'Sex changed to Male' },
+    { Code: 'B', Name: 'Sex changed to female' },
+    { Code: 'C', Name: 'Not Completed' }
+  ];
+
+  documentTypes: { Code: string, Name: string }[] = [
+    { Code: 'PRC', Name: 'Resident Card' },
+    { Code: 'PPN', Name: 'Passport' },
+    { Code: 'VS', Name: 'Visa' },
+    { Code: 'NI', Name: 'National Card' }
+  ];
+
+  recedencetypes: { Code: string, Name: string }[] = [
+    { Code: 'visitor', Name: 'Visitor' },
+    { Code: 'dependent', Name: 'Dependent' },
+    { Code: 'citizen', Name: 'Citizen or Resident' }
+  ];
+
+  preferredLanguages: { Code: string, Name: string }[] = [
+    { Code: 'EN', Name: 'English' },
+    { Code: 'AR', Name: 'Arabic' }
+  ];
+
+  coverageTypes: { Code: string, Name: string }[] = [
+    { Code: 'EHCPOL', Name: 'Extended healthcare' },
+    { Code: 'PUBLICPOL', Name: 'Public healthcare' }
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
@@ -97,36 +112,38 @@ export class BeneficiaryTabComponent implements OnInit {
     private sharedServices: SharedServices) { }
 
   ngOnInit() {
-    this.filteredNations.next(this.nationalities.slice());
-    this.filteredCountry.next(this.nationalities.slice());
-    this.allMaritalStatuses.next(this.maritalStatuses.slice());
-    this.allBloodType.next(this.bloodGroup.slice());
-    this.allSubscriberRelationship.next(this.subscriberRelationship.slice());
-
-    if (this.pageMode === 'EDIT') {
-      const model: any = {};
-      model.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
-      model.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
-      model.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
-      model.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
-      model.primary = this.FormNphiesClaim.controls.insurancePrimary.value;
-      model.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
-
-      this.insurancePlans.push(model);
-    }
     this.getPayers();
 
-    this.FormNphiesClaim.controls.nationality.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterNationality();
-      });
+    if (this.pageMode === 'CREATE' || this.pageMode === 'EDIT') {
+      this.filteredNations.next(this.nationalities.slice());
+      this.filteredCountry.next(this.nationalities.slice());
+      this.allMaritalStatuses.next(this.maritalStatuses.slice());
+      this.allBloodType.next(this.bloodGroup.slice());
+      this.allSubscriberRelationship.next(this.subscriberRelationship.slice());
 
-    this.FormNphiesClaim.controls.bCountry.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCountry();
-      });
+      if (this.pageMode === 'EDIT') {
+        const model: any = {};
+        model.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
+        model.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+        model.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+        model.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+        model.primary = this.FormNphiesClaim.controls.insurancePrimary.value;
+        model.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
+        this.insurancePlans.push(model);
+      }
+
+      this.FormNphiesClaim.controls.nationality.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterNationality();
+        });
+
+      this.FormNphiesClaim.controls.bCountry.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterCountry();
+        });
+    }
   }
 
   getPayers() {
@@ -134,6 +151,9 @@ export class BeneficiaryTabComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
           this.payersList = event.body as Payer[];
+          if (this.pageMode === 'VIEW' && this.otherDataModel && this.otherDataModel.beneficiary) {
+            this.setData();
+          }
         }
       }
     }, err => {
@@ -141,6 +161,37 @@ export class BeneficiaryTabComponent implements OnInit {
         console.log(err.message);
       }
     });
+  }
+
+  setData() {
+    this.otherDataModel.beneficiary.dobLabel = '';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.genderName = this.genders.filter(x => x.Code === this.otherDataModel.beneficiary.gender)[0] ? this.genders.filter(x => x.Code === this.otherDataModel.beneficiary.gender)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.documentTypeName = this.documentTypes.filter(x => x.Code === this.otherDataModel.beneficiary.documentType)[0] ? this.documentTypes.filter(x => x.Code === this.otherDataModel.beneficiary.documentType)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.nationalityName = this.nationalities.filter(x => x.Code === this.otherDataModel.beneficiary.nationality)[0] ? this.nationalities.filter(x => x.Code === this.otherDataModel.beneficiary.nationality)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.residencyTypeName = this.recedencetypes.filter(x => x.Code === this.otherDataModel.beneficiary.residencyType)[0] ? this.recedencetypes.filter(x => x.Code === this.otherDataModel.beneficiary.residencyType)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.maritalStatusName = this.maritalStatuses.filter(x => x.Code === this.otherDataModel.beneficiary.maritalStatus)[0] ? this.maritalStatuses.filter(x => x.Code === this.otherDataModel.beneficiary.maritalStatus)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.bloodGroupName = this.bloodGroup.filter(x => x.Code === this.otherDataModel.beneficiary.bloodGroup)[0] ? this.bloodGroup.filter(x => x.Code === this.otherDataModel.beneficiary.bloodGroup)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.preferredLanguageName = this.preferredLanguages.filter(x => x.Code === this.otherDataModel.beneficiary.preferredLanguage)[0] ? this.preferredLanguages.filter(x => x.Code === this.otherDataModel.beneficiary.preferredLanguage)[0].Name : '-';
+    // tslint:disable-next-line:max-line-length
+    this.otherDataModel.beneficiary.countryName = this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0].Name : '-';
+
+    if (this.otherDataModel.beneficiary.insurancePlan) {
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.beneficiary.insurancePlan.payerName = this.payersList.filter(y => y.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.payersList.filter(y => y.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].englistName : '-';
+
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriberName = this.subscriberRelationship.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber)[0] ? this.subscriberRelationship.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber)[0].Name : '-';
+
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.beneficiary.insurancePlan.coverageTypeName = this.coverageTypes.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.coverageType)[0] ? this.coverageTypes.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.coverageType)[0].Name : '-';
+    }
   }
 
   searchBeneficiaries() {

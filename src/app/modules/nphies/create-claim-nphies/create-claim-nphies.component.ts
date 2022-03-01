@@ -1583,7 +1583,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.otherDataModel.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0].name : '-';
     }
 
-
     if (this.otherDataModel.beneficiary) {
       // tslint:disable-next-line:max-line-length
       this.FormNphiesClaim.controls.firstName.setValue(this.otherDataModel.beneficiary.firstName);

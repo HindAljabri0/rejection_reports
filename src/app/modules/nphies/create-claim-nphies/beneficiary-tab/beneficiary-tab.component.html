@@ -1,4 +1,4 @@
-<ng-container *ngIf="FormNphiesClaim && pageMode">
+<ng-container *ngIf="FormNphiesClaim && pageMode && pageMode !== 'VIEW'">
   <form [formGroup]="FormNphiesClaim">
     <ng-container *ngIf="pageMode === 'CREATE'">
       <h5 class="form-title pt-0">Beneficary Info</h5>
@@ -110,14 +110,15 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="gender">
               <mat-option value="">Select Gender</mat-option>
-              <mat-option value="MALE">Male</mat-option>
+              <mat-option *ngFor="let g of genders" [value]="g.Code">{{g.Name}}</mat-option>
+              <!-- <mat-option value="MALE">Male</mat-option>
               <mat-option value="FEMALE">Female</mat-option>
               <mat-option value="unknown">unknown</mat-option>
               <mat-option value="U">Undetermined</mat-option>
               <mat-option value="N">Undifferentiated </mat-option>
               <mat-option value="A">Sex changed to Male</mat-option>
               <mat-option value="B">Sex changed to female</mat-option>
-              <mat-option value="C">Not Completed </mat-option>
+              <mat-option value="C">Not Completed </mat-option> -->
             </mat-select>
           </mat-form-field>
           <div *ngIf="(isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')">
@@ -132,10 +133,7 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="documentType">
               <mat-option value="">Select Document Type</mat-option>
-              <mat-option value="PRC">Resident Card</mat-option>
-              <mat-option value="PPN">Passport</mat-option>
-              <mat-option value="VS">visa</mat-option>
-              <mat-option value="NI">National Card</mat-option>
+              <mat-option *ngFor="let dt of documentTypes" [value]="dt.Code">{{dt.Name}}</mat-option>
             </mat-select>
             <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')">
               <span class="error-text">Please select Document Type</span>
@@ -181,9 +179,10 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="residencyType">
               <mat-option value="">Select Residency Type</mat-option>
-              <mat-option value="visitor">Visitor</mat-option>
+              <mat-option *ngFor="let r of recedencetypes" value="r.Code">{{r.Name}}</mat-option>
+              <!-- <mat-option value="visitor">Visitor</mat-option>
               <mat-option value="dependent">Dependent</mat-option>
-              <mat-option value="citizen">Citizen or Resident</mat-option>
+              <mat-option value="citizen">Citizen or Resident</mat-option> -->
             </mat-select>
           </mat-form-field>
         </div>
@@ -224,8 +223,9 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="preferredLanguage">
               <mat-option value="">Select Preferred Language</mat-option>
-              <mat-option value="EN">English</mat-option>
-              <mat-option value="AR">Arabic</mat-option>
+              <mat-option *ngFor="let p of preferredLanguages" value="p.Code">{{p.Name}}</mat-option>
+              <!-- <mat-option value="EN">English</mat-option>
+              <mat-option value="AR">Arabic</mat-option> -->
             </mat-select>
           </mat-form-field>
         </div>
@@ -356,8 +356,12 @@
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanCoverageType">
                     <mat-option value="">Select Coverage Type</mat-option>
+                    <mat-option *ngFor="let co of coverageTypes" [value]="co.Code">
+                      {{co.Name}}
+                    </mat-option>
+                    <!--
                     <mat-option value="EHCPOL">Extended healthcare</mat-option>
-                    <mat-option value="PUBLICPOL">Public healthcare</mat-option>
+                    <mat-option value="PUBLICPOL">Public healthcare</mat-option> -->
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -368,4 +372,206 @@
     </div>
     <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length == 0" [message]="'No insurance plans found!'"></app-empty-state>
   </form>
+</ng-container>
+<ng-container *ngIf="otherDataModel && pageMode === 'VIEW'">
+  <h5 class="form-title">Personal Information</h5>
+  <div class="row small-gutter">
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">First Name</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.firstName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Second Name</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.secondName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Third Name</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.thirdName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Family Name</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.familyName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Full Name</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.fullName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Beneficiary File ID</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.beneficiaryFileld}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Date of Birth</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.dob}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Gender</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.gender}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Document Type</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.documentTypeName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Document ID</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.documentId}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">E-Health ID</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.eHealthId}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Nationality</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.nationalityName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Residency Type</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.residencyTypeName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Contact Number</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.contactNumber}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Marital Status</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.maritalStatusName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Blood Group</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.bloodGroupName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Preferred Language</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.preferredLanguageName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Emergency Phone Number</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.emergencyPhoneNumber}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Email</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.email}}</p>
+      </div>
+    </div>
+  </div>
+
+  <h5 class="form-title">
+    <span>Address</span>
+  </h5>
+
+  <div class="table-responsive ">
+    <table class="primary-grid manual-row-color claim-view-table no-borders">
+      <thead>
+        <tr>
+          <th>House No./Appartment</th>
+          <th>Street Name</th>
+          <th>City</th>
+          <th>State/Province</th>
+          <th>Country</th>
+          <th>Postal Code</th>
+          <th width="10"></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="align-middle">
+          <td>
+            {{otherDataModel.beneficiary.addressLine}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.streetLine}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.city}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.state}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.countryName}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.postalCode}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <h5 class="form-title">
+    <span>Insurance Plan</span>
+  </h5>
+
+  <div class="table-responsive" *ngIf="otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
+    <table class="primary-grid manual-row-color claim-view-table no-borders">
+      <thead>
+        <tr>
+          <th>Payer<span class="asterisk">*</span></th>
+          <th>Expiry Date</th>
+          <th>Member Card ID<span class="asterisk">*</span></th>
+          <th>Relation with Subscriber<span class="asterisk">*</span></th>
+          <th>Coverage Type<span class="asterisk">*</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="align-middle">
+          <td>
+            {{otherDataModel.beneficiary.insurancePlan.payerName}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.insurancePlan.expiryDate}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.insurancePlan.memberCardId}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.insurancePlan.relationWithSubscriberName}}
+          </td>
+          <td>
+            {{otherDataModel.beneficiary.insurancePlan.coverageTypeName}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-empty-state [className]="'mb-2'" *ngIf="otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan" [message]="'No insurance plans found!'">
+  </app-empty-state>
 </ng-container>

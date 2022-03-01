@@ -195,6 +195,14 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
+        <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
+          error</mat-icon>
+        <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
+      </ng-template>
+      <app-beneficiary-tab [(pageMode)]="pageMode" [otherDataModel]="otherDataModel"></app-beneficiary-tab>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="IsCareTeamRequired" [class.text-danger]="IsCareTeamRequired">
           error</mat-icon>
         <span [class.text-danger]="IsCareTeamRequired">Care Team</span>
