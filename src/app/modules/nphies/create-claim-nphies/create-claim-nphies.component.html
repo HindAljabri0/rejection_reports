@@ -563,7 +563,7 @@
                             </tr>
                             <tr>
                               <td class="label">Discount(%)</td>
-                              <td>{{item.discount!=null?item.discount +" %":"-"}}</td>
+                              <td>{{item.discountPercent!=null?item.discountPercent +" %":"-"}}</td>
                             </tr>
                             <tr>
                               <td class="label">Tax(%)</td>
@@ -585,6 +585,10 @@
                               <td class="label">Body Site</td>
                               <td>{{item.bodySiteName ? item.bodySiteName : "-"}}</td>
                             </tr>
+                            <tr>
+                              <td class="label">Invoice No</td>
+                              <td>{{item.invoiceNo ? item.invoiceNo : "-"}}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -596,13 +600,8 @@
                               <td>{{item.unitPrice}} <span class="currency">SR</span></td>
                             </tr>
                             <tr>
-                              <td class="label">
-                                <div class="d-flex align-items-center">
-                                  <span class="pr-1">Factor</span>
-                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
-                                </div>
-                              </td>
-                              <td>{{item.factor}}</td>
+                              <td class="label">Discount Amount</td>
+                              <td>{{item.discount!=null?item.discount +" %":"-"}}</td>
                             </tr>
                             <tr>
                               <td class="label">Tax</td>
@@ -620,6 +619,15 @@
                             <tr>
                               <td class="label">Sub Site</td>
                               <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
+                            </tr>
+                            <tr>
+                              <td class="label">
+                                <div class="d-flex align-items-center">
+                                  <span class="pr-1">Factor</span>
+                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                </div>
+                              </td>
+                              <td>{{item.factor}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -1081,15 +1089,7 @@
     <div class="create-claim-body">
       <div class="bg-white">
         <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab">
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
-                error</mat-icon>
-              <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
-            </ng-template>
-            <app-beneficiary-tab [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormNphiesClaim" [(selectedBeneficiary)]="selectedBeneficiary"
-              (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
-          </mat-tab>
+
           <mat-tab>
             <ng-template mat-tab-label>
               <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -1226,10 +1226,10 @@
               </div>
               <div class="col-4 col-lg-3">
                 <div class="form-group"
-                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeNo').touched) && FormNphiesClaim.get('episodeNo').hasError('required')}">
+                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
                   <label class="control-label">Episode No.</label>
-                  <input class="form-control" placeholder="Episode No" formControlName="episodeNo">
-                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeNo').touched) && FormNphiesClaim.get('episodeNo').hasError('required')">
+                  <input class="form-control" placeholder="Episode No" formControlName="episodeId">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
                     <span class="error-text">Please enter Episode No</span>
                   </div>
                 </div>
@@ -1242,6 +1242,15 @@
                                 </div>
                             </div> -->
             </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
+                error</mat-icon>
+              <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
+            </ng-template>
+            <app-beneficiary-tab [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormNphiesClaim" [(selectedBeneficiary)]="selectedBeneficiary"
+              (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
@@ -1701,6 +1710,11 @@
                                   <tr>
                                     <td class="label">Body Site</td>
                                     <td>{{item.bodySiteName ? item.bodySiteName :
+                                      "-"}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="label">Invoice No</td>
+                                    <td>{{item.invoiceNo ? item.invoiceNo :
                                       "-"}}</td>
                                   </tr>
                                 </tbody>
