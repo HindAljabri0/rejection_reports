@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MatSelect, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subject, ReplaySubject } from 'rxjs';
