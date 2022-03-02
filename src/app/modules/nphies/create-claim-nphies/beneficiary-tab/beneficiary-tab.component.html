@@ -315,8 +315,8 @@
         </thead>
         <tbody>
           <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
-            <td>
-              <div class="form-group m-0 w-260">
+            <td class="maxw260">
+              <div class="form-group m-0">
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanPayerId">
                     <mat-option value="">Select Payer</mat-option>
@@ -327,7 +327,7 @@
               </div>
             </td>
             <td>
-              <div class="form-group m-0 w-130">
+              <div class="form-group m-0">
                 <div class="date-picker">
                   <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" formControlName="insurancePlanExpiryDate">
                   <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
@@ -336,12 +336,12 @@
               </div>
             </td>
             <td>
-              <div class="form-group m-0 w-160">
+              <div class="form-group m-0">
                 <input type="text" class="form-control" placeholder="Enter member card ID" formControlName="insurancePlanMemberCardId" />
               </div>
             </td>
             <td>
-              <div class="form-group m-0 w-160">
+              <div class="form-group m-0">
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanRelationWithSubscriber">
                     <mat-option value="">Select Relation with Subscriber</mat-option>
@@ -352,7 +352,7 @@
               </div>
             </td>
             <td>
-              <div class="form-group m-0 w-160">
+              <div class="form-group m-0">
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanCoverageType">
                     <mat-option value="">Select Coverage Type</mat-option>
