@@ -510,7 +510,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   openAddEditCareTeam(careTeam: any = null) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-sm'];
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       Sequence: (careTeam !== null) ? careTeam.sequence : (this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1)),
