@@ -78,6 +78,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    // if (this.data.source === 'APPROVAL') {
+    //   this.FormItem.controls.invoiceNo.clearValidators();
+    //   this.FormItem.controls.invoiceNo.updateValueAndValidity();
+    //   this.FormItem.controls.invoiceNo.setValue('');
+    // } else if (this.data.source === 'CLAIM') {
+    //   this.FormItem.controls.invoiceNo.setValidators(Validators.required);
+    //   this.FormItem.controls.invoiceNo.updateValueAndValidity();
+    //   this.FormItem.controls.invoiceNo.setValue('');
+    // }
+
     if (this.data.type) {
       this.setTypes(this.data.type);
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
@@ -105,7 +116,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         net: this.data.item.net,
         patientShare: this.data.item.patientShare,
         payerShare: this.data.item.payerShare,
-        startDate: this.data.item.startDate
+        startDate: this.data.item.startDate,
+        invoiceNo: this.data.item.invoiceNo
       });
 
       if (this.data.careTeams) {
@@ -623,6 +635,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+
     if (this.FormItem.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;
@@ -667,7 +680,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
 
-      model.invoiceNo = this.FormItem.controls.invoiceNo.value;
+      if (this.data.source === 'CLAIM') {
+        model.invoiceNo = this.FormItem.controls.invoiceNo.value;
+      }
+
+
       model.itemDetails = [];
 
       this.dialogRef.close(model);

@@ -118,6 +118,7 @@
                             {{otherDataModel.preAuthRefNo ? otherDataModel.preAuthRefNo : '-'}}</p>
                     </div>
                 </div>
+
                 <div class="col-4">
                     <div class="form-group form-group-static">
                         <div class="control-label">Insurer</div>
@@ -147,6 +148,12 @@
                         <div class="control-label">Disposition</div>
                         <p class="form-control-static">{{otherDataModel.disposition ? otherDataModel.disposition : '-'}}
                         </p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group form-group-static">
+                        <div class="control-label">Episode No</div>
+                        <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ? FormNphiesClaim.controls.episodeId.value : '-'}}</p>
                     </div>
                 </div>
             </div>
@@ -192,6 +199,14 @@
                     </div>
                 </div>
             </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
+                    error</mat-icon>
+                <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
+            </ng-template>
+            <app-beneficiary-tab [(pageMode)]="pageMode" [otherDataModel]="otherDataModel"></app-beneficiary-tab>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
@@ -447,11 +462,119 @@
                             FormNphiesClaim.controls.accidentType.value.name : "-"}}</p>
                     </div>
                 </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group form-group-static">
-                        <label class="control-label">Street Name</label>
-                        <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-                            FormNphiesClaim.controls.streetName.value : "-"}}</p>
+                <div class="box mb-2">
+                    <h5 class="align-self-center medium pb-2">Item Info</h5>
+                    <div class="row">
+                        <div class="col-4">
+                            <table class="inline-label-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="label">Quantity</td>
+                                        <td>{{item.quantity}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Discount(%)</td>
+                                        <td>{{item.discountPercent!=null?item.discountPercent +" %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Tax(%)</td>
+                                        <td>{{item.taxPercent!=null?item.taxPercent +" %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Patient Share(%)</td>
+                                        <td>{{item.patientSharePercent!=null?item.patientSharePercent
+                                            +" %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Is Package?</td>
+                                        <td>
+                                            <span *ngIf="item.isPackage">Yes</span>
+                                            <span *ngIf="!item.isPackage">No</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Body Site</td>
+                                        <td>{{item.bodySiteName ? item.bodySiteName : "-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Invoice No</td>
+                                        <td>{{item.invoiceNo ? item.invoiceNo : "-"}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-4">
+                            <table class="inline-label-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="label">Unit Price</td>
+                                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Discount Amount</td>
+                                        <td>{{item.discount!=null?item.discount +" %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Tax</td>
+                                        <td>{{item.tax !=null?item.tax:"-"}} <span class="currency" *ngIf="item.tax !=null">SR</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Patient Share</td>
+                                        <td>{{item.patientShare !=null?item.patientShare:"-"}} <span class="currency" *ngIf="item.patientShare!=null">SR</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Payer Share</td>
+                                        <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency" *ngIf="item.payerShare!=null">SR</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Sub Site</td>
+                                        <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            <div class="d-flex align-items-center">
+                                                <span class="pr-1">Factor</span>
+                                                <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                            </div>
+                                        </td>
+                                        <td>{{item.factor}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-4">
+                            <table class="inline-label-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="label">Start Date</td>
+                                        <td>{{item.startDateStr}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Non Standard Code</td>
+                                        <td>{{item.nonStandardCode ? item.nonStandardCode :"-"}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Display</td>
+                                        <td>{{item.display ? item.display :"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Supporting Info</td>
+                                        <td>{{item.supportingInfoNames ?
+                                            item.supportingInfoNames:"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Diagnosis</td>
+                                        <td>{{item.diagnosisNames?item.diagnosisNames:"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Care Teams</td>
+                                        <td>{{item.careTeamNames ? item.careTeamNames:"-"}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
@@ -1083,15 +1206,7 @@
         <div class="create-claim-body">
             <div class="bg-white">
                 <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab">
-                    <mat-tab>
-                        <ng-template mat-tab-label>
-                            <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
-                                error</mat-icon>
-                            <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
-                        </ng-template>
-                        <app-beneficiary-tab [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormNphiesClaim"
-                            [(selectedBeneficiary)]="selectedBeneficiary" (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
-                    </mat-tab>
+
                     <mat-tab>
                         <ng-template mat-tab-label>
                             <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -1229,13 +1344,17 @@
                                 </div>
                             </div>
                             <div class="col-4 col-lg-3">
-                                <div class="form-group"
-                                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeNo').touched) && FormNphiesClaim.get('episodeNo').hasError('required')}">
+                                <!-- <div class="form-group"
+                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
+                  <label class="control-label">Episode No.</label>
+                  <input class="form-control" placeholder="Episode No" formControlName="episodeId">
+                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
+                    <span class="error-text">Please enter Episode No</span>
+                  </div>
+                </div> -->
+                                <div class="form-group">
                                     <label class="control-label">Episode No.</label>
-                                    <input class="form-control" placeholder="Episode No" formControlName="episodeNo">
-                                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeNo').touched) && FormNphiesClaim.get('episodeNo').hasError('required')">
-                                        <span class="error-text">Please enter Episode No</span>
-                                    </div>
+                                    <input class="form-control" placeholder="Episode No" formControlName="episodeId">
                                 </div>
                             </div>
                             <!-- <div class="col-4 col-lg-3">
@@ -1246,6 +1365,15 @@
                                 </div>
                             </div> -->
                         </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
+                                error</mat-icon>
+                            <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
+                        </ng-template>
+                        <app-beneficiary-tab [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormNphiesClaim"
+                            [(selectedBeneficiary)]="selectedBeneficiary" (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
                     </mat-tab>
                     <mat-tab>
                         <ng-template mat-tab-label>
@@ -1638,206 +1766,42 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngFor="let item of Items; let i = index">
-                                        <tr>
-                                            <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline
-                                                </mat-icon>
-                                                <mat-icon *ngIf="currentOpenItem==i" class="size-21">
-                                                    remove_circle_outline</mat-icon>
-                                            </td>
-                                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.sequence}}</td>
-                                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.typeName}}</td>
-                                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.itemCode}} - {{item.itemDescription}}</td>
-                                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.quantity}}</td>
-                                            <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.unitPrice}} <span class="currency">SR</span></td>
-                                            <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.net}} <span class="currency">SR</span></td>
-                                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                                {{item.nonStandardCode ? item.nonStandardCode:"-"}}</td>
-                                            <td class="actions text-nowrap">
-                                                <button *ngIf="item.isPackage" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
-                                                    (click)="openAddEditItemDetailsDialog(item.sequence)">
-                                                    <mat-icon>add</mat-icon>
-                                                </button>
-                                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
-                                                    <mat-icon>create</mat-icon>
-                                                </button>
-                                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
-                                                    <mat-icon>delete_outline</mat-icon>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="currentOpenItem==i">
-                                            <td colspan="9">
-                                                <div class="box mb-2">
-                                                    <h5 class="align-self-center medium pb-2">Item Info</h5>
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <table class="inline-label-table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="label">Quantity</td>
-                                                                        <td>{{item.quantity}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Discount(%)</td>
-                                                                        <td>{{item.discountPercent!=null?item.discountPercent +"
-                                                                            %":"-"}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Tax(%)</td>
-                                                                        <td>{{item.taxPercent!=null?item.taxPercent +"
-                                                                            %":"-"}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Patient Share(%)</td>
-                                                                        <td>{{item.patientSharePercent!=null?item.patientSharePercent
-                                                                            +" %":"-"}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Is Package?</td>
-                                                                        <td>
-                                                                            <span *ngIf="item.isPackage">Yes</span>
-                                                                            <span *ngIf="!item.isPackage">No</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Body Site</td>
-                                                                        <td>{{item.bodySiteName ? item.bodySiteName :
-                                                                            "-"}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <table class="inline-label-table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="label">Unit Price</td>
-                                                                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Discount Amount</td>
-                                                                        <td>{{item.discount!=null?item.discount:"-"}} <span class="currency" *ngIf="item.discount !=null">SR</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Tax</td>
-                                                                        <td>{{item.tax !=null?item.tax:"-"}} <span class="currency" *ngIf="item.tax !=null">SR</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Patient Share</td>
-                                                                        <td>{{item.patientShare
-                                                                            !=null?item.patientShare:"-"}} <span class="currency" *ngIf="item.patientShare!=null">SR</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Payer Share</td>
-                                                                        <td>{{item.payerShare!=null?item.payerShare:"-"}}
-                                                                            <span class="currency" *ngIf="item.payerShare!=null">SR</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Sub Site</td>
-                                                                        <td>{{item.subSiteName ? item.subSiteName :"-"}}
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">
-                                                                            <div class="d-flex align-items-center">
-                                                                                <span class="pr-1">Factor</span>
-                                                                                <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info
-                                                                                </mat-icon>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>{{item.factor}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <table class="inline-label-table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="label">Start Date</td>
-                                                                        <td>{{item.startDateStr}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Non Standard Code</td>
-                                                                        <td>{{item.nonStandardCode ?
-                                                                            item.nonStandardCode :"-"}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Display</td>
-                                                                        <td>{{item.display ? item.display :"-"}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Supporting Info</td>
-                                                                        <td>{{item.supportingInfoNames ?
-                                                                            item.supportingInfoNames:"-"}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Diagnosis</td>
-                                                                        <td>{{item.diagnosisNames?item.diagnosisNames:"-"}}
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Care Teams</td>
-                                                                        <td>{{item.careTeamNames ?
-                                                                            item.careTeamNames:"-"}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                                                    <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                                                    <table class="primary-grid manual-row-color claim-view-table no-borders">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Sequence No.</th>
-                                                                <th>Type</th>
-                                                                <th>Code - Description</th>
-                                                                <th>Non Standard Code</th>
-                                                                <th>Display</th>
-                                                                <th width="10"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let d of item.itemDetails; let di = index">
-                                                                <td class="row-click">{{d.sequence}}</td>
-                                                                <td class="row-click">{{d.typeName}}</td>
-                                                                <td class="row-click">{{d.itemCode}} -
-                                                                    {{d.itemDescription}}</td>
-                                                                <td class="row-click">{{d.nonStandardCode ?
-                                                                    d.nonStandardCode :"-"}}</td>
-                                                                <td class="row-click">{{d.display ? d.display :"-"}}
-                                                                </td>
-                                                                <td class="actions text-nowrap">
-                                                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                                                                        (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                                                        <mat-icon>create</mat-icon>
-                                                                    </button>
-                                                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary"
-                                                                        (click)="deleteItemDetails(item.sequence, di)">
-                                                                        <mat-icon>delete_outline</mat-icon>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-container>
+                                    <tr>
+                                        <td class="label">Quantity</td>
+                                        <td>{{item.quantity}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Discount(%)</td>
+                                        <td>{{item.discountPercent!=null?item.discountPercent +"
+                                            %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Tax(%)</td>
+                                        <td>{{item.taxPercent!=null?item.taxPercent +"
+                                            %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Patient Share(%)</td>
+                                        <td>{{item.patientSharePercent!=null?item.patientSharePercent
+                                            +" %":"-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Is Package?</td>
+                                        <td>
+                                            <span *ngIf="item.isPackage">Yes</span>
+                                            <span *ngIf="!item.isPackage">No</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Body Site</td>
+                                        <td>{{item.bodySiteName ? item.bodySiteName :
+                                            "-"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Invoice No</td>
+                                        <td>{{item.invoiceNo ? item.invoiceNo :
+                                            "-"}}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

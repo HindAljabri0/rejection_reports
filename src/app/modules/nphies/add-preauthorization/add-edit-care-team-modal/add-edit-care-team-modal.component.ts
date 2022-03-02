@@ -50,6 +50,32 @@ export class AddEditCareTeamModalComponent implements OnInit {
   IsPractitionerRequired = true;
   IsPractitionerNameRequired = false;
 
+
+
+  constructor(
+    private sharedDataService: SharedDataService,
+    private dialogRef: MatDialogRef<AddEditCareTeamModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
+    private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService,
+    private providerNphiesSearchService: ProviderNphiesSearchService) {
+    this.providerId = this.sharedServices.providerId;
+  }
+
+  ngOnInit() {
+    if (this.data.item && this.data.item.practitionerName) {
+      this.FormCareTeam.patchValue({
+        practitionerRole: this.practitionerRoleList.filter(x => x.value === this.data.item.practitionerRole)[0],
+        careTeamRole: this.careTeamRoleList.filter(x => x.value === this.data.item.careTeamRole)[0],
+      });
+    } else {
+      this.FormCareTeam.patchValue({
+        practitionerRole: this.practitionerRoleList.filter(role => role.value === 'doctor')[0],
+        careTeamRole: this.careTeamRoleList.filter(role => role.value === 'primary')[0],
+      });
+    }
+    this.getPractitionerList();
+    this.getSpecialityList();
+  }
+
   PractitionerNameChange() {
     if (this.FormCareTeam.controls.practitionerName.value || this.FormCareTeam.controls.practitionerId.value) {
       this.FormCareTeam.controls.practitioner.clearValidators();
@@ -94,30 +120,6 @@ export class AddEditCareTeamModalComponent implements OnInit {
       this.FormCareTeam.controls.practitioner.updateValueAndValidity();
       this.IsPractitionerRequired = true;
     }
-  }
-
-  constructor(
-    private sharedDataService: SharedDataService,
-    private dialogRef: MatDialogRef<AddEditCareTeamModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
-    private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService,
-    private providerNphiesSearchService: ProviderNphiesSearchService) {
-    this.providerId = this.sharedServices.providerId;
-  }
-
-  ngOnInit() {
-    if (this.data.item && this.data.item.practitionerName) {
-      this.FormCareTeam.patchValue({
-        practitionerRole: this.practitionerRoleList.filter(x => x.value === this.data.item.practitionerRole)[0],
-        careTeamRole: this.careTeamRoleList.filter(x => x.value === this.data.item.careTeamRole)[0],
-      });
-    } else {
-      this.FormCareTeam.patchValue({
-        practitionerRole: this.practitionerRoleList.filter(role => role.value === 'doctor')[0],
-        careTeamRole: this.careTeamRoleList.filter(role => role.value === 'primary')[0],
-      });
-    }
-    this.getPractitionerList();
-    this.getSpecialityList();
   }
 
   getPractitionerList() {
