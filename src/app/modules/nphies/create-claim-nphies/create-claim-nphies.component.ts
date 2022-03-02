@@ -55,7 +55,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
     preAuthOfflineDate: [''],
-    episodeId: ['', Validators.required],
+    episodeId: [''],
     // preAuthResponseId: [''],
     accidentType: [''],
     streetName: [''],
@@ -1364,7 +1364,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   get checkErrorBeneficiaryInfo() {
     if (this.isSubmitted && (
-      !this.FormNphiesClaim.controls.beneficiaryName.value ||
       !this.FormNphiesClaim.controls.insurancePlanId.value ||
       !this.FormNphiesClaim.controls.fullName.value ||
       !this.FormNphiesClaim.controls.dob.value ||
@@ -1379,8 +1378,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   get checkErrorClaimInfo() {
     if (this.isSubmitted && (!this.FormNphiesClaim.controls.dateOrdered.value ||
-      !this.FormNphiesClaim.controls.type.value ||
-      !this.FormNphiesClaim.controls.episodeId.value)) {
+      !this.FormNphiesClaim.controls.type.value)) {
       return true;
     } else {
       return false;
