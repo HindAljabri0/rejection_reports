@@ -116,7 +116,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         net: this.data.item.net,
         patientShare: this.data.item.patientShare,
         payerShare: this.data.item.payerShare,
-        startDate: this.data.item.startDate
+        startDate: this.data.item.startDate,
+        invoiceNo: this.data.item.invoiceNo
       });
 
       if (this.data.careTeams) {

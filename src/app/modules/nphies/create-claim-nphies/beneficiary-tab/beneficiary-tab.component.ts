@@ -9,6 +9,7 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { takeUntil } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-beneficiary-tab',
@@ -164,7 +165,7 @@ export class BeneficiaryTabComponent implements OnInit {
   }
 
   setData() {
-    this.otherDataModel.beneficiary.dobLabel = '';
+    this.otherDataModel.beneficiary.dobLabel = moment(this.otherDataModel.beneficiary.dob, 'YYYY-MM-DD').format('DD-MM-YYYY');
     // tslint:disable-next-line:max-line-length
     this.otherDataModel.beneficiary.genderName = this.genders.filter(x => x.Code === this.otherDataModel.beneficiary.gender)[0] ? this.genders.filter(x => x.Code === this.otherDataModel.beneficiary.gender)[0].Name : '-';
     // tslint:disable-next-line:max-line-length
