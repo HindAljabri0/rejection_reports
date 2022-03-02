@@ -118,6 +118,7 @@
               {{otherDataModel.preAuthRefNo ? otherDataModel.preAuthRefNo : '-'}}</p>
           </div>
         </div>
+
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Insurer</div>
@@ -147,6 +148,12 @@
             <div class="control-label">Disposition</div>
             <p class="form-control-static">{{otherDataModel.disposition ? otherDataModel.disposition : '-'}}
             </p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group form-group-static">
+            <div class="control-label">Episode No</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ? FormNphiesClaim.controls.episodeId.value : '-'}}</p>
           </div>
         </div>
       </div>
@@ -1233,13 +1240,17 @@
                 </div>
               </div>
               <div class="col-4 col-lg-3">
-                <div class="form-group"
+                <!-- <div class="form-group"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
                   <label class="control-label">Episode No.</label>
                   <input class="form-control" placeholder="Episode No" formControlName="episodeId">
                   <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
                     <span class="error-text">Please enter Episode No</span>
                   </div>
+                </div> -->
+                <div class="form-group">
+                  <label class="control-label">Episode No.</label>
+                  <input class="form-control" placeholder="Episode No" formControlName="episodeId">
                 </div>
               </div>
               <!-- <div class="col-4 col-lg-3">

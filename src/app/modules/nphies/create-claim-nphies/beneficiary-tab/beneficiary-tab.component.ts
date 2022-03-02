@@ -229,7 +229,7 @@ export class BeneficiaryTabComponent implements OnInit {
       eHealthId: beneficiary.eHealthId ? beneficiary.eHealthId : '',
       nationality: beneficiary.nationality ? beneficiary.nationality : '',
       // tslint:disable-next-line:max-line-length
-      nationalityName: beneficiary.nationality ? (nationalities.filter(x => x.Code === beneficiary.nationality)[0] ? nationalities.filter(x => x.Code === beneficiary.nationality)[0].Name : '') : '',
+      nationalityName: beneficiary.nationality ? (this.nationalities.filter(x => x.Code === beneficiary.nationality)[0] ? this.nationalities.filter(x => x.Code === beneficiary.nationality)[0].Name : '') : '',
       residencyType: beneficiary.residencyType ? beneficiary.residencyType : '',
       contactNumber: beneficiary.contactNumber ? beneficiary.contactNumber : '',
       martialStatus: beneficiary.maritalStatus ? beneficiary.maritalStatus : '',
