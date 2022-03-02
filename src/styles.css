@@ -57,6 +57,7 @@ input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allo
 .w-190{width: 190px;}
 .w-200{width: 200px;}
 .w-260{width: 260px;}
+.maxw260{max-width: 260px;}
 .col{min-width: 0;}
 
 /* custom scrollbar
@@ -235,6 +236,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .mat-icon.size-18{font-size:18px;line-height:18px;height:18px;width:18px;}
 .mat-icon.size-20{font-size:20px;line-height:20px;height:20px;width:20px;}
 .form-title{font-weight: 600;padding-bottom: 8px;padding-top: 24px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;margin-bottom: 16px;}
+.form-title:first-child{padding-top: 0;}
 .form-title .mat-slide-toggle{font-weight: 400;}
 .form-title.no-border{padding-bottom: 0;border-bottom: 0;margin-bottom: 0;}
 .mat-dialog-container{color: inherit;}
@@ -506,8 +508,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-card.no-radius{border-radius: 0;}
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}
 .view-claim .create-claim-body{min-height: calc(100vh - 132px);}
-.mat-dialog-container .nphies-claim-tab{min-height: calc(100vh - 165px);}
-.mat-dialog-container .block-header{min-height: 55px;}
+.create-claim-body.nphies-create .nphies-claim-tab{min-height: calc(100vh - 212px);}
+.mat-dialog-container .nphies-claim-tab,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab{min-height: calc(100vh - 132px);}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/
