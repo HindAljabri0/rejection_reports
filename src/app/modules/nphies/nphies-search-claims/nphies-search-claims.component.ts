@@ -700,21 +700,21 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.params.page = this.pageIndex > 0 ? this.pageIndex : null;
         this.router.navigate([], {
             relativeTo: this.routeActive,
-            queryParams: { ...this.params, editMode: null, size: null },
-            fragment: this.params.editMode == 'true' ? 'edit' : null,
+            queryParams: { ...this.params, editMode: null, reSubmitMode: null, size: null },
+            fragment: this.params.editMode == 'true' ? 'edit' : (this.params.reSubmitMode == 'true' ? 'Resubmit' : null),
         });
     }
 
 
-    showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false) {
+    showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false) {
         this.params.claimId = claimId;
         this.params.claimResponseId = claimResponseId;
         if (edit) {
             this.params.editMode = `${edit}`;
+        } else if (ReSubmit) {
+            this.params.reSubmitMode = `${ReSubmit}`;
         }
-        /*else if (ReSubmit) {
-            this.params.editMode = `${ReSubmit}`;
-        }*/ else {
+        else {
             this.params.editMode = null;
         }
         this.resetURL();
@@ -1281,7 +1281,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             return false;
         }
         status = status.trim().toLowerCase();
-        const validStatus = ['accepted', 'notaccepted', 'batched'];
+        const validStatus = ['accepted', 'cancelled', 'notaccepted', 'batched'];
         if (validStatus.indexOf(status) >= 0) {
             return false;
         } else {
@@ -1292,5 +1292,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     claimIsEditable(status: string) {
         return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
     }
-
+    claimIsCancelled(status: string) {
+        return ['cancelled'].includes(status.trim().toLowerCase())
+    }
 }
