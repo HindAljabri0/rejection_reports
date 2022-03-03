@@ -10,6 +10,10 @@ import { AdminService } from 'src/app/services/adminService/admin.service';
 import { PageEvent } from '@angular/material';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
+import { Router } from '@angular/router';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTemplate';
 
 @Component({
     selector: 'app-billing',
@@ -25,6 +29,7 @@ export class BillingComponent implements OnInit {
     selectedPatient: string;
     selectedDoctor: string;
     dialogRef: MatDialog;
+    billListTemplate: BillTemplate;
 
     constructor(
         private dialog: MatDialog,
@@ -32,7 +37,9 @@ export class BillingComponent implements OnInit {
         private contractService: ContractService,
         private beneficiaryService: ProvidersBeneficiariesService,
         private adminService: AdminService,
-        private providerNphiesSearchService: ProviderNphiesSearchService
+        private providerNphiesSearchService: ProviderNphiesSearchService,
+        private router: Router,
+        private dialogService: DialogService
     ) { }
 
     length = 100;
@@ -76,6 +83,7 @@ export class BillingComponent implements OnInit {
                 const body = event.body;
                 if (body instanceof Array) {
                     this.billList = body;
+                    console.log("Assignment");
                 }
             }
         }, errorEvent => {
@@ -129,5 +137,43 @@ export class BillingComponent implements OnInit {
 
             }
         });
+    }
+
+    deleteBill(billToDelete) {
+        this.billListTemplate = new BillTemplate();
+        this.billListTemplate.billNo = billToDelete.bill_No;
+        this.billListTemplate.billDate = billToDelete.bill_Date;
+        this.billListTemplate.grossAmount = billToDelete.gross_Amount;
+        this.billListTemplate.discountAmount = billToDelete.discount_Amount;
+        this.billListTemplate.additionalDiscount = billToDelete.additional_Discount;
+        this.billListTemplate.additionalDiscountPercent = billToDelete.additional_Discount_Percent;
+        this.billListTemplate.netAmount = billToDelete.net_Amount;
+        this.billListTemplate.isInvoiced = billToDelete.is_Invoiced;
+        this.billListTemplate.isDeleted = 'Y';
+
+        this.dialogService.openMessageDialog(
+            new MessageDialogData('Delete Record?',
+                `Are you sure you want to delete it?`,
+                false,
+                true)).subscribe(result => {
+                    if (result === true) {
+                        this.contractService.deleteBill(this.billListTemplate).subscribe(event => {
+                            if (event instanceof HttpResponse) {
+                                if (event.status === 200) {
+                                    this.sharedServices.loadingChanged.next(false);
+                                    this.dialogService.openMessageDialog(new MessageDialogData('',
+                                        `Bill was deleted successfully.`,
+                                        false));
+                                    this.getBillList();
+                                }
+                            }
+                        }, errorEvent => {
+                            if (errorEvent instanceof HttpErrorResponse) {
+
+                            }
+                        });
+
+                    }
+                });
     }
 }

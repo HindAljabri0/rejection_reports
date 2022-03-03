@@ -17,7 +17,7 @@
                     <div class="form-group form-group-static">
                         <label class="control-label">Patient</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select placeholder="Select Department" [formControl]="billingDetailsControllerPatient" [(value)]="selectedPatient">
+                            <mat-select placeholder="Select Patient" [formControl]="billingDetailsControllerPatient" [(value)]="selectedPatient">
                                 <mat-option *ngFor="let patient of beneficiaries" [value]="patient.documentId">{{patient.fullName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -61,8 +61,8 @@
             <table class="primary-grid sticky-header manual-row-color claim-view-table" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                        <th *ngIf="addMode || EditMode">
+                            <!-- <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox> -->
                         </th>
                         <th colspan="2" class="text-center">Service</th>
                         <th colspan="2" class="text-center">Insurance Service</th>
@@ -75,10 +75,10 @@
                         <th colspan="2" class="text-center">Insurance Share</th>
                         <th colspan="2" class="text-center">Patient Share</th>
                         <th rowspan="2">Net Amount</th>
-                        <th rowspan="2">Delete</th>
+                        <!-- <th rowspan="2">Delete</th> -->
                     </tr>
                     <tr>
-                        <th></th>
+                        <th *ngIf="addMode || EditMode"></th>
                         <th>Code</th>
                         <th>Description</th>
                         <th>Code</th>
@@ -94,9 +94,9 @@
                 <tbody>
                     <ng-container *ngIf="generateInvoice">
                         <tr *ngFor="let sev of selectedServicesForInvoice; let i = index" class="align-middle">
-                            <td>
-                                <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                            </td>
+                            <!--<td>
+                                 <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox> 
+                            </td>-->
                             <td class="text-nowrap">{{sev.serviceCode}}</td>
                             <td>{{sev.serviceName}}</td>
                             <td class="text-nowrap">{{sev.insServiceCode}}</td>
@@ -115,7 +115,7 @@
                             </td>
                             <td></td>
                             <td></td>
-                            <td>{{sev.quantity}}
+                            <td>{{sev.quantity.value}}
                                 <!-- <div class="form-group m-0">
                                     <input type="text" class="form-control" placeholder="Enter Quantity"
                                         (change)="calculateAllPrices($event,sev.serviceId,selectedServicesForInvoice)" [formControl]="sev.quantity">
@@ -147,11 +147,11 @@
                             </td>
 
                             <td class="text-nowrap">{{sev.netShareAmount}}<span class="currency">SR</span></td>
-                            <td class="text-nowrap">
+                            <!-- <td class="text-nowrap">
                                 <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteServiceFromBill(i)">
                                     <mat-icon>delete_outline</mat-icon>
                                 </button>
-                            </td>
+                            </td> -->
 
                         </tr>
 
@@ -172,7 +172,7 @@
                         <tr *ngFor="let sev of serviceListModel; let i = index; let element" class="align-middle">
                             <td>
                                 <!-- <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox> -->
-                                <mat-checkbox class="grid-checkbox" color="primary" (change)="selectService($event,i,sev)">
+                                <mat-checkbox *ngIf="sev.isInvoiced !== 'Y'" class="grid-checkbox" color="primary" (change)="selectService($event,i,sev)">
                                 </mat-checkbox>
                             </td>
                             <td class="text-nowrap">{{sev.serviceCode}}</td>
@@ -289,12 +289,82 @@
                 </div>
             </div>
         </div>
-        <div class="block-footer has-border">
-            <div class="btn-list right-block">
-                <button type="button" color="primary" mat-flat-button (click)="createOrUpdateBill()">{{ addMode == true ? 'Save' : 'Update' }}</button>
-                <!-- <button mat-flat-button color="primary" routerLink="/billing-management/generate-bill-invoice">Generate Invoice</button> -->
-                <button mat-flat-button color="primary" routerLink="/billing-management/bill-details/generate-bill-invoice/{{param.billId}}">Generate Invoice</button>
+        <!--Payment block-->
+        <ng-container *ngIf="generateInvoice">
+            <h5 class="form-title p-14 mb-0">
+                <span>Payments</span>
+            </h5>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                <table class="primary-grid sticky-header manual-row-color claim-view-table" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Receipt Type</th>
+                            <th>Ref. Details</th>
+                            <th>Date</th>
+                            <th>Amount Received</th>
+                            <th width="10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="align-middle">
+                            <td>
+                                <div class="form-group mt-n1 mb-n1">
+                                    <mat-form-field class="form-control custom-select-control">
+                                        <mat-select [formControl]="receiptTypeController" [(value)]="selectedReceiptType">
+                                            <mat-option value="">Select type</mat-option>
+                                            <mat-option value="Cash">Cash</mat-option>
+                                            <mat-option value="Card">Card</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group mt-n1 mb-n1">
+                                    <input type="text" [formControl]="refDetailsController" class="form-control" placeholder="Enter ref. details">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group mt-n1 mb-n1">
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="paymentDate" [formControl]="paymentDateController" class="form-control" placeholder="Select date">
+                                        <mat-datepicker-toggle [for]="paymentDate"></mat-datepicker-toggle>
+                                        <mat-datepicker #paymentDate></mat-datepicker>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group mt-n1 mb-n1">
+                                    <input type="text" [formControl]="invoiceAmountController" class="form-control" placeholder="Enter amount received">
+                                </div>
+                            </td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-scrollbar>
+        </ng-container>
+        <!--Payment Block Ends-->
+        <ng-container *ngIf="addMode || EditMode">
+            <div class="block-footer has-border">
+                <div class="btn-list right-block">
+                    <button type="button" color="primary" mat-flat-button (click)="createOrUpdateBill()">{{ addMode == true ? 'Save' : 'Update' }}</button>
+                    <!-- <button mat-flat-button color="primary" routerLink="/billing-management/generate-bill-invoice">Generate Invoice</button> -->
+                    <!-- <button mat-flat-button color="primary" routerLink="/billing-management/bill-details/generate-bill-invoice/{{param.billId}}">Generate Invoice</button> -->
+                    <button mat-flat-button color="primary" (click)="generateBillServiceInvoice()">Generate Invoice</button>
+                </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="generateInvoice">
+            <div class="block-footer has-border">
+                <div class="btn-list right-block">
+                    <button mat-flat-button color="primary" (click)="saveInvoice()">Print</button>
+                    <button mat-flat-button color="primary" routerLink="/billing-management/bill-details/edit/{{param.billId}}">Cancel</button>
+                </div>
+            </div>
+        </ng-container>
     </div>
 </div>
