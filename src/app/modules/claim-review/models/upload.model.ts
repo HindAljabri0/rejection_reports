@@ -28,7 +28,7 @@ export class Upload {
         return {
             id: incomingUpload.id,
             name: incomingUpload.name,
-            date: new Date(incomingUpload.date),
+            date: new Date(incomingUpload.uploadDate),
             totalClaims: incomingUpload.totalClaims,
             assignedDoctor: {
                 id: incomingUpload.assignedDoctorId,
