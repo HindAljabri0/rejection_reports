@@ -12,6 +12,7 @@ export class SharedBillingService {
 
     public invoiceServices: {
         serviceId: number;
+        billServiceId: number;
         isActiveServiceList: boolean;
         cashAmount: number;
         grossAmount: number,
@@ -34,6 +35,7 @@ export class SharedBillingService {
         patientShareAmount: number;
         insShareAmount: number;
         netShareAmount: number;
+        isInvoiced: string;
     }[];
 
 
@@ -43,9 +45,10 @@ export class SharedBillingService {
 
     set setInvoiceServices(val: {
         serviceId: number;
+        billServiceId: number;
         isActiveServiceList: boolean;
         cashAmount: number;
-        grossAmount: number,
+        grossAmount: number;
         departmentId: number;
         serviceName: string;
         providerId: number;
@@ -65,6 +68,7 @@ export class SharedBillingService {
         patientShareAmount: number;
         insShareAmount: number;
         netShareAmount: number;
+        isInvoiced: string;
     }[]) {
         this.invoiceServices = val;
     }
@@ -75,9 +79,10 @@ export class SharedBillingService {
 
     get getInvoiceServices(): {
         serviceId: number;
+        billServiceId: number;
         isActiveServiceList: boolean;
         cashAmount: number;
-        grossAmount: number,
+        grossAmount: number;
         departmentId: number;
         serviceName: string;
         providerId: number;
@@ -86,7 +91,7 @@ export class SharedBillingService {
         insServiceName: string;
         insDiscountAmount: number;
         insDiscountType: string;
-        quantity: FormControl,
+        quantity: FormControl;
         //discountTypeController: FormControl,
         deptDepartmentName: string;
         deptDiscountType: string;
@@ -97,6 +102,7 @@ export class SharedBillingService {
         patientShareAmount: number;
         insShareAmount: number;
         netShareAmount: number;
+        isInvoiced: string;
     }[] {
         return this.invoiceServices;
     }
