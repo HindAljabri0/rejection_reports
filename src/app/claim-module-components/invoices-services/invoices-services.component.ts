@@ -36,6 +36,7 @@ import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { parse } from 'querystring';
 import { Subject } from 'rxjs';
+import { log } from 'console';
 
 @Component({
     selector: 'claim-invoices-services',
@@ -222,10 +223,27 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         let invoicesHasDuplicateService = this.errors.filter(x => Number(x.code) == invoice.invoiceId && x.error.includes('We found duplicate services in Invoice'));
         return invoicesHasDuplicateService.length > 0 ? 'Duplicate services in Invoice' : false
     }
+    ListDuplicateService: Number[] = [];
     invoiceHasError(invoice: Invoice) {
+
         let check = 0;
         let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
         if (invoicesError.length > 0) {
+            let invoiceshasuplicate = this.errors.filter(x => Number(x.code) == invoice.invoiceId && x.error.includes('We found duplicate services in Invoice'));
+            if (invoiceshasuplicate.length > 0) {
+
+                for (var i = 0; i < invoice.service.length; i++) {
+                    for (var j = i + 1; j < invoice.service.length; j++) {
+                        if (invoice.service[i].serviceCode == invoice.service[j].serviceCode) {
+
+                            this.ListDuplicateService.push(invoice.service[i].serviceId);
+                            this.ListDuplicateService.push(invoice.service[j].serviceId);
+                        }
+                    }
+
+                }
+
+            }
             check++;
             return true
         } else {
@@ -252,7 +270,11 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                 iaHasError = true;
             }
 
-        })
+        });
+
+        if (this.ListDuplicateService.includes(service.serviceId)) {
+            iaHasError = true
+        }
         return iaHasError;
     }
 
