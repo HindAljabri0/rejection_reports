@@ -1048,10 +1048,10 @@
       </app-empty-state>
     </mat-tab>
   </mat-tab-group>
-  <div class="block-footer sticky-bottom" *ngIf="!isLoading && claimIsEditable">
+  <div class="block-footer sticky-bottom" *ngIf="!isLoading">
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button color="primary" (click)="toEditMode()">Edit</button>
+      <button mat-flat-button color="primary" *ngIf="claimIsEditable" (click)="toEditMode()">Edit</button>
     </div>
   </div>
 </div>
