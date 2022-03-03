@@ -1285,6 +1285,9 @@ export class CreateClaimNphiesComponent implements OnInit {
                 requestObservable = this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model);
             } else if (this.pageMode == 'EDIT') {
                 requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
+            } else if (this.pageMode == 'Resubmit') {
+                
+                //requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
             }
 
 

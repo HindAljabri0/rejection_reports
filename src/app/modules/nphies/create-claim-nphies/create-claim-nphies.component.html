@@ -1067,7 +1067,7 @@
             <p>Create Claim</p>
         </div>
         <div *ngIf="pageMode == 'EDIT' || pageMode == 'Resubmit'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
-            <p *ngIf="pageMode == 'Edit'" class="title">Edit Claim</p>
+            <p *ngIf="pageMode == 'EDIT'" class="title">Edit Claim</p>
             <p *ngIf="pageMode == 'Resubmit'" class="title">Re-Submit Claim</p>
             <div class="summary">
                 <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
