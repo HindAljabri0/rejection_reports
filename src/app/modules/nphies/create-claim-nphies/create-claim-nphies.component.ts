@@ -214,7 +214,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     toEditMode() {
-        this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'Resubmit';
+        this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
         this.selectedBeneficiary = {
             documentId: this.otherDataModel.beneficiary.documentId,
             documentType: this.otherDataModel.beneficiary.documentType,
@@ -378,7 +378,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.eligibilityResponseId.enable();
         this.FormNphiesClaim.controls.preAuthOfflineDate.enable();
         // this.FormNphiesClaim.controls.preAuthResponseId.disable();
-        if (this.pageMode == 'Resubmit') {
+        if (this.pageMode == 'RESUBMIT') {
             this.FormNphiesClaim.controls.documentType.disable();
             this.FormNphiesClaim.controls.documentId.disable();
             this.SaveBtn = 'Re-Submit';
@@ -1060,13 +1060,17 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
             this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
             this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
-
+            const now = new Date(Date.now());
             if (this.pageMode === 'EDIT') {
                 this.model.provClaimNo = this.otherDataModel.provClaimNo;
             } else if (this.pageMode === 'CREATE') {
-                const now = new Date(Date.now());
+                
                 // tslint:disable-next-line:max-line-length
                 this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+            } else if (this.pageMode === 'RESUBMIT') {
+                this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+                this.model.claimId = this.otherDataModel.claimId;
+                this.model.uploadId = this.uploadId;
             }
 
             if (this.FormNphiesClaim.controls.preAuthRefNo.value) {
@@ -1284,10 +1288,10 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (this.pageMode == 'CREATE') {
                 requestObservable = this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model);
             } else if (this.pageMode == 'EDIT') {
+
                 requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
-            } else if (this.pageMode == 'Resubmit') {
-                
-                //requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
+            } else if (this.pageMode == 'RESUBMIT') {
+                requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, this.model);
             }
 
 
