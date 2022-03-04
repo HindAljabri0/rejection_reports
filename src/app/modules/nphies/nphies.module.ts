@@ -4,7 +4,7 @@ import { EligibilityComponent } from './eligibility/eligibility.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared.module';
-import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
@@ -52,6 +52,7 @@ import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.directive';
+import { BeneficiaryTabComponent } from './create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
 
 
 
@@ -90,7 +91,8 @@ import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.di
     ClaimProcessedTransactionsComponent,
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
-    UploadsHistoryComponent
+    UploadsHistoryComponent,
+    // BeneficiaryTabComponent
   ],
   imports: [
     CommonModule,

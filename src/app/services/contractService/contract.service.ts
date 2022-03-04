@@ -5,6 +5,7 @@ import { ContractSearchModel } from 'src/app/models/contractModels/ContractSearc
 import { ContractTemplate } from 'src/app/models/contractModels/ContractTemplate';
 import { environment } from 'src/environments/environment';
 import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTemplate';
+import { InvoiceDetail } from 'src/app/models/contractModels/BillingModels/InvoiceDetail';
 
 @Injectable({
     providedIn: 'root'
@@ -55,6 +56,21 @@ export class ContractService {
         return this.httpClient.request(httpRequest);
     }
 
+    deleteBill(deleteBill: BillTemplate) {
+        const requestUrl = `/billing/deleteBill/`;
+        let body: any = { ...deleteBill };
+        const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
+        return this.httpClient.request(httpRequest);
+    }
+
+
+    updateBill(contract: BillTemplate) {
+        const requestUrl = `/billing/updateBill`;
+        let body: any = { ...contract };
+        const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
+        return this.httpClient.request(httpRequest);
+    }
+
     getBillList(providerId: string) {
         const requestUrl = `/billing/searchBill/${providerId}`;
         const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
@@ -65,6 +81,19 @@ export class ContractService {
         const requestUrl = `/billing/searchDoctor/${providerId}`;
         const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
         return this.httpClient.request(request);
+    }
+
+    getBillDetailsByBillId(billId: string) {
+        const requestUrl = `/billing/billDetails/${billId}`;
+        const request = new HttpRequest('GET', environment.contractManagementService + requestUrl);
+        return this.httpClient.request(request);
+    }
+
+    createInvoice(invoice: InvoiceDetail, providerId: string) {
+        const requestUrl = `/billing/payment/${providerId}/manipulate`;
+        let body: any = { ...invoice };
+        const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
+        return this.httpClient.request(httpRequest);
     }
 
     // beneficiaryFullTextSearch( query: string) {

@@ -57,7 +57,12 @@ export class NphiesClaimUploaderService {
         return this.http.request(request);
     }
 
-
+    ReSubmitNphiesClaim(providerId: string, body: any) {
+        const requestUrl = `/providers/${providerId}/claim/reSubmit`;
+        console.log(requestUrl);
+        const request = new HttpRequest('POST', environment.nphiesClaimUploader + requestUrl, body);
+        return this.http.request(request);
+    }
 
     updateNphiesClaim(providerId: string, claimId: string, body: any) {
         const requestUrl = `/providers/${providerId}/claims/${claimId}`;

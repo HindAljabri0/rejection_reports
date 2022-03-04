@@ -36,6 +36,7 @@ import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { parse } from 'querystring';
 import { Subject } from 'rxjs';
+import { log } from 'console';
 
 @Component({
     selector: 'claim-invoices-services',
@@ -224,6 +225,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
     ListDuplicateService: Number[] = [];
     invoiceHasError(invoice: Invoice) {
+
         let check = 0;
         let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
         if (invoicesError.length > 0) {
@@ -268,7 +270,8 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                 iaHasError = true;
             }
 
-        })
+
+        });
 
         if (this.ListDuplicateService.includes(service.serviceId)) {
             iaHasError = true

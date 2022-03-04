@@ -8,6 +8,7 @@ export class SearchPageQueryParams {
     claimId?: string;
     claimResponseId?: string;
     editMode?: string;
+    reSubmitMode?: string;
     from?: string;
     to?: string;
     payerId?: string;

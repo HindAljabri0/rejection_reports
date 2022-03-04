@@ -30,6 +30,6 @@ export const environment = {
     contractManagementService: `${host}/contract-billing`,
 
     claimsDownloadsService: `${host}/downloads`,
-    claimReviewService: `${host}/claims-review`
+    claimReviewService: `${host}/review`
 
 };

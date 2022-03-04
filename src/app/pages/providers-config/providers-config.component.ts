@@ -880,8 +880,10 @@ export class ProvidersConfigComponent implements OnInit {
     get f() { return this.addDbConfigForm.controls; }
 
     onPayerMapSetting(payerData, event, index) {
+
         this.newPayerMappingEnable[payerData.switchAccountId] = event.checked
         this.newPayerName[payerData.switchAccountId] = payerData.name;
+
         if (event.checked && !this.addPayerMappingList.includes(payerData.switchAccountId)) {
             this.addPayerMappingList.push(payerData.switchAccountId);
         } else {
@@ -900,9 +902,11 @@ export class ProvidersConfigComponent implements OnInit {
             this.errors.payerMappingSaveError = 'Please fill mapped value for payer.';
             return true;
         }
+
         const newPayerMapping = this.existingPayers.filter(payer =>
             this.newPayerMappingValue[payer.payerId].trim() != ''
             && this.newPayerMappingValue[payer.payerId] != payer.mappingName
+
         );
         this.addPayerMappingList = newPayerMapping.map(payer => payer.payerId);
         const toDeletePayerMapping = this.existingPayers.filter(payer =>

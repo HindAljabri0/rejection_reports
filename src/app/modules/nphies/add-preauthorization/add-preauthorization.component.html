@@ -31,7 +31,8 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New Beneficiary</button>
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+              Beneficiary</button>
           </div>
         </div>
 
@@ -41,7 +42,7 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
               <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="insurancePlanId">
+                <mat-select formControlName="insurancePlanId" (selectionChange)="selectPlan($event)">
                   <mat-option value="">Select Insurance Plan</mat-option>
                   <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId">
                     {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
@@ -501,10 +502,13 @@
                   <th width="10"></th>
                   <th>Type</th>
                   <th>Code - Description</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
                   <th>Net</th>
-                  <th>Non Standard Code</th>
+                  <th>Approved Net</th>
+                  <th>Status</th>
+                  <th>Note No.</th>
+                  <!-- <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Non Standard Code</th> -->
                   <th width="10"></th>
                 </tr>
               </thead>
@@ -519,14 +523,31 @@
                     </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
                       - {{item.itemDescription}}</td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
+
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      {{item.net}} <span class="currency">SR</span></td>
+
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                        <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
+                          <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
+                      <span *ngIf="!item.itemDecision"></span>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
+                      <span *ngIf="!item.itemDecision"></span>
+                    </td>
+                    <!-- <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.unitPrice}} <span class="currency">SR</span></td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.net}} <span class="currency">SR</span></td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.nonStandardCode}}</td>
+                      {{item.nonStandardCode}}</td> -->
                     <td class="actions text-nowrap">
                       <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
                         (click)="openAddEditItemDetailsDialog(item.sequence)">
@@ -554,7 +575,7 @@
                                 </tr>
                                 <tr>
                                   <td class="label">Discount(%)</td>
-                                  <td>{{item.discount}} %</td>
+                                  <td>{{item.discountPercent}} %</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Tax(%)</td>
@@ -586,8 +607,8 @@
                                   <td>{{item.unitPrice}} <span class="currency">SR</span></td>
                                 </tr>
                                 <tr>
-                                  <td class="label">Factor</td>
-                                  <td>{{item.factor}}</td>
+                                  <td class="label">Discount Amount</td>
+                                  <td>{{item.discount}} <span class="currency">SR</span></td>
                                 </tr>
                                 <tr>
                                   <td class="label">Tax</td>
@@ -604,6 +625,15 @@
                                 <tr>
                                   <td class="label">Sub Site</td>
                                   <td>{{item.subSiteName}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">
+                                    <div class="d-flex align-items-center">
+                                      <span class="pr-1">Factor</span>
+                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                    </div>
+                                  </td>
+                                  <td>{{item.factor}}</td>
                                 </tr>
                               </tbody>
                             </table>
