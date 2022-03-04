@@ -881,8 +881,9 @@ export class ProvidersConfigComponent implements OnInit {
 
     onPayerMapSetting(payerData, event, index) {
 
-        this.newPayerName[payerData.switchAccountId] = payerData.name;
         this.newPayerMappingEnable[payerData.switchAccountId] = event.checked
+        this.newPayerName[payerData.switchAccountId] = payerData.name;
+
         if (event.checked && !this.addPayerMappingList.includes(payerData.switchAccountId)) {
             this.addPayerMappingList.push(payerData.switchAccountId);
         } else {
@@ -903,9 +904,9 @@ export class ProvidersConfigComponent implements OnInit {
         }
 
         const newPayerMapping = this.existingPayers.filter(payer =>
-            (this.newPayerMappingValue[payer.payerId].trim() != ''
-                && this.newPayerMappingValue[payer.payerId] != payer.mappingName) &&
-            this.newPayerMappingEnable[payer.payerId] != payer.enabled
+            this.newPayerMappingValue[payer.payerId].trim() != ''
+            && this.newPayerMappingValue[payer.payerId] != payer.mappingName
+
         );
         this.addPayerMappingList = newPayerMapping.map(payer => payer.payerId);
         const toDeletePayerMapping = this.existingPayers.filter(payer =>
@@ -924,7 +925,6 @@ export class ProvidersConfigComponent implements OnInit {
                     mapPayerName: this.newPayerMappingValue[id],
                     payerName: this.newPayerName[id],
                     enabled: this.newPayerMappingEnable[id]
-
                 };
                 selectedPayer.push(data);
             });
