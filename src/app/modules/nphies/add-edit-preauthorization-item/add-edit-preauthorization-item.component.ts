@@ -683,8 +683,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       if (this.data.source === 'CLAIM') {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
-
-
       model.itemDetails = [];
 
       this.dialogRef.close(model);
