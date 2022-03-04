@@ -3,7 +3,7 @@ export class InsurancePlan {
     payerId: string;
     expiryDate: Date;
     memberCardId: string;
-    isPrimary: boolean;
+    isPrimary?: boolean;
     relationWithSubscriber: string;
     coverageType: string;
 

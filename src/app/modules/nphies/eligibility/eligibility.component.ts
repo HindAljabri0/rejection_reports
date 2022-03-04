@@ -12,7 +12,6 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { ApiErrorsDialogComponent } from '../api-errors-dialog/api-errors-dialog.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
@@ -200,16 +199,18 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       return;
     }
 
+    const tempbeneficiary = this.selectedBeneficiary;
+    tempbeneficiary.plans.forEach(x => x.payerId = x.payerNphiesId);
+
     const request: EligibilityRequestModel = {
-      beneficiaryId: this.selectedBeneficiary.id,
-      memberCardId: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId : null,
+      beneficiary: this.selectedBeneficiary,
+      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
-      payerNphiesId: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId : this.selectedPayer,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation
-    }
+    };
 
 
 

@@ -1,15 +1,15 @@
-import { LongDateFormatKey } from "moment";
+import { BeneficiariesSearchResult } from "./beneficiaryFullTextSearchResult";
+import { InsurancePlan } from "./insurancePlan";
 
 
 export class EligibilityRequestModel {
 
-    beneficiaryId: number;
-	serviceDate: string;
-	toDate: string;
-	payerNphiesId:string;
-	memberCardId: string;
-	benefits: boolean;
-	discovery: boolean;
-	validation: boolean;
+    beneficiary: BeneficiariesSearchResult;
+    insurancePlan: InsurancePlan;
+    serviceDate: string;
+    toDate: string;
+    benefits: boolean;
+    discovery: boolean;
+    validation: boolean;
 
 }

@@ -104,7 +104,7 @@ const _mainReducer = createReducer(
             },
             ProviderPrivileges: {
                 Contract_Bill: {
-                    isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '3.0'),
+                    isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),
                     canAccessContract: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),
                     canAccessPolicy: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '28'),
                     canAccessClass: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '29'),

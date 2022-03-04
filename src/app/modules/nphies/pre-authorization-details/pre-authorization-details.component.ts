@@ -189,6 +189,13 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         this.paymentAmount += x.net;
         x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
 
+        x.discount = parseFloat(x.discount);
+        x.quantity = parseFloat(x.quantity);
+        x.unitPrice = parseFloat(x.unitPrice);
+
+        x.discountPercent = ((x.discount * 100) / (x.quantity * x.unitPrice)).toFixed(2);
+        x.discountPercent = parseFloat(x.discountPercent);
+
         // x.supportingInfoSequence = x.supportingInfoSequence ? x.supportingInfoSequence.toString() : '-';
         // x.careTeamSequence = x.careTeamSequence ? x.careTeamSequence.toString() : '';
         // x.diagnosisSequence = x.diagnosisSequence ? x.diagnosisSequence.toString() : '';

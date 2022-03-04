@@ -15,4 +15,7 @@ export class BillTemplate {
     patientId: string;
     departmentNo: string;
     doctorId: string
+    isDeleted: string;
+
+    services: Array<BillServiceList>;
 }

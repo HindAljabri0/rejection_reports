@@ -76,7 +76,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     }
 
     get isClaimUser() {
-        return this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser;
+        return this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || this.commen.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin;
     }
 
     get hasNphiesClaims() {
@@ -84,7 +84,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     }
 
     get selectedCriteriaIsUsedInBoth() {
-        return ['claimRefNo', 'memberId', 'payer&date', 'batchId', 'patientFileNo', 'nationalId'].includes(this.selectedSearchMode);
+        return ['claimRefNo', 'memberId', 'payer&date', 'batchId', 'invoiceNo', 'patientFileNo', 'nationalId'].includes(this.selectedSearchMode);
     }
 
     dateToText(date: Moment) {

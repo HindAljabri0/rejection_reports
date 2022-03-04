@@ -2,7 +2,7 @@
     <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate" class="page-top-loader"></mat-progress-bar>
     <div [class.view-claim]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'">
         <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
-            <div class="block-header">
+            <div class="block-header has-border">
                 <p>Create Claim</p><span class="spacer"></span>
                 <p *ngIf="claim != null && errors == null && claim.visitInformation != null" [class.d-none]="!(claim != null && errors == null)">{{claimName}}</p>
             </div>
@@ -37,7 +37,7 @@
             </ng-container>
         </ng-template>
 
-        <div class="block-body create-claim-body">
+        <div class="create-claim-body">
             <div class="error-block mb-3" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">
                 {{getError()}}</div>
             <ng-container *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">

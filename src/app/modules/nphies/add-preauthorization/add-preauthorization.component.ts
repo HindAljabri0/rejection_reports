@@ -65,7 +65,43 @@ export class AddPreauthorizationComponent implements OnInit {
         prescriber: [''],
         eligibilityOfflineDate: [''],
         eligibilityOfflineId: [''],
-        eligibilityResponseId: ['']
+        eligibilityResponseId: [''],
+
+        firstName: [''],
+        middleName: [''],
+        lastName: [''],
+        familyName: [''],
+        fullName: ['', Validators.required],
+        beneficiaryFileld: [''],
+        dob: ['', Validators.required],
+        gender: ['', Validators.required],
+        documentType: ['', Validators.required],
+        documentId: ['', Validators.required],
+        eHealthId: [''],
+        nationality: [''],
+        nationalityName: [''],
+        residencyType: [''],
+        contactNumber: [''],
+        martialStatus: [''],
+        bloodGroup: [''],
+        preferredLanguage: [''],
+        emergencyNumber: [''],
+        email: [''],
+        addressLine: [''],
+        streetLine: [''],
+        bcity: [''],
+        bstate: [''],
+        bcountry: [''],
+        bcountryName: [''],
+        postalCode: [''],
+        insurancePlanPayerId: [''],
+        insurancePlanExpiryDate: [''],
+        insurancePlanMemberCardId: [''],
+        insurancePlanRelationWithSubscriber: [''],
+        insurancePlanCoverageType: [''],
+        insurancePlanPayerName: [''],
+        insurancePrimary: [''],
+        insurancePayerNphiesId: ['']
     });
 
     typeList = this.sharedDataService.claimTypeList;
@@ -358,7 +394,37 @@ export class AddPreauthorizationComponent implements OnInit {
         this.selectedBeneficiary = beneficiary;
         this.FormPreAuthorization.patchValue({
             beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
-            beneficiaryId: beneficiary.id
+            beneficiaryId: beneficiary.id,
+
+            firstName: beneficiary.firstName ? beneficiary.firstName : '',
+            middleName: beneficiary.secondName ? beneficiary.secondName : '',
+            lastName: beneficiary.thirdName ? beneficiary.thirdName : '',
+            familyName: beneficiary.familyName ? beneficiary.familyName : '',
+            fullName: beneficiary.fullName ? beneficiary.fullName : '',
+            beneficiaryFileld: beneficiary.fileId ? beneficiary.fileId : '',
+            dob: beneficiary.dob ? beneficiary.dob : '',
+            gender: beneficiary.gender ? beneficiary.gender : '',
+            documentType: beneficiary.documentType ? beneficiary.documentType : '',
+            documentId: beneficiary.documentId ? beneficiary.documentId : '',
+            eHealthId: beneficiary.eHealthId ? beneficiary.eHealthId : '',
+            nationality: beneficiary.nationality ? beneficiary.nationality : '',
+            // tslint:disable-next-line:max-line-length
+            nationalityName: beneficiary.nationality ? (this.nationalities.filter(x => x.Code === beneficiary.nationality)[0] ? this.nationalities.filter(x => x.Code === beneficiary.nationality)[0].Name : '') : '',
+            residencyType: beneficiary.residencyType ? beneficiary.residencyType : '',
+            contactNumber: beneficiary.contactNumber ? beneficiary.contactNumber : '',
+            martialStatus: beneficiary.maritalStatus ? beneficiary.maritalStatus : '',
+            bloodGroup: beneficiary.bloodGroup ? beneficiary.bloodGroup : '',
+            preferredLanguage: beneficiary.preferredLanguage ? beneficiary.preferredLanguage : '',
+            emergencyNumber: beneficiary.emergencyPhoneNumber ? beneficiary.emergencyPhoneNumber : '',
+            email: beneficiary.email ? beneficiary.email : '',
+            addressLine: beneficiary.addressLine ? beneficiary.addressLine : '',
+            streetLine: beneficiary.streetLine ? beneficiary.streetLine : '',
+            bcity: beneficiary.city ? beneficiary.city : '',
+            bstate: beneficiary.state ? beneficiary.state : '',
+            bcountry: beneficiary.country ? beneficiary.country : '',
+            // tslint:disable-next-line:max-line-length
+            bcountryName: beneficiary.country ? (this.nationalities.filter(x => x.Name.toLowerCase() === beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == beneficiary.country.toLowerCase())[0].Name : '') : '',
+            postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
         });
     }
 
@@ -370,6 +436,22 @@ export class AddPreauthorizationComponent implements OnInit {
             return date.getTime() > Date.now() ? ' (Active)' : ' (Expired)';
         }
         return '';
+    }
+
+    selectPlan(plan) {
+        if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]) {
+            this.FormPreAuthorization.controls.insurancePlanPayerId.setValue(
+                this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId, 10);
+            this.FormPreAuthorization.controls.insurancePlanExpiryDate.setValue(
+                this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].expiryDate);
+            this.FormPreAuthorization.controls.insurancePlanMemberCardId.setValue(
+                this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].memberCardId);
+            this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.setValue(
+                this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber);
+            this.FormPreAuthorization.controls.insurancePlanCoverageType.setValue(
+                this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+            // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
+        }
     }
 
     openAddEditVisionLensDialog(visionSpecification: any = null) {
@@ -428,7 +510,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
     openAddEditCareTeam(careTeam: any = null) {
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.panelClass = ['primary-dialog', 'dialog-sm'];
+        dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
             Sequence: (careTeam !== null) ? careTeam.sequence : (this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1)),
@@ -563,6 +645,7 @@ export class AddPreauthorizationComponent implements OnInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
         dialogConfig.data = {
+            source: 'APPROVAL',
             // tslint:disable-next-line:max-line-length
             Sequence: (itemModel !== null) ? itemModel.sequence : (this.Items.length === 0 ? 1 : (this.Items[this.Items.length - 1].sequence + 1)),
             item: itemModel,
@@ -594,6 +677,7 @@ export class AddPreauthorizationComponent implements OnInit {
                             x.quantity = result.quantity;
                             x.unitPrice = result.unitPrice;
                             x.discount = result.discount;
+                            x.discountPercent = result.discountPercent;
                             x.factor = result.factor;
                             x.taxPercent = result.taxPercent;
                             x.patientSharePercent = result.patientSharePercent;
@@ -984,14 +1068,47 @@ export class AddPreauthorizationComponent implements OnInit {
                 this.model.claimReuseId = this.claimReuseId;
             }
 
-            this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
-            this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
+            this.model.beneficiary = {};
+            this.model.beneficiary.firstName = this.FormPreAuthorization.controls.firstName.value;
+            this.model.beneficiary.secondName = this.FormPreAuthorization.controls.middleName.value;
+            this.model.beneficiary.thirdName = this.FormPreAuthorization.controls.lastName.value;
+            this.model.beneficiary.familyName = this.FormPreAuthorization.controls.familyName.value;
+            this.model.beneficiary.fullName = this.FormPreAuthorization.controls.fullName.value;
+            this.model.beneficiary.fileId = this.FormPreAuthorization.controls.beneficiaryFileld.value;
+            this.model.beneficiary.dob = this.FormPreAuthorization.controls.dob.value;
+            this.model.beneficiary.gender = this.FormPreAuthorization.controls.gender.value;
+            this.model.beneficiary.documentType = this.FormPreAuthorization.controls.documentType.value;
+            this.model.beneficiary.documentId = this.FormPreAuthorization.controls.documentId.value;
+            this.model.beneficiary.eHealthId = this.FormPreAuthorization.controls.eHealthId.value;
+            this.model.beneficiary.nationality = this.FormPreAuthorization.controls.nationality.value;
+            this.model.beneficiary.residencyType = this.FormPreAuthorization.controls.residencyType.value;
+            this.model.beneficiary.contactNumber = this.FormPreAuthorization.controls.contactNumber.value;
+            this.model.beneficiary.maritalStatus = this.FormPreAuthorization.controls.martialStatus.value;
+            this.model.beneficiary.bloodGroup = this.FormPreAuthorization.controls.bloodGroup.value;
+            this.model.beneficiary.preferredLanguage = this.FormPreAuthorization.controls.preferredLanguage.value;
+            this.model.beneficiary.emergencyPhoneNumber = this.FormPreAuthorization.controls.emergencyNumber.value;
+            this.model.beneficiary.email = this.FormPreAuthorization.controls.email.value;
+            this.model.beneficiary.addressLine = this.FormPreAuthorization.controls.addressLine.value;
+            this.model.beneficiary.streetLine = this.FormPreAuthorization.controls.streetLine.value;
+            this.model.beneficiary.city = this.FormPreAuthorization.controls.bcity.value;
+            this.model.beneficiary.state = this.FormPreAuthorization.controls.bstate.value;
+            this.model.beneficiary.country = this.FormPreAuthorization.controls.bcountry.value;
+            this.model.beneficiary.postalCode = this.FormPreAuthorization.controls.postalCode.value;
 
-            this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
-            this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
-            this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
-            // tslint:disable-next-line:max-line-length
-            this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
+            this.model.insurancePlan = {};
+            this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
+            this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
+            this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
+            this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
+            this.model.insurancePlan.expiryDate = this.FormPreAuthorization.controls.insurancePlanExpiryDate.value;
+            // this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
+            // this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
+
+            // this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
+            // this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
+            // this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+            // // tslint:disable-next-line:max-line-length
+            // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
             const preAuthorizationModel: any = {};
             preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
@@ -1010,7 +1127,7 @@ export class AddPreauthorizationComponent implements OnInit {
             preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
             preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
             preAuthorizationModel.eligibilityResponseId = this.FormPreAuthorization.controls.eligibilityResponseId.value;
-
+            preAuthorizationModel.episodeId = null;
             this.model.preAuthorizationInfo = preAuthorizationModel;
 
             this.model.supportingInfo = this.SupportingInfo.map(x => {
@@ -1121,6 +1238,7 @@ export class AddPreauthorizationComponent implements OnInit {
                     model.supportingInfoSequence = x.supportingInfoSequence;
                     model.careTeamSequence = x.careTeamSequence;
                     model.diagnosisSequence = x.diagnosisSequence;
+                    model.invoiceNo = null;
 
                     model.itemDetails = x.itemDetails.map(y => {
                         const dmodel: any = {};
@@ -1159,6 +1277,7 @@ export class AddPreauthorizationComponent implements OnInit {
                     model.supportingInfoSequence = x.supportingInfoSequence;
                     model.careTeamSequence = x.careTeamSequence;
                     model.diagnosisSequence = x.diagnosisSequence;
+                    model.invoiceNo = null;
 
                     model.itemDetails = x.itemDetails.map(y => {
                         const dmodel: any = {};

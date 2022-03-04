@@ -8,19 +8,19 @@
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Name</label>
-                        <input class="form-control" placeholder="Enter name"  [formControl]="nameController" />
+                        <input class="form-control" placeholder="Enter name" [formControl]="nameController" />
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
-                        <label class="control-label">National ID</label>
-                        <input class="form-control" placeholder="Enter national ID" [formControl]="nationalIdController" />
+                        <label class="control-label">Document ID</label>
+                        <input class="form-control" placeholder="Enter document ID" [formControl]="nationalIdController" />
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Contact no.</label>
-                        <input class="form-control" placeholder="Enter contact no."  [formControl]="contactNoController"/>
+                        <input class="form-control" placeholder="Enter contact no." [formControl]="contactNoController" />
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
@@ -32,7 +32,7 @@
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Member Card ID</label>
-                        <input class="form-control" placeholder="Enter member card ID" [formControl]="memberCardidController"/>
+                        <input class="form-control" placeholder="Enter member card ID" [formControl]="memberCardidController" />
                     </div>
                 </div>
             </div>
@@ -41,17 +41,17 @@
             </div>
         </div>
 
-        <div class="p-14 bg-white" *ngIf="beneficiaries && beneficiaries.length==0" >
+        <div class="p-14 bg-white" *ngIf="beneficiaries && beneficiaries.length==0">
             <app-empty-state message='Search Beneficiary' icon="ic-empty-search.svg">
             </app-empty-state>
         </div>
         <ng-scrollbar *ngIf="beneficiaries && beneficiaries.length>0" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" style="height: 480px;">
-            <div class="fixed-height" >
+            <div class="fixed-height">
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>National ID</th>
+                            <th>Document ID</th>
                             <th>Contact No.</th>
                             <th>File ID</th>
                             <th>Member Card ID</th>

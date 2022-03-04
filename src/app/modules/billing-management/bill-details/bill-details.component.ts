@@ -12,6 +12,14 @@ import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { BillSearchModel } from 'src/app/models/contractModels/BillingModels/BillSearchModel';
+import { SEVEN } from '@angular/cdk/keycodes';
+import { SelectionModel } from '@angular/cdk/collections';
+import { BillServiceList } from 'src/app/models/contractModels/BillingModels/BillServiceList';
+import { SharedBillingService } from 'src/app/services/contractService/shared-billing.service';
+import { InvoiceDetail } from 'src/app/models/contractModels/BillingModels/InvoiceDetail';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: 'app-bill-details',
@@ -35,8 +43,36 @@ export class BillDetailsComponent implements OnInit {
     tableNetAmount: number = 0;
     //serviceSearchModel2 = [];
     selectedService: string
+    updateBillNo: number;
 
-    _services: {
+
+    /*_services: {
+        serviceId: number;
+        isActiveServiceList: boolean;
+        cashAmount: number;
+        grossAmount: number;
+        departmentId: number;
+        serviceName: string;
+        providerId: number;
+        serviceCode: string;
+        insServiceCode: string;
+        insServiceName: string;
+        insDiscountAmount: number;
+        insDiscountType: string;
+        quantity: FormControl;
+        discountTypeController: FormControl;
+        deptDepartmentName: string;
+        deptDiscountType: string;
+        deptDiscountAmount: number;
+        patientShare: number;
+        shareType: string;
+        serviceDiscountAmount: number;
+        patientShareAmount: number;
+        insShareAmount: number;
+        netShareAmount: number;
+    }[] = [];*/
+
+    /*_generateInvoiceServices: {
         serviceId: number;
         isActiveServiceList: boolean;
         cashAmount: number;
@@ -60,17 +96,35 @@ export class BillDetailsComponent implements OnInit {
         patientShareAmount: number;
         insShareAmount: number;
         netShareAmount: number;
-    }[] = [];
+    }[] = [];*/
+
+    serviceListModel: BillServiceList[] = [];
+    selectedServicesForInvoice: BillServiceList[] = [];
+
+
+    invoiceDetail: InvoiceDetail;
+    invoiceAmountController: FormControl = new FormControl();
+    paymentDateController: FormControl = new FormControl();
+    receiptTypeController: FormControl = new FormControl();
+    refDetailsController: FormControl = new FormControl();
+    selectedReceiptType: string;
+
+
+
+    //selectedServicesForInvoice = new SelectionModel<BillServiceList>(true, []);
 
     messageError = "";
 
     constructor(
         private dialog: MatDialog,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
         private sharedServices: SharedServices,
         private contractService: ContractService,
         private dialogService: DialogService,
         private adminService: AdminService,
-        private providerNphiesSearchService: ProviderNphiesSearchService
+        private providerNphiesSearchService: ProviderNphiesSearchService,
+        private sharedBilling: SharedBillingService
     ) { }
 
     length = 100;
@@ -83,10 +137,42 @@ export class BillDetailsComponent implements OnInit {
     billingDetailsControllerDoctor: FormControl = new FormControl();
     billingDetailsControllerPatient: FormControl = new FormControl();
 
+    param: BillSearchModel = new BillSearchModel();
+
+    addMode: boolean = false;
+    EditMode: boolean = false;
+    generateInvoice: boolean = false;
+
     ngOnInit() {
-        this.getDepartmentList();
-        this.getDoctorList();
-        this.getBeneList();
+
+
+
+        this.param.billId = this.activatedRoute.snapshot.paramMap.get("billId")
+        var url = this.router.url;
+
+        //console.log("Contract Id= "+this.param.contractId);
+
+        if (url.endsWith('add') || this.param.billId == null) {
+            this.addMode = true;
+            this.getDepartmentList();
+            this.getDoctorList();
+            this.getBeneList();
+        }
+        else if (url.includes('generate-bill-invoice')) {
+            this.generateInvoice = true;
+            this.getDepartmentList();
+            this.getDoctorList();
+            this.getBeneList();
+            this.selectedServicesForInvoice = this.sharedBilling.getInvoiceServices;
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        else if (url.includes('edit')) {
+            this.getBillDetails(this.param)
+            this.EditMode = true;
+            this.getDepartmentList();
+            this.getDoctorList();
+            this.getBeneList();
+        }
     }
 
     openAddServiceDialog() {
@@ -112,7 +198,7 @@ export class BillDetailsComponent implements OnInit {
             if (result) {
                 //() => console.log('serviceExists ' + (typeof result[0].serviceId));
                 //() => console.log('serviceExists ' + (typeof this.serviceSearchModel[0].serviceId));
-                if (this._services.find(x => x.serviceId === result[0].serviceId)) {
+                if (this.serviceListModel.find(x => x.serviceId === result[0].serviceId)) {
                     //() => console.log('typeof ' + (typeof this.serviceSearchModel));
 
                     //alert("serviceExists");
@@ -125,8 +211,13 @@ export class BillDetailsComponent implements OnInit {
                     //alert("PUSHING " + JSON.stringify(this.serviceSearchModel));
                     //() => console.log('Push ' + JSON.stringify(this.serviceSearchModel));
                     //this.serviceSearchModel.push(result[0]);
-                    this._services.push(result[0]);
-                    this.calculateTableAmounts();
+                    this.serviceListModel.push(result[0]);
+                    if (this.addMode || this.EditMode) {
+                        this.calculateTableAmounts(this.serviceListModel);
+                    } else {
+                        this.calculateTableAmounts(this.selectedServicesForInvoice);
+                    }
+
                 }
             }
         });
@@ -163,7 +254,7 @@ export class BillDetailsComponent implements OnInit {
     }
 
 
-    calculateTableAmounts() {
+    calculateTableAmounts(model) {
 
         this.tableGrossAmount = 0;
         this.tableDiscountAmount = 0;
@@ -171,7 +262,7 @@ export class BillDetailsComponent implements OnInit {
         this.tablePatientShareAmount = 0;
         this.tableNetAmount = 0;
 
-        this._services.forEach(element => {
+        model.forEach(element => {
             // this.tableGrossAmount = Number((element.grossAmount + this.tableGrossAmount).toPrecision(2));
             // this.tableDiscountAmount = Number((element.serviceDiscountAmount + this.tableDiscountAmount).toPrecision(2));
             // this.tableInsShareAmount = Number((element.insShareAmount + this.tableInsShareAmount).toPrecision(2));
@@ -205,9 +296,9 @@ export class BillDetailsComponent implements OnInit {
         });
     }
 
-    calculateAllPrices(e, serviceId) {
+    calculateAllPrices(e, serviceId, model) {
 
-        for (let service of this._services) {
+        for (let service of model) {
             //type == null? service.discountTypeController.value : type;
             //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
             if (serviceId == service.serviceId) {
@@ -251,7 +342,12 @@ export class BillDetailsComponent implements OnInit {
 
             }
         }
-        this.calculateTableAmounts();
+        if (this.addMode || this.EditMode) {
+            this.calculateTableAmounts(this.serviceListModel);
+        } else {
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        //this.calculateTableAmounts();
 
     }
 
@@ -262,22 +358,29 @@ export class BillDetailsComponent implements OnInit {
     }
 
 
-    createBill() {
+    createOrUpdateBill() {
+
+        if (this.param.billId != null) {
+            this.updateBillNo = Number(this.param.billId);
+
+        }
         this.billTemplate = new BillTemplate();
 
         this.billTemplate.billDate = new Date();
         this.billTemplate.grossAmount = this.tableGrossAmount;
         this.billTemplate.netAmount = this.tableNetAmount;
         this.billTemplate.isInvoiced = 'N';
+        this.billTemplate.isDeleted = 'N';
         this.billTemplate.discountAmount = this.tableDiscountAmount;
         this.billTemplate.additionalDiscount = 0;
         this.billTemplate.additionalDiscountPercent = 0;
 
 
-        this.billTemplate.billServices = this._services.filter(function (obj) {
+        this.billTemplate.billServices = this.serviceListModel.filter(function (obj) {
             return obj.quantity.value != null;
         }).map(service => ({
             serviceId: service.serviceId,
+            billServiceId: service.billServiceId,
             isActiveServiceList: service.isActiveServiceList,
             cashAmount: service.cashAmount,
             grossAmount: service.grossAmount,
@@ -290,6 +393,7 @@ export class BillDetailsComponent implements OnInit {
             insDiscountAmount: service.insDiscountAmount,
             insDiscountType: service.insDiscountType,
             quantity: service.quantity.value,
+            //discountTypeController: 'aaa0',
             deptDepartmentName: service.deptDepartmentName,
             deptDiscountType: service.deptDiscountType,
             deptDiscountAmount: service.deptDiscountAmount,
@@ -298,46 +402,89 @@ export class BillDetailsComponent implements OnInit {
             serviceDiscountAmount: service.serviceDiscountAmount,
             patientShareAmount: service.patientShareAmount,
             insShareAmount: service.insShareAmount,
-            netShareAmount: service.netShareAmount
+            netShareAmount: service.netShareAmount,
+            isInvoiced: service.isInvoiced,
         }));
 
         this.billTemplate.departmentNo = this.billingDetailsControllerDepartment.value;
         this.billTemplate.patientId = this.billingDetailsControllerPatient.value;
         this.billTemplate.doctorId = this.billingDetailsControllerDoctor.value;
 
-        console.log("Yes");
-        this.contractService.createBill(this.billTemplate).subscribe(event => {
-            if (event instanceof HttpResponse) {
-                console.log(event.body);
-                if (event.body != null) {
-                    this.dialogService.openMessageDialog({
-                        title: '',
-                        message: `Bill Saved successfully`,
-                        isError: false
-                    }).subscribe(event => { window.location.reload(); });
-                    this.sharedServices.loadingChanged.next(false);
+        if (this.updateBillNo != null) {
+            this.billTemplate.billNo = this.updateBillNo;
+
+            console.log("Inside his.updateBillNo != null ");
+
+            this.contractService.updateBill(this.billTemplate).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    console.log(event.body);
+                    if (event.body != null) {
+                        this.dialogService.openMessageDialog({
+                            title: '',
+                            message: `Bill Updated successfully`,
+                            isError: false
+                        }).subscribe(event => { window.location.reload(); });
+                        this.sharedServices.loadingChanged.next(false);
+                    }
                 }
             }
-        }
-            , err => {
+                , err => {
 
-                if (err instanceof HttpErrorResponse) {
-                    if (err.status == 500) {
-                        this.messageError = "could not reach server Please try again later "
+                    if (err instanceof HttpErrorResponse) {
+                        if (err.status == 500) {
+                            this.messageError = "could not reach server for Update Please try again later "
 
-                    } else {
-                        this.messageError = err.message;
+                        } else {
+                            this.messageError = err.message;
+                        }
+
+                        this.dialogService.openMessageDialog({
+                            title: '',
+
+                            message: this.messageError,
+                            isError: true
+                        });
+                        this.sharedServices.loadingChanged.next(false);
                     }
+                });
+        } else {
+            console.log("Inside his.updateBillNo != null else");
 
-                    this.dialogService.openMessageDialog({
-                        title: '',
-
-                        message: this.messageError,
-                        isError: true
-                    });
-                    this.sharedServices.loadingChanged.next(false);
+            this.contractService.createBill(this.billTemplate).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    console.log(event.body);
+                    if (event.body != null) {
+                        this.dialogService.openMessageDialog({
+                            title: '',
+                            message: `Bill Saved successfully`,
+                            isError: false
+                        }).subscribe(event => { window.location.reload(); });
+                        this.sharedServices.loadingChanged.next(false);
+                    }
                 }
-            });
+            }
+                , err => {
+
+                    if (err instanceof HttpErrorResponse) {
+                        if (err.status == 500) {
+                            this.messageError = "could not reach server Please try again later "
+
+                        } else {
+                            this.messageError = err.message;
+                        }
+
+                        this.dialogService.openMessageDialog({
+                            title: '',
+
+                            message: this.messageError,
+                            isError: true
+                        });
+                        this.sharedServices.loadingChanged.next(false);
+                    }
+                });
+
+        }
+
     }
 
     getBeneList() {
@@ -354,6 +501,148 @@ export class BillDetailsComponent implements OnInit {
 
             }
         });
+    }
+
+    getBillDetails(param: BillSearchModel) {
+        this.contractService.getBillDetailsByBillId(this.param.billId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                const body = event.body;
+                if (event.body != null) {
+                    this.fillEditData(body);
+                }
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
+    }
+
+    fillEditData(result) {
+
+        this.serviceListModel = result.billServiceList.map(serv => ({
+            serviceId: serv.serviceId,
+            billServiceId: serv.billServiceId,
+            isActiveServiceList: serv.isActiveServiceList,
+            quantity: serv.quantity.value,
+            cashAmount: serv.cashAmount,
+            grossAmount: serv.grossAmount,
+            departmentId: serv.departmentId,
+            serviceName: serv.serviceName,
+            providerId: serv.providerId,
+            serviceCode: serv.serviceCode,
+            insServiceCode: serv.insServiceCode,
+            insServiceName: serv.insServiceName,
+            insDiscountAmount: serv.insDiscountAmount,
+            insDiscountType: serv.insDiscountType,
+            deptDepartmentName: serv.deptDepartmentName,
+            deptDiscountType: serv.deptDiscountType,
+            deptDiscountAmount: serv.deptDiscountAmount,
+            patientShare: serv.patientShare,
+            shareType: serv.shareType,
+            serviceDiscountAmount: serv.serviceDiscountAmount,
+            patientShareAmount: serv.patientShareAmount,
+            insShareAmount: serv.insShareAmount,
+            netShareAmount: serv.netShareAmount,
+            isInvoiced: serv.isInvoiced
+
+        }));
+        if (this.addMode || this.EditMode) {
+            this.calculateTableAmounts(this.serviceListModel);
+        } else {
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        //this.calculateTableAmounts();
+        console.log("Do you work ?");
+    }
+
+    deleteServiceFromBill(index: number) {
+        this.serviceListModel.splice(index, 1);
+        if (this.addMode || this.EditMode) {
+            this.calculateTableAmounts(this.serviceListModel);
+        } else {
+            this.calculateTableAmounts(this.selectedServicesForInvoice);
+        }
+        //this.calculateTableAmounts();
+    }
+
+    selectService(e, i: number, sev) {
+
+        console.log("Reached Method selectService");
+
+        console.log("index " + index);
+
+        if (e.checked) {
+            this.selectedServicesForInvoice.push(sev);
+        } else {
+            for (var index in this.selectedServicesForInvoice) {
+                console.log(index); // prints indexes: 0, 1, 2, 
+
+                if (this.selectedServicesForInvoice[index].serviceId === sev.serviceId) {
+                    this.selectedServicesForInvoice.splice(parseInt(index), 1);
+                }
+            }
+        }
+        console.log("Exit Method selectService");
+        this.sharedBilling.setInvoiceServices = this.selectedServicesForInvoice;
+    }
+
+    generateBillServiceInvoice() {
+        if (this.selectedServicesForInvoice.length != 0) {
+            this.router.navigateByUrl('/billing-management/bill-details/generate-bill-invoice/' + this.param.billId);
+        } else {
+            this.dialogService.openMessageDialog({
+                title: '',
+                message: `No Services Selected for Invoicing`,
+                isError: true
+            });
+        }
+    }
+
+    saveInvoice() {
+        this.invoiceDetail = new InvoiceDetail();
+        this.invoiceDetail.status = 1;
+        this.invoiceDetail.billId = parseInt(this.param.billId);
+        this.invoiceDetail.details = this.invoiceAmountController.value;
+        this.invoiceDetail.paymentNo = 'AutoGenerated';
+        this.invoiceDetail.amount = this.invoiceAmountController.value;
+        this.invoiceDetail.paymentType = this.receiptTypeController.value;
+        this.invoiceDetail.paymentDate = this.paymentDateController.value;
+        for (let current of this.selectedServicesForInvoice) {
+            this.invoiceDetail.serviceIds.push(current.billServiceId);
+        }
+
+        console.log("Object Created :: " + JSON.stringify(this.invoiceDetail));
+        this.contractService.createInvoice(this.invoiceDetail, this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                console.log(event.body);
+                if (event.body != null) {
+                    this.dialogService.openMessageDialog({
+                        title: '',
+                        message: `Invoice Saved successfully`,
+                        isError: false
+                    }).subscribe(event => { this.router.navigateByUrl('/billing-management/bill-details/edit/' + this.param.billId) });
+                    this.sharedServices.loadingChanged.next(false);
+                }
+            }
+        }
+            , err => {
+
+                if (err instanceof HttpErrorResponse) {
+                    if (err.status == 500) {
+                        this.messageError = "could not reach server Please try again later "
+
+                    } else {
+                        this.messageError = err.message;
+                    }
+                    this.dialogService.openMessageDialog({
+                        title: 'Error in Saving Invoice',
+                        message: this.messageError,
+                        isError: true
+                    });
+                    this.sharedServices.loadingChanged.next(false);
+                }
+            });
     }
 
 }
