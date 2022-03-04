@@ -637,10 +637,6 @@
                               <td class="label">Body Site</td>
                               <td>{{item.bodySiteName ? item.bodySiteName : "-"}}</td>
                             </tr>
-                            <tr>
-                              <td class="label">Invoice No</td>
-                              <td>{{item.invoiceNo ? item.invoiceNo : "-"}}</td>
-                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -1686,6 +1682,7 @@
                   <th>Net</th>
                   <th>Approved Net</th>
                   <th>Status</th>
+                  <th>Invoice No.</th>
                   <th>Note No.</th>
                   <!-- <th>Quantity</th>
                   <th>Unit Price</th>
@@ -1720,6 +1717,10 @@
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.status ? item.itemDecision.status : '-'}}</span>
+                      <span *ngIf="!item.itemDecision">-</span>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.invoiceNo ? item.invoiceNo : '-'}}</span>
                       <span *ngIf="!item.itemDecision">-</span>
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -1783,11 +1784,6 @@
                                 <tr>
                                   <td class="label">Body Site</td>
                                   <td>{{item.bodySiteName ? item.bodySiteName :
-                                    "-"}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Invoice No</td>
-                                  <td>{{item.invoiceNo ? item.invoiceNo :
                                     "-"}}</td>
                                 </tr>
                               </tbody>
