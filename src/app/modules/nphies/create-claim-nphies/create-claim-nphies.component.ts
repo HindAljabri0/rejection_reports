@@ -216,7 +216,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     toEditMode() {
         this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
         this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
-        console.log("beneficiary = " + this.otherDataModel.beneficiary);
+        console.log("beneficiary = " + JSON.stringify(this.otherDataModel.beneficiary));
         this.selectedBeneficiary = {
             documentId: this.otherDataModel.beneficiary.documentId,
             documentType: this.otherDataModel.beneficiary.documentType,
@@ -248,15 +248,15 @@ export class CreateClaimNphiesComponent implements OnInit {
             postalCode: this.otherDataModel.beneficiary.postalCode,
 
             plans: [{
-                payerNphiesId: this.otherDataModel.payerNphiesId,
-                payerName: this.otherDataModel.insurer,
-                memberCardId: this.otherDataModel.memberCardId,
+                payerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerNphiesId,
+                payerName: this.otherDataModel.beneficiary.insurancePlan.insurer,
+                memberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
                 planId: null,
                 payerId: null,
-                coverageType: this.otherDataModel.insurancePlan,
+                coverageType: this.otherDataModel.beneficiary.insurancePlan.insurancePlan,
                 expiryDate: null,
                 primary: null,
-                relationWithSubscriber: this.otherDataModel.relationWithSubscriber
+                relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber
             }]
         };
         this.FormNphiesClaim.patchValue({
