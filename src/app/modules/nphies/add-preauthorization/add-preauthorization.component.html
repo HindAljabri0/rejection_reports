@@ -502,10 +502,13 @@
                   <th width="10"></th>
                   <th>Type</th>
                   <th>Code - Description</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
                   <th>Net</th>
-                  <th>Non Standard Code</th>
+                  <th>Approved Net</th>
+                  <th>Status</th>
+                  <th>Note No.</th>
+                  <!-- <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Non Standard Code</th> -->
                   <th width="10"></th>
                 </tr>
               </thead>
@@ -520,14 +523,31 @@
                     </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
                       - {{item.itemDescription}}</td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
+
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      {{item.net}} <span class="currency">SR</span></td>
+
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                        <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
+                          <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
+                      <span *ngIf="!item.itemDecision"></span>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
+                      <span *ngIf="!item.itemDecision"></span>
+                    </td>
+                    <!-- <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.unitPrice}} <span class="currency">SR</span></td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.net}} <span class="currency">SR</span></td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.nonStandardCode}}</td>
+                      {{item.nonStandardCode}}</td> -->
                     <td class="actions text-nowrap">
                       <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
                         (click)="openAddEditItemDetailsDialog(item.sequence)">
