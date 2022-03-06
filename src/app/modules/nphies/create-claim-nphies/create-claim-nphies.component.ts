@@ -215,6 +215,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     toEditMode() {
         this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
+        this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
+        console.log("beneficiary = " + this.otherDataModel.beneficiary);
         this.selectedBeneficiary = {
             documentId: this.otherDataModel.beneficiary.documentId,
             documentType: this.otherDataModel.beneficiary.documentType,
@@ -381,7 +383,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (this.pageMode == 'RESUBMIT') {
             this.FormNphiesClaim.controls.documentType.disable();
             this.FormNphiesClaim.controls.documentId.disable();
-            this.SaveBtn = 'Re-Submit';
+
         }
     }
 
@@ -1064,7 +1066,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (this.pageMode === 'EDIT') {
                 this.model.provClaimNo = this.otherDataModel.provClaimNo;
             } else if (this.pageMode === 'CREATE') {
-                
+
                 // tslint:disable-next-line:max-line-length
                 this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
             } else if (this.pageMode === 'RESUBMIT') {
