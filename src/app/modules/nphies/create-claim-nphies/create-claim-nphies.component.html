@@ -1265,7 +1265,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Preauthorization Reference No</label>
-                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [separatorKeyCodes]="[32]" (onBlur)="tagInputBlur($event)">
+                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
                 </tag-input>
               </div>
             </div>
