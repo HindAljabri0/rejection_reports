@@ -60,7 +60,8 @@
       FormSupportingInfo.controls.category.value.value === 'vital-sign-diastolic' ||
       FormSupportingInfo.controls.category.value.value === 'icu-hours' ||
       FormSupportingInfo.controls.category.value.value === 'ventilation-hours' ||
-      FormSupportingInfo.controls.category.value.value === 'vital-sign-height'">
+      FormSupportingInfo.controls.category.value.value === 'vital-sign-height' ||
+      FormSupportingInfo.controls.category.value.value === 'chief-complaint'">
         <div class="col-6">
           <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('value').touched) && FormSupportingInfo.get('value').hasError('required')}">
             <label class="control-label">Value<span class="asterisk">*</span></label>

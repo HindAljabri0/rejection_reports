@@ -303,6 +303,9 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         this.FormSupportingInfo.controls.code.setValidators([Validators.required]);
         this.FormSupportingInfo.controls.code.updateValueAndValidity();
 
+        this.FormSupportingInfo.controls.value.setValidators([Validators.required]);
+        this.FormSupportingInfo.controls.value.updateValueAndValidity();
+
         // codes  same as diagnosis
         break;
       default:
