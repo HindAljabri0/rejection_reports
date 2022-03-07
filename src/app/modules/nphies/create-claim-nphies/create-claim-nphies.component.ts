@@ -2179,4 +2179,13 @@ export class CreateClaimNphiesComponent implements OnInit {
         return this.otherDataModel != null && this.otherDataModel.status != null && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
     }
 
+    tagInputBlur($event) {
+        let list = this.FormNphiesClaim.controls.preAuthRefNo.value;
+        list.push({
+            display: $event,
+            value: $event
+        });
+        this.FormNphiesClaim.controls.preAuthRefNo.setValue(list);
+    }
+
 }
