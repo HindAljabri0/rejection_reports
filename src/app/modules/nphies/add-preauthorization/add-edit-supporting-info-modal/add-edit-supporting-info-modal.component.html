@@ -67,12 +67,13 @@
             <label class="control-label">Value<span class="asterisk">*</span></label>
             <div class="input-group">
 
-              <input *ngIf="FormSupportingInfo.controls.category.value.value === 'info'" class="input-group-append" type="text" class="form-control minw145"
-                placeholder="Enter value" formControlName="value" />
-              <input *ngIf="FormSupportingInfo.controls.category.value.value !== 'info'" class="input-group-append" type="number" class="form-control minw145"
-                placeholder="Enter value" formControlName="value" />
+              <input *ngIf="FormSupportingInfo.controls.category.value.value === 'info' || FormSupportingInfo.controls.category.value.value === 'chief-complaint'"
+                class="input-group-append" type="text" class="form-control minw145" placeholder="Enter value" formControlName="value" />
+              <input *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint'"
+                class="input-group-append" type="number" class="form-control minw145" placeholder="Enter value" formControlName="value" />
 
-              <span *ngIf="FormSupportingInfo.controls.category.value.value !== 'info'" class="input-group-append">
+              <span *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint'"
+                class="input-group-append">
                 <span *ngIf="FormSupportingInfo.controls.category.value.value === 'vital-sign-weight'" class="input-group-text">kg</span>
                 <span
                   *ngIf="FormSupportingInfo.controls.category.value.value === 'vital-sign-systolic' || FormSupportingInfo.controls.category.value.value === 'vital-sign-diastolic'"
