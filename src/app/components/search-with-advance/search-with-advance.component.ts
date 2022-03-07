@@ -16,7 +16,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 })
 export class SearchWithAdvanceComponent implements OnInit {
 
-    searchModes: { key: string, label: string }[] = [
+    searchModesWassel: { key: string, label: string }[] = [
         { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
         { key: 'memberId', label: 'Member ID' },
         { key: 'payer&date', label: 'Payer' },
@@ -25,6 +25,16 @@ export class SearchWithAdvanceComponent implements OnInit {
         { key: 'invoiceNo', label: 'Invoice No.' },
         { key: 'patientFileNo', label: 'Patient File No' },
         { key: 'policyNo', label: 'Policy No.' },
+        { key: 'nationalId', label: 'National ID' }
+    ];
+
+    searchModesNphies: { key: string, label: string }[] = [
+        { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
+        { key: 'memberId', label: 'Member ID' },
+        { key: 'payer&date', label: 'Payer' },
+        { key: 'batchId', label: 'Batch ID' },
+        { key: 'invoiceNo', label: 'Invoice No.' },
+        { key: 'patientFileNo', label: 'Patient File No' },
         { key: 'nationalId', label: 'National ID' }
     ];
     selectedSearchMode = 'claimRefNo';
@@ -65,6 +75,15 @@ export class SearchWithAdvanceComponent implements OnInit {
         });
     }
 
+
+    searchMode(isWassel: boolean) {
+        if (isWassel) {
+            return this.searchModesWassel;
+        } else {
+            return this.searchModesNphies;
+        }
+
+    }
     ngOnInit() {
         this.payers = this.commen.getPayersList();
         this.tpas = this.commen.getTPAsList();

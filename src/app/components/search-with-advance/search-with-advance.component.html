@@ -1,7 +1,7 @@
 <div class="advance-search">
     <mat-form-field class="search-mode-select">
         <mat-select [value]="selectedSearchMode" (selectionChange)="onSearchModeChange($event);">
-            <mat-option *ngFor="let type of searchModes" [value]="type.key">
+            <mat-option *ngFor="let type of searchMode(isClaimUser)" [value]="type.key">
                 {{type.label}}
             </mat-option>
         </mat-select>
@@ -12,26 +12,27 @@
         <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
         </button> -->
-        <div class="search-btns" *ngIf="isClaimUser && hasNphiesClaims && selectedCriteriaIsUsedInBoth else showOnlySearchIcon">
-            <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
+        <div class="search-btns">
+            <button *ngIf="isClaimUser" type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
             </button>
             <span class="separator"></span>
-            <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(false)">
+            <button *ngIf="hasNphiesClaims  && selectedCriteriaIsUsedInBoth" type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn"
+                (click)="search(false)">
                 <mat-icon>search</mat-icon>
                 <span>NPHIES</span>
             </button>
         </div>
 
-        <ng-template #showOnlySearchIcon>
+        <!-- <ng-template #showOnlySearchIcon>
             <div class="search-btns">
                 <button type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                     <mat-icon>search</mat-icon>
                     <span>Waseel</span>
                 </button>
             </div>
-        </ng-template>
+        </ng-template> -->
 
         <mat-chip-list #chipList (keyup.enter)="search(true)">
             <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'">
