@@ -161,7 +161,7 @@ export class SharedDataService {
     { value: 'missingtooth', name: 'Missing Tooth' },
     { value: 'hospitalized', name: 'Hospitalized' },
     { value: 'employmentImpacted', name: 'Employment Impacted' },
-    // { value: 'lab-test', name: 'Lab Test' },
+    { value: 'lab-test', name: 'Lab Test' },
     { value: 'reason-for-visit', name: 'Reason For Visit' },
     { value: 'days-supply', name: 'Days Supply' },
     { value: 'vital-sign-weight', name: 'Vital Sign Weight' },

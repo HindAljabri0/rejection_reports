@@ -67,12 +67,12 @@
             <label class="control-label">Value<span class="asterisk">*</span></label>
             <div class="input-group">
 
-              <input *ngIf="FormSupportingInfo.controls.category.value.value === 'info' || FormSupportingInfo.controls.category.value.value === 'chief-complaint'"
+              <input *ngIf="FormSupportingInfo.controls.category.value.value === 'info' || FormSupportingInfo.controls.category.value.value === 'chief-complaint' || FormSupportingInfo.controls.category.value.value === 'lab-test'"
                 class="input-group-append" type="text" class="form-control minw145" placeholder="Enter value" formControlName="value" />
-              <input *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint'"
+              <input *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint' && FormSupportingInfo.controls.category.value.value !== 'lab-test'"
                 class="input-group-append" type="number" class="form-control minw145" placeholder="Enter value" formControlName="value" />
 
-              <span *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint'"
+              <span *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint' && FormSupportingInfo.controls.category.value.value !== 'lab-test'"
                 class="input-group-append">
                 <span *ngIf="FormSupportingInfo.controls.category.value.value === 'vital-sign-weight'" class="input-group-text">kg</span>
                 <span
@@ -148,7 +148,11 @@
         <div class="col-6">
           <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('code').touched) && FormSupportingInfo.get('code').hasError('required')}">
             <label class="control-label">Code<span class="asterisk">*</span></label>
-            <mat-form-field class="form-control custom-select-control">
+
+            <input *ngIf=" FormSupportingInfo.controls.category.value.value === 'lab-test'"
+            class="input-group-append" type="text" class="form-control minw145" placeholder="Enter code" formControlName="code" />
+
+            <mat-form-field *ngIf=" FormSupportingInfo.controls.category.value.value !== 'lab-test'" class="form-control custom-select-control">
               <mat-select formControlName="code">
                 <mat-option value="">Select Code</mat-option>
                 <mat-option *ngFor="let code of codeList" [value]="code">{{code.name}}</mat-option>
