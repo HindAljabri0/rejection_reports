@@ -1134,7 +1134,7 @@
     </ul>
 
     <div class="create-claim-body nphies-create">
-      <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab">
+      <mat-tab-group class="primary-tab nphies-claim-tab">
 
         <mat-tab>
           <ng-template mat-tab-label>
@@ -1265,7 +1265,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Preauthorization Reference No</label>
-                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'">
+                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
                 </tag-input>
               </div>
             </div>
