@@ -566,13 +566,13 @@ export class BeneficiaryComponent implements OnInit {
         this.beneficiaryModel.postalCode = this.postalCodeController.value;
         this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
             expiryDate: new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
-            payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
+            payerId: insurancePlan.selectePayer == "" ? null : this.payersList.filter(payer => payer.payerId == insurancePlan.selectePayer)[0].nphiesId,
             memberCardId: insurancePlan.memberCardId.value,
             relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == "" ? null : insurancePlan.selecteSubscriberRelationship,
             coverageType: insurancePlan.selecteCoverageType == "" ? null : insurancePlan.selecteCoverageType,
             isPrimary: insurancePlan.iSPrimary,
 
-        }));;
+        }));
 
     }
     save() {
