@@ -8,7 +8,7 @@
     </mat-form-field>
     <div class="input-wrapper">
         <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [readonly]="selectedSearchMode == 'payer&date'"
-            (keyup.enter)="isClaimUser?search(true):search(false)">
+        (keyup.enter)="isClaimUser?search(true):search(false)">
         <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
         </button> -->

@@ -50,6 +50,15 @@ export class SearchWithAdvanceComponent implements OnInit {
         { value: 'INPATIENT', name: 'Inpatient' },
     ];
 
+
+    searchMode(isWassel:boolean){
+       if(isWassel){
+          return this.searchModesWassel;
+       } else{
+         return this.searchModesNphies;
+       }
+
+    }
     searchControl: FormControl = new FormControl();
 
     selectedPayer: { id: number, name: string };

@@ -20,7 +20,6 @@ export class ClaimReviewEffects {
         withLatestFrom(this.store.select(currentSelectedTabPageControls)),
         withLatestFrom(this.store.select(currentSelectedTabHasContent)),
         map(values => ({ tabName: values[0][0][1], pageControl: values[0][1], hasContent: values[1] })),
-        filter(requestParams => !requestParams.hasContent),
         switchMap(requestParams => this.claimReviewService.fetchUnderReviewUploadsOfStatus(
             requestParams.tabName,
             requestParams.pageControl.pageNumber,

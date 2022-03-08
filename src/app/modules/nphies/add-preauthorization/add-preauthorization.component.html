@@ -3,13 +3,16 @@
   <ng-container *ngIf="!IsJSONPosted">
     <div class="block-header has-border">
       <p>Request Pre Authorization</p>
+      <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
+      </mat-slide-toggle>
+
     </div>
     <div class="block-filter-panel">
       <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
+        <div class="form-title pt-0">
+          <h5>Beneficary Info</h5>
+        </div>
 
-
-
-        <h5 class="form-title pt-0">Beneficary Info</h5>
         <div class="d-flex">
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
@@ -730,7 +733,7 @@
   <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
     <div class="block-header has-border">
       <h5 class="primary-dialog-title">Authorization -
-        {{detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
+        {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
       <h5 class="primary-dialog-title ml-auto">Transaction -
         {{detailsModel.providertransactionlogId}}</h5>
     </div>

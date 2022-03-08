@@ -69,7 +69,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         description: (this.data.item.category === 'onset' || this.data.item.category === 'chief-complaint') ? this.data.item.codeName : undefined,
         value: this.data.item.value,
         // tslint:disable-next-line:max-line-length
-        code: (this.data.item.category === 'onset' || this.data.item.category === 'chief-complaint') ? this.data.item.code : this.codeList.filter(x => x.value === this.data.item.code)[0],
+        code: (this.data.item.category === 'onset' || this.data.item.category === 'chief-complaint' ||  this.data.item.category === 'lab-test') ? this.data.item.code : this.codeList.filter(x => x.value === this.data.item.code)[0],
         attachment: this.data.item.attachment,
         timingDate: (!this.data.item.toDate) ? this.data.item.fromDate : undefined,
         timingPeriodFrom: (this.data.item.toDate) ? this.data.item.fromDate : undefined,
@@ -302,6 +302,9 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
         this.FormSupportingInfo.controls.code.setValidators([Validators.required]);
         this.FormSupportingInfo.controls.code.updateValueAndValidity();
+
+        this.FormSupportingInfo.controls.value.setValidators([Validators.required]);
+        this.FormSupportingInfo.controls.value.updateValueAndValidity();
 
         // codes  same as diagnosis
         break;
