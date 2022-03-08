@@ -84,15 +84,6 @@ export class SearchWithAdvanceComponent implements OnInit {
         });
     }
 
-
-    searchMode(isWassel: boolean) {
-        if (isWassel) {
-            return this.searchModesWassel;
-        } else {
-            return this.searchModesNphies;
-        }
-
-    }
     ngOnInit() {
         this.payers = this.commen.getPayersList();
         this.tpas = this.commen.getTPAsList();
