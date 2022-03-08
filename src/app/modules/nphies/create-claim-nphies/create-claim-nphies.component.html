@@ -560,7 +560,6 @@
                 </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.invoiceNo ? item.invoiceNo : '-'}}</span>
-                  <span *ngIf="!item.itemDecision">-</span>
                 </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -1721,7 +1720,6 @@
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.invoiceNo ? item.invoiceNo : '-'}}</span>
-                      <span *ngIf="!item.itemDecision">-</span>
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
