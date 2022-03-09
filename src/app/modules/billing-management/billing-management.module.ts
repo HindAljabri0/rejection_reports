@@ -10,11 +10,12 @@ import { SearchBillingPatientDialogComponent } from './search-billing-patient-di
 import { BillDetailsComponent } from './bill-details/bill-details.component';
 import { AddBillServiceDialogComponent } from './add-bill-service-dialog/add-bill-service-dialog.component';
 import { GenerateBillInvoiceComponent } from './generate-bill-invoice/generate-bill-invoice.component';
+import { InvoicesComponent } from './invoices/invoices.component';
 
 
 
 @NgModule({
-  declarations: [BillingComponent, SearchBillingPatientDialogComponent, BillDetailsComponent, AddBillServiceDialogComponent, GenerateBillInvoiceComponent],
+  declarations: [BillingComponent, SearchBillingPatientDialogComponent, BillDetailsComponent, AddBillServiceDialogComponent, GenerateBillInvoiceComponent, InvoicesComponent],
   imports: [
     CommonModule,
     SharedModule,

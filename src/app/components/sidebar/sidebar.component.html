@@ -411,13 +411,26 @@
                             </ul>
                         </mat-expansion-panel>
                     </mat-accordion>
-                    <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
-                        <li>
-                            <a routerLink="/billing-management" routerLinkActive="is-active">
-                                <span class="text">Billing Management</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <mat-accordion displayMode="flat"
+                        *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Billing Management</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ul class="nav-list">
+                                <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                                    <a routerLink="/billing-management" routerLinkActive="is-active">
+                                        <span class="text">Billing</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                                    <a routerLink="/billing-management/invoice" routerLinkActive="is-active">
+                                        <span class="text">Billing Invoices</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </mat-expansion-panel>
+                    </mat-accordion>
                 </ng-container>
 
                 <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
