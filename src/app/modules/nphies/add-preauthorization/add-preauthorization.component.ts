@@ -31,7 +31,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styles: []
 })
 export class AddPreauthorizationComponent implements OnInit {
-
+//H
   @Input() claimReuseId: number;
   @Input() data: any;
   @Output() closeEvent = new EventEmitter();
@@ -120,7 +120,7 @@ export class AddPreauthorizationComponent implements OnInit {
   Items = [];
 
   model: any = {};
-  detailsModel: any = {};
+   detailsModel: any = {};
 
   isSubmitted = false;
   IsLensSpecificationRequired = false;

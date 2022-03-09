@@ -2,7 +2,7 @@
     <ng-container *ngIf="!showDetails">
         <div class="block-header has-border">
             <p>Request Eligibility</p>
-            <mat-slide-toggle color="primary" class="ml-auto">Referral</mat-slide-toggle>
+            <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto">Referral</mat-slide-toggle>
         </div>
         <div class="block-filter-panel">
             <div class="d-flex">
@@ -71,7 +71,7 @@
                                 <mat-radio-button value="2" color="primary" [checked]="purposeRadioButton == '2'">Discovery
                                 </mat-radio-button>
                             </mat-radio-group>
-                            <!-- 
+                            <!--
                             <mat-checkbox color="primary" [checked]="isDiscovery"
                                 (change)="isDiscovery = $event.checked">Discovery</mat-checkbox> -->
                         </div>

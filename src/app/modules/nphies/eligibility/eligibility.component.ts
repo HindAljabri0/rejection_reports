@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +28,13 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   payers: Payer[] = [];
 
   selectedBeneficiary: BeneficiariesSearchResult;
+  //
+  @Input() claimReuseId: number;
+  detailsModel: any = {};
+  model: any = {};
 
+
+  //
   selectedPlanId: string;
   selectedPlanIdError: string;
   serviceDateControl = new FormControl(new Date());
@@ -43,6 +49,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   isValidation = false;
   purposeError: string;
   payerNphiesId: string;
+  transfer:false
 
   showDetails = false;
   constructor(
@@ -155,6 +162,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.endDateError = null;
     this.purposeError = null;
 
+
     if (this.purposeRadioButton == '1') {
       this.isDiscovery = false;
       if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
@@ -209,7 +217,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
-      validation: this.isValidation
+      validation: this.isValidation,
+      transfer :this.transfer,
     };
 
 
