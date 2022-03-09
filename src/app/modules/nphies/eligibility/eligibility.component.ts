@@ -41,6 +41,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   isBenefits = false;
   isDiscovery = false;
   isValidation = false;
+  transfer = false;
   purposeError: string;
   payerNphiesId: string;
 
@@ -209,7 +210,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
-      validation: this.isValidation
+      validation: this.isValidation,
+      transfer : this.transfer
     };
 
 
