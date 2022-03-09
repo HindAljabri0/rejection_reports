@@ -2,7 +2,7 @@
     <ng-container *ngIf="!showDetails">
         <div class="block-header has-border">
             <p>Request Eligibility</p>
-            <mat-slide-toggle color="primary" class="ml-auto" [formControl]="transfer">Referral</mat-slide-toggle>
+            <mat-slide-toggle color="primary" class="ml-auto" [checked]="transfer" (change)="transfer = $event.checked">Referral</mat-slide-toggle>
         </div>
         <div class="block-filter-panel">
             <div class="d-flex">
