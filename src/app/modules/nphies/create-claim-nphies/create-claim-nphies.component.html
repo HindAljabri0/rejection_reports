@@ -1251,7 +1251,7 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{'has-error' : IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))}">
                 <label class="control-label">Offline Approval Date</label>
                 <div class="date-picker">
                   <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
@@ -1259,13 +1259,19 @@
                   <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                 </div>
+                <div *ngIf="IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))">
+                  <span class="error-text">Please select Offline Approval Date</span>
+                </div>
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Preauthorization Reference No</label>
+              <div class="form-group"  [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
+                <label class="control-label">Preauthorization Reference No<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
                 <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
                 </tag-input>
+                <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
+                  <span class="error-text">Please enter Preauthorization Reference No</span>
+                </div>
               </div>
             </div>
             <div class="col-4 col-lg-3">
