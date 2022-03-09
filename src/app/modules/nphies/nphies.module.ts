@@ -53,6 +53,7 @@ import { UploadsHistoryComponent } from './uploads-history/uploads-history.compo
 import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.directive';
 import { BeneficiaryTabComponent } from './create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
+import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
 
 
 
@@ -92,6 +93,7 @@ import { BeneficiaryTabComponent } from './create-claim-nphies/beneficiary-tab/b
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
     UploadsHistoryComponent,
+    NphiesConfigurationsComponent,
     // BeneficiaryTabComponent
   ],
   imports: [
