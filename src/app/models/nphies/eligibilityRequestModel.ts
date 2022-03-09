@@ -11,5 +11,5 @@ export class EligibilityRequestModel {
     benefits: boolean;
     discovery: boolean;
     validation: boolean;
-
+    transfer : boolean;
 }
