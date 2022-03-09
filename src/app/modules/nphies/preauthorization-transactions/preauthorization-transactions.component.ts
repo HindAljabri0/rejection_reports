@@ -386,6 +386,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
+          console.log("REsponse = "+JSON.stringify(body));
           if (communicationId) {
             body.communicationId = communicationId;
           }
