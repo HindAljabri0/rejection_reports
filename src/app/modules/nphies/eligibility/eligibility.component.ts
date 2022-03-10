@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,12 +22,18 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
+  transfer =false;
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
 
   payers: Payer[] = [];
 
   selectedBeneficiary: BeneficiariesSearchResult;
+  //
+  @Input() claimReuseId: number;
+
+  detailsModel: any = {};
+  model: any = {};
 
   selectedPlanId: string;
   selectedPlanIdError: string;
@@ -41,9 +47,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   isBenefits = false;
   isDiscovery = false;
   isValidation = false;
-  transfer = false;
   purposeError: string;
   payerNphiesId: string;
+  eligibilityResponseModel: EligibilityResponseModel;
 
   showDetails = false;
   constructor(
@@ -98,8 +104,15 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
       }
     })
+
+    console.log("test")
+    console.log(this.transfer);
   }
 
+  onChangeState(transfer){
+    this.transfer=!transfer;
+    console.log(this.transfer);
+  }
   searchBeneficiaries() {
     this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -142,7 +155,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
-  eligibilityResponseModel: EligibilityResponseModel;
+
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
@@ -155,6 +168,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.serviceDateError = null;
     this.endDateError = null;
     this.purposeError = null;
+
 
     if (this.purposeRadioButton == '1') {
       this.isDiscovery = false;
@@ -174,6 +188,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.isDiscovery = true;
       this.isBenefits = false;
       this.isValidation = false;
+
       if (this.selectedPayer == null || this.payers.findIndex(payer => payer.nphiesId == this.selectedPayer) == -1) {
         this.selectedPayerError = "Please select a payer first";
         requestHasErrors = true;
@@ -211,7 +226,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer : this.transfer
+      transfer: this.transfer
     };
 
 

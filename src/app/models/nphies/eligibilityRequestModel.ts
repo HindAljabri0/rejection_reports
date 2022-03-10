@@ -3,7 +3,6 @@ import { InsurancePlan } from "./insurancePlan";
 
 
 export class EligibilityRequestModel {
-
     beneficiary: BeneficiariesSearchResult;
     insurancePlan: InsurancePlan;
     serviceDate: string;
