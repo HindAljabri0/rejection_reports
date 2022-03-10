@@ -1395,9 +1395,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       !this.FormNphiesClaim.controls.type.value) || (
         this.FormNphiesClaim.controls.preAuthOfflineDate.value && (!this.FormNphiesClaim.controls.preAuthRefNo.value
           || (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length === 0))
-      ) || (
-        !this.FormNphiesClaim.controls.preAuthOfflineDate.value && (this.FormNphiesClaim.controls.preAuthRefNo.value
-          && this.FormNphiesClaim.controls.preAuthRefNo.value.length > 0)
       )) {
       return true;
     } else {
@@ -2199,19 +2196,19 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  get IsApprovalDateRequired() {
-    if (this.isSubmitted) {
-      if (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length > 0) {
-        this.FormNphiesClaim.controls.preAuthOfflineDate.setValidators(Validators.required);
-        this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
-        return true;
-      } else {
-        this.FormNphiesClaim.controls.preAuthOfflineDate.clearValidators();
-        this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
-        // this.FormNphiesClaim.controls.preAuthOfflineDate.setValue('');
-        return false;
-      }
-    }
-  }
+  // get IsApprovalDateRequired() {
+  //   if (this.isSubmitted) {
+  //     if (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length > 0) {
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.setValidators(Validators.required);
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
+  //       return true;
+  //     } else {
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.clearValidators();
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
+  //       // this.FormNphiesClaim.controls.preAuthOfflineDate.setValue('');
+  //       return false;
+  //     }
+  //   }
+  // }
 
 }
