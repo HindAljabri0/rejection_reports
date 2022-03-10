@@ -22,7 +22,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
-  transfer = new FormControl();
+  transfer =false;
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
 
@@ -104,8 +104,15 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
       }
     })
+
+    console.log("test")
+    console.log(this.transfer);
   }
 
+  onChangeState(transfer){
+    this.transfer=!transfer;
+    console.log(this.transfer);
+  }
   searchBeneficiaries() {
     this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -219,7 +226,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer: this.transfer.value
+      transfer: this.transfer
     };
 
 
