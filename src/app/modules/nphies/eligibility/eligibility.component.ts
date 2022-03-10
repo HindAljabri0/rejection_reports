@@ -22,6 +22,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
+  transfer = new FormControl();
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
 
@@ -30,11 +31,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   selectedBeneficiary: BeneficiariesSearchResult;
   //
   @Input() claimReuseId: number;
+
   detailsModel: any = {};
   model: any = {};
 
-
-  //
   selectedPlanId: string;
   selectedPlanIdError: string;
   serviceDateControl = new FormControl(new Date());
@@ -49,7 +49,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   isValidation = false;
   purposeError: string;
   payerNphiesId: string;
-  transfer:false
+  eligibilityResponseModel: EligibilityResponseModel;
 
   showDetails = false;
   constructor(
@@ -148,7 +148,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
-  eligibilityResponseModel: EligibilityResponseModel;
+
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
@@ -181,6 +181,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.isDiscovery = true;
       this.isBenefits = false;
       this.isValidation = false;
+
       if (this.selectedPayer == null || this.payers.findIndex(payer => payer.nphiesId == this.selectedPayer) == -1) {
         this.selectedPayerError = "Please select a payer first";
         requestHasErrors = true;
@@ -218,7 +219,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer :this.transfer,
+      transfer: this.transfer.value
     };
 
 

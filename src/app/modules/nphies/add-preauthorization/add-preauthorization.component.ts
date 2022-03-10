@@ -31,7 +31,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styles: []
 })
 export class AddPreauthorizationComponent implements OnInit {
-//H
+
   @Input() claimReuseId: number;
   @Input() data: any;
   @Output() closeEvent = new EventEmitter();

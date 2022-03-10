@@ -2,7 +2,7 @@
     <ng-container *ngIf="!showDetails">
         <div class="block-header has-border">
             <p>Request Eligibility</p>
-            <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto">Referral</mat-slide-toggle>
+            <mat-slide-toggle *ngIf="!claimReuseId"  [formControl]="transfer" color="primary" [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto">Referral</mat-slide-toggle>
         </div>
         <div class="block-filter-panel">
             <div class="d-flex">

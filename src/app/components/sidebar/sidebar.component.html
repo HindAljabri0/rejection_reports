@@ -420,6 +420,13 @@
                     </ul>
                 </ng-container>
 
+                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
+                  <li>
+                      <a routerLink="/nphies/configurations" routerLinkActive="is-active">
+                          <span class="text">Nphies Configurations</span>
+                      </a>
+                  </li>
+              </ul>
             </div>
 
             <ng-container
