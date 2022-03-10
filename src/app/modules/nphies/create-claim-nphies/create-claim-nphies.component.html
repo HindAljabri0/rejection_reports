@@ -559,8 +559,7 @@
                   <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
                 </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  <span *ngIf="item.itemDecision">{{item.invoiceNo ? item.invoiceNo : '-'}}</span>
-                  <span *ngIf="!item.itemDecision">-</span>
+                  {{item.invoiceNo ? item.invoiceNo : '-'}}
                 </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -1228,7 +1227,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Offline Eligibility ID</label>
                 <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
@@ -1246,12 +1245,26 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Eligibility Response ID</label>
                 <input class="form-control" placeholder="Eligibility Response ID" formControlName="eligibilityResponseId">
               </div>
             </div>
+            <!-- <div class="col-4 col-xxl-3">
+              <div class="form-group" [ngClass]="{'has-error' : IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))}">
+                <label class="control-label">Offline Approval Date</label>
+                <div class="date-picker">
+                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
+                    formControlName="preAuthOfflineDate">
+                  <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                  <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
+                </div>
+                <div *ngIf="IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))">
+                  <span class="error-text">Please select Offline Approval Date</span>
+                </div>
+              </div>
+            </div> -->
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Offline Approval Date</label>
@@ -1264,13 +1277,16 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Preauthorization Reference No</label>
+              <div class="form-group"  [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
+                <label class="control-label">Preauthorization Reference No<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
                 <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
                 </tag-input>
+                <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
+                  <span class="error-text">Please enter Preauthorization Reference No</span>
+                </div>
               </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-xxl-3">
               <!-- <div class="form-group"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
                   <label class="control-label">Episode No.</label>
@@ -1284,7 +1300,7 @@
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
               </div>
             </div>
-            <!-- <div class="col-4 col-lg-3">
+            <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
                                     <input class="form-control" placeholder="Approval Response IDs"
@@ -1721,8 +1737,7 @@
                       <span *ngIf="!item.itemDecision">-</span>
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <span *ngIf="item.itemDecision">{{item.invoiceNo ? item.invoiceNo : '-'}}</span>
-                      <span *ngIf="!item.itemDecision">-</span>
+                      {{item.invoiceNo ? item.invoiceNo : '-'}}
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>

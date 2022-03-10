@@ -409,133 +409,154 @@
                         </ul>
                     </mat-expansion-panel>
                 </mat-accordion>
-                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                <mat-accordion displayMode="flat"
+                    *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Billing Management</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="nav-list">
+                            <li
+                                *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                                <a routerLink="/billing-management" routerLinkActive="is-active">
+                                    <span class="text">Billing</span>
+                                </a>
+                            </li>
+                            <li
+                                *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessPolicy || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessBilling">
+                                <a routerLink="/billing-management/invoice" routerLinkActive="is-active">
+                                    <span class="text">Billing Invoices</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </ng-container>
+
+            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
+                <li>
+                    <a routerLink="/nphies/configurations" routerLinkActive="is-active">
+                        <span class="text">Nphies Configurations</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ng-container
+                *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder))">
+                <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
+                    <hr>
+                </div>
+                <div class="list-title">
+                    Administration
+                </div>
+            </ng-container>
+            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isPAM">
+                <mat-accordion displayMode="flat">
+                    <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerCertificate.isActive ">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="nav-list">
+                            <li i18n="@@providerconfiguration">
+                                <a routerLink="/administration/config/providers" routerLinkActive="is-active" #providerConfiguration="routerLinkActive">
+                                    <span class="text">Provider Configuration</span>
+                                </a>
+                            </li>
+                            <li i18n="@@providermapping">
+                                <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active" #providermapping="routerLinkActive">
+                                    <span class="text">Provider Mapping</span>
+                                </a>
+                            </li>
+                            <li i18n="@@providerCertificate">
+                                <a routerLink="/administration/config/providerCertificate" routerLinkActive="is-active" #providerCertificate="routerLinkActive">
+                                    <span class="text">Provider Certificate Configuration</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <mat-accordion displayMode="flat">
+                    <mat-expansion-panel hideToggle [expanded]="auditTrail.isActive || transactionsLog.isActive">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title i18n="@@audit">Logs</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="nav-list">
+                            <li i18n="@@audittrail">
+                                <a routerLink="/administration/auditLogs" routerLinkActive="is-active" #auditTrail="routerLinkActive">
+                                    <span class="text">Audit Trail</span>
+                                </a>
+                            </li>
+                            <li i18n="@@transactionsLog">
+                                <a routerLink="/administration/transactions" routerLinkActive="is-active" #transactionsLog="routerLinkActive">
+                                    <span class="text">Transactions Log</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <mat-expansion-panel hideToggle [expanded]="payerClaimsReport.isActive">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Reports</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li *ngIf="!envStaging && !envProd">
+                            <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive">
+                                <span class="text">Claim Submissions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive">
+                                <span class="text">Payer Claims Report</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
+            </div>
+            <ng-container
+                *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
+                <div class="list-title">
+                    <hr>
+                </div>
+                <div class="list-title">
+                    RCM
+                </div>
+            </ng-container>
+            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin">
+                <ul class="nav-list">
                     <li>
-                        <a routerLink="/billing-management" routerLinkActive="is-active">
-                            <span class="text">Billing Management</span>
+                        <a routerLink="/review/uploads" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+                            <span class="text">Claims Scrubbing</span>
+                        </a>
+                    </li>
+                </ul>
+                <mat-accordion displayMode="flat">
+                    <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="nav-list">
+                            <li i18n="@@payerPaymentContract">
+                                <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+                                    <span class="text">Payer Payment Contract</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
+                            <span class="text">Switch Provider</span>
                         </a>
                     </li>
                 </ul>
             </ng-container>
-
         </div>
-
-        <ng-container
-            *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder))">
-            <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
-                <hr>
-            </div>
-            <div class="list-title">
-                Administration
-            </div>
-        </ng-container>
-        <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isPAM">
-            <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerCertificate.isActive ">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <ul class="nav-list">
-                        <li i18n="@@providerconfiguration">
-                            <a routerLink="/administration/config/providers" routerLinkActive="is-active" #providerConfiguration="routerLinkActive">
-                                <span class="text">Provider Configuration</span>
-                            </a>
-                        </li>
-                        <li i18n="@@providermapping">
-                            <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active" #providermapping="routerLinkActive">
-                                <span class="text">Provider Mapping</span>
-                            </a>
-                        </li>
-                        <li i18n="@@providerCertificate">
-                            <a routerLink="/administration/config/providerCertificate" routerLinkActive="is-active" #providerCertificate="routerLinkActive">
-                                <span class="text">Provider Certificate Configuration</span>
-                            </a>
-                        </li>
-                    </ul>
-                </mat-expansion-panel>
-            </mat-accordion>
-
-            <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="auditTrail.isActive || transactionsLog.isActive">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@audit">Logs</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <ul class="nav-list">
-                        <li i18n="@@audittrail">
-                            <a routerLink="/administration/auditLogs" routerLinkActive="is-active" #auditTrail="routerLinkActive">
-                                <span class="text">Audit Trail</span>
-                            </a>
-                        </li>
-                        <li i18n="@@transactionsLog">
-                            <a routerLink="/administration/transactions" routerLinkActive="is-active" #transactionsLog="routerLinkActive">
-                                <span class="text">Transactions Log</span>
-                            </a>
-                        </li>
-                    </ul>
-                </mat-expansion-panel>
-            </mat-accordion>
-
-            <mat-expansion-panel hideToggle [expanded]="payerClaimsReport.isActive">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Reports</mat-panel-title>
-                </mat-expansion-panel-header>
-                <ul class="nav-list">
-                    <li *ngIf="!envStaging && !envProd">
-                        <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive">
-                            <span class="text">Claim Submissions</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive">
-                            <span class="text">Payer Claims Report</span>
-                        </a>
-                    </li>
-                </ul>
-            </mat-expansion-panel>
-        </div>
-        <ng-container
-            *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
-            <div class="list-title">
-                <hr>
-            </div>
-            <div class="list-title">
-                RCM
-            </div>
-        </ng-container>
-        <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin">
-            <ul class="nav-list">
-                <li>
-                    <a routerLink="/review/uploads" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
-                        <span class="text">Claims Scrubbing</span>
-                    </a>
-                </li>
-            </ul>
-            <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <ul class="nav-list">
-                        <li i18n="@@payerPaymentContract">
-                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
-                                <span class="text">Payer Payment Contract</span>
-                            </a>
-                        </li>
-                    </ul>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-        <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
-            <ul class="nav-list">
-                <li>
-                    <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
-                        <span class="text">Switch Provider</span>
-                    </a>
-                </li>
-            </ul>
-        </ng-container>
     </div>
-</div>
-<div class="nav-backdrop">
-    <button type="button" (click)="toggleNav()"></button>
-</div>
+    <div class="nav-backdrop">
+        <button type="button" (click)="toggleNav()"></button>
+    </div>

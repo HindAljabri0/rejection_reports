@@ -12,6 +12,7 @@ import { SearchBeneficiaryComponent } from './search-beneficiary/search-benefici
 import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.component';
 import { UploadClaimComponent } from './upload-claim/upload-claim.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
+import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'upload-claim', component: UploadClaimComponent },
   { path: 'upload/history', component: UploadsHistoryComponent },
   { path: 'summary', component: UploadClaimComponent },
+  { path: 'configurations', component: NphiesConfigurationsComponent }
 
 ];
 

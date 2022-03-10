@@ -120,7 +120,7 @@ export class AddPreauthorizationComponent implements OnInit {
   Items = [];
 
   model: any = {};
-  detailsModel: any = {};
+   detailsModel: any = {};
 
   isSubmitted = false;
   IsLensSpecificationRequired = false;
