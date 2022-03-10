@@ -1071,7 +1071,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
       } else if (this.pageMode === 'RESUBMIT') {
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-        this.model.claimId = this.otherDataModel.claimId;
+        this.model.relatedClaimId = this.otherDataModel.claimId;
         this.model.uploadId = this.uploadId;
       }
 
