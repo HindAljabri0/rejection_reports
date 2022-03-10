@@ -488,8 +488,7 @@
 
         <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
           <span>Items<span class="asterisk">*</span></span>
-          <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-            [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
+          <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="disableItemsButton()" [matTooltip]="itemsButtonTooltip">
             <mat-icon>add</mat-icon>
           </button>
         </h5>
@@ -628,7 +627,7 @@
                                 <td class="label">
                                   <div class="d-flex align-items-center">
                                     <span class="pr-1">Factor</span>
-                                    <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                    <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                                   </div>
                                 </td>
                                 <td>{{item.factor}}</td>

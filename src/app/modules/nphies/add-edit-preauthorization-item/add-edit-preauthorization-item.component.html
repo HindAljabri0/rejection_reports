@@ -197,7 +197,8 @@
         </div>
         <div class="row small-gutter">
           <div class="col-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('min'))}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('min'))}">
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Other')">
               <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
@@ -256,7 +257,7 @@
               <label class="control-label">
                 <span class="d-flex align-items-center">
                   <span class="pr-1">Factor</span>
-                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                 </span>
               </label>
               <input class="form-control" placeholder="Enter factor" formControlName="factor" readonly>

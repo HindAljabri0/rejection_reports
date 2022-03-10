@@ -671,7 +671,7 @@
                               <td class="label">
                                 <div class="d-flex align-items-center">
                                   <span class="pr-1">Factor</span>
-                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                                 </div>
                               </td>
                               <td>{{item.factor}}</td>
@@ -1277,7 +1277,8 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group"  [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
+              <div class="form-group"
+                [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
                 <label class="control-label">Preauthorization Reference No<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
                 <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
                 </tag-input>
@@ -1764,7 +1765,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="currentOpenItem==i">
-                    <td colspan="9">
+                    <td colspan="10">
                       <div class="box mb-2">
                         <h5 class="align-self-center medium pb-2">Item Info</h5>
                         <div class="row">
@@ -1842,7 +1843,7 @@
                                   <td class="label">
                                     <div class="d-flex align-items-center">
                                       <span class="pr-1">Factor</span>
-                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info
+                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info
                                       </mat-icon>
                                     </div>
                                   </td>
