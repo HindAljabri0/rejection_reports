@@ -1226,7 +1226,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Offline Eligibility ID</label>
                 <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
@@ -1244,13 +1244,13 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Eligibility Response ID</label>
                 <input class="form-control" placeholder="Eligibility Response ID" formControlName="eligibilityResponseId">
               </div>
             </div>
-            <div class="col-4 col-xxl-3">
+            <!-- <div class="col-4 col-xxl-3">
               <div class="form-group" [ngClass]="{'has-error' : IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))}">
                 <label class="control-label">Offline Approval Date</label>
                 <div class="date-picker">
@@ -1261,6 +1261,17 @@
                 </div>
                 <div *ngIf="IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))">
                   <span class="error-text">Please select Offline Approval Date</span>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Offline Approval Date</label>
+                <div class="date-picker">
+                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
+                    formControlName="preAuthOfflineDate">
+                  <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                  <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                 </div>
               </div>
             </div>
@@ -1274,7 +1285,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-xxl-3">
               <!-- <div class="form-group"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
                   <label class="control-label">Episode No.</label>
@@ -1288,7 +1299,7 @@
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
               </div>
             </div>
-            <!-- <div class="col-4 col-lg-3">
+            <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
                                     <input class="form-control" placeholder="Approval Response IDs"
