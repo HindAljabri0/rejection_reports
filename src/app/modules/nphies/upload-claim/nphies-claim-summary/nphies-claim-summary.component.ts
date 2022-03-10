@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-claims.component';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router, ActivatedRoute, RouterEvent, NavigationEnd } from '@angular/router';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -16,15 +15,16 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { filter } from 'rxjs/operators';
 import { UploadSummary } from 'src/app/models/uploadSummary';
-// tslint:disable-next-line:max-line-length
-import { UploadSummaryDialogComponent } from 'src/app/pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
+import {
+  UploadSummaryDialogComponent
+} from 'src/app/pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { Location } from '@angular/common';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Component({
   selector: 'app-nphies-claim-summary',
   templateUrl: './nphies-claim-summary.component.html',
-  styleUrls: ['./nphies-claim-summary.component.css']
+  styles: []
 })
 export class NphiesClaimSummaryComponent implements OnInit {
 

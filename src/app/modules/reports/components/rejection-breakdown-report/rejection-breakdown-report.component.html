@@ -1,16 +1,15 @@
-<div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Rejection Breakdown Report</p>
     </div>
     <form #revenuBreakingReportForm='ngForm' (ngSubmit)='generate()'>
-        <div class="block-filter-panel has-border">
+        <div class="block-filter-panel">
             <div class="row small-gutter align-items-end">
                 <div class="col">
                     <div class="form-group">
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId"
-                                (selectionChange)="onPayerChanged()" required>
+                            <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId" (selectionChange)="onPayerChanged()" required>
                                 <mat-option value="All">All</mat-option>
                                 <mat-option *ngFor="let payer of payersList" [value]="payer.id+''">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
@@ -19,15 +18,12 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group" [matTooltip]="fromDateError"
-                        [ngClass]="{'has-error' : fromDateError!=null}">
+                    <div class="form-group" [matTooltip]="fromDateError" [ngClass]="{'has-error' : fromDateError!=null}">
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
-                            <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                                (bsValueChange)="dateValidation($event)" autocomplete="off"
-                                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
-                                [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
+                            <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (bsValueChange)="dateValidation($event)" autocomplete="off"
+                                (onShown)="onOpenCalendar($event)" placeholder="Select from month" [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
                         </div>
                     </div>
                 </div>
@@ -35,10 +31,8 @@
                     <div class="form-group" [matTooltip]="toDateError" [ngClass]="{'has-error' : toDateError!=null}">
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
-                            <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
-                                autocomplete="off" [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                                [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required
-                                [minDate]="minDate" />
+                            <input class="form-control date-picker" placeholder="Select to month" bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
+                                (onShown)="onOpenCalendar($event)" [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required [minDate]="minDate" />
                         </div>
                     </div>
                 </div>
@@ -55,31 +49,25 @@
             <ul class="list">
                 <li class="title">Payer</li>
                 <li>
-                    <button type="button"
-                        (click)="selectedPayerId=='All'? onCategoryChanged('Payers',revenuBreakingReportForm):null"
-                        matRipple
+                    <button type="button" (click)="selectedPayerId=='All'? onCategoryChanged('Payers',revenuBreakingReportForm):null" matRipple
                         [ngClass]="{'active': selectedCategory== 'Payers' && selectedPayerId == 'All'}">{{selectedPayerName}}</button>
                 </li>
                 <li class="title">By Category</li>
                 <ng-container>
 
                     <li>
-                        <button type="button" matRipple
-                            (click)="onCategoryChanged('ServiceCode',revenuBreakingReportForm)"
+                        <button type="button" matRipple (click)="onCategoryChanged('ServiceCode',revenuBreakingReportForm)"
                             [class.active]="selectedCategory=='ServiceCode'">Service</button>
                     </li>
                     <li>
-                        <button type="button" [class.active]="selectedCategory=='Department'"
-                            (click)="onCategoryChanged('Department',revenuBreakingReportForm)"
+                        <button type="button" [class.active]="selectedCategory=='Department'" (click)="onCategoryChanged('Department',revenuBreakingReportForm)"
                             matRipple>Department</button>
                     </li>
                     <li>
-                        <button type="button" (click)="onCategoryChanged('Doctor',revenuBreakingReportForm)"
-                            [class.active]="selectedCategory=='Doctor'" matRipple>Doctor</button>
+                        <button type="button" (click)="onCategoryChanged('Doctor',revenuBreakingReportForm)" [class.active]="selectedCategory=='Doctor'" matRipple>Doctor</button>
                     </li>
                     <li>
-                        <button type="button" (click)="onCategoryChanged('ServiceType',revenuBreakingReportForm)"
-                            [class.active]="selectedCategory=='ServiceType'" matRipple>Service
+                        <button type="button" (click)="onCategoryChanged('ServiceType',revenuBreakingReportForm)" [class.active]="selectedCategory=='ServiceType'" matRipple>Service
                             Type</button>
                     </li>
                 </ng-container>
@@ -88,12 +76,12 @@
         <div class="right-block" *ngIf="pieChartData.length>0">
             <div class="custom-legend-wrapper">
                 <div class="chart-wrapper" *ngIf="pieChartData[0].data.length>0">
-                    <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
-                        [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                    <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins"
+                        [legend]="pieChartLegend">
                     </canvas>
                 </div>
                 <div class="chart-wrapper" *ngIf="pieChartData[0].data.length===0">
-                    <app-empty-state message="No records found" icon="ic-empty-chart.svg">
+                    <app-empty-state message="No records found">
                     </app-empty-state>
                 </div>
                 <ul class="custom-legend" [class.child-active]="selectedDoctor!=-1">
@@ -101,8 +89,7 @@
                         [class.expandable]="selectedCategory== 'Doctor' && i!=tempPieChartLables.length-1">
                         <ng-container *ngIf="selectedCategory== 'Doctor' && i!=tempPieChartLables.length-1">
                             <button type="button" (click)="selectDoctor(i)" [title]="data">
-                                <span class="color"
-                                    [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
+                                <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
                                 <span class="text">
                                     {{data}}<ng-container *ngIf="tempPieChartData[i].description"> -
                                         {{tempPieChartData[i].description}}</ng-container>
@@ -118,11 +105,9 @@
                                     Services of {{data}}
                                 </li>
                                 <li *ngFor="let data1 of serviceDoctorData(data);let j=index">
-                                    <span class="color"
-                                        [style.background-color]="pieChartData[0].backgroundColor[j]"></span>
+                                    <span class="color" [style.background-color]="pieChartData[0].backgroundColor[j]"></span>
                                     <span class="text">
-                                        {{data1.label}}<ng-container
-                                            *ngIf="data1.description!==undefined && data1.description!==null"> -
+                                        {{data1.label}}<ng-container *ngIf="data1.description!==undefined && data1.description!==null"> -
                                             {{data1.description}}</ng-container>
                                         <span class="text-muted">Amount -
                                             {{data1.amount | number : "1.2-2"}} SR
@@ -131,8 +116,7 @@
                                 </li>
                             </ul>
                         </ng-container>
-                        <ng-container
-                            *ngIf="(selectedCategory== 'Doctor' && i==tempPieChartLables.length-1) || selectedCategory!= 'Doctor'">
+                        <ng-container *ngIf="(selectedCategory== 'Doctor' && i==tempPieChartLables.length-1) || selectedCategory!= 'Doctor'">
                             <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
                             <span class="text">
                                 {{data}}<ng-container *ngIf="tempPieChartData[i].description"> -
@@ -146,11 +130,11 @@
             </div>
         </div>
         <div class="right-block" *ngIf="pieChartData.length===0">
-            <app-empty-state [message]="getEmptyStateMessage()" icon="ic-empty-chart.svg">
+            <app-empty-state [message]="getEmptyStateMessage()">
             </app-empty-state>
         </div>
     </div>
-    <!-- <div class="block-footer sticky-bottom">
+    <!-- <div class="block-footer sticky">
         <div class="right-block btn-list">
             <button color="primary" mat-flat-button>Print</button>
         </div>

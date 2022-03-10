@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+    <div class="block-header">
         <p>Classes</p>
     </div>
     <div class="block-filter-panel">
@@ -95,7 +95,7 @@
         <app-empty-state *ngIf="!classes" message='No Classes found!'>
         </app-empty-state>
     </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky">
         <div class="left-block">
             <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 [pageIndex]="pageIndex">

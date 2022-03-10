@@ -1,19 +1,17 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Accounts Receivables Monthly</p>
     </div>
     <form #createBatchForm='ngForm' (ngSubmit)='createBatchForm.valid && search()'>
-        <div class="block-filter-panel has-border">
+        <div class="block-filter-panel">
             <div class="row">
                 <div class="col-lg-5">
                     <div class="row small-gutter">
                         <div class="col">
                             <div class="form-group">
                                 <label class="control-label">Year</label>
-                                <input autocomplete="off" placeholder="Select year " class="form-control date-picker"
-                                    [(ngModel)]="accountReceivableModel.strYear" #strYear='ngModel' name="strYear"
-                                    bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                                    required>
+                                <input autocomplete="off" placeholder="Select year " class="form-control date-picker" [(ngModel)]="accountReceivableModel.strYear"
+                                    #strYear='ngModel' name="strYear" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" required>
                                 <div *ngIf="createBatchForm.submitted && strYear.invalid">
                                     <span class="error-text">Please select a Year</span>
                                 </div>
@@ -30,9 +28,9 @@
             </div>
         </div>
     </form>
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white" #tabEvent>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" #tabEvent>
         <mat-tab [label]="'By Year'">
-            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(payementData == null || payementData.length == 0)">
                 <div class="fixed-height">
                     <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                         <thead>
@@ -46,36 +44,26 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of yearData">
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.month}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.totalSubmittedAmount}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.totalPaidAmount}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.totalOutstandingAmount}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.collecttionRatio}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" class="p-0">
-                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0"
-                                        class="claim-list-empty-state" message='No records found!'>
-                                    </app-empty-state>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </ng-scrollbar>
+            <app-empty-state *ngIf="payementData == null || payementData.length == 0" class="claim-list-empty-state" message='No records found!'>
+            </app-empty-state>
         </mat-tab>
         <mat-tab [label]="'By Payer'">
-            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(payementData == null || payementData.length == 0)">
                 <div class="fixed-height">
                     <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                         <thead>
@@ -89,41 +77,31 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of payementData">
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: strPayerYear,payerId:item.payerId}">
                                     {{item.payerName}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: strPayerYear,payerId:item.payerId}">
                                     {{item.totalSubmittedAmount}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: strPayerYear,payerId:item.payerId}">
                                     {{item.totalReceivedAmount}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: strPayerYear,payerId:item.payerId}">
                                     {{item.outstandingAmount}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: strPayerYear,payerId:item.payerId}">
                                     {{item.totalReceivedPerc}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" class="p-0">
-                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0"
-                                        class="claim-list-empty-state" message='No records found!'>
-                                    </app-empty-state>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </ng-scrollbar>
+            <app-empty-state *ngIf="payementData == null || payementData.length == 0" class="claim-list-empty-state" message='No records found!'>
+            </app-empty-state>
         </mat-tab>
     </mat-tab-group>
-    <!-- <div class="block-footer sticky-bottom">
+    <!-- <div class="block-footer sticky">
         <div class="left-block custom-paginator">
             <button matRipple type="button" title="First Page">
                 <img src="./assets/ic-page-first.svg" alt="First" />

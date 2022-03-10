@@ -1,8 +1,8 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Accounts Receivables Tracking Report</p>
     </div>
-    <div class="block-filter-panel has-border">
+    <div class="block-filter-panel">
         <div class="row">
             <div class="col-lg-8">
                 <div class="row small-gutter">
@@ -40,9 +40,9 @@
             </div>
         </div>
     </div>
-    <div class="ar-report-body pb-14">
+    <div class="ar-report-body block-body">
         <div class="section-card m-0">
-            <div class="ar-payment-tracking-chart">
+            <div class="chart-wrapper">
                 <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
                     [chartType]="lineChartType"></canvas>
             </div>

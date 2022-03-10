@@ -554,7 +554,7 @@
                         <td class="label">
                           <div class="d-flex align-items-center">
                             <span class="pr-1">Factor</span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                           </div>
                         </td>
                         <td>{{item.factor}}</td>
@@ -671,7 +671,7 @@
     <tbody>
       <tr *ngIf="data.diagnosis.length === 0">
         <td colspan="5">
-          <app-empty-state [className]="'size-sm'" message='No Diagnosis found!'></app-empty-state>
+          <app-empty-state message='No Diagnosis found!'></app-empty-state>
         </td>
       </tr>
       <ng-container *ngIf="data.diagnosis.length > 0">
@@ -733,7 +733,7 @@
       <tbody>
         <tr *ngIf="data.visionPrescription.lensSpecifications.length === 0">
           <td colspan="5">
-            <app-empty-state [className]="'size-sm'" message='No Lens Specifications found!'></app-empty-state>
+            <app-empty-state message='No Lens Specifications found!'></app-empty-state>
           </td>
         </tr>
         <ng-container *ngIf="data.visionPrescription.lensSpecifications.length > 0">
@@ -788,7 +788,7 @@
     <tbody>
       <tr *ngIf="data.supportingInfo.length === 0">
         <td colspan="6">
-          <app-empty-state [className]="'size-sm'" message='No supporting info found!'></app-empty-state>
+          <app-empty-state message='No supporting info found!'></app-empty-state>
         </td>
       </tr>
       <ng-container *ngIf="data.supportingInfo.length > 0">

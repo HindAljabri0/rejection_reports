@@ -1,8 +1,8 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-      <p>Claim Submission Report</p>
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Claim Submission Report</p>
     </div>
-    <div class="block-filter-panel has-border">
+    <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col">
                 <div class="form-group" [class.has-error]="payerIdHasError">
@@ -24,8 +24,7 @@
                 <div class="form-group" [class.has-error]="fromDateHasError">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date"
-                            [formControl]="fromDateControl" (keyup.enter)="search()" required>
+                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="search()" required>
                         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromPicker></mat-datepicker>
                     </div>
@@ -39,8 +38,7 @@
                 <div class="form-group" [class.has-error]="toDateHasError">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
-                            [formControl]="toDateControl" (keyup.enter)="search()" required>
+                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="search()" required>
                         <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                         <mat-datepicker #toPicker></mat-datepicker>
                     </div>
@@ -74,11 +72,7 @@
         </div>
     </div>
 
-    <div class="bg-white">
-        <app-submitted-invoices #submittedInvoicesSearchResult
-            [providerId]="providerId" [from]="fromDate" [to]="toDate"
-            [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
-            (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
-        </app-submitted-invoices>
-    </div>
+    <app-submitted-invoices #submittedInvoicesSearchResult [providerId]="providerId" [from]="fromDate" [to]="toDate" [payerId]="payerIdControl.value" [queryPage]="page"
+        [pageSize]="pageSize" (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
+    </app-submitted-invoices>
 </div>

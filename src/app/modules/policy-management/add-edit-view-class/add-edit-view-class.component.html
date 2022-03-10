@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+    <div class="block-header">
         <p *ngIf="addMode"> Add Class</p>
         <p *ngIf="EditMode"> Edit Class</p>
     </div>
@@ -140,7 +140,7 @@
             </table>
         </ng-scrollbar>
         <app-empty-state [className]="'mb-2'" *ngIf="subbenefits.length==0" [message]="'No contract found Please check your config and try again!'"></app-empty-state>
-        <div class="block-footer sticky-bottom">
+        <div class="block-footer sticky">
             <div class="right-block btn-list">
                 <button type="button" color="primary" (click)="SaveData()" mat-flat-button>Save</button>
             </div>

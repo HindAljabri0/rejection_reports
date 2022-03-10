@@ -1,6 +1,6 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <ng-container *ngIf="!showDetails">
-        <div class="block-header has-border">
+        <div class="block-header">
             <p>Request Eligibility</p>
             <mat-slide-toggle *ngIf="!claimReuseId"   color="primary" [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto" (change)="onChangeState(transfer)"  [checked]="transfer">Referral</mat-slide-toggle>
         </div>
@@ -110,7 +110,7 @@
         </div>
     </ng-container>
     <ng-container *ngIf="showDetails && eligibilityResponseModel !=  null">
-        <div class="block-header has-border">
+        <div class="block-header">
             <p>Eligibility - {{eligibilityResponseModel.eligibilityRequestId}}</p>
             <span class="spacer"></span>
             <p>Transaction - {{eligibilityResponseModel.transactionId}}</p>
