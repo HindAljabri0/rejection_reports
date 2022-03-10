@@ -1,7 +1,7 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
 
   <ng-container *ngIf="!IsJSONPosted">
-    <div class="block-header has-border">
+    <div class="block-header">
       <p>Request Pre Authorization</p>
       <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
       </mat-slide-toggle>
@@ -169,101 +169,97 @@
           </div>
         </div>
 
-        <div [ngClass]="{'text-danger': IsCareTeamRequired}">
-          <h5 class="form-title">
-            <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
-              <mat-icon>add</mat-icon>
-            </button>
-          </h5>
-          <div *ngIf="CareTeams.length > 0" class="table-responsive">
-            <table class="primary-grid no-borders">
-              <thead>
-                <tr>
-                  <th>Practitioner</th>
-                  <th>Practitioner Role</th>
-                  <th>Care Team Role</th>
-                  <th>Qualification</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let careTeam of CareTeams; let i = index">
-                  <td>
-                    {{careTeam.practitionerName}}
-                  </td>
-                  <td>
-                    {{careTeam.practitionerRoleName}}
-                  </td>
-                  <td>
-                    {{careTeam.careTeamRoleName}}
-                  </td>
-                  <td>
-                    {{careTeam.speciality}}
-                  </td>
-                  <td class="actions">
-                    <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
-                      <mat-icon>create</mat-icon>
-                    </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
-                      <mat-icon>delete_outline</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='No Care Team found!'>
-          </app-empty-state>
-          <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" [className]="'size-sm'" message='Care Team required!'>
-          </app-empty-state>
+        <h5 class="form-title" [ngClass]="{'text-danger': IsCareTeamRequired}">
+          <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
+          <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h5>
+        <div *ngIf="CareTeams.length > 0" class="table-responsive">
+          <table class="primary-grid no-borders">
+            <thead>
+              <tr>
+                <th>Practitioner</th>
+                <th>Practitioner Role</th>
+                <th>Care Team Role</th>
+                <th>Qualification</th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let careTeam of CareTeams; let i = index">
+                <td>
+                  {{careTeam.practitionerName}}
+                </td>
+                <td>
+                  {{careTeam.practitionerRoleName}}
+                </td>
+                <td>
+                  {{careTeam.careTeamRoleName}}
+                </td>
+                <td>
+                  {{careTeam.speciality}}
+                </td>
+                <td class="actions">
+                  <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
+        </app-empty-state>
+        <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
+        </app-empty-state>
 
-        <div [ngClass]="{'text-danger': IsDiagnosisRequired}">
-          <h5 class="form-title">
-            <span>Diagnosis<span class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
-              <mat-icon>add</mat-icon>
-            </button>
-          </h5>
-          <div *ngIf="Diagnosises.length > 0" class="table-responsive">
-            <table class="primary-grid no-borders">
-              <thead>
-                <tr>
-                  <th>Code - Description</th>
-                  <th>Type</th>
-                  <th>On Admission</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let diagnosis of Diagnosises; let i = index">
-                  <td>
-                    {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
-                  </td>
-                  <td>
-                    {{diagnosis.typeName}}
-                  </td>
-                  <td>
-                    {{diagnosis.onAdmissionName}}
-                  </td>
-                  <td class="actions">
-                    <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
-                      <mat-icon>create</mat-icon>
-                    </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
-                      <mat-icon>delete_outline</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='No Diagnosis found!'>
-          </app-empty-state>
-          <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" [className]="'size-sm'" message='Diagnosis required!'>
-          </app-empty-state>
+        <h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
+          <span>Diagnosis<span class="asterisk">*</span></span>
+          <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h5>
+        <div *ngIf="Diagnosises.length > 0" class="table-responsive">
+          <table class="primary-grid no-borders">
+            <thead>
+              <tr>
+                <th>Code - Description</th>
+                <th>Type</th>
+                <th>On Admission</th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let diagnosis of Diagnosises; let i = index">
+                <td>
+                  {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
+                </td>
+                <td>
+                  {{diagnosis.typeName}}
+                </td>
+                <td>
+                  {{diagnosis.onAdmissionName}}
+                </td>
+                <td class="actions">
+                  <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
+        </app-empty-state>
+        <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
+        </app-empty-state>
 
         <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
           <h5 class="form-title">
@@ -352,9 +348,9 @@
                 </tbody>
               </table>
             </div>
-            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='No Lens Specifications found!'>
+            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" message='No Lens Specifications found!'>
             </app-empty-state>
-            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0" [className]="'size-sm'" message='Lens Specifications reqired!'>
+            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0" message='Lens Specifications reqired!'>
             </app-empty-state>
           </div>
         </ng-container>
@@ -418,7 +414,7 @@
             </tbody>
           </table>
         </div>
-        <app-empty-state *ngIf="SupportingInfo.length === 0" [className]="'size-sm'" message='No Supporting Info found!'>
+        <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
         </app-empty-state>
 
         <h5 class="form-title">Accident</h5>
@@ -490,237 +486,235 @@
         </div>
 
 
-        <div [ngClass]="{'text-danger': IsItemRequired}">
-          <h5 class="form-title">
-            <span>Items<span class="asterisk">*</span></span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-              [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
-              <mat-icon>add</mat-icon>
-            </button>
-          </h5>
-          <div *ngIf="Items.length > 0" class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-              <thead>
+        <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
+          <span>Items<span class="asterisk">*</span></span>
+          <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
+            [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h5>
+        <div *ngIf="Items.length > 0" class="table-responsive">
+          <table class="primary-grid manual-row-color claim-view-table no-borders">
+            <thead>
+              <tr>
+                <th width="10"></th>
+                <th>Type</th>
+                <th>Code - Description</th>
+                <th>Net</th>
+                <th>Approved Net</th>
+                <th>Status</th>
+                <th>Note No.</th>
+                <!-- <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Non Standard Code</th> -->
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of Items; let i = index">
                 <tr>
-                  <th width="10"></th>
-                  <th>Type</th>
-                  <th>Code - Description</th>
-                  <th>Net</th>
-                  <th>Approved Net</th>
-                  <th>Status</th>
-                  <th>Note No.</th>
-                  <!-- <th>Quantity</th>
-                  <th>Unit Price</th>
-                  <th>Non Standard Code</th> -->
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let item of Items; let i = index">
-                  <tr>
-                    <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
-                      <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
-                    </td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
-                    </td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
-                      - {{item.itemDescription}}</td>
+                  <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
+                    <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
+                  </td>
+                  <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
+                  </td>
+                  <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
+                    - {{item.itemDescription}}</td>
 
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.net}} <span class="currency">SR</span></td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    {{item.net}} <span class="currency">SR</span></td>
 
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
-                        <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                          <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
-                        </ng-container>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                      <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
+                        <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
                       </ng-container>
-                    </td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
-                      <span *ngIf="!item.itemDecision"></span>
-                    </td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
-                      <span *ngIf="!item.itemDecision"></span>
-                    </td>
-                    <!-- <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
-                    </td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.unitPrice}} <span class="currency">SR</span></td>
-                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.nonStandardCode}}</td> -->
-                    <td class="actions text-nowrap">
-                      <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
-                        (click)="openAddEditItemDetailsDialog(item.sequence)">
-                        <mat-icon>add</mat-icon>
-                      </button>
-                      <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
-                        <mat-icon>create</mat-icon>
-                      </button>
-                      <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
-                        <mat-icon>delete_outline</mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr *ngIf="currentOpenItem==i">
-                    <td colspan="9">
-                      <div class="box mb-2">
-                        <h5 class="align-self-center medium pb-2">Item Info</h5>
-                        <div class="row">
-                          <div class="col-4">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                  <td class="label">Quantity</td>
-                                  <td>{{item.quantity}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Discount(%)</td>
-                                  <td>{{item.discountPercent}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Tax(%)</td>
-                                  <td>{{item.taxPercent}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Patient Share(%)</td>
-                                  <td>{{item.patientShare}} %</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Is Package?</td>
-                                  <td>
-                                    <span *ngIf="item.isPackage">Yes</span>
-                                    <span *ngIf="!item.isPackage">No</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Body Site</td>
-                                  <td>{{item.bodySiteName}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div class="col-4">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                  <td class="label">Unit Price</td>
-                                  <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Discount Amount</td>
-                                  <td>{{item.discount}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Tax</td>
-                                  <td>{{item.tax}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Patient Share</td>
-                                  <td>{{item.patientShare}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Payer Share</td>
-                                  <td>{{item.payerShare}} <span class="currency">SR</span></td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Sub Site</td>
-                                  <td>{{item.subSiteName}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">
-                                    <div class="d-flex align-items-center">
-                                      <span class="pr-1">Factor</span>
-                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
-                                    </div>
-                                  </td>
-                                  <td>{{item.factor}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div class="col-4">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                  <td class="label">Start Date</td>
-                                  <td>{{item.startDateStr}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Non Standard Code</td>
-                                  <td>{{item.nonStandardCode}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Display</td>
-                                  <td>{{item.display}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Supporting Info</td>
-                                  <td>{{item.supportingInfoNames}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Diagnosis</td>
-                                  <td>{{item.diagnosisNames}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Care Teams</td>
-                                  <td>{{item.careTeamNames}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
+                    </ng-container>
+                  </td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
+                    <span *ngIf="!item.itemDecision"></span>
+                  </td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
+                    <span *ngIf="!item.itemDecision"></span>
+                  </td>
+                  <!-- <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
+                  </td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    {{item.unitPrice}} <span class="currency">SR</span></td>
+                  <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    {{item.nonStandardCode}}</td> -->
+                  <td class="actions text-nowrap">
+                    <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
+                      (click)="openAddEditItemDetailsDialog(item.sequence)">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
+                      <mat-icon>create</mat-icon>
+                    </button>
+                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="currentOpenItem==i">
+                  <td colspan="9">
+                    <div class="box mb-2">
+                      <h5 class="align-self-center medium pb-2">Item Info</h5>
+                      <div class="row">
+                        <div class="col-4">
+                          <table class="inline-label-table">
+                            <tbody>
+                              <tr>
+                                <td class="label">Quantity</td>
+                                <td>{{item.quantity}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Discount(%)</td>
+                                <td>{{item.discountPercent}} %</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Tax(%)</td>
+                                <td>{{item.taxPercent}} %</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Patient Share(%)</td>
+                                <td>{{item.patientShare}} %</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Is Package?</td>
+                                <td>
+                                  <span *ngIf="item.isPackage">Yes</span>
+                                  <span *ngIf="!item.isPackage">No</span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="label">Body Site</td>
+                                <td>{{item.bodySiteName}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-4">
+                          <table class="inline-label-table">
+                            <tbody>
+                              <tr>
+                                <td class="label">Unit Price</td>
+                                <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                              </tr>
+                              <tr>
+                                <td class="label">Discount Amount</td>
+                                <td>{{item.discount}} <span class="currency">SR</span></td>
+                              </tr>
+                              <tr>
+                                <td class="label">Tax</td>
+                                <td>{{item.tax}} <span class="currency">SR</span></td>
+                              </tr>
+                              <tr>
+                                <td class="label">Patient Share</td>
+                                <td>{{item.patientShare}} <span class="currency">SR</span></td>
+                              </tr>
+                              <tr>
+                                <td class="label">Payer Share</td>
+                                <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                              </tr>
+                              <tr>
+                                <td class="label">Sub Site</td>
+                                <td>{{item.subSiteName}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">
+                                  <div class="d-flex align-items-center">
+                                    <span class="pr-1">Factor</span>
+                                    <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                  </div>
+                                </td>
+                                <td>{{item.factor}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-4">
+                          <table class="inline-label-table">
+                            <tbody>
+                              <tr>
+                                <td class="label">Start Date</td>
+                                <td>{{item.startDateStr}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Non Standard Code</td>
+                                <td>{{item.nonStandardCode}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Display</td>
+                                <td>{{item.display}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Supporting Info</td>
+                                <td>{{item.supportingInfoNames}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Diagnosis</td>
+                                <td>{{item.diagnosisNames}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Care Teams</td>
+                                <td>{{item.careTeamNames}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
+                    </div>
 
-                      <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                        <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                        <table class="primary-grid manual-row-color claim-view-table no-borders">
-                          <thead>
-                            <tr>
-                              <th>Seq.</th>
-                              <th>Type</th>
-                              <th>Code - Description</th>
-                              <th>Non Standard Code</th>
-                              <th>Display</th>
-                              <th width="10"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let d of item.itemDetails; let di = index">
-                              <td class="row-click">{{d.sequence}}</td>
-                              <td class="row-click">{{d.typeName}}</td>
-                              <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
-                              <td class="row-click">{{d.nonStandardCode}}</td>
-                              <td class="row-click">{{d.display}}</td>
-                              <td class="actions text-nowrap">
-                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                  <mat-icon>create</mat-icon>
-                                </button>
-                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
-                                  <mat-icon>delete_outline</mat-icon>
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
-          </app-empty-state>
-          <app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
-          </app-empty-state>
+                    <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                      <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                      <table class="primary-grid manual-row-color claim-view-table no-borders">
+                        <thead>
+                          <tr>
+                            <th>Seq.</th>
+                            <th>Type</th>
+                            <th>Code - Description</th>
+                            <th>Non Standard Code</th>
+                            <th>Display</th>
+                            <th width="10"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let d of item.itemDetails; let di = index">
+                            <td class="row-click">{{d.sequence}}</td>
+                            <td class="row-click">{{d.typeName}}</td>
+                            <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
+                            <td class="row-click">{{d.nonStandardCode}}</td>
+                            <td class="row-click">{{d.display}}</td>
+                            <td class="actions text-nowrap">
+                              <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                <mat-icon>create</mat-icon>
+                              </button>
+                              <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
+                                <mat-icon>delete_outline</mat-icon>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
         </div>
+        <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
+        </app-empty-state>
+        <app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
+        </app-empty-state>
 
         <hr class="hr spaced" />
 
-        <div class="form-group">
+        <div class="form-group text-right">
           <button type="submit" mat-flat-button color="primary">
             <span>Request Authorization</span>
           </button>
@@ -731,18 +725,20 @@
   </ng-container>
 
   <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
-    <div class="block-header has-border">
+    <div class="block-header">
       <h5 class="primary-dialog-title">Authorization -
         {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
       <h5 class="primary-dialog-title ml-auto">Transaction -
         {{detailsModel.providertransactionlogId}}</h5>
     </div>
-    <div class="bg-white p-14">
+    <div class="block-body">
       <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
       </app-pre-authorization-details>
     </div>
-    <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New
-      Authorization</button>
+    <div class="text-right pt-14">
+      <button type="button" mat-flat-button color="primary" (click)="reset()">Request New
+        Authorization</button>
+    </div>
   </ng-container>
 
 </div>

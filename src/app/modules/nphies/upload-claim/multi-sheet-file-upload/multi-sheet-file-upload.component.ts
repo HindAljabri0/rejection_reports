@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidation/claim-files-validation.service';
 import * as XLSX from 'xlsx';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 type AOA = any[][];
@@ -14,7 +12,7 @@ type AOA = any[][];
 @Component({
   selector: 'app-multi-sheet-file-upload',
   templateUrl: './multi-sheet-file-upload.component.html',
-  styleUrls: ['./multi-sheet-file-upload.component.css']
+  styles: []
 })
 export class MultiSheetFileUploadComponent implements OnInit {
 
@@ -45,7 +43,7 @@ export class MultiSheetFileUploadComponent implements OnInit {
     if (!this.checkfile()) {
       this.currentFileUpload = undefined;
     }
-   // this.readFile();
+    // this.readFile();
   }
 
   readFile() {

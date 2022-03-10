@@ -1,8 +1,8 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Payment Report</p>
     </div>
-    <div class="block-filter-panel has-border">
+    <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col">
                 <div class="form-group" [class.has-error]="payerIdHasError">
@@ -24,8 +24,8 @@
                 <div class="form-group" [class.has-error]="fromDateHasError">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date"
-                            [formControl]="fromDateControl" (keyup.enter)="fetchData()" required>
+                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="fetchData()"
+                            required>
                         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromPicker></mat-datepicker>
                     </div>
@@ -39,8 +39,7 @@
                 <div class="form-group" [class.has-error]="toDateHasError">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
-                            [formControl]="toDateControl" (keyup.enter)="fetchData()" required>
+                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="fetchData()" required>
                         <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                         <mat-datepicker #toPicker></mat-datepicker>
                     </div>
@@ -74,13 +73,13 @@
         </div>
     </div>
     <!-- *ngIf="paymentReference != null" -->
-    <div class="pagination-header">
-        <button matRipple type="button" class="action-btn ml-3" (click)="download()" matTooltip="Download">
+    <div class="pagination-header" *ngIf="payments.length != 0">
+        <button matRipple type="button" class="action-btn ml-auto" (click)="download()" matTooltip="Download">
             <img src="./assets/{{actionIcon}}" />
         </button>
     </div>
 
-    <div class="table-responsive" *ngIf="errorMessage == null">
+    <div class="table-responsive" *ngIf="errorMessage == null && payments.length != 0">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
             <thead>
                 <tr>
@@ -106,12 +105,11 @@
                 </tr>
             </tbody>
         </table>
-        <app-empty-state *ngIf="payments.length == 0" class="claim-list-empty-state" icon="ic-empty-search.svg"
-            message='Select criteria to generate report'>
-        </app-empty-state>
     </div>
+    <app-empty-state *ngIf="payments.length == 0" class="claim-list-empty-state" message='Select criteria to generate report'>
+    </app-empty-state>
 
-    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+    <div class="block-body" *ngIf="errorMessage != null">
         <p class="error-card m-0">{{errorMessage}}</p>
     </div>
 </div>

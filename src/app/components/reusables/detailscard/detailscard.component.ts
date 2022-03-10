@@ -4,7 +4,7 @@ import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-detailscard',
   templateUrl: './detailscard.component.html',
-  styleUrls: ['./detailscard.component.css']
+  styles: []
 })
 export class DetailscardComponent {
 

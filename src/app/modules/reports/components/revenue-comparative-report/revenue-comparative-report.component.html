@@ -1,9 +1,9 @@
-<div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Revenue Comparison Report</p>
     </div>
     <form #revenuComparativeReportForm='ngForm' (ngSubmit)='revenuComparativeReportForm.valid && generate()'>
-        <div class="block-filter-panel has-border">
+        <div class="block-filter-panel">
             <div class="row small-gutter align-items-end">
                 <div class="col">
                     <div class="form-group">
@@ -120,11 +120,11 @@
             </div>
         </div>
         <div class="right-block full-width" *ngIf="percenatgeChartData.length===0">
-            <app-empty-state [message]="getEmptyStateMessage()" icon="ic-empty-chart.svg">
+            <app-empty-state [message]="getEmptyStateMessage()">
             </app-empty-state>
         </div>
     </div>
-    <!-- <div class="block-footer sticky-bottom">
+    <!-- <div class="block-footer sticky">
         <div class="right-block btn-list">
             <button color="primary" mat-flat-button>Print</button>
         </div>

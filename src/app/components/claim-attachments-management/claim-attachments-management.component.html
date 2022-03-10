@@ -1,14 +1,12 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
         <p>Attachments Management</p>
     </div>
-    <div class="px-14 pb-14 bg-white">
-        <div class="alert info m-0">
+    <div class="block-body">
+        <div class="alert info">
             <mat-icon class="material-icons-outlined">info</mat-icon>
             <span>Maximum 7 files can be uploaded for claim and each file can have maximum 2 MB size.</span>
         </div>
-    </div>
-    <div class="pl-7 pr-7">
         <div class="row small-gutter bg-white">
             <div class="col-4">
                 <div class="table-responsive claim-attachment-table">
@@ -145,11 +143,11 @@
             </div>
         </div>
     </div>
-    <div class="block-footer has-border">
-        <div class="left-block" *ngIf="!saving">
+    <div class="block-footer">
+        <div class="right-block" *ngIf="!saving">
             <div class="btn-list">
-                <button mat-flat-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
                 <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()">Cancel</button>
+                <button mat-flat-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
             </div>
         </div>
         <mat-spinner *ngIf="saving" class="m-auto" diameter="30"></mat-spinner>

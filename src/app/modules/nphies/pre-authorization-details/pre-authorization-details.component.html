@@ -666,7 +666,7 @@
     <tbody>
       <tr *ngIf="data.diagnosis.length === 0">
         <td colspan="5">
-          <app-empty-state [className]="'size-sm'" message='No Diagnosis found!'></app-empty-state>
+          <app-empty-state message='No Diagnosis found!'></app-empty-state>
         </td>
       </tr>
       <ng-container *ngIf="data.diagnosis.length > 0">
@@ -728,7 +728,7 @@
       <tbody>
         <tr *ngIf="data.visionPrescription.lensSpecifications.length === 0">
           <td colspan="5">
-            <app-empty-state [className]="'size-sm'" message='No Lens Specifications found!'></app-empty-state>
+            <app-empty-state message='No Lens Specifications found!'></app-empty-state>
           </td>
         </tr>
         <ng-container *ngIf="data.visionPrescription.lensSpecifications.length > 0">
@@ -783,7 +783,7 @@
     <tbody>
       <tr *ngIf="data.supportingInfo.length === 0">
         <td colspan="6">
-          <app-empty-state [className]="'size-sm'" message='No supporting info found!'></app-empty-state>
+          <app-empty-state message='No supporting info found!'></app-empty-state>
         </td>
       </tr>
       <ng-container *ngIf="data.supportingInfo.length > 0">

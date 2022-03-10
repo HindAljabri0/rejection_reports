@@ -1081,7 +1081,7 @@
       </app-empty-state>
     </mat-tab>
   </mat-tab-group>
-  <div class="block-footer sticky-bottom" *ngIf="!isLoading">
+  <div class="block-footer sticky" *ngIf="!isLoading">
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
       <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">Edit</button>
@@ -1090,13 +1090,14 @@
 </div>
 
 
-<div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode && pageMode !== 'VIEW'">
+<div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode && pageMode !== 'VIEW'"
+  [class.block-card]="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
   <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate" class="page-top-loader">
   </mat-progress-bar>
 
 
   <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
-    <div class="block-header has-border" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
+    <div class="block-header" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
       <p>Create Claim</p>
     </div>
     <div *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
@@ -2156,7 +2157,7 @@
           </app-empty-state>
         </mat-tab>
       </mat-tab-group>
-      <div class="block-footer sticky-bottom">
+      <div class="block-footer sticky">
         <div class="right-block btn-list" *ngIf="pageMode == 'CREATE'">
           <button type="submit" mat-flat-button color="primary">Save</button>
         </div>
