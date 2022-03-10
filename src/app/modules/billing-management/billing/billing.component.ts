@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { SearchBillingPatientDialogComponent } from '../search-billing-patient-dialog/search-billing-patient-dialog.component';
-import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ContractService } from 'src/app/services/contractService/contract.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { FormControl } from '@angular/forms';
@@ -10,7 +9,6 @@ import { AdminService } from 'src/app/services/adminService/admin.service';
 import { PageEvent } from '@angular/material';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
-import { Router } from '@angular/router';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTemplate';
@@ -35,10 +33,8 @@ export class BillingComponent implements OnInit {
         private dialog: MatDialog,
         private sharedServices: SharedServices,
         private contractService: ContractService,
-        private beneficiaryService: ProvidersBeneficiariesService,
         private adminService: AdminService,
         private providerNphiesSearchService: ProviderNphiesSearchService,
-        private router: Router,
         private dialogService: DialogService
     ) { }
 

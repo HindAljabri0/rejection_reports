@@ -1,17 +1,14 @@
+<p>invoices works!</p>
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Billing</p>
+        <p>Invoices</p>
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col-md">
                 <div class="form-group">
-                    <label class="control-label">Patient</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select Department" [formControl]="billingControllerPatient" [(value)]="selectedPatient">
-                            <mat-option *ngFor="let patient of beneficiaries" [value]="patient.documentId">{{patient.fullName}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <label class="control-label">Bill</label>
+                    <input type="text" placeholder="Enter Bill No" class="form-control" [formControl]="invoicesSelectedBill">
                 </div>
             </div>
 
@@ -19,7 +16,7 @@
                 <div class="form-group">
                     <label class="control-label">Department</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select Department" [formControl]="billingControllerDepartment" [(value)]="selectedDepartment">
+                        <mat-select placeholder="Select Department" [formControl]="invoicesControllerDepartment" [(value)]="invoicesSelectedDepartment">
                             <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -29,7 +26,7 @@
                 <div class="form-group">
                     <label class="control-label">Doctor</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select Doctor" [formControl]="billingControllerDoctor" [(value)]="selectedDoctor">
+                        <mat-select placeholder="Select Doctor" [formControl]="invoicesControllerDoctor" [(value)]="invoicesSelectedDoctor">
                             <mat-option *ngFor="let doctor of doctorList" [value]="doctor.physicianId.physicianCode">{{doctor.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -48,35 +45,32 @@
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
+                        <th>Payment Id</th>
                         <th>Bill No</th>
-                        <th>Bill Date</th>
-                        <th>Gross Amount</th>
-                        <th>Discount Amount</th>
-                        <th>Additional Bill Discount</th>
-                        <th>Net Amount</th>
-                        <th width="10" class="text-nowrap">Is Invoiced</th>
-                        <th width="10"></th>
+                        <th>Payment Date</th>
+                        <th>Amount</th>
+                        <th>Payment No</th>
+                        <th>Details</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let bill of billList">
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}">{{bill.bill_No}}</td>
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}">{{bill.bill_Date}}</td>
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}">{{bill.gross_Amount}} <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}">{{bill.discount_Amount}} <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}">{{bill.additional_Discount}} <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}">{{bill.net_Amount}} <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}" class="text-center">
-                            <mat-icon *ngIf="bill.is_Imvoiced" class="size21 text-primary">done</mat-icon>
-                        </td>
-                        <td class="actions">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <!-- <td class="actions">
                             <button routerLink="/billing-management/bill-details/edit/{{bill.bill_No}}" mat-icon-button type="button" matTooltip="Edit" class="text-primary">
                                 <mat-icon>create</mat-icon>
                             </button>
                             <button mat-icon-button type="button" (click)="deleteBill(bill)" matTooltip="Delete" class="text-primary">
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -89,7 +83,4 @@
             </mat-paginator>
         </div>
     </div>
-    <button mat-fab color="primary" class="page-fab" routerLink="/billing-management/bill-details/add">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>

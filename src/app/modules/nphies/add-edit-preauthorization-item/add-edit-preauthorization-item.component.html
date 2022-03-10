@@ -197,11 +197,14 @@
         </div>
         <div class="row small-gutter">
           <div class="col-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('min'))}">
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Other')">
               <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
                 <span class="error-text">Please enter Quantity</span>
+              </div>
+              <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('min')">
+                <span class="error-text">Quantity must be greater than 0</span>
               </div>
             </div>
           </div>
