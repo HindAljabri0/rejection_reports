@@ -6,6 +6,11 @@
           otherDataModel.provClaimNo : '-'}}</strong></p>
       <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimId ? otherDataModel.claimId : '-'}}</strong>
       </p>
+      <p *ngIf="otherDataModel.relatedClaimId">
+        <span>Related Claim ID:</span>&nbsp;<strong>
+          <span *ngIf="otherDataModel.relatedClaimId">{{otherDataModel.relatedClaimId }}</span>
+        </strong>
+      </p>
       <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
           otherDataModel.claimRefNo : '-'}}</strong></p>
       <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
@@ -18,6 +23,7 @@
           <span *ngIf="!otherDataModel.submissionDate">-</span>
         </strong>
       </p>
+      
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
 
