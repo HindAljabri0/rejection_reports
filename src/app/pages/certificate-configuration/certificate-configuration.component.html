@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-  <div class="block-header has-border">
+  <div class="block-header">
     <p>Provider Certificate Configuration</p>
   </div>
   <div class="block-body bg-white" *ngIf="isLoading">
@@ -47,7 +47,7 @@
           (click)="clearFiles($event)" class="upload-control">
       </div>
     </div>
-    <div class="block-footer has-border">
+    <div class="block-footer">
       <div class="right-block" *ngIf="pageMode == 'save'">
         <div class="btn-list">
           <button type="button" (click)="save()" mat-flat-button color="primary">Save</button>

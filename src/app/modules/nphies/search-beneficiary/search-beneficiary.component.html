@@ -1,90 +1,87 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <ng-container>
-        <div class="block-header has-border">
-            <p>Beneficiary</p>
-        </div>
-        <div class="block-filter-panel has-border">
-            <div class="row small-gutter">
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Name</label>
-                        <input class="form-control" placeholder="Enter name" [formControl]="nameController" />
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Document ID</label>
-                        <input class="form-control" placeholder="Enter document ID" [formControl]="nationalIdController" />
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Contact no.</label>
-                        <input class="form-control" placeholder="Enter contact no." [formControl]="contactNoController" />
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">File ID</label>
-                        <input class="form-control" placeholder="Enter file ID" [formControl]="fileIdController" />
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Member Card ID</label>
-                        <input class="form-control" placeholder="Enter member card ID" [formControl]="memberCardidController" />
-                    </div>
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Beneficiary</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <input class="form-control" placeholder="Enter name" [formControl]="nameController" />
                 </div>
             </div>
-            <div class="form-group">
-                <button type="button" mat-flat-button color="primary" (click)="searchByCriteria()">Search</button>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Document ID</label>
+                    <input class="form-control" placeholder="Enter document ID" [formControl]="nationalIdController" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Contact no.</label>
+                    <input class="form-control" placeholder="Enter contact no." [formControl]="contactNoController" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">File ID</label>
+                    <input class="form-control" placeholder="Enter file ID" [formControl]="fileIdController" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Member Card ID</label>
+                    <input class="form-control" placeholder="Enter member card ID" [formControl]="memberCardidController" />
+                </div>
             </div>
         </div>
-
-        <div class="p-14 bg-white" *ngIf="beneficiaries && beneficiaries.length==0">
-            <app-empty-state message='Search Beneficiary' icon="ic-empty-search.svg">
-            </app-empty-state>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary" (click)="searchByCriteria()">Search</button>
         </div>
-        <ng-scrollbar *ngIf="beneficiaries && beneficiaries.length>0" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" style="height: 480px;">
-            <div class="fixed-height">
-                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Document ID</th>
-                            <th>Contact No.</th>
-                            <th>File ID</th>
-                            <th>Member Card ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let Beneficiary of beneficiaries">
-                            <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
-                                {{Beneficiary.fullName}}</td>
-                            <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
-                                {{Beneficiary.documentId}}</td>
-                            <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
-                                {{Beneficiary.contractNumber}}</td>
-                            <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
-                                {{Beneficiary.fileId}}</td>
-                            <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
-                                {{Beneficiary.memberCardId}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+    </div>
 
-            </div>
+    <app-empty-state message='Search Beneficiary' *ngIf="beneficiaries && beneficiaries.length==0">
+    </app-empty-state>
+    <ng-scrollbar *ngIf="beneficiaries && beneficiaries.length>0" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Document ID</th>
+                        <th>Contact No.</th>
+                        <th>File ID</th>
+                        <th>Member Card ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let Beneficiary of beneficiaries">
+                        <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
+                            {{Beneficiary.fullName}}</td>
+                        <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
+                            {{Beneficiary.documentId}}</td>
+                        <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
+                            {{Beneficiary.contractNumber}}</td>
+                        <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
+                            {{Beneficiary.fileId}}</td>
+                        <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
+                            {{Beneficiary.memberCardId}}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-        </ng-scrollbar>
-        <div class="block-footer sticky-bottom">
-            <div class="left-block">
-                <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-                    [pageIndex]="pageIndex" aria-label="Select page">
-                </mat-paginator>
-            </div>
         </div>
 
-        <button mat-fab color="primary" routerLink="/nphies/beneficiary/add" class="page-fab">
-            <mat-icon>add</mat-icon>
-        </button>
-    </ng-container>
+    </ng-scrollbar>
+    <div class="block-footer sticky" *ngIf="beneficiaries && beneficiaries.length>0">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex" aria-label="Select page">
+            </mat-paginator>
+        </div>
+    </div>
+</div>
+
+<button mat-fab color="primary" routerLink="/nphies/beneficiary/add" class="page-fab">
+    <mat-icon>add</mat-icon>
+</button>

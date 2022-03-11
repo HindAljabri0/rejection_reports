@@ -1,8 +1,8 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-  <div class="block-header has-border">
+  <div class="block-header">
     <p>Payer Claims Report</p>
   </div>
-  <div class="block-filter-panel has-border">
+  <div class="block-filter-panel">
     <form [formGroup]="PayerClaimsReportForm" (ngSubmit)="search()">
       <div class="row small-gutter">
         <div class="col-md">
@@ -148,7 +148,7 @@
       <app-empty-state *ngIf="searchedClaim && searchedClaim.length === 0" message='No records found!'>
       </app-empty-state>
     </div>
-    <!-- <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+    <!-- <div class="block-body" *ngIf="errorMessage != null">
       <p class="error-card m-0">{{errorMessage}}</p>
     </div> -->
   </div>

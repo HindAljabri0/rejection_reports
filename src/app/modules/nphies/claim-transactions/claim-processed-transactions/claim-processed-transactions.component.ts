@@ -14,7 +14,7 @@ import { CancelReasonModalComponent } from '../../preauthorization-transactions/
 @Component({
   selector: 'app-claim-processed-transactions',
   templateUrl: './claim-processed-transactions.component.html',
-  styleUrls: ['./claim-processed-transactions.component.css']
+  styles: []
 })
 export class ClaimProcessedTransactionsComponent implements OnInit {
 

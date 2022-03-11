@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+    <div class="block-header">
         <p>Switch Providers</p>
     </div>
     <div class="bg-white p-14">
@@ -18,7 +18,7 @@
             </mat-autocomplete>
         </div>
     </div>
-    <div class="block-footer has-border" *ngIf="!isLoading && selectedProvider!=null && selectedProvider!=''">
+    <div class="block-footer" *ngIf="!isLoading && selectedProvider!=null && selectedProvider!=''">
         <div class="right-block">
             <button type="button" mat-flat-button color="primary" (click)="switch()">Switch</button>
         </div>

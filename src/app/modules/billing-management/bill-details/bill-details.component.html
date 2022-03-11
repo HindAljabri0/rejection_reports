@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+    <div class="block-header">
         <div class="d-flex align-items-center">
             <div class="actions mr-2 my-n2 ml-n1">
                 <button matRipple type="button" routerLink="/billing-management" class="action-btn">
@@ -349,7 +349,7 @@
         </ng-container>
         <!--Payment Block Ends-->
         <ng-container *ngIf="addMode || EditMode">
-            <div class="block-footer has-border">
+            <div class="block-footer">
                 <div class="btn-list right-block">
                     <button type="button" color="primary" mat-flat-button (click)="createOrUpdateBill()">{{ addMode == true ? 'Save' : 'Update' }}</button>
                     <!-- <button mat-flat-button color="primary" routerLink="/billing-management/generate-bill-invoice">Generate Invoice</button> -->
@@ -359,7 +359,7 @@
             </div>
         </ng-container>
         <ng-container *ngIf="generateInvoice">
-            <div class="block-footer has-border">
+            <div class="block-footer">
                 <div class="btn-list right-block">
                     <button mat-flat-button color="primary" (click)="saveInvoice()">Print</button>
                     <button mat-flat-button color="primary" routerLink="/billing-management/bill-details/edit/{{param.billId}}">Cancel</button>

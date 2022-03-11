@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+    <div class="block-header">
         <p *ngIf="addMode"> Add Policy</p>
         <p *ngIf="EditMode"> Edit Policy</p>
     </div>
@@ -111,7 +111,7 @@
             <app-empty-state *ngIf="!classes" message='No Classes found!'>
             </app-empty-state>
         </ng-scrollbar>
-        <div class="block-footer sticky-bottom" [hidden]="addMode">
+        <div class="block-footer sticky" [hidden]="addMode">
             <div class="left-block">
                 <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                     [pageIndex]="pageIndex">
@@ -119,7 +119,7 @@
             </div>
         </div>
     </div>
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky">
         <div class="right-block btn-list">
             <button type="button" color="primary" (click)="SaveData()" mat-flat-button>Save</button>
         </div>

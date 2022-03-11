@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+    <div class="block-header">
         <p>Contracts</p>
     </div>
     <div class="block-filter-panel">
@@ -58,8 +58,7 @@
                         <td class="row-click" routerLink="/contract-management/edit/{{Contract.contractId}}">
                             {{Contract.isActive}}</td>
                         <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                                routerLink="/contract-management/edit/{{Contract.contractId}}">
+                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/contract-management/edit/{{Contract.contractId}}">
                                 <mat-icon>create</mat-icon>
                             </button>
                         </td>
@@ -70,10 +69,10 @@
         <app-empty-state *ngIf="!contracts" message='No Contracts found!'>
         </app-empty-state>
     </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky">
         <div class="left-block">
-            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
-                [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
             </mat-paginator>
         </div>
     </div>

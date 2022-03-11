@@ -1,8 +1,7 @@
 <div class="uplaoded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
     <div class="d-flex">
         <span class="medium text-primary align-self-center">{{data.uploadName}}</span>
-        <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
-            (click)="$event.stopPropagation(); deleteUpload()"
+        <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted" (click)="$event.stopPropagation(); deleteUpload()"
             matTooltip="Delete All Not Submitted Claims (Ready For Submission, Rejected By Waseel, Downloadable, and Invalid)">
             <mat-icon class="d-block">delete_outline</mat-icon>
         </span>
@@ -14,8 +13,7 @@
             <h4 class="semibold">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
         </div>
         <div class="col-auto">
-            <button mat-stroked-button color="primary" *ngIf="!data.isManualUpload" routerLink="/summary"
-                [queryParams]="{id: data.uploadId}">View Summary</button>
+            <button mat-stroked-button color="primary" *ngIf="!data.isManualUpload" routerLink="/summary" [queryParams]="{id: data.uploadId}">View Summary</button>
         </div>
     </div>
     <div class="row small-gutter pt-3">
@@ -66,7 +64,11 @@
     </div>
     <hr class="hr separator">
     <div class="d-flex">
-        <span class="text-medium-grey">Date: {{data.uploadDate | date : 'EEEE, d MMMM, y'}}</span>
-        <span class="text-medium-grey ml-auto text-right">Time: {{data.uploadDate | date : 'hh:mm a'}}</span>
+        <span class="text-grey d-flex align-items-center">
+            <mat-icon class="material-icons-outlined size-18 mr-2">event</mat-icon> {{data.uploadDate | date : 'EEEE, d MMMM, y'}}
+        </span>
+        <span class="text-grey ml-auto text-right d-flex align-items-center">
+            <mat-icon class="material-icons-outlined size-18 mr-2">schedule</mat-icon> {{data.uploadDate | date : 'hh:mm a'}}
+        </span>
     </div>
 </div>
