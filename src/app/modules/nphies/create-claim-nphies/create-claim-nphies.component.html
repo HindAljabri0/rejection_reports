@@ -23,7 +23,7 @@
           <span *ngIf="!otherDataModel.submissionDate">-</span>
         </strong>
       </p>
-      
+
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
 
@@ -164,7 +164,7 @@
         </div>
       </div>
 
-      <h5 class="form-title">Beneficiary Details</h5>
+      <!-- <h5 class="form-title">Beneficiary Details</h5>
       <div class="row" *ngIf="otherDataModel && otherDataModel.beneficiary">
         <div class="col-4">
           <div class="form-group form-group-static">
@@ -204,7 +204,7 @@
               otherDataModel.beneficiary.email:"-"}}</p>
           </div>
         </div>
-      </div>
+      </div> -->
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
