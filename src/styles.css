@@ -409,7 +409,11 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 .advance-search .search-btn .mat-icon{margin-right: 4px;}
 .advance-search .search-btns .separator{display: block;height: 24px;width: 1px;background: #BEBEBE;margin: 0 4px;}
 .advance-search .hidden-input{width: 0;opacity: 0;visibility: hidden;position: absolute;}
-.advance-search .mat-chip-list{position: relative; left: 0; bottom: 37px;display: block;padding-left: 12px;width: calc(100% - 210px);}
+.advance-search .mat-chip-list{position: relative; left: 0; bottom: 37px;display: block;padding-left: 8px;width: calc(100% - 210px);}
+.advance-search .mat-chip.mat-standard-chip{background-color: #fff;color: inherit;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);border:1px solid #d5d5d5;box-shadow: none;}
+.advance-search .mat-chip.mat-standard-chip:not(.mat-chip-disabled):active{box-shadow:none;}
+.advance-search .mat-chip.mat-standard-chip::after{display: none;}
+.advance-search .mat-chip.mat-standard-chip >span{text-overflow: ellipsis;overflow: hidden;display: block;max-width: 120px;white-space: nowrap;}
 .advance-search .close-btn{margin-left: 8px;display: none;}
 .advance-search .search-mode-select .mat-form-field-infix{border:0;padding:0;width:auto;max-width: 200px;display: flex;min-width: 120px;}
 .advance-search .search-mode-select .mat-form-field-wrapper{padding: 0;}
@@ -524,12 +528,13 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .create-claim-body .primary-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 310px);}
 .block-body.primary{min-height: calc(100vh - 147px);padding: 0;}
 .block-footer{display: flex;align-items: center;color: #3060AA;padding: 12px;min-height: 60px;border-top:1px solid #e1e1e1;}
-.block-footer.sticky{position:sticky;bottom:0;z-index: 7;background: #fff;border-radius: 0 0 8px 8px;}
+.block-footer.sticky{position:sticky;bottom:0;z-index: 7;background: #fff;}
 .block-footer>.right-block{margin-left: auto;display: flex;}
 .block-footer>.middle-block{margin-left: auto;}
 .block-footer>.left-block{padding-right: 12px;flex-grow:1;}
 .block-card{background: #fff;border-radius: 8px;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
 .block-card .block-header,.block-card .block-body,.block-card .block-filter-panel, .block-card .block-footer:not(.sticky){background: none;}
+.block-card .block-footer.sticky{border-radius: 0 0 8px 8px;}
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}
 .view-claim .create-claim-body .mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
 .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 261px);}
@@ -855,11 +860,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* uploaded card
 --------------------------------------------------------------------------------------------------------*/
-.uplaoded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;background: #fff;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);border-radius: 8px;position: relative;}
-.uplaoded-card:hover,.uplaoded-card:focus,.uplaoded-card:active{box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);z-index: 1;}
-.upload-history-list .uplaoded-card{border-bottom: 1px solid #e1e1e1;}
+.uploaded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;background: #fff;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);border-radius: 8px;position: relative;}
+.uploaded-card:hover,.uploaded-card:focus,.uploaded-card:active{box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);z-index: 1;}
+.upload-history-list .uploaded-card{border-bottom: 1px solid #e1e1e1;}
 .upload-history-list ng-scrollbar{height: calc(100% - 49px)!important;}
-.uploaded-card-all .uplaoded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:8px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
+.uploaded-card-all .uploaded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:8px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
 .uploaded-card-all .scroll-block{max-height: calc(100vh - 174px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploads-body.scroll-block{max-height: calc(100vh - 70px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
@@ -899,7 +904,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* bupa
 --------------------------------------------------------------------------------------------------------*/
-.bupa-footer .left-block{display: flex;padding-left: 30px;}
+.bupa-footer .left-block{display: flex;}
 .bupa-footer .left-block .control-label{white-space: nowrap;}
 .bupa-footer .left-block .form-group{margin-bottom: 0;margin-right: 14px;}
 .bupa-table.primary-grid>thead>tr>th, .bupa-table.primary-grid>thead>tr>td, .bupa-table.primary-grid>tbody>tr>th, .bupa-table.primary-grid>tbody>tr>td{padding: 7px;}
@@ -1043,7 +1048,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* credit report summary header
 --------------------------------------------------------------------------------------------------------*/
 .credit-report-header{display: flex;}
-.credit-report-header,.credit-report-body .section-header{top:68px;position:sticky;z-index:3;}
+.credit-report-header,.credit-report-body .section-header{top:68px;position:sticky;z-index:3;border-bottom: 1px solid #e1e1e1;}
 .credit-report-header>.left-block,.credit-report-body .section-header{display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
 .credit-report-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;}
 .credit-report-header>.left-block .content,.credit-report-body .section-header .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}

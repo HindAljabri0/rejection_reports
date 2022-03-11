@@ -39,20 +39,13 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
-import { NphiesSearchClaimsComponent } from './nphies-search-claims/nphies-search-claims.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
 import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
 import { ClaimProcessedTransactionsComponent } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
 import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
 import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
-import { UploadClaimComponent } from './upload-claim/upload-claim.component';
-import { MultiSheetFileUploadComponent } from './upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
-import { NphiesClaimSummaryComponent } from './upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
-import { ReusableSearchBarComponent } from 'src/app/components/reusables/reusable-search-bar/reusable-search-bar.component';
-import { ScrollableDirective } from 'src/app/directives/scrollable/scrollable.directive';
-import { BeneficiaryTabComponent } from './create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
 import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
 
 
@@ -93,8 +86,7 @@ import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-co
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
     UploadsHistoryComponent,
-    NphiesConfigurationsComponent,
-    // BeneficiaryTabComponent
+    NphiesConfigurationsComponent
   ],
   imports: [
     CommonModule,
@@ -106,8 +98,7 @@ import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-co
     NgScrollbarModule,
     SmoothScrollModule,
     NphiesRoutingModule,
-    CarouselModule,
-
+    CarouselModule
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,

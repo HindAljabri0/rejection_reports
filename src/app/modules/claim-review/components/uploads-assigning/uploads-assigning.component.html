@@ -1,59 +1,57 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
         <p>Uploads</p>
     </div>
-    <div class="block-body primary">
-        <div class="primary-tab-wrapper">
-            <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
-                <mat-tab [label]="'New'">
-                    <ng-container *ngIf="(newUploads$|async) != null">
-                        <app-uploads-assigning-tab-content [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
-                    </ng-container>
-                </mat-tab>
-                <mat-tab [label]="'In Progress'">
-                    <ng-container *ngIf="(inProgressUploads$|async) != null">
-                        <app-uploads-assigning-tab-content [page]="(inProgressUploads$|async)"></app-uploads-assigning-tab-content>
-                    </ng-container>
-                </mat-tab>
-                <mat-tab [label]="'Completed'">
-                    <ng-container *ngIf="(completedUploads$|async) != null">
-                        <app-uploads-assigning-tab-content [page]="(completedUploads$|async)"></app-uploads-assigning-tab-content>
-                    </ng-container>
-                </mat-tab>
-            </mat-tab-group>
-            <button class="btn-action tab-filter-btn text-primary" type="button" matRipple [matMenuTriggerFor]="filterMenu">
-                <mat-icon>filter_list</mat-icon>
-            </button>
-            <mat-menu #filterMenu="matMenu" xPosition="before" class="filter-menu">
-                <div class="menu-body" (click)="$event.stopPropagation()">
-                    <div class="form-group">
-                        <label class="control-label">Doctor</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="-1">
-                                <mat-option value="-1">Select Doctor</mat-option>
-                                <mat-option value="Doctor 1">Doctor 1</mat-option>
-                                <mat-option value="Doctor 2">Doctor 2</mat-option>
-                                <mat-option value="Doctor 3">Doctor 3</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Coder</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="-1">
-                                <mat-option value="-1">Select Coder</mat-option>
-                                <mat-option value="Coder 1">Coder 1</mat-option>
-                                <mat-option value="Coder 2">Coder 2</mat-option>
-                                <mat-option value="Coder 3">Coder 3</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="btn-list text-right">
-                        <button mat-flat-button>Clear</button>
-                        <button mat-flat-button color="primary">Filter</button>
-                    </div>
+    <div class="primary-tab-wrapper">
+        <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
+            <mat-tab [label]="'New'">
+                <ng-container *ngIf="(newUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+            <mat-tab [label]="'In Progress'">
+                <ng-container *ngIf="(inProgressUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [page]="(inProgressUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+            <mat-tab [label]="'Completed'">
+                <ng-container *ngIf="(completedUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [page]="(completedUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+        </mat-tab-group>
+        <button class="btn-action tab-filter-btn text-primary" type="button" matRipple [matMenuTriggerFor]="filterMenu">
+            <mat-icon>filter_list</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu" xPosition="before" class="filter-menu">
+            <div class="menu-body" (click)="$event.stopPropagation()">
+                <div class="form-group">
+                    <label class="control-label">Doctor</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Doctor</mat-option>
+                            <mat-option value="Doctor 1">Doctor 1</mat-option>
+                            <mat-option value="Doctor 2">Doctor 2</mat-option>
+                            <mat-option value="Doctor 3">Doctor 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-            </mat-menu>
-        </div>
+                <div class="form-group">
+                    <label class="control-label">Coder</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Coder</mat-option>
+                            <mat-option value="Coder 1">Coder 1</mat-option>
+                            <mat-option value="Coder 2">Coder 2</mat-option>
+                            <mat-option value="Coder 3">Coder 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="btn-list text-right">
+                    <button mat-flat-button>Clear</button>
+                    <button mat-flat-button color="primary">Filter</button>
+                </div>
+            </div>
+        </mat-menu>
     </div>
 </div>

@@ -5,7 +5,7 @@
     <mat-spinner diameter="20" *ngIf="isLoading" style="margin: 30px auto;"></mat-spinner>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
         <div *ngFor="let data of dataList">
-            <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" fragment="reload" [queryParams]="{uploadId: data.uploadId}" (click)="hideCenter()">
+            <div class="uploaded-card clickable" [routerLink]="['/',providerId,'claims']" fragment="reload" [queryParams]="{uploadId: data.uploadId}" (click)="hideCenter()">
                 <p class="medium text-primary">{{data.uploadName}}</p>
                 <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</span>
             </div>

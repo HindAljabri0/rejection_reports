@@ -1,4 +1,4 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
         <p>Policies</p>
     </div>
@@ -71,8 +71,8 @@
             <button type="button" mat-flat-button color="primary" (click)="searchByCriteria()">Search</button>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height" *ngIf="policies && policies.length>0">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="policies && policies.length>0">
+        <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -109,10 +109,10 @@
                 </tbody>
             </table>
         </div>
-        <app-empty-state *ngIf="!policies" message='No Policies found!'>
-        </app-empty-state>
     </ng-scrollbar>
-    <div class="block-footer sticky">
+    <app-empty-state *ngIf="!policies" message='No Policies found!' class="claim-list-empty-state">
+    </app-empty-state>
+    <div class="block-footer sticky" *ngIf="policies && policies.length>0">
         <div class="left-block">
             <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 [pageIndex]="pageIndex">

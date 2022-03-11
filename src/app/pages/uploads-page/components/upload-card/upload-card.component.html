@@ -1,4 +1,4 @@
-<div class="uplaoded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
+<div class="uploaded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
     <div class="d-flex">
         <span class="medium text-primary align-self-center">{{data.uploadName}}</span>
         <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted" (click)="$event.stopPropagation(); deleteUpload()"

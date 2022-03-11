@@ -446,7 +446,7 @@
                 <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
                     <hr>
                 </div>
-                <div class="list-title">
+                <div class="list-title primary">
                     Administration
                 </div>
             </ng-container>
@@ -519,7 +519,7 @@
                 <div class="list-title">
                     <hr>
                 </div>
-                <div class="list-title">
+                <div class="list-title primary">
                     RCM
                 </div>
             </ng-container>
@@ -547,6 +547,9 @@
                 </mat-accordion>
             </div>
             <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
+                <div class="list-title">
+                    <hr>
+                </div>
                 <ul class="nav-list">
                     <li>
                         <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">

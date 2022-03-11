@@ -1,36 +1,34 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
         <p>Provider Mapping</p>
     </div>
-    <div class="block-body bg-white" *ngIf="isLoading">
+    <div class="block-body" *ngIf="isLoading">
         <div class="inline-loader">
             <mat-spinner diameter="48"></mat-spinner>
         </div>
     </div>
-    <ng-container *ngIf="!isLoading">
-        <div class="block-body bg-white">
-            <h5 class="medium pb-2">Step 1: Select Provider</h5>
-            <div class="form-group">
-                <label class="control-label">Provider</label>
-                <input type="text" class="form-control search-box" placeholder="Select Provider" [matAutocomplete]="auto" (keyup.enter)="selectProvider()"
-                    [formControl]="providerController" (input)="updateFilter()" />
-                <mat-autocomplete autoActiveFirstOption #auto>
-                    <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
-                        (click)="selectProvider(provider.switchAccountId)">
-                        {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </div>
-            <h5 class="medium pb-2 pt-2">Step 2: Upload CSV File</h5>
-            <div class="custom-file-upload" [class.disabled]="selectedProvider!==undefined">
-                <div class="content">
-                    <img src="./assets/ic-upload.svg" alt="Upload" />
-                    <p>Drag & drop CSV file here, or click here to upload files</p>
-                    <span>Only .CSV files allowed</span>
-                </div>
-                <input type="file" accept=".csv" [disabled]="selectedProvider===undefined" (change)="openCSV($event)" (click)="clearFiles($event)" class="upload-control"
-                    (click)="clearFiles($event)">
-            </div>
+    <div class="block-body" *ngIf="!isLoading">
+        <h5 class="medium pb-2">Step 1: Select Provider</h5>
+        <div class="form-group">
+            <label class="control-label">Provider</label>
+            <input type="text" class="form-control search-box" placeholder="Select Provider" [matAutocomplete]="auto" (keyup.enter)="selectProvider()"
+                [formControl]="providerController" (input)="updateFilter()" />
+            <mat-autocomplete autoActiveFirstOption #auto>
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                    (click)="selectProvider(provider.switchAccountId)">
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                </mat-option>
+            </mat-autocomplete>
         </div>
-    </ng-container>
+        <h5 class="medium pb-2 pt-2">Step 2: Upload CSV File</h5>
+        <div class="custom-file-upload" [class.disabled]="selectedProvider!==undefined">
+            <div class="content">
+                <img src="./assets/ic-upload.svg" alt="Upload" />
+                <p>Drag & drop CSV file here, or click here to upload files</p>
+                <span>Only .CSV files allowed</span>
+            </div>
+            <input type="file" accept=".csv" [disabled]="selectedProvider===undefined" (change)="openCSV($event)" (click)="clearFiles($event)" class="upload-control"
+                (click)="clearFiles($event)">
+        </div>
+    </div>
 </div>

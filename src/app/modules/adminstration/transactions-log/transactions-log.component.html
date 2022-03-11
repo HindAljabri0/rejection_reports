@@ -1,4 +1,4 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
         <p>Transactions Log</p>
     </div>
@@ -65,7 +65,7 @@
             <button type="button" mat-flat-button color="primary" (click)="searchTransactions()">Search</button>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(!isLoading && (transactions == null || transactions.length == 0))">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
@@ -91,16 +91,12 @@
                             <td>{{log.waseelResponseStatusCode}}</td>
                         </tr>
                     </ng-container>
-                    <tr>
-                        <td colspan="7" class="p-0">
-                            <app-empty-state *ngIf="!isLoading && (transactions == null || transactions.length == 0)" class="claim-list-empty-state" message='No records found!'>
-                            </app-empty-state>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
+    <app-empty-state *ngIf="!isLoading && (transactions == null || transactions.length == 0)" class="claim-list-empty-state" message='No records found!'>
+    </app-empty-state>
     <div class="block-footer sticky">
         <div class="left-block custom-paginator">
             <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="page==0 || isLoading">
