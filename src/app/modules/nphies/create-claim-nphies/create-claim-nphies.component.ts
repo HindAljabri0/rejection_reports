@@ -1581,7 +1581,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
-
+    this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
     this.otherDataModel.submissionDate = response.submissionDate;

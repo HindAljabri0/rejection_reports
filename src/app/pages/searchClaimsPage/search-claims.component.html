@@ -134,7 +134,7 @@
                 </div>
             </div>
         </div>
-        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header bg-white">
+        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
             <mat-tab>
                 <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchResult != null">
                     <div class="fixed-height">

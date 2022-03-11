@@ -1,4 +1,4 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
   <div class="block-header">
     <p>Payer Claims Report</p>
   </div>
@@ -88,67 +88,57 @@
     </form>
 
   </div>
-  <div class="bg-white">
-    <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
-
-      <button matRipple type="button" class="action-btn ml-auto" matTooltip="Download">
-        <img src="./assets/{{detailTopActionIcon}}" />
-      </button>
+  <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
+    <div class="form-group page-select">
+      <label class="control-label">Go to page: </label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+          <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-
-    <div class="pagination-header">
-      <div class="form-group page-select">
-        <label class="control-label">Go to page: </label>
-        <mat-form-field class="form-control custom-select-control">
-          <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
-        </mat-paginator>
-      </div>
-      <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
-        <img src="./assets/{{detailTopActionIcon}}" />
-      </button>
+    <div class="material-paginator">
+      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+      </mat-paginator>
     </div>
-
-    <div class="bg-white">
-      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchedClaim && searchedClaim.length > 0">
-        <div class="fixed-height">
-          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Claim Ref. No.</th>
-                <th>Dr.Name</th>
-                <th>Member Card Id</th>
-                <th>Patient File No.</th>
-                <th>Claim Date </th>
-                <th>Net Amount</th>
-                <th>Status</th>
-                <th>Status Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of searchedClaim">
-                <th>{{data.providerClaimNumber}}</th>
-                <th>{{data.physicianname}}</th>
-                <th>{{data.memberId}}</th>
-                <th>{{data.patientFileNumber}}</th>
-                <th>{{data.visitDate}}</th>
-                <th>{{data.netAmount}}</th>
-                <th>{{data.status}}</th>
-                <th>{{data.statusDetail}}</th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </ng-scrollbar>
-      <app-empty-state *ngIf="searchedClaim && searchedClaim.length === 0" message='No records found!'>
-      </app-empty-state>
-    </div>
-    <!-- <div class="block-body" *ngIf="errorMessage != null">
-      <p class="error-card m-0">{{errorMessage}}</p>
-    </div> -->
+    <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
+      <img src="./assets/{{detailTopActionIcon}}" />
+    </button>
   </div>
+
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchedClaim && searchedClaim.length > 0">
+    <div class="fixed-height">
+      <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>Claim Ref. No.</th>
+            <th>Dr.Name</th>
+            <th>Member Card Id</th>
+            <th>Patient File No.</th>
+            <th>Claim Date </th>
+            <th>Net Amount</th>
+            <th>Status</th>
+            <th>Status Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of searchedClaim">
+            <th>{{data.providerClaimNumber}}</th>
+            <th>{{data.physicianname}}</th>
+            <th>{{data.memberId}}</th>
+            <th>{{data.patientFileNumber}}</th>
+            <th>{{data.visitDate}}</th>
+            <th>{{data.netAmount}}</th>
+            <th>{{data.status}}</th>
+            <th>{{data.statusDetail}}</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-scrollbar>
+  <app-empty-state *ngIf="searchedClaim && searchedClaim.length === 0" message='No records found!' class="claim-list-empty-state">
+  </app-empty-state>
+  <!-- <div class="block-body" *ngIf="errorMessage != null">
+    <p class="error-card m-0">{{errorMessage}}</p>
+  </div> -->
+</div>

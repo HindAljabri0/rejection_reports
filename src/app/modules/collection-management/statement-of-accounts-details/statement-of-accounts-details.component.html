@@ -1,4 +1,4 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
         <p>Transactions - {{previousFromdate | date: 'dd/MM/yyyy'}} to {{previousToDate | date: 'dd/MM/yyyy'}}</p>
     </div>
@@ -59,7 +59,7 @@
             </div>
         </form>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(transactionData == null || transactionData.length == 0)">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
@@ -75,17 +75,13 @@
                         <td>{{item.amount}}</td>
                         <td>{{item.payerName}}</td>
                     </tr>
-                    <tr>
-                        <td colspan="3" class="p-0">
-                            <app-empty-state *ngIf="transactionData == null || transactionData.length == 0" class="claim-list-empty-state" message='No records found!'>
-                            </app-empty-state>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-    <div class="block-footer sticky">
+    <app-empty-state *ngIf="transactionData == null || transactionData.length == 0" class="claim-list-empty-state" message='No records found!'>
+    </app-empty-state>
+    <div class="block-footer sticky" *ngIf="!(transactionData == null || transactionData.length == 0)">
         <div class="left-block custom-paginator" *ngIf="transactionModel.totalPages > 0">
             <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="transactionModel.page==0 || isLoading">
                 <img src="./assets/ic-page-first.svg" alt="First" />

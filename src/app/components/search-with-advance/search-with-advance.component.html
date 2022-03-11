@@ -61,7 +61,12 @@
 </div>
 
 <mat-menu #payersMenu>
+  <h3>Waseel</h3>
     <button *ngFor="let payer of payers" (click)="selectedPayer = payer" mat-menu-item>
+        <span>{{payer.name}}</span>
+    </button>
+    <h3>Nphies</h3>
+    <button *ngFor="let payer of nphiesPayers" (click)="selectedPayer = payer" mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
 </mat-menu>

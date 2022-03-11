@@ -2,7 +2,8 @@
     <ng-container *ngIf="!showDetails">
         <div class="block-header">
             <p>Request Eligibility</p>
-            <mat-slide-toggle *ngIf="!claimReuseId"   color="primary" [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto" (change)="onChangeState(transfer)"  [checked]="transfer">Referral</mat-slide-toggle>
+            <mat-slide-toggle *ngIf="!claimReuseId" color="primary" [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto"
+                (change)="onChangeState(transfer)" [checked]="transfer">Referral</mat-slide-toggle>
         </div>
         <div class="block-filter-panel">
             <div class="d-flex">
@@ -115,9 +116,11 @@
             <span class="spacer"></span>
             <p>Transaction - {{eligibilityResponseModel.transactionId}}</p>
         </div>
-        <app-eligibility-details class="d-block mb-14" [eligibilityResponse]='eligibilityResponseModel'>
+        <app-eligibility-details [eligibilityResponse]='eligibilityResponseModel'>
         </app-eligibility-details>
-        <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
-            Eligibility</button>
+        <div class="text-right">
+            <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
+                Eligibility</button>
+        </div>
     </ng-container>
 </div>

@@ -1,14 +1,14 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
   <div class="block-header">
     <p>Provider Certificate Configuration</p>
   </div>
-  <div class="block-body bg-white" *ngIf="isLoading">
+  <div class="block-body" *ngIf="isLoading">
     <div class="inline-loader">
       <mat-spinner diameter="48"></mat-spinner>
     </div>
   </div>
   <ng-container *ngIf="!isLoading">
-    <div class="block-body bg-white">
+    <div class="block-body">
       <h5 class="medium pb-2">Step 1: Select Provider</h5>
       <div class="form-group">
         <input type="text" class="form-control search-box" placeholder="Select Provider" [matAutocomplete]="off" (keyup.enter)="selectProvider()" [formControl]="providerController"
@@ -47,7 +47,7 @@
           (click)="clearFiles($event)" class="upload-control">
       </div>
     </div>
-    <div class="block-footer">
+    <div class="block-footer sticky" *ngIf="pageMode == 'save' || pageMode == 'EDIT'">
       <div class="right-block" *ngIf="pageMode == 'save'">
         <div class="btn-list">
           <button type="button" (click)="save()" mat-flat-button color="primary">Save</button>
