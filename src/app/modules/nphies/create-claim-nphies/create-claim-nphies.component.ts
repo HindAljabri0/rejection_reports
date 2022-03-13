@@ -208,6 +208,14 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     this.getPayees();
+    if (this.claimId) {
+      this.pageMode = 'VIEW';
+      if (this.responseId) {
+        this.getCommunications();
+      }
+      this.disableControls();
+      this.getClaimDetails();
+    }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
@@ -282,17 +290,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.payeeList = event.body;
           this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
           this.onPayeeTypeChange();
-          if (this.claimId && this.uploadId) {
-            this.pageMode = 'VIEW';
-            if (this.responseId) {
-              this.getCommunications();
-            }
-            this.disableControls();
-            this.getClaimDetails();
-          } else {
-            this.isLoading = false;
-            this.sharedServices.loadingChanged.next(false);
-          }
+          this.isLoading = false;
+          this.sharedServices.loadingChanged.next(false);
         } else {
           this.isLoading = false;
           this.sharedServices.loadingChanged.next(false);
@@ -1559,8 +1558,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   getClaimDetails() {
     this.sharedServices.loadingChanged.next(true);
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, this.uploadId, this.responseId).subscribe(event => {
+    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
