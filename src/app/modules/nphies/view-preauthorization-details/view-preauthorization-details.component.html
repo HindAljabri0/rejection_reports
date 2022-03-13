@@ -1,7 +1,7 @@
 <div class="primary-dialog-header has-border">
-  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization -
-    {{data.detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
-  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction -
+  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization :
+    {{data.detailsModel.claimResourceId}}</h5>&nbsp;&nbsp;
+  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction :
     {{data.detailsModel.providertransactionlogId}}</h5>
 
   <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>

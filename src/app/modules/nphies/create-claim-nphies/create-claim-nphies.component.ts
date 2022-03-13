@@ -1071,7 +1071,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
       } else if (this.pageMode === 'RESUBMIT') {
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-        this.model.claimId = this.otherDataModel.claimId;
+        this.model.relatedClaimId = this.otherDataModel.claimId;
         this.model.uploadId = this.uploadId;
       }
 
@@ -1391,14 +1391,16 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get checkErrorClaimInfo() {
-    if (this.isSubmitted && (!this.FormNphiesClaim.controls.dateOrdered.value ||
-      !this.FormNphiesClaim.controls.type.value)) {
+    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value ||
+      !this.FormNphiesClaim.controls.type.value) || (
+        this.FormNphiesClaim.controls.preAuthOfflineDate.value && (!this.FormNphiesClaim.controls.preAuthRefNo.value
+          || (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length === 0))
+      ))) {
       return true;
     } else {
       return false;
     }
   }
-
 
   get checkErrorAccident() {
     let hasError = false;
@@ -1579,7 +1581,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
-
+    this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
     this.otherDataModel.submissionDate = response.submissionDate;
@@ -2179,5 +2181,34 @@ export class CreateClaimNphiesComponent implements OnInit {
     return this.otherDataModel != null && this.otherDataModel.status != null && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
+  get IsPreAuthRefRequired() {
+    if (this.isSubmitted) {
+      if (this.FormNphiesClaim.controls.preAuthOfflineDate.value) {
+        this.FormNphiesClaim.controls.preAuthRefNo.setValidators(Validators.required);
+        this.FormNphiesClaim.controls.preAuthRefNo.updateValueAndValidity();
+        return true;
+      } else {
+        this.FormNphiesClaim.controls.preAuthRefNo.clearValidators();
+        this.FormNphiesClaim.controls.preAuthRefNo.updateValueAndValidity();
+        // this.FormNphiesClaim.controls.preAuthRefNo.setValue('');
+        return false;
+      }
+    }
+  }
+
+  // get IsApprovalDateRequired() {
+  //   if (this.isSubmitted) {
+  //     if (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length > 0) {
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.setValidators(Validators.required);
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
+  //       return true;
+  //     } else {
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.clearValidators();
+  //       this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
+  //       // this.FormNphiesClaim.controls.preAuthOfflineDate.setValue('');
+  //       return false;
+  //     }
+  //   }
+  // }
 
 }

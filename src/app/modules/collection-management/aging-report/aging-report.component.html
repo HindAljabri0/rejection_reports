@@ -1,36 +1,31 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Aging Report</p>
     </div>
     <div class="block-filter-panel">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="row small-gutter">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">As of Date</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date"
-                                    class="form-control" [formControl]="date">
-                                <mat-datepicker-toggle [for]="asOfDatePicker"></mat-datepicker-toggle>
-                                <mat-datepicker #asOfDatePicker></mat-datepicker>
-                            </div>
-                            <span class="d-block pt-1 text-sm text-muted">Will show data of submission date between {{getPreviousDate()}} and
-                                {{formatDate(date.value)}}.</span>
-                        </div>
-                    </div>
-                    <div class="col-auto align-self-end">
-                        <div class="form-group">
-                            <button type="button" mat-flat-button color="primary" (click)="search()">Search</button>
-                            <span class="d-block pt-1 text-sm">&nbsp;</span>
-                        </div>
+        <div class="row small-gutter">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">As of Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date" class="form-control" [formControl]="date">
+                        <mat-datepicker-toggle [for]="asOfDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #asOfDatePicker></mat-datepicker>
                     </div>
                 </div>
             </div>
+            <div class="col-auto align-self-end">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="button" mat-flat-button color="primary" (click)="search()">Search</button>
+                </div>
+            </div>
         </div>
+        <span class="d-block pt-1 mt-n14 text-sm pb-14 text-muted">Will show data of submission date between {{getPreviousDate()}} and
+            {{formatDate(date.value)}}.</span>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height" *ngIf="errorMessage == null">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="errorMessage == null">
+        <div class="fixed-height">
             <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -43,8 +38,7 @@
                 <tbody>
                     <ng-container *ngFor="let item of agingReportResponseModel;let i=index">
                         <tr [class.even]="i%2==0">
-                            <td class="text-primary row-click" width="10"
-                                (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
+                            <td class="text-primary row-click" width="10" (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
                                 <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
@@ -113,8 +107,7 @@
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                                                [options]="barChartOptions" [legend]="barChartLegend"
+                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
                                                 [chartType]="barChartType">
                                             </canvas>
                                         </div>
@@ -126,9 +119,8 @@
                 </tbody>
             </table>
         </div>
-
-        <div style="margin-top: 20px;" class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
-            <p class="error-card m-0">{{errorMessage}}</p>
-        </div>
     </ng-scrollbar>
+    <div class="block-body" *ngIf="errorMessage != null">
+        <p class="error-card m-0">{{errorMessage}}</p>
+    </div>
 </div>

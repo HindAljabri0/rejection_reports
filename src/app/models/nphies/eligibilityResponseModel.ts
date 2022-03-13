@@ -10,6 +10,7 @@ export class EligibilityResponseModel {
     status: string;
     outcome: string;
     disposition: string;
+    transfer:boolean;
     noCoverageFoundReason: string;
     serviceDate: Date;
     transactionDate: Date;

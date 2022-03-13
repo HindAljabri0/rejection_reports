@@ -262,12 +262,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
           });
-          console.log(this.transactions);
-          const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
-          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.transactionModel.number;
-          this.paginator.pageIndex = this.transactionModel.number;
-          this.paginator.pageSize = this.transactionModel.size;
+          if (this.paginator) {
+            const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
+            this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+            this.manualPage = this.transactionModel.number;
+            this.paginator.pageIndex = this.transactionModel.number;
+            this.paginator.pageSize = this.transactionModel.size;
+          }
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {
@@ -386,6 +387,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
+          console.log("REsponse = " + JSON.stringify(body));
           if (communicationId) {
             body.communicationId = communicationId;
           }

@@ -1,5 +1,5 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-  <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+  <div class="block-header">
     <p>Eligibility Transactions</p>
   </div>
   <div class="block-filter-panel">
@@ -81,7 +81,7 @@
       </div>
     </form>
   </div>
-  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(transactionModel && transactions.length === 0)">
     <div class="fixed-height  fixed-height-sm" *ngIf="transactionModel && transactions.length > 0">
       <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
         <thead>
@@ -114,10 +114,10 @@
         </tbody>
       </table>
     </div>
-    <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Eligibility transactions found!'>
-    </app-empty-state>
   </ng-scrollbar>
-  <div class="pagination-header">
+  <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Eligibility transactions found!'>
+  </app-empty-state>
+  <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
     <div class="form-group page-select">
       <label class="control-label">Go to page: </label>
       <mat-form-field class="form-control custom-select-control">

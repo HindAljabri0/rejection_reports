@@ -49,7 +49,7 @@
             </ng-container>
         </div>
 
-        <div class="block-footer sticky-bottom" *ngIf="!isLoading">
+        <div class="block-footer sticky" *ngIf="!isLoading">
             <div class="left-block custom-paginator" *ngIf="paginationControl != null && paginationControl.size > 0">
                 <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="paginationControl.currentIndex==0">
                     <img src="./assets/ic-page-first.svg" alt="First" />

@@ -1,4 +1,4 @@
-<div class="bg-white p-14">
+<div class="block-body">
     <div class="row">
         <div class="col-4">
             <div class="form-group form-group-static">
@@ -43,6 +43,12 @@
             <div class="form-group form-group-static">
                 <div class="control-label">Eligibility Response ID</div>
                 <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group form-group-static">
+                <div class="control-label">Is Referral ? </div>
+                <p class="form-control-static">{{eligibilityResponse.transfer ? 'Yes' : 'No'}}</p>
             </div>
         </div>
     </div>
