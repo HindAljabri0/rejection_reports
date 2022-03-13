@@ -1,8 +1,8 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Accounts Receivables Breakdown Report</p>
     </div>
-    <div class="block-filter-panel has-border">
+    <div class="block-filter-panel">
         <div class="row">
             <div class="col-lg-8">
                 <form [formGroup]="FormBreakDownReport" (ngSubmit)="onSubmit()">
@@ -57,7 +57,7 @@
                             [options]="paymentStatusChartOptions" [legend]="paymentStatusChartLegend">
                         </canvas>
                     </div>
-                    <app-empty-state *ngIf="emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
+                    <app-empty-state *ngIf="emptypaymentStatus" message="No data found">
                     </app-empty-state>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                             [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
                         </canvas>
                     </div>
-                    <app-empty-state *ngIf="emptyCategoryStatus" message="No data found" icon="ic-empty-chart.svg">
+                    <app-empty-state *ngIf="emptyCategoryStatus" message="No data found">
                     </app-empty-state>
                 </div>
                 <!-- <div class="section-card half">
@@ -108,9 +108,9 @@
                 </div>
             </div>
         </div>
-        <app-empty-state *ngIf="!isSubmitted" message="Apply the filter & generate the report." icon="ic-empty-chart.svg">
+        <app-empty-state *ngIf="!isSubmitted" message="Apply the filter & generate the report.">
         </app-empty-state>
-        <app-empty-state *ngIf="isSubmitted && emptypaymentStatus" message="No data found" icon="ic-empty-chart.svg">
+        <app-empty-state *ngIf="isSubmitted && emptypaymentStatus" message="No data found">
         </app-empty-state>
     </div>
 </div>

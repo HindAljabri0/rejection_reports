@@ -1,9 +1,9 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p *ngIf="addMode"> Add Class</p>
         <p *ngIf="EditMode"> Edit Class</p>
     </div>
-    <div class="p-14 bg-white">
+    <div class="block-body">
         <h5 class="form-title pt-0">
             <span>Class Info</span>
             <mat-slide-toggle color="primary" class="ml-auto theme-success" checked="true" labelPosition="before" [formControl]="IsActiveController">
@@ -66,7 +66,7 @@
         <h5 class="form-title">
             <span>Max Benefits Limit</span>
         </h5>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="benefits.length!=0">
             <table class="primary-grid sticky-header manual-row-color no-borders claim-view-table" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -102,7 +102,7 @@
                 </tbody>
             </table>
         </ng-scrollbar>
-        <app-empty-state [className]="'mb-2'" *ngIf="benefits.length==0" [message]="'No contract found Please check your config and try again!'"></app-empty-state>
+        <app-empty-state [className]="'mb-2'" *ngIf="benefits.length==0" [message]="'No contract found. Please check your config and try again!'"></app-empty-state>
         <div class="text-right">
             <button type="button" mat-stroked-button color="primary" (click)="IncludeServ()">Apply</button>
         </div>
@@ -110,7 +110,7 @@
         <h5 class="form-title">
             <span>Max Sub Benefit Limits</span>
         </h5>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="subbenefits.length!=0">
             <table class="primary-grid sticky-header manual-row-color claim-view-table no-borders" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -139,10 +139,11 @@
                 </tbody>
             </table>
         </ng-scrollbar>
-        <app-empty-state [className]="'mb-2'" *ngIf="subbenefits.length==0" [message]="'No contract found Please check your config and try again!'"></app-empty-state>
-        <div class="block-footer sticky-bottom">
-            <div class="right-block btn-list">
-                <button type="button" color="primary" (click)="SaveData()" mat-flat-button>Save</button>
-            </div>
+        <app-empty-state [className]="'mb-2'" *ngIf="subbenefits.length==0" [message]="'No contract found. Please check your config and try again!'"></app-empty-state>
+    </div>
+    <div class="block-footer sticky">
+        <div class="right-block btn-list">
+            <button type="button" color="primary" (click)="SaveData()" mat-flat-button>Save</button>
         </div>
     </div>
+</div>

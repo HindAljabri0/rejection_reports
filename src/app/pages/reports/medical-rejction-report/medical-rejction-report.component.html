@@ -1,8 +1,8 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-  <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+  <div class="block-header">
     <p>Medical Rejection Report</p>
   </div>
-  <div class="block-filter-panel has-border">
+  <div class="block-filter-panel">
     <div class="row small-gutter" [formGroup]="medicalRejectionReportForm">
       <div class="col">
         <div class="form-group" [class.has-error]="submitted && formCn.payerId.errors">
@@ -27,8 +27,7 @@
               >
             <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
-              [bsConfig]="datePickerConfig" placeholder="Select From Date" required
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="datePickerConfig" placeholder="Select From Date" required
               (bsValueChange)="dateValidation($event)" />
           </div>
           <div *ngIf="submitted && formCn.fromDate.errors">
@@ -44,8 +43,8 @@
               formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
-              [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required />
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig" [minDate]="minDate"
+              placeholder="Select To Date" required />
           </div>
           <div *ngIf="submitted && formCn.toDate.errors">
             <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
@@ -77,189 +76,185 @@
 
     </div>
   </div>
-  <div class="bg-white">
-    <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
+  <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
 
-      <button matRipple type="button" class="action-btn ml-auto" (click)="download()" matTooltip="Download">
-        <img src="./assets/{{detailTopActionIcon}}" />
-      </button>
-    </div>
-    <!-- <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white"
-      *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
-      <div class="fixed-height">
-        <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>No. Of Claim</th>
-              <th>Gross (SR)</th>
-              <th>Discount (SR)</th>
-              <th>Patient Share (SR)</th>
-              <th>Net (SR)</th>
-              <th>Net VAT (SR)</th>
-              <th>Corrected Amount (SR)</th>
-              <th>Actual Deducted (SR)</th>
-              <th>Actual Paid (SR)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedStatuses">
-              <td>{{commen.statusToName(claim.status)}}</td>
-              <td>{{claim.noOfClaims}}</td>
-              <td>{{claim.gross | number : '1.2-2'}}</td>
-              <td>{{claim.discount| number : '1.2-2'}}</td>
-              <td>{{claim.patientShare | number : '1.2-2'}}</td>
-              <td>{{claim.net | number : '1.2-2'}}</td>
-              <td>{{claim.netVat | number : '1.2-2'}}</td>
-              <td>{{claim.correctAmount | number : '1.2-2'}}</td>
-              <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
-              <td>{{claim.actualPaid | number : '1.2-2'}}</td>
-            </tr>
-            <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedAmount">
-              <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
-              <td class="header-cell">{{claim.noOfClaims}}</td>
-              <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
-            </tr>
-            <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedStatuses">
-              <td>{{commen.statusToName(claim.status)}}</td>
-              <td>{{claim.noOfClaims}}</td>
-              <td>{{claim.gross | number : '1.2-2'}}</td>
-              <td>{{claim.discount| number : '1.2-2'}}</td>
-              <td>{{claim.patientShare | number : '1.2-2'}}</td>
-              <td>{{claim.net | number : '1.2-2'}}</td>
-              <td>{{claim.netVat | number : '1.2-2'}}</td>
-              <td>{{claim.correctAmount | number : '1.2-2'}}</td>
-              <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
-              <td>{{claim.actualPaid | number : '1.2-2'}}</td>
-            </tr>
-            <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedAmount">
-              <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
-              <td class="header-cell">{{claim.noOfClaims}}</td>
-              <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount" class="even">
-              <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
-              <td class="header-cell">{{claim.noOfClaims}}</td>
-              <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
-              <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </ng-scrollbar> -->
-    <!-- <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
-      class="claim-list-empty-state" message='No reports found!'>
-    </app-empty-state> -->
-    <div class="pagination-header">
-      <div class="form-group page-select">
-        <label class="control-label">Go to page: </label>
-        <mat-form-field class="form-control custom-select-control">
-          <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-          (page)="paginatorAction($event)">
-        </mat-paginator>
-      </div>
-      <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
-        <img src="./assets/{{detailTopActionIcon}}" />
-      </button>
-    </div>
-
-    <div class="table-responsive" *ngIf="errorMessage == null">
-      <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <button matRipple type="button" class="action-btn ml-auto" (click)="download()" matTooltip="Download">
+      <img src="./assets/{{detailTopActionIcon}}" />
+    </button>
+  </div>
+  <!-- <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+    *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
+    <div class="fixed-height">
+      <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
-            <th>Doctor Id</th>
-            <th>Patient Name</th>
-            <th>Claim Id</th>
-            <th>File Number</th>
-            <th>Member Id</th>
-            <th>Policy Number</th>
-            <th>
-              <button type="button" (click)="onSortClick($event,'claimdate')" class="sort-btn">
-                <span>Claim Date</span>
-                <mat-icon *ngIf="sortStatusArray.claimdate">expand_less</mat-icon>
-                <mat-icon *ngIf="!sortStatusArray.claimdate">expand_more</mat-icon>
-              </button>
-            </th>
-            <th>Net Amount</th>
-            <!-- <th>Rejected By</th> -->
-            <th>
-              <button type="button" (click)="onSortClick($event,'status')" class="sort-btn">
-                <span>Status</span>
-                <mat-icon *ngIf="sortStatusArray.status">expand_less</mat-icon>
-                <mat-icon *ngIf="!sortStatusArray.status">expand_more</mat-icon>
-              </button>
-            </th>
-            <th>Status Details</th>
-            <th></th>
+            <th>Status</th>
+            <th>No. Of Claim</th>
+            <th>Gross (SR)</th>
+            <th>Discount (SR)</th>
+            <th>Patient Share (SR)</th>
+            <th>Net (SR)</th>
+            <th>Net VAT (SR)</th>
+            <th>Corrected Amount (SR)</th>
+            <th>Actual Deducted (SR)</th>
+            <th>Actual Paid (SR)</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let claim of medicalRejectedClaims">
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memberId}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
-            <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
-            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
-            <td class="actions">
-              <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim,$event)">
-                <mat-icon class="material-icons-outlined">article</mat-icon>
-              </button>
-            </td>
+          <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedStatuses">
+            <td>{{commen.statusToName(claim.status)}}</td>
+            <td>{{claim.noOfClaims}}</td>
+            <td>{{claim.gross | number : '1.2-2'}}</td>
+            <td>{{claim.discount| number : '1.2-2'}}</td>
+            <td>{{claim.patientShare | number : '1.2-2'}}</td>
+            <td>{{claim.net | number : '1.2-2'}}</td>
+            <td>{{claim.netVat | number : '1.2-2'}}</td>
+            <td>{{claim.correctAmount | number : '1.2-2'}}</td>
+            <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
+            <td>{{claim.actualPaid | number : '1.2-2'}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedAmount">
+            <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
+            <td class="header-cell">{{claim.noOfClaims}}</td>
+            <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedStatuses">
+            <td>{{commen.statusToName(claim.status)}}</td>
+            <td>{{claim.noOfClaims}}</td>
+            <td>{{claim.gross | number : '1.2-2'}}</td>
+            <td>{{claim.discount| number : '1.2-2'}}</td>
+            <td>{{claim.patientShare | number : '1.2-2'}}</td>
+            <td>{{claim.net | number : '1.2-2'}}</td>
+            <td>{{claim.netVat | number : '1.2-2'}}</td>
+            <td>{{claim.correctAmount | number : '1.2-2'}}</td>
+            <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
+            <td>{{claim.actualPaid | number : '1.2-2'}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedAmount">
+            <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
+            <td class="header-cell">{{claim.noOfClaims}}</td>
+            <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount" class="even">
+            <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
+            <td class="header-cell">{{claim.noOfClaims}}</td>
+            <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
+            <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
           </tr>
         </tbody>
       </table>
-      <app-empty-state *ngIf="medicalRejectedClaims.length == 0" class="claim-list-empty-state"
-        icon="ic-empty-search.svg" message='Select criteria to generate report'>
-      </app-empty-state>
     </div>
+  </ng-scrollbar> -->
+  <!-- <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
+    class="claim-list-empty-state" message='No reports found!'>
+  </app-empty-state> -->
+  <div class="pagination-header" *ngIf="medicalRejectedClaims.length != 0">
+    <div class="form-group page-select">
+      <label class="control-label">Go to page: </label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+          <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="material-paginator">
+      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+      </mat-paginator>
+    </div>
+    <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
+      <img src="./assets/{{detailTopActionIcon}}" />
+    </button>
+  </div>
+
+  <div class="table-responsive" *ngIf="errorMessage == null && medicalRejectedClaims.length != 0">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <th>Doctor Id</th>
+          <th>Patient Name</th>
+          <th>Claim Id</th>
+          <th>File Number</th>
+          <th>Member Id</th>
+          <th>Policy Number</th>
+          <th>
+            <button type="button" (click)="onSortClick($event,'claimdate')" class="sort-btn">
+              <span>Claim Date</span>
+              <mat-icon *ngIf="sortStatusArray.claimdate">expand_less</mat-icon>
+              <mat-icon *ngIf="!sortStatusArray.claimdate">expand_more</mat-icon>
+            </button>
+          </th>
+          <th>Net Amount</th>
+          <!-- <th>Rejected By</th> -->
+          <th>
+            <button type="button" (click)="onSortClick($event,'status')" class="sort-btn">
+              <span>Status</span>
+              <mat-icon *ngIf="sortStatusArray.status">expand_less</mat-icon>
+              <mat-icon *ngIf="!sortStatusArray.status">expand_more</mat-icon>
+            </button>
+          </th>
+          <th>Status Details</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let claim of medicalRejectedClaims">
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memberId}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
+          <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
+          <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
+          <td class="actions">
+            <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim,$event)">
+              <mat-icon class="material-icons-outlined">article</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-empty-state *ngIf="medicalRejectedClaims.length == 0" class="claim-list-empty-state" message='Select criteria to generate report'>
+  </app-empty-state>
 
 
-    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
-      <p class="error-card m-0">{{errorMessage}}</p>
-    </div>
+  <div class="block-body" *ngIf="errorMessage != null">
+    <p class="error-card m-0">{{errorMessage}}</p>
   </div>
 </div>

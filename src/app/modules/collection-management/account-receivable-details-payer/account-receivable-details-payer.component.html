@@ -1,5 +1,5 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <div class="d-flex align-items-center">
             <div class="actions mr-2 my-n2 ml-n1">
                 <button matRipple type="button" (click)="goBack()" class="action-btn">
@@ -9,7 +9,7 @@
             <p>Accounts Receivables Monthly - {{payerName}}</p>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(receivableDetailsData == null || receivableDetailsData.length == 0)">
         <div class="fixed-height fixed-height-lg">
             <table class="primary-grid manual-row-color" cellpadding="0" cellspacing="0" border="0">
                 <thead>
@@ -115,17 +115,13 @@
                             </td>
                         </tr>
                     </ng-container>
-                    <tr>
-                        <td colspan="12" class="p-0">
-                            <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0" class="claim-list-empty-state" message='No records found!'>
-                            </app-empty-state>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-    <!-- <div class="block-footer sticky-bottom">
+    <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0" class="claim-list-empty-state" message='No records found!'>
+    </app-empty-state>
+    <!-- <div class="block-footer sticky">
         <div class="left-block custom-paginator">
             <button matRipple type="button" title="First Page">
                 <img src="./assets/ic-page-first.svg" alt="First" />

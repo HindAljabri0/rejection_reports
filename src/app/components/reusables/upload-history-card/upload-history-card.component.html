@@ -1,4 +1,4 @@
-<div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadSummaryID}" (click)="hideCenter()">
+<div class="uploaded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadSummaryID}" (click)="hideCenter()">
   <p class="medium text-primary">{{data.uploadName}}</p>
   <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</span>
   <ng-container *ngIf='!fromRightSideBar'>

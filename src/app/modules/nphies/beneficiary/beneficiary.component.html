@@ -1,6 +1,6 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-  <ng-container *ngIf=' addMode'>
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+  <ng-container *ngIf='addMode'>
+    <div class="block-header">
       <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
     </div>
     <div class="block-filter-panel">
@@ -356,18 +356,18 @@
         </mat-radio-group>
       </div>
       <hr class="hr spaced">
-      <div class="form-group btn-list">
+      <div class="form-group btn-list text-right">
+        <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
         <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save()">Add
           Beneficiary</button>
         <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="updateDate()">Save</button>
-        <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
       </div>
     </div>
   </ng-container>
 
 
   <ng-container *ngIf="viewMode ||editMode">
-    <div class="block-header has-border align-items-center">
+    <div class="block-header align-items-center">
       <div class="left-block">
         <div class="d-flex align-items-center">
           <div class="actions mr-2 my-n2 ml-n1">
@@ -743,9 +743,9 @@
         </mat-radio-group>
       </div>
       <hr class="hr spaced">
-      <div class="form-group btn-list">
-        <button type="button" mat-flat-button color="primary" (click)=" updateDate()">Save</button>
+      <div class="form-group btn-list text-right">
         <button type="button" mat-flat-button (click)="changeMode()">Cancel</button>
+        <button type="button" mat-flat-button color="primary" (click)=" updateDate()">Save</button>
       </div>
     </div>
 

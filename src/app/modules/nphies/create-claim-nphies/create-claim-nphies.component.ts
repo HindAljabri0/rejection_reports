@@ -1071,7 +1071,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
       } else if (this.pageMode === 'RESUBMIT') {
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-        this.model.claimId = this.otherDataModel.claimId;
+        this.model.relatedClaimId = this.otherDataModel.claimId;
         this.model.uploadId = this.uploadId;
       }
 
@@ -1581,7 +1581,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
-
+    this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
     this.otherDataModel.submissionDate = response.submissionDate;

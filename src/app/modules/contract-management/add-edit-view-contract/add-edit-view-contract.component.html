@@ -1,16 +1,16 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p *ngIf="addMode"> Add Contract</p>
         <p *ngIf="EditMode"> Edit Contract</p>
     </div>
-    <div class="p-14 bg-white">
+    <div class="block-body">
         <h5 class="form-title pt-0">
             <span>Insurance Company Info</span>
             <mat-slide-toggle color="primary" class="ml-auto theme-success" [formControl]="IsActiveController" labelPosition="before">
                 Active
             </mat-slide-toggle>
         </h5>
-        <div class="row">
+        <div class="row small-gutter">
             <div class="col-8 col-xxl-6">
                 <div class="form-group" [matTooltip]="errors.InsCompCode" [class.has-error]="errors.InsCompCode!=null&&errors.InsCompCode.trim().length>0">
                     <label class="control-label">Insurance Company <span class="asterisk">*</span></label>
@@ -89,7 +89,7 @@
         <h5 class="form-title">
             <span>Department Discount</span>
         </h5>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="_departments.length!=0">
             <div class="fixed-height no-min-height">
                 <table class="primary-grid sticky-header manual-row-color no-borders claim-view-table" cellpadding="0" cellspacing="0" border="0">
                     <thead>
@@ -126,7 +126,7 @@
                 </table>
             </div>
         </ng-scrollbar>
-        <app-empty-state [className]="'mb-2'" *ngIf="_departments.length==0" [message]="'No Departments found Please Uplaod and try again!'"></app-empty-state>
+        <app-empty-state [className]="'mb-2'" *ngIf="_departments.length==0" [message]="'No Departments found. Please Upload and try again!'"></app-empty-state>
         <div class="text-right">
             <button type="button" mat-stroked-button color="primary" (click)="ApplyDiscount();">Apply</button>
         </div>
@@ -134,7 +134,7 @@
         <h5 class="form-title">
             <span>Services Discount</span>
         </h5>
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="_services.length!=0">
             <div class="fixed-height no-min-height">
                 <table class="primary-grid sticky-header manual-row-color claim-view-table no-borders" cellpadding="0" cellspacing="0" border="0">
                     <thead>
@@ -203,9 +203,9 @@
                 </table>
             </div>
         </ng-scrollbar>
-        <app-empty-state [className]="'mb-2'" *ngIf="_services.length==0" [message]="'No Services found Please Uplaod and try again!'"></app-empty-state>
+        <app-empty-state [className]="'mb-2'" *ngIf="_services.length==0" [message]="'No Services found. Please Upload and try again!'"></app-empty-state>
     </div>
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky">
         <div class="right-block btn-list">
             <button type="button" color="primary" mat-flat-button (click)="SaveData()">Save</button>
         </div>

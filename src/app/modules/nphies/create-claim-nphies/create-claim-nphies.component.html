@@ -4,7 +4,12 @@
     <div class="summary">
       <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
           otherDataModel.provClaimNo : '-'}}</strong></p>
-      <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimId ? otherDataModel.claimId : '-'}}</strong>
+      <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId ? otherDataModel.claimResourceId : '-'}}</strong>
+      </p>
+      <p *ngIf="otherDataModel.relatedClaimId">
+        <span>Related Claim ID:</span>&nbsp;<strong>
+          <span *ngIf="otherDataModel.relatedClaimId">{{otherDataModel.relatedClaimId }}</span>
+        </strong>
       </p>
       <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
           otherDataModel.claimRefNo : '-'}}</strong></p>
@@ -18,6 +23,7 @@
           <span *ngIf="!otherDataModel.submissionDate">-</span>
         </strong>
       </p>
+
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
 
@@ -158,7 +164,7 @@
         </div>
       </div>
 
-      <h5 class="form-title">Beneficiary Details</h5>
+      <!-- <h5 class="form-title">Beneficiary Details</h5>
       <div class="row" *ngIf="otherDataModel && otherDataModel.beneficiary">
         <div class="col-4">
           <div class="form-group form-group-static">
@@ -198,7 +204,7 @@
               otherDataModel.beneficiary.email:"-"}}</p>
           </div>
         </div>
-      </div>
+      </div> -->
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -671,7 +677,7 @@
                               <td class="label">
                                 <div class="d-flex align-items-center">
                                   <span class="pr-1">Factor</span>
-                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info</mat-icon>
+                                  <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                                 </div>
                               </td>
                               <td>{{item.factor}}</td>
@@ -1080,7 +1086,7 @@
       </app-empty-state>
     </mat-tab>
   </mat-tab-group>
-  <div class="block-footer sticky-bottom" *ngIf="!isLoading">
+  <div class="block-footer sticky" *ngIf="!isLoading">
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
       <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">Edit</button>
@@ -1089,13 +1095,14 @@
 </div>
 
 
-<div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode && pageMode !== 'VIEW'">
+<div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode && pageMode !== 'VIEW'"
+  [class.block-card]="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
   <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate" class="page-top-loader">
   </mat-progress-bar>
 
 
   <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
-    <div class="block-header has-border" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
+    <div class="block-header" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
       <p>Create Claim</p>
     </div>
     <div *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
@@ -1104,7 +1111,7 @@
       <div class="summary">
         <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
             otherDataModel.provClaimNo : '-'}}</strong></p>
-        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimId ? otherDataModel.claimId : '-'}}</strong>
+        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId ? otherDataModel.claimResourceId : '-'}}</strong>
         </p>
         <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
@@ -1276,7 +1283,8 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group"  [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
+              <div class="form-group"
+                [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
                 <label class="control-label">Preauthorization Reference No<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
                 <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
                 </tag-input>
@@ -1763,7 +1771,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="currentOpenItem==i">
-                    <td colspan="9">
+                    <td colspan="10">
                       <div class="box mb-2">
                         <h5 class="align-self-center medium pb-2">Item Info</h5>
                         <div class="row">
@@ -1841,7 +1849,7 @@
                                   <td class="label">
                                     <div class="d-flex align-items-center">
                                       <span class="pr-1">Factor</span>
-                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount percentage">info
+                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info
                                       </mat-icon>
                                     </div>
                                   </td>
@@ -2171,7 +2179,7 @@
           </app-empty-state>
         </mat-tab>
       </mat-tab-group>
-      <div class="block-footer sticky-bottom">
+      <div class="block-footer sticky">
         <div class="right-block btn-list" *ngIf="pageMode == 'CREATE'">
           <button type="submit" mat-flat-button color="primary">Save</button>
         </div>
