@@ -219,9 +219,11 @@
 
         <h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
           <span>Diagnosis<span class="asterisk">*</span></span>
-          <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
-            <mat-icon>add</mat-icon>
-          </button>
+          <div class="ml-auto" matTooltip="Select Claim Type to enable adding Diagnosis" [matTooltipDisabled]="(FormPreAuthorization.controls.type.value)?true:false">
+            <button type="button" class="btn-icon btn-primary" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
         </h5>
         <div *ngIf="Diagnosises.length > 0" class="table-responsive">
           <table class="primary-grid no-borders">
@@ -488,9 +490,11 @@
 
         <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
           <span>Items<span class="asterisk">*</span></span>
-          <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="disableItemsButton()" [matTooltip]="itemsButtonTooltip">
-            <mat-icon>add</mat-icon>
-          </button>
+          <div class="ml-auto" matTooltip="Add Care Team to enable adding Items" [matTooltipDisabled]="!disableItemsButton()">
+            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
         </h5>
         <div *ngIf="Items.length > 0" class="table-responsive">
           <table class="primary-grid manual-row-color claim-view-table no-borders">
