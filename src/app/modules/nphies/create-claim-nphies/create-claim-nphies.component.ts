@@ -185,6 +185,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    var urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       // this.isLoading = true;
       // tslint:disable-next-line:radix
@@ -197,6 +198,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     }
 
+
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
       // tslint:disable-next-line:radix
       this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
@@ -208,14 +210,21 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     this.getPayees();
-    // if (this.claimId) {
-    //   this.pageMode = 'VIEW';
-    //   if (this.responseId) {
-    //     this.getCommunications();
-    //   }
-    //   this.disableControls();
-    //   this.getClaimDetails();
-    // }
+    if (urlHasEditMode) {
+      this.pageMode = 'EDIT'
+        this.disableControls();
+      this.getClaimDetails();
+    }
+    if (this.claimId && !urlHasEditMode) {
+      this.pageMode = 'VIEW';
+
+      this.getClaimDetails();
+      if (this.responseId) {
+        this.getCommunications();
+      }
+      this.disableControls();
+      this.getClaimDetails();
+    }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
