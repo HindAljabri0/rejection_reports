@@ -185,6 +185,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    var urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       // this.isLoading = true;
       // tslint:disable-next-line:radix
@@ -197,6 +198,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     }
 
+
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
       // tslint:disable-next-line:radix
       this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
@@ -208,6 +210,21 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     this.getPayees();
+    if (urlHasEditMode) {
+      this.pageMode = 'EDIT'
+        this.disableControls();
+      this.getClaimDetails();
+    }
+    if (this.claimId && !urlHasEditMode) {
+      this.pageMode = 'VIEW';
+
+      this.getClaimDetails();
+      if (this.responseId) {
+        this.getCommunications();
+      }
+      this.disableControls();
+      this.getClaimDetails();
+    }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
@@ -283,7 +300,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.payeeList = event.body;
           this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
           this.onPayeeTypeChange();
-          if (this.claimId && this.uploadId) {
+          this.isLoading = false;
+          if (this.claimId) {
             this.pageMode = 'VIEW';
             if (this.responseId) {
               this.getCommunications();
@@ -291,7 +309,6 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.disableControls();
             this.getClaimDetails();
           } else {
-            this.isLoading = false;
             this.sharedServices.loadingChanged.next(false);
           }
         } else {
@@ -1560,8 +1577,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   getClaimDetails() {
     this.sharedServices.loadingChanged.next(true);
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, this.uploadId, this.responseId).subscribe(event => {
+    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -2212,5 +2228,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   //     }
   //   }
   // }
+
+  disabledAddItemsButton() {
+    return !this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
+  }
 
 }

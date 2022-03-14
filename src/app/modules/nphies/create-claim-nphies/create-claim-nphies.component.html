@@ -1396,9 +1396,11 @@
           </ng-template>
           <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
-              <mat-icon>add</mat-icon>
-            </button>
+            <div class="ml-auto" matTooltip="Select Claim Type to enable adding diagnosis" [matTooltipDisabled]="(FormNphiesClaim.controls.type.value)?true:false">
+              <button type="button" class="btn-icon btn-primary" (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
           </h5>
           <div *ngIf="Diagnosises.length > 0" class="table-responsive">
             <table class="primary-grid no-borders">
@@ -1694,10 +1696,11 @@
           </ng-template>
           <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-              [disabled]="!FormNphiesClaim.controls.type.value || (FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
-              <mat-icon>add</mat-icon>
-            </button>
+            <div class="ml-auto" matTooltip="Add Care Team to enable adding Items" [matTooltipDisabled]="!disabledAddItemsButton()">
+              <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disabledAddItemsButton()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
           </h5>
 
           <div *ngIf="Items.length > 0" class="table-responsive">
