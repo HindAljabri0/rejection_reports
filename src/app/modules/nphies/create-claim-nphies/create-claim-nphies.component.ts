@@ -208,14 +208,14 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     this.getPayees();
-    if (this.claimId) {
-      this.pageMode = 'VIEW';
-      if (this.responseId) {
-        this.getCommunications();
-      }
-      this.disableControls();
-      this.getClaimDetails();
-    }
+    // if (this.claimId) {
+    //   this.pageMode = 'VIEW';
+    //   if (this.responseId) {
+    //     this.getCommunications();
+    //   }
+    //   this.disableControls();
+    //   this.getClaimDetails();
+    // }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
@@ -291,7 +291,16 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
           this.onPayeeTypeChange();
           this.isLoading = false;
-          this.sharedServices.loadingChanged.next(false);
+          if (this.claimId) {
+            this.pageMode = 'VIEW';
+            if (this.responseId) {
+              this.getCommunications();
+            }
+            this.disableControls();
+            this.getClaimDetails();
+          } else {
+            this.sharedServices.loadingChanged.next(false);
+          }
         } else {
           this.isLoading = false;
           this.sharedServices.loadingChanged.next(false);
