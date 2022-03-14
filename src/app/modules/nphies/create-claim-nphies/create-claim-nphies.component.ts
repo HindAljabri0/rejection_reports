@@ -233,7 +233,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   toEditMode() {
     this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
     this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
-    console.log("beneficiary = " + JSON.stringify(this.otherDataModel.beneficiary));
+    
     this.selectedBeneficiary = {
       documentId: this.otherDataModel.beneficiary.documentId,
       documentType: this.otherDataModel.beneficiary.documentType,
@@ -284,6 +284,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
     }
     this.enableControls();
+    //console.log("Data = " + JSON.stringify(this.otherDataModel));
   }
 
   cancelEdit() {
@@ -1607,7 +1608,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.insurer = response.insurer;
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.beneficiary = response.beneficiary;
-
+    this.otherDataModel.relatedClaimId = response.relatedClaimId;
+    
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0].name : '-';
