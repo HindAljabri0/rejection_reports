@@ -60,18 +60,18 @@
     </button>
 </div>
 
-<mat-menu #payersMenu>
-  <h3>Waseel</h3>
+<mat-menu #payersMenu class="header-search-menu">
+    <h5 class="menu-opt-group">Waseel</h5>
     <button *ngFor="let payer of payers" (click)="selectedPayer = payer" mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
-    <h3>Nphies</h3>
+    <h5 class="menu-opt-group">Nphies</h5>
     <button *ngFor="let payer of nphiesPayers" (click)="selectedPayer = payer" mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
 </mat-menu>
 
-<mat-menu #tpasMenu>
+<mat-menu #tpasMenu class="header-search-menu">
     <button *ngFor="let tpa of tpas" (click)="selectedTpa = tpa" mat-menu-item>
         <span>{{tpa.name}}</span>
     </button>

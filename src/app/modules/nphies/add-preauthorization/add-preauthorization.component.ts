@@ -45,7 +45,6 @@ export class AddPreauthorizationComponent implements OnInit {
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
-  itemsButtonTooltip = '';
 
   FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
@@ -1475,16 +1474,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   disableItemsButton() {
-    const retval = !this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
-    setTimeout(() => {
-      if (retval) {
-        this.itemsButtonTooltip = 'Add Care Team to enable adding Items';
-      }
-      else {
-        this.itemsButtonTooltip = '';
-      }
-    }, 50);
-    return retval;
+    return !this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
   }
 
 }

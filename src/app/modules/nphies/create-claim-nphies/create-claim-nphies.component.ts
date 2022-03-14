@@ -300,7 +300,16 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
           this.onPayeeTypeChange();
           this.isLoading = false;
-          this.sharedServices.loadingChanged.next(false);
+          if (this.claimId) {
+            this.pageMode = 'VIEW';
+            if (this.responseId) {
+              this.getCommunications();
+            }
+            this.disableControls();
+            this.getClaimDetails();
+          } else {
+            this.sharedServices.loadingChanged.next(false);
+          }
         } else {
           this.isLoading = false;
           this.sharedServices.loadingChanged.next(false);
@@ -2217,5 +2226,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   //     }
   //   }
   // }
+
+  disabledAddItemsButton() {
+    return !this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
+  }
 
 }
