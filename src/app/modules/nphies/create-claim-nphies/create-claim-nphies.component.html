@@ -6,9 +6,9 @@
           otherDataModel.provClaimNo : '-'}}</strong></p>
       <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId ? otherDataModel.claimResourceId : '-'}}</strong>
       </p>
-      <p *ngIf="otherDataModel.relatedClaimId">
+      <p >
         <span>Related Claim ID:</span>&nbsp;<strong>
-          <span *ngIf="otherDataModel.relatedClaimId">{{otherDataModel.relatedClaimId }}</span>
+          <span> <strong>{{otherDataModel.relatedClaimId ? otherDataModel.relatedClaimId : '-' }} </strong></span>
         </strong>
       </p>
       <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
@@ -1112,6 +1112,11 @@
         <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
             otherDataModel.provClaimNo : '-'}}</strong></p>
         <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId ? otherDataModel.claimResourceId : '-'}}</strong>
+        </p>
+        <p >
+          <span>Related Claim ID:</span>&nbsp;<strong>
+            <span> <strong>{{otherDataModel.relatedClaimId ? otherDataModel.relatedClaimId : '-' }} </strong></span>
+          </strong>
         </p>
         <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
