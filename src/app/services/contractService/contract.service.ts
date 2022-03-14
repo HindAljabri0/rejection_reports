@@ -6,6 +6,7 @@ import { ContractTemplate } from 'src/app/models/contractModels/ContractTemplate
 import { environment } from 'src/environments/environment';
 import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTemplate';
 import { InvoiceDetail } from 'src/app/models/contractModels/BillingModels/InvoiceDetail';
+import { InvoiceSearchModel } from 'src/app/models/contractModels/BillingModels/InvoiceSearchModel';
 
 @Injectable({
     providedIn: 'root'
@@ -92,6 +93,13 @@ export class ContractService {
     createInvoice(invoice: InvoiceDetail, providerId: string) {
         const requestUrl = `/billing/payment/${providerId}/manipulate`;
         let body: any = { ...invoice };
+        const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
+        return this.httpClient.request(httpRequest);
+    }
+
+    getInvoiceList(invoiceSearchModel: InvoiceSearchModel,providerId: string) {
+        const requestUrl = `/billing/payment/${providerId}/paymentList`;
+        let body: any = { ...invoiceSearchModel };
         const httpRequest = new HttpRequest('POST', environment.contractManagementService + requestUrl, body);
         return this.httpClient.request(httpRequest);
     }
