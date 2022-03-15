@@ -16,6 +16,7 @@ export class EligibilityResponseModel {
     transactionDate: Date;
     nphiesResponseId: string;
     purpose: string[];
+    siteEligibility: string;
     errors: {
         code: string;
         message: string;
