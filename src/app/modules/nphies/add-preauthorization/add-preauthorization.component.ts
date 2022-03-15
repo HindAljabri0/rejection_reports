@@ -800,6 +800,7 @@ export class AddPreauthorizationComponent implements OnInit {
                     y.itemDescription = result.itemDescription;
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
+                    y.quantity = result.quantity;
                   }
                 });
               } else {
@@ -1253,6 +1254,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
+            dmodel.quantity = parseInt(y.quantity);
             return dmodel;
           });
 
@@ -1292,6 +1294,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
+            dmodel.quantity = parseInt(y.quantity);
             return dmodel;
           });
 

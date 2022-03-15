@@ -746,6 +746,7 @@
                           <th>Code - Description</th>
                           <th>Non Standard Code</th>
                           <th>Display</th>
+                          <th>Quantity</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -756,6 +757,7 @@
                           <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}
                           </td>
                           <td class="row-click">{{d.display ? d.display :"-"}}</td>
+                          <td class="row-click">{{d.quantity ? d.quantity :"-"}}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -2009,6 +2011,7 @@
                               <th>Code - Description</th>
                               <th>Non Standard Code</th>
                               <th>Display</th>
+                              <th>Quantity</th>
                               <th width="10"></th>
                             </tr>
                           </thead>
@@ -2021,6 +2024,8 @@
                               <td class="row-click">{{d.nonStandardCode ?
                                 d.nonStandardCode :"-"}}</td>
                               <td class="row-click">{{d.display ? d.display :"-"}}
+                              </td>
+                              <td class="row-click">{{d.quantity ? d.quantity :"-"}}
                               </td>
                               <td class="actions text-nowrap">
                                 <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
