@@ -165,7 +165,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   pageMode = '';
   currentOpenItem: number = null;
   otherDataModel: any = {};
-  SaveBtn = 'Save';
+  //EditBtn = 'Edit';
   communications = [];
 
   constructor(
@@ -232,7 +232,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   toEditMode() {
     this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
-    this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
+    // this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
 
     this.selectedBeneficiary = {
       documentId: this.otherDataModel.beneficiary.documentId,

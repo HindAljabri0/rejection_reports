@@ -181,9 +181,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
+      
       if (value != null) {
         this.reloadClaim(value);
       }
+      
       this.params.claimId = null;
       this.params.editMode = null;
       this.resetURL();
@@ -731,6 +733,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
+      //reload search data
+      const statuses = this.summaries[0].statuses;
+      this.loadStatues(statuses.filter(status => status.toUpperCase() != 'ALL'));
     });
   }
 
