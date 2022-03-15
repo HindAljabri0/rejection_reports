@@ -13,12 +13,12 @@
             <mat-icon>search</mat-icon>
         </button> -->
         <div class="search-btns">
-            <button *ngIf="isClaimUser" type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
+            <button *ngIf="(isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date')" type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
             </button>
-            <span class="separator" *ngIf="hasNphiesClaims  && selectedCriteriaIsUsedInBoth"></span>
-            <button *ngIf="hasNphiesClaims  && selectedCriteriaIsUsedInBoth" type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn"
+            <span class="separator" *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date')"></span>
+            <button *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date')" type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn"
                 (click)="search(false)">
                 <mat-icon>search</mat-icon>
                 <span>NPHIES</span>
@@ -61,12 +61,12 @@
 </div>
 
 <mat-menu #payersMenu class="header-search-menu">
-    <h5 class="menu-opt-group">Waseel</h5>
-    <button *ngFor="let payer of payers" (click)="selectedPayer = payer" mat-menu-item>
+    <h5 *ngIf="payers.length > 0" class="menu-opt-group">Waseel</h5>
+    <button *ngFor="let payer of payers" (click)="selectedPayer = payer; selectedPayerType = 'W'" mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
-    <h5 class="menu-opt-group">Nphies</h5>
-    <button *ngFor="let payer of nphiesPayers" (click)="selectedPayer = payer" mat-menu-item>
+    <h5 *ngIf="nphiesPayers.length > 0" class="menu-opt-group">Nphies</h5>
+    <button *ngFor="let payer of nphiesPayers" (click)="selectedPayer = payer; selectedPayerType = 'N'" mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
 </mat-menu>

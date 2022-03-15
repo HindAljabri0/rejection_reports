@@ -9,7 +9,7 @@
             <div class="d-flex">
                 <div class="form-group flex-grow-1">
                     <label class="control-label">Select a Beneficiary</label>
-                    <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." [formControl]="beneficiarySearchController"
+                    <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." [formControl]="beneficiarySearchController"
                         [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
@@ -104,7 +104,9 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+        </div>
+        <div class="block-footer" *ngIf="selectedBeneficiary != null">
+            <div class="right-block">
                 <button type="button" mat-flat-button color="primary" (click)="sendRequest()">Request
                     Eligibility</button>
             </div>
@@ -118,9 +120,11 @@
         </div>
         <app-eligibility-details [eligibilityResponse]='eligibilityResponseModel'>
         </app-eligibility-details>
-        <div class="text-right">
-            <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
-                Eligibility</button>
+        <div class="block-footer">
+            <div class="right-block">
+                <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
+                    Eligibility</button>
+            </div>
         </div>
     </ng-container>
 </div>
