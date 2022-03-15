@@ -181,6 +181,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
             y.itemCode = y.code;
             y.itemDescription = y.description;
             y.display = y.nonStandardDesc;
+            y.quantity = y.quantity;
           });
         }
 

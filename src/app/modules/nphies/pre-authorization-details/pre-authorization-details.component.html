@@ -604,6 +604,7 @@
                     <th>Code - Description</th>
                     <th>Non Standard Code</th>
                     <th>Display</th>
+                    <th>Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -611,8 +612,9 @@
                     <td class="row-click">{{d.sequence}}</td>
                     <td class="row-click">{{d.typeName}}</td>
                     <td class="row-click">{{d.code}} - {{d.description}}</td>
-                    <td class="row-click">{{d.nonStandardCode}}</td>
-                    <td class="row-click">{{d.nonStandardDesc}}</td>
+                    <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
+                    <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
+                    <td class="row-click">{{d.quantity ? d.quantity : '-'}}</td>
                   </tr>
                 </tbody>
               </table>

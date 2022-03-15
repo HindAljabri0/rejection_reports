@@ -233,7 +233,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   toEditMode() {
     this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
     this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
-    
+
     this.selectedBeneficiary = {
       documentId: this.otherDataModel.beneficiary.documentId,
       documentType: this.otherDataModel.beneficiary.documentType,
@@ -817,6 +817,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.itemDescription = result.itemDescription;
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
+                    y.quantity = result.quantity;
                   }
                 });
               } else {
@@ -1235,6 +1236,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
+            dmodel.quantity = parseInt(y.quantity);
             return dmodel;
           });
 
@@ -1274,6 +1276,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
+            dmodel.quantity = parseInt(y.quantity);
             return dmodel;
           });
 
@@ -1609,7 +1612,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.beneficiary = response.beneficiary;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
-    
+
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0].name : '-';
@@ -2016,6 +2019,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           y.itemCode = y.code;
           y.itemDescription = y.description;
           y.display = y.nonStandardDesc;
+          y.quantity = y.quantity;
         });
       }
       model.itemDecision = x.itemDecision;
