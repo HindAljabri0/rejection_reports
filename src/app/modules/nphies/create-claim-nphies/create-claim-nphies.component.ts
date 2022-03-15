@@ -165,7 +165,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   pageMode = '';
   currentOpenItem: number = null;
   otherDataModel: any = {};
-  SaveBtn = 'Save';
+  //EditBtn = 'Edit';
   communications = [];
 
   constructor(
@@ -197,7 +197,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.isLoading = false;
 
     }
-
+    
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
       // tslint:disable-next-line:radix
@@ -227,12 +227,12 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-
+    
   }
 
   toEditMode() {
     this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
-    this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
+    
     
     this.selectedBeneficiary = {
       documentId: this.otherDataModel.beneficiary.documentId,
