@@ -75,6 +75,9 @@ export class SearchWithAdvanceComponent implements OnInit {
   toDateHasError = false;
 
   payersList: Payer[] = [];
+
+  selectedPayerType = '';
+
   constructor(
     private router: Router,
     private routeActive: ActivatedRoute,
