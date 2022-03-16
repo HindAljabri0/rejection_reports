@@ -174,8 +174,7 @@
                                         </td>
 
                                         <td class="actions">
-                                            <ng-container
-                                                *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
+                                            <ng-container *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <ng-container *ngIf="showColumns(selectedCardKey,claim.status) && claim.claimResponseId">
                                                         <!--button mat-menu-item><span>Re-Use</span></button-->
