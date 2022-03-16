@@ -1323,15 +1323,21 @@ export class CreateClaimNphiesComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.isError) {
+              
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
-              if (this.pageMode == 'CREATE') {
+              if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
+                
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               }
             } else {
-              if (this.pageMode == 'CREATE') {
-                this.reset();
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+              
+              if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
+                
+                if (this.pageMode == 'CREATE') 
+                  this.reset();
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true,true);
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
                 this.ngOnInit();
