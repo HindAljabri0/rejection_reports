@@ -2042,6 +2042,12 @@
                       </div>
                     </td>
                   </tr>
+                  <tr *ngIf="item.careTeamSequenceRequired || item.detailsRequired">
+                    <td colspan="10">
+                      <p class="error-card" *ngIf="item.careTeamSequenceRequired">Item must have atleast one Care Team</p>
+                      <p class="error-card" *ngIf="item.detailsRequired" >Item detail must be provided when Item is a package</p>
+                    </td>
+                  </tr>
                 </ng-container>
               </tbody>
             </table>

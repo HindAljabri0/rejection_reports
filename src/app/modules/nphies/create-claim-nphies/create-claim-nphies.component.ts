@@ -685,7 +685,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (this.Items.find(x => x.sequence === result.sequence)) {
-          this.Items.map(x => {
+          this.Items.forEach(x => {
             if (x.sequence === result.sequence) {
               x.type = result.type;
               x.typeName = result.typeName,
@@ -750,6 +750,10 @@ export class CreateClaimNphiesComponent implements OnInit {
 
             }
           });
+          if (this.isSubmitted) {
+            this.checkItemCareTeams();
+            this.checkItemDetails();
+          }
         } else {
           this.Items.push(result);
           this.Items.filter((x, i) => {
@@ -780,6 +784,10 @@ export class CreateClaimNphiesComponent implements OnInit {
               }
             }
           });
+          if (this.isSubmitted) {
+            this.checkItemCareTeams();
+            this.checkItemDetails();
+          }
           this.checkItemValidation();
         }
       }
@@ -823,12 +831,17 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.quantity = result.quantity;
                   }
                 });
+                if (this.isSubmitted) {
+                  this.checkItemDetails();
+                }
               } else {
                 x.itemDetails.push(result);
+                if (this.isSubmitted) {
+                  this.checkItemDetails();
+                }
               }
             }
           });
-
         }
       }
     });
@@ -841,6 +854,9 @@ export class CreateClaimNphiesComponent implements OnInit {
           x.itemDetails.splice(index, 1);
         }
       });
+    }
+    if (this.isSubmitted) {
+      this.checkItemDetails();
     }
   }
 
@@ -939,19 +955,54 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   checkItemCareTeams() {
+    let result = true;
     if (this.Items.length > 0) {
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
         return true;
       } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') {
-        if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
-          this.dialogService.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK', null, true);
-          return false;
-        } else {
-          return true;
-        }
-      }
+        this.Items.forEach(x => {
+          if (x.careTeamSequence && x.careTeamSequence.length === 0) {
+            x.careTeamSequenceRequired = true;
+          } else if (x.careTeamSequence && x.careTeamSequence.length > 0) {
+            x.careTeamSequenceRequired = false;
+          }
+        });
 
+        if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
+          result = false;
+        }
+        // if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
+        //   this.dialogService.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK', null, true);
+        //   return false;
+        // } else {
+        //   return true;
+        // }
+      }
     }
+    if (!result) {
+      this.IsItemRequired = true;
+    }
+    return result;
+  }
+
+  checkItemDetails() {
+    let result = true;
+    this.Items.forEach(x => {
+      if (x.isPackage && x.itemDetails.length === 0) {
+        x.detailsRequired = true;
+      } else if (!x.isPackage || (x.isPackage && x.itemDetails.length > 0)) {
+        x.detailsRequired = false;
+      }
+    });
+
+    if (this.Items.find(x => (x.isPackage && x.itemDetails.length === 0))) {
+      result = false;
+    }
+
+    if (!result) {
+      this.IsItemRequired = true;
+    }
+    return result;
   }
 
   updateSequenceNames() {
@@ -1039,6 +1090,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.checkItemValidation();
 
     if (!this.checkItemCareTeams()) {
+      hasError = true;
+    }
+
+    if (!this.checkItemDetails()) {
       hasError = true;
     }
 
@@ -1326,21 +1381,21 @@ export class CreateClaimNphiesComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.isError) {
-              
+
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
               if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
-                
+
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               }
             } else {
-              
+
               if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
-                
-                if (this.pageMode == 'CREATE') 
+
+                if (this.pageMode == 'CREATE')
                   this.reset();
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true,true);
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-                
+
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
                 this.ngOnInit();
