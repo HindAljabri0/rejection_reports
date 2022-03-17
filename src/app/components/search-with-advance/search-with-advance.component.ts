@@ -53,6 +53,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { value: 'OUTPATIENT', name: 'Outpatient' },
     { value: 'INPATIENT', name: 'Inpatient' },
   ];
+  
 
 
   searchMode(isWassel: boolean) {
