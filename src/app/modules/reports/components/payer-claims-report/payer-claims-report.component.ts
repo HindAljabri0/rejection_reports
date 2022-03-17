@@ -210,7 +210,7 @@ export class PayerClaimsReportComponent implements OnInit {
                     this.searchedClaim = event.body["content"] as SearchedClaim[];
                     this.paginatorLength1 = event.body["totalElements"];
                     this.manualPage = event.body["number"];
-                    const pages = Math.ceil((this.paginatorLength1 / this.paginator.pageSize));
+                    const pages = Math.ceil((this.paginatorLength1 / this.pageSize));
                     this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
                     if (this.searchedClaim.length == 0) {
                         this.errorMessage = 'No Results Found';
