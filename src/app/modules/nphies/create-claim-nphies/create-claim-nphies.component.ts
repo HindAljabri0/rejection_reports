@@ -1338,11 +1338,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                   this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
                 }
 
-                /*let url= this.pageMode == 'RESUBMIT' ?  `/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`
-                : `/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`;
                 
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true,true);
-                this.router.navigateByUrl(url);*/
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null,true);
                 if(this.pageMode == 'RESUBMIT'){
                   this.claimId = body.claimId;
