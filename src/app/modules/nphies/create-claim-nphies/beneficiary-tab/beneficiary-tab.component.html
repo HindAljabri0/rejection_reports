@@ -373,7 +373,7 @@
     <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length == 0" [message]="'No insurance plans found!'"></app-empty-state>
   </form>
 </ng-container>
-<ng-container *ngIf="otherDataModel && pageMode === 'VIEW'">
+<ng-container *ngIf="otherDataModel && otherDataModel.beneficiary && pageMode === 'VIEW'">
   <h5 class="form-title">Personal Information</h5>
   <div class="row small-gutter">
     <div class="col-4 col-lg-3">
@@ -540,7 +540,7 @@
     <span>Insurance Plan</span>
   </h5>
 
-  <div class="table-responsive" *ngIf="otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
+  <div class="table-responsive" *ngIf="otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
     <table class="primary-grid manual-row-color claim-view-table no-borders">
       <thead>
         <tr>
@@ -572,6 +572,6 @@
       </tbody>
     </table>
   </div>
-  <app-empty-state [className]="'mb-2'" *ngIf="otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan" [message]="'No insurance plans found!'">
+  <app-empty-state [className]="'mb-2'" *ngIf="otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan" [message]="'No insurance plans found!'">
   </app-empty-state>
 </ng-container>

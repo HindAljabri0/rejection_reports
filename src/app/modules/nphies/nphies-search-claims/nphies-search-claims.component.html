@@ -1,5 +1,7 @@
-<div *ngIf="errorMessage != null" class="p-3 bg-white">
-    <p class="error-card mb-0">{{errorMessage}}</p>
+<div class="block-card mb-3" *ngIf="errorMessage != null">
+    <div class="block-body">
+        <p class="error-card mb-0">{{errorMessage}}</p>
+    </div>
 </div>
 <ng-content></ng-content>
 
@@ -8,64 +10,60 @@
         <mat-spinner diameter="48"></mat-spinner>
     </div>
 
-    <div class="block-header">
-        <p *ngIf="uploadNameExist" class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
-        <div class="ml-auto d-flex mt-n2 mb-n2">
-            <button mat-flat-button class="tab-btn" [ngClass]="{'active': !isManagingAttachments}" (click)="isManagingAttachments = false">Claims</button>
-            <button mat-flat-button class="tab-btn" [ngClass]="{'active': isManagingAttachments}" (click)="isManagingAttachments = true">Attachments
-                Management</button>
+    <div class="block-card mb-3">
+        <div class="block-header" *ngIf="uploadNameExist">
+            <p class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
+        </div>
+        <div class="block-body pb-0">
+            <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
+                <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
+                    <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
+                        <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
+                            [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
+                            class="primary-card border-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                            <table>
+                                <tr>
+                                    <th *ngIf="summary.value.statuses[0] != 'partially_paid'" colspan="2">No. of Claims</th>
+                                    <th *ngIf="summary.value.statuses[0] == 'partially_paid'">No. of Claims</th>
+                                    <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
+                                    <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
+                                </tr>
+                                <tr>
+                                    <td *ngIf="summary.value.statuses[0] != 'partially_paid'"
+                                        class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}" colspan="2">
+                                        <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
+                                    </td>
+                                    <td *ngIf="summary.value.statuses[0] == 'partially_paid'"
+                                        class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                        <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
+                                    </td>
+                                    <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                        <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency"> SR</span>
+                                    </td>
+                                    <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                        <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Total Net</th>
+                                    <th *ngIf="summary.value.statuses[0] == 'partially_paid'"></th>
+                                </tr>
+                                <tr>
+                                    <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                        <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span
+                                            *ngIf="summary.value.totalNetAmount!=null" class="currency"> SR</span>
+                                    </td>
+                                    <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
+                                </tr>
+                            </table>
+                        </app-abstractcard>
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
         </div>
     </div>
-    <div class="block-body pb-0 mb-3">
 
-        <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
-            <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
-                <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
-                    <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
-                        [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)" class="primary-card">
-                        <table>
-                            <tr>
-                                <th *ngIf="summary.value.statuses[0] != 'partially_paid'" colspan="2">No. of Claims</th>
-                                <th *ngIf="summary.value.statuses[0] == 'partially_paid'">No. of Claims</th>
-                                <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
-                                <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
-                            </tr>
-                            <tr>
-                                <td *ngIf="summary.value.statuses[0] != 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}"
-                                    colspan="2">
-                                    <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
-                                </td>
-                                <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                    <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
-                                </td>
-                                <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                    <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency"> SR</span>
-                                </td>
-                                <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                    <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Total Net</th>
-
-                                <th *ngIf="summary.value.statuses[0] == 'partially_paid'"></th>
-                            </tr>
-                            <tr>
-                                <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                    <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span
-                                        *ngIf="summary.value.totalNetAmount!=null" class="currency"> SR</span>
-                                </td>
-
-                                <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
-                            </tr>
-                        </table>
-                    </app-abstractcard>
-                </ng-template>
-            </ng-container>
-        </owl-carousel-o>
-    </div>
-
-    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
+    <div class="block-card" *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
         <div class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
                 *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
@@ -74,7 +72,7 @@
 
 
         </div>
-        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header bg-white">
+        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
             <mat-tab>
                 <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchResult != null">
                     <div class="fixed-height">
@@ -126,6 +124,7 @@
 
                                     <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+
                                     </th>
 
                                 </tr>
@@ -175,8 +174,7 @@
                                         </td>
 
                                         <td class="actions">
-                                            <ng-container
-                                                *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
+                                            <ng-container *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <ng-container *ngIf="showColumns(selectedCardKey,claim.status) && claim.claimResponseId">
                                                         <!--button mat-menu-item><span>Re-Use</span></button-->
@@ -261,7 +259,7 @@
                 </ng-scrollbar>
             </mat-tab>
         </mat-tab-group>
-        <div class="block-footer sticky-bottom" *ngIf="claims.length > 0">
+        <div class="block-footer sticky" *ngIf="claims.length > 0">
             <div class="left-block">
                 <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize"
                     [showFirstLastButtons]="showFirstLastButtons" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
@@ -276,6 +274,5 @@
                 </ng-container>
             </div>
         </div>
-    </ng-container>
-    <app-claim-attachments-management *ngIf="isManagingAttachments"></app-claim-attachments-management>
+    </div>
 </div>

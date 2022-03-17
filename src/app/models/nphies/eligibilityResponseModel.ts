@@ -10,11 +10,13 @@ export class EligibilityResponseModel {
     status: string;
     outcome: string;
     disposition: string;
+    transfer:boolean;
     noCoverageFoundReason: string;
     serviceDate: Date;
     transactionDate: Date;
     nphiesResponseId: string;
     purpose: string[];
+    siteEligibility: string;
     errors: {
         code: string;
         message: string;

@@ -1,17 +1,15 @@
-<div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
-  <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+  <div class="block-header">
     <p>Rejection Tracking Report</p>
   </div>
   <form #revenuTrackingReportForm='ngForm' (ngSubmit)='revenuTrackingReportForm.valid && generate()'>
-    <div class="block-filter-panel has-border">
+    <div class="block-filter-panel">
       <div class="row small-gutter align-items-end">
         <div class="col">
-          <div class="form-group"
-            [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && !revenuTrackingReport.payerId}">
+          <div class="form-group" [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && !revenuTrackingReport.payerId}">
             <label class="control-label">Payer</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [(ngModel)]="revenuTrackingReport.payerId" #payerId name="payerId"
-                (selectionChange)="selectRevenu($event,revenuTrackingReportForm)" required>
+              <mat-select [(ngModel)]="revenuTrackingReport.payerId" #payerId name="payerId" (selectionChange)="selectRevenu($event,revenuTrackingReportForm)" required>
                 <mat-option value="0">All</mat-option>
                 <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                   ({{payer.arName}})</mat-option>
@@ -24,10 +22,8 @@
             <label class="control-label">Date From</label>
             <div class="date-picker">
               <!-- [matDatepicker]="fromDate"  -->
-              <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
-                [(ngModel)]='revenuTrackingReport.fromDate' #fromDate='ngModel' name="fromDate" required
-                (bsValueChange)="dateValidation($event)" />
+              <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                placeholder="Select from month" [(ngModel)]='revenuTrackingReport.fromDate' #fromDate='ngModel' name="fromDate" required (bsValueChange)="dateValidation($event)" />
             </div>
           </div>
         </div>
@@ -36,10 +32,8 @@
             <label class="control-label">Date To</label>
             <div class="date-picker">
               <!--  -->
-              <input autocomplete="off" class="form-control date-picker" placeholder="Select to month" bsDatepicker
-                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                [(ngModel)]='revenuTrackingReport.toDate' #toDate='ngModel' name="toDate" required
-                [minDate]="minDate" />
+              <input autocomplete="off" class="form-control date-picker" placeholder="Select to month" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                [(ngModel)]='revenuTrackingReport.toDate' #toDate='ngModel' name="toDate" required [minDate]="minDate" />
             </div>
           </div>
         </div>
@@ -56,25 +50,22 @@
       <ul class="list">
         <li class="title">Payer</li>
         <li>
-          <button type="button" (click)="showAllChart(revenuTrackingReportForm)" matRipple
-            [ngClass]="{'active': allChart}" id="chartName">{{selectedPayerName}}</button>
+          <button type="button" (click)="showAllChart(revenuTrackingReportForm)" matRipple [ngClass]="{'active': allChart}" id="chartName">{{selectedPayerName}}</button>
         </li>
         <li class="title">By Category</li>
         <ng-container>
 
           <li>
-            <button type="button" matRipple
-              (click)="showServiceChart(revenuTrackingEnum.Service,revenuTrackingReportForm)"
+            <button type="button" matRipple (click)="showServiceChart(revenuTrackingEnum.Service,revenuTrackingReportForm)"
               [class.active]="isActiveService(revenuTrackingEnum.Service)">Service</button>
           </li>
           <li>
-            <button type="button" [class.active]="isActiveService(revenuTrackingEnum.Department)"
-              (click)="showServiceChart(revenuTrackingEnum.Department,revenuTrackingReportForm)"
+            <button type="button" [class.active]="isActiveService(revenuTrackingEnum.Department)" (click)="showServiceChart(revenuTrackingEnum.Department,revenuTrackingReportForm)"
               matRipple>Department</button>
           </li>
           <li>
-            <button type="button" (click)="showServiceChart(revenuTrackingEnum.Doctor,revenuTrackingReportForm)"
-              [class.active]="isActiveService(revenuTrackingEnum.Doctor)" matRipple>Doctor</button>
+            <button type="button" (click)="showServiceChart(revenuTrackingEnum.Doctor,revenuTrackingReportForm)" [class.active]="isActiveService(revenuTrackingEnum.Doctor)"
+              matRipple>Doctor</button>
           </li>
           <li>
             <button type="button" (click)="showServiceChart(revenuTrackingEnum.Service_type,revenuTrackingReportForm)"
@@ -95,20 +86,19 @@
     </div>
     <div class="right-block" *ngIf="lineChartData.length>0">
       <div class="chart-wrapper">
-        <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-          [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
-          [plugins]="lineChartPlugins"></canvas>
+        <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+          [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
         <!-- <canvas *ngIf="serviceChart" baseChart [datasets]="barChartData" [labels]="barChartLabels"
               [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"> -->
         <!-- </canvas> -->
       </div>
     </div>
     <div class="right-block" *ngIf="lineChartData.length===0">
-      <app-empty-state [message]="getEmptyStateMessage()" icon="ic-empty-chart.svg">
+      <app-empty-state [message]="getEmptyStateMessage()">
       </app-empty-state>
     </div>
   </div>
-  <!-- <div class="block-footer sticky-bottom">
+  <!-- <div class="block-footer sticky">
       <div class="right-block btn-list">
           <button color="primary" mat-flat-button>Print</button>
       </div>

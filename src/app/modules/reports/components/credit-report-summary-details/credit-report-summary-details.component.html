@@ -1,4 +1,4 @@
-<div class="block-header has-border">
+<div class="block-header">
     <ul class="custom-breadcrumb">
         <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
         <li class="active">Bupa</li>
@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-<div class="block-header has-border">
+<div class="block-header">
     <ul class="custom-breadcrumb align-self-center">
         <li><a routerLink="/reports/creditReportSummary" [queryParams]="{ batchId: batchId, payerId: payerId}" class="primary-link">Bupa Rejections
                 Breakdown</a></li>
@@ -692,7 +692,7 @@
     </table>
 </div>
 
-<div class="block-footer sticky-bottom">
+<div class="block-footer sticky">
     <div class="left-block custom-paginator">
         <button (click)="goToFirstPage()" matRipple type="button" title="First Page">
             <img src="./assets/ic-page-first.svg" alt="First" />

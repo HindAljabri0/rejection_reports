@@ -2,10 +2,10 @@
     <div class="inner-loader" *ngIf="page.pageControls.isLoading">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
-    <div *ngIf="page.pageControls != null && page.pageControls.errorMessage != null" class="bg-white mb-14">
+    <div *ngIf="page.pageControls != null && page.pageControls.errorMessage != null" class="mb-14">
         <p class="error-card mb-0">{{page.pageControls.errorMessage}}</p>
     </div>
-    <app-empty-state *ngIf="page.uploads != null && page.uploads.length == 0" message='No uploads found!'>
+    <app-empty-state *ngIf="page.uploads != null && page.uploads.length == 0" class="claim-list-empty-state" message='No uploads found!'>
     </app-empty-state>
     <div class="row small-gutter">
         <app-upload-assigning-card class="col-lg-6" *ngFor="let upload of page.uploads" [data]="upload"></app-upload-assigning-card>

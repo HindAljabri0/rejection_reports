@@ -1,0 +1,79 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Invoices</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-md">
+                <div class="form-group" [matTooltip]="errors.billNo" [class.has-error]="errors.billNo!=null&&errors.billNo.trim().length>0">
+                    <label class="control-label" >Bill No</label>
+                    <input type="text" placeholder="Enter Bill No" class="form-control" [formControl]="invoicesSelectedBill">
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-group" [matTooltip]="errors.departmentNo" [class.has-error]="errors.departmentNo!=null&&errors.departmentNo.trim().length>0">
+                    <label class="control-label">Department</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select Department" [formControl]="invoicesControllerDepartment" [(value)]="invoicesSelectedDepartment">
+                            <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">{{department.departmentName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group" [matTooltip]="errors.doctorNo" [class.has-error]="errors.doctorNo!=null&&errors.doctorNo.trim().length>0">
+                    <label class="control-label">Doctor</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select Doctor" [formControl]="invoicesControllerDoctor" [(value)]="invoicesSelectedDoctor">
+                            <mat-option *ngFor="let doctor of doctorList" [value]="doctor.physicianId.physicianCode">{{doctor.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-auto">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="button" mat-flat-button color="primary" (click)="searchInvoice()">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height" *ngIf="invoiceList && invoiceList.length>0">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Payment Id</th>
+                        <th>Bill No</th>
+                        <th>Payment Date</th>
+                        <th>Amount</th>
+                        <th>Payment No</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let invoice of invoiceList">
+                        <td>{{invoice.paymentId}}</td>
+                        <td>{{invoice.billId}}</td>
+                        <td>{{invoice.paymentDate}}</td>
+                        <td>{{invoice.amount}}</td>
+                        <td>{{invoice.paymentNo}}</td>
+                        <td>{{invoice.details}}</td>
+                        <td>{{invoice.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-empty-state *ngIf="invoiceList.length<=0" message='No Invoices found!'>
+        </app-empty-state>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
+                [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

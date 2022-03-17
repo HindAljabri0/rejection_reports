@@ -1,4 +1,4 @@
-<div class="pagination-header">
+<div class="pagination-header" *ngIf="claims.length != 0">
     <div class="form-group page-select">
         <label class="control-label">Go to page: </label>
         <mat-form-field class="form-control custom-select-control">
@@ -8,8 +8,7 @@
         </mat-form-field>
     </div>
     <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-            (page)="paginatorAction($event)">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
         </mat-paginator>
     </div>
     <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
@@ -17,7 +16,7 @@
     </button>
 </div>
 
-<div class="table-responsive" *ngIf="errorMessage == null">
+<div class="table-responsive" *ngIf="errorMessage == null && claims.length != 0">
     <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
         <thead>
             <tr>
@@ -46,11 +45,10 @@
             </tr>
         </tbody>
     </table>
-    <app-empty-state *ngIf="claims.length == 0" class="claim-list-empty-state" icon="ic-empty-search.svg"
-        message='Select criteria to generate report'>
-    </app-empty-state>
 </div>
+<app-empty-state *ngIf="claims.length == 0" class="claim-list-empty-state" message='Select criteria to generate report'>
+</app-empty-state>
 
-<div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+<div class="block-body" *ngIf="errorMessage != null">
     <p class="error-card m-0">{{errorMessage}}</p>
 </div>

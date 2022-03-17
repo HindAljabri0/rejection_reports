@@ -1,9 +1,9 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p *ngIf="addMode"> Add Policy</p>
         <p *ngIf="EditMode"> Edit Policy</p>
     </div>
-    <div class="p-14 bg-white">
+    <div class="block-body">
         <h5 class="form-title pt-0">
             <span>Policy Info</span>
             <mat-slide-toggle color="primary" class="ml-auto theme-success" checked="true" labelPosition="before" [formControl]="IsActiveController">
@@ -64,8 +64,8 @@
                 <mat-icon>add</mat-icon>
             </button>
         </h5>
-        <ng-scrollbar [hidden]="addMode" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-            <div class="fixed-height" *ngIf="classes && classes.length>0">
+        <ng-scrollbar [hidden]="addMode" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="classes && classes.length>0">
+            <div class="fixed-height">
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                     <thead>
                         <tr>
@@ -108,18 +108,16 @@
                     </tbody>
                 </table>
             </div>
-            <app-empty-state *ngIf="!classes" message='No Classes found!'>
-            </app-empty-state>
         </ng-scrollbar>
-        <div class="block-footer sticky-bottom" [hidden]="addMode">
-            <div class="left-block">
-                <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-                    [pageIndex]="pageIndex">
-                </mat-paginator>
-            </div>
-        </div>
+        <app-empty-state [hidden]="addMode" *ngIf="!classes" message='No Classes found!'>
+        </app-empty-state>
     </div>
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky">
+        <div class="left-block" [hidden]="addMode" *ngIf="classes && classes.length>0">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
+            </mat-paginator>
+        </div>
         <div class="right-block btn-list">
             <button type="button" color="primary" (click)="SaveData()" mat-flat-button>Save</button>
         </div>

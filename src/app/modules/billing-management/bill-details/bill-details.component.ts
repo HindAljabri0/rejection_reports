@@ -524,7 +524,7 @@ export class BillDetailsComponent implements OnInit {
             serviceId: serv.serviceId,
             billServiceId: serv.billServiceId,
             isActiveServiceList: serv.isActiveServiceList,
-            quantity: serv.quantity.value,
+            quantity: serv.quantity,
             cashAmount: serv.cashAmount,
             grossAmount: serv.grossAmount,
             departmentId: serv.departmentId,

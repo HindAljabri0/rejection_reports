@@ -1,196 +1,168 @@
 <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel" [class.fixed-card]="cardCount<4">
-  <ng-template [id]="'1'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfUploadedClaims != 0'>
-      <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title"
-          [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()"
-          class="primary-card">
-          <table>
-              <tr>
-                  <th colspan="2">No. of Claims</th>
-              </tr>
-              <tr>
-                  <td colspan="2" class="pb-2 text-{{card0AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.noOfUploadedClaims}}</span></td>
-              </tr>
-              <tr>
-                  <th>Total Net</th>
-              </tr>
-              <tr>
-                  <td class="text-{{card0AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.totalAmtOfUploadedClaims}}</span><span
-                          class="currency">
-                          SR</span></td>
-              </tr>
-          </table>
-      </app-abstractcard>
-  </ng-template>
-  <ng-template [id]="'2'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfAcceptedClaims != 0'>
-      <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title"
-          [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()"
-          class="primary-card">
-          <div class="card-progress text-{{card1AccentColor}}">
-              <span class="value">{{summary.ratioOfAccepted}}%</span>
-              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioOfAccepted"
-                  diameter="48">
-              </mat-progress-spinner>
-          </div>
-          <table>
-              <tr>
-                  <th colspan="2">No. of Claims</th>
-              </tr>
-              <tr>
-                  <td class="pb-2 text-{{card1AccentColor}}" colspan="2"><span
-                          class="dashboard-numbers">{{summary.noOfAcceptedClaims}}</span></td>
-              </tr>
-              <tr>
-                  <th>Total Net</th>
-              </tr>
-              <tr>
-                  <td class="text-{{card1AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.totalAmtOfAcceptedClaims}}</span><span
-                          class="currency">
-                          SR</span></td>
-              </tr>
-          </table>
-      </app-abstractcard>
-  </ng-template>
-  <ng-template [id]="'3'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfNotAcceptedClaims != 0'>
-      <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title"
-          [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()"
-          class="primary-card">
-          <div class="card-progress text-{{card2AccentColor}}">
-              <span class="value">{{summary.ratioOfNotAccepted}}%</span>
-              <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioOfNotAccepted"
-                  diameter="48">
-              </mat-progress-spinner>
-          </div>
-          <table>
-              <tr>
-                  <th colspan="2">No. of Claims</th>
-              </tr>
-              <tr>
-                  <td class="pb-2 text-{{card2AccentColor}}" colspan="2"><span
-                          class="dashboard-numbers">{{summary.noOfNotAcceptedClaims}}</span></td>
-              </tr>
-              <tr>
-                  <th>Total Net</th>
-              </tr>
-              <tr>
-                  <td class="text-{{card2AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.totalAmtOfNotAcceptedClaims}}</span><span
-                          class="currency"> SR</span></td>
-              </tr>
-          </table>
-      </app-abstractcard>
-  </ng-template>
-  <ng-template [id]="'4'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfNotUploadedClaims != 0'>
-      <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title"
-          [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()"
-          class="primary-card">
-          <table>
-              <tr>
-                  <th colspan="2">No. of Claims</th>
-              </tr>
-              <tr>
-                  <td colspan="2" class="pb-2 text-{{card3AccentColor}}"><span
-                          class="dashboard-numbers">{{summary.noOfNotUploadedClaims}}</span></td>
-              </tr>
-              <tr>
-                  <td colspan="2">
-                      <span class="card-message text-{{card3AccentColor}} light-bg-{{card3AccentColor}}">Non readable
-                          claims will not be saved in the
-                          system</span>
-                  </td>
-              </tr>
-          </table>
-      </app-abstractcard>
-  </ng-template>
+    <ng-template [id]="'1'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfUploadedClaims != 0'>
+        <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor"
+            (action)="card0Action()" class="primary-card border-{{card0AccentColor}}">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td colspan="2" class="pb-2 text-{{card0AccentColor}}"><span class="dashboard-numbers">{{summary.noOfUploadedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total Net</th>
+                </tr>
+                <tr>
+                    <td class="text-{{card0AccentColor}}"><span class="dashboard-numbers">{{summary.totalAmtOfUploadedClaims}}</span><span class="currency">
+                            SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'2'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfAcceptedClaims != 0'>
+        <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title" [actionText]="card1ActionText" [accentColor]="card1AccentColor"
+            (action)="card1Action()" class="primary-card border-{{card1AccentColor}}">
+            <div class="card-progress text-{{card1AccentColor}}">
+                <span class="value">{{summary.ratioOfAccepted}}%</span>
+                <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioOfAccepted" diameter="48">
+                </mat-progress-spinner>
+            </div>
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td class="pb-2 text-{{card1AccentColor}}" colspan="2"><span class="dashboard-numbers">{{summary.noOfAcceptedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total Net</th>
+                </tr>
+                <tr>
+                    <td class="text-{{card1AccentColor}}"><span class="dashboard-numbers">{{summary.totalAmtOfAcceptedClaims}}</span><span class="currency">
+                            SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'3'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfNotAcceptedClaims != 0'>
+        <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title" [actionText]="card2ActionText" [accentColor]="card2AccentColor"
+            (action)="card2Action()" class="primary-card border-{{card2AccentColor}}">
+            <div class="card-progress text-{{card2AccentColor}}">
+                <span class="value">{{summary.ratioOfNotAccepted}}%</span>
+                <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioOfNotAccepted" diameter="48">
+                </mat-progress-spinner>
+            </div>
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td class="pb-2 text-{{card2AccentColor}}" colspan="2"><span class="dashboard-numbers">{{summary.noOfNotAcceptedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total Net</th>
+                </tr>
+                <tr>
+                    <td class="text-{{card2AccentColor}}"><span class="dashboard-numbers">{{summary.totalAmtOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'4'" carouselSlide *ngIf='uploadService.summary && uploadService.summary.noOfNotUploadedClaims != 0'>
+        <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor"
+            (action)="card3Action()" class="primary-card border-{{card3AccentColor}}">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td colspan="2" class="pb-2 text-{{card3AccentColor}}"><span class="dashboard-numbers">{{summary.noOfNotUploadedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span class="card-message text-{{card3AccentColor}} light-bg-{{card3AccentColor}}">Non readable
+                            claims will not be saved in the
+                            system</span>
+                    </td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
 </owl-carousel-o>
 
-<div *ngIf="location.path().includes('summary') && paginatedResult != null">
-  <div class="block-header">
-      <div>
-          <p>Upload Summary - {{commen.statusToName(selectedCardKey)}}</p>
-          <span class="block-description">Claim validations grouped by field name</span>
-      </div>
-      <span class="spacer"></span>
-      <div class="custom-paginator" *ngIf="paginatedResult.totalPages > 0">
-          <button matRipple (click)="goToFirstPage()" [disabled]='(paginatedResult.number + 1) === 1' type="button"
-              title="First Page">
-              <img src="./assets/ic-page-first.svg" alt="First" />
-          </button>
-          <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
-              [disabled]='(paginatedResult.number + 1) === 1'>
-              <img src="./assets/ic-page-prev.svg" alt="Previous" />
-          </button>
-          <p class="page-info">{{(paginatedResult.number+1)}}<small>/{{paginatedResult.totalPages}}</small></p>
-          <button matRipple [disabled]='(paginatedResult.number + 1) === paginatedResult.totalPages'
-              (click)="goToNextPage()" type="button" title="Next Page">
-              <img src="./assets/ic-page-next.svg" alt="Next" />
-          </button>
-          <button matRipple [disabled]='(paginatedResult.number + 1) === paginatedResult.totalPages'
-              (click)="goToLastPage()" type="button" title="Last Page">
-              <img src="./assets/ic-page-last.svg" alt="Last" />
-          </button>
-      </div>
-  </div>
-  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-      <div class="fixed-height">
-          <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
-              <ng-container *ngIf='paginatedResult.content.length > 0'>
-                  <thead>
-                      <tr>
-                          <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}"
-                              width="10"></th>
-                          <th
-                              class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">
-                              Field Name</th>
-                          <th
-                              class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">
-                              Frequency of errors</th>
-                          <th
-                              class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">
-                              Ratio</th>
-                          <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}"
-                              width="10" class="text-center">
-                              Status</th>
-                      </tr>
-                  </thead>
-              </ng-container>
-              <tbody>
-                  <ng-container *ngIf='paginatedResult.content.length > 0'>
-                      <tr *ngFor="let result of paginatedResult.content"
-                          (click)="(result.fieldName !== null && result.fieldName !== '' ) && openUploadSummaryDialog(result)"
-                          [ngClass]="(result.fieldName !== null && result.fieldName !== '' ) ? 'row-click' : '' ">
-                          <td class="text-primary text-center">
-                              <mat-icon class="size-21">add_circle_outline</mat-icon>
-                          </td>
-                          <td>{{result.fieldName}}</td>
-                          <td>{{result.frequency}}</td>
-                          <td>{{result.ratio}}%</td>
-                          <td class="text-center"><span
-                                  class="status-dot bg-{{accentColor(result.subStatus)}}"></span>
-                          </td>
-                      </tr>
-                  </ng-container>
-                  <ng-container *ngIf='paginatedResult.content.length === 0'>
-                      <tr>
-                          <td colspan="4" class="p-0">
-                              <app-empty-state class="summary-empty-state"></app-empty-state>
-                          </td>
-                      </tr>
-                  </ng-container>
-              </tbody>
-          </table>
-      </div>
-  </ng-scrollbar>
-  <div class="block-footer sticky-bottom">
-      <div class="left-block" *ngIf="uploading">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </div>
-      <div class="right-block btn-list">
-          <!-- <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button> -->
-          <button *ngIf="summary.uploadId != undefined" (click)="viewClaims()" mat-flat-button
-              color="primary">View Claims</button>
-      </div>
-  </div>
-</div>
+<ng-container *ngIf="location.path().includes('summary') && paginatedResult != null">
+    <div class="block-header p-0 pb-14 pt-14">
+        <div>
+            <p>Upload Summary - {{commen.statusToName(selectedCardKey)}}</p>
+            <span class="block-description">Claim validations grouped by field name</span>
+        </div>
+        <span class="spacer"></span>
+        <div class="custom-paginator" *ngIf="paginatedResult.totalPages > 0">
+            <button matRipple (click)="goToFirstPage()" [disabled]='(paginatedResult.number + 1) === 1' type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]='(paginatedResult.number + 1) === 1'>
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">{{(paginatedResult.number+1)}}<small>/{{paginatedResult.totalPages}}</small></p>
+            <button matRipple [disabled]='(paginatedResult.number + 1) === paginatedResult.totalPages' (click)="goToNextPage()" type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple [disabled]='(paginatedResult.number + 1) === paginatedResult.totalPages' (click)="goToLastPage()" type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+            <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <ng-container *ngIf='paginatedResult.content.length > 0'>
+                    <thead>
+                        <tr>
+                            <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}" width="10"></th>
+                            <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">
+                                Field Name</th>
+                            <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">
+                                Frequency of errors</th>
+                            <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">
+                                Ratio</th>
+                            <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}" width="10" class="text-center">
+                                Status</th>
+                        </tr>
+                    </thead>
+                </ng-container>
+                <tbody>
+                    <ng-container *ngIf='paginatedResult.content.length > 0'>
+                        <tr *ngFor="let result of paginatedResult.content" (click)="(result.fieldName !== null && result.fieldName !== '' ) && openUploadSummaryDialog(result)"
+                            [ngClass]="(result.fieldName !== null && result.fieldName !== '' ) ? 'row-click' : '' ">
+                            <td class="text-primary text-center">
+                                <mat-icon class="size-21">add_circle_outline</mat-icon>
+                            </td>
+                            <td>{{result.fieldName}}</td>
+                            <td>{{result.frequency}}</td>
+                            <td>{{result.ratio}}%</td>
+                            <td class="text-center"><span class="status-dot bg-{{accentColor(result.subStatus)}}"></span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf='paginatedResult.content.length === 0'>
+                        <tr>
+                            <td colspan="4" class="p-0">
+                                <app-empty-state class="summary-empty-state"></app-empty-state>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky p-0 pt-14 mb-n14 pb-14">
+        <div class="left-block" *ngIf="uploading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div class="right-block btn-list">
+            <!-- <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button> -->
+            <button *ngIf="summary.uploadId != undefined" (click)="viewClaims()" mat-flat-button color="primary">View Claims</button>
+        </div>
+    </div>
+</ng-container>
