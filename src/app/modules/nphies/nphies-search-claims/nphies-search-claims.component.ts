@@ -32,6 +32,7 @@ import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
+import { nlLocale } from 'ngx-bootstrap/chronos';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -703,7 +704,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.router.navigate([], {
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, reSubmitMode: null, size: null },
-      fragment: this.params.editMode == 'true' ? 'edit' : (this.params.reSubmitMode == 'true' ? 'Resubmit' : null),
+      fragment: this.params.editMode == 'true' ? 'edit' : null,
     });
   }
 
@@ -730,12 +731,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.claimDialogRef = null;
       this.params.claimId = null;
       this.params.editMode = null;
-      this.resetURL();
+      //this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
       //reload search data
-      const statuses = this.summaries[0].statuses;
-      this.loadStatues(statuses.filter(status => status.toUpperCase() != 'ALL'));
+      this.fetchData();
+      location.reload();
+      //const statuses = this.summaries[0].statuses;
+      //this.loadStatues(statuses.filter(status => status.toUpperCase() != 'ALL'));
     });
   }
 

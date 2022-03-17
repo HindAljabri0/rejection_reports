@@ -41,7 +41,7 @@
 
   </ul>
 
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab"  (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedTab">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab" >
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -1185,7 +1185,7 @@
     </ul>
 
     <div class="create-claim-body nphies-create">
-      <mat-tab-group class="primary-tab nphies-claim-tab" (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedTab">
+      <mat-tab-group class="primary-tab nphies-claim-tab" >
 
         <mat-tab>
           <ng-template mat-tab-label>
