@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -25,7 +25,6 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
-import { MatTabGroup } from '@angular/material';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -33,7 +32,6 @@ import { MatTabGroup } from '@angular/material';
   styles: []
 })
 export class CreateClaimNphiesComponent implements OnInit {
-
   errorMessage = null;
   beneficiarySearchController = new FormControl();
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
@@ -42,7 +40,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   selectedPlanIdError: string;
   isLoading = false;
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  selectedTab = 0;
+
   FormNphiesClaim: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
@@ -214,7 +212,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     if (urlHasEditMode) {
       this.pageMode = 'EDIT'
-      this.disableControls();
+        this.disableControls();
       this.getClaimDetails();
     }
     if (this.claimId && !urlHasEditMode) {
@@ -233,7 +231,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   toEditMode() {
-
     this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
     // this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
 
@@ -1328,7 +1325,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (body.isError) {
               
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
-              if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
+              if (this.pageMode == 'CREATE') {
                 
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               }
@@ -1336,10 +1333,24 @@ export class CreateClaimNphiesComponent implements OnInit {
               
               if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
                 
-                if (this.pageMode == 'CREATE') 
+                if (this.pageMode == 'CREATE') {
                   this.reset();
+                  this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                }
+
+                /*let url= this.pageMode == 'RESUBMIT' ?  `/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`
+                : `/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`;
+                
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true,true);
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                this.router.navigateByUrl(url);*/
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null,true);
+                if(this.pageMode == 'RESUBMIT'){
+                  this.claimId = body.claimId;
+                  this.uploadId = body.uploadId;                  
+                  this.getPayees();
+                  //this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                  //this.ngOnInit();
+                }
                 
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
@@ -2244,10 +2255,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   disabledAddItemsButton() {
     return !this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
-  }
-
-  onTabChanged(event) {
-    this.selectedTab = event.index;
   }
 
 }
