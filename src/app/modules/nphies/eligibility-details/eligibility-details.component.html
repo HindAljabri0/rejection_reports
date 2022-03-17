@@ -46,6 +46,12 @@
             </div>
         </div>
         <div class="col-4">
+          <div class="form-group form-group-static">
+              <div class="control-label">Site Eligibility</div>
+              <p class="form-control-static">{{eligibilityResponse.siteEligibility ? eligibilityResponse.siteEligibility : '-'}}</p>
+          </div>
+      </div>
+        <div class="col-4">
             <div class="form-group form-group-static">
                 <div class="control-label">Is Referral ? </div>
                 <p class="form-control-static">{{eligibilityResponse.transfer ? 'Yes' : 'No'}}</p>

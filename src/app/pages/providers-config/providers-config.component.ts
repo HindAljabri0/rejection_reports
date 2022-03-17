@@ -154,7 +154,7 @@ export class ProvidersConfigComponent implements OnInit {
             console.log(error);
         });
         this.addDbConfigForm = this.formBuilder.group({
-            midTablesType: [''],
+            // midTablesType: [''],
             dbType: [''],
             hostName: [''],
             port: [''],
@@ -739,7 +739,7 @@ export class ProvidersConfigComponent implements OnInit {
                 const data = event.body['dbObject'];
                 if (data != null) {
                     this.addDbConfigForm.patchValue({
-                        midTablesType: data.midTablesType,
+                        // midTablesType: data.midTablesType,
                         dbType: data.dbType,
                         hostName: data.hostName,
                         port: data.port,
@@ -772,14 +772,14 @@ export class ProvidersConfigComponent implements OnInit {
         }
         if (this.addDbConfigForm.dirty) {
             if (this.addDbConfigForm.valid) {
-                if (this.addDbConfigForm.controls['midTablesType'].untouched && this.addDbConfigForm.controls['dbType'].untouched
+                if (this.addDbConfigForm.controls['dbType'].untouched
                     && this.addDbConfigForm.controls['hostName'].untouched
                     && this.addDbConfigForm.controls['port'].untouched && this.addDbConfigForm.controls['databaseName'].untouched
                     && this.addDbConfigForm.controls['dbUserName'].untouched && this.addDbConfigForm.controls['dbPassword'].untouched) {
                     return true;
                 }
                 const body = {
-                    midTablesType: this.addDbConfigForm.value.midTablesType,
+                    // midTablesType: this.addDbConfigForm.value.midTablesType,
                     dbType: this.addDbConfigForm.value.dbType,
                     hostName: this.addDbConfigForm.value.hostName.trim(),
                     port: this.addDbConfigForm.value.port,
@@ -835,7 +835,7 @@ export class ProvidersConfigComponent implements OnInit {
             }
             if (this.addDbConfigForm.invalid &&
                 ((this.addDbConfigForm.value.hostName == null || this.addDbConfigForm.value.hostName.trim() == '')
-                    || this.addDbConfigForm.value.midTablesType == null || this.addDbConfigForm.value.dbType == null || this.addDbConfigForm.value.port == null
+                    || this.addDbConfigForm.value.dbType == null || this.addDbConfigForm.value.port == null
                     || (this.addDbConfigForm.value.databaseName == null || this.addDbConfigForm.value.databaseName.trim() == '')
                     || (this.addDbConfigForm.value.dbUserName == null || this.addDbConfigForm.value.dbUserName.trim() == '')
                     || (this.addDbConfigForm.value.dbPassword == null || this.addDbConfigForm.value.dbPassword.trim() == ''))) {
@@ -848,7 +848,7 @@ export class ProvidersConfigComponent implements OnInit {
     }
 
     validateForm() {
-        this.addDbConfigForm.controls['midTablesType'].clearValidators();
+        // this.addDbConfigForm.controls['midTablesType'].clearValidators();
         this.addDbConfigForm.controls['dbType'].clearValidators();
         this.addDbConfigForm.controls['hostName'].clearValidators();
         this.addDbConfigForm.controls['port'].clearValidators();
@@ -860,7 +860,7 @@ export class ProvidersConfigComponent implements OnInit {
             && (this.addDbConfigForm.value.databaseName == null || this.addDbConfigForm.value.databaseName.trim() == '')
             && (this.addDbConfigForm.value.dbUserName == null || this.addDbConfigForm.value.dbUserName.trim() == '')
             && (this.addDbConfigForm.value.dbPassword == null || this.addDbConfigForm.value.dbPassword.trim() == ''))) {
-            this.addDbConfigForm.controls['midTablesType'].setValidators([Validators.required]);
+            // this.addDbConfigForm.controls['midTablesType'].setValidators([Validators.required]);
             this.addDbConfigForm.controls['dbType'].setValidators([Validators.required]);
             this.addDbConfigForm.controls['hostName'].setValidators([Validators.required]);
             this.addDbConfigForm.controls['port'].setValidators([Validators.required]);
@@ -868,7 +868,7 @@ export class ProvidersConfigComponent implements OnInit {
             this.addDbConfigForm.controls['dbUserName'].setValidators([Validators.required]);
             this.addDbConfigForm.controls['dbPassword'].setValidators([Validators.required]);
         }
-        this.addDbConfigForm.controls['midTablesType'].updateValueAndValidity();
+        // this.addDbConfigForm.controls['midTablesType'].updateValueAndValidity();
         this.addDbConfigForm.controls['dbType'].updateValueAndValidity();
         this.addDbConfigForm.controls['hostName'].updateValueAndValidity();
         this.addDbConfigForm.controls['port'].updateValueAndValidity();
@@ -998,7 +998,7 @@ export class ProvidersConfigComponent implements OnInit {
                         mappingList.forEach(payer => {
                             this.newPayerMappingEnable[payer.payerId] = payer.enabled;
                             this.newPayerMappingValue[payer.payerId] = payer.mappingName;
-                   //         this.payerMappingValue[payer.payerId] = payer.mappingName;
+                            //         this.payerMappingValue[payer.payerId] = payer.mappingName;
                             this.newPayerName[payer.payerId] = payer.payerName;
                             this.addPayerMappingList.push(payer.payerId);
                             this.existingPayers.push(payer);
@@ -1193,12 +1193,12 @@ export class ProvidersConfigComponent implements OnInit {
         return false;
     }
 
-    get isWaseelMidTables() {
-        return this.addDbConfigForm.value.midTablesType != null && this.addDbConfigForm.value.midTablesType == 'WASEEL_MID_TABLES';
-    }
+    // get isWaseelMidTables() {
+    //     return this.addDbConfigForm.value.midTablesType != null && this.addDbConfigForm.value.midTablesType == 'WASEEL_MID_TABLES';
+    // }
 
 
-    get isNphiesMidTables() {
-        return this.addDbConfigForm.value.midTablesType != null && this.addDbConfigForm.value.midTablesType == 'NPHIES_MID_TABLES';
-    }
+    // get isNphiesMidTables() {
+    //     return this.addDbConfigForm.value.midTablesType != null && this.addDbConfigForm.value.midTablesType == 'NPHIES_MID_TABLES';
+    // }
 }

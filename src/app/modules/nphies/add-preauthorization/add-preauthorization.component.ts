@@ -45,7 +45,6 @@ export class AddPreauthorizationComponent implements OnInit {
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
-  itemsButtonTooltip = '';
 
   FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
@@ -801,6 +800,7 @@ export class AddPreauthorizationComponent implements OnInit {
                     y.itemDescription = result.itemDescription;
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
+                    y.quantity = result.quantity;
                   }
                 });
               } else {
@@ -1254,6 +1254,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
+            dmodel.quantity = parseInt(y.quantity);
             return dmodel;
           });
 
@@ -1293,6 +1294,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
+            dmodel.quantity = parseInt(y.quantity);
             return dmodel;
           });
 
@@ -1475,16 +1477,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   disableItemsButton() {
-    const retval = !this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
-    setTimeout(() => {
-      if (retval) {
-        this.itemsButtonTooltip = 'Add Care Team to enable adding Items';
-      }
-      else {
-        this.itemsButtonTooltip = '';
-      }
-    }, 50);
-    return retval;
+    return !this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
   }
 
 }
