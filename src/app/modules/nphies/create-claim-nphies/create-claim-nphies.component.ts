@@ -212,7 +212,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     if (urlHasEditMode) {
       this.pageMode = 'EDIT'
-        this.disableControls();
+      this.disableControls();
       this.getClaimDetails();
     }
     if (this.claimId && !urlHasEditMode) {
@@ -1323,35 +1323,31 @@ export class CreateClaimNphiesComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.isError) {
-              
+
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
               if (this.pageMode == 'CREATE') {
-                
+
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               }
             } else {
-              
+
               if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
-                
+
                 if (this.pageMode == 'CREATE') {
                   this.reset();
                   this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
                 }
 
-                /*let url= this.pageMode == 'RESUBMIT' ?  `/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`
-                : `/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`;
-                
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true,true);
-                this.router.navigateByUrl(url);*/
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null,true);
-                if(this.pageMode == 'RESUBMIT'){
+
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
+                if (this.pageMode == 'RESUBMIT') {
                   this.claimId = body.claimId;
-                  this.uploadId = body.uploadId;                  
+                  this.uploadId = body.uploadId;
                   this.getPayees();
                   //this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
                   //this.ngOnInit();
                 }
-                
+
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
                 this.ngOnInit();
@@ -1632,6 +1628,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.beneficiary = response.beneficiary;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
+    this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
 
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length
@@ -1941,6 +1938,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       switch (model.category) {
         case 'vital-sign-weight':
+        case 'birth-weight':
           model.unit = 'kg';
           break;
         case 'vital-sign-systolic':
@@ -1956,6 +1954,16 @@ export class CreateClaimNphiesComponent implements OnInit {
           break;
         case 'days-supply':
           model.unit = 'd';
+          break;
+        case 'temperature':
+          model.unit = 'Cel';
+          break;
+        case 'pulse':
+        case 'respiratory-rate':
+          model.unit = 'Min';
+          break;
+        case 'oxygen-saturation':
+          model.unit = '%';
           break;
       }
       model.byteArray = x.attachment;
