@@ -170,7 +170,13 @@ export class SharedDataService {
     { value: 'icu-hours', name: 'ICU Hours' },
     { value: 'ventilation-hours', name: 'Ventilation Hours' },
     { value: 'vital-sign-height', name: 'Vital Sign Height' },
-    { value: 'chief-complaint', name: 'Chief Complaint' }
+    { value: 'chief-complaint', name: 'Chief Complaint' },
+    { value: 'temperature', name: 'Temperature' },
+    { value: 'pulse', name: 'Pulse' },
+    { value: 'oxygen-saturation', name: 'Oxygen Saturation' },
+    { value: 'respiratory-rate', name: 'Respiratory Rate' },
+    { value: 'last-menstrual-period', name: 'Last Menstrual Period' },
+    { value: 'birth-weight', name: 'Birth Weight' }
   ];
 
   reasonList = [

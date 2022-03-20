@@ -10,7 +10,7 @@
       </p>
       <p>
         <span>Related Claim ID:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimId ? otherDataModel.relatedClaimId : '-' }} </strong></span>
+          <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-" +otherDataModel.relatedClaimId) : '-' }} </strong></span>
         </strong>
       </p>
       <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
@@ -1153,8 +1153,8 @@
         </p>
         <p>
           <span>Related Claim ID:</span>&nbsp;<strong>
-            <span> <strong>{{otherDataModel.relatedClaimId ? otherDataModel.relatedClaimId :
-                otherDataModel.claimResourceId }} </strong></span>
+            <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-" +otherDataModel.relatedClaimId) :
+              otherDataModel.status == 'Cancelled' ? otherDataModel.claimResourceId : "-" }} </strong></span>
           </strong>
         </p>
         <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
