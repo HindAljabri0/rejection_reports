@@ -6,14 +6,16 @@
         <div class="form-group flex-grow-1"
           [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
           <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-          <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+          <input type="text" class="form-control search-box"
+            placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
             [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
               {{beneficiary.name}} ({{beneficiary.documentId}})
             </mat-option>
           </mat-autocomplete>
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
             <span class="error-text">Please select a Beneficiary</span>
           </div>
         </div>
@@ -23,7 +25,8 @@
         </div>
         <div class="form-group">
           <label class="control-label">&nbsp;</label>
-          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+            color="primary">Create New Beneficiary</button>
         </div>
       </div>
 
@@ -42,7 +45,8 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
               <span class="error-text">Please select an Insurance Plan</span>
             </div>
           </div>
@@ -52,6 +56,11 @@
 
     <h5 class="form-title">Personal Information</h5>
     <div class="row small-gutter">
+      <div class="col-4 col-lg-3">
+        <mat-slide-toggle formControlName="isNewBorn" color="primary"
+          [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">New Born
+        </mat-slide-toggle>
+      </div>
       <div class="col-4 col-lg-3">
         <div class="form-group">
           <label class="control-label">First Name</label>
@@ -77,10 +86,12 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')}">
           <label class="control-label">Full Name<span class="asterisk">*</span></label>
           <input placeholder="Enter full name" class="form-control" formControlName="fullName">
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')">
             <span class="error-text">Please enter full name</span>
           </div>
         </div>
@@ -92,20 +103,24 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')}">
           <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
           <div class="date-picker">
-            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" formControlName="dob">
+            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
+              formControlName="dob">
             <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
             <mat-datepicker #dateOfBirth></mat-datepicker>
           </div>
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')">
             <span class="error-text">Please select Dob</span>
           </div>
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')}">
           <label class="control-label">Gender<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="gender">
@@ -121,7 +136,8 @@
               <mat-option value="C">Not Completed </mat-option> -->
             </mat-select>
           </mat-form-field>
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')">
             <span class="error-text">Please select Gender</span>
           </div>
         </div>
@@ -135,17 +151,20 @@
               <mat-option value="">Select Document Type</mat-option>
               <mat-option *ngFor="let dt of documentTypes" [value]="dt.Code">{{dt.Name}}</mat-option>
             </mat-select>
-            <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')">
               <span class="error-text">Please select Document Type</span>
             </div>
           </mat-form-field>
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')}">
           <label class="control-label">Document ID<span class="asterisk">*</span></label>
           <input placeholder="Enter document ID" class="form-control" formControlName="documentId">
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')">
             <span class="error-text">Please select Document Id</span>
           </div>
         </div>
@@ -160,9 +179,11 @@
         <div class="form-group">
           <label class="control-label">Nationality</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select [value]="selectedNationality" formControlName="nationality" (selectionChange)="selectedNationality = $event.value;" #Nationality>
+            <mat-select [value]="selectedNationality" formControlName="nationality"
+              (selectionChange)="selectedNationality = $event.value;" #Nationality>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Select Nationality" noEntriesFoundLabel="No nationalities found" formControlName="nationalityName"
+                <ngx-mat-select-search placeholderLabel="Select Nationality"
+                  noEntriesFoundLabel="No nationalities found" formControlName="nationalityName"
                   name='selectedNationality'>
                 </ngx-mat-select-search>
               </mat-option>
@@ -199,7 +220,8 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="martialStatus">
               <mat-option value="">Select Marital Status</mat-option>
-              <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+              <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async"
+                [value]="MaritalStatusValue.Code">
                 {{MaritalStatusValue.Name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -265,22 +287,28 @@
 
           <tr class="align-middle">
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" formControlName="addressLine" />
+              <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"
+                formControlName="addressLine" />
             </td>
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter Street Name" formControlName="streetLine" />
+              <input type="text" class="form-control minw145" placeholder="Enter Street Name"
+                formControlName="streetLine" />
             </td>
             <td>
               <input type="text" class="form-control minw145" placeholder="Enter City" formControlName="bcity" />
             </td>
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter State/Province" formControlName="bstate" />
+              <input type="text" class="form-control minw145" placeholder="Enter State/Province"
+                formControlName="bstate" />
             </td>
             <td>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCountry" formControlName="bcountry" (selectionChange)="selectedCountry = $event.value;" #Country>
+                <mat-select [value]="selectedCountry" formControlName="bcountry"
+                  (selectionChange)="selectedCountry = $event.value;" #Country>
                   <mat-option>
-                    <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="bcountryName" name='selectedCountry'>
+                    <ngx-mat-select-search placeholderLabel="Select Country"
+                      noEntriesFoundLabel="No nationalities found" formControlName="bcountryName"
+                      name='selectedCountry'>
                     </ngx-mat-select-search>
                   </mat-option>
                   <mat-option value="">Select Country</mat-option>
@@ -290,7 +318,8 @@
               </mat-form-field>
             </td>
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter Postal Code" formControlName="postalCode" />
+              <input type="text" class="form-control minw145" placeholder="Enter Postal Code"
+                formControlName="postalCode" />
             </td>
           </tr>
         </tbody>
@@ -329,7 +358,8 @@
             <td>
               <div class="form-group m-0">
                 <div class="date-picker">
-                  <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" formControlName="insurancePlanExpiryDate">
+                  <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
+                    formControlName="insurancePlanExpiryDate">
                   <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
                   <mat-datepicker #expiryDate></mat-datepicker>
                 </div>
@@ -337,7 +367,8 @@
             </td>
             <td>
               <div class="form-group m-0">
-                <input type="text" class="form-control" placeholder="Enter member card ID" formControlName="insurancePlanMemberCardId" />
+                <input type="text" class="form-control" placeholder="Enter member card ID"
+                  formControlName="insurancePlanMemberCardId" />
               </div>
             </td>
             <td>
@@ -370,7 +401,8 @@
         </tbody>
       </table>
     </div>
-    <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length == 0" [message]="'No insurance plans found!'"></app-empty-state>
+    <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length == 0" [message]="'No insurance plans found!'">
+    </app-empty-state>
   </form>
 </ng-container>
 <ng-container *ngIf="otherDataModel && otherDataModel.beneficiary && pageMode === 'VIEW'">
@@ -540,7 +572,8 @@
     <span>Insurance Plan</span>
   </h5>
 
-  <div class="table-responsive" *ngIf="otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
+  <div class="table-responsive"
+    *ngIf="otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
     <table class="primary-grid manual-row-color claim-view-table no-borders">
       <thead>
         <tr>
@@ -572,6 +605,8 @@
       </tbody>
     </table>
   </div>
-  <app-empty-state [className]="'mb-2'" *ngIf="otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan" [message]="'No insurance plans found!'">
+  <app-empty-state [className]="'mb-2'"
+    *ngIf="otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan"
+    [message]="'No insurance plans found!'">
   </app-empty-state>
 </ng-container>

@@ -113,7 +113,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanCoverageType: [''],
     insurancePlanPayerName: [''],
     insurancePrimary: [''],
-    insurancePayerNphiesId: ['']
+    insurancePayerNphiesId: [''],
+    isNewBorn: [false]
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -239,7 +240,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       documentType: this.otherDataModel.beneficiary.documentType,
       id: this.otherDataModel.beneficiary.id,
       name: this.otherDataModel.beneficiary.beneficiaryName,
-
+      isNewBorn:  this.otherDataModel.beneficiary.isNewBorn,
       firstName: this.otherDataModel.beneficiary.firstName,
       secondName: this.otherDataModel.beneficiary.secondName,
       thirdName: this.otherDataModel.beneficiary.thirdName,
@@ -951,6 +952,17 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
+  checkItemsCodeForSupportingInfo() {
+    // tslint:disable-next-line:max-line-length
+    if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+      // tslint:disable-next-line:max-line-length
+      this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   updateSequenceNames() {
     this.Items.forEach(x => {
       if (x.supportingInfoSequence) {
@@ -1039,6 +1051,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
 
+    if (!this.checkItemsCodeForSupportingInfo()) {
+      hasError = true;
+    }
+
     if (hasError) {
       return;
     }
@@ -1049,6 +1065,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.sharedServices.loadingChanged.next(true);
 
       this.model.beneficiary = {};
+      this.model.beneficiary.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
       this.model.beneficiary.thirdName = this.FormNphiesClaim.controls.lastName.value;
@@ -1637,6 +1654,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (this.otherDataModel.beneficiary) {
       // tslint:disable-next-line:max-line-length
+
+      this.FormNphiesClaim.controls.isNewBorn.setValue(this.otherDataModel.beneficiary.isNewBorn);
       this.FormNphiesClaim.controls.firstName.setValue(this.otherDataModel.beneficiary.firstName);
       this.FormNphiesClaim.controls.middleName.setValue(this.otherDataModel.beneficiary.secondName);
       this.FormNphiesClaim.controls.lastName.setValue(this.otherDataModel.beneficiary.thirdName);
