@@ -2,58 +2,71 @@
   <ng-container *ngIf='addMode'>
     <div class="block-header">
       <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
+      <mat-slide-toggle color="primary" color="primary" class="ml-auto" (change)="onChangeState(isNewBorn)"
+        [checked]="isNewBorn">Is New Born</mat-slide-toggle>
     </div>
     <div class="block-filter-panel">
       <h5 class="form-title pt-0">Personal Information</h5>
+
       <div class="row small-gutter">
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">First Name</label>
-            <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="firstNameController" [(ngModel)]="fullName">
+            <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="firstNameController" [(ngModel)]="fullName">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Second Name</label>
-            <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="secondNameController">
+            <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="secondNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Third Name</label>
-            <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="thirdNameController">
+            <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="thirdNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Family Name</label>
-            <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="familyNameController">
+            <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="familyNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.fullName"
+            [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
-            <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()" [formControl]="fullNameController">
+            <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()"
+              [formControl]="fullNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Beneficiary File ID</label>
-            <input placeholder="Enter beneficiary file ID" class="form-control" [formControl]="beneficiaryFileIdController">
+            <input placeholder="Enter beneficiary file ID" class="form-control"
+              [formControl]="beneficiaryFileIdController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.dob"
+            [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
             <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
+              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
+                [formControl]="dobFormControl">
               <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
               <mat-datepicker #dateOfBirth></mat-datepicker>
             </div>
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.gender"
+            [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
             <label class="control-label">Gender<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value;">
@@ -71,7 +84,8 @@
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.documentType" [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.documentType"
+            [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
             <label class="control-label">Document Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select [value]="selectedDocumentType" (selectionChange)="selectedDocumentType = $event.value;">
@@ -90,7 +104,8 @@
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.documentId"
+            [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
             <label class="control-label">Document ID<span class="asterisk">*</span></label>
             <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
           </div>
@@ -105,9 +120,11 @@
           <div class="form-group">
             <label class="control-label">Nationality</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;" #nationalitySelect>
+              <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;"
+                #nationalitySelect>
                 <mat-option>
-                  <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                  <ngx-mat-select-search placeholderLabel="Search Nationality"
+                    noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
                     name='searchedNationality'>
                   </ngx-mat-select-search>
                 </mat-option>
@@ -122,7 +139,8 @@
           <div class="form-group">
             <label class="control-label">Residency Type</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
+              <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;"
+                #ResidencyType>
                 <mat-option value="">Select Residency Type</mat-option>
                 <mat-option value="visitor">Visitor</mat-option>
                 <mat-option value="dependent">Dependent</mat-option>
@@ -141,10 +159,12 @@
           <div class="form-group">
             <label class="control-label">Marital Status</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;" required #maritalStatusSelect>
+              <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;"
+                required #maritalStatusSelect>
 
                 <mat-option value="">Select Marital Status</mat-option>
-                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async"
+                  [value]="MaritalStatusValue.Code">
                   {{MaritalStatusValue.Name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -154,7 +174,8 @@
           <div class="form-group">
             <label class="control-label">Blood Group</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
+              <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;"
+                #BloodGroupe>
                 <mat-option value="">Select Blood Group</mat-option>
                 <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
                   {{bloodTybe.Name}}</mat-option>
@@ -177,7 +198,8 @@
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Emergency Phone Number</label>
-            <input placeholder="Enter emergency phone number" class="form-control" [formControl]="emergencyPhoneNumberController">
+            <input placeholder="Enter emergency phone number" class="form-control"
+              [formControl]="emergencyPhoneNumberController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
@@ -215,24 +237,29 @@
 
             <tr class="align-middle">
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
+                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"
+                  [formControl]="houseNumberController" />
               </td>
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
+                <input type="text" class="form-control minw145" placeholder="Enter Street Name"
+                  [formControl]="streetNameController" />
               </td>
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
+                <input type="text" class="form-control minw145" placeholder="Enter City"
+                  [formControl]="cityNameController" />
               </td>
               <td>
 
-                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
+                <input type="text" class="form-control minw145" placeholder="Enter State/Province"
+                  [formControl]="stateController" />
 
               </td>
               <td>
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
                     <mat-option>
-                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                      <ngx-mat-select-search placeholderLabel="Select Country"
+                        noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
                         name='selectedCountry'>
                       </ngx-mat-select-search>
                     </mat-option>
@@ -243,7 +270,8 @@
                 </mat-form-field>
               </td>
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
+                <input type="text" class="form-control minw145" placeholder="Enter Postal Code"
+                  [formControl]="postalCodeController" />
               </td>
               <!-- <td class="actions">
                                 <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteAddress(i)">
@@ -263,7 +291,8 @@
           <mat-icon>add</mat-icon>
         </button>
       </h5>
-      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'"></app-empty-state>
+      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'">
+      </app-empty-state>
       <div class="table-responsive" *ngIf="insurancePlans.length>0">
         <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
           <table class="primary-grid manual-row-color claim-view-table no-borders">
@@ -282,7 +311,8 @@
 
               <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                 <td class="text-center">
-                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="((i+''==setPrimary && addMode) || insurancePlans.length===0)">
+                  <mat-radio-button color="primary" class="grid-radio" [value]="i"
+                    [checked]="((i+''==setPrimary && addMode) || insurancePlans.length===0)">
                   </mat-radio-button>
                 </td>
 
@@ -291,7 +321,8 @@
                   <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
                     [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                      <mat-select [value]="insurancePlan.selectePayer"
+                        (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
                         <mat-option [value]="insurancePlan.selectePayer">{{editMode?
                           selectedPayer(insurancePlan.selectePayer):"Select payer"}}
                         </mat-option>
@@ -304,7 +335,8 @@
                 <td>
                   <div class="form-group m-0 w-130">
                     <div class="date-picker">
-                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" [formControl]="insurancePlan.expiryDateController">
+                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
+                        [formControl]="insurancePlan.expiryDateController">
                       <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
                       <mat-datepicker #expiryDate></mat-datepicker>
                     </div>
@@ -313,17 +345,20 @@
                 <td>
                   <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
                     [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
+                    <input type="text" class="form-control" placeholder="Enter member card ID"
+                      [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
                   </div>
                 </td>
                 <td>
                   <div class="form-group m-0 w-160"
                     [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship" (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
+                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
+                        (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
                         #selecteSubscriberRelationship>
                         <mat-option value="">Select Relation with Subscriber</mat-option>
-                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
+                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship"
+                          [value]="subscriberRelationship.Code">
                           {{subscriberRelationship.Name}}</mat-option>
 
                       </mat-select>
@@ -335,7 +370,8 @@
                   <div class="form-group m-0 w-160"
                     [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                      <mat-select [value]="insurancePlan.selecteCoverageType"
+                        (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
                         <mat-option value="">Select Coverage Type</mat-option>
                         <mat-option value="EHCPOL">Extended healthcare</mat-option>
                         <mat-option value="PUBLICPOL">Public healthcare</mat-option>
@@ -371,16 +407,26 @@
       <div class="left-block">
         <div class="d-flex align-items-center">
           <div class="actions mr-2 my-n2 ml-n1">
-            <button matRipple type="button" (click)="viewMode=false" class="action-btn" routerLink="/nphies/beneficiary">
+            <button matRipple type="button" (click)="viewMode=false" class="action-btn"
+              routerLink="/nphies/beneficiary">
               <mat-icon>arrow_back</mat-icon>
             </button>
           </div>
           <p>{{beneficiaryinfo.fullName}}</p>
+
+          
         </div>
+
       </div>
 
       <div *ngIf="viewMode" class="right-block">
-        <button type="button" class="size-sm mt-n1 mb-n1" mat-flat-button color="primary" (click)="changeMode()">Edit</button>
+        <button type="button" class="size-sm mt-n1 mb-n1" mat-flat-button color="primary"
+          (click)="changeMode()">Edit</button>
+         
+      </div>
+      <div *ngIf="editMode" class="right-block">
+          <mat-slide-toggle  color="primary" color="primary" class="ml-auto"
+            (change)="onChangeState(isNewBorn)" [checked]="isNewBorn">Is New Born</mat-slide-toggle>
       </div>
     </div>
 
@@ -388,55 +434,66 @@
 
     <div *ngIf="editMode" class="block-filter-panel">
       <h5 class="form-title pt-0">Personal Information</h5>
+
       <div class="row small-gutter">
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">First Name</label>
-            <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="firstNameController" [(ngModel)]="fullName">
+            <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="firstNameController" [(ngModel)]="fullName">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Second Name</label>
-            <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="secondNameController">
+            <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="secondNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Third Name</label>
-            <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="thirdNameController">
+            <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="thirdNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Family Name</label>
-            <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()" [formControl]="familyNameController">
+            <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()"
+              [formControl]="familyNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.fullName"
+            [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
-            <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()" [formControl]="fullNameController">
+            <input placeholder="Enter full name" class="form-control" (change)="onNameChanged()"
+              [formControl]="fullNameController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Beneficiary File ID</label>
-            <input placeholder="Enter beneficiary file ID" class="form-control" [formControl]="beneficiaryFileIdController">
+            <input placeholder="Enter beneficiary file ID" class="form-control"
+              [formControl]="beneficiaryFileIdController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.dob"
+            [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
             <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
+              <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
+                [formControl]="dobFormControl">
               <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
               <mat-datepicker #dateOfBirth></mat-datepicker>
             </div>
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.gender"
+            [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
             <label class="control-label">Gender<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value;">
@@ -457,7 +514,8 @@
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.documentType" [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.documentType"
+            [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
             <label class="control-label">Document Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select [value]="selectedDocumentType" (selectionChange)="selectedDocumentType = $event.value;">
@@ -483,7 +541,8 @@
           </div>
         </div>
         <div class="col-4 col-lg-3">
-          <div class="form-group" [matTooltip]="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.documentId"
+            [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
             <label class="control-label">Document ID<span class="asterisk">*</span></label>
             <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
           </div>
@@ -498,9 +557,11 @@
           <div class="form-group">
             <label class="control-label">Nationality</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;" #nationalitySelect>
+              <mat-select [value]="selectedNationality" (selectionChange)="selectedNationality = $event.value;"
+                #nationalitySelect>
                 <mat-option>
-                  <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                  <ngx-mat-select-search placeholderLabel="Search Nationality"
+                    noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
                     name='searchedNationality'>
                   </ngx-mat-select-search>
                 </mat-option>
@@ -515,7 +576,8 @@
           <div class="form-group">
             <label class="control-label">Residency Type</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;" #ResidencyType>
+              <mat-select [value]="selectedResidencyType" (selectionChange)="selectedResidencyType = $event.value;"
+                #ResidencyType>
                 <mat-option value="">Select Residency Type</mat-option>
                 <!-- <mat-option value="VISITOR">Visitor</mat-option>
                 <mat-option value="DEPENDENT">Dependent</mat-option>
@@ -537,10 +599,12 @@
           <div class="form-group">
             <label class="control-label">Marital Status</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;" required #maritalStatusSelect>
+              <mat-select [value]="selectedMaritalStatus" (selectionChange)="selectedMaritalStatus = $event.value;"
+                required #maritalStatusSelect>
 
                 <mat-option value="">Select Marital Status</mat-option>
-                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+                <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async"
+                  [value]="MaritalStatusValue.Code">
                   {{MaritalStatusValue.Name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -550,7 +614,8 @@
           <div class="form-group">
             <label class="control-label">Blood Group</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
+              <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;"
+                #BloodGroupe>
                 <mat-option value="">Select Blood Group</mat-option>
                 <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
                   {{bloodTybe.Name}}</mat-option>
@@ -573,7 +638,8 @@
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label">Emergency Phone Number</label>
-            <input placeholder="Enter emergency phone number" class="form-control" [formControl]="emergencyPhoneNumberController">
+            <input placeholder="Enter emergency phone number" class="form-control"
+              [formControl]="emergencyPhoneNumberController">
           </div>
         </div>
         <div class="col-4 col-lg-3">
@@ -606,24 +672,29 @@
 
             <tr class="align-middle">
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
+                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"
+                  [formControl]="houseNumberController" />
               </td>
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
+                <input type="text" class="form-control minw145" placeholder="Enter Street Name"
+                  [formControl]="streetNameController" />
               </td>
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
+                <input type="text" class="form-control minw145" placeholder="Enter City"
+                  [formControl]="cityNameController" />
               </td>
               <td>
 
-                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
+                <input type="text" class="form-control minw145" placeholder="Enter State/Province"
+                  [formControl]="stateController" />
 
               </td>
               <td>
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
                     <mat-option>
-                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                      <ngx-mat-select-search placeholderLabel="Select Country"
+                        noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
                         name='selectedCountry'>
                       </ngx-mat-select-search>
                     </mat-option>
@@ -634,7 +705,8 @@
                 </mat-form-field>
               </td>
               <td>
-                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
+                <input type="text" class="form-control minw145" placeholder="Enter Postal Code"
+                  [formControl]="postalCodeController" />
               </td>
             </tr>
 
@@ -649,7 +721,8 @@
           <mat-icon>add</mat-icon>
         </button>
       </h5>
-      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'"></app-empty-state>
+      <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length==0" [message]="'No insurance plans found!'">
+      </app-empty-state>
       <div class="table-responsive" *ngIf="insurancePlans.length>0">
         <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
           <table class="primary-grid manual-row-color claim-view-table no-borders">
@@ -668,7 +741,8 @@
 
               <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                 <td class="text-center">
-                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode) ||insurancePlan.iSPrimary">
+                  <mat-radio-button color="primary" class="grid-radio" [value]="i"
+                    [checked]="(i+''==setPrimary && addMode) ||insurancePlan.iSPrimary">
                   </mat-radio-button>
                 </td>
 
@@ -677,8 +751,10 @@
                   <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
                     [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
-                        <mat-option [value]="insurancePlan.selectePayer">{{editMode && selectedPayer(insurancePlan.selectePayer)!=null?
+                      <mat-select [value]="insurancePlan.selectePayer"
+                        (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                        <mat-option [value]="insurancePlan.selectePayer">{{editMode &&
+                          selectedPayer(insurancePlan.selectePayer)!=null?
                           selectedPayer(insurancePlan.selectePayer):"Select payer"}}
                         </mat-option>
                         <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
@@ -691,7 +767,8 @@
                 <td>
                   <div class="form-group m-0 w-130">
                     <div class="date-picker">
-                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" [formControl]="insurancePlan.expiryDateController">
+                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
+                        [formControl]="insurancePlan.expiryDateController">
                       <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
                       <mat-datepicker #expiryDate></mat-datepicker>
                     </div>
@@ -700,17 +777,20 @@
                 <td>
                   <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
                     [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
-                    <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" />
+                    <input type="text" class="form-control" placeholder="Enter member card ID"
+                      [formControl]="insurancePlan.memberCardId" />
                   </div>
                 </td>
                 <td>
                   <div class="form-group m-0 w-160"
                     [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship" (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
+                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
+                        (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
                         #selecteSubscriberRelationship>
                         <mat-option value="">Select Relation with Subscriber</mat-option>
-                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
+                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship"
+                          [value]="subscriberRelationship.Code">
                           {{subscriberRelationship.Name}}</mat-option>
 
                       </mat-select>
@@ -722,7 +802,8 @@
                   <div class="form-group m-0 w-160"
                     [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                      <mat-select [value]="insurancePlan.selecteCoverageType"
+                        (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
                         <mat-option value="">Select Coverage Type</mat-option>
                         <mat-option value="EHCPOL">Extended healthcare</mat-option>
                         <mat-option value="PUBLICPOL">Public healthcare</mat-option>
