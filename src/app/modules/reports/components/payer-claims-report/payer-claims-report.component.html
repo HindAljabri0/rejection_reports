@@ -27,12 +27,16 @@
           <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('payerId').hasError('required')">
             <label class="control-label">Payer</label>
             <!-- <input type="text" class="form-control" placeholder="Select Payer" formControlName="payerId" /> -->
-            <mat-form-field class="form-control custom-select-control">
+            <mat-form-field  class="form-control custom-select-control">
               <!-- <mat-label>Select payer</mat-label> -->
-              <mat-select formControlName="payerId" required>
-                <mat-option value="">Select payer</mat-option>
+              <mat-select disabled="true" formControlName="payerId" required>
+                <!-- <mat-option value="">Select payer</mat-option>
                 <mat-option *ngFor="let payer of payers" [value]="payer.payerId">
                   {{payer.payerName}}
+                </mat-option> -->
+                
+                <mat-option  value="102">
+                  Tawuniya
                 </mat-option>
               </mat-select>
             </mat-form-field>

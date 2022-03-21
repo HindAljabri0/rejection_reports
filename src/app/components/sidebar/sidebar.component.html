@@ -450,8 +450,8 @@
                     Administration
                 </div>
             </ng-container>
-            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isPAM">
-                <mat-accordion displayMode="flat">
+            <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isPAM||userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isPayerUser">
+                <mat-accordion *ngIf="userPrivileges.WaseelPrivileges.isPAM" displayMode="flat" >
                     <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerCertificate.isActive ">
                         <mat-expansion-panel-header>
                             <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
@@ -476,7 +476,7 @@
                     </mat-expansion-panel>
                 </mat-accordion>
 
-                <mat-accordion displayMode="flat">
+                <mat-accordion *ngIf="userPrivileges.WaseelPrivileges.isPAM" displayMode="flat">
                     <mat-expansion-panel hideToggle [expanded]="auditTrail.isActive || transactionsLog.isActive">
                         <mat-expansion-panel-header>
                             <mat-panel-title i18n="@@audit">Logs</mat-panel-title>
@@ -501,13 +501,13 @@
                         <mat-panel-title>Reports</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
-                        <li *ngIf="!envStaging && !envProd">
+                        <li *ngIf="!envStaging && !envProd &&!userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isPayerUser">
                             <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive">
                                 <span class="text">Claim Submissions</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive">
+                            <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive" >
                                 <span class="text">Payer Claims Report</span>
                             </a>
                         </li>

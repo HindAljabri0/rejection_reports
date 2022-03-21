@@ -14,7 +14,6 @@ import { checkAlerts, evaluateUserPrivileges } from 'src/app/store/mainStore.act
 export class AuthService {
 
     toKeepStorageValues: { key: string, value?: string }[] = [{ key: 'defaultDashboardPayer' }, { key: 'defaultDashboardSectionsOrder' }, { key: 'lastDateAlertAppeared:{}' }];
-
     isUserNameUpdated: Subject<boolean> = new Subject();
     onCancelPendingHttpRequests$: Subject<void> = new Subject();
     onCancelPendingHttpRequests = () => this.onCancelPendingHttpRequests$.asObservable();
@@ -128,9 +127,10 @@ export class AuthService {
         this.getCurrentUserToken().subscribe(event => {
             if (event instanceof HttpResponse) {
                 const authorities: Array<any> = event.body['authorities'];
+
                 const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
                     || element['authority'].split('|')[1] == '22.0'
-                    || element['authority'].split('|')[1] == '24.0' || element['authority'].split('|')[1] == '25.0');
+                    || element['authority'].split('|')[1] == '24.0' || element['authority'].split('|')[1] == '25.0' || element['authority'].split('|')[1] == '99.0');
                 if (hasClaimPrivileges) {
                     authorities.forEach(element => {
                         const key = element['authority'].split('|')[0] + element['authority'].split('|')[2];

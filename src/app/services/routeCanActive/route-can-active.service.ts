@@ -8,6 +8,10 @@ import { NotificationsPageComponent } from 'src/app/pages/notifications-page/not
 import { Route } from '@angular/compiler/src/core';
 import { DashboardComponent } from 'src/app/pages/dashboard/dashboard.component';
 import { NphiesSearchClaimsComponent } from 'src/app/modules/nphies/nphies-search-claims/nphies-search-claims.component';
+import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+import { log } from 'util';
+import { Store } from '@ngrx/store';
+import { SharedServices } from '../shared.services';
 
 
 @Injectable({
@@ -16,11 +20,15 @@ import { NphiesSearchClaimsComponent } from 'src/app/modules/nphies/nphies-searc
 export class RouteCanActiveService implements CanActivate, CanLoad {
 
 
-  constructor(public authService: AuthService, public router: Router) { }
+  constructor(public authService: AuthService, public router: Router) {
+
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    
+  
     if (!this.authService.loggedIn) {
       return this.router.createUrlTree(['/login']);
     }
@@ -31,6 +39,9 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       case ClaimpageComponent:
         return true;
       case DashboardComponent:
+        if(this._isOnlyPayerUser()){
+          return this.router.navigate(['/reports/payer-claims-report']);
+        }
         if (this._isOnlyAdmin()) {
           return this.router.createUrlTree(['administration']);
         } else if (this._isOnlyRcm()) {
@@ -137,6 +148,14 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       return userPrivileges != null && userPrivileges.split('|').includes('3.0');
     });
     return !isProvider && item != null && (item.includes('|24') || item.startsWith('24'));
+  }
+
+  private _isOnlyPayerUser(): boolean {
+
+    const providerId = localStorage.getItem('provider_id');
+    const userPrivileges = localStorage.getItem(`${providerId}101`);
+    return userPrivileges != null && userPrivileges.split('|').includes('99.0');
+
   }
 
   private _isAdminOrRcm(): boolean {
