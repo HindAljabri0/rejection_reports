@@ -103,7 +103,7 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanPayerName: [''],
     insurancePrimary: [''],
     insurancePayerNphiesId: [''],
-
+    isNewBorn: [false],
     transfer: [false]
   });
 
@@ -399,6 +399,8 @@ export class AddPreauthorizationComponent implements OnInit {
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
 
+
+      isNewBorn: beneficiary.isNewBorn ? beneficiary.isNewBorn : false,
       firstName: beneficiary.firstName ? beneficiary.firstName : '',
       middleName: beneficiary.secondName ? beneficiary.secondName : '',
       lastName: beneficiary.thirdName ? beneficiary.thirdName : '',
@@ -1075,6 +1077,8 @@ export class AddPreauthorizationComponent implements OnInit {
       }
 
       this.model.beneficiary = {};
+
+      this.model.beneficiary.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
       this.model.beneficiary.firstName = this.FormPreAuthorization.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormPreAuthorization.controls.middleName.value;
       this.model.beneficiary.thirdName = this.FormPreAuthorization.controls.lastName.value;
