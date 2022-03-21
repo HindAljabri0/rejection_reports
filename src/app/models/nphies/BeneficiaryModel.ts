@@ -30,6 +30,7 @@ export class BeneficiaryModel {
   state: string;
   country: string;
   postalCode: string;
+  isNewBorn:boolean;
   insurancePlans: Array<InsurancePlan>;
 
   documentTypeName: string;
