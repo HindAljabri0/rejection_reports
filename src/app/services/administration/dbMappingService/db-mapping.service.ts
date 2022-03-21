@@ -69,4 +69,10 @@ export class DbMappingService {
     });
     return this.http.request(request);
   }
+
+  getNphiesPayerMapping(providerId: string) {
+    const requestURL = `/providers/${providerId}/nphies/payer-mapping`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
 }

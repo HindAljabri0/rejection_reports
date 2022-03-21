@@ -16,6 +16,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
+
 @Component({
     selector: 'app-providers-config',
     templateUrl: './providers-config.component.html',
@@ -30,6 +31,7 @@ export class ProvidersConfigComponent implements OnInit {
     errors: {
         providersError?: string,
         payersError?: string,
+        NphiesPayerError?: string,
         serviceCodeError?: string,
         serviceCodeSaveError?: string,
         portalUserError?: string,
@@ -40,7 +42,11 @@ export class ProvidersConfigComponent implements OnInit {
         midtableError?: string,
         midtableSaveError?: string,
         payerMappingError?: string,
+        NphiespayerMappingError?: string,
         payerMappingSaveError?: string,
+        NphiesMappingSaveError?: string,
+
+        NphiesPayerMappingError?: string,
         providerMappingError?: string,
         providerMappingSaveError?: string,
         pbmConfigurationError?: string,
@@ -55,6 +61,7 @@ export class ProvidersConfigComponent implements OnInit {
         sfdaSaveSuccess?: string,
         midtableSaveSuccess?: string,
         payerMappingSaveSuccess?: string,
+        NphiesPayerMappingSuccess?: string,
         providerMappingSaveSuccess?: string,
         pbmConfigurationSaveSuccess?: string,
         netAmountConfigurationSaveSuccess?: string
@@ -68,12 +75,15 @@ export class ProvidersConfigComponent implements OnInit {
         pbmConfiguration: true,
         midtable: true,
         payerMapping: true,
+        NphiesPayerMapping: true,
         providerMapping: true,
         netAmount: true
     };
 
     selectedProvider: string;
+    selectednphiesPayerId: string;
     associatedPayers: any[] = [];
+    associatedNphiePayers: any[] = [];
     serviceCodeValidationSettings: any[] = [];
     priceUnitSettings: any[] = [];
     ICD10ValidationSettings: any[] = [];
@@ -84,6 +94,7 @@ export class ProvidersConfigComponent implements OnInit {
     newICD10ValidationSettings: { [key: string]: boolean } = {};
     newSFDAValidationSettings: { [key: string]: boolean } = {};
     newPBMValidationSettings: { [key: string]: boolean } = {};
+
     portalUserSettings: any;
     portalUsernameController: FormControl = new FormControl('');
     portalPasswordController: FormControl = new FormControl('');
@@ -92,8 +103,15 @@ export class ProvidersConfigComponent implements OnInit {
     newPayerMappingValue: { [key: number]: string } = {};
     newPayerName: { [key: number]: string } = {};
     deletePayerMappingList: any[] = [];
+    newNphiesPayerMappingEnable: { [key: number]: boolean } = {};
+    newNphiesPayerMappingValue: { [key: number]: string } = {};
+    newNphiesPayerName: { [key: number]: string } = {};
+    deleteNphiesPayerMappingList: any[] = [];
+
     addPayerMappingList: any[] = [];
+    addNphiesPayerMappingList: any[] = [];
     existingPayers: any[] = [];
+    existingNphiePayers: any[] = [];
     providerMappingController: FormControl = new FormControl('');
     restrictExtractionDateController: FormControl = new FormControl(new Date(2021, 0, 1));
     providerMappingValue: string;
@@ -124,7 +142,7 @@ export class ProvidersConfigComponent implements OnInit {
         const isValid = !isWhitespace;
         return isValid ? null : { 'required': true };
     }
-
+//
     ngOnInit() {
         this.superAdmin.getProviders().subscribe(event => {
             if (event instanceof HttpResponse) {
@@ -140,6 +158,8 @@ export class ProvidersConfigComponent implements OnInit {
                             this.providerController.setValue(`${provider.switchAccountId} | ${provider.code} | ${provider.name}`);
                             this.updateFilter();
                             this.getAssociatedPayers();
+
+
                         } else {
                             this.sharedServices.loadingChanged.next(false);
                         }
@@ -174,6 +194,7 @@ export class ProvidersConfigComponent implements OnInit {
     selectProvider(providerId: string = null) {
         if (providerId !== null)
             this.selectedProvider = providerId;
+
         else {
             const providerId = this.providerController.value.split('|')[0].trim();
             this.selectedProvider = providerId;
@@ -192,7 +213,6 @@ export class ProvidersConfigComponent implements OnInit {
                 if (event.body instanceof Array) {
                     this.newPBMValidationSettings['101'] = false;
                     this.associatedPayers = event.body;
-
                     this.associatedPayers.forEach(payer => {
                         // this.newServiceValidationSettings[payer.switchAccountId] = false;
                         // this.newPriceUnitSettings[payer.switchAccountId] = false;
@@ -211,7 +231,12 @@ export class ProvidersConfigComponent implements OnInit {
                         this.addPayerMappingList = [];
                         this.addDbConfigForm.reset();
                         // this.providerMappingController.
+
+
+
                     });
+
+
                 }
                 if (this.associatedPayers.length == 0) {
                     this.errors.payersError = 'There are no payers associated with this provider.';
@@ -232,6 +257,8 @@ export class ProvidersConfigComponent implements OnInit {
             this.sharedServices.loadingChanged.next(false);
         });
     }
+
+
     serviceAndPriceValidationSetting() {
         this.componentLoading.serviceCode = true;
         this.superAdmin.getPriceListValidationSettings(this.selectedProvider).subscribe(event => {
@@ -281,6 +308,7 @@ export class ProvidersConfigComponent implements OnInit {
         // ####### Chages on 02-01-2021 start
         this.getDatabaseConfig();
         this.getPayerMapping();
+        this.getNphiesPayerMapping();
         this.getProviderMapping();
         // ####### Chages on 02-01-2021 end
 
@@ -300,9 +328,11 @@ export class ProvidersConfigComponent implements OnInit {
             this.componentLoading.pbmConfiguration ||
             this.componentLoading.midtable ||
             this.componentLoading.payerMapping ||
+            this.componentLoading.NphiesPayerMapping ||
             this.componentLoading.providerMapping) {
             return;
         }
+
         this.resetUserMessages();
         const portalUserFlag = this.savePortalUserSettings();
         // const serviceCodeFlag = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings,
@@ -419,6 +449,7 @@ export class ProvidersConfigComponent implements OnInit {
         }
         return true;
     }
+
     addValueToSetting(URLKey: string, payerId: string, newSettingValues: { [key: string]: boolean; }) {
         switch (URLKey) {
             case SERVICE_CODE_RESTRICTION_KEY:
@@ -463,6 +494,7 @@ export class ProvidersConfigComponent implements OnInit {
                 break;
         }
     }
+
     setSettingIndexed(URLKey: string, index: number, value: string) {
         switch (URLKey) {
             case SERVICE_CODE_RESTRICTION_KEY:
@@ -532,6 +564,7 @@ export class ProvidersConfigComponent implements OnInit {
         this.resetDbAndMapping();
         this.resetUserMessages();
     }
+
     resetSection(URLKey: string, newSettingArray: { [key: string]: boolean; }) {
         if (Object.keys(newSettingArray).length > 0) {
             this.setComponentLoading(URLKey, true);
@@ -611,6 +644,7 @@ export class ProvidersConfigComponent implements OnInit {
             this.setComponentLoading(URLKey, false);
         });
     }
+
     setErrorMessage(message: string, URLKey: string) {
         switch (URLKey) {
             case SERVICE_CODE_RESTRICTION_KEY:
@@ -983,6 +1017,7 @@ export class ProvidersConfigComponent implements OnInit {
         }
         return false;
     }
+
     getPayerMapping() {
         this.componentLoading.payerMapping = true;
         this.errors.payerMappingError = null;
@@ -1015,6 +1050,44 @@ export class ProvidersConfigComponent implements OnInit {
             }
             this.componentLoading.payerMapping = false;
         });
+    }
+
+    getNphiesPayerMapping() {
+        this.componentLoading.NphiesPayerMapping = true;
+        this.errors.NphiesMappingSaveError = null;
+        this.errors.NphiesPayerError = null;
+        this.success.NphiesPayerMappingSuccess = null;
+
+        this.dbMapping.getNphiesPayerMapping(this.selectedProvider).subscribe(event => {
+            if (event instanceof HttpResponse) {
+
+                const response = event.body['response'];
+
+                if (response) {
+                    const mappingList = event.body['mappingList'];
+                    this.existingNphiePayers = this.existingNphiePayers.filter(Nphiepayer => mappingList.findIndex(Nphiepayer1 => Nphiepayer1.NphiepayerId == Nphiepayer.NphiepayerId));
+                    if (mappingList.length > 0) {
+                        mappingList.forEach(Nphiepayer => {
+                            this.newNphiesPayerMappingEnable[Nphiepayer.nphiesPayerId] = Nphiepayer.enabled;
+                            this.newNphiesPayerMappingValue[Nphiepayer.nphiesPayerId] = Nphiepayer.mappingName;
+                            this.newNphiesPayerName[Nphiepayer.nphiesPayerId] = Nphiepayer.payerName;
+                            this.addNphiesPayerMappingList.push(Nphiepayer.nphiesPayerId);
+                            this.existingNphiePayers.push(Nphiepayer);
+                        });
+                    }
+                }
+                this.componentLoading.NphiesPayerMapping = false;
+            }
+        }, error => {
+            if (error instanceof HttpErrorResponse) {
+                if (error.status != 404) {
+                    this.errors.NphiespayerMappingError = 'Could not load payer mapping, please try again later.';
+                }
+            }
+            this.componentLoading.NphiesPayerMapping = false;
+
+        });
+
     }
     get selectedProviderName() {
         return this.providers.find(provider => provider.switchAccountId == this.selectedProvider).name;
@@ -1086,6 +1159,7 @@ export class ProvidersConfigComponent implements OnInit {
     }
 
     getProviderMapping() {
+
         this.componentLoading.providerMapping = true;
         this.errors.providerMappingError = null;
         this.errors.providerMappingSaveError = null;
@@ -1113,13 +1187,18 @@ export class ProvidersConfigComponent implements OnInit {
             this.componentLoading.providerMapping = false;
         });
     }
+
     resetDbAndMapping() {
 
         this.newPayerMappingEnable = {};
+        this.newNphiesPayerMappingEnable = {};
         this.newPayerMappingValue = {};
+        this.newNphiesPayerMappingValue = {};
         this.payerMappingValue = {};
+        this.newNphiesPayerName = {};
         this.newPayerName = {};
         this.addPayerMappingList = [];
+        this.addNphiesPayerMappingList = [];
         this.addDbConfigForm.reset();
         this.providerMappingController.setValue('');
         this.restrictExtractionDateController.setValue(new Date(2021, 0, 1));
@@ -1152,12 +1231,11 @@ export class ProvidersConfigComponent implements OnInit {
             this.netAmountController.setValue(null);
         });
     }
+
     setNetAmountAccuracy() {
         this.errors.netAmountConfigurationError = null;
         this.errors.netAmountConfigurationSaveError = null;
         this.success.netAmountConfigurationSaveSuccess = null;
-
-
 
         if (this.netAmountController.value === this.netAmountValue)
             return false;
