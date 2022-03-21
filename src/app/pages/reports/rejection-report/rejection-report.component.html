@@ -142,7 +142,7 @@
             </tbody>
         </table>
     </div>
-    <app-empty-state *ngIf="rejectedClaims.length == 0" class="claim-list-empty-state" message='Select criteria to generate report'>
+    <app-empty-state *ngIf="rejectedClaims.length == 0 && errorMessage == null" class="claim-list-empty-state" message='Select criteria to generate report'>
     </app-empty-state>
 
     <div class="block-body" *ngIf="errorMessage != null">
