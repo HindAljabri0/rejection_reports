@@ -142,7 +142,7 @@ export class ProvidersConfigComponent implements OnInit {
         const isValid = !isWhitespace;
         return isValid ? null : { 'required': true };
     }
-
+//
     ngOnInit() {
         this.superAdmin.getProviders().subscribe(event => {
             if (event instanceof HttpResponse) {
@@ -202,7 +202,6 @@ export class ProvidersConfigComponent implements OnInit {
         this.location.go(`/administration/config/providers/${providerId}`);
         this.reset();
         this.getAssociatedPayers();
-        this.getNphiesPayerMapping()
 
     }
 
