@@ -88,7 +88,7 @@
     </form>
 
   </div>
-  <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
+  <div class="pagination-header" *ngIf="searchedClaim !== null && searchedClaim !== undefined && searchedClaim.length > 0">
     <div class="form-group page-select">
       <label class="control-label">Go to page: </label>
       <mat-form-field class="form-control custom-select-control">
