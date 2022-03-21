@@ -44,9 +44,9 @@ export class SearchWithAdvanceComponent implements OnInit {
 
 
 
-  payers: { id: number, name: string }[];
-  nphiesPayers: { id: number, name: string }[];
-  tpas: { id: number, name: string }[];
+  payers: { id: number, name: string }[]=[];
+  nphiesPayers: { id: number, name: string }[]=[];
+  tpas: { id: number, name: string }[]=[];
 
   casetypes: { value: string, name: string }[] = [
     { value: 'OUTPATIENT,INPATIENT', name: 'Any' },
