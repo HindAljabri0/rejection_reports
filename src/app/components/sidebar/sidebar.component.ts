@@ -30,6 +30,7 @@ export class SidebarComponent implements OnInit {
         this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
         this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
         this.envStaging = (environment.name == 'oci_staging' || environment.name == 'staging');
+    
     }
 
     init() {

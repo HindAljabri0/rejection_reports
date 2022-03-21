@@ -83,7 +83,7 @@ export class PayerClaimsReportComponent implements OnInit {
             providerId: ['', Validators.required],
             fromDate: ['', Validators.required],
             toDate: ['', Validators.required],
-            payerId: ['', Validators.required],
+            payerId: ['102', Validators.required],
             summaryCriteria: ['', Validators.required],
         });
 
@@ -131,7 +131,7 @@ export class PayerClaimsReportComponent implements OnInit {
             const providerId = this.PayerClaimsReportForm.controls.providerId.value.split('|')[0].trim();
             this.selectedProvider = providerId;
         }
-        this.getPayers();
+      //  this.getPayers();
     }
 
     getPayers() {
