@@ -202,7 +202,6 @@ export class ProvidersConfigComponent implements OnInit {
         this.location.go(`/administration/config/providers/${providerId}`);
         this.reset();
         this.getAssociatedPayers();
-        this.getNphiesPayerMapping()
 
     }
 
