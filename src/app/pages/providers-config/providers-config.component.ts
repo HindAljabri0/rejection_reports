@@ -126,6 +126,7 @@ export class ProvidersConfigComponent implements OnInit {
   netAmountValue: number;
 
   isBothSame = true;
+  dbConfigs = [];
 
   constructor(
     public datepipe: DatePipe,
@@ -781,22 +782,30 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         const data = event.body['dbObject'];
         if (data != null) {
-          this.addDbConfigForm.patchValue({
-            // midTablesType: data.midTablesType,
-            waseelDbType: data.dbType,
-            waseelHostName: data.hostName,
-            waseelPort: data.port,
-            waseelDatabaseName: data.databaseName,
-            waseelDbUserName: data.dbUserName,
-            waseelDbPassword: data.dbPassword,
-
-            nphiesDbType: data.dbType,
-            nphiesHostName: data.hostName,
-            nphiesPort: data.port,
-            nphiesDatabaseName: data.databaseName,
-            nphiesDbUserName: data.dbUserName,
-            nphiesDbPassword: data.dbPassword
+          this.dbConfigs = data;
+          this.isBothSame = data.length > 1 ? false : true;
+          data.forEach(x => {
+            if (x.midTableType === 'WASEEL_MID_TABLES' || x.midTableType === 'BOTH') {
+              this.addDbConfigForm.patchValue({
+                waseelDbType: x.dbType,
+                waseelHostName: x.hostName,
+                waseelPort: x.port,
+                waseelDatabaseName: x.databaseName,
+                waseelDbUserName: x.dbUserName,
+                waseelDbPassword: x.dbPassword,
+              });
+            } else if (x.midTableType === 'NPHIES_MID_TABLES') {
+              this.addDbConfigForm.patchValue({
+                nphiesDbType: x.dbType,
+                nphiesHostName: x.hostName,
+                nphiesPort: x.port,
+                nphiesDatabaseName: x.databaseName,
+                nphiesDbUserName: x.dbUserName,
+                nphiesDbPassword: x.dbPassword
+              });
+            }
           });
+
         } else {
           this.addDbConfigForm.reset();
         }
@@ -829,21 +838,27 @@ export class ProvidersConfigComponent implements OnInit {
       }
     }
 
-    if (this.addDbConfigForm.dirty) {
-      if (this.addDbConfigForm.valid) {
-        if (this.addDbConfigForm.controls['waseelDbType'].untouched
-          && this.addDbConfigForm.controls['waseelHostName'].untouched
-          && this.addDbConfigForm.controls['waseelPort'].untouched && this.addDbConfigForm.controls['waseelDatabaseName'].untouched
-          && this.addDbConfigForm.controls['waseelDbUserName'].untouched && this.addDbConfigForm.controls['waseelDbPassword'].untouched) {
-          return true;
-        }
+    let bothStatus = this.dbConfigs.length > 1 ? false : true;
 
-        if (!this.isBothSame) {
-          if (this.addDbConfigForm.controls['nphiesDbType'].untouched
-            && this.addDbConfigForm.controls['nphiesHostName'].untouched
-            && this.addDbConfigForm.controls['nphiesPort'].untouched && this.addDbConfigForm.controls['nphiesDatabaseName'].untouched
-            && this.addDbConfigForm.controls['nphiesDbUserName'].untouched && this.addDbConfigForm.controls['nphiesDbPassword'].untouched) {
+    if (this.addDbConfigForm.dirty || (this.isBothSame !== bothStatus)) {
+      if (this.addDbConfigForm.valid) {
+
+        if (this.isBothSame === bothStatus) {
+          if (this.addDbConfigForm.controls['waseelDbType'].untouched
+            && this.addDbConfigForm.controls['waseelHostName'].untouched
+            && this.addDbConfigForm.controls['waseelPort'].untouched && this.addDbConfigForm.controls['waseelDatabaseName'].untouched
+            && this.addDbConfigForm.controls['waseelDbUserName'].untouched && this.addDbConfigForm.controls['waseelDbPassword'].untouched) {
             return true;
+          }
+
+          if (!this.isBothSame) {
+            if (this.addDbConfigForm.controls['nphiesDbType'].untouched
+              && this.addDbConfigForm.controls['nphiesHostName'].untouched
+              && this.addDbConfigForm.controls['nphiesPort'].untouched && this.addDbConfigForm.controls['nphiesDatabaseName'].untouched
+              && this.addDbConfigForm.controls['nphiesDbUserName'].untouched
+              && this.addDbConfigForm.controls['nphiesDbPassword'].untouched) {
+              return true;
+            }
           }
         }
 
