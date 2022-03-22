@@ -78,6 +78,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12">
+                    <div class="right-block">
+                        <mat-slide-toggle  color="primary" color="primary" class="ml-auto"
+                          (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">Is New Born</mat-slide-toggle>
+                    </div>
+                </div>
                 <div class="col-4" *ngIf="purposeRadioButton == '1'">
                     <div class="form-group" [class.has-error]="selectedPlanIdError?.trim().length > 0" [matTooltip]="selectedPlanIdError">
                         <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
