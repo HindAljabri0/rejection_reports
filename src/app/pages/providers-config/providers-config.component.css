@@ -1,16 +1,3 @@
-.selectProvider {
-    width: 100%;
-    background-color: #fbfbfb;
-    border-radius: 10px;
-    text-align: center;
-    height: 64px;
-    margin-bottom: 30px;
-}
-
-.mat-form-field-appearance-outline .mat-form-field-outline {
-    color: black;
-}
-
 .radio-button-custom {
     padding: 5px;
     background-color: aqua;
