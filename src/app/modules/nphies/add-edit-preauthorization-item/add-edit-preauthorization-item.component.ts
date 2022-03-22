@@ -41,6 +41,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     bodySite: [''],
     subSite: [''],
     quantity: ['', [Validators.required, Validators.min(1)]],
+    quantityCode : [''],
     unitPrice: ['', Validators.required],
     discountPercent: [''],
     discount: [''],
@@ -104,6 +105,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
         subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
         quantity: this.data.item.quantity,
+        quantityCode: this.data.item.quantityCode,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
         discountPercent: this.data.item.discountPercent,
@@ -654,6 +656,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
       model.quantity = parseInt(this.FormItem.controls.quantity.value);
+      model.quantityCode = this.FormItem.controls.quantityCode.value;
       model.unitPrice = parseFloat(this.FormItem.controls.unitPrice.value);
       model.discount = this.FormItem.controls.discount.value ? parseFloat(this.FormItem.controls.discount.value) : 0;
       model.discountPercent = this.FormItem.controls.discountPercent.value ? parseFloat(this.FormItem.controls.discountPercent.value) : 0;

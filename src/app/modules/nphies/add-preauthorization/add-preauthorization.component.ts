@@ -680,6 +680,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.subSite = result.subSite;
               x.subSiteName = result.subSiteName;
               x.quantity = result.quantity;
+              x.quantityCode = result.quantityCode;
               x.unitPrice = result.unitPrice;
               x.discount = result.discount;
               x.discountPercent = result.discountPercent;
@@ -803,6 +804,8 @@ export class AddPreauthorizationComponent implements OnInit {
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
                     y.quantity = result.quantity;
+                    y.quantityCode = result.quantityCode;
+                    
                   }
                 });
               } else {
@@ -1235,6 +1238,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
+          model.quantityCode = x.quantityCode;
           model.unitPrice = x.unitPrice;
           model.discount = x.discount;
           model.factor = x.factor;
@@ -1299,6 +1303,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
             dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });
 
