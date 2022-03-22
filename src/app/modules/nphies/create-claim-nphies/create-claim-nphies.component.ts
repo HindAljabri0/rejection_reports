@@ -240,7 +240,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       documentType: this.otherDataModel.beneficiary.documentType,
       id: this.otherDataModel.beneficiary.id,
       name: this.otherDataModel.beneficiary.beneficiaryName,
-      isNewBorn:  this.otherDataModel.beneficiary.isNewBorn,
       firstName: this.otherDataModel.beneficiary.firstName,
       secondName: this.otherDataModel.beneficiary.secondName,
       thirdName: this.otherDataModel.beneficiary.thirdName,

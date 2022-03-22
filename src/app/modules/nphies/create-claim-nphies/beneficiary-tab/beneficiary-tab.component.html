@@ -57,8 +57,7 @@
     <h5 class="form-title">Personal Information</h5>
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
-        <mat-slide-toggle formControlName="isNewBorn" color="primary"      class="ml-auto">New Born
-        </mat-slide-toggle>
+        <mat-checkbox color="primary" formControlName="isNewBorn">New Born</mat-checkbox>
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group">
@@ -407,6 +406,12 @@
 <ng-container *ngIf="otherDataModel && otherDataModel.beneficiary && pageMode === 'VIEW'">
   <h5 class="form-title">Personal Information</h5>
   <div class="row small-gutter">
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Is New Born</div>
+        <p class="form-control-static">{{otherDataModel.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
+      </div>
+    </div>
     <div class="col-4 col-lg-3">
       <div class="form-group form-group-static">
         <div class="control-label">First Name</div>

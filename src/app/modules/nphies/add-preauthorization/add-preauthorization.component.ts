@@ -399,8 +399,6 @@ export class AddPreauthorizationComponent implements OnInit {
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
 
-
-      isNewBorn: beneficiary.isNewBorn ? beneficiary.isNewBorn : false,
       firstName: beneficiary.firstName ? beneficiary.firstName : '',
       middleName: beneficiary.secondName ? beneficiary.secondName : '',
       lastName: beneficiary.thirdName ? beneficiary.thirdName : '',
@@ -805,7 +803,7 @@ export class AddPreauthorizationComponent implements OnInit {
                     y.display = result.display;
                     y.quantity = result.quantity;
                     y.quantityCode = result.quantityCode;
-                    
+
                   }
                 });
               } else {

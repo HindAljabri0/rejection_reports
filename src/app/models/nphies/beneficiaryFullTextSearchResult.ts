@@ -31,7 +31,6 @@ export class BeneficiariesSearchResult {
   state: string;
   country: string;
   postalCode: string;
-  isNewBorn: boolean;
 
 
   plans: {
