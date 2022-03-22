@@ -29,8 +29,9 @@
             </div>
         </div>
 
-
+        
         <div class="block-filter-panel" *ngIf="selectedBeneficiary != null">
+            
             <div class="row small-gutter">
                 <div class="col-4">
                     <div class="form-group">
@@ -58,6 +59,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-4">
+                    <div class="form-group">
+                    <mat-slide-toggle  color="primary" color="primary" class="ml-auto"
+                                  (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">Is New Born</mat-slide-toggle>
+                                </div>
+                </div>
                 <div class="col-12">
                     <div class="form-group" [class.has-error]="purposeError?.trim().length > 0" [matTooltip]="purposeError">
                         <label class="control-label">Purpose<span class="asterisk">*</span></label>
@@ -76,8 +83,11 @@
                             <mat-checkbox color="primary" [checked]="isDiscovery"
                                 (change)="isDiscovery = $event.checked">Discovery</mat-checkbox> -->
                         </div>
+                        
                     </div>
+                    
                 </div>
+
                 <div class="col-4" *ngIf="purposeRadioButton == '1'">
                     <div class="form-group" [class.has-error]="selectedPlanIdError?.trim().length > 0" [matTooltip]="selectedPlanIdError">
                         <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
@@ -103,6 +113,7 @@
                         </mat-form-field>
                     </div>
                 </div>
+                
             </div>
         </div>
         <div class="block-footer" *ngIf="selectedBeneficiary != null">

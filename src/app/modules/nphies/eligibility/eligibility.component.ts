@@ -23,6 +23,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
   transfer =false;
+  isNewBorn =false;
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
 
@@ -112,6 +113,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   onChangeState(transfer){
     this.transfer=!transfer;
     console.log(this.transfer);
+  }
+  onNewBornChangeState(isNewBorn){
+    this.isNewBorn=!isNewBorn;
+    console.log(this.isNewBorn);
   }
   searchBeneficiaries() {
     this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
@@ -226,7 +231,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer: this.transfer
+      transfer: this.transfer,
+      isNewBorn : this.isNewBorn
     };
 
 

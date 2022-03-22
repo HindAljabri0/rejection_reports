@@ -5,8 +5,9 @@
                 <div class="list-title primary">
                     Waseel
                 </div>
+                
                 <mat-accordion displayMode="flat">
-                    <mat-expansion-panel 
+                    <mat-expansion-panel hideToggle
                         [expanded]="uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive">
                         <mat-expansion-panel-header>
                             <mat-panel-title i18n="@@claims">Claims</mat-panel-title>
@@ -433,7 +434,7 @@
                 </mat-accordion>
             </ng-container>
 
-            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
+            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
                 <li>
                     <a routerLink="/nphies/configurations" routerLinkActive="is-active">
                         <span class="text">Nphies Configurations</span>

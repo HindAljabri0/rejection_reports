@@ -695,6 +695,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.bodySite = result.bodySite;
               x.bodySiteName = result.bodySiteName;
               x.quantity = result.quantity;
+              x.quantityCode = result.quantityCode;
               x.unitPrice = result.unitPrice;
               x.discount = result.discount;
               x.discountPercent = result.discountPercent;
@@ -819,6 +820,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
                     y.quantity = result.quantity;
+                    y.quantityCode = result.quantityCode;
                   }
                 });
               } else {
@@ -1230,6 +1232,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
+          model.quantityCode = x.quantityCode;
           model.unitPrice = x.unitPrice;
           model.discount = x.discount;
           model.factor = x.factor;
@@ -1254,6 +1257,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
             dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });
 
@@ -2080,6 +2084,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.display = x.nonStandardDesc;
       model.isPackage = x.isPackage;
       model.quantity = x.quantity;
+      model.quantityCode = x.quantityCode;
       model.unitPrice = x.unitPrice;
       model.discount = x.discount;
       model.factor = x.factor;

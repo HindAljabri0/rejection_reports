@@ -33,7 +33,8 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     itemFilter: [''],
     nonStandardCode: [''],
     display: [''],
-    quantity: ['1']
+    quantity: ['1'],
+    quantityCode :['']
   });
 
   isSubmitted = false;
@@ -181,6 +182,8 @@ export class AddEditItemDetailsModalComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.quantity = this.FormItem.controls.quantity.value;
+      model.quantityCode = this.FormItem.controls.quantityCode.value;
+      
       this.dialogRef.close(model);
     }
   }
