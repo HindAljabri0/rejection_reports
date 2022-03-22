@@ -777,7 +777,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.midtableError = null;
     this.errors.midtableSaveError = null;
     this.success.midtableSaveSuccess = null;
-    this.dbMapping.getDatabaseConfig(this.selectedProvider).subscribe(event => {
+    this.dbMapping.getDatabaseConfigList(this.selectedProvider).subscribe(event => {
 
       if (event instanceof HttpResponse) {
         const data = event.body['dbObject'];
