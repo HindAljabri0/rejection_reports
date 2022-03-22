@@ -41,6 +41,7 @@ export class BeneficiaryComponent implements OnInit {
     setPrimary = "0";
     fullName = "";
     providerId = "";
+    isNewBorn=false;
     beneficiaryId: string;
     nationalities = nationalities;
     Beneficiaries: BeneficiarySearch[];
@@ -151,7 +152,10 @@ export class BeneficiaryComponent implements OnInit {
         this.editMode = !this.editMode;
         this.getBeneficiary(this.beneficiaryId);
     }
-
+    onChangeState(isNewBorn){
+        this.isNewBorn=!isNewBorn;
+        console.log(this.isNewBorn);
+      }
 
     getCoverageTypeName(CoverageTypeCode: string) {
 
@@ -298,6 +302,7 @@ export class BeneficiaryComponent implements OnInit {
         this.cityNameController.setValue(beneficiaryinfo.city);
         this.stateController.setValue(beneficiaryinfo.state);
         this.selectedCountry = beneficiaryinfo.country;
+        this.isNewBorn = beneficiaryinfo.isNewBorn;
         this.postalCodeController.setValue(beneficiaryinfo.postalCode)
 
         for (let insurancePlans of beneficiaryinfo.insurancePlans) {
@@ -564,6 +569,7 @@ export class BeneficiaryComponent implements OnInit {
         this.beneficiaryModel.documentId = this.documentIdFormControl.value;
         this.beneficiaryModel.country = this.selectedCountry == "" ? null : this.selectedCountry;
         this.beneficiaryModel.postalCode = this.postalCodeController.value;
+        this.beneficiaryModel.isNewBorn =this.isNewBorn;
         this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
             expiryDate: new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
             payerId: insurancePlan.selectePayer == "" ? null : this.payersList.filter(payer => payer.payerId == insurancePlan.selectePayer)[0].nphiesId,

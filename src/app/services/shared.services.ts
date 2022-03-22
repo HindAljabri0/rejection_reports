@@ -18,11 +18,10 @@ import { getUserPrivileges, initState, UserPrivileges } from '../store/mainStore
     providedIn: 'root'
 })
 export class SharedServices {
-    private payers: { id: number, name: string }[];
-    payerids: number[];
+    private payers: { id: number, name: string }[] = [];
+    payerids: number[] = [];
     loading = false;
     loadingChanged: Subject<boolean> = new Subject<boolean>();
-
     searchIsOpen = false;
     searchIsOpenChange: Subject<boolean> = new Subject<boolean>();
 
@@ -165,6 +164,7 @@ export class SharedServices {
             this.unReadClaimComunicationRequestCount = value;
         });
         this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
+
     }
 
     getNotifications() {
@@ -336,6 +336,9 @@ export class SharedServices {
     public get providerId() {
         return this.authService.getProviderId();
     }
+    provider(): String {
+        return this.authService.getProviderId();
+    }
 
     public get cchiId() {
         // tslint:disable-next-line:radix
@@ -420,7 +423,6 @@ export class SharedServices {
         const keys = Object.keys(this.userPrivileges.ProviderPrivileges.NPHIES);
         return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
     }
-
 
 
     getPayersListWithoutTPA(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {

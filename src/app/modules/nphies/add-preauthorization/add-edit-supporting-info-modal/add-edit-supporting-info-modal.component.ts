@@ -69,7 +69,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         description: (this.data.item.category === 'onset' || this.data.item.category === 'chief-complaint') ? this.data.item.codeName : undefined,
         value: this.data.item.value,
         // tslint:disable-next-line:max-line-length
-        code: (this.data.item.category === 'onset' || this.data.item.category === 'chief-complaint' ||  this.data.item.category === 'lab-test') ? this.data.item.code : this.codeList.filter(x => x.value === this.data.item.code)[0],
+        code: (this.data.item.category === 'onset' || this.data.item.category === 'chief-complaint' || this.data.item.category === 'lab-test') ? this.data.item.code : this.codeList.filter(x => x.value === this.data.item.code)[0],
         attachment: this.data.item.attachment,
         timingDate: (!this.data.item.toDate) ? this.data.item.fromDate : undefined,
         timingPeriodFrom: (this.data.item.toDate) ? this.data.item.fromDate : undefined,
@@ -293,7 +293,11 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
       case 'icu-hours':
       case 'ventilation-hours':
       case 'vital-sign-height':
-
+      case 'temperature':
+      case 'pulse':
+      case 'respiratory-rate':
+      case 'oxygen-saturation':
+      case 'birth-weight':
         this.FormSupportingInfo.controls.value.setValidators([Validators.required]);
         this.FormSupportingInfo.controls.value.updateValueAndValidity();
 
@@ -308,6 +312,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
         // codes  same as diagnosis
         break;
+
       default:
         break;
     }
@@ -458,6 +463,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
       switch (model.category) {
         case 'vital-sign-weight':
+        case 'birth-weight':
           model.unit = 'kg';
           break;
         case 'vital-sign-systolic':
@@ -473,6 +479,16 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
           break;
         case 'days-supply':
           model.unit = 'd';
+          break;
+        case 'temperature':
+          model.unit = 'Cel';
+          break;
+        case 'pulse':
+        case 'respiratory-rate':
+          model.unit = 'Min';
+          break;
+        case 'oxygen-saturation':
+          model.unit = '%';
           break;
       }
 

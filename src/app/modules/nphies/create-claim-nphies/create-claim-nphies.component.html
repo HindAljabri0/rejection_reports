@@ -10,7 +10,7 @@
       </p>
       <p>
         <span>Related Claim ID:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimId ? otherDataModel.relatedClaimId : '-' }} </strong></span>
+          <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-" +otherDataModel.relatedClaimId) : '-' }} </strong></span>
         </strong>
       </p>
       <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
@@ -41,7 +41,7 @@
 
   </ul>
 
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab"  (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedTab">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab" >
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -1153,8 +1153,8 @@
         </p>
         <p>
           <span>Related Claim ID:</span>&nbsp;<strong>
-            <span> <strong>{{otherDataModel.relatedClaimId ? otherDataModel.relatedClaimId :
-                otherDataModel.claimResourceId }} </strong></span>
+            <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-" +otherDataModel.relatedClaimId) :
+              otherDataModel.status == 'Cancelled' ? otherDataModel.claimResourceId : "-" }} </strong></span>
           </strong>
         </p>
         <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
@@ -1185,7 +1185,7 @@
     </ul>
 
     <div class="create-claim-body nphies-create">
-      <mat-tab-group class="primary-tab nphies-claim-tab" (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedTab">
+      <mat-tab-group class="primary-tab nphies-claim-tab" >
 
         <mat-tab>
           <ng-template mat-tab-label>

@@ -22,6 +22,7 @@ export interface UserPrivileges {
         WASEEL_CLAIMS: {
             isAdmin: boolean,
             isClaimUser: boolean,
+            isPayerUser:boolean
 
         }
         RCM: {
@@ -66,7 +67,8 @@ export const initState: MainState = {
             },
             WASEEL_CLAIMS: {
                 isAdmin: false,
-                isClaimUser: false
+                isClaimUser: false,
+                isPayerUser:false
 
             },
             RCM: {
@@ -113,6 +115,7 @@ const _mainReducer = createReducer(
                 WASEEL_CLAIMS: {
                     isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '3.0'),
                     isClaimUser: providerId != '101' && payerIds.some(payerId => AuthService.hasPrivilege(providerId, payerId, '3')),
+                    isPayerUser: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '99.0'),
                 },
                 RCM: {
                     isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.0'),
