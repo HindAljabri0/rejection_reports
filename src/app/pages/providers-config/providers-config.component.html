@@ -44,6 +44,9 @@
 
           <mat-checkbox color="primary" [(ngModel)]="isBothSame" [ngModelOptions]="{standalone: true}">Apply same configuration for both Waseel and NPHIES claim extraction</mat-checkbox>
           <hr class="hr my-14">
+          <div [hidden]="isBothSame" class="form-group">
+            <label class="control-label pb-0 text-primary semibold">Waseel Configuration</label>
+          </div>
           <div class="form-group">
             <label class="control-label pb-0 text-grey">Select Database Type</label>
             <mat-radio-group class="radio-group inline" formControlName="waseelDbType">
@@ -65,7 +68,7 @@
                   </div>
                   <div class="form-group port">
                     <label class="control-label">Port</label>
-                    <input type="text" class="form-control" placeholder="Enter port" formControlName="waseelPort" (change)="validateForm()" autocomplete="" />
+                    <input type="number" class="form-control" placeholder="Enter port" formControlName="waseelPort" (change)="validateForm()" autocomplete="" />
                   </div>
                 </div>
               </div>
@@ -84,13 +87,16 @@
               <div class="col-6">
                 <div class="form-group">
                   <label class="control-label">Password</label>
-                  <input type="text" class="form-control" placeholder="Enter password" formControlName="waseelDbPassword" (change)="validateForm()" autocomplete="new-password" />
+                  <input type="password" class="form-control" placeholder="Enter password" formControlName="waseelDbPassword" (change)="validateForm()" autocomplete="new-password" />
                 </div>
               </div>
             </div>
           </div>
-          <hr class="hr mt-2 mb-14">
           <div [hidden]="isBothSame">
+            <hr class="hr mt-2 mb-14">
+            <div class="form-group">
+              <label class="control-label pb-0 text-primary semibold">NPHIES Configuration</label>
+            </div>
             <div class="form-group">
               <label class="control-label pb-0 text-grey">Select Database Type</label>
               <mat-radio-group class="radio-group inline" formControlName="nphiesDbType">
@@ -112,7 +118,7 @@
                     </div>
                     <div class="form-group port">
                       <label class="control-label">Port</label>
-                      <input type="text" class="form-control" placeholder="Enter port" formControlName="nphiesPort" (change)="validateForm()" autocomplete="" />
+                      <input type="number" class="form-control" placeholder="Enter port" formControlName="nphiesPort" (change)="validateForm()" autocomplete="" />
                     </div>
                   </div>
                 </div>
@@ -131,7 +137,7 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label class="control-label">Password</label>
-                    <input type="text" class="form-control" placeholder="Enter password" formControlName="nphiesDbPassword" (change)="validateForm()" autocomplete="new-password" />
+                    <input type="password" class="form-control" placeholder="Enter password" formControlName="nphiesDbPassword" (change)="validateForm()" autocomplete="new-password" />
                   </div>
                 </div>
               </div>
