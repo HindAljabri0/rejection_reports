@@ -434,7 +434,7 @@
                 </mat-accordion>
             </ng-container>
 
-            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
+            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
                 <li>
                     <a routerLink="/nphies/configurations" routerLinkActive="is-active">
                         <span class="text">Nphies Configurations</span>
