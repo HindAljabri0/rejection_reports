@@ -19,6 +19,11 @@ export class DbMappingService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+  getDatabaseConfigList(providerId: string) {
+    const requestURL = `/providers/${providerId}/db-config/list`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
   deleteDatabaseConfig(providerId: string) {
     const requestURL = `/providers/${providerId}/db-config`;
     const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
