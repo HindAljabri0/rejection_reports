@@ -228,12 +228,6 @@
 <div class="row" *ngIf="data.beneficiary">
   <div class="col-4">
     <div class="form-group form-group-static">
-      <div class="control-label">Is New Born</div>
-      <p class="form-control-static">{{data.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
-    </div>
-  </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
       <div class="control-label">Name</div>
       <p class="form-control-static">{{data.beneficiary.beneficiaryName}}</p>
     </div>
@@ -248,6 +242,12 @@
     <div class="form-group form-group-static">
       <div class="control-label">Gender</div>
       <p class="form-control-static">{{data.beneficiary.gender}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">New born?</div>
+      <p class="form-control-static">{{data.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4">
