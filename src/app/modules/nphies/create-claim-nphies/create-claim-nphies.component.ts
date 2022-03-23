@@ -694,7 +694,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.bodySite = result.bodySite;
               x.bodySiteName = result.bodySiteName;
               x.quantity = result.quantity;
-              x.quantityCode = result.quantityCode;
+              x.quantityCode = result.quantityCode != "" ? result.quantityCode : null;
               x.unitPrice = result.unitPrice;
               x.discount = result.discount;
               x.discountPercent = result.discountPercent;
@@ -819,7 +819,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
                     y.quantity = result.quantity;
-                    y.quantityCode = result.quantityCode;
+                    y.quantityCode = result.quantityCode != "" ? result.quantityCode : null;
                   }
                 });
               } else {

@@ -531,12 +531,12 @@
             <tr>
               <th width="10"></th>
               <th>Sequence No.</th>
+              <th>Invoice No.</th>
               <th>Type</th>
               <th>Code - Description</th>
               <th>Net</th>
               <th>Approved Net</th>
               <th>Status</th>
-              <th>Invoice No.</th>
               <th>Note No.</th>
 
               <!-- <th>Quantity</th>
@@ -556,6 +556,9 @@
                 </td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.sequence}}</td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    {{item.invoiceNo ? item.invoiceNo : '-'}}
+                  </td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.typeName}}</td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -573,9 +576,7 @@
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
                 </td>
-                <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  {{item.invoiceNo ? item.invoiceNo : '-'}}
-                </td>
+               
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
                   <span *ngIf="!item.itemDecision">-</span>
@@ -626,12 +627,9 @@
                           <tbody>
                             <tr>
                               <td class="label">Quantity</td>
-                              <td>{{item.quantity}}</td>
+                              <td>{{item.quantity}} {{item.quantityCode}}</td>
                             </tr>
-                            <tr>
-                              <td class="label">Quantity Code</td>
-                              <td>{{item.quantityCode}}</td>
-                            </tr>
+                            
                             <tr>
                               <td class="label">Discount(%)</td>
                               <td>{{item.discountPercent!=null?item.discountPercent +" %":"-"}}</td>
@@ -750,7 +748,7 @@
                           <th>Non Standard Code</th>
                           <th>Display</th>
                           <th>Quantity</th>
-                          <th>Quantity Code</th>
+                          
                         </tr>
                       </thead>
                       <tbody>
@@ -761,8 +759,8 @@
                           <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}
                           </td>
                           <td class="row-click">{{d.display ? d.display :"-"}}</td>
-                          <td class="row-click">{{d.quantity ? d.quantity :"-"}}</td>
-                          <td class="row-click">{{d.quantityCode ? d.quantityCode :"-"}}</td>
+                          <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                          
                         </tr>
                       </tbody>
                     </table>
@@ -1800,12 +1798,12 @@
                 <tr>
                   <th width="10"></th>
                   <th>Sequence No.</th>
+                  <th>Invoice No.</th>
                   <th>Type</th>
                   <th>Code - Description</th>
                   <th>Net</th>
                   <th>Approved Net</th>
                   <th>Status</th>
-                  <th>Invoice No.</th>
                   <th>Note No.</th>
                   <!-- <th>Quantity</th>
                   <th>Unit Price</th>
@@ -1825,6 +1823,9 @@
                     </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.sequence}}</td>
+                      <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                        {{item.invoiceNo ? item.invoiceNo : '-'}}
+                      </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.typeName}}</td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -1847,9 +1848,7 @@
                         '-'}}</span>
                       <span *ngIf="!item.itemDecision">-</span>
                     </td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.invoiceNo ? item.invoiceNo : '-'}}
-                    </td>
+                    
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
                         '-'}}</span>
@@ -1887,12 +1886,9 @@
                               <tbody>
                                 <tr>
                                   <td class="label">Quantity</td>
-                                  <td>{{item.quantity}}</td>
+                                  <td>{{item.quantity}} {{item.quantityCode}}</td>
                                 </tr>
-                                <tr>
-                                  <td class="label">Quantity Code</td>
-                                  <td>{{item.quantityCode}}</td>
-                                </tr>
+                                
                                 <tr>
                                   <td class="label">Discount(%)</td>
                                   <td>{{item.discountPercent!=null?item.discountPercent +"
@@ -2021,7 +2017,7 @@
                               <th>Non Standard Code</th>
                               <th>Display</th>
                               <th>Quantity</th>
-                              <th>Quantity Code</th>
+                              
                               <th width="10"></th>
                             </tr>
                           </thead>
@@ -2035,10 +2031,8 @@
                                 d.nonStandardCode :"-"}}</td>
                               <td class="row-click">{{d.display ? d.display :"-"}}
                               </td>
-                              <td class="row-click">{{d.quantity ? d.quantity :"-"}}
-                              </td>
-                              <td class="row-click">{{d.quantityCode ? d.quantityCode :"-"}}
-                              </td>
+                              <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                              
                               <td class="actions text-nowrap">
                                 <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
                                   (click)="openAddEditItemDetailsDialog(item.sequence, d)">
