@@ -11,5 +11,4 @@ export class EligibilityRequestModel {
     discovery: boolean;
     validation: boolean;
     transfer : boolean;
-    isNewBorn: boolean;
 }

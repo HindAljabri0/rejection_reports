@@ -220,6 +220,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       return;
     }
 
+    this.selectedBeneficiary.isNewBorn = this.isNewBorn;
     const tempbeneficiary = this.selectedBeneficiary;
     tempbeneficiary.plans.forEach(x => x.payerId = x.payerNphiesId);
 
@@ -231,11 +232,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer: this.transfer,
-      isNewBorn : this.isNewBorn
+      transfer: this.transfer
     };
-
-
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {

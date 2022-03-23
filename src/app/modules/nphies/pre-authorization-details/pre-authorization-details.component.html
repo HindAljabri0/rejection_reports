@@ -246,6 +246,12 @@
   </div>
   <div class="col-4">
     <div class="form-group form-group-static">
+      <div class="control-label">New born?</div>
+      <p class="form-control-static">{{data.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
       <div class="control-label">Date of Birth</div>
       <p class="form-control-static">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
     </div>

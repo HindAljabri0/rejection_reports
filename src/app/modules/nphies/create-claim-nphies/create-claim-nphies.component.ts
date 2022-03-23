@@ -240,7 +240,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       documentType: this.otherDataModel.beneficiary.documentType,
       id: this.otherDataModel.beneficiary.id,
       name: this.otherDataModel.beneficiary.beneficiaryName,
-      isNewBorn:  this.otherDataModel.beneficiary.isNewBorn,
       firstName: this.otherDataModel.beneficiary.firstName,
       secondName: this.otherDataModel.beneficiary.secondName,
       thirdName: this.otherDataModel.beneficiary.thirdName,
@@ -1326,7 +1325,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.claimEncounter = encounterModel;
       }
 
-      console.log('Model', this.model);
+      // console.log('Model', this.model);
 
       let requestObservable: Observable<HttpEvent<any>>;
       if (this.pageMode == 'CREATE') {
@@ -1334,6 +1333,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       } else if (this.pageMode == 'EDIT') {
 
         requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
+        console.log('Model EDIT', this.model);
       } else if (this.pageMode == 'RESUBMIT') {
         requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, this.model);
       }
@@ -1397,7 +1397,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
           } else if (error.status === 500) {
             // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', null, true);
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.errors, '', 'alert', true, 'OK', null, true);
           } else if (error.status === 503) {
             const errors: any[] = [];
             if (error.error.errors) {
