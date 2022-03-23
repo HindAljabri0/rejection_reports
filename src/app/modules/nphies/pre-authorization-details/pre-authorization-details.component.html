@@ -500,12 +500,9 @@
                     <tbody>
                       <tr>
                         <td class="label">Quantity</td>
-                        <td>{{item.quantity}}</td>
+                        <td>{{item.quantity}} {{item.quantityCode}}</td>
                       </tr>
-                      <tr>
-                        <td class="label">Quantity Code</td>
-                        <td>{{item.quantityCode}}</td>
-                      </tr>
+                      
                       <tr>
                         <td class="label">Discount(%)</td>
                         <td>{{item.discountPercent}} %</td>
@@ -624,7 +621,7 @@
                     <td class="row-click">{{d.code}} - {{d.description}}</td>
                     <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
                     <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
-                    <td class="row-click">{{d.quantity ? d.quantity : '-'}}</td>
+                    <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
                   </tr>
                 </tbody>
               </table>

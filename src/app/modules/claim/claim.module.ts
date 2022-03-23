@@ -34,8 +34,12 @@ import { CreateClaimNphiesComponent } from '../nphies/create-claim-nphies/create
 import { AddEditPreauthorizationItemComponent } from '../nphies/add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddEditCareTeamModalComponent } from '../nphies/add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditDiagnosisModalComponent } from '../nphies/add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
-import { AddEditVisionLensSpecificationsComponent } from '../nphies/add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
-import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import {
+  AddEditVisionLensSpecificationsComponent
+} from '../nphies/add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import {
+  AddEditSupportingInfoModalComponent
+} from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { NphiesSearchClaimsComponent } from '../nphies/nphies-search-claims/nphies-search-claims.component';
@@ -69,7 +73,7 @@ import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficia
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: 'transactions', component: ClaimTransactionsComponent },
-      { path: 'nphies-claim', component: CreateClaimNphiesComponent },
+      { path: 'nphies-claim', component: CreateClaimNphiesComponent, data: { routeMode: 'page' } },
       { path: 'nphies-search-claim', component: NphiesSearchClaimsComponent },
     ]),
     StoreModule.forFeature('claimState', claimReducer),

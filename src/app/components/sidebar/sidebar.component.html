@@ -5,7 +5,7 @@
                 <div class="list-title primary">
                     Waseel
                 </div>
-                
+
                 <mat-accordion displayMode="flat">
                     <mat-expansion-panel hideToggle
                         [expanded]="uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive">
@@ -452,7 +452,7 @@
                 </div>
             </ng-container>
             <div class="list-container pt-0" *ngIf="userPrivileges.WaseelPrivileges.isPAM||userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isPayerUser">
-                <mat-accordion *ngIf="userPrivileges.WaseelPrivileges.isPAM" displayMode="flat" >
+                <mat-accordion *ngIf="userPrivileges.WaseelPrivileges.isPAM" displayMode="flat">
                     <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerCertificate.isActive ">
                         <mat-expansion-panel-header>
                             <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
@@ -508,7 +508,7 @@
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive" >
+                            <a routerLink="/reports/payer-claims-report" routerLinkActive="is-active" #payerClaimsReport="routerLinkActive">
                                 <span class="text">Payer Claims Report</span>
                             </a>
                         </li>
@@ -561,6 +561,7 @@
             </ng-container>
         </div>
     </div>
-    <div class="nav-backdrop">
-        <button type="button" (click)="toggleNav()"></button>
-    </div>
+</div>
+<div class="nav-backdrop">
+    <button type="button" (click)="toggleNav()"></button>
+</div>

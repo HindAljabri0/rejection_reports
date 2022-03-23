@@ -10,12 +10,16 @@ import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
-import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import {
+  AddEditVisionLensSpecificationsComponent
+} from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
-import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import {
+  AddEditSupportingInfoModalComponent
+} from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
@@ -166,8 +170,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   pageMode = '';
   currentOpenItem: number = null;
   otherDataModel: any = {};
-  //EditBtn = 'Edit';
+  // EditBtn = 'Edit';
   communications = [];
+
+  routeMode;
 
   constructor(
 
@@ -186,7 +192,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
-    var urlHasEditMode = +this.router.url.endsWith('edit');
+    const urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       // this.isLoading = true;
       // tslint:disable-next-line:radix
@@ -199,6 +205,9 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     }
 
+    this.activatedRoute.data.subscribe(data => {
+      this.routeMode = data;
+    });
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
       // tslint:disable-next-line:radix
@@ -212,7 +221,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.getPayees();
     if (urlHasEditMode) {
-      this.pageMode = 'EDIT'
+      this.pageMode = 'EDIT';
       this.disableControls();
       this.getClaimDetails();
     }
@@ -284,7 +293,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
     }
     this.enableControls();
-    //console.log("Data = " + JSON.stringify(this.otherDataModel));
+    // console.log("Data = " + JSON.stringify(this.otherDataModel));
   }
 
   cancelEdit() {
@@ -435,7 +444,10 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   onStatusOrClassChange() {
     if (this.FormNphiesClaim.controls.serviceProvider.value === '') {
-      this.FormNphiesClaim.controls.serviceProvider.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+      this.FormNphiesClaim.controls.serviceProvider.setValue(
+        this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0]
+          ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId
+          : '');
     }
   }
 
@@ -694,7 +706,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.bodySite = result.bodySite;
               x.bodySiteName = result.bodySiteName;
               x.quantity = result.quantity;
-              x.quantityCode = result.quantityCode;
+              x.quantityCode = result.quantityCode != "" ? result.quantityCode : null;
               x.unitPrice = result.unitPrice;
               x.discount = result.discount;
               x.discountPercent = result.discountPercent;
@@ -819,7 +831,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     y.nonStandardCode = result.nonStandardCode;
                     y.display = result.display;
                     y.quantity = result.quantity;
-                    y.quantityCode = result.quantityCode;
+                    y.quantityCode = result.quantityCode != "" ? result.quantityCode : null;
                   }
                 });
               } else {
@@ -1255,7 +1267,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantity = parseInt(y.quantity, 10);
             dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });
@@ -1296,7 +1308,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantity = parseInt(y.quantity, 10);
             return dmodel;
           });
 
@@ -1332,7 +1344,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         requestObservable = this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model);
       } else if (this.pageMode == 'EDIT') {
 
-        requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(this.sharedServices.providerId, `${this.claimId}`, this.model);
+        requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(
+          this.sharedServices.providerId, `${this.claimId}`, this.model
+        );
         console.log('Model EDIT', this.model);
       } else if (this.pageMode == 'RESUBMIT') {
         requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, this.model);
@@ -1365,8 +1379,8 @@ export class CreateClaimNphiesComponent implements OnInit {
                   this.claimId = body.claimId;
                   this.uploadId = body.uploadId;
                   this.getPayees();
-                  //this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-                  //this.ngOnInit();
+                  // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                  // this.ngOnInit();
                 }
 
               } else {
@@ -1464,7 +1478,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     let hasError = false;
     if (this.isSubmitted) {
 
-      if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
+      if (this.FormNphiesClaim.controls.accidentType.value
+        && this.FormNphiesClaim.controls.accidentType.value.value
+        && !this.FormNphiesClaim.controls.date.value) {
         this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
         this.FormNphiesClaim.controls.date.updateValueAndValidity();
         this.IsDateRequired = true;
@@ -1474,7 +1490,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.date.updateValueAndValidity();
         this.IsDateRequired = false;
       }
-      if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
+      if (this.FormNphiesClaim.controls.date.value
+        && !(this.FormNphiesClaim.controls.accidentType.value
+          && this.FormNphiesClaim.controls.accidentType.value.value)) {
         this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
         this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
         this.IsAccidentTypeRequired = true;
@@ -1497,7 +1515,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     let hasError = false;
     if (this.isSubmitted) {
 
-      if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.serviceProvider.value) && !this.FormNphiesClaim.controls.status.value) {
+      if ((this.FormNphiesClaim.controls.encounterClass.value
+        || this.FormNphiesClaim.controls.serviceProvider.value)
+        && !this.FormNphiesClaim.controls.status.value) {
         this.FormNphiesClaim.controls.status.setValidators([Validators.required]);
         this.FormNphiesClaim.controls.status.updateValueAndValidity();
         this.IsStatusRequired = true;
@@ -1507,7 +1527,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.status.updateValueAndValidity();
         this.IsStatusRequired = false;
       }
-      if (!this.FormNphiesClaim.controls.encounterClass.value && (this.FormNphiesClaim.controls.serviceProvider.value || this.FormNphiesClaim.controls.status.value)) {
+      if (!this.FormNphiesClaim.controls.encounterClass.value
+        && (this.FormNphiesClaim.controls.serviceProvider.value
+          || this.FormNphiesClaim.controls.status.value)) {
         this.FormNphiesClaim.controls.encounterClass.setValidators([Validators.required]);
         this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
         this.IsClassRequired = true;
@@ -1517,7 +1539,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.encounterClass.updateValueAndValidity();
         this.IsClassRequired = false;
       }
-      if ((this.FormNphiesClaim.controls.encounterClass.value || this.FormNphiesClaim.controls.status.value) && !this.FormNphiesClaim.controls.serviceProvider.value) {
+      if ((this.FormNphiesClaim.controls.encounterClass.value
+        || this.FormNphiesClaim.controls.status.value)
+        && !this.FormNphiesClaim.controls.serviceProvider.value) {
         this.FormNphiesClaim.controls.serviceProvider.setValidators([Validators.required]);
         this.FormNphiesClaim.controls.serviceProvider.updateValueAndValidity();
         this.IsServiceProviderRequired = true;
@@ -1955,7 +1979,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }
 
-      model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0] ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name : '';
+      model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0]
+        ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name
+        : '';
       model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
       model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
 
@@ -2252,7 +2278,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get claimIsEditable() {
-    return this.otherDataModel != null && this.otherDataModel.status != null && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
+    return this.otherDataModel != null
+      && this.otherDataModel.status != null
+      && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
   get IsPreAuthRefRequired() {
@@ -2286,7 +2314,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   // }
 
   disabledAddItemsButton() {
-    return !this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
+    return !this.FormNphiesClaim.controls.type.value
+      || (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0);
   }
 
 }
