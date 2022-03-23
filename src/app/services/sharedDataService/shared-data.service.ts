@@ -213,8 +213,8 @@ export class SharedDataService {
     { value: 'procedures', name: 'Procedures' },
     { value: 'services', name: 'Services' },
     { value: 'laboratory', name: 'Laboratory' },
-    { value: 'oral-health-ip', name: 'Oral Health OP' },
-    { value: 'oral-health-op', name: 'Oral Health IP' },
+    { value: 'oral-health-ip', name: 'Oral Health IP' },
+    { value: 'oral-health-op', name: 'Oral Health OP' },
   ];
 
 
