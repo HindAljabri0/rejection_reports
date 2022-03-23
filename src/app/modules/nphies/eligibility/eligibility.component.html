@@ -29,9 +29,9 @@
             </div>
         </div>
 
-        
+
         <div class="block-filter-panel" *ngIf="selectedBeneficiary != null">
-            
+
             <div class="row small-gutter">
                 <div class="col-4">
                     <div class="form-group">
@@ -61,13 +61,15 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                    <mat-slide-toggle  color="primary" color="primary" class="ml-auto"
-                                  (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">Is New Born</mat-slide-toggle>
-                                </div>
+                        <label class="control-label pb-0">New born?</label>
+                        <div class="checkbox-group inline">
+                            <mat-checkbox color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">Yes / No</mat-checkbox>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12">
+                <div class="col-8">
                     <div class="form-group" [class.has-error]="purposeError?.trim().length > 0" [matTooltip]="purposeError">
-                        <label class="control-label">Purpose<span class="asterisk">*</span></label>
+                        <label class="control-label pb-0">Purpose<span class="asterisk">*</span></label>
                         <div class="checkbox-group inline">
                             <mat-radio-group [(ngModel)]="purposeRadioButton">
                                 <mat-radio-button value="1" color="primary" [checked]="purposeRadioButton == '1'">
@@ -83,9 +85,9 @@
                             <mat-checkbox color="primary" [checked]="isDiscovery"
                                 (change)="isDiscovery = $event.checked">Discovery</mat-checkbox> -->
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
 
                 <div class="col-4" *ngIf="purposeRadioButton == '1'">
@@ -113,7 +115,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="block-footer" *ngIf="selectedBeneficiary != null">
