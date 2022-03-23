@@ -629,6 +629,10 @@
                               <td>{{item.quantity}}</td>
                             </tr>
                             <tr>
+                              <td class="label">Quantity Code</td>
+                              <td>{{item.quantityCode}}</td>
+                            </tr>
+                            <tr>
                               <td class="label">Discount(%)</td>
                               <td>{{item.discountPercent!=null?item.discountPercent +" %":"-"}}</td>
                             </tr>
@@ -746,6 +750,7 @@
                           <th>Non Standard Code</th>
                           <th>Display</th>
                           <th>Quantity</th>
+                          <th>Quantity Code</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -757,6 +762,7 @@
                           </td>
                           <td class="row-click">{{d.display ? d.display :"-"}}</td>
                           <td class="row-click">{{d.quantity ? d.quantity :"-"}}</td>
+                          <td class="row-click">{{d.quantityCode ? d.quantityCode :"-"}}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -1884,6 +1890,10 @@
                                   <td>{{item.quantity}}</td>
                                 </tr>
                                 <tr>
+                                  <td class="label">Quantity Code</td>
+                                  <td>{{item.quantityCode}}</td>
+                                </tr>
+                                <tr>
                                   <td class="label">Discount(%)</td>
                                   <td>{{item.discountPercent!=null?item.discountPercent +"
                                     %":"-"}}</td>
@@ -2011,6 +2021,7 @@
                               <th>Non Standard Code</th>
                               <th>Display</th>
                               <th>Quantity</th>
+                              <th>Quantity Code</th>
                               <th width="10"></th>
                             </tr>
                           </thead>
@@ -2025,6 +2036,8 @@
                               <td class="row-click">{{d.display ? d.display :"-"}}
                               </td>
                               <td class="row-click">{{d.quantity ? d.quantity :"-"}}
+                              </td>
+                              <td class="row-click">{{d.quantityCode ? d.quantityCode :"-"}}
                               </td>
                               <td class="actions text-nowrap">
                                 <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
