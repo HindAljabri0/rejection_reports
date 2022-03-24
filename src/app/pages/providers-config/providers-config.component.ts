@@ -777,7 +777,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.midtableError = null;
     this.errors.midtableSaveError = null;
     this.success.midtableSaveSuccess = null;
-    this.dbMapping.getDatabaseConfig(this.selectedProvider).subscribe(event => {
+    this.dbMapping.getDatabaseConfigList(this.selectedProvider).subscribe(event => {
 
       if (event instanceof HttpResponse) {
         const data = event.body['dbObject'];
@@ -822,6 +822,7 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   addDatabaseConfig() {
+
     this.errors.midtableSaveError = null;
     this.success.midtableSaveSuccess = null;
     if (this.addDbConfigForm.value.waseelHostName == null && this.addDbConfigForm.value.waseelPort == null
@@ -844,15 +845,21 @@ export class ProvidersConfigComponent implements OnInit {
       if (this.addDbConfigForm.valid) {
 
         if (this.isBothSame === bothStatus) {
-          if (this.addDbConfigForm.controls['waseelDbType'].untouched
-            && this.addDbConfigForm.controls['waseelHostName'].untouched
-            && this.addDbConfigForm.controls['waseelPort'].untouched && this.addDbConfigForm.controls['waseelDatabaseName'].untouched
-            && this.addDbConfigForm.controls['waseelDbUserName'].untouched && this.addDbConfigForm.controls['waseelDbPassword'].untouched) {
-            return true;
-          }
 
-          if (!this.isBothSame) {
-            if (this.addDbConfigForm.controls['nphiesDbType'].untouched
+          if (this.isBothSame) {
+            if (this.addDbConfigForm.controls['waseelDbType'].untouched
+              && this.addDbConfigForm.controls['waseelHostName'].untouched
+              && this.addDbConfigForm.controls['waseelPort'].untouched && this.addDbConfigForm.controls['waseelDatabaseName'].untouched
+              && this.addDbConfigForm.controls['waseelDbUserName'].untouched
+              && this.addDbConfigForm.controls['waseelDbPassword'].untouched) {
+              return true;
+            }
+          } else {
+            if (this.addDbConfigForm.controls['waseelDbType'].untouched
+              && this.addDbConfigForm.controls['waseelHostName'].untouched
+              && this.addDbConfigForm.controls['waseelPort'].untouched && this.addDbConfigForm.controls['waseelDatabaseName'].untouched
+              && this.addDbConfigForm.controls['waseelDbUserName'].untouched && this.addDbConfigForm.controls['waseelDbPassword'].untouched
+              && this.addDbConfigForm.controls['nphiesDbType'].untouched
               && this.addDbConfigForm.controls['nphiesHostName'].untouched
               && this.addDbConfigForm.controls['nphiesPort'].untouched && this.addDbConfigForm.controls['nphiesDatabaseName'].untouched
               && this.addDbConfigForm.controls['nphiesDbUserName'].untouched
@@ -860,6 +867,7 @@ export class ProvidersConfigComponent implements OnInit {
               return true;
             }
           }
+
         }
 
         const body = [];

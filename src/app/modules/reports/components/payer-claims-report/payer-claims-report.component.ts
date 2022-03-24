@@ -14,6 +14,9 @@ import { MatPaginator } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
+import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+import { Store } from '@ngrx/store';
+import { AuthService } from 'src/app/services/authService/authService.service';
 
 @Component({
     selector: 'app-payer-claims-report',
@@ -25,6 +28,10 @@ export class PayerClaimsReportComponent implements OnInit {
     claimStatusSummaryData: any;
     payerId = '';
     fromDate = new FormControl();
+    payerName = '';
+    isPayerUser=true;
+    userId='';
+
     toDate = new FormControl();
     filtterStatuses: string[] = []
     statuses: { code: string, name: string }[] = [
@@ -62,8 +69,10 @@ export class PayerClaimsReportComponent implements OnInit {
         private downloadService: DownloadService,
         public datepipe: DatePipe,
         private sharedServices: SharedServices,
+        public authService: AuthService,
         private superAdmin: SuperAdminService,
-        private dbMappingService: DbMappingService
+        private dbMappingService: DbMappingService,
+
     ) {
         this.page = 0;
         this.pageSize = 10;
@@ -79,15 +88,19 @@ export class PayerClaimsReportComponent implements OnInit {
     providerLoader = false;
 
     ngOnInit() {
+        this.userId=this.authService.getProviderId();
+        this.isPayerUser=this._isOnlyPayerUser();
+        this.payerName = this.authService.getProviderName();
         this.PayerClaimsReportForm = this.formBuilder.group({
             providerId: ['', Validators.required],
             fromDate: ['', Validators.required],
             toDate: ['', Validators.required],
-            payerId: ['102', Validators.required],
+            payerId: [this.isPayerUser ? this.authService.getProviderId() : '', Validators.required],
             summaryCriteria: ['', Validators.required],
         });
 
         this.getProviders();
+        console.log(this.isPayerUser);
 
         // this.commen.getPayersList().map(value => {
         //   this.payers.push({
@@ -131,7 +144,8 @@ export class PayerClaimsReportComponent implements OnInit {
             const providerId = this.PayerClaimsReportForm.controls.providerId.value.split('|')[0].trim();
             this.selectedProvider = providerId;
         }
-      //  this.getPayers();
+        if (!this.isPayerUser)
+            this.getPayers();
     }
 
     getPayers() {
@@ -262,4 +276,12 @@ export class PayerClaimsReportComponent implements OnInit {
     get isLoading() {
         return this.sharedServices.loading;
     }
+    private _isOnlyPayerUser(): boolean {
+
+        const providerId = localStorage.getItem('provider_id');
+        const userPrivileges = localStorage.getItem(`${providerId}101`);
+        return userPrivileges != null && userPrivileges.split('|').includes('99.0');
+
+    }
+
 }

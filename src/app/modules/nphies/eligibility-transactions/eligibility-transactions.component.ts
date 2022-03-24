@@ -22,7 +22,7 @@ import * as moment from 'moment';
 export class EligibilityTransactionsComponent implements OnInit {
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  paginatorPagesNumbers: number[];
+  paginatorPagesNumbers: number[]=[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
   page: number;
@@ -236,11 +236,11 @@ export class EligibilityTransactionsComponent implements OnInit {
             x.payerName = this.payersList.find(y => y.nphiesId === x.payer) ? this.payersList.filter(y => y.nphiesId === x.payer)[0].englistName : '';
           });
           // console.log(this.transactions);
-          const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.transactionModel.totalElements / this.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;
-          this.paginator.pageIndex = this.transactionModel.number;
-          this.paginator.pageSize = this.transactionModel.size;
+          this.page = this.transactionModel.number;
+          this.pageSize = this.transactionModel.size;
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {

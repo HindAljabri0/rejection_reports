@@ -2,8 +2,7 @@
   <ng-container *ngIf='addMode'>
     <div class="block-header">
       <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
-      <mat-slide-toggle color="primary" color="primary" class="ml-auto" (change)="onChangeState(isNewBorn)"
-        [checked]="isNewBorn">Is New Born</mat-slide-toggle>
+     
     </div>
     <div class="block-filter-panel">
       <h5 class="form-title pt-0">Personal Information</h5>
@@ -424,10 +423,7 @@
           (click)="changeMode()">Edit</button>
          
       </div>
-      <div *ngIf="editMode" class="right-block">
-          <mat-slide-toggle  color="primary" color="primary" class="ml-auto"
-            (change)="onChangeState(isNewBorn)" [checked]="isNewBorn">Is New Born</mat-slide-toggle>
-      </div>
+      
     </div>
 
 

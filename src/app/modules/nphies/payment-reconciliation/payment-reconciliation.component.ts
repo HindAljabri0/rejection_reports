@@ -25,7 +25,7 @@ export class PaymentReconciliationComponent implements OnInit {
 
   @ViewChild('recentReconciliation', { static: false }) recentReconciliation: RecentReconciliationComponent;
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  paginatorPagesNumbers: number[];
+  paginatorPagesNumbers: number[]=[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
   page: number;
@@ -146,11 +146,11 @@ export class PaymentReconciliationComponent implements OnInit {
             x.issuerName = this.payersList.find(y => y.nphiesId === x.issuerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.issuerNphiesId)[0].englistName : '';
           });
           // console.log(this.paymentReconciliations);
-          const pages = Math.ceil((this.paymentReconciliationModel.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.paymentReconciliationModel.totalElements / this.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.paymentReconciliationModel.number;
-          this.paginator.pageIndex = this.paymentReconciliationModel.number;
-          this.paginator.pageSize = this.paymentReconciliationModel.size;
+          this.page = this.paymentReconciliationModel.number;
+          this.pageSize = this.paymentReconciliationModel.size;
           this.sharedServices.loadingChanged.next(false);
         }
       }, err => {
