@@ -49,4 +49,10 @@ export class ProvidersBeneficiariesService {
     return this.httpClient.request(httpRequest);
   }
 
+  getBeneficiaryFromCCHI(providerId: string,patientKey: string) {
+    const requestUrl = `/providers/${providerId}/patientKey/${patientKey}`;
+    const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(request);
+  }
+
 }
