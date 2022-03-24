@@ -57,6 +57,12 @@
                 <p class="form-control-static">{{eligibilityResponse.transfer ? 'Yes' : 'No'}}</p>
             </div>
         </div>
+        <div class="col-4">
+            <div class="form-group form-group-static">
+                <div class="control-label">Is New Born ? </div>
+                <p class="form-control-static">{{eligibilityResponse.isNewBorn ? 'Yes' : 'No'}}</p>
+            </div>
+        </div>
     </div>
 
     <ng-container *ngIf="eligibilityResponse.errors != null && eligibilityResponse.errors.length > 0">
