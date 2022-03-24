@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit {
     envStaging = false;
 
     userPrivileges: UserPrivileges = initState.userPrivileges;
+    
 
     constructor(private auth: AuthService, private sharedServices: SharedServices, private store: Store) {
         this.auth.isUserNameUpdated.subscribe(updated => {
