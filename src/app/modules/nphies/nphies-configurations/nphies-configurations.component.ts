@@ -97,6 +97,7 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
   }
 
   selectCategory(category: string) {
+    this.filterWLECodesControl.setValue('');
     this.codes = [];
     if (category == 'departmentName_') {
       category += this.getPayerCode();
