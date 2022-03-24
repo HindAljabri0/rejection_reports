@@ -647,6 +647,10 @@
                               <td class="label">Body Site</td>
                               <td>{{item.bodySiteName ? item.bodySiteName : "-"}}</td>
                             </tr>
+                            <tr>
+                              <td class="label">Sub Site</td>
+                              <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -674,10 +678,7 @@
                               <td class="label">Payer Share</td>
                               <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency" *ngIf="item.payerShare!=null">SR</span></td>
                             </tr>
-                            <tr>
-                              <td class="label">Sub Site</td>
-                              <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
-                            </tr>
+                           
                             <tr>
                               <td class="label">
                                 <div class="d-flex align-items-center">
@@ -1835,6 +1836,11 @@
                                   <td>{{item.bodySiteName ? item.bodySiteName :
                                     "-"}}</td>
                                 </tr>
+                                <tr>
+                                  <td class="label">Sub Site</td>
+                                  <td>{{item.subSiteName ? item.subSiteName :"-"}}
+                                  </td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -1866,11 +1872,7 @@
                                     <span class="currency" *ngIf="item.payerShare!=null">SR</span>
                                   </td>
                                 </tr>
-                                <tr>
-                                  <td class="label">Sub Site</td>
-                                  <td>{{item.subSiteName ? item.subSiteName :"-"}}
-                                  </td>
-                                </tr>
+                                
                                 <tr>
                                   <td class="label">
                                     <div class="d-flex align-items-center">
