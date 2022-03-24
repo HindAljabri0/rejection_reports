@@ -274,7 +274,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       postalCode: this.otherDataModel.beneficiary.postalCode,
 
       plans: [{
-        payerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerNphiesId,
+        payerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
         payerName: this.otherDataModel.beneficiary.insurancePlan.insurer,
         memberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
         planId: null,
