@@ -542,6 +542,48 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
         break;
 
+      case 'Discount':
+
+        // tslint:disable-next-line:max-line-length
+        if (this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
+          const discountPercentValue: number = (1 - parseFloat(this.FormItem.controls.factor.value)) * 100;
+
+          this.FormItem.controls.discountPercent.setValue(parseFloat(discountPercentValue.toFixed(2)));
+        } else {
+          this.FormItem.controls.discountPercent.setValue(1);
+        }
+
+        // tslint:disable-next-line:max-line-length
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.discountPercent.value) {
+          // tslint:disable-next-line:max-line-length
+          const discountValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.discountPercent.value)) / 100;
+          this.FormItem.controls.discount.setValue(parseFloat(discountValue.toFixed(2)));
+        } else {
+          this.FormItem.controls.discount.setValue(0);
+        }
+
+        // tslint:disable-next-line:max-line-length
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
+          // tslint:disable-next-line:max-line-length
+          const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
+
+          // tslint:disable-next-line:max-line-length
+          // const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+          this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
+        } else {
+          this.FormItem.controls.net.setValue('');
+        }
+
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientSharePercent.value) {
+          // tslint:disable-next-line:max-line-length
+          const patientShareValue = (parseFloat(this.FormItem.controls.net.value) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
+          this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
+        } else {
+          this.FormItem.controls.patientShare.setValue('');
+        }
+
+        break;
+
       case 'DiscountPercent':
         // tslint:disable-next-line:max-line-length
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.discount.value) {

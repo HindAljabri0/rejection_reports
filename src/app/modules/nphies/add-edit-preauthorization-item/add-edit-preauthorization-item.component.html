@@ -299,7 +299,7 @@
                   <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                 </span>
               </label>
-              <input class="form-control" placeholder="Enter factor" formControlName="factor" readonly>
+              <input class="form-control" placeholder="Enter factor" formControlName="factor" (blur)="Calculate('Discount')">
             </div>
           </div>
           <div class="col-6">
