@@ -324,7 +324,7 @@
         <tbody>
           <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
             <td class="maxw260">
-              <div class="form-group m-0">
+              <div class="form-group m-0" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')}">
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanPayerId">
                     <mat-option value="">Select Payer</mat-option>
@@ -332,6 +332,9 @@
                       {{payer.englistName}}({{payer.arabicName}})</mat-option>
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')">
+                  <span class="error-text">Please select Payer</span>
+                </div>
               </div>
             </td>
             <td>
@@ -344,12 +347,15 @@
               </div>
             </td>
             <td>
-              <div class="form-group m-0">
+              <div class="form-group m-0" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanMemberCardId').touched) && FormNphiesClaim.get('insurancePlanMemberCardId').hasError('required')}">
                 <input type="text" class="form-control" placeholder="Enter member card ID" formControlName="insurancePlanMemberCardId" />
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanMemberCardId').touched) && FormNphiesClaim.get('insurancePlanMemberCardId').hasError('required')">
+                  <span class="error-text">Please enter Member Card ID</span>
+                </div>
               </div>
             </td>
             <td>
-              <div class="form-group m-0">
+              <div class="form-group m-0" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanRelationWithSubscriber').touched) && FormNphiesClaim.get('insurancePlanRelationWithSubscriber').hasError('required')}">
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanRelationWithSubscriber">
                     <mat-option value="">Select Relation with Subscriber</mat-option>
@@ -357,21 +363,24 @@
                       {{subscriber.Name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanRelationWithSubscriber').touched) && FormNphiesClaim.get('insurancePlanRelationWithSubscriber').hasError('required')">
+                  <span class="error-text">Please select Relation with Subscriber</span>
+                </div>
               </div>
             </td>
             <td>
-              <div class="form-group m-0">
+              <div class="form-group m-0" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanCoverageType').touched) && FormNphiesClaim.get('insurancePlanCoverageType').hasError('required')}">
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanCoverageType">
                     <mat-option value="">Select Coverage Type</mat-option>
                     <mat-option *ngFor="let co of coverageTypes" [value]="co.Code">
                       {{co.Name}}
                     </mat-option>
-                    <!--
-                    <mat-option value="EHCPOL">Extended healthcare</mat-option>
-                    <mat-option value="PUBLICPOL">Public healthcare</mat-option> -->
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanCoverageType').touched) && FormNphiesClaim.get('insurancePlanCoverageType').hasError('required')">
+                  <span class="error-text">Please select Coverage Type</span>
+                </div>
               </div>
             </td>
           </tr>
