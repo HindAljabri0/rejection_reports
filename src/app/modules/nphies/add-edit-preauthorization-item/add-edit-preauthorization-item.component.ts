@@ -45,7 +45,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     unitPrice: ['', Validators.required],
     discountPercent: [''],
     discount: [''],
-    factor: ['', Validators.required],
+    factor: ['', [Validators.required, Validators.min(0),  Validators.max(1)]],
     taxPercent: [''],
     patientSharePercent: [''],
     tax: [''],

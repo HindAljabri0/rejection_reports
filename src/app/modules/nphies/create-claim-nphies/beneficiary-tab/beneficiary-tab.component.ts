@@ -106,6 +106,8 @@ export class BeneficiaryTabComponent implements OnInit {
     { Code: 'PUBLICPOL', Name: 'Public healthcare' }
   ];
 
+  IsLoading = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
@@ -154,6 +156,8 @@ export class BeneficiaryTabComponent implements OnInit {
           this.payersList = event.body as Payer[];
           if (this.pageMode === 'VIEW' && this.otherDataModel && this.otherDataModel.beneficiary) {
             this.setData();
+          } else {
+            this.IsLoading = false;
           }
         }
       }
@@ -165,6 +169,7 @@ export class BeneficiaryTabComponent implements OnInit {
   }
 
   setData() {
+
     this.otherDataModel.beneficiary.dobLabel = moment(this.otherDataModel.beneficiary.dob, 'YYYY-MM-DD').format('DD-MM-YYYY');
     // tslint:disable-next-line:max-line-length
     this.otherDataModel.beneficiary.genderName = this.genders.filter(x => x.Code === this.otherDataModel.beneficiary.gender)[0] ? this.genders.filter(x => x.Code === this.otherDataModel.beneficiary.gender)[0].Name : '-';
@@ -180,19 +185,29 @@ export class BeneficiaryTabComponent implements OnInit {
     this.otherDataModel.beneficiary.bloodGroupName = this.bloodGroup.filter(x => x.Code === this.otherDataModel.beneficiary.bloodGroup)[0] ? this.bloodGroup.filter(x => x.Code === this.otherDataModel.beneficiary.bloodGroup)[0].Name : '-';
     // tslint:disable-next-line:max-line-length
     this.otherDataModel.beneficiary.preferredLanguageName = this.preferredLanguages.filter(x => x.Code === this.otherDataModel.beneficiary.preferredLanguage)[0] ? this.preferredLanguages.filter(x => x.Code === this.otherDataModel.beneficiary.preferredLanguage)[0].Name : '-';
-    // tslint:disable-next-line:max-line-length
-    this.otherDataModel.beneficiary.countryName = this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0].Name : '-';
+
+    if (this.otherDataModel.beneficiary.country) {
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.beneficiary.countryName = this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.beneficiary.country.toLowerCase())[0].Name : '-';
+    }
 
     if (this.otherDataModel.beneficiary.insurancePlan) {
-      // tslint:disable-next-line:max-line-length
-      this.otherDataModel.beneficiary.insurancePlan.payerName = this.payersList.filter(y => y.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.payersList.filter(y => y.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].englistName : '-';
 
-      // tslint:disable-next-line:max-line-length
-      this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriberName = this.subscriberRelationship.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber)[0] ? this.subscriberRelationship.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber)[0].Name : '-';
+      if (this.otherDataModel.beneficiary.insurancePlan.payerId) {
+        this.otherDataModel.beneficiary.insurancePlan.payerName = this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? (this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].englistName + ' (' + this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].arabicName + ')') : '-';
+      }
 
-      // tslint:disable-next-line:max-line-length
-      this.otherDataModel.beneficiary.insurancePlan.coverageTypeName = this.coverageTypes.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.coverageType)[0] ? this.coverageTypes.filter(y => y.Code === this.otherDataModel.beneficiary.insurancePlan.coverageType)[0].Name : '-';
+      if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
+        this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriberName = this.subscriberRelationship.filter(x => x.Code.toLowerCase() === this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber.toLowerCase())[0] ? this.subscriberRelationship.filter(x => x.Code.toLowerCase() === this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber.toLowerCase())[0].Name : '-';
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.coverageType) {
+        this.otherDataModel.beneficiary.insurancePlan.coverageTypeName = this.coverageTypes.filter(x => x.Code.toLowerCase() === this.otherDataModel.beneficiary.insurancePlan.coverageType.toLowerCase())[0] ? this.coverageTypes.filter(x => x.Code.toLowerCase() === this.otherDataModel.beneficiary.insurancePlan.coverageType.toLowerCase())[0].Name : '-';
+      }
     }
+
+    this.IsLoading = false;
+
   }
 
   searchBeneficiaries() {
