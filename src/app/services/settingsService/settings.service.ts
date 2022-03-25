@@ -56,4 +56,31 @@ export class SettingsService {
     return this.httpClient.request(request);
   }
 
+  getNphiesProviderMappingsWithCategories(providerId: string) {
+    const requestUrl = `/providers/${providerId}/nphies-map-values?withCat=true`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestUrl);
+    return this.httpClient.request(request);
+  }
+
+  sendNphiesChangingProviderMappingsRequest(providerId: string, values: ModifyingCodeValueRequest[], type: 'SAVE' | 'DELETE') {
+    if (type == 'SAVE') {
+      return this.saveNphiesNewProviderMappings(providerId, values);
+    } else {
+      return this.deleteNphiesProviderMappings(providerId, values);
+    }
+  }
+
+  saveNphiesNewProviderMappings(providerId: string, newValues: ModifyingCodeValueRequest[]) {
+    const requestUrl = `/providers/${providerId}/nphies-map-values`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestUrl, newValues);
+    return this.httpClient.request(request);
+  }
+
+  deleteNphiesProviderMappings(providerId: string, toDeleteValues: ModifyingCodeValueRequest[]) {
+    const requestUrl = `/providers/${providerId}/nphies-map-values`;
+    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestUrl);
+    const requestWithBody = request.clone({ body: toDeleteValues });
+    return this.httpClient.request(requestWithBody);
+  }
+
 }

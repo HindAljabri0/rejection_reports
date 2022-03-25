@@ -51,6 +51,7 @@ export class BeneficiaryComponent implements OnInit {
 
     dobFormControl: FormControl = new FormControl();
     documentIdFormControl: FormControl = new FormControl();
+    documentIdCCHIFormControl: FormControl = new FormControl();
     nationalityFilterCtrl: FormControl = new FormControl();
     countryFilterCtrl: FormControl = new FormControl();
     firstNameController: FormControl = new FormControl();
@@ -424,7 +425,7 @@ export class BeneficiaryComponent implements OnInit {
         documentId: "",
         gender: "",
         fullName: "",
-
+        documentIdCCHI:""
     }
 
 
@@ -768,6 +769,43 @@ export class BeneficiaryComponent implements OnInit {
         }
     }
 
+    getInfoFromCCHI(){
+        let thereIsError = false;
 
+        if (this.documentIdCCHIFormControl.value == null || this.documentIdCCHIFormControl.value.trim().length <= 0) {
+            this.errors.documentIdCCHI = "Document ID must be specified"
+            thereIsError = true;
+            return;
+        }
+
+        this.providersBeneficiariesService.getBeneficiaryFromCCHI(this.providerId,this.documentIdCCHIFormControl.value).subscribe(event => {
+            if (event instanceof HttpResponse) {          
+                    this.beneficiaryinfo = event.body as BeneficiaryModel;
+                    if(this.beneficiaryinfo.fullName!=null){
+                        this.beneficiaryinfo.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0].name : '-';
+                        console.log("CCHI Beneficiary :: " +JSON.stringify(this.beneficiaryinfo));
+                        //this.editMode = true;
+                        //this.addMode = false;
+                        this.setDateforView(this.beneficiaryinfo);
+                        console.log("Exit");
+                    }else{
+                        this.dialogService.openMessageDialog({
+                            title: '',
+                            message: `No Data Returned from CCHI`,
+                            isError: true
+                        });
+                    }
+                }
+            
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+                this.dialogService.openMessageDialog({
+                    title: '',
+                    message: `No Data Returned from CCHI`,
+                    isError: true
+                });
+            }
+        });
+    }
 
 }
