@@ -703,7 +703,7 @@
                             <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
                             <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
                             <td class="row-click">{{d.display ? d.display : 'd.display'}}</td>
-                            <td class="row-click">{{d.quantity ? d.quantity : '-'}}</td>
+                            <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
                             <td class="actions text-nowrap">
                               <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                 <mat-icon>create</mat-icon>

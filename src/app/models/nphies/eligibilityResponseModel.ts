@@ -11,6 +11,7 @@ export class EligibilityResponseModel {
     outcome: string;
     disposition: string;
     transfer:boolean;
+    isNewBorn:boolean;
     noCoverageFoundReason: string;
     serviceDate: Date;
     transactionDate: Date;

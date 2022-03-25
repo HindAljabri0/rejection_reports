@@ -29,7 +29,7 @@ export class ConfigurationsEffects {
 
     onRequestProviderMappingValues$ = createEffect(() => this.actions$.pipe(
         ofType(loadProviderMappingValues),
-        switchMap(() => this.settingsService.getProviderMappingsWithCategories(this.sharedServices.providerId).pipe(
+        switchMap(() => this.settingsService.getNphiesProviderMappingsWithCategories(this.sharedServices.providerId).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => storeProviderMappingValues({ values: this.getCategorizedCodeValuesFromResponse(response) })),
             catchError(error => of({ type: setCodeValueManagementError.type, error }))
@@ -43,7 +43,7 @@ export class ConfigurationsEffects {
         map(data => forkJoin(
             data.map((requestValues, i) => {
                 if (requestValues.length > 0) {
-                    return this.settingsService.sendChangingProviderMappingsRequest(this.sharedServices.providerId,
+                    return this.settingsService.sendNphiesChangingProviderMappingsRequest(this.sharedServices.providerId,
                         requestValues, i == 0 ? 'SAVE' : 'DELETE').pipe(
                             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
                             map(response => ({ request: i == 0 ? 'SAVE' : 'DELETE', status: 'done' })),
