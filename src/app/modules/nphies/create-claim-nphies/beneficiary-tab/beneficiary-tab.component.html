@@ -564,7 +564,7 @@
     <span>Insurance Plan</span>
   </h5>
 
-  <div class="table-responsive" *ngIf="otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
+  <div class="table-responsive" *ngIf="!IsLoading && otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
     <table class="primary-grid manual-row-color claim-view-table no-borders">
       <thead>
         <tr>
