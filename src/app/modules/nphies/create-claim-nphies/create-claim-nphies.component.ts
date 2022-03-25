@@ -174,6 +174,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   communications = [];
 
   routeMode;
+  selectedTab = 0;
 
   constructor(
 
@@ -2323,6 +2324,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       || (this.FormNphiesClaim.controls.type.value
         && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
+  }
+
+  onTabChanged(event) {
+    this.selectedTab = event.index;
   }
 
 }
