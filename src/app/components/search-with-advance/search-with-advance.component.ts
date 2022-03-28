@@ -1,3 +1,4 @@
+import { log } from 'util';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -39,10 +40,10 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
     { key: 'nationalId', label: 'National ID' }
+
   ];
+
   selectedSearchMode = 'claimRefNo';
-
-
 
   payers: { id: number, name: string }[]=[];
   nphiesPayers: { id: number, name: string }[]=[];
@@ -54,7 +55,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { value: 'OUTPATIENT', name: 'Outpatient' },
     { value: 'INPATIENT', name: 'Inpatient' },
   ];
-  
+
 
 
   searchMode(isWassel: boolean) {
@@ -113,6 +114,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     return this.commen.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.commen.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim;
   }
 
+
   get selectedCriteriaIsUsedInBoth() {
     return ['claimRefNo', 'memberId', 'payer&date', 'batchId', 'invoiceNo', 'patientFileNo', 'nationalId'].includes(this.selectedSearchMode);
   }
@@ -153,6 +155,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       }
       this.toDateHasError = false;
       let routes = [this.commen.providerId, 'claims'];
+
       if (!isWassel) {
         routes.push('nphies-search-claim')
       }

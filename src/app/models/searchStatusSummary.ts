@@ -10,6 +10,7 @@ export class SearchStatusSummary {
   actualPaid = 0;
   actualDeducted = 0;
 
+
   constructor(body: {}) {
     if (body != null) {
       this.statuses = body['statuses'];
