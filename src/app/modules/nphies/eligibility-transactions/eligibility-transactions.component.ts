@@ -13,6 +13,7 @@ import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNph
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EligibilityTransaction } from 'src/app/models/eligibility-transaction';
 import * as moment from 'moment';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 @Component({
   selector: 'app-eligibility-transactions',
@@ -38,6 +39,7 @@ export class EligibilityTransactionsComponent implements OnInit {
     payerId: [''],
     eligibilityId: [''],
     beneficiaryId: [''],
+    documentId: [''],
     beneficiaryName: [''],
     status: ['']
   });
@@ -56,6 +58,7 @@ export class EligibilityTransactionsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
+    private providerNphiesSearchService: ProviderNphiesSearchService,
     private providersNphiesEligibilityService: ProvidersNphiesEligibilityService
   ) { }
 
@@ -98,6 +101,11 @@ export class EligibilityTransactionsComponent implements OnInit {
         this.FormEligibilityTransaction.controls.beneficiaryId.patchValue(parseInt(params.beneficiaryId));
       }
 
+      if (params.documentId != null) {
+        // tslint:disable-next-line:radix
+        this.FormEligibilityTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+      }
+
       if (params.beneficiaryName != null) {
         this.FormEligibilityTransaction.controls.beneficiaryName.patchValue(params.beneficiaryName);
       }
@@ -127,7 +135,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    this.beneficiaryService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormEligibilityTransaction.controls.beneficiaryName.value).subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormEligibilityTransaction.controls.beneficiaryName.value).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
@@ -145,7 +153,8 @@ export class EligibilityTransactionsComponent implements OnInit {
     this.selectedBeneficiary = beneficiary;
     this.FormEligibilityTransaction.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
-      beneficiaryId: beneficiary.id
+      beneficiaryId: beneficiary.id,
+      documentId: beneficiary.documentId
     });
   }
 
@@ -206,15 +215,16 @@ export class EligibilityTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
-        model.eligibilityId = parseInt(this.FormEligibilityTransaction.controls.eligibilityId.value);
+        model.eligibilityId = parseInt(this.FormEligibilityTransaction.controls.eligibilityId.value, 10);
       }
 
       if (this.FormEligibilityTransaction.controls.payerId.value) {
         model.payerId = this.FormEligibilityTransaction.controls.payerId.value;
       }
 
-      if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
-        model.beneficiaryId = parseInt(this.FormEligibilityTransaction.controls.beneficiaryId.value);
+      // tslint:disable-next-line:max-line-length
+      if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
+        model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
       }
 
       if (this.FormEligibilityTransaction.controls.status.value) {
@@ -270,9 +280,11 @@ export class EligibilityTransactionsComponent implements OnInit {
       path += `eligibilityId=${this.FormEligibilityTransaction.controls.eligibilityId.value}&`;
     }
 
-    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
       path += `beneficiaryId=${this.FormEligibilityTransaction.controls.beneficiaryId.value}&`;
       path += `beneficiaryName=${this.FormEligibilityTransaction.controls.beneficiaryName.value}&`;
+      path += `documentId=${this.FormEligibilityTransaction.controls.documentId.value}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.status.value) {
