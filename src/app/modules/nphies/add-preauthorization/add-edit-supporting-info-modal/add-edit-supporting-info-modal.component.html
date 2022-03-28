@@ -88,7 +88,8 @@
               <span
                 *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint' && FormSupportingInfo.controls.category.value.value !== 'lab-test'"
                 class="input-group-append">
-                <span *ngIf="FormSupportingInfo.controls.category.value.value === 'vital-sign-weight'|| FormSupportingInfo.controls.category.value.value === 'birth-weight'"
+                <span
+                  *ngIf="FormSupportingInfo.controls.category.value.value === 'vital-sign-weight'|| FormSupportingInfo.controls.category.value.value === 'birth-weight'"
                   class="input-group-text">kg</span>
                 <span
                   *ngIf="FormSupportingInfo.controls.category.value.value === 'vital-sign-systolic' || FormSupportingInfo.controls.category.value.value === 'vital-sign-diastolic'"
@@ -100,7 +101,7 @@
                   class="input-group-text">cm</span>
                 <span *ngIf="FormSupportingInfo.controls.category.value.value === 'temperature'"
                   class="input-group-text">Cel</span>
-                  <span *ngIf="FormSupportingInfo.controls.category.value.value === 'oxygen-saturation'"
+                <span *ngIf="FormSupportingInfo.controls.category.value.value === 'oxygen-saturation'"
                   class="input-group-text">%</span>
                 <span
                   *ngIf="FormSupportingInfo.controls.category.value.value === 'pulse' || FormSupportingInfo.controls.category.value.value === 'respiratory-rate'"
@@ -115,8 +116,21 @@
         </div>
       </ng-container>
 
-      <ng-container
-        *ngIf="FormSupportingInfo.controls.category.value.value === 'onset' || FormSupportingInfo.controls.category.value.value === 'last-menstrual-period' || FormSupportingInfo.controls.category.value.value === 'missingtooth'">
+      <ng-container *ngIf="FormSupportingInfo.controls.category.value.value === 'onset' ||
+         FormSupportingInfo.controls.category.value.value === 'last-menstrual-period' ||
+          FormSupportingInfo.controls.category.value.value === 'missingtooth' ||
+          FormSupportingInfo.controls.category.value.value === 'lab-test' ||
+          FormSupportingInfo.controls.category.value.value === 'vital-sign-weight' ||
+          FormSupportingInfo.controls.category.value.value === 'vital-sign-systolic' ||
+          FormSupportingInfo.controls.category.value.value === 'vital-sign-diastolic' ||
+          FormSupportingInfo.controls.category.value.value === 'icu-hours' ||
+          FormSupportingInfo.controls.category.value.value === 'ventilation-hours' ||
+          FormSupportingInfo.controls.category.value.value === 'vital-sign-height' ||
+          FormSupportingInfo.controls.category.value.value === 'temperature' ||
+          FormSupportingInfo.controls.category.value.value === 'pulse' ||
+          FormSupportingInfo.controls.category.value.value === 'oxygen-saturation' ||
+          FormSupportingInfo.controls.category.value.value === 'respiratory-rate' 
+          ">
         <div class="col-6">
           <div class="form-group"
             [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('timingDate').touched) && FormSupportingInfo.get('timingDate').hasError('required')}">
