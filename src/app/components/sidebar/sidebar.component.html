@@ -266,14 +266,29 @@
                     Nphies
                 </div>
             </ng-container>
-            <ul class="nav-list">
-                <li *ngIf="(userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary)">
-                    <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
-                        <span class="text">Beneficiary</span>
-                    </a>
-                </li>
-            </ul>
             <mat-accordion displayMode="flat">
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header *ngIf="(userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary)">
+                        <mat-panel-title>Beneficiary</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li>
+                            <a routerLink="/nphies/beneficiary" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
+                                <span class="text">Beneficiary List</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/nphies/beneficiary/upload" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
+                                <span class="text">Upload Beneficiaries</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/nphies/beneficiary/add" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
+                                <span class="text">Add Beneficiary</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
                 <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Eligibility</mat-panel-title>
