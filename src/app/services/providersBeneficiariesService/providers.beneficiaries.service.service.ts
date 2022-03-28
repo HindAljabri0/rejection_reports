@@ -78,7 +78,7 @@ export class ProvidersBeneficiariesService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file, file.name);
-    const req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/file`, formdata, {
+    const req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryUpload/file`, formdata, {
         reportProgress: true,
     });
 
