@@ -110,11 +110,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     bcountryName: [''],
     postalCode: [''],
     insurancePlanId: ['', Validators.required],
-    insurancePlanPayerId: [''],
+    insurancePlanPayerId: ['', Validators.required],
     insurancePlanExpiryDate: [''],
-    insurancePlanMemberCardId: [''],
-    insurancePlanRelationWithSubscriber: [''],
-    insurancePlanCoverageType: [''],
+    insurancePlanMemberCardId: ['', Validators.required],
+    insurancePlanRelationWithSubscriber: ['', Validators.required],
+    insurancePlanCoverageType: ['', Validators.required],
     insurancePlanPayerName: [''],
     insurancePrimary: [''],
     insurancePayerNphiesId: [''],
@@ -174,6 +174,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   communications = [];
 
   routeMode;
+  selectedTab = 0;
 
   constructor(
 
@@ -220,21 +221,21 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     this.getPayees();
-    if (urlHasEditMode) {
-      this.pageMode = 'EDIT';
-      this.disableControls();
-      this.getClaimDetails();
-    }
-    if (this.claimId && !urlHasEditMode) {
-      this.pageMode = 'VIEW';
+    // if (urlHasEditMode) {
+    //   this.pageMode = 'EDIT';
+    //   this.disableControls();
+    //   this.getClaimDetails();
+    // }
+    // if (this.claimId && !urlHasEditMode) {
+    //   this.pageMode = 'VIEW';
 
-      this.getClaimDetails();
-      if (this.responseId) {
-        this.getCommunications();
-      }
-      this.disableControls();
-      this.getClaimDetails();
-    }
+    //   this.getClaimDetails();
+    //   if (this.responseId) {
+    //     this.getCommunications();
+    //   }
+    //   this.disableControls();
+    //   this.getClaimDetails();
+    // }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
@@ -310,7 +311,12 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
           this.onPayeeTypeChange();
           this.isLoading = false;
-          if (this.claimId) {
+          const urlHasEditMode = +this.router.url.endsWith('edit');
+          if (urlHasEditMode) {
+            this.pageMode = 'EDIT';
+            this.disableControls();
+            this.getClaimDetails();
+          } else if (this.claimId && !urlHasEditMode) {
             this.pageMode = 'VIEW';
             if (this.responseId) {
               this.getCommunications();
@@ -2318,6 +2324,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       || (this.FormNphiesClaim.controls.type.value
         && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
+  }
+
+  onTabChanged(event) {
+    this.selectedTab = event.index;
   }
 
 }

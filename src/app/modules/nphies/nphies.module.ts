@@ -47,6 +47,10 @@ import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-
 import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { configurationReducer } from './nphies-configurations/store/configurations.reducer';
+import { ConfigurationsEffects } from './nphies-configurations/store/configurations.effects';
 
 
 
@@ -98,7 +102,9 @@ import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-co
     NgScrollbarModule,
     SmoothScrollModule,
     NphiesRoutingModule,
-    CarouselModule
+    CarouselModule,
+    StoreModule.forFeature('configurationState', configurationReducer),
+    EffectsModule.forFeature([ConfigurationsEffects]),
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
