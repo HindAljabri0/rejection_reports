@@ -11,8 +11,10 @@
     <div class="block-body">
         <ng-content></ng-content>
     </div>
-    <div class="block-footer" *ngIf="bottomLeftActionText!=null || bottomRightActionText!=null || bottomDetails">
-        <p>{{bottomDetails}}</p>
+    <div class="block-footer sticky" *ngIf="bottomLeftActionText!=null || bottomRightActionText!=null || bottomDetails">
+        <div class="left-block">
+            <p>{{bottomDetails}}</p>
+        </div>
         <div class="right-block btn-list">
             <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()" [disabled]="bottomLeftActionDisabled">{{bottomLeftActionText}}</button>
             <button *ngIf="bottomRightActionText!=null" mat-flat-button color="primary" (click)="bottomRightAction.emit()"

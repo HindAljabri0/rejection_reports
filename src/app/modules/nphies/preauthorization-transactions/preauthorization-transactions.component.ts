@@ -52,6 +52,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     nphiesRequestId: [''],
     beneficiaryId: [''],
     beneficiaryName: [''],
+    documentId: [''],
     status: ['']
   });
 
@@ -118,6 +119,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.FormPreAuthTransaction.controls.beneficiaryId.patchValue(parseInt(params.beneficiaryId));
       }
 
+      if (params.documentId != null) {
+        // tslint:disable-next-line:radix
+        this.FormPreAuthTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+      }
+
       if (params.beneficiaryName != null) {
         this.FormPreAuthTransaction.controls.beneficiaryName.patchValue(params.beneficiaryName);
       }
@@ -163,7 +169,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.selectedBeneficiary = beneficiary;
     this.FormPreAuthTransaction.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
-      beneficiaryId: beneficiary.id
+      beneficiaryId: beneficiary.id,
+      documentId: beneficiary.documentId
     });
   }
 
@@ -240,8 +247,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
 
-      if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
-        model.beneficiaryId = parseInt(this.FormPreAuthTransaction.controls.beneficiaryId.value, 10);
+      // tslint:disable-next-line:max-line-length
+      if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+        model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {
@@ -298,9 +306,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       path += `nphiesRequestId=${this.FormPreAuthTransaction.controls.nphiesRequestId.value}&`;
     }
 
-    if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
       path += `beneficiaryId=${this.FormPreAuthTransaction.controls.beneficiaryId.value}&`;
       path += `beneficiaryName=${this.FormPreAuthTransaction.controls.beneficiaryName.value}&`;
+      path += `documentId=${this.FormPreAuthTransaction.controls.documentId.value}&`;
     }
 
     if (this.FormPreAuthTransaction.controls.status.value) {
