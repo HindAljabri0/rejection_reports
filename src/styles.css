@@ -450,6 +450,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .mat-form-field.mat-form-field-appearance-outline input.mat-input-element{height:21px;}
 .mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick{color:#bbbbbb;}
 .mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
+.form-group .mat-form-field.mat-form-field-appearance-fill{width: 100%;}
 .mat-form-field.mat-form-field-appearance-fill .mat-form-field-underline{display: none;}
 .mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex{background-color: #fff;border-radius: 8px;border:1px solid #D5D5D5;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;padding: 6px 14px 1px 14px;}
 .mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex:hover{border-color:#909090;}
@@ -460,10 +461,17 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .mat-form-field.mat-form-field-appearance-fill.mat-focused .mat-form-field-label{color: #3060aa;}
 .mat-form-field.mat-form-field-appearance-fill .mat-form-field-label-wrapper{padding-top: 0;top: -12px;}
 .mat-form-field.mat-form-field-appearance-fill.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field.mat-form-field-appearance-fill.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label{transform:translateY(-8px) scale(0.9);}
-.mat-form-field.mat-form-field-appearance-fill input.mat-input-element{height: 20px;font-size: 14px;line-height: 20px;color: #333;caret-color:#333;}
-.mat-form-field.mat-form-field-appearance-fill .mat-form-field-infix{padding: 7px 0;}
+.mat-form-field.mat-form-field-appearance-fill input.mat-input-element{height: 20px;font-size: 14px;line-height: 20px;color: #333;caret-color:#333;appearance:none;-webkit-appearance:none;-moz-appearance: none;-o-appearance:none;}
+.mat-form-field.mat-form-field-appearance-fill input.mat-input-element:-webkit-autofill,.mat-form-field.mat-form-field-appearance-fill input.mat-input-element:-webkit-autofill:hover,.mat-form-field.mat-form-field-appearance-fill input.mat-input-element:-webkit-autofill:focus, .mat-form-field.mat-form-field-appearance-fill textarea.mat-input-element:-webkit-autofill,.mat-form-field.mat-form-field-appearance-fill textarea.mat-input-element:-webkit-autofill:hover, .mat-form-field.mat-form-field-appearance-fill textarea.mat-input-element:-webkit-autofill:focus{-webkit-box-shadow: 0 0 0 1000px #fff inset !important;}
+.mat-form-field.mat-form-field-appearance-fill input.mat-input-element::-webkit-outer-spin-button, .mat-form-field.mat-form-field-appearance-fill input.mat-input-element::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
+.mat-form-field.mat-form-field-appearance-fill input.mat-input-element[type=number] {-moz-appearance: textfield;}
+.mat-form-field.mat-form-field-appearance-fill .mat-form-field-infix{padding: 7px 0;display: flex;}
 .mat-form-field.mat-form-field-appearance-fill.mat-form-field-invalid .mat-form-field-label,.mat-form-field.mat-form-field-appearance-fill .mat-placeholder-required{color:#CD4949;}
 .mat-form-field.mat-form-field-appearance-fill.mat-form-field-invalid .mat-form-field-flex:before,.mat-form-field.mat-form-field-appearance-fill.mat-form-field-invalid .mat-form-field-flex{border-color:#CD4949;}
+.mat-form-field.mat-form-field-appearance-fill.mat-form-field-disabled{opacity: 0.5;cursor: not-allowed;}
+.mat-form-field.mat-form-field-appearance-fill.no-spacing .mat-form-field-wrapper{padding-bottom: 0;}
+.mat-form-field.mat-form-field-appearance-fill .mat-datepicker-toggle{margin-top: -19px;margin-bottom: -2px;margin-right: -7px;}
+.mat-form-field.mat-form-field-appearance-fill .mat-form-field-prefix .mat-icon, .mat-form-field.mat-form-field-appearance-fill .mat-form-field-suffix .mat-icon{margin-right: -4px;position: relative;top: -2px;}
 .form-group .control-hint{font-size: 12px;line-height: 20px;color: #707070;padding-top: 4px;}
 .form-group-static .control-label{color:#707070;padding-bottom: 0;}
 .form-control-static{color:#333333;font-weight: 500;}
@@ -1455,10 +1463,10 @@ tag tag-ripple{display:none;}
 
 /* mid table config
 --------------------------------------------------------------------------------------------------------*/
-.mid-table-config{max-width: 800px;}
-.mid-table-config .host-wrapper{display: flex;}
-.mid-table-config .host-wrapper .port{flex-basis: 112px;max-width: 112px;flex-grow: 0;flex-shrink: 0;padding-left: 14px;}
-.mid-table-config .host-wrapper .host{flex-basis: calc(100% - 112px);max-width: calc(100% - 112px);flex-grow: 0;flex-shrink: 0;}
+.provider-config-container{max-width: 800px;}
+.provider-config-container .host-wrapper{display: flex;}
+.provider-config-container .host-wrapper .port{flex-basis: 112px;max-width: 112px;flex-grow: 0;flex-shrink: 0;padding-left: 14px;}
+.provider-config-container .host-wrapper .host{flex-basis: calc(100% - 112px);max-width: calc(100% - 112px);flex-grow: 0;flex-shrink: 0;}
 
 /* config accordion
 --------------------------------------------------------------------------------------------------------*/
@@ -1467,7 +1475,7 @@ tag tag-ripple{display:none;}
 .config-accordion .mat-expansion-panel-header{height: 46px!important;min-height: 46px!important;max-height: 46px!important;padding: 0 52px 0 14px;position: relative;}
 .config-accordion .mat-expansion-panel-header:after{position: absolute;content:'';right: 14px;height: 24px;width: 24px;display: block;background: url('./assets/ic-chevron-down.svg') center no-repeat;background-size: 24px 24px;opacity: 0.5;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
 .config-accordion .mat-expanded .mat-expansion-panel-header:after{transform: rotate(180deg);}
-.config-accordion.mat-accordion .mat-expansion-panel:last-of-type,.config-accordion.mat-accordion .mat-expansion-panel:first-of-type,.config-accordion.mat-accordion .mat-expansion-panel,.config-accordion.mat-accordion .mat-expansion-panel:not(.mat-expanded), .config-accordion .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing){border-radius: 8px;}
+.config-accordion.mat-accordion .mat-expansion-panel:last-of-type,.config-accordion.mat-accordion .mat-expansion-panel:first-of-type,.config-accordion.mat-accordion .mat-expansion-panel.mat-expanded,.config-accordion.mat-accordion .mat-expansion-panel:not(.mat-expanded), .config-accordion .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing){border-radius: 8px;}
 .config-accordion .mat-expansion-panel-body{border-top:1px solid #e1e1e1; padding: 14px;}
 .config-accordion .mat-expansion-panel-header-title{font-size: 14px;line-height: 20px;color: #333;font-weight: 500;}
 

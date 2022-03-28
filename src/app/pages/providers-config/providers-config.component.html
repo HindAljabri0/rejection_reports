@@ -1,17 +1,20 @@
 <app-detailscard title="Providers Configuration" [bottomLeftActionText]=" (isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '' : 'Reset'"
   [bottomRightActionText]=" (isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '' : 'Save'" (bottomLeftAction)=" reset()" (bottomRightAction)="save()">
-  <div class="form-group" [class.mb-0]="selectedProvider == null || selectedProvider == ''">
-    <input [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()" [readonly]="isLoading" (keyup.enter)="selectProvider()"
-      class="form-control search-box" placeholder="Select provider">
-    <mat-autocomplete autoActiveFirstOption #auto>
-      <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
-        (click)="selectProvider(provider.switchAccountId)">
-        {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
-      </mat-option>
-      <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
-        {{errors.providersError}}
-      </mat-option>
-    </mat-autocomplete>
+  <div class="form-group mb-0">
+    <mat-form-field appearance="fill" [class.no-spacing]="selectedProvider == null || selectedProvider == ''">
+      <mat-label>Select provider</mat-label>
+      <input matInput type="text" [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()" [readonly]="isLoading" (keyup.enter)="selectProvider()" />
+      <mat-icon matSuffix>search</mat-icon>
+      <mat-autocomplete autoActiveFirstOption #auto>
+        <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+          (click)="selectProvider(provider.switchAccountId)">
+          {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+        </mat-option>
+        <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
+          {{errors.providersError}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
   </div>
 
   <mat-accordion *ngIf="selectedProvider != null && selectedProvider != ''" hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
@@ -26,7 +29,7 @@
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.midtableError == null || errors.midtableError == '') && !componentLoading.midtable">
         <form [formGroup]="addDbConfigForm" (ngSubmit)="addDatabaseConfig()" autocomplete="off">
-          <mat-checkbox color="primary" [(ngModel)]="isBothSame" [ngModelOptions]="{standalone: true}">Apply same configuration for both Waseel and NPHIES claim extraction
+          <mat-checkbox color="primary" [(ngModel)]="isBothSame" [ngModelOptions]="{standalone: true}">Apply same configuration for both Waseel & NPHIES claim extraction
           </mat-checkbox>
           <hr class="hr my-14">
           <div [hidden]="isBothSame" class="form-group">
@@ -36,44 +39,53 @@
             <label class="control-label pb-0 text-grey">Select Database Type</label>
             <mat-radio-group class="radio-group inline" formControlName="waseelDbType">
               <mat-radio-button color="primary" value="ORACLE">Oracle 11.2 onwards</mat-radio-button>
-              <mat-radio-button color="primary" value="ORACLE_11_2">Oracle between 9.0 and 11.1</mat-radio-button>
+              <mat-radio-button color="primary" value="ORACLE_11_2">Oracle between 9.0 & 11.1</mat-radio-button>
               <mat-radio-button color="primary" value="POSTGRESQL">PostgreSql</mat-radio-button>
               <mat-radio-button color="primary" value="MYSQL">MySql</mat-radio-button>
               <mat-radio-button color="primary" value="SQLSERVER">SqlServer 2016 onwards</mat-radio-button>
               <mat-radio-button color="primary" value="SQLSERVERLEGACY">SqlServer Legacy</mat-radio-button>
             </mat-radio-group>
           </div>
-          <div class="mid-table-config">
+          <div class="provider-config-container">
             <div class="row small-gutter">
               <div class="col-6">
                 <div class="host-wrapper">
-                  <div class="form-group host">
-                    <label class="control-label">Host Name</label>
-                    <input type="text" class="form-control" placeholder="Enter host name" formControlName="waseelHostName" (change)="validateForm()" autocomplete="" />
+                  <div class="form-group mb-0 host">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Host Name</mat-label>
+                      <input matInput placeholder="Enter host name" formControlName="waseelHostName" (change)="validateForm()" autocomplete="" type="text" />
+                    </mat-form-field>
                   </div>
-                  <div class="form-group port">
-                    <label class="control-label">Port</label>
-                    <input type="number" class="form-control" placeholder="Enter port" formControlName="waseelPort" (change)="validateForm()" autocomplete="" />
+                  <div class="form-group mb-0 port">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Port</mat-label>
+                      <input matInput type="number" placeholder="Enter port" formControlName="waseelPort" (change)="validateForm()" autocomplete="" />
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
               <div class="col-6">
-                <div class="form-group">
-                  <label class="control-label">Database Name</label>
-                  <input type="text" class="form-control" placeholder="Enter database name" formControlName="waseelDatabaseName" (change)="validateForm()" autocomplete="" />
+                <div class="form-group mb-0">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Database Name</mat-label>
+                    <input matInput type="text" placeholder="Enter database name" formControlName="waseelDatabaseName" (change)="validateForm()" autocomplete="" />
+                  </mat-form-field>
                 </div>
               </div>
               <div class="col-6">
-                <div class="form-group">
-                  <label class="control-label">Username</label>
-                  <input type="text" class="form-control" placeholder="Enter username" formControlName="waseelDbUserName" (change)="validateForm()" autocomplete="" />
+                <div class="form-group mb-0">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" placeholder="Enter username" formControlName="waseelDbUserName" (change)="validateForm()" autocomplete="" />
+                  </mat-form-field>
                 </div>
               </div>
               <div class="col-6">
-                <div class="form-group">
-                  <label class="control-label">Password</label>
-                  <input type="password" class="form-control" placeholder="Enter password" formControlName="waseelDbPassword" (change)="validateForm()"
-                    autocomplete="new-password" />
+                <div class="form-group mb-0">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" placeholder="Enter password" formControlName="waseelDbPassword" (change)="validateForm()" autocomplete="new-password" />
+                  </mat-form-field>
                 </div>
               </div>
             </div>
@@ -87,44 +99,53 @@
               <label class="control-label pb-0 text-grey">Select Database Type</label>
               <mat-radio-group class="radio-group inline" formControlName="nphiesDbType">
                 <mat-radio-button color="primary" value="ORACLE">Oracle 11.2 onwards</mat-radio-button>
-                <mat-radio-button color="primary" value="ORACLE_11_2">Oracle between 9.0 and 11.1</mat-radio-button>
+                <mat-radio-button color="primary" value="ORACLE_11_2">Oracle between 9.0 & 11.1</mat-radio-button>
                 <mat-radio-button color="primary" value="POSTGRESQL">PostgreSql</mat-radio-button>
                 <mat-radio-button color="primary" value="MYSQL">MySql</mat-radio-button>
                 <mat-radio-button color="primary" value="SQLSERVER">SqlServer 2016 onwards</mat-radio-button>
                 <mat-radio-button color="primary" value="SQLSERVERLEGACY">SqlServer Legacy</mat-radio-button>
               </mat-radio-group>
             </div>
-            <div class="mid-table-config">
+            <div class="provider-config-container">
               <div class="row small-gutter">
                 <div class="col-6">
                   <div class="host-wrapper">
-                    <div class="form-group host">
-                      <label class="control-label">Host Name</label>
-                      <input type="text" class="form-control" placeholder="Enter host name" formControlName="nphiesHostName" (change)="validateForm()" autocomplete="" />
+                    <div class="form-group mb-0 host">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Host Name</mat-label>
+                        <input matInput placeholder="Enter host name" formControlName="nphiesHostName" (change)="validateForm()" autocomplete="" type="text" />
+                      </mat-form-field>
                     </div>
-                    <div class="form-group port">
-                      <label class="control-label">Port</label>
-                      <input type="number" class="form-control" placeholder="Enter port" formControlName="nphiesPort" (change)="validateForm()" autocomplete="" />
+                    <div class="form-group mb-0 port">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Port</mat-label>
+                        <input matInput type="number" placeholder="Enter port" formControlName="nphiesPort" (change)="validateForm()" autocomplete="" />
+                      </mat-form-field>
                     </div>
                   </div>
                 </div>
                 <div class="col-6">
-                  <div class="form-group">
-                    <label class="control-label">Database Name</label>
-                    <input type="text" class="form-control" placeholder="Enter database name" formControlName="nphiesDatabaseName" (change)="validateForm()" autocomplete="" />
+                  <div class="form-group mb-0">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Database Name</mat-label>
+                      <input matInput type="text" placeholder="Enter database name" formControlName="nphiesDatabaseName" (change)="validateForm()" autocomplete="" />
+                    </mat-form-field>
                   </div>
                 </div>
                 <div class="col-6">
-                  <div class="form-group">
-                    <label class="control-label">Username</label>
-                    <input type="text" class="form-control" placeholder="Enter username" formControlName="nphiesDbUserName" (change)="validateForm()" autocomplete="" />
+                  <div class="form-group mb-0">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Username</mat-label>
+                      <input matInput type="text" placeholder="Enter username" formControlName="nphiesDbUserName" (change)="validateForm()" autocomplete="" />
+                    </mat-form-field>
                   </div>
                 </div>
                 <div class="col-6">
-                  <div class="form-group">
-                    <label class="control-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Enter password" formControlName="nphiesDbPassword" (change)="validateForm()"
-                      autocomplete="new-password" />
+                  <div class="form-group mb-0">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Password</mat-label>
+                      <input matInput type="password" placeholder="Enter password" formControlName="nphiesDbPassword" (change)="validateForm()" autocomplete="new-password" />
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -141,38 +162,28 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Payer Selection and Mapping
+          Payer Selection & Mapping
           <span class="text-danger ml-auto" *ngIf="errors.payerMappingSaveError != null">{{errors.payerMappingSaveError}}</span>
           <span class="text-success ml-auto" *ngIf="success.payerMappingSaveSuccess != null">{{success.payerMappingSaveSuccess}}</span>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.payerMappingError == null || errors.payerMappingError == '') && !componentLoading.payerMapping">
-        <table style="width: 100%; margin: 10px">
-          <thead>
-            <th style="width: 33%">Payer</th>
-            <th style="text-align: center; width: 33%">Mapped Value</th>
-            <th style="text-align: center; width: 33%">Enable/Disable</th>
-          </thead>
-          <tr *ngFor="let payer of associatedPayers;let i = index" style="width: 100%">
-            <td style="width: 33%">
-              <p style="padding: 5px 0; margin: 0; height: 80px;">{{payer.name}}
-              </p>
-            </td>
-            <td style="text-align: center; width: 33%; height: 80px;">
-              <div class="form-group mb-0" *ngIf="newPayerMappingEnable[payer.switchAccountId]">
-                <mat-form-field appearance="fill">
-                  <mat-label>Value</mat-label>
-                  <input matInput placeholder="Mapped value" [(ngModel)]="newPayerMappingValue[payer.switchAccountId]" required type="text">
-                </mat-form-field>
-              </div>
-            </td>
-            <td style="width: 33%; height: 80px;">
-              <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" color="primary" [(ngModel)]="newPayerMappingEnable[payer.switchAccountId]" (change)="onPayerMapSetting(payer, $event,i)">
+        <div class="row">
+          <div class="col-xxl-3 col-lg-4 col-6" *ngFor="let payer of associatedPayers;let i = index">
+            <div class="d-flex align-items-center pb-2">
+              <p class="medium text-primary">{{payer.name}}</p>
+              <mat-slide-toggle color="primary" [(ngModel)]="newPayerMappingEnable[payer.switchAccountId]" (change)="onPayerMapSetting(payer, $event,i)" class="ml-auto">Enable
               </mat-slide-toggle>
-            </td>
-          </tr>
-        </table>
+            </div>
+            <div class="form-group">
+              <mat-form-field appearance="fill">
+                <mat-label>Maped value</mat-label>
+                <input matInput placeholder="Mapped value" [disabled]="!newPayerMappingEnable[payer.switchAccountId]" [(ngModel)]="newPayerMappingValue[payer.switchAccountId]"
+                  required type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <p class="error-card mb-0" *ngIf="errors.payerMappingError != null && errors.payerMappingError != '' && !componentLoading.payerMapping">{{errors.payerMappingError}}</p>
       <div class="inline-loader" *ngIf="componentLoading.payerMapping">
@@ -180,37 +191,29 @@
       </div>
     </mat-expansion-panel>
 
-    <!-- //Nphies Payer Selection And Mapping For Legacy Midtables -->
+    <!-- //Nphies Payer Selection & Mapping For Legacy Midtables -->
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Nphies Payer Selection And Mapping For Legacy Midtables
+          Nphies Payer Selection & Mapping For Legacy Midtables
           <span *ngIf="errors.NphiespayerMappingError != null" class="text-danger ml-auto">{{errors.NphiesMappingSaveError}}</span>
           <span *ngIf="success.NphiesPayerMappingSuccess != null" class="text-success ml-auto">{{success.NphiesPayerMappingSuccess}}</span>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <ng-container *ngIf="(errors.NphiespayerMappingError == null || errors.NphiespayerMappingError == '') && !componentLoading.NphiesPayerMapping">
-        <table style="width: 100%; margin: 10px">
-          <thead>
-            <th style="width: 33%">Payer</th>
-            <th style="text-align: center; width: 33%">Mapped Value</th>
-
-          </thead>
-          <tr *ngFor="let Nphiepayer of addNphiesPayerMappingList;let i = index" style="width: 100%">
-            <td style="width: 33%">
-              <p style="padding: 5px 0; margin: 0; height: 80px;">{{newNphiesPayerName[Nphiepayer]}} </p>
-            </td>
-            <td style="text-align: center; width: 33%; height: 80px;">
-              <mat-form-field appearance="outline">
-                <mat-label>value</mat-label>
-                <input matInput placeholder="mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer]" required type="text">
+        <div class="row">
+          <div class="col-xxl-4 col-6" *ngFor="let Nphiepayer of addNphiesPayerMappingList;let i = index">
+            <p class="pb-2 text-primary medium">{{newNphiesPayerName[Nphiepayer]}} </p>
+            <div class="form-group">
+              <mat-form-field appearance="fill">
+                <mat-label>Maped value</mat-label>
+                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer]" required type="text">
               </mat-form-field>
-            </td>
-
-          </tr>
-        </table>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <p *ngIf="errors.NphiespayerMappingError != null && errors.NphiespayerMappingError != '' && !componentLoading.NphiesPayerMapping" class="error-card mb-0">
         {{errors.NphiespayerMappingError}}</p>
@@ -222,40 +225,47 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Provider Code Mapping and Extraction Date Config
+          Provider Code Mapping & Extraction Date Config
           <span *ngIf="errors.providerMappingSaveError != null" class="text-danger ml-auto">{{errors.providerMappingSaveError}}</span>
           <span *ngIf="success.providerMappingSaveSuccess != null" class="text-success ml-auto">{{success.providerMappingSaveSuccess}}</span>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.providerMappingError == null || errors.providerMappingError == '') && !componentLoading.providerMapping">
-        <table style="width: 100%; margin: 10px">
-          <thead>
-            <th style="width:25%;">Provider</th>
-            <th style="text-align: center; width: 24%;">Provider Code</th>
-            <th style="width:25%;text-align: center">Mapped Value</th>
-            <th style="width:25%;text-align: center">Restrict Extraction Prior to</th>
-          </thead>
-          <tr>
-            <td style="width:25%;">{{selectedProviderName}}</td>
-            <td style="text-align: center; width: 24%;">{{selectedProviderCode}}</td>
-            <td style="text-align: center; width: 25%;">
-              <mat-form-field appearance="outline">
-                <mat-label>value</mat-label>
-                <input matInput [formControl]="providerMappingController" placeholder="mapped value" type="text">
-              </mat-form-field>
-            </td>
-            <td style="text-align: center; width: 25%;">
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-6">
+              <div class="form-group form-group-static">
+                <label class="control-label">Provider</label>
+                <p class="form-control-static">{{selectedProviderName}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group form-group-static">
+                <label class="control-label">Provider Code</label>
+                <p class="form-control-static">{{selectedProviderCode}}</p>
+              </div>
+            </div>
+            <div class="col-6">
               <div class="form-group mb-0">
-                <div class="date-picker">
-                  <input id="restrictExtractionDate" [matDatepicker]="restrictExtractionDatePicker" placeholder="Select Date" class="form-control"
+                <mat-form-field appearance="fill">
+                  <mat-label>Maped value</mat-label>
+                  <input matInput [formControl]="providerMappingController" placeholder="Mapped value" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <mat-form-field appearance="fill">
+                  <mat-label>Restrict Extraction Prior to</mat-label>
+                  <input id="restrictExtractionDate" matInput [matDatepicker]="restrictExtractionDatePicker" placeholder="Select Date"
                     [formControl]="restrictExtractionDateController">
                   <mat-datepicker-toggle [for]="restrictExtractionDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #restrictExtractionDatePicker></mat-datepicker>
-                </div>
+                </mat-form-field>
               </div>
-            </td>
-          </tr>
-        </table>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <p *ngIf="errors.providerMappingError != null && errors.providerMappingError != '' && !componentLoading.providerMapping" class="error-card mb-0">
         {{errors.providerMappingError}}</p>
@@ -350,14 +360,26 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser">
-        <mat-form-field appearance="outline" style="width: 49%; margin-right: 2%;">
-          <input matInput placeholder="Portal Username" [formControl]="portalUsernameController" st>
-          <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
-        </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 49%;">
-          <input type="password" matInput placeholder="Passowrd" [formControl]="portalPasswordController">
-          <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
-        </mat-form-field>
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <mat-form-field appearance="fill">
+                  <mat-label>Portal Username</mat-label>
+                  <input matInput placeholder="Enter username" [formControl]="portalUsernameController">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <mat-form-field appearance="fill">
+                  <mat-label>Password</mat-label>
+                  <input type="password" matInput placeholder="Enter passowrd" [formControl]="portalPasswordController">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <p *ngIf="errors.portalUserError != null && errors.portalUserError != '' && !componentLoading.portalUser" class="error-card mb-0">{{errors.portalUserError}}</p>
       <div *ngIf="componentLoading.portalUser" class="inline-loader">
@@ -408,20 +430,21 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.pbmConfigurationError == null || errors.pbmConfigurationError == '') && !componentLoading.pbmConfiguration">
-        <table style="width: 100%; margin: 10px">
-          <thead>
-            <th>Provider</th>
-            <th style="text-align: center">Enable/Disable</th>
-          </thead>
-          <tr>
-            <td>{{selectedProviderName}}</td>
-            <td class="text-center">
-              <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                            width: 15%" color="primary" [(ngModel)]="newPBMValidationSettings['101']">
-              </mat-slide-toggle>
-            </td>
-          </tr>
-        </table>
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-6">
+              <div class="form-group form-group-static">
+                <label class="control-label">Provider</label>
+                <p class="form-control-static">{{selectedProviderName}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group pt-2">
+                <mat-slide-toggle color="primary" [(ngModel)]="newPBMValidationSettings['101']">Enable</mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <div *ngIf="componentLoading.pbmConfiguration" class="inline-loader">
         <mat-spinner diameter="48"></mat-spinner>
@@ -437,21 +460,24 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.netAmountConfigurationError == null || errors.netAmountConfigurationError == '') && !componentLoading.netAmount">
-        <table style="width: 100%; margin: 10px">
-          <thead>
-            <th>Provider</th>
-            <th style="width:33%;text-align: center">Accuracy Amount</th>
-          </thead>
-          <tr>
-            <td>{{selectedProviderName}}</td>
-            <td style="text-align: center; width: 33%;">
-              <mat-form-field appearance="outline">
-                <mat-label>value</mat-label>
-                <input matInput [formControl]="netAmountController" placeholder="0.5 SR" type="number" pattern="^(\d*\.)?\d+$">
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-6">
+              <div class="form-group form-group-static">
+                <label class="control-label">Provider</label>
+                <p class="form-control-static">{{selectedProviderName}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <mat-form-field appearance="fill">
+                  <mat-label>Accuracy Amount</mat-label>
+                  <input matInput [formControl]="netAmountController" placeholder="0.5 SR" type="number" pattern="^(\d*\.)?\d+$">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <div *ngIf="componentLoading.netAmount" class="inline-loader">
         <mat-spinner diameter="48"></mat-spinner>
