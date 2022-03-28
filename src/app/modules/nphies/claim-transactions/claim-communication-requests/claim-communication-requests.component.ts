@@ -120,7 +120,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
     this.resetURL();
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
-      autoFocus: false, data: { claimId }
+      autoFocus: false, data: {  openCommunicationTab: true }
     });
 
     this.claimDialogRef.afterClosed().subscribe(result => {

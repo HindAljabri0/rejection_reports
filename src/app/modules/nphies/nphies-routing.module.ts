@@ -13,10 +13,12 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { UploadClaimComponent } from './upload-claim/upload-claim.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
+import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-beneficiary.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
   { path: 'eligibility-transactions', component: EligibilityTransactionsComponent },
+  { path: 'beneficiary/upload', component: UploadBeneficiaryComponent },
   { path: 'beneficiary/:beneficiaryId/edit', component: BeneficiaryComponent },
   { path: 'beneficiary/:beneficiaryId', component: BeneficiaryComponent },
   { path: 'beneficiary/add', component: BeneficiaryComponent },
