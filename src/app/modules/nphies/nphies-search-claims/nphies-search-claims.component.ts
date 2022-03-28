@@ -1,3 +1,4 @@
+import { log } from 'util';
 import { Location } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
@@ -182,11 +183,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
-      
+
       if (value != null) {
         this.reloadClaim(value);
       }
-      
+
       this.params.claimId = null;
       this.params.editMode = null;
       this.resetURL();
@@ -199,7 +200,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async fetchData() {
-
+    console.log("test"+this.commen.providerId)
     this.commen.searchIsOpenChange.next(true);
     this.claims = new Array();
     this.summaries = new Array();
@@ -208,7 +209,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.selectedClaimsCountOfPage = 0;
     this.errorMessage = null;
     this.routeActive.params.subscribe(value => {
-      this.providerId = value.providerId;
+      this.providerId = this.commen.providerId;
     }).unsubscribe();
     this.routeActive.queryParams.subscribe(value => {
       this.params = SearchPageQueryParams.fromParams(value);
@@ -312,23 +313,35 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
-    console.log("commen-providerId" + this.commen.providerId);
 
-    this.claimSearchCriteriaModel.providerId = this.providerId;
-    console.log("providerId" + this.providerId);
+
+
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
+
     this.claimSearchCriteriaModel.statuses = statuses;
+
     this.claimSearchCriteriaModel.page = this.pageIndex;
+
     this.claimSearchCriteriaModel.pageSize = this.pageSize;
+
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
+
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
+
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
+
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
+
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
+
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
-    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId;
+
+    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
+
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
+
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
+    this.claimSearchCriteriaModel.providerId=this.commen.providerId;
 
     event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
 
@@ -434,6 +447,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   getClaimTransactions(key?: number, page?: number) {
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
+    console.log("getClaimTransactions"+this.commen.providerId);
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
     this.claimSearchCriteriaModel.statuses = key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
     this.claimSearchCriteriaModel.page = this.pageIndex;
@@ -444,7 +458,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
-    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId;
+    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
+
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
 
@@ -1000,14 +1015,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.params.filter_drName = ClaimListFilterSelection.DR_NAME ? this.claimList.drName : this.params.filter_drName;
     this.params.filter_nationalId = ClaimListFilterSelection.NATIONALID ? this.claimList.nationalId : this.params.filter_nationalId;
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
-      this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
+    this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
+    console.log(this.setParamsValueSummary.toString);
   }
 
-
-  clearFilters(name: string, key = false) {
+    clearFilters(name: string, key = false) {
     if (this.appliedFilters.length > 0) {
       if (!key) {
         const findKey = this.allFilters.find(subele => subele.value === name);

@@ -29,6 +29,7 @@ export class SearchedClaim extends Paginateable {
   descApproval: string;
   visitDate: string;
   physicianname: string;
+
   constructor(body: {}) {
     super(body);
     if (body != null) {
