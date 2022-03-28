@@ -137,13 +137,13 @@ export class BeneficiaryComponent implements OnInit {
     // ];
 
     SubscriberRelationship: { Code: string, Name: string }[] = [
-        { Code: 'child', Name: 'Child' },
-        { Code: 'parent', Name: 'Parent' },
-        { Code: 'spouse', Name: 'Spouse' },
-        { Code: 'common', Name: 'Common Law Spouse' },
-        { Code: 'self', Name: 'Self' },
-        { Code: 'injured', Name: 'Injured Party' },
-        { Code: 'other', Name: 'Other' },
+        { Code: 'CHILD', Name: 'Child' },
+        { Code: 'PARENT', Name: 'Parent' },
+        { Code: 'SPOUSE', Name: 'Spouse' },
+        { Code: 'COMMON', Name: 'Common Law Spouse' },
+        { Code: 'SELF', Name: 'Self' },
+        { Code: 'INJURED', Name: 'Injured Party' },
+        { Code: 'OTHER', Name: 'Other' },
     ];
 
     beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
@@ -783,11 +783,7 @@ export class BeneficiaryComponent implements OnInit {
                     this.beneficiaryinfo = event.body as BeneficiaryModel;
                     if(this.beneficiaryinfo.fullName!=null){
                         this.beneficiaryinfo.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0].name : '-';
-                        console.log("CCHI Beneficiary :: " +JSON.stringify(this.beneficiaryinfo));
-                        //this.editMode = true;
-                        //this.addMode = false;
                         this.setDateforView(this.beneficiaryinfo);
-                        console.log("Exit");
                     }else{
                         this.dialogService.openMessageDialog({
                             title: '',
