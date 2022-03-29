@@ -14,6 +14,9 @@ export class ProvidersBeneficiariesService {
   progressChange: Subject<{ percentage: number }> = new Subject();
   errorChange: Subject<string> = new Subject();
   error: string;
+  summary: any;
+  summaryChange: Subject<any> = new Subject<any>();
+
   constructor(private httpClient: HttpClient) {
     this.httpClient = httpClient;
     /*this.summary = new UploadSummary();
@@ -88,8 +91,8 @@ export class ProvidersBeneficiariesService {
         } else if (event instanceof HttpResponse) {
             this.uploading = false;
             this.uploadingObs.next(false);
-            //const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
-            //this.summaryChange.next(summary);
+            const summary: any = JSON.parse(JSON.stringify(event.body));
+            this.summaryChange.next(summary);
             this.progressChange.next({ percentage: 101 });
         }
     }, errorEvent => {
