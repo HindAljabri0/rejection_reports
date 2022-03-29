@@ -33,8 +33,7 @@
   <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
 
     <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-      {{res.category}}:<span class="value">{{res.categoryValue}} </span>
-      <span class="currency">SR</span>
+      {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
     </li>
 
   </ul>
@@ -550,9 +549,9 @@
                 </td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.sequence}}</td>
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.invoiceNo ? item.invoiceNo : '-'}}
-                  </td>
+                <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                  {{item.invoiceNo ? item.invoiceNo : '-'}}
+                </td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.typeName}}</td>
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -1152,14 +1151,13 @@
     <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
 
       <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-        {{res.category}}:<span class="value">{{res.categoryValue}} </span>
-        <span class="currency">SR</span>
+        {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
       </li>
 
     </ul>
 
     <div class="create-claim-body nphies-create">
-      <mat-tab-group class="primary-tab nphies-claim-tab"  [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
+      <mat-tab-group class="primary-tab nphies-claim-tab" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
 
         <mat-tab>
           <ng-template mat-tab-label>
@@ -1747,9 +1745,9 @@
                     </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.sequence}}</td>
-                      <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                        {{item.invoiceNo ? item.invoiceNo : '-'}}
-                      </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      {{item.invoiceNo ? item.invoiceNo : '-'}}
+                    </td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.typeName}}</td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
