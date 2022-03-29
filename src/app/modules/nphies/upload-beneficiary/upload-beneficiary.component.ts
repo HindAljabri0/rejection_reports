@@ -18,7 +18,7 @@ export class UploadBeneficiaryComponent implements OnInit {
   uploading = false;
   currentFileUpload: File;
   selectedFiles: FileList;
-  // data: AOA ;
+  
   payerIdsFromCurrentFile: string[] = [];
   serviceCodeValidationDisabledMessages: string[] = [];
   priceListDoesNotExistMessages: string[] = [];
@@ -26,7 +26,7 @@ export class UploadBeneficiaryComponent implements OnInit {
   fileUploads: Observable<string[]>;
   uploadContainerClass = '';
   error = '';
-
+  data :any;
   isVertical = true;
   constructor(public beneficiaryService: ProvidersBeneficiariesService, public common: SharedServices,
     private dialogService: DialogService, private adminService: AdminService,
@@ -80,11 +80,14 @@ export class UploadBeneficiaryComponent implements OnInit {
         progressObservable.unsubscribe();
       }
     });
-    /*const summaryObservable = this.beneficiaryService.summaryChange.subscribe(async value => {
+    const summaryObservable = this.beneficiaryService.summaryChange.subscribe(async value => {
       summaryObservable.unsubscribe();
       this.uploading = false;
+      this.data = value;
+      console.log(JSON.stringify(this.data));
+      //this.dialogService.showMessage('Success',"Saved Count : "+value.savedBeneficiaryCount + " Falid Count : "+value.failToSaveBeneficiaryCount, 'success', true, 'OK', null, true);
       this.cancel();
-    });*/
+    });
     const errorobservable = this.beneficiaryService.errorChange.subscribe(error => {
       this.dialogService.openMessageDialog(new MessageDialogData('', error, true));
       errorobservable.unsubscribe();
