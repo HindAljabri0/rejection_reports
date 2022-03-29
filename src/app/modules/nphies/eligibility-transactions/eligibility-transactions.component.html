@@ -87,6 +87,7 @@
         <thead>
           <tr>
             <th>Beneficiary Name</th>
+            <th>Patient ID</th>
             <th>Member Card ID</th>
             <th>Eligibility ID</th>
             <th>Purpose</th>
@@ -97,7 +98,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let transaction of transactions">
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.memberId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
