@@ -6,6 +6,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 @Component({
     selector: 'app-add-edit-diagnosis-modal',
@@ -60,7 +61,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     pageMode = '';
 
     constructor(
-        private sharedDataService: SharedDataService,
+        private sharedDataService: SharedDataService, private providerNphiesSearchService: ProviderNphiesSearchService,
         private dialogRef: MatDialogRef<AddEditDiagnosisModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
         private formBuilder: FormBuilder, private adminService: AdminService) { }
 
@@ -98,7 +99,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
         if (this.FormDiagnosis.controls.description.value !== '') {
 
-            this.adminService.searchICDCode(this.FormDiagnosis.controls.description.value).subscribe(
+            this.providerNphiesSearchService.searchICDCode(this.FormDiagnosis.controls.description.value).subscribe(
                 event => {
                     //console.log("Response = " + JSON.stringify(event));
                     if (event instanceof HttpResponse) {

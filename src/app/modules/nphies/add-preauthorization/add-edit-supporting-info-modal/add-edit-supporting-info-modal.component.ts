@@ -9,6 +9,7 @@ import { AlertPromise } from 'selenium-webdriver';
 import { DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 @Component({
   selector: 'app-add-edit-supporting-info-modal',
@@ -51,7 +52,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   fileByteArray: any;
 
   constructor(
-    private sharedDataService: SharedDataService,
+    private sharedDataService: SharedDataService, private providerNphiesSearchService: ProviderNphiesSearchService,
     private dialogRef: MatDialogRef<AddEditSupportingInfoModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
     private datePipe: DatePipe, private sharedServices: SharedServices,
     private formBuilder: FormBuilder, private adminService: AdminService) { }
@@ -355,7 +356,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   searchICDCodes() {
     this.icedOptions = [];
     if (this.FormSupportingInfo.controls.code.value !== '') {
-      this.adminService.searchICDCode(this.FormSupportingInfo.controls.code.value).subscribe(
+      this.providerNphiesSearchService.searchICDCode(this.FormSupportingInfo.controls.code.value).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
