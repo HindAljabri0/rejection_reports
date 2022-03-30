@@ -42,8 +42,12 @@ import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
 import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
-import { ClaimProcessedTransactionsComponent } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
-import { ClaimCommunicationRequestsComponent } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
+import {
+  ClaimProcessedTransactionsComponent
+} from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
+import {
+  ClaimCommunicationRequestsComponent
+} from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
 import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
 import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
@@ -51,6 +55,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { configurationReducer } from './nphies-configurations/store/configurations.reducer';
 import { ConfigurationsEffects } from './nphies-configurations/store/configurations.effects';
+import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-beneficiary.component';
 
 
 
@@ -90,7 +95,8 @@ import { ConfigurationsEffects } from './nphies-configurations/store/configurati
     ClaimCommunicationRequestsComponent,
     ReuseApprovalModalComponent,
     UploadsHistoryComponent,
-    NphiesConfigurationsComponent
+    NphiesConfigurationsComponent,
+    UploadBeneficiaryComponent
   ],
   imports: [
     CommonModule,

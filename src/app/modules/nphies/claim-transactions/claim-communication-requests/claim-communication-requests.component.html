@@ -3,6 +3,7 @@
     <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
       <thead>
         <tr>
+          <th>Beneficiary Name</th>
           <th>Communication ID</th>
           <th>Category</th>
           <th>Claim ID</th>
@@ -12,6 +13,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let req of communicationRequests" [ngClass]="{'text-warning light-bg-warning': req.notificationStatus !== 'read'}">
+          <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.beneficiaryName}} ({{req.documentId}})</td>
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.communicationId}}</td>
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.category}}</td>
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.requestId}}</td>

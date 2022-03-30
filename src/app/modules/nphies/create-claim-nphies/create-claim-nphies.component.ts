@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { Observable, ReplaySubject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -188,7 +189,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
-    private nphiesClaimUploaderService: NphiesClaimUploaderService) {
+    private nphiesClaimUploaderService: NphiesClaimUploaderService,
+    @Inject(MAT_DIALOG_DATA) private data) {
     this.today = new Date();
   }
 
@@ -238,7 +240,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     // }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-
+    if(this.data && this.data.openCommunicationTab ) {
+      this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision')? 9:8;
+    }
   }
 
   toEditMode() {
