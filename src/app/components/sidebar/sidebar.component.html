@@ -302,7 +302,7 @@
             <li>
               <a routerLink="/nphies/beneficiary/add" [routerLinkActiveOptions]="{exact: true}"
                 routerLinkActive="is-active">
-                <span class="text">Add Beneficiary</span>
+                <span class="text">Create Beneficiary</span>
               </a>
             </li>
           </ul>
@@ -421,13 +421,13 @@
         </ul>
       </ng-container>
 
-      <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
+      <!-- <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
         <li>
           <a routerLink="/nphies/configurations" routerLinkActive="is-active">
             <span class="text">Configurations</span>
           </a>
         </li>
-      </ul>
+      </ul> -->
 
       <ng-container
         *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">

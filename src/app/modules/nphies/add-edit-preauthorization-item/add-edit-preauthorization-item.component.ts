@@ -41,11 +41,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     bodySite: [''],
     subSite: [''],
     quantity: ['', [Validators.required, Validators.min(1)]],
-    quantityCode : [''],
+    quantityCode: [''],
     unitPrice: ['', Validators.required],
     discountPercent: [''],
     discount: [''],
-    factor: ['', [Validators.required, Validators.min(0),  Validators.max(1)]],
+    factor: ['', [Validators.required, Validators.min(0), Validators.max(1)]],
     taxPercent: [''],
     patientSharePercent: [''],
     tax: [''],
@@ -148,8 +148,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.factor.setValue(1);
     }
 
-
-
     if (this.data.supportingInfos) {
       this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
       this.FormItem.controls.supportingInfoFilter.valueChanges
@@ -249,6 +247,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   typeChange() {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    } else {
+      this.FormItem.controls.quantityCode.clearValidators();
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    }
     this.FormItem.controls.item.setValue('');
     this.getItemList();
   }
@@ -731,6 +736,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.itemDetails = [];
 
       this.dialogRef.close(model);
+    }
+  }
+
+  get IsQuantityCodeRequired() {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      return true;
+    } else {
+      return false;
     }
   }
 

@@ -141,11 +141,12 @@ export class BeneficiaryTabComponent implements OnInit {
           this.filterNationality();
         });
 
-      this.FormNphiesClaim.controls.bCountry.valueChanges
+      this.FormNphiesClaim.controls.bcountry.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
           this.filterCountry();
         });
+
     }
   }
 
@@ -275,6 +276,7 @@ export class BeneficiaryTabComponent implements OnInit {
   }
 
   selectPlan(plan) {
+
     this.insurancePlans = [];
     if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]) {
       this.insurancePlans.push(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]);

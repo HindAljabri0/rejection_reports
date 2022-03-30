@@ -59,37 +59,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label class="control-label pb-0">&nbsp;</label>
-                        <div class="checkbox-group inline">
-                            <mat-checkbox color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">New born?</mat-checkbox>
-                        </div>
-                    </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox-group inline">
+                    <mat-checkbox color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">New born?</mat-checkbox>
                 </div>
-                <div class="col-8">
-                    <div class="form-group" [class.has-error]="purposeError?.trim().length > 0" [matTooltip]="purposeError">
-                        <label class="control-label pb-0">Purpose<span class="asterisk">*</span></label>
-                        <div class="checkbox-group inline">
-                            <mat-radio-group [(ngModel)]="purposeRadioButton">
-                                <mat-radio-button value="1" color="primary" [checked]="purposeRadioButton == '1'">
-                                </mat-radio-button>
-                                <mat-checkbox color="primary" [checked]="isBenefits" (change)="isBenefits = $event.checked" [disabled]="purposeRadioButton != '1'">
-                                    Benefits</mat-checkbox>
-                                <mat-checkbox color="primary" [checked]="isValidation" (change)="isValidation = $event.checked" [disabled]="purposeRadioButton != '1'">
-                                    Validation</mat-checkbox>
-                                <mat-radio-button value="2" color="primary" [checked]="purposeRadioButton == '2'">Discovery
-                                </mat-radio-button>
-                            </mat-radio-group>
-                            <!--
-                            <mat-checkbox color="primary" [checked]="isDiscovery"
-                                (change)="isDiscovery = $event.checked">Discovery</mat-checkbox> -->
-                        </div>
-
-                    </div>
-
+            </div>
+            <div class="form-group" [class.has-error]="purposeError?.trim().length > 0" [matTooltip]="purposeError">
+                <label class="control-label pb-0">Purpose<span class="asterisk">*</span></label>
+                <div class="checkbox-group inline">
+                    <mat-radio-group [(ngModel)]="purposeRadioButton">
+                        <mat-radio-button value="1" color="primary" [checked]="purposeRadioButton == '1'">
+                        </mat-radio-button>
+                        <mat-checkbox color="primary" [checked]="isBenefits" (change)="isBenefits = $event.checked" [disabled]="purposeRadioButton != '1'">
+                            Benefits</mat-checkbox>
+                        <mat-checkbox color="primary" [checked]="isValidation" (change)="isValidation = $event.checked" [disabled]="purposeRadioButton != '1'">
+                            Validation</mat-checkbox>
+                        <mat-radio-button value="2" color="primary" [checked]="purposeRadioButton == '2'">Discovery
+                        </mat-radio-button>
+                    </mat-radio-group>
+                    <!--
+                        <mat-checkbox color="primary" [checked]="isDiscovery"
+                            (change)="isDiscovery = $event.checked">Discovery</mat-checkbox> -->
                 </div>
 
+            </div>
+            <div class="row small-gutter">
                 <div class="col-4" *ngIf="purposeRadioButton == '1'">
                     <div class="form-group" [class.has-error]="selectedPlanIdError?.trim().length > 0" [matTooltip]="selectedPlanIdError">
                         <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>

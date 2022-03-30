@@ -282,4 +282,10 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  searchICDCode(searchQuery: string) {
+    const requestURL: string = '/diagnosis/search?query=' + searchQuery;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
 }
