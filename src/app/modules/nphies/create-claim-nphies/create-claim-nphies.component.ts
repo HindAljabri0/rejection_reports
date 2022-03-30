@@ -190,7 +190,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private nphiesClaimUploaderService: NphiesClaimUploaderService,
-    @Inject(MAT_DIALOG_DATA) private data) {
+    // @Inject(MAT_DIALOG_DATA) private data
+    ) {
     this.today = new Date();
   }
 
@@ -240,9 +241,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     // }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-    if(this.data && this.data.openCommunicationTab ) {
-      this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision')? 9:8;
-    }
+    // if(this.data && this.data.openCommunicationTab ) {
+    //   this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision')? 9:8;
+    // }
   }
 
   toEditMode() {
