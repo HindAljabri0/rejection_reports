@@ -2045,10 +2045,11 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-              </div>
-              <div
-                *ngIf="IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))">
-                <span class="error-text">Please select Service Provider</span>
+                <div
+                  *ngIf="IsServiceProviderRequired && ((isSubmitted || FormNphiesClaim.get('serviceProvider').touched) && FormNphiesClaim.get('serviceProvider').hasError('required'))"
+                  class="error-text">
+                  Please select Service Provider
+                </div>
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -2065,7 +2066,7 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Period</label>
+                <label class="control-label">Period <span class="asterisk">*</span></label>
                 <div class="row small-gutter">
                   <div class="col-6">
                     <div class="date-picker">
