@@ -346,7 +346,7 @@ export class AddPreauthorizationComponent implements OnInit {
   onPayeeTypeChange() {
     if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiId === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
     this.FormPreAuthorization.controls.payeeType.disable();
     this.FormPreAuthorization.controls.payee.disable();
