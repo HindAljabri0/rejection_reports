@@ -104,11 +104,11 @@
 
             <ng-container *ngIf="data.source === 'CLAIM'">
               <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
-              formControlName="startDate" [max]="today">
+                formControlName="startDate" [max]="today">
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
               <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
-              formControlName="startDate" [max]="today" [min]="data.dateOrdered">
+                formControlName="startDate" [max]="today" [min]="data.dateOrdered">
             </ng-container>
 
             <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
@@ -119,10 +119,11 @@
             <span class="error-text">Please enter start date</span>
           </div>
           <div
-          *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('matDatepickerMax')">
-          <span class="error-text" *ngIf="data.source === 'CLAIM'">Item date must be on or before Claim date</span>
-          <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval date</span>
-        </div>
+            *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('matDatepickerMax')">
+            <span class="error-text" *ngIf="data.source === 'CLAIM'">Item date must be on or before Claim date</span>
+            <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval
+              date</span>
+          </div>
         </div>
       </div>
       <div class="col-4 col-lg-3">
@@ -218,15 +219,20 @@
         </div>
         <div class="row small-gutter">
           <div class="col-3">
-            <div class="form-group">
-              <label class="control-label">Quantity Code</label>
+            <div class="form-group"
+              [ngClass]="{'has-error' : IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))}">
+              <label class="control-label">Quantity Code <span *ngIf="IsQuantityCodeRequired" class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-              <mat-select formControlName="quantityCode">
-                <mat-option value="">Select Quantity Code</mat-option>
-                <mat-option value="{unit}">Unit </mat-option>
-                <mat-option value="{package}">Package</mat-option>
-              </mat-select>
-            </mat-form-field>
+                <mat-select formControlName="quantityCode">
+                  <mat-option value="">Select Quantity Code</mat-option>
+                  <mat-option value="{unit}">Unit </mat-option>
+                  <mat-option value="{package}">Package</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div
+                *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
+                <span class="error-text">Please enter Quantity Code</span>
+              </div>
             </div>
           </div>
           <div class="col-3">
@@ -297,14 +303,16 @@
             </div>
           </div>
           <div class="col-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('factor').touched) && (FormItem.get('factor').hasError('min') ||  FormItem.get('factor').hasError('max'))}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormItem.get('factor').touched) && (FormItem.get('factor').hasError('min') ||  FormItem.get('factor').hasError('max'))}">
               <label class="control-label">
                 <span class="d-flex align-items-center">
                   <span class="pr-1">Factor</span>
                   <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                 </span>
               </label>
-              <input class="form-control" placeholder="Enter factor" formControlName="factor" (blur)="Calculate('Discount')">
+              <input class="form-control" placeholder="Enter factor" formControlName="factor"
+                (blur)="Calculate('Discount')">
               <div *ngIf="(isSubmitted || FormItem.get('factor').touched) && FormItem.get('factor').hasError('min')">
                 <span class="error-text">Factor must be greater than or equal to 0</span>
               </div>
