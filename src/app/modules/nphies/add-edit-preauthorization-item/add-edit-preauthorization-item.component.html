@@ -114,7 +114,8 @@
           </div>
           <div *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('matDatepickerMax')">
             <span class="error-text" *ngIf="data.source === 'CLAIM'">Item date must be on or before Claim date</span>
-            <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval date</span>
+            <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval
+              date</span>
           </div>
         </div>
       </div>
@@ -210,7 +211,7 @@
         <div class="row small-gutter">
           <div class="col-6">
             <div class="form-group"
-              [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('min'))}">
+              [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('min')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <div class="row extra-small-gutter">
                 <div class="col">
@@ -219,7 +220,7 @@
                 <div class="col-auto">
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="quantityCode">
-                      <mat-option value="">Code</mat-option>
+                      <mat-option value="">Code<span *ngIf="IsQuantityCodeRequired">*</span></mat-option>
                       <mat-option value="{unit}">Unit</mat-option>
                       <mat-option value="{package}">Package</mat-option>
                     </mat-select>
@@ -231,6 +232,9 @@
               </div>
               <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('min')">
                 <span class="error-text">Quantity must be greater than 0</span>
+              </div>
+              <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
+                <span class="error-text">Please enter Quantity Code</span>
               </div>
             </div>
           </div>
