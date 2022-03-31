@@ -74,10 +74,10 @@
 
               <input
                 *ngIf="FormSupportingInfo.controls.category.value.value === 'info' || FormSupportingInfo.controls.category.value.value === 'chief-complaint' || FormSupportingInfo.controls.category.value.value === 'lab-test'"
-                class="input-group-append" type="text" class="form-control minw145" placeholder="Enter value" formControlName="value" />
+                type="text" class="form-control" placeholder="Enter value" formControlName="value" />
               <input
                 *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint' && FormSupportingInfo.controls.category.value.value !== 'lab-test'"
-                class="input-group-append" type="number" class="form-control minw145" placeholder="Enter value" formControlName="value" />
+                type="number" class="form-control" placeholder="Enter value" formControlName="value" />
 
               <span
                 *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint' && FormSupportingInfo.controls.category.value.value !== 'lab-test'"
@@ -177,8 +177,7 @@
           <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('code').touched) && FormSupportingInfo.get('code').hasError('required')}">
             <label class="control-label">Code<span class="asterisk">*</span></label>
 
-            <input *ngIf=" FormSupportingInfo.controls.category.value.value === 'lab-test'" class="input-group-append" type="text" class="form-control minw145"
-              placeholder="Enter code" formControlName="code" />
+            <input *ngIf=" FormSupportingInfo.controls.category.value.value === 'lab-test'" type="text" class="form-control" placeholder="Enter code" formControlName="code" />
 
             <mat-form-field *ngIf=" FormSupportingInfo.controls.category.value.value !== 'lab-test'" class="form-control custom-select-control">
               <mat-select formControlName="code">
