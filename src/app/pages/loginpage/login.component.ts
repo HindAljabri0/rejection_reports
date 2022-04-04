@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit {
   errors: string;
 
   expired: boolean;
+
+  isRamadan = true;
   constructor(
     public authService: AuthService,
     public router: Router,

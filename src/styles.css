@@ -627,7 +627,6 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .actions .mat-icon-button{width: 30px;height: 30px;line-height: 30px;margin:-5px 0;}
 .primary-grid .actions .mat-icon-button.disabled,.primary-grid .actions .mat-icon-button:disabled{opacity: 0.5;cursor: not-allowed;}
 .primary-grid .actions .mat-icon-button .mat-button-wrapper{display: block;}
-.primary-grid .actions .mat-icon-button .mat-icon{font-size: 20px;line-height: 20px;height: 20px;width: 20px;}
 .primary-grid .actions .mat-spinner-wrapper{display: inline-flex;vertical-align: middle;align-items: center;justify-content: center;height: 32px;width: 32px;}
 .primary-grid.sticky-header>thead>tr>th,.primary-grid.sticky-header>thead>tr>td{position: sticky;top: 0;z-index: 7;}
 .primary-grid .delete-btn{flex-grow: 0;flex-shrink: 0;max-width: 24px;border:0;background:none;flex-basis:24px;min-width: 24px;display:block;padding:0;}
@@ -655,6 +654,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .grid-radio .mat-radio-label-content{display: none;}
 .grid-radio .mat-radio-label{vertical-align: top;padding: 10px;}
 .grid-radio.mat-radio-button{display: block;margin: -10px auto;width: 40px;}
+
+/* menu
+--------------------------------------------------------------------------------------------------------*/
+.mat-menu-panel .mat-menu-item .mat-icon-no-color, .mat-menu-panel .mat-menu-item-submenu-trigger::after,.mat-menu-panel .mat-menu-item{color:inherit;}
+.mat-menu-panel .mat-menu-item .mat-icon{margin-right: 8px;}
+.cdk-overlay-pane .mat-menu-panel{border-radius: 8px;box-shadow: 0px 11px 15px rgba(0, 0, 0, 0.2);}
 
 /* abstract card carousel
 --------------------------------------------------------------------------------------------------------*/
@@ -854,6 +859,10 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-card .login-text{padding-bottom: 24px;}
 .login-wrapper .copyright{padding: 24px 0 0;color: #707070;text-align: center;}
 .login-language-switch{position: absolute;top: 16px;right: calc(50% + 16px);}
+.login-wrapper .right-block.ramadan-poster{padding-top: 0;}
+.ramadan-poster .artwork{width: 494px;height: 601px;display: block;margin: 0 auto 54px;max-width: 100%;}
+.ramadan-poster .logo{display: block;height: 80px;width: 113px;margin: 0 auto 24px;}
+.ramadan-poster .contact{font-size: 20px;line-height: 30px;opacity: 0.72;font-weight: 500;color: #3060AA;text-align: center;}
 
 /* tour
 --------------------------------------------------------------------------------------------------------*/
@@ -1033,10 +1042,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .custom-file-upload.disabled{cursor: not-allowed;opacity: 0.5;}
 .custom-file-upload>.upload-control{position: absolute;top: 0;left: 0;height: 100%;width: 100%;opacity: 0;display: block;z-index: 1;cursor: pointer;}
 .custom-file-upload>.upload-control[disabled]{cursor: not-allowed;}
-.custom-file-upload>.content{position: relative;z-index: 0;padding: 32px 16px;border:2px dashed #b9b9b9;text-align: center;}
-.custom-file-upload>.content>img{display: block;margin: 0 auto 12px;height: 56px;width: 56px;}
-.custom-file-upload>.content>p{font-weight: 600;padding: 0 0 2px;color:#3060AA;}
-.custom-file-upload>.content>span{color:#707070;}
+.custom-file-upload>.content{position: relative;z-index: 0;padding: 92px 16px;border:2px dashed #bebebe;text-align: center;line-height: 24px;border-radius: 8px;}
+.custom-file-upload>.content>img{display: block;margin: 0 auto 16px;height: 72px;width: 72px;}
+.custom-file-upload>.content>p{font-size: 16px;}
+.custom-file-upload>.content>span{color:#707070;font-size: 14px;}
 .custom-file-upload>.content>p,.custom-file-upload>.content>span{max-width: 300px;margin: 0 auto;display: block;}
 
 /* file upload wrapper
@@ -1539,6 +1548,8 @@ tag tag-ripple{display:none;}
     .general-info-wrapper>div{flex-basis:20%;max-width: 20%;}
     .tawuniya-report-details .credit-report-header{position: static;}
     .brand-header .logo-wrapper{width: auto;text-align: left;padding-right: 16px;}
+    .ramadan-poster .artwork{width: 440px;height: 535px;margin-bottom: 40px;}
+    .ramadan-poster .contact{font-size: 18px;line-height: 26px;}
 }
 @media (max-width:1364px) {
     .brand-header .tablet-search,.advance-search .close-btn{display: block;}

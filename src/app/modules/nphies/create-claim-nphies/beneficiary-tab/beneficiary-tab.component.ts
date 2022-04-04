@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { Payer } from 'src/app/models/nphies/payer';
@@ -16,14 +16,17 @@ import * as moment from 'moment';
   templateUrl: './beneficiary-tab.component.html',
   styles: []
 })
-export class BeneficiaryTabComponent implements OnInit {
+export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
+  @Input() IsNewBorn = false;
+  @Input() IsSubscriber = false;
   @Input() otherDataModel: any;
   @Input() pageMode: string;
   @Input() isSubmitted = false;
   @Input() FormNphiesClaim: FormGroup;
   @Input() selectedBeneficiary: BeneficiariesSearchResult;
   @Output() emitSelectedBenificiary = new EventEmitter();
+  @Output() emitNewBornStatus = new EventEmitter();
 
   // tslint:disable-next-line:variable-name
   _onDestroy = new Subject<void>();
@@ -115,6 +118,14 @@ export class BeneficiaryTabComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes && this.IsSubscriber) {
+      if (changes.IsNewBorn && changes.IsNewBorn.previousValue !== changes.IsNewBorn.currentValue) {
+        this.updateValidations();
+      }
+    }
+  }
+
   ngOnInit() {
     this.getPayers();
 
@@ -149,6 +160,69 @@ export class BeneficiaryTabComponent implements OnInit {
         });
 
     }
+  }
+
+  updateValidations() {
+    if (this.IsSubscriber) {
+
+      if (this.IsNewBorn) {
+        this.FormNphiesClaim.controls.beneficiaryName.setValidators(Validators.required);
+        this.FormNphiesClaim.controls.beneficiaryName.updateValueAndValidity();
+        this.setValidators();
+      } else {
+        if (this.selectedBeneficiary && this.selectedBeneficiary.name) {
+          this.setValidators();
+        } else {
+          this.removeValidators();
+        }
+
+      }
+    }
+  }
+
+  setValidators() {
+    this.FormNphiesClaim.controls.beneficiaryId.setValidators(Validators.required);
+    this.FormNphiesClaim.controls.beneficiaryId.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.fullName.setValidators(Validators.required);
+    this.FormNphiesClaim.controls.fullName.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.dob.setValidators(Validators.required);
+    this.FormNphiesClaim.controls.dob.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.gender.setValidators(Validators.required);
+    this.FormNphiesClaim.controls.gender.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.documentType.setValidators(Validators.required);
+    this.FormNphiesClaim.controls.documentType.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.documentId.setValidators(Validators.required);
+    this.FormNphiesClaim.controls.documentId.updateValueAndValidity();
+
+  }
+
+  removeValidators() {
+    this.FormNphiesClaim.controls.beneficiaryName.clearValidators();
+    this.FormNphiesClaim.controls.beneficiaryName.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.beneficiaryId.clearValidators();
+    this.FormNphiesClaim.controls.beneficiaryId.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.fullName.clearValidators();
+    this.FormNphiesClaim.controls.fullName.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.dob.clearValidators();
+    this.FormNphiesClaim.controls.dob.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.gender.clearValidators();
+    this.FormNphiesClaim.controls.gender.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.documentType.clearValidators();
+    this.FormNphiesClaim.controls.documentType.updateValueAndValidity();
+
+    this.FormNphiesClaim.controls.documentId.clearValidators();
+    this.FormNphiesClaim.controls.documentId.updateValueAndValidity();
+
   }
 
   getPayers() {
@@ -219,6 +293,9 @@ export class BeneficiaryTabComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
+          if (!this.FormNphiesClaim.controls.beneficiaryName.value) {
+            this.deSelectBeneficiary();
+          }
         }
       }
     }, errorEvent => {
@@ -226,6 +303,42 @@ export class BeneficiaryTabComponent implements OnInit {
 
       }
     });
+  }
+
+  deSelectBeneficiary() {
+    this.selectedBeneficiary = new BeneficiariesSearchResult();
+    this.FormNphiesClaim.controls.beneficiaryName.setValue('');
+    this.FormNphiesClaim.controls.beneficiaryId.setValue('');
+    this.FormNphiesClaim.controls.firstName.setValue('');
+    this.FormNphiesClaim.controls.middleName.setValue('');
+    this.FormNphiesClaim.controls.lastName.setValue('');
+    this.FormNphiesClaim.controls.familyName.setValue('');
+    this.FormNphiesClaim.controls.fullName.setValue('');
+    this.FormNphiesClaim.controls.beneficiaryFileld.setValue('');
+    this.FormNphiesClaim.controls.dob.setValue('');
+    this.FormNphiesClaim.controls.gender.setValue('');
+    this.FormNphiesClaim.controls.documentType.setValue('');
+    this.FormNphiesClaim.controls.documentId.setValue('');
+    this.FormNphiesClaim.controls.eHealthId.setValue('');
+    this.FormNphiesClaim.controls.nationality.setValue('');
+    this.FormNphiesClaim.controls.nationalityName.setValue('');
+    this.FormNphiesClaim.controls.residencyType.setValue('');
+    this.FormNphiesClaim.controls.contactNumber.setValue('');
+    this.FormNphiesClaim.controls.martialStatus.setValue('');
+    this.FormNphiesClaim.controls.bloodGroup.setValue('');
+    this.FormNphiesClaim.controls.preferredLanguage.setValue('');
+    this.FormNphiesClaim.controls.emergencyNumber.setValue('');
+    this.FormNphiesClaim.controls.email.setValue('');
+    this.FormNphiesClaim.controls.addressLine.setValue('');
+    this.FormNphiesClaim.controls.streetLine.setValue('');
+    this.FormNphiesClaim.controls.bcity.setValue('');
+    this.FormNphiesClaim.controls.bstate.setValue('');
+    this.FormNphiesClaim.controls.bcountry.setValue('');
+    this.FormNphiesClaim.controls.bcountryName.setValue('');
+    this.FormNphiesClaim.controls.postalCode.setValue('');
+    this.insurancePlans = [];
+    this.updateValidations();
+    this.emitSelectedBenificiary.emit(this.selectedBeneficiary);
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
@@ -263,6 +376,7 @@ export class BeneficiaryTabComponent implements OnInit {
       bcountryName: beneficiary.country ? (this.nationalities.filter(x => x.Name.toLowerCase() === beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == beneficiary.country.toLowerCase())[0].Name : '') : '',
       postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
     });
+    this.updateValidations();
     this.emitSelectedBenificiary.emit(this.selectedBeneficiary);
   }
 
