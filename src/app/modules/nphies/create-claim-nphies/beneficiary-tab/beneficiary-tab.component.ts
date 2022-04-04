@@ -87,7 +87,8 @@ export class BeneficiaryTabComponent implements OnInit {
     { Code: 'PRC', Name: 'Resident Card' },
     { Code: 'PPN', Name: 'Passport' },
     { Code: 'VS', Name: 'Visa' },
-    { Code: 'NI', Name: 'National Card' }
+    { Code: 'NI', Name: 'National Card' },
+    { Code: 'MR', Name: 'Medical Record Number' }
   ];
 
   recedencetypes: { Code: string, Name: string }[] = [
