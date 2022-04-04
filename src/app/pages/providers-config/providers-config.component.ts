@@ -1060,10 +1060,15 @@ export class ProvidersConfigComponent implements OnInit {
       return true;
     }
 
+    // const newPayerMapping = this.existingPayers.filter(payer =>
+    //   (this.newPayerMappingValue[payer.payerId].trim() != ''
+    //     && this.newPayerMappingValue[payer.payerId] != payer.mappingName) &&
+    //   this.newPayerMappingEnable[payer.payerId] != payer.enabled
+    // );
+
     const newPayerMapping = this.existingPayers.filter(payer =>
-      (this.newPayerMappingValue[payer.payerId].trim() != ''
-        && this.newPayerMappingValue[payer.payerId] != payer.mappingName) &&
-      this.newPayerMappingEnable[payer.payerId] != payer.enabled
+   
+      (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingValue[payer.payerId] != payer.mappingName) || (this.newPayerMappingValue[payer.payerId].trim() != ''&&this.newPayerMappingEnable[payer.payerId] != payer.enabled)
     );
     this.addPayerMappingList = newPayerMapping.map(payer => payer.payerId);
     const toDeletePayerMapping = this.existingPayers.filter(payer =>
@@ -1157,7 +1162,7 @@ export class ProvidersConfigComponent implements OnInit {
             mappingList.forEach(payer => {
               this.newPayerMappingEnable[payer.payerId] = payer.enabled;
               this.newPayerMappingValue[payer.payerId] = payer.mappingName;
-              //         this.payerMappingValue[payer.payerId] = payer.mappingName;
+              this.payerMappingValue[payer.payerId] = payer.mappingName;
               this.newPayerName[payer.payerId] = payer.payerName;
               this.addPayerMappingList.push(payer.payerId);
               this.existingPayers.push(payer);
