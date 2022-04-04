@@ -859,6 +859,10 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-card .login-text{padding-bottom: 24px;}
 .login-wrapper .copyright{padding: 24px 0 0;color: #707070;text-align: center;}
 .login-language-switch{position: absolute;top: 16px;right: calc(50% + 16px);}
+.login-wrapper .right-block.ramadan-poster{padding-top: 0;}
+.ramadan-poster .artwork{width: 494px;height: 601px;display: block;margin: 0 auto 54px;max-width: 100%;}
+.ramadan-poster .logo{display: block;height: 80px;width: 113px;margin: 0 auto 24px;}
+.ramadan-poster .contact{font-size: 20px;line-height: 30px;opacity: 0.72;font-weight: 500;color: #3060AA;text-align: center;}
 
 /* tour
 --------------------------------------------------------------------------------------------------------*/
@@ -1544,6 +1548,8 @@ tag tag-ripple{display:none;}
     .general-info-wrapper>div{flex-basis:20%;max-width: 20%;}
     .tawuniya-report-details .credit-report-header{position: static;}
     .brand-header .logo-wrapper{width: auto;text-align: left;padding-right: 16px;}
+    .ramadan-poster .artwork{width: 440px;height: 535px;margin-bottom: 40px;}
+    .ramadan-poster .contact{font-size: 18px;line-height: 26px;}
 }
 @media (max-width:1364px) {
     .brand-header .tablet-search,.advance-search .close-btn{display: block;}
