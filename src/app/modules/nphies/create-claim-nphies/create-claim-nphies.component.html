@@ -1344,6 +1344,15 @@
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
+            <mat-icon class="mr-1" *ngIf="checkErrorSubscriberInfo === true" [class.text-danger]="checkErrorSubscriberInfo === true">
+              error</mat-icon>
+            <span [class.text-danger]="checkErrorSubscriberInfo === true">Subscriber</span>
+          </ng-template>
+          <app-beneficiary-tab [IsSubscriber]="true" [IsNewBorn]="FormNphiesClaim.controls.isNewBorn.value" [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormSubscriber" [(selectedBeneficiary)]="selectedSubscriber"
+            (emitSelectedBenificiary)="selectedSubscriberChange($event)"></app-beneficiary-tab>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="IsCareTeamRequired" [class.text-danger]="IsCareTeamRequired">
               error</mat-icon>
             <span [class.text-danger]="IsCareTeamRequired">Care Team</span>
