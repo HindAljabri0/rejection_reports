@@ -240,6 +240,7 @@ export class SharedDataService {
 
   siteEligibility = [
     { value: 'eligible', name: 'Eligible'},
+    // tslint:disable-next-line:quotemark
     { value: 'not-active',	name: "Member's insurance policy is not active"},
     { value: 'not-covered', 	name: 'Policy does not cover the requested services'},
     { value: 'not-direct billing',	name: 'Patient is not covered on direct billing basis'},
