@@ -5,8 +5,7 @@
         <div class="control-label">Site Eligibility</div>
         <p class="form-control-static"
           [ngClass]="eligibilityResponse.siteEligibility === 'eligible' ? 'text-success' : (eligibilityResponse.siteEligibility ? 'text-danger' : '')">
-          {{(eligibilityResponse.siteEligibility ? eligibilityResponse.siteEligibility :
-          '-') | titlecase}}</p>
+          {{eligibilityResponse.siteEligibilityName | titlecase}}</p>
       </div>
     </div>
     <div class="col-4">

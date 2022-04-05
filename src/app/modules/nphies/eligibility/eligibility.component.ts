@@ -166,7 +166,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
-    // this.beneficiarySearchController.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
+    this.beneficiarySearchController.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
     if (beneficiary.plans != null && beneficiary.plans instanceof Array && beneficiary.plans.length > 0) {
       this.purposeRadioButton = '1';
       const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
@@ -177,7 +177,6 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.purposeRadioButton = '2';
     }
     this.selectedBeneficiary = beneficiary;
-    this.isNewBorn = false;
     this.subscriberSearchController.setValue('');
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -277,13 +276,13 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       return;
     }
 
-    this.selectedBeneficiary.isNewBorn = this.isNewBorn;
     const tempbeneficiary = this.selectedBeneficiary;
     tempbeneficiary.plans.forEach(x => x.payerId = x.payerNphiesId);
 
     const request: EligibilityRequestModel = {
+      isNewBorn: this.isNewBorn,
       beneficiary: this.selectedBeneficiary,
-      subscriber: this.selectedSubscriber,
+      subscriber: this.isNewBorn ? this.selectedSubscriber : null,
       insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,

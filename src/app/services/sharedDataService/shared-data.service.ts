@@ -238,6 +238,17 @@ export class SharedDataService {
     { value: 'NI', name: 'Border Number' },
   ];
 
+  siteEligibility = [
+    { value: 'eligible', name: 'Eligible'},
+    { value: 'not-active',	name: "Member's insurance policy is not active"},
+    { value: 'not-covered', 	name: 'Policy does not cover the requested services'},
+    { value: 'not-direct billing',	name: 'Patient is not covered on direct billing basis'},
+    { value: 'out-network',	name: 'Provider outside member Network'},
+    { value: 'limit-exhausted',	name: 'Patient policy/benefit limit is exhausted'},
+    { value: 'coverage-suspended',	name: 'Patient coverage is suspended '},
+    { value: 'provider-contract-suspended',	name: 'Provider contract is suspended'}
+  ];
+
   constructor(private adminService: AdminService) { }
 
   getCodeName(category) {
