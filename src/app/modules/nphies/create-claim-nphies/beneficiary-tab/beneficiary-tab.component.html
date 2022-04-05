@@ -2,11 +2,17 @@
   <form [formGroup]="FormNphiesClaim">
     <ng-container *ngIf="pageMode === 'CREATE'">
       <h5 class="form-title pt-0">Beneficary Info</h5>
+      <div  *ngIf="!IsSubscriber" class="form-group">
+        <label class="control-label pb-0" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">&nbsp;</label>
+        <div class="checkbox-group inline">
+          <mat-checkbox color="primary" formControlName="isNewBorn">New born?</mat-checkbox>
+        </div>
+      </div>
       <div class="d-flex">
         <div class="form-group flex-grow-1"
           [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
-          <label class="control-label">Select a Beneficiary<span  *ngIf="(!IsSubscriber) || (IsSubscriber && IsNewBorn)"class="asterisk">*</span></label>
-          <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+          <label class="control-label">Select a {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}<span  *ngIf="(!IsSubscriber) || (IsSubscriber && IsNewBorn)"class="asterisk">*</span></label>
+          <input type="text" class="form-control search-box" placeholder="Search for {{!IsSubscriber ? 'beneficiary': 'subscriber'}} by name or document ID..." formControlName="beneficiaryName"
             [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
@@ -14,7 +20,7 @@
             </mat-option>
           </mat-autocomplete>
           <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
-            <span class="error-text">Please select a Beneficiary</span>
+            <span class="error-text">Please select a {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}</span>
           </div>
         </div>
         <div class="form-group pl-3 pr-3">
@@ -23,20 +29,12 @@
         </div>
         <div class="form-group">
           <label class="control-label">&nbsp;</label>
-          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}</button>
         </div>
       </div>
 
 
       <div  *ngIf="!IsSubscriber" class="row small-gutter">
-        <div class="col-4 col-lg-3">
-          <div class="form-group">
-            <label class="control-label pb-0" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">&nbsp;</label>
-            <div class="checkbox-group inline">
-              <mat-checkbox color="primary" formControlName="isNewBorn">New born?</mat-checkbox>
-            </div>
-          </div>
-        </div>
         <div class="col-md-4" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
           <div class="form-group" [matTooltip]="selectedPlanIdError"
             [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">

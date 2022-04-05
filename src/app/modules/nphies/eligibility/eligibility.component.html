@@ -7,6 +7,12 @@
         (change)="onChangeState(transfer)" [checked]="transfer">Referral</mat-slide-toggle>
     </div>
     <div class="block-filter-panel">
+      <div class="form-group">
+        <div class="checkbox-group inline">
+          <mat-checkbox color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">New born?
+          </mat-checkbox>
+        </div>
+      </div>
       <div class="d-flex">
         <div class="form-group flex-grow-1">
           <label class="control-label">Select a Beneficiary</label>
@@ -28,6 +34,20 @@
 
           <button routerLink="/nphies/beneficiary/add" type="button" mat-flat-button class="text-nowrap"
             color="primary">Create New Beneficiary</button>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isNewBorn" [ngClass]="{'has-error' : IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))}">
+        <label class="control-label">Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
+        <input type="text" class="form-control search-box"
+          placeholder="Search for subscriber by name or document ID..." [formControl]="subscriberSearchController"
+          [matAutocomplete]="auto2" (keyup)="searchBeneficiaries(true)">
+        <mat-autocomplete #auto2="matAutocomplete">
+          <mat-option *ngFor="let subscriber of subscriberSearchResult" (click)="selectSubscriber(subscriber)">
+            {{subscriber.name}} ({{subscriber.documentId}})
+          </mat-option>
+        </mat-autocomplete>
+        <div *ngIf="IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))">
+          <span class="error-text">Please select Subscriber</span>
         </div>
       </div>
     </div>
@@ -67,26 +87,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <div class="checkbox-group inline">
-          <mat-checkbox color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">New born?
-          </mat-checkbox>
-        </div>
-      </div>
-      <div class="form-group" [ngClass]="{'has-error' : IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))}">
-        <label class="control-label">Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
-        <input type="text" class="form-control search-box"
-          placeholder="Search for subscriber by name or document ID..." [formControl]="subscriberSearchController"
-          [matAutocomplete]="auto2" (keyup)="searchBeneficiaries(true)">
-        <mat-autocomplete #auto2="matAutocomplete">
-          <mat-option *ngFor="let subscriber of subscriberSearchResult" (click)="selectSubscriber(subscriber)">
-            {{subscriber.name}} ({{subscriber.documentId}})
-          </mat-option>
-        </mat-autocomplete>
-        <div *ngIf="IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))">
-          <span class="error-text">Please select Subscriber</span>
-        </div>
-      </div>
+
 
       <div class="form-group" [class.has-error]="purposeError?.trim().length > 0" [matTooltip]="purposeError">
         <label class="control-label pb-0">Purpose<span class="asterisk">*</span></label>
