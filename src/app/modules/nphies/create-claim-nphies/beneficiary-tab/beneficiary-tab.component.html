@@ -5,7 +5,7 @@
       <div class="d-flex">
         <div class="form-group flex-grow-1"
           [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
-          <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
+          <label class="control-label">Select a Beneficiary<span  *ngIf="(!IsSubscriber) || (IsSubscriber && IsNewBorn)"class="asterisk">*</span></label>
           <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
             [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
@@ -28,7 +28,7 @@
       </div>
 
 
-      <div class="row small-gutter">
+      <div  *ngIf="!IsSubscriber" class="row small-gutter">
         <div class="col-4 col-lg-3">
           <div class="form-group">
             <label class="control-label pb-0" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">&nbsp;</label>
@@ -40,7 +40,7 @@
         <div class="col-md-4" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
           <div class="form-group" [matTooltip]="selectedPlanIdError"
             [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
-            <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+            <label class="control-label">Insurance Plan<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="insurancePlanId" (selectionChange)="selectPlan($event)">
                 <mat-option value="">Select Insurance Plan</mat-option>
@@ -86,7 +86,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')}">
-          <label class="control-label">Full Name<span class="asterisk">*</span></label>
+          <label class="control-label">Full Name<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
           <input placeholder="Enter full name" class="form-control" formControlName="fullName">
           <div *ngIf="(isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')">
             <span class="error-text">Please enter full name</span>
@@ -101,7 +101,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')}">
-          <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
+          <label class="control-label">Date of Birth<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
           <div class="date-picker">
             <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" formControlName="dob">
             <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
@@ -114,7 +114,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')}">
-          <label class="control-label">Gender<span class="asterisk">*</span></label>
+          <label class="control-label">Gender<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="gender">
               <mat-option value="">Select Gender</mat-option>
@@ -137,7 +137,7 @@
       <div class="col-4 col-lg-3">
         <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')}">
-          <label class="control-label">Document Type<span class="asterisk">*</span></label>
+          <label class="control-label">Document Type<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="documentType">
               <mat-option value="">Select Document Type</mat-option>
@@ -151,7 +151,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')}">
-          <label class="control-label">Document ID<span class="asterisk">*</span></label>
+          <label class="control-label">Document ID<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
           <input placeholder="Enter document ID" class="form-control" formControlName="documentId">
           <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')">
             <span class="error-text">Please select Document Id</span>
@@ -256,7 +256,7 @@
       <span>Address</span>
     </h5>
 
-    <div class="table-responsive ">
+    <div class="table-responsive">
       <table class="primary-grid manual-row-color claim-view-table no-borders">
         <thead>
           <tr>
@@ -306,19 +306,19 @@
     </div>
 
 
-    <h5 class="form-title">
+    <h5  *ngIf="!IsSubscriber" class="form-title">
       <span>Insurance Plan</span>
     </h5>
 
-    <div class="table-responsive" *ngIf="insurancePlans.length > 0">
+    <div class="table-responsive" *ngIf="!IsSubscriber && insurancePlans.length > 0">
       <table class="primary-grid manual-row-color claim-view-table no-borders">
         <thead>
           <tr>
-            <th>Payer<span class="asterisk">*</span></th>
+            <th>Payer<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></th>
             <th>Expiry Date</th>
-            <th>Member Card ID<span class="asterisk">*</span></th>
-            <th>Relation with Subscriber<span class="asterisk">*</span></th>
-            <th>Coverage Type<span class="asterisk">*</span></th>
+            <th>Member Card ID<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></th>
+            <th>Relation with Subscriber<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></th>
+            <th>Coverage Type<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></th>
           </tr>
         </thead>
         <tbody>
@@ -392,7 +392,7 @@
         </tbody>
       </table>
     </div>
-    <app-empty-state [className]="'mb-2'" *ngIf="insurancePlans.length == 0" [message]="'No insurance plans found!'">
+    <app-empty-state [className]="'mb-2'" *ngIf="!IsSubscriber && insurancePlans.length == 0" [message]="'No insurance plans found!'">
     </app-empty-state>
   </form>
 </ng-container>
@@ -429,7 +429,7 @@
         <p class="form-control-static">{{otherDataModel.beneficiary.fullName}}</p>
       </div>
     </div>
-    <div class="col-4 col-lg-3">
+    <div *ngIf="!IsSubscriber" class="col-4 col-lg-3">
       <div class="form-group form-group-static">
         <div class="control-label">New born?</div>
         <p class="form-control-static">{{otherDataModel.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
@@ -565,11 +565,11 @@
   </div>
 
 
-  <h5 class="form-title">
+  <h5 *ngIf="!IsSubscriber" class="form-title">
     <span>Insurance Plan</span>
   </h5>
 
-  <div class="table-responsive" *ngIf="!IsLoading && otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
+  <div class="table-responsive" *ngIf="!IsSubscriber && !IsLoading && otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
     <table class="primary-grid manual-row-color claim-view-table no-borders">
       <thead>
         <tr>
@@ -601,6 +601,6 @@
       </tbody>
     </table>
   </div>
-  <app-empty-state [className]="'mb-2'" *ngIf="otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan" [message]="'No insurance plans found!'">
+  <app-empty-state [className]="'mb-2'" *ngIf="!IsSubscriber && otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan" [message]="'No insurance plans found!'">
   </app-empty-state>
 </ng-container>
