@@ -799,6 +799,8 @@ export class BeneficiaryComponent implements OnInit {
                         : '-';
                     this.setDateforView(this.beneficiaryinfo);
                 } else {
+                    this.beneficiaryinfo = new BeneficiaryModel();
+                    this.setDateforView(this.beneficiaryinfo);
                     this.dialogService.openMessageDialog({
                         title: '',
                         message: `No Data Returned from CCHI`,
