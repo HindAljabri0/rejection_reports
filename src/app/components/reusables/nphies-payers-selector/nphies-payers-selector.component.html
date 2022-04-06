@@ -1,4 +1,4 @@
-<ng-template *ngIf="!isMatSelect else matSelect">
+<ng-container *ngIf="!isMatSelect else matSelect">
     <ng-container *ngFor="let organization of organizations">
         <h5 *ngIf="organization.code != '-1'" class="menu-opt-group" style="font-weight: normal;">
             {{organization.display}}</h5>
@@ -7,7 +7,7 @@
             <span>{{payer.display}}</span>
         </button>
     </ng-container>
-</ng-template>
+</ng-container>
 <ng-template #matSelect>
     <mat-form-field class="form-control custom-select-control">
         <mat-select (selectionChange)="selectionChange.emit($event)" [value]="-1">
