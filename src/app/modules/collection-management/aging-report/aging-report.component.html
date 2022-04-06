@@ -26,7 +26,7 @@
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="errorMessage == null">
         <div class="fixed-height">
-            <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th width="10"></th>
@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let item of agingReportResponseModel;let i=index">
-                        <tr [class.even]="i%2==0">
+                        <tr>
                             <td class="text-primary row-click" width="10" (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
                                 <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>

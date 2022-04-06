@@ -3,15 +3,15 @@ import { MatDialog } from '@angular/material';
 import { DatePipe, Location } from '@angular/common';
 import { AddFinalRejectionDialogComponent } from '../add-final-rejection-dialog/add-final-rejection-dialog.component';
 import { AddReconciliationDialogComponent } from '../add-reconciliation-dialog/add-reconciliation-dialog.component';
-import { ReconciliationReport } from 'src/app/models/reconciliationReport'
-import { ReconciliationReportResponse } from 'src/app/models/reconciliationReportResponse'
-import { ReconciliationService } from 'src/app/services/reconciliationService/reconciliation.service'
+import { ReconciliationReport } from 'src/app/models/reconciliationReport';
+import { ReconciliationReportResponse } from 'src/app/models/reconciliationReportResponse';
+import { ReconciliationService } from 'src/app/services/reconciliationService/reconciliation.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReconciliationAddPaymentComponent } from '../reconciliation-add-payment/reconciliation-add-payment.component';
 @Component({
   selector: 'app-reconciliation-report',
@@ -31,9 +31,14 @@ export class ReconciliationReportComponent implements OnInit {
   reconciliationReportResponse: ReconciliationReportResponse[] = [];
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
 
-  isSubmitted: boolean = false;
+  isSubmitted = false;
   totalPages: number;
-  page: number = 0;
+  page = 0;
+  FormReconciliationReport: FormGroup = this.formBuilder.group({
+    payerId: ['', Validators.required],
+    startDate: ['', Validators.required],
+    endDate: ['']
+  });
   constructor(
     private reconciliationService: ReconciliationService,
     private dialog: MatDialog,
@@ -45,19 +50,17 @@ export class ReconciliationReportComponent implements OnInit {
   ) { }
 
   getPreviousDate() {
-    this.selectedDate = new Date(this.FormReconciliationReport.controls.startDate.value)
-    return this.datePipe.transform(new Date(this.selectedDate.getFullYear() - 1, this.selectedDate.getMonth(), this.selectedDate.getDate()), 'dd-MM-yyyy');
+    this.selectedDate = new Date(this.FormReconciliationReport.controls.startDate.value);
+    return this.datePipe.transform(
+      new Date(this.selectedDate.getFullYear() - 1,
+        this.selectedDate.getMonth(),
+        this.selectedDate.getDate()),
+      'dd-MM-yyyy');
   }
 
   formatDate(date: Date) {
     return this.datePipe.transform(date, 'dd-MM-yyyy');
   }
-
-  FormReconciliationReport: FormGroup = this.formBuilder.group({
-    payerId: ['', Validators.required],
-    startDate: ['', Validators.required],
-    endDate: ['']
-  });
 
   ngOnInit() {
     this.payersList = [];
@@ -100,10 +103,10 @@ export class ReconciliationReportComponent implements OnInit {
         this.FormReconciliationReport.controls.endDate.setValue(endDate);
       }
       if (params.page != null) {
-        this.reconciliationReport.page = parseInt(params.page);
+        this.reconciliationReport.page = parseInt(params.page, 10);
       }
       if (params.size != null) {
-        this.reconciliationReport.size = parseInt(params.size);
+        this.reconciliationReport.size = parseInt(params.size, 10);
       }
 
       this.search();
@@ -112,7 +115,7 @@ export class ReconciliationReportComponent implements OnInit {
 
 
   decrementYear(startDate) {
-    var year = new Date(startDate);
+    const year = new Date(startDate);
     return new Date(year.setFullYear(year.getFullYear() - 1));
   }
 
@@ -131,7 +134,7 @@ export class ReconciliationReportComponent implements OnInit {
       this.reconciliationReportResponse = [];
       // this.endDateController.setValue(this.incrementYear(this.reconciliationReport.startDate));
 
-      let model: any = {};
+      const model: any = {};
       model.payerId = this.FormReconciliationReport.controls.payerId.value;
       model.startDate = this.datePipe.transform(this.decrementYear(this.FormReconciliationReport.controls.startDate.value), 'yyyy-MM-dd');
       model.endDate = this.datePipe.transform(this.FormReconciliationReport.controls.startDate.value, 'yyyy-MM-dd');
@@ -154,21 +157,34 @@ export class ReconciliationReportComponent implements OnInit {
             this.reconciliationReportResponse = event.body['content'] as ReconciliationReportResponse[];
             this.totalPages = event.body['totalPages'];
 
-            let sumTotalSubmitted = 0, sumTotalReceivedAmount = 0, sumTotalReceivedAmountPerc = 0, finalRejectionAmount = 0, finalRejectionAmountPrec = 0, sumTotalOutstandingAmount = 0, promptPaymentDiscountPrec = 0, sumPromptPaymentDiscount = 0, sumVolumeDiscount = 0, volumeDiscountPrec = 0;
+            let sumTotalSubmitted = 0;
+            let sumTotalReceivedAmount = 0;
+            let sumTotalReceivedAmountPerc = 0;
+            let finalRejectionAmount = 0;
+            let finalRejectionAmountPrec = 0;
+            let sumTotalOutstandingAmount = 0;
+            let promptPaymentDiscountPrec = 0;
+            let sumPromptPaymentDiscount = 0;
+            let sumVolumeDiscount = 0;
+            let volumeDiscountPrec = 0;
             this.reconciliationReportResponse.map(ele => {
               const payerData = this.payersList.find(sele => sele.id === ele.payerId);
               ele.payerName = payerData !== undefined ? payerData.name : ele.payerId;
-              if (ele.finalRejectionAmountPerc !== null)
+              if (ele.finalRejectionAmountPerc !== null) {
                 ele.finalRejectionAmountPerc = ele.finalRejectionAmountPerc + '%';
+              }
 
-              if (ele.totalReceivedPerc !== null)
+              if (ele.totalReceivedPerc !== null) {
                 ele.totalReceivedPerc = ele.totalReceivedPerc + '%';
+              }
 
-              if (ele.promptDiscountPerc !== null)
+              if (ele.promptDiscountPerc !== null) {
                 ele.promptDiscountPerc = ele.promptDiscountPerc + '%';
+              }
 
-              if (ele.volumeDiscountPerc !== null)
+              if (ele.volumeDiscountPerc !== null) {
                 ele.volumeDiscountPerc = ele.volumeDiscountPerc + '%';
+              }
 
               sumTotalSubmitted += ele.totalSubmittedAmount;
               sumTotalReceivedAmount += ele.totalReceived;
@@ -188,13 +204,16 @@ export class ReconciliationReportComponent implements OnInit {
             this.sumOfTotalReceivableObj = {
               sumTotalSubmitted: sumTotalSubmitted.toFixed(2),
               sumTotalReceivedAmount: sumTotalReceivedAmount.toFixed(2),
-              sumTotalReceivedAmountPerc: sumTotalReceivedAmountPerc !== null && !isNaN(sumTotalReceivedAmountPerc) ? sumTotalReceivedAmountPerc.toFixed(2) + '%' : '0%',
-              initRejectionAmountPerc: finalRejectionAmountPrec !== null && !isNaN(finalRejectionAmountPrec) ? finalRejectionAmountPrec.toFixed(2) + '%' : '0%',
+              sumTotalReceivedAmountPerc: sumTotalReceivedAmountPerc !== null
+                && !isNaN(sumTotalReceivedAmountPerc) ? sumTotalReceivedAmountPerc.toFixed(2) + '%' : '0%',
+              initRejectionAmountPerc: finalRejectionAmountPrec !== null
+                && !isNaN(finalRejectionAmountPrec) ? finalRejectionAmountPrec.toFixed(2) + '%' : '0%',
               initRejectionAmount: finalRejectionAmount.toFixed(2),
               sumTotalOutstandingAmount: sumTotalOutstandingAmount.toFixed(2),
 
               sumPromptPaymentDiscount: sumPromptPaymentDiscount.toFixed(2),
-              promptPaymentDiscountPrec: promptPaymentDiscountPrec !== null && !isNaN(promptPaymentDiscountPrec) ? promptPaymentDiscountPrec.toFixed(2) + '%' : '0%',
+              promptPaymentDiscountPrec: promptPaymentDiscountPrec !== null
+                && !isNaN(promptPaymentDiscountPrec) ? promptPaymentDiscountPrec.toFixed(2) + '%' : '0%',
 
               sumVolumeDiscount: sumVolumeDiscount.toFixed(2),
               volumeDiscountPrec: volumeDiscountPrec !== null && !isNaN(volumeDiscountPrec) ? volumeDiscountPrec.toFixed(2) + '%' : '0%'

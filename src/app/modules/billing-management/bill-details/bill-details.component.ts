@@ -8,18 +8,14 @@ import { AddBillServiceDialogComponent } from '../add-bill-service-dialog/add-bi
 import { ServiceSearchModel } from 'src/app/models/contractModels/BillingModels/ServiceSearchModel';
 import { BillTemplate } from 'src/app/models/contractModels/BillingModels/BillTemplate';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BillSearchModel } from 'src/app/models/contractModels/BillingModels/BillSearchModel';
-import { SEVEN } from '@angular/cdk/keycodes';
-import { SelectionModel } from '@angular/cdk/collections';
 import { BillServiceList } from 'src/app/models/contractModels/BillingModels/BillServiceList';
 import { SharedBillingService } from 'src/app/services/contractService/shared-billing.service';
 import { InvoiceDetail } from 'src/app/models/contractModels/BillingModels/InvoiceDetail';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: 'app-bill-details',
@@ -36,13 +32,13 @@ export class BillDetailsComponent implements OnInit {
     selectedPatient: string;
     serviceSearchModel: ServiceSearchModel[] = [];
     billTemplate: BillTemplate;
-    tableGrossAmount: number = 0;
-    tableDiscountAmount: number = 0;
-    tableInsShareAmount: number = 0;
-    tablePatientShareAmount: number = 0;
-    tableNetAmount: number = 0;
-    //serviceSearchModel2 = [];
-    selectedService: string
+    tableGrossAmount = 0;
+    tableDiscountAmount = 0;
+    tableInsShareAmount = 0;
+    tablePatientShareAmount = 0;
+    tableNetAmount = 0;
+    // serviceSearchModel2 = [];
+    selectedService: string;
     updateBillNo: number;
 
 
@@ -111,9 +107,9 @@ export class BillDetailsComponent implements OnInit {
 
 
 
-    //selectedServicesForInvoice = new SelectionModel<BillServiceList>(true, []);
+    // selectedServicesForInvoice = new SelectionModel<BillServiceList>(true, []);
 
-    messageError = "";
+    messageError = '';
 
     constructor(
         private dialog: MatDialog,
@@ -139,35 +135,33 @@ export class BillDetailsComponent implements OnInit {
 
     param: BillSearchModel = new BillSearchModel();
 
-    addMode: boolean = false;
-    EditMode: boolean = false;
-    generateInvoice: boolean = false;
+    addMode = false;
+    EditMode = false;
+    generateInvoice = false;
 
     ngOnInit() {
 
 
 
-        this.param.billId = this.activatedRoute.snapshot.paramMap.get("billId")
-        var url = this.router.url;
+        this.param.billId = this.activatedRoute.snapshot.paramMap.get('billId');
+        const url = this.router.url;
 
-        //console.log("Contract Id= "+this.param.contractId);
+        // console.log("Contract Id= "+this.param.contractId);
 
         if (url.endsWith('add') || this.param.billId == null) {
             this.addMode = true;
             this.getDepartmentList();
             this.getDoctorList();
             this.getBeneList();
-        }
-        else if (url.includes('generate-bill-invoice')) {
+        } else if (url.includes('generate-bill-invoice')) {
             this.generateInvoice = true;
             this.getDepartmentList();
             this.getDoctorList();
             this.getBeneList();
             this.selectedServicesForInvoice = this.sharedBilling.getInvoiceServices;
             this.calculateTableAmounts(this.selectedServicesForInvoice);
-        }
-        else if (url.includes('edit')) {
-            this.getBillDetails(this.param)
+        } else if (url.includes('edit')) {
+            this.getBillDetails(this.param);
             this.EditMode = true;
             this.getDepartmentList();
             this.getDoctorList();
@@ -177,40 +171,40 @@ export class BillDetailsComponent implements OnInit {
 
     openAddServiceDialog() {
 
-        //var serviceSearchModelLocal: ServiceSearchModel[];
+        // var serviceSearchModelLocal: ServiceSearchModel[];
         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = ['primary-dialog'];
         dialogConfig.data = {
             policyNo: 'P0587',
             classId: 3,
             departmentId: 2,
-            //item: serviceSearchModelLocal
+            // item: serviceSearchModelLocal
         };
 
         const dialogRef = this.dialog.open(AddBillServiceDialogComponent, dialogConfig);
 
-        //dialogRef.beforeClosed().subscribe(result => alert("Before CLosed :: " + JSON.stringify(result)));
+        // dialogRef.beforeClosed().subscribe(result => alert("Before CLosed :: " + JSON.stringify(result)));
 
         dialogRef.afterClosed().subscribe(result => {
-            //alert("after closed " + JSON.stringify(result));
-            //alert("serviceSearchModel " + JSON.stringify(this.serviceSearchModel));
-            //() => console.log('serviceSearchModel ' + JSON.stringify(this.serviceSearchModel));
+            // alert("after closed " + JSON.stringify(result));
+            // alert("serviceSearchModel " + JSON.stringify(this.serviceSearchModel));
+            // () => console.log('serviceSearchModel ' + JSON.stringify(this.serviceSearchModel));
             if (result) {
-                //() => console.log('serviceExists ' + (typeof result[0].serviceId));
-                //() => console.log('serviceExists ' + (typeof this.serviceSearchModel[0].serviceId));
+                // () => console.log('serviceExists ' + (typeof result[0].serviceId));
+                // () => console.log('serviceExists ' + (typeof this.serviceSearchModel[0].serviceId));
                 if (this.serviceListModel.find(x => x.serviceId === result[0].serviceId)) {
-                    //() => console.log('typeof ' + (typeof this.serviceSearchModel));
+                    // () => console.log('typeof ' + (typeof this.serviceSearchModel));
 
-                    //alert("serviceExists");
+                    // alert("serviceExists");
                     this.dialogService.openMessageDialog({
                         title: '',
                         message: `Service Already Existing in Table`,
                         isError: true
                     });
                 } else {
-                    //alert("PUSHING " + JSON.stringify(this.serviceSearchModel));
-                    //() => console.log('Push ' + JSON.stringify(this.serviceSearchModel));
-                    //this.serviceSearchModel.push(result[0]);
+                    // alert("PUSHING " + JSON.stringify(this.serviceSearchModel));
+                    // () => console.log('Push ' + JSON.stringify(this.serviceSearchModel));
+                    // this.serviceSearchModel.push(result[0]);
                     this.serviceListModel.push(result[0]);
                     if (this.addMode || this.EditMode) {
                         this.calculateTableAmounts(this.serviceListModel);
@@ -268,23 +262,33 @@ export class BillDetailsComponent implements OnInit {
             // this.tableInsShareAmount = Number((element.insShareAmount + this.tableInsShareAmount).toPrecision(2));
             // this.tablePatientShareAmount = Number((element.patientShareAmount + this.tablePatientShareAmount).toPrecision(2));
             // this.tableNetAmount = Number((element.netShareAmount + this.tableNetAmount).toPrecision(2));
-            //element.quantity = new FormControl(element.quantity);
+            // element.quantity = new FormControl(element.quantity);
 
-            this.tableGrossAmount = Number.parseFloat(element.grossAmount.toPrecision(element.grossAmount.toFixed().length + 2)) + Number.parseFloat(this.tableGrossAmount.toPrecision(this.tableGrossAmount.toFixed().length + 2));
-            this.tableDiscountAmount = Number.parseFloat(element.serviceDiscountAmount.toPrecision(element.serviceDiscountAmount.toFixed().length + 2)) + Number.parseFloat(this.tableDiscountAmount.toPrecision(this.tableDiscountAmount.toFixed().length + 2));
-            this.tableInsShareAmount = Number.parseFloat(element.insShareAmount.toPrecision(element.insShareAmount.toFixed().length + 2)) + Number.parseFloat(this.tableInsShareAmount.toPrecision(this.tableInsShareAmount.toFixed().length + 2));
-            this.tablePatientShareAmount = Number.parseFloat(element.patientShareAmount.toPrecision(element.patientShareAmount.toFixed().length + 2)) + Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2));
-            this.tableNetAmount = Number.parseFloat(element.netShareAmount.toPrecision(element.netShareAmount.toFixed().length + 2)) + Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2));
+            this.tableGrossAmount = Number.parseFloat(
+                element.grossAmount.toPrecision(element.grossAmount.toFixed().length + 2)
+            ) + Number.parseFloat(this.tableGrossAmount.toPrecision(this.tableGrossAmount.toFixed().length + 2));
+            this.tableDiscountAmount = Number.parseFloat(
+                element.serviceDiscountAmount.toPrecision(element.serviceDiscountAmount.toFixed().length + 2)
+            ) + Number.parseFloat(this.tableDiscountAmount.toPrecision(this.tableDiscountAmount.toFixed().length + 2));
+            this.tableInsShareAmount = Number.parseFloat(
+                element.insShareAmount.toPrecision(element.insShareAmount.toFixed().length + 2)
+            ) + Number.parseFloat(this.tableInsShareAmount.toPrecision(this.tableInsShareAmount.toFixed().length + 2));
+            this.tablePatientShareAmount = Number.parseFloat(
+                element.patientShareAmount.toPrecision(element.patientShareAmount.toFixed().length + 2)
+            ) + Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2));
+            this.tableNetAmount = Number.parseFloat(
+                element.netShareAmount.toPrecision(element.netShareAmount.toFixed().length + 2)
+            ) + Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2));
 
 
-            //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
-            Number.parseFloat(this.tableGrossAmount.toPrecision(this.tableGrossAmount.toFixed().length + 2))
-            Number.parseFloat(this.tableDiscountAmount.toPrecision(this.tableDiscountAmount.toFixed().length + 2))
-            Number.parseFloat(this.tableInsShareAmount.toPrecision(this.tableInsShareAmount.toFixed().length + 2))
-            Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2))
-            Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2))
+            // Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
+            Number.parseFloat(this.tableGrossAmount.toPrecision(this.tableGrossAmount.toFixed().length + 2));
+            Number.parseFloat(this.tableDiscountAmount.toPrecision(this.tableDiscountAmount.toFixed().length + 2));
+            Number.parseFloat(this.tableInsShareAmount.toPrecision(this.tableInsShareAmount.toFixed().length + 2));
+            Number.parseFloat(this.tablePatientShareAmount.toPrecision(this.tablePatientShareAmount.toFixed().length + 2));
+            Number.parseFloat(this.tableNetAmount.toPrecision(this.tableNetAmount.toFixed().length + 2));
 
-            //console.log("typeof  :: " + typeof (element.quantity));
+            // console.log("typeof  :: " + typeof (element.quantity));
 
             if (element.quantity == null || element.quantity == undefined) {
                 element.quantity = new FormControl(1);
@@ -298,47 +302,58 @@ export class BillDetailsComponent implements OnInit {
 
     calculateAllPrices(e, serviceId, model) {
 
-        for (let service of model) {
-            //type == null? service.discountTypeController.value : type;
-            //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
+        for (const service of model) {
+            // type == null? service.discountTypeController.value : type;
+            // Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
             if (serviceId == service.serviceId) {
-                //console.log("Inside serviceId == service.serviceId " + JSON.stringify(serviceId));
-                //console.log(Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)));
+                // console.log("Inside serviceId == service.serviceId " + JSON.stringify(serviceId));
+                // console.log(Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)));
                 service.grossAmount = 0;
                 service.serviceDiscountAmount = 0;
                 service.netShareAmount = 0;
                 service.patientShareAmount = 0;
                 service.insShareAmount = 0;
 
-                //service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)) * Number.parseFloat(service.quantity.value);
-                service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2)) * Number.parseInt(service.quantity.value);
-                service.grossAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2))
+                // service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2))
+                // * Number.parseFloat(service.quantity.value);
+                service.grossAmount = Number.parseFloat(service.cashAmount.toPrecision(service.cashAmount.toFixed().length + 2))
+                    * Number.parseInt(service.quantity.value, 10);
+                service.grossAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2));
 
                 service.quantity = service.quantity.value;
 
-                //New Calculations
+                // New Calculations
                 if (service.insDiscountType == '%') {
                     service.serviceDiscountAmount = this.calculatePercentage(service.insDiscountAmount, service.grossAmount);
                 } else {
-                    service.serviceDiscountAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2)) - (Number.parseFloat(service.insDiscountAmount.toPrecision(service.insDiscountAmount.toFixed().length + 2)) * Number.parseFloat(service.quantity.value));
+                    service.serviceDiscountAmount = Number.parseFloat(
+                        service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2)
+                    ) - (Number.parseFloat(
+                        service.insDiscountAmount.toPrecision(service.insDiscountAmount.toFixed().length + 2)
+                    ) * Number.parseFloat(service.quantity.value));
                 }
 
-                //service.netShareAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2)) - Number.parseFloat(service.serviceDiscountAmount.toPrecision(service.serviceDiscountAmount.toFixed().length + 2));
+                // service.netShareAmount = Number.parseFloat(service.grossAmount.toPrecision(service.grossAmount.toFixed().length + 2))
+                // - Number.parseFloat(service.serviceDiscountAmount.toPrecision(service.serviceDiscountAmount.toFixed().length + 2));
                 service.netShareAmount = service.grossAmount - service.serviceDiscountAmount;
-                service.netShareAmount = Number.parseFloat(service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2))
+                service.netShareAmount = Number.parseFloat(service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2));
 
 
-                if (service.shareType == "%") {
+                if (service.shareType == '%') {
                     service.patientShareAmount = this.calculatePercentage(service.patientShare, service.netShareAmount);
                 } else {
-                    service.patientShareAmount = Number.parseFloat(service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2)) - Number.parseFloat(service.patientShare.toPrecision(service.patientShare.toFixed().length + 2));
+                    service.patientShareAmount = Number.parseFloat(
+                        service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2)
+                    ) - Number.parseFloat(service.patientShare.toPrecision(service.patientShare.toFixed().length + 2));
                 }
 
-                //service.insShareAmount = Number.parseFloat(service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2)) - Number.parseFloat(service.patientShareAmount.toPrecision(service.patientShareAmount.toFixed().length + 2));
-                //console.log("Inside insShareAmount :: service.netShareAmount" + JSON.stringify(service.netShareAmount));
-                //console.log("Inside insShareAmount :: service.patientShareAmount" + JSON.stringify(service.patientShareAmount));
+                // service.insShareAmount = Number.parseFloat(
+                // service.netShareAmount.toPrecision(service.netShareAmount.toFixed().length + 2)
+                // ) - Number.parseFloat(service.patientShareAmount.toPrecision(service.patientShareAmount.toFixed().length + 2));
+                // console.log("Inside insShareAmount :: service.netShareAmount" + JSON.stringify(service.netShareAmount));
+                // console.log("Inside insShareAmount :: service.patientShareAmount" + JSON.stringify(service.patientShareAmount));
                 service.insShareAmount = service.netShareAmount - service.patientShareAmount;
-                service.insShareAmount = Number.parseFloat(service.insShareAmount.toPrecision(service.insShareAmount.toFixed().length + 2))
+                service.insShareAmount = Number.parseFloat(service.insShareAmount.toPrecision(service.insShareAmount.toFixed().length + 2));
 
             }
         }
@@ -347,12 +362,12 @@ export class BillDetailsComponent implements OnInit {
         } else {
             this.calculateTableAmounts(this.selectedServicesForInvoice);
         }
-        //this.calculateTableAmounts();
+        // this.calculateTableAmounts();
 
     }
 
     calculatePercentage(obtained, total) {
-        //Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
+        // Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2))
         const intermediatePercentage = obtained / 100 * total;
         return Number.parseFloat(intermediatePercentage.toPrecision(intermediatePercentage.toFixed().length + 2));
     }
@@ -376,7 +391,7 @@ export class BillDetailsComponent implements OnInit {
         this.billTemplate.additionalDiscountPercent = 0;
 
 
-        this.billTemplate.billServices = this.serviceListModel.filter(function (obj) {
+        this.billTemplate.billServices = this.serviceListModel.filter((obj) => {
             return obj.quantity.value != null;
         }).map(service => ({
             serviceId: service.serviceId,
@@ -393,7 +408,7 @@ export class BillDetailsComponent implements OnInit {
             insDiscountAmount: service.insDiscountAmount,
             insDiscountType: service.insDiscountType,
             quantity: service.quantity.value,
-            //discountTypeController: 'aaa0',
+            // discountTypeController: 'aaa0',
             deptDepartmentName: service.deptDepartmentName,
             deptDiscountType: service.deptDiscountType,
             deptDiscountAmount: service.deptDiscountAmount,
@@ -413,7 +428,7 @@ export class BillDetailsComponent implements OnInit {
         if (this.updateBillNo != null) {
             this.billTemplate.billNo = this.updateBillNo;
 
-            console.log("Inside his.updateBillNo != null ");
+            console.log('Inside his.updateBillNo != null ');
 
             this.contractService.updateBill(this.billTemplate).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -432,7 +447,7 @@ export class BillDetailsComponent implements OnInit {
 
                     if (err instanceof HttpErrorResponse) {
                         if (err.status == 500) {
-                            this.messageError = "could not reach server for Update Please try again later "
+                            this.messageError = 'could not reach server for Update Please try again later ';
 
                         } else {
                             this.messageError = err.message;
@@ -448,7 +463,7 @@ export class BillDetailsComponent implements OnInit {
                     }
                 });
         } else {
-            console.log("Inside his.updateBillNo != null else");
+            console.log('Inside his.updateBillNo != null else');
 
             this.contractService.createBill(this.billTemplate).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -467,7 +482,7 @@ export class BillDetailsComponent implements OnInit {
 
                     if (err instanceof HttpErrorResponse) {
                         if (err.status == 500) {
-                            this.messageError = "could not reach server Please try again later "
+                            this.messageError = 'could not reach server Please try again later ';
 
                         } else {
                             this.messageError = err.message;
@@ -488,13 +503,16 @@ export class BillDetailsComponent implements OnInit {
     }
 
     getBeneList() {
-        this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null, 0, 10).subscribe(event => {
+        this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(
+            this.sharedServices.providerId, null, null, null, null, null, 0, 10
+        ).subscribe(event => {
             if (event instanceof HttpResponse) {
-                if (event.body != null && event.body instanceof Array)
+                if (event.body != null && event.body instanceof Array) {
                     this.beneficiaries = [];
+                }
 
-                this.beneficiaries = event.body["content"] as BeneficiarySearch[];
-                this.length = event.body["totalElements"]
+                this.beneficiaries = event.body['content'] as BeneficiarySearch[];
+                this.length = event.body['totalElements'];
             }
         }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
@@ -552,8 +570,8 @@ export class BillDetailsComponent implements OnInit {
         } else {
             this.calculateTableAmounts(this.selectedServicesForInvoice);
         }
-        //this.calculateTableAmounts();
-        console.log("Do you work ?");
+        // this.calculateTableAmounts();
+        console.log('Do you work ?');
     }
 
     deleteServiceFromBill(index: number) {
@@ -563,27 +581,27 @@ export class BillDetailsComponent implements OnInit {
         } else {
             this.calculateTableAmounts(this.selectedServicesForInvoice);
         }
-        //this.calculateTableAmounts();
+        // this.calculateTableAmounts();
     }
 
     selectService(e, i: number, sev) {
 
-        console.log("Reached Method selectService");
+        console.log('Reached Method selectService');
 
-        console.log("index " + index);
+        console.log('index ' + i);
 
         if (e.checked) {
             this.selectedServicesForInvoice.push(sev);
         } else {
-            for (var index in this.selectedServicesForInvoice) {
-                console.log(index); // prints indexes: 0, 1, 2, 
+            for (const index in this.selectedServicesForInvoice) {
+                console.log(index); // prints indexes: 0, 1, 2,
 
                 if (this.selectedServicesForInvoice[index].serviceId === sev.serviceId) {
-                    this.selectedServicesForInvoice.splice(parseInt(index), 1);
+                    this.selectedServicesForInvoice.splice(parseInt(index, 10), 1);
                 }
             }
         }
-        console.log("Exit Method selectService");
+        console.log('Exit Method selectService');
         this.sharedBilling.setInvoiceServices = this.selectedServicesForInvoice;
     }
 
@@ -602,17 +620,17 @@ export class BillDetailsComponent implements OnInit {
     saveInvoice() {
         this.invoiceDetail = new InvoiceDetail();
         this.invoiceDetail.status = 1;
-        this.invoiceDetail.billId = parseInt(this.param.billId);
+        this.invoiceDetail.billId = parseInt(this.param.billId, 10);
         this.invoiceDetail.details = this.invoiceAmountController.value;
         this.invoiceDetail.paymentNo = 'AutoGenerated';
         this.invoiceDetail.amount = this.invoiceAmountController.value;
         this.invoiceDetail.paymentType = this.receiptTypeController.value;
         this.invoiceDetail.paymentDate = this.paymentDateController.value;
-        for (let current of this.selectedServicesForInvoice) {
+        for (const current of this.selectedServicesForInvoice) {
             this.invoiceDetail.serviceIds.push(current.billServiceId);
         }
 
-        console.log("Object Created :: " + JSON.stringify(this.invoiceDetail));
+        console.log('Object Created :: ' + JSON.stringify(this.invoiceDetail));
         this.contractService.createInvoice(this.invoiceDetail, this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 console.log(event.body);
@@ -621,7 +639,7 @@ export class BillDetailsComponent implements OnInit {
                         title: '',
                         message: `Invoice Saved successfully`,
                         isError: false
-                    }).subscribe(event => { this.router.navigateByUrl('/billing-management/bill-details/edit/' + this.param.billId) });
+                    }).subscribe(event => { this.router.navigateByUrl('/billing-management/bill-details/edit/' + this.param.billId); });
                     this.sharedServices.loadingChanged.next(false);
                 }
             }
@@ -630,7 +648,7 @@ export class BillDetailsComponent implements OnInit {
 
                 if (err instanceof HttpErrorResponse) {
                     if (err.status == 500) {
-                        this.messageError = "could not reach server Please try again later "
+                        this.messageError = 'could not reach server Please try again later ';
 
                     } else {
                         this.messageError = err.message;
