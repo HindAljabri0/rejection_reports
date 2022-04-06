@@ -2,6 +2,14 @@
   <div class="row">
     <div class="col-4">
       <div class="form-group form-group-static">
+        <div class="control-label">Site Eligibility</div>
+        <p class="form-control-static"
+          [ngClass]="eligibilityResponse.siteEligibility === 'eligible' ? 'text-success' : (eligibilityResponse.siteEligibility ? 'text-danger' : '')">
+          {{eligibilityResponse.siteEligibilityName | titlecase}}</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
         <div class="control-label">Beneficiary Name</div>
         <p class="form-control-static">
           {{eligibilityResponse.beneficiaryName}}
@@ -47,13 +55,6 @@
     </div>
     <div class="col-4">
       <div class="form-group form-group-static">
-        <div class="control-label">Site Eligibility</div>
-        <p class="form-control-static">{{eligibilityResponse.siteEligibility ? eligibilityResponse.siteEligibility :
-          '-'}}</p>
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group form-group-static">
         <div class="control-label">Is Referral ? </div>
         <p class="form-control-static">{{eligibilityResponse.transfer ? 'Yes' : 'No'}}</p>
       </div>
@@ -61,7 +62,8 @@
     <div class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Eligibility Identifier Url</div>
-        <p class="form-control-static">{{eligibilityResponse.eligibilityIdentifierUrl ? eligibilityResponse.eligibilityIdentifierUrl : '-'}}</p>
+        <p class="form-control-static">{{eligibilityResponse.eligibilityIdentifierUrl ?
+          eligibilityResponse.eligibilityIdentifierUrl : '-'}}</p>
       </div>
     </div>
     <div class="col-4">

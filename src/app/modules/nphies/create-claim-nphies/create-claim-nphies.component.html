@@ -9,7 +9,8 @@
       </p>
       <p>
         <span>Related Claim ID:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-" +otherDataModel.relatedClaimId) : '-' }} </strong></span>
+          <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-"
+              +otherDataModel.relatedClaimId) : '-' }} </strong></span>
         </strong>
       </p>
       <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
@@ -1100,7 +1101,8 @@
   <div class="block-footer sticky" *ngIf="!isLoading">
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">{{ this.otherDataModel.status != 'Cancelled' ? 'Edit' : 'Edit to Re-Submit' }}</button>
+      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">{{
+        this.otherDataModel.status != 'Cancelled' ? 'Edit' : 'Edit to Re-Submit' }}</button>
     </div>
   </div>
 </div>
@@ -1127,7 +1129,8 @@
         </p>
         <p>
           <span>Related Claim ID:</span>&nbsp;<strong>
-            <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-" +otherDataModel.relatedClaimId) :
+            <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-"
+                +otherDataModel.relatedClaimId) :
                 otherDataModel.status == 'Cancelled' ? otherDataModel.claimResourceId : "-" }} </strong></span>
           </strong>
         </p>
@@ -1341,6 +1344,16 @@
           </ng-template>
           <app-beneficiary-tab [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted" [(FormNphiesClaim)]="FormNphiesClaim" [(selectedBeneficiary)]="selectedBeneficiary"
             (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
+        </mat-tab>
+        <mat-tab *ngIf="FormNphiesClaim.controls.isNewBorn.value">
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-1" *ngIf="checkErrorSubscriberInfo === true" [class.text-danger]="checkErrorSubscriberInfo === true">
+              error</mat-icon>
+            <span [class.text-danger]="checkErrorSubscriberInfo === true">Subscriber</span>
+          </ng-template>
+          <app-beneficiary-tab [IsSubscriber]="true" [IsNewBorn]="FormNphiesClaim.controls.isNewBorn.value" [(pageMode)]="pageMode" [(isSubmitted)]="isSubmitted"
+            [(FormNphiesClaim)]="FormSubscriber" [(selectedBeneficiary)]="selectedSubscriber" (emitSelectedBenificiary)="selectedSubscriberChange($event)">
+          </app-beneficiary-tab>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
@@ -2019,8 +2032,10 @@
                   </tr>
                   <tr *ngIf="item.careTeamSequenceRequired || item.detailsRequired">
                     <td colspan="10">
-                      <p class="error-card" *ngIf="item.careTeamSequenceRequired">Item must have atleast one Care Team</p>
-                      <p class="error-card" *ngIf="item.detailsRequired">Item detail must be provided when Item is a package</p>
+                      <p class="error-card" *ngIf="item.careTeamSequenceRequired">Item must have atleast one Care Team
+                      </p>
+                      <p class="error-card" *ngIf="item.detailsRequired">Item detail must be provided when Item is a
+                        package</p>
                     </td>
                   </tr>
                 </ng-container>

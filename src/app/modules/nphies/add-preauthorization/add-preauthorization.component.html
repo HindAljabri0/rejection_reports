@@ -9,11 +9,15 @@
 
       </div>
       <div class="block-filter-panel">
-
         <div class="form-title pt-0">
           <h5>Beneficary Info</h5>
         </div>
-
+        <div class="form-group">
+          <div class="checkbox-group inline">
+            <mat-checkbox color="primary" formControlName="isNewBorn" (change)="onNewBornChangeState($event)">New
+              born?</mat-checkbox>
+          </div>
+        </div>
         <div class="d-flex">
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
@@ -40,6 +44,34 @@
           </div>
         </div>
 
+        <div *ngIf="FormPreAuthorization.controls.isNewBorn.value" class="d-flex">
+          <div class="form-group flex-grow-1"
+            [ngClass]="{'has-error' : IsSubscriberRequired && ((isSubmitted || FormPreAuthorization.get('subscriberName').touched) && FormPreAuthorization.get('subscriberName').hasError('required'))}">
+            <label class="control-label">Select a Subscriber<span class="asterisk">*</span></label>
+            <input type="text" class="form-control search-box" placeholder="Search for subscriber by name or document ID..." formControlName="subscriberName"
+              [matAutocomplete]="auto" (keyup)="searchBeneficiaries(true)">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let beneficiary of subscriberSearchResult" (click)="selectSubscriber(beneficiary)">
+                {{beneficiary.name}} ({{beneficiary.documentId}})
+              </mat-option>
+            </mat-autocomplete>
+            <div
+              *ngIf="IsSubscriberRequired && ((isSubmitted || FormPreAuthorization.get('subscriberName').touched) && FormPreAuthorization.get('subscriberName').hasError('required'))">
+              <span class="error-text">Please select a Subscriber</span>
+            </div>
+          </div>
+          <div class="form-group pl-3 pr-3">
+            <label class="control-label">&nbsp;</label>
+            <span class="pt-2 d-block semibold">OR</span>
+          </div>
+          <div class="form-group">
+            <label class="control-label">&nbsp;</label>
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+              Subscriber</button>
+          </div>
+        </div>
+
+
         <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
           <div class="col-md-4">
             <div class="form-group" [matTooltip]="selectedPlanIdError"
@@ -59,14 +91,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label class="control-label pb-0">&nbsp;</label>
-              <div class="checkbox-group inline">
-                <mat-checkbox color="primary" formControlName="isNewBorn">New born?</mat-checkbox>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <h5 class="form-title">Pre Authorization Info</h5>
