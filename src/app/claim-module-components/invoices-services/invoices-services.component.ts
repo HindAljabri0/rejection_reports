@@ -270,11 +270,13 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                 iaHasError = true;
             }
 
+
         });
 
         if (this.ListDuplicateService.includes(service.serviceId)) {
             iaHasError = true
         }
+
         return iaHasError;
     }
 

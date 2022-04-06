@@ -101,8 +101,16 @@
                         <td class="row-click" routerLink="/policy-management/edit/{{policy.policyId}}">
                             {{policy.isActive}}</td>
                         <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit/{{policy.policyId}}">
-                                <mat-icon>create</mat-icon>
+                            <mat-menu #policiesActionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                    <button mat-menu-item type="button" routerLink="/policy-management/edit/{{policy.policyId}}">
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                </ng-template>
+                            </mat-menu>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="policiesActionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>

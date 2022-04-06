@@ -41,7 +41,7 @@
         <span>Services</span>
     </h5>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-        <table class="primary-grid sticky-header manual-row-color claim-view-table" cellpadding="0" cellspacing="0" border="0">
+        <table class="primary-grid sticky-header claim-view-table divided-header" cellpadding="0" cellspacing="0" border="0">
             <thead>
                 <tr>
                     <th colspan="2" class="text-center">Service</th>
@@ -250,7 +250,7 @@
         </button>
     </h5>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-        <table class="primary-grid sticky-header manual-row-color claim-view-table" cellpadding="0" cellspacing="0" border="0">
+        <table class="primary-grid sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
             <thead>
                 <tr>
                     <th class="text-center">Receipt No.</th>
@@ -298,8 +298,16 @@
                     </td>
                     <td class="text-primary medium text-center">SR</td>
                     <td class="actions">
-                        <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
-                            <mat-icon>delete_outline</mat-icon>
+                        <mat-menu #paymentsActionsMenu xPosition="before">
+                            <ng-template matMenuContent>
+                                <button mat-menu-item type="button">
+                                    <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                    <span>Delete</span>
+                                </button>
+                            </ng-template>
+                        </mat-menu>
+                        <button type="button" mat-icon-button [matMenuTriggerFor]="paymentsActionsMenu">
+                            <mat-icon>more_vert</mat-icon>
                         </button>
                     </td>
                 </tr>

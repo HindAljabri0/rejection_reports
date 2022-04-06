@@ -274,7 +274,7 @@
                 <span class="text">Beneficiary List</span>
               </a>
             </li>
-            <li>
+            <li *ngIf="!envProd">
               <a routerLink="/nphies/beneficiary/upload" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                 <span class="text">Upload Beneficiaries</span>
               </a>

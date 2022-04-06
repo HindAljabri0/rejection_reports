@@ -1,6 +1,6 @@
 <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="processedTransactionModel && processedTransactions.length > 0">
   <div class="fixed-height fixed-height-sm">
-    <table class="primary-grid manual-row-color sticky-header no-borders" cellpadding="0" cellspacing="0" border="0">
+    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
       <thead>
         <tr>
           <th>Beneficiary Name</th>
@@ -29,12 +29,21 @@
             {{transaction.status}}</td>
           <td class="actions">
             <mat-menu #moreMenu="matMenu" xPosition="before">
-              <button mat-menu-item><span>Reuse</span></button>
-              <button mat-menu-item><span>Cancel</span></button>
-              <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+              <button mat-menu-item>
+                <mat-icon class="material-icons-outlined">replay</mat-icon>
+                <span>Reuse</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon class="material-icons-outlined">close</mat-icon>
+                <span>Cancel</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                <span>Nullify/Soft Delete</span>
+              </button>
               <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
             </mat-menu>
-            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
               <mat-icon>more_vert</mat-icon>
             </button>
           </td>
