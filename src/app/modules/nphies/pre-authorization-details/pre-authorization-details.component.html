@@ -210,7 +210,7 @@
   Errors
 </h5>
 <div class="table-responsive" *ngIf="data.errors">
-  <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
     <thead>
       <tr>
         <th class="light-bg-danger text-danger">Code</th>
@@ -306,7 +306,7 @@
   Items
 </h5>
 <div class="table-responsive">
-  <table class="primary-grid manual-row-color no-borders">
+  <table class="primary-grid">
     <thead>
       <tr>
         <th width="10"></th>
@@ -352,7 +352,7 @@
               <h5 class="align-self-center medium pb-2">Adjudication</h5>
               <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
 
-              <table class="primary-grid no-borders">
+              <table class="primary-grid">
                 <thead>
                   <tr>
                     <th>Category</th>
@@ -508,7 +508,7 @@
                         <td class="label">Quantity</td>
                         <td>{{item.quantity}} {{item.quantityCode}}</td>
                       </tr>
-                      
+
                       <tr>
                         <td class="label">Discount(%)</td>
                         <td>{{item.discountPercent}} %</td>
@@ -609,7 +609,7 @@
             </div>
             <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
               <h5 class="align-self-center medium pb-2">Item Detail</h5>
-              <table class="primary-grid manual-row-color claim-view-table no-borders">
+              <table class="primary-grid claim-view-table">
                 <thead>
                   <tr>
                     <th>Seq.</th>
@@ -725,7 +725,7 @@
     <strong class="medium">Lens Specifications</strong>
   </h5>
   <div class="table-responsive">
-    <table class="primary-grid manual-row-color no-borders">
+    <table class="primary-grid">
       <thead>
         <tr>
           <th>Sequence</th>

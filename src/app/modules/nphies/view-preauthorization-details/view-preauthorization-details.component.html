@@ -36,7 +36,7 @@
               <div class="header-block">
                 <div class="message">
                   <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
                           <tr *ngIf="payload.payloadValue">
@@ -84,7 +84,7 @@
                 <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
                   <div class="message size-sm">
                     <div class="table-responsive pb-2">
-                      <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                      <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
                         <tbody>
                           <ng-container *ngFor="let payload of reply.payloadList">
                             <tr *ngIf="payload.payloadValue">
@@ -129,7 +129,7 @@
               <div class="header-block sent">
                 <div class="message">
                   <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
                           <tr *ngIf="payload.payloadValue">

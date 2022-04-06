@@ -185,7 +185,7 @@
           </button>
         </h5>
         <div *ngIf="CareTeams.length > 0" class="table-responsive">
-          <table class="primary-grid no-borders">
+          <table class="primary-grid">
             <thead>
               <tr>
                 <th>Practitioner</th>
@@ -210,11 +210,20 @@
                   {{careTeam.speciality}}
                 </td>
                 <td class="actions">
-                  <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
-                    <mat-icon>delete_outline</mat-icon>
+                  <mat-menu #careTeamActionsMenu xPosition="before">
+                    <ng-template matMenuContent>
+                      <button mat-menu-item type="button" (click)="openAddEditCareTeam(careTeam)">
+                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item type="button" (click)="deleteCareTeam(careTeam.sequence, i)">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </ng-template>
+                  </mat-menu>
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="careTeamActionsMenu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
                 </td>
               </tr>
@@ -235,7 +244,7 @@
           </div>
         </h5>
         <div *ngIf="Diagnosises.length > 0" class="table-responsive">
-          <table class="primary-grid no-borders">
+          <table class="primary-grid">
             <thead>
               <tr>
                 <th>Code - Description</th>
@@ -256,11 +265,20 @@
                   {{diagnosis.onAdmissionName}}
                 </td>
                 <td class="actions">
-                  <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(diagnosis.sequence, i)">
-                    <mat-icon>delete_outline</mat-icon>
+                  <mat-menu #diagnosisActionsMenu xPosition="before">
+                    <ng-template matMenuContent>
+                      <button mat-menu-item type="button" (click)="openAddEditDiagnosis(diagnosis)">
+                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item type="button" (click)="deleteDiagnosis(diagnosis.sequence, i)">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </ng-template>
+                  </mat-menu>
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="diagnosisActionsMenu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
                 </td>
               </tr>
@@ -319,7 +337,7 @@
               </button>
             </h5>
             <div *ngIf="VisionSpecifications" class="table-responsive">
-              <table class="primary-grid manual-row-color no-borders">
+              <table class="primary-grid">
                 <thead>
                   <tr>
                     <th>Product</th>
@@ -348,11 +366,20 @@
                     <td>{{visionSpecification.lensDiameter}}</td>
                     <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td *ngIf="!claimReuseId" class="actions">
-                      <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit" class="text-primary">
-                        <mat-icon>create</mat-icon>
-                      </button>
-                      <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete" class="text-primary">
-                        <mat-icon>delete_outline</mat-icon>
+                      <mat-menu #lensSpecificationActionsMenu xPosition="before">
+                        <ng-template matMenuContent>
+                          <button mat-menu-item type="button" (click)="openAddEditVisionLensDialog(visionSpecification)">
+                            <mat-icon class="material-icons-outlined">edit</mat-icon>
+                            <span>Edit</span>
+                          </button>
+                          <button mat-menu-item type="button" (click)="deleteVisionLens(i)">
+                            <mat-icon class="material-icons-outlined">delete</mat-icon>
+                            <span>Delete</span>
+                          </button>
+                        </ng-template>
+                      </mat-menu>
+                      <button type="button" mat-icon-button [matMenuTriggerFor]="lensSpecificationActionsMenu">
+                        <mat-icon>more_vert</mat-icon>
                       </button>
                     </td>
                   </tr>
@@ -373,7 +400,7 @@
           </button>
         </h5>
         <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
-          <table class="primary-grid no-borders">
+          <table class="primary-grid">
             <thead>
               <tr>
                 <th>Category</th>
@@ -414,11 +441,20 @@
                   {{s.reasonName}}
                 </td>
                 <td class="actions">
-                  <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(s.sequence, i)">
-                    <mat-icon>delete_outline</mat-icon>
+                  <mat-menu #supportingInfoActionsMenu xPosition="before">
+                    <ng-template matMenuContent>
+                      <button mat-menu-item type="button" (click)="openAddEditSupportInfoDialog(s)">
+                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item type="button" (click)="deleteSupportingInfo(s.sequence, i)">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </ng-template>
+                  </mat-menu>
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="supportingInfoActionsMenu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
                 </td>
               </tr>
@@ -506,7 +542,7 @@
           </div>
         </h5>
         <div *ngIf="Items.length > 0" class="table-responsive">
-          <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <table class="primary-grid claim-view-table">
             <thead>
               <tr>
                 <th width="10"></th>
@@ -558,16 +594,25 @@
                     {{item.unitPrice}} <span class="currency">SR</span></td>
                   <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     {{item.nonStandardCode}}</td> -->
-                  <td class="actions text-nowrap">
-                    <button mat-icon-button *ngIf="item.isPackage === true" type="button" matTooltip="Add Details" class="text-primary"
-                      (click)="openAddEditItemDetailsDialog(item.sequence)">
-                      <mat-icon>add</mat-icon>
-                    </button>
-                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDialog(item)">
-                      <mat-icon>create</mat-icon>
-                    </button>
-                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
-                      <mat-icon>delete_outline</mat-icon>
+                  <td class="actions">
+                    <mat-menu #itemsActionsMenu xPosition="before">
+                      <ng-template matMenuContent>
+                        <button mat-menu-item type="button" *ngIf="item.isPackage === true" (click)="openAddEditItemDetailsDialog(item.sequence)">
+                          <mat-icon class="material-icons-outlined">add</mat-icon>
+                          <span>Add Details</span>
+                        </button>
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog(item)">
+                          <mat-icon class="material-icons-outlined">edit</mat-icon>
+                          <span>Edit</span>
+                        </button>
+                        <button mat-menu-item type="button" (click)="deleteItem(i)">
+                          <mat-icon class="material-icons-outlined">delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                      </ng-template>
+                    </mat-menu>
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu">
+                      <mat-icon>more_vert</mat-icon>
                     </button>
                   </td>
                 </tr>
@@ -684,7 +729,7 @@
 
                     <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
                       <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                      <table class="primary-grid manual-row-color claim-view-table no-borders">
+                      <table class="primary-grid claim-view-table">
                         <thead>
                           <tr>
                             <th>Seq.</th>
@@ -704,12 +749,21 @@
                             <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
                             <td class="row-click">{{d.display ? d.display : '-'}}</td>
                             <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
-                            <td class="actions text-nowrap">
-                              <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                <mat-icon>create</mat-icon>
-                              </button>
-                              <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItemDetails(item.sequence, di)">
-                                <mat-icon>delete_outline</mat-icon>
+                            <td class="actions">
+                              <mat-menu #itemsDetailsActionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                  <button mat-menu-item type="button" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                    <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                    <span>Edit</span>
+                                  </button>
+                                  <button mat-menu-item type="button" (click)="deleteItemDetails(item.sequence, di)">
+                                    <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                    <span>Delete</span>
+                                  </button>
+                                </ng-template>
+                              </mat-menu>
+                              <button type="button" mat-icon-button [matMenuTriggerFor]="itemsDetailsActionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                               </button>
                             </td>
                           </tr>

@@ -83,9 +83,16 @@
                 <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
                   {{pr.paymentNoticeStatus}}</td>
                 <td class="actions">
-                  <button *ngIf="pr.paymentNoticeStatus !== 'Sent'" mat-icon-button matTooltip="Send Payment Notice" class="text-primary"
-                    (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)">
-                    <mat-icon>send</mat-icon>
+                  <mat-menu #paymentReconciliationActionsMenu xPosition="before">
+                    <ng-template matMenuContent>
+                      <button mat-menu-item type="button" (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)">
+                        <mat-icon class="material-icons-outlined">send</mat-icon>
+                        <span>Send Payment Notice</span>
+                      </button>
+                    </ng-template>
+                  </mat-menu>
+                  <button type="button" *ngIf="pr.paymentNoticeStatus !== 'Sent'" mat-icon-button [matMenuTriggerFor]="paymentReconciliationActionsMenu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
                 </td>
               </tr>

@@ -66,11 +66,8 @@
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Edit" class="text-primary">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
@@ -83,11 +80,8 @@
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Edit" class="text-primary">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
@@ -100,11 +94,8 @@
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Edit" class="text-primary">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
@@ -117,11 +108,8 @@
                             <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                         </td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Edit" class="text-primary">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
@@ -132,4 +120,16 @@
     <button mat-fab color="primary" class="page-fab" (click)="openAddInsuranceDialog()">
         <mat-icon>add</mat-icon>
     </button>
+    <mat-menu #actionsMenu xPosition="before">
+        <ng-template matMenuContent>
+            <button mat-menu-item type="button">
+                <mat-icon class="material-icons-outlined">edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button mat-menu-item type="button">
+                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                <span>Delete</span>
+            </button>
+        </ng-template>
+    </mat-menu>
 </div>

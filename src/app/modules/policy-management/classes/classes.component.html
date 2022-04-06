@@ -83,9 +83,16 @@
                         <td class="row-click" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
                             {{cl.contract_class.isActive}}</td>
                         <td class="actions">
-                            <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                                routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
-                                <mat-icon>create</mat-icon>
+                            <mat-menu #classesActionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                    <button mat-menu-item type="button" routerLink="/policy-management/class-management/edit/{{cl.contract_class.classId}}">
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                </ng-template>
+                            </mat-menu>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="classesActionsMenu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
