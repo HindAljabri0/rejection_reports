@@ -1134,8 +1134,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
 
+      this.model.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
+
       this.model.beneficiary = {};
-      this.model.beneficiary.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
       this.model.beneficiary.thirdName = this.FormNphiesClaim.controls.lastName.value;
@@ -1162,32 +1163,36 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary.country = this.FormNphiesClaim.controls.bcountry.value;
       this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
 
-      this.model.subscriber = {};
-      this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
-      this.model.subscriber.secondName = this.FormSubscriber.controls.middleName.value;
-      this.model.subscriber.thirdName = this.FormSubscriber.controls.lastName.value;
-      this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
-      this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
-      this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
-      this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
-      this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
-      this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
-      this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
-      this.model.subscriber.eHealthId = this.FormSubscriber.controls.eHealthId.value;
-      this.model.subscriber.nationality = this.FormSubscriber.controls.nationality.value;
-      this.model.subscriber.residencyType = this.FormSubscriber.controls.residencyType.value;
-      this.model.subscriber.contactNumber = this.FormSubscriber.controls.contactNumber.value;
-      this.model.subscriber.maritalStatus = this.FormSubscriber.controls.martialStatus.value;
-      this.model.subscriber.bloodGroup = this.FormSubscriber.controls.bloodGroup.value;
-      this.model.subscriber.preferredLanguage = this.FormSubscriber.controls.preferredLanguage.value;
-      this.model.subscriber.emergencyPhoneNumber = this.FormSubscriber.controls.emergencyNumber.value;
-      this.model.subscriber.email = this.FormSubscriber.controls.email.value;
-      this.model.subscriber.addressLine = this.FormSubscriber.controls.addressLine.value;
-      this.model.subscriber.streetLine = this.FormSubscriber.controls.streetLine.value;
-      this.model.subscriber.city = this.FormSubscriber.controls.bcity.value;
-      this.model.subscriber.state = this.FormSubscriber.controls.bstate.value;
-      this.model.subscriber.country = this.FormSubscriber.controls.bcountry.value;
-      this.model.subscriber.postalCode = this.FormSubscriber.controls.postalCode.value;
+      if (this.FormNphiesClaim.controls.isNewBorn.value) {
+        this.model.subscriber = {};
+        this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
+        this.model.subscriber.secondName = this.FormSubscriber.controls.middleName.value;
+        this.model.subscriber.thirdName = this.FormSubscriber.controls.lastName.value;
+        this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
+        this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
+        this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
+        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
+        this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
+        this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
+        this.model.subscriber.eHealthId = this.FormSubscriber.controls.eHealthId.value;
+        this.model.subscriber.nationality = this.FormSubscriber.controls.nationality.value;
+        this.model.subscriber.residencyType = this.FormSubscriber.controls.residencyType.value;
+        this.model.subscriber.contactNumber = this.FormSubscriber.controls.contactNumber.value;
+        this.model.subscriber.maritalStatus = this.FormSubscriber.controls.martialStatus.value;
+        this.model.subscriber.bloodGroup = this.FormSubscriber.controls.bloodGroup.value;
+        this.model.subscriber.preferredLanguage = this.FormSubscriber.controls.preferredLanguage.value;
+        this.model.subscriber.emergencyPhoneNumber = this.FormSubscriber.controls.emergencyNumber.value;
+        this.model.subscriber.email = this.FormSubscriber.controls.email.value;
+        this.model.subscriber.addressLine = this.FormSubscriber.controls.addressLine.value;
+        this.model.subscriber.streetLine = this.FormSubscriber.controls.streetLine.value;
+        this.model.subscriber.city = this.FormSubscriber.controls.bcity.value;
+        this.model.subscriber.state = this.FormSubscriber.controls.bstate.value;
+        this.model.subscriber.country = this.FormSubscriber.controls.bcountry.value;
+        this.model.subscriber.postalCode = this.FormSubscriber.controls.postalCode.value;
+      } else {
+        this.model.subscriber = null;
+      }
 
       this.model.insurancePlan = {};
       this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
