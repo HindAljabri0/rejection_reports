@@ -165,6 +165,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
+  selectPayer(event) {
+    this.FormPreAuthTransaction.patchValue({
+      payerId: event.value.payerNphiesId,
+      organizationId: event.value.organizationNphiesId != '-1'? event.value.organizationNphiesId : null
+    });
+  }
+
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     this.selectedBeneficiary = beneficiary;
     this.FormPreAuthTransaction.patchValue({
@@ -246,7 +253,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (this.FormPreAuthTransaction.controls.payerId.value) {
         model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
-
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
         model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
