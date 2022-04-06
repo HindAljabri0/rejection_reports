@@ -111,7 +111,8 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePrimary: [''],
     insurancePayerNphiesId: [''],
     isNewBorn: [false],
-    transfer: [false]
+    transfer: [false],
+    subscriberName: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -143,8 +144,7 @@ export class AddPreauthorizationComponent implements OnInit {
     bstate: [''],
     bcountry: [''],
     bcountryName: [''],
-    postalCode: [''],
-    subscriberName: ['']
+    postalCode: ['']
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -418,12 +418,18 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   searchBeneficiaries(IsSubscriber = null) {
+    let searchStr = '';
+    if (!IsSubscriber) {
+      searchStr = this.FormPreAuthorization.controls.beneficiaryName.value;
+    } else {
+      searchStr = this.FormPreAuthorization.controls.subscriberName.value;
+    }
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthorization.controls.beneficiaryName.value).subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
-          if (IsSubscriber) {
+          if (!IsSubscriber) {
             this.beneficiariesSearchResult = body;
           } else {
             this.subscriberSearchResult = body;
@@ -476,6 +482,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   selectSubscriber(beneficiary: BeneficiariesSearchResult) {
     this.selectedSubscriber = beneficiary;
+    this.FormPreAuthorization.controls.subscriberName.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
     this.FormSubscriber.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,

@@ -36,20 +36,35 @@
             color="primary">Create New Beneficiary</button>
         </div>
       </div>
-      <div class="form-group" *ngIf="isNewBorn" [ngClass]="{'has-error' : IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))}">
-        <label class="control-label">Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
-        <input type="text" class="form-control search-box"
-          placeholder="Search for subscriber by name or document ID..." [formControl]="subscriberSearchController"
-          [matAutocomplete]="auto2" (keyup)="searchBeneficiaries(true)">
-        <mat-autocomplete #auto2="matAutocomplete">
-          <mat-option *ngFor="let subscriber of subscriberSearchResult" (click)="selectSubscriber(subscriber)">
-            {{subscriber.name}} ({{subscriber.documentId}})
-          </mat-option>
-        </mat-autocomplete>
-        <div *ngIf="IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))">
-          <span class="error-text">Please select Subscriber</span>
+
+      <div *ngIf="isNewBorn" class="d-flex">
+        <div class="form-group flex-grow-1"  [ngClass]="{'has-error' : IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))}">
+          <label class="control-label">Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
+          <input type="text" class="form-control search-box"
+            placeholder="Search for subscriber by name or document ID..." [formControl]="subscriberSearchController"
+            [matAutocomplete]="auto2" (keyup)="searchBeneficiaries(true)">
+          <mat-autocomplete #auto2="matAutocomplete">
+            <mat-option *ngFor="let subscriber of subscriberSearchResult" (click)="selectSubscriber(subscriber)">
+              {{subscriber.name}} ({{subscriber.documentId}})
+            </mat-option>
+          </mat-autocomplete>
+          <div *ngIf="IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))">
+            <span class="error-text">Please select Subscriber</span>
+          </div>
+        </div>
+        <div class="form-group pl-3 pr-3">
+          <label class="control-label">&nbsp;</label>
+          <span class="pt-2 d-block semibold">OR</span>
+        </div>
+        <div class="form-group">
+          <label class="control-label">&nbsp;</label>
+
+          <button routerLink="/nphies/beneficiary/add" type="button" mat-flat-button class="text-nowrap"
+            color="primary">Create New Subscriber</button>
         </div>
       </div>
+
+
     </div>
 
 
