@@ -1,12 +1,12 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
         <p>Invoices</p>
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col-md">
                 <div class="form-group" [matTooltip]="errors.billNo" [class.has-error]="errors.billNo!=null&&errors.billNo.trim().length>0">
-                    <label class="control-label" >Bill No</label>
+                    <label class="control-label">Bill No</label>
                     <input type="text" placeholder="Enter Bill No" class="form-control" [formControl]="invoicesSelectedBill">
                 </div>
             </div>
@@ -39,8 +39,8 @@
             </div>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height" *ngIf="invoiceList && invoiceList.length>0">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="invoiceList && invoiceList.length>0">
+        <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -66,13 +66,13 @@
                 </tbody>
             </table>
         </div>
-        <app-empty-state *ngIf="invoiceList.length<=0" message='No Invoices found!'>
-        </app-empty-state>
     </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
+    <app-empty-state *ngIf="invoiceList.length<=0" message='No Invoices found!'>
+    </app-empty-state>
+    <div class="block-footer sticky" *ngIf="invoiceList && invoiceList.length>0">
         <div class="left-block">
-            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
-                [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex">
             </mat-paginator>
         </div>
     </div>

@@ -3,13 +3,14 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY } from '../administration/superAdminService/super-admin.service';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
   searchICDCode(searchQuery: string) {
     const requestURL: string = '/diagnosis/search?query=' + searchQuery;
@@ -23,7 +24,7 @@ export class AdminService {
       serviceCode,
       providerId,
       payerId,
-      visitDate: this._fixDate(visitDate).getTime()
+      visitDate: this._formatDate(this._fixDate(visitDate))
     };
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, body);
     return this.http.request(request);
@@ -58,6 +59,10 @@ export class AdminService {
       return new Date(date);
     }
     return date;
+  }
+
+  private _formatDate(date: Date) {
+    return this.datePipe.transform(date, 'yyyy-MM-dd');
   }
 
   getPractitionerList(providerId: string) {

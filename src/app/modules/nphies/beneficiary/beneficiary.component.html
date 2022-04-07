@@ -103,6 +103,7 @@
                 <mat-option value="PPN">Passport</mat-option>
                 <mat-option value="VS">visa</mat-option>
                 <mat-option value="NI">National Card</mat-option>
+                <mat-option value="MR">Medical Record Number</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -217,7 +218,7 @@
       <!-- </app-empty-state> -->
       <!-- *ngIf="addresses.length>0  -->
       <div class="table-responsive ">
-        <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <table class="primary-grid claim-view-table">
           <thead>
             <tr>
               <th>House No./Appartment</th>
@@ -285,7 +286,7 @@
       </app-empty-state>
       <div class="table-responsive" *ngIf="insurancePlans.length>0">
         <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
-          <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <table class="primary-grid claim-view-table">
             <thead>
               <tr>
                 <th class="text-center">Set Primary?</th>
@@ -363,8 +364,16 @@
                   </div>
                 </td>
                 <td class="actions">
-                  <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
-                    <mat-icon>delete_outline</mat-icon>
+                  <mat-menu #insurancePlanActionsMenu xPosition="before">
+                    <ng-template matMenuContent>
+                      <button mat-menu-item type="button" (click)="deleteInsurancePlan(i)">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </ng-template>
+                  </mat-menu>
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="insurancePlanActionsMenu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
                 </td>
               </tr>
@@ -503,6 +512,7 @@
                 <mat-option value="PPN">Passport</mat-option>
                 <mat-option value="VS">visa</mat-option>
                 <mat-option value="NI">National Card</mat-option>
+                <mat-option value="MR">Medical Record Number</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -615,7 +625,7 @@
       </h5>
 
       <div class="table-responsive ">
-        <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <table class="primary-grid claim-view-table">
           <thead>
             <tr>
               <th>House No./Appartment</th>
@@ -678,7 +688,7 @@
       </app-empty-state>
       <div class="table-responsive" *ngIf="insurancePlans.length>0">
         <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
-          <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <table class="primary-grid claim-view-table">
             <thead>
               <tr>
                 <th class="text-center">Set Primary?</th>
@@ -758,8 +768,16 @@
                   </div>
                 </td>
                 <td class="actions">
-                  <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
-                    <mat-icon>delete_outline</mat-icon>
+                  <mat-menu #insurancePlanEditActionsMenu xPosition="before">
+                    <ng-template matMenuContent>
+                      <button mat-menu-item type="button" (click)="deleteInsurancePlan(i)">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </ng-template>
+                  </mat-menu>
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="insurancePlanEditActionsMenu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
                 </td>
               </tr>
@@ -902,7 +920,7 @@
 
       <h5 class="form-title">Address</h5>
       <div class="table-responsive">
-        <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <table class="primary-grid claim-view-table">
           <thead>
             <tr>
               <th>House No./Appartment</th>
@@ -929,7 +947,7 @@
 
       <h5 class="form-title">Insurance Plans</h5>
       <div class="table-responsive">
-        <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <table class="primary-grid claim-view-table">
           <thead>
             <tr>
               <th class="text-center text-nowrap" width="10">Set Primary?</th>

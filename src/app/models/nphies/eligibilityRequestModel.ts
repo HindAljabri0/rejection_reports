@@ -3,12 +3,15 @@ import { InsurancePlan } from "./insurancePlan";
 
 
 export class EligibilityRequestModel {
-    beneficiary: BeneficiariesSearchResult;
-    insurancePlan: InsurancePlan;
-    serviceDate: string;
-    toDate: string;
-    benefits: boolean;
-    discovery: boolean;
-    validation: boolean;
-    transfer : boolean;
+  isNewBorn?: boolean;
+  beneficiary: BeneficiariesSearchResult;
+  subscriber?: BeneficiariesSearchResult;
+  insurancePlan: InsurancePlan;
+  serviceDate: string;
+  toDate: string;
+  benefits: boolean;
+  discovery: boolean;
+  validation: boolean;
+  transfer: boolean;
+  destinationId: string;
 }

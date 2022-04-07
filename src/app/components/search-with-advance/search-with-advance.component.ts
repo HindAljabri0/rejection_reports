@@ -7,7 +7,6 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Moment } from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
-import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Payer } from 'src/app/models/nphies/payer';
 
@@ -47,7 +46,6 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   payers: { id: number, name: string }[]=[];
   nphiesPayers: { id: number, name: string }[]=[];
-
   tpas: { id: number, name: string }[]=[];
 
   casetypes: { value: string, name: string }[] = [
@@ -79,14 +77,12 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   payersList: Payer[] = [];
 
-  selectedPayerType = '';
+  selectedPayerType = ''
 
   constructor(
     private router: Router,
     private routeActive: ActivatedRoute,
     private commen: SharedServices,
-    private providersBeneficiariesService: ProvidersBeneficiariesService,
-    private searchService: ProviderNphiesSearchService,
     private authService: AuthService) {
     this.authService.isUserNameUpdated.subscribe((isUpdated) => {
       if (isUpdated) {
@@ -96,7 +92,6 @@ export class SearchWithAdvanceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPayers();
     this.payers = this.commen.getPayersList();
     this.tpas = this.commen.getTPAsList();
     this.router.events.pipe(
@@ -131,6 +126,16 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.searchControl.setValue('');
   }
 
+  onNphiesPayerSelected(event) {
+    this.selectedPayerType = 'N';
+    this.selectedPayer = { id: event.payer.code, name: event.payer.display };
+    if (event.organization.code != '-1') {
+      this.selectedTpa = { id: event.organization.code, name: event.organization.display };
+    } else {
+      this.selectedTpa = null;
+    }
+  }
+
 
   search(isWassel: boolean) {
 
@@ -162,7 +167,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.router.navigate(routes, {
         queryParams: {
           payerId: this.selectedSearchMode == 'tpa&date' ? null : this.selectedPayer.id,
-          organizationId: this.selectedSearchMode == 'payer&date' ? null : this.selectedTpa.id,
+          organizationId: this.selectedTpa != null? this.selectedTpa.id : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
         },
@@ -199,26 +204,6 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   toggleSearch() {
     document.body.classList.toggle('search-visible');
-  }
-
-  getPayers() {
-    this.providersBeneficiariesService.getPayers().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array) {
-          this.payersList = event.body as Payer[];
-          this.nphiesPayers = this.payersList.map(x => {
-            const model: any = {};
-            model.id = x.nphiesId;
-            model.name = x.englistName;
-            return model;
-          });
-        }
-      }
-    }, err => {
-      if (err instanceof HttpErrorResponse) {
-        console.log(err.message);
-      }
-    });
   }
 
 }

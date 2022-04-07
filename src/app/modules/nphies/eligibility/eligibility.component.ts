@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
@@ -22,14 +22,17 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
-  transfer =false;
-  isNewBorn =false;
+  subscriberSearchController = new FormControl();
+  transfer = false;
+  isNewBorn = false;
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
+  subscriberSearchResult: BeneficiariesSearchResult[] = [];
 
   payers: Payer[] = [];
 
   selectedBeneficiary: BeneficiariesSearchResult;
+  selectedSubscriber: BeneficiariesSearchResult;
   //
   @Input() claimReuseId: number;
 
@@ -43,6 +46,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   endDateControl = new FormControl();
   endDateError: string;
   selectedPayer: string;
+  selectedDestination: string;
   selectedPayerError: string;
   purposeRadioButton: string;
   isBenefits = false;
@@ -84,7 +88,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
           if (errorEvent instanceof HttpErrorResponse) {
 
           }
-        })
+        });
       }
     }).unsubscribe();
   }
@@ -110,30 +114,65 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     console.log(this.transfer);
   }
 
-  onChangeState(transfer){
-    this.transfer=!transfer;
+  onChangeState(transfer) {
+    this.transfer = !transfer;
     console.log(this.transfer);
   }
-  onNewBornChangeState(isNewBorn){
-    this.isNewBorn=!isNewBorn;
+  onNewBornChangeState(isNewBorn) {
+    this.isNewBorn = !isNewBorn;
+
+    if (this.isNewBorn) {
+      this.subscriberSearchController.setValidators([Validators.required]);
+      this.subscriberSearchController.updateValueAndValidity();
+    } else {
+      this.subscriberSearchController.clearValidators();
+      this.subscriberSearchController.updateValueAndValidity();
+    }
     console.log(this.isNewBorn);
   }
-  searchBeneficiaries() {
-    this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
+
+  get IsSubscriberRequired() {
+    if (this.isNewBorn) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  selectPayer(event) {
+    this.selectedPayer = event.value.payerNphiesId;
+    this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId
+  }
+
+  searchBeneficiaries(IsSubscriber = null) {
+    let searchStr = '';
+    if (!IsSubscriber) {
+      searchStr = this.beneficiarySearchController.value;
+    } else {
+      searchStr = this.subscriberSearchController.value;
+    }
+
+    this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
+
+          if (!IsSubscriber) {
+            this.beneficiariesSearchResult = body;
+          } else {
+            this.subscriberSearchResult = body;
+          }
         }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
 
       }
-    })
+    });
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
+    this.beneficiarySearchController.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
     if (beneficiary.plans != null && beneficiary.plans instanceof Array && beneficiary.plans.length > 0) {
       this.purposeRadioButton = '1';
       const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
@@ -144,10 +183,29 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.purposeRadioButton = '2';
     }
     this.selectedBeneficiary = beneficiary;
+    this.subscriberSearchController.setValue('');
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { beneficiary: beneficiary.id }
-    })
+    });
+  }
+
+  selectSubscriber(subscriber: BeneficiariesSearchResult) {
+    this.subscriberSearchController.setValue(subscriber.name + ' (' + subscriber.documentId + ')');
+    // if (subscriber.plans != null && subscriber.plans instanceof Array && subscriber.plans.length > 0) {
+    //   this.purposeRadioButton = '1';
+    //   const primaryPlanIndex = subscriber.plans.findIndex(plan => plan.primary);
+    //   if (primaryPlanIndex != -1) {
+    //     this.selectedPlanId = subscriber.plans[primaryPlanIndex].planId;
+    //   }
+    // } else {
+    //   this.purposeRadioButton = '2';
+    // }
+    this.selectedSubscriber = subscriber;
+    // this.router.navigate([], {
+    //   relativeTo: this.activatedRoute,
+    //   queryParams: { beneficiary: subscriber.id }
+    // })
   }
 
   isPlanExpired(date: Date) {
@@ -164,6 +222,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
+      return;
+    }
+    if (this.isNewBorn && !this.selectedSubscriber) {
+      this.subscriberSearchController.markAsTouched();
       return;
     }
     this.sharedServices.loadingChanged.next(true);
@@ -194,7 +256,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.isBenefits = false;
       this.isValidation = false;
 
-      if (this.selectedPayer == null || this.payers.findIndex(payer => payer.nphiesId == this.selectedPayer) == -1) {
+      if (this.selectedPayer == null) {
         this.selectedPayerError = "Please select a payer first";
         requestHasErrors = true;
       }
@@ -220,19 +282,21 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       return;
     }
 
-    this.selectedBeneficiary.isNewBorn = this.isNewBorn;
     const tempbeneficiary = this.selectedBeneficiary;
     tempbeneficiary.plans.forEach(x => x.payerId = x.payerNphiesId);
 
     const request: EligibilityRequestModel = {
+      isNewBorn: this.isNewBorn,
       beneficiary: this.selectedBeneficiary,
+      subscriber: this.isNewBorn ? this.selectedSubscriber : null,
       insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer: this.transfer
+      transfer: this.transfer,
+      destinationId: this.selectedDestination
     };
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {

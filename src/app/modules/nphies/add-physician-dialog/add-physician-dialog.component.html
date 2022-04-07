@@ -1,0 +1,47 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add/Edit Physician</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="form-group mb-0">
+        <mat-form-field appearance="fill">
+            <mat-label>Physician ID</mat-label>
+            <input matInput placeholder="Enter physician ID" type="text">
+        </mat-form-field>
+    </div>
+    <div class="form-group mb-0">
+        <mat-form-field appearance="fill">
+            <mat-label>Physician Name</mat-label>
+            <input matInput placeholder="Enter physician name" type="text">
+        </mat-form-field>
+    </div>
+    <div class="form-group mb-0">
+        <mat-form-field appearance="fill">
+            <mat-label>Speciality</mat-label>
+            <input matInput placeholder="Enter speciality" type="text">
+        </mat-form-field>
+    </div>
+    <div class="form-group mb-0">
+        <mat-form-field appearance="fill">
+            <mat-label>Role</mat-label>
+            <mat-select value="-1">
+                <mat-option value="-1">Select Role</mat-option>
+                <mat-option value="Doctor">Doctor</mat-option>
+                <mat-option value="Nurse">Nurse</mat-option>
+                <mat-option value="Pharmacist">Pharmacist</mat-option>
+                <mat-option value="Researcher">Researcher</mat-option>
+                <mat-option value="Teacher">Teacher</mat-option>
+                <mat-option value="Dentist">Dentist</mat-option>
+                <mat-option value="Physio">Physio</mat-option>
+                <mat-option value="Speech">Speech</mat-option>
+                <mat-option value="ICT">ICT</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="primary" (click)="closeDialog()">Add</button>
+    </div>
+</div>

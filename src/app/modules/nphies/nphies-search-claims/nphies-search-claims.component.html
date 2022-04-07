@@ -175,24 +175,35 @@
                                         </td>
 
                                         <td class="actions">
-                                            <ng-container *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
+                                            <ng-container
+                                                *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <ng-container *ngIf="showColumns(selectedCardKey,claim.status) && claim.claimResponseId">
                                                         <!--button mat-menu-item><span>Re-Use</span></button-->
 
-                                                        <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')"><span>Cancel</span></button>
-                                                        <button mat-menu-item
-                                                            (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'nullify')"><span>Nullify</span></button>
+                                                        <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
+                                                            <mat-icon class="material-icons-outlined">close</mat-icon>
+                                                            <span>Cancel</span>
+                                                        </button>
+                                                        <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'nullify')">
+                                                            <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                                            <span>Nullify</span>
+                                                        </button>
                                                         <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                                                     </ng-container>
                                                     <button mat-menu-item *ngIf="claimIsCancelled(claim.status)"
-                                                        (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, false,true)"><span>Re-Submit</span></button>
+                                                        (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, false,true)">
+                                                        <mat-icon class="material-icons-outlined">ios_share</mat-icon>
+                                                        <span>Re-Submit</span>
+                                                    </button>
                                                     <button mat-menu-item *ngIf="claimIsEditable(claim.status)"
-                                                        (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)"><span>Edit
-                                                            Claim</span></button>
+                                                        (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
+                                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                                        <span>Edit Claim</span>
+                                                    </button>
                                                 </mat-menu>
 
-                                                <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                                <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
                                                     <mat-icon>more_vert</mat-icon>
                                                 </button>
                                             </ng-container>
