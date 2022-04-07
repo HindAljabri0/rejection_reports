@@ -330,6 +330,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         coverageType: this.otherDataModel.beneficiary.insurancePlan.insurancePlan,
         expiryDate: null,
         primary: null,
+        tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber
       }]
     };
