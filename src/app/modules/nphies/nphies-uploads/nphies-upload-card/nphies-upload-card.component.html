@@ -71,7 +71,12 @@
         </div>
         <hr class="hr separator">
         <div class="d-flex">
-            <span class="text-medium-grey">Date: {{data.uploadDate | date : 'EEEE, d MMMM, y'}}</span>
-            <span class="text-medium-grey ml-auto text-right">Time: {{data.uploadDate | date : 'hh:mm a'}}</span>
+            <span class="text-grey d-flex align-items-center">
+                <mat-icon class="material-icons-outlined size-18 mr-2">event</mat-icon> {{data.uploadDate | date : 'EEEE, d MMMM, y'}}
+            </span>
+            <span class="text-grey ml-auto text-right d-flex align-items-center">
+                <mat-icon class="material-icons-outlined size-18 mr-2">schedule</mat-icon> {{data.uploadDate | date : 'hh:mm a'}}
+            </span>
         </div>
     </div>
+</div>

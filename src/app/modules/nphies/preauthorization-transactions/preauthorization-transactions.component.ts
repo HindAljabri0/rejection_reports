@@ -53,7 +53,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     beneficiaryId: [''],
     beneficiaryName: [''],
     documentId: [''],
-    status: ['']
+    status: [''],
+    preAuthRefNo: ['']
   });
 
   payersList = [];
@@ -65,9 +66,14 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   statusList = [
     { value: 'queued', name: 'Queued' },
-    { value: 'Processing Complete', name: 'Processing Complete' },
+    // { value: 'Processing Complete', name: 'Processing Complete' },
     { value: 'error', name: 'Error' },
-    { value: 'Partial Processing', name: 'Partial Processing' },
+    // { value: 'Partial Processing', name: 'Partial Processing' },
+    { value: 'approved', name: 'Approved' },
+    { value: 'rejected', name: 'Rejected' },
+    { value: 'partial', name: 'Partially Approved' },
+    { value: 'not-required', name: 'Not Required' },
+    { value: 'pended', name: 'Pended' }
   ];
 
   constructor(
@@ -132,6 +138,16 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.FormPreAuthTransaction.controls.status.patchValue(params.status);
       }
 
+      if (params.preAuthRefNo != null) {
+        const preAuthValue = params.preAuthRefNo.split(',').map(x => {
+          const model: any = {};
+          model.display = x.trim();
+          model.value = x.trim();
+          return model;
+        });
+        this.FormPreAuthTransaction.controls.preAuthRefNo.patchValue(preAuthValue);
+      }
+
       if (params.page != null) {
         this.page = Number.parseInt(params.page, 10);
       } else {
@@ -162,6 +178,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (errorEvent instanceof HttpErrorResponse) {
 
       }
+    });
+  }
+
+  selectPayer(event) {
+    this.FormPreAuthTransaction.patchValue({
+      payerId: event.value.payerNphiesId,
+      organizationId: event.value.organizationNphiesId != '-1'? event.value.organizationNphiesId : null
     });
   }
 
@@ -246,7 +269,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (this.FormPreAuthTransaction.controls.payerId.value) {
         model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
-
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
         model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
@@ -255,6 +277,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (this.FormPreAuthTransaction.controls.status.value) {
         model.status = this.FormPreAuthTransaction.controls.status.value;
       }
+
+      if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+        model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+          return x.value;
+        });
+      }
+
 
       model.page = this.page;
       model.pageSize = this.pageSize;
@@ -315,6 +344,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
     if (this.FormPreAuthTransaction.controls.status.value) {
       path += `status=${this.FormPreAuthTransaction.controls.status.value}&`;
+    }
+
+    if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+      path += `preAuthRefNo=${ this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+        return x.value;
+      })}&`;
     }
 
     if (this.page > 0) {

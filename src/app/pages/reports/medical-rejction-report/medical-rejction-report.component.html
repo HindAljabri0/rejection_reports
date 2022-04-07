@@ -85,7 +85,7 @@
   <!-- <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
     *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
     <div class="fixed-height">
-      <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
+      <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
             <th>Status</th>
@@ -161,7 +161,7 @@
             <td></td>
             <td></td>
           </tr>
-          <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount" class="even">
+          <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount">
             <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
             <td class="header-cell">{{claim.noOfClaims}}</td>
             <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
@@ -242,7 +242,7 @@
           <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
           <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
           <td class="actions">
-            <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim,$event)">
+            <button type="button" mat-icon-button (click)="viewClaim(claim,$event)">
               <mat-icon class="material-icons-outlined">article</mat-icon>
             </button>
           </td>

@@ -66,13 +66,11 @@
 
 <mat-menu #payersMenu class="header-search-menu">
     <h5 *ngIf="payers.length > 0" class="menu-opt-group">Waseel</h5>
-    <button *ngFor="let payer of payers" (click)="selectedPayer = payer; selectedPayerType = 'W'" mat-menu-item>
+    <button *ngFor="let payer of payers" (click)="selectedPayer = payer; selectedPayerType = 'W'; selectedTpa = null" mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
-    <h5 *ngIf="nphiesPayers.length > 0" class="menu-opt-group">Nphies</h5>
-    <button *ngFor="let payer of nphiesPayers" (click)="selectedPayer = payer; selectedPayerType = 'N'" mat-menu-item>
-        <span>{{payer.name}}</span>
-    </button>
+    <h5 class="menu-opt-group">NPHIES</h5>
+    <app-nphies-payers-selector (payerSelected)="onNphiesPayerSelected($event)" [isMatSelect]="false"></app-nphies-payers-selector>
 </mat-menu>
 
 <mat-menu #tpasMenu class="header-search-menu">

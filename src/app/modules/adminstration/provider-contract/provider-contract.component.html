@@ -89,8 +89,16 @@
                                     </span>
                                 </td>
                                 <td class="actions">
-                                    <button type="button" mat-icon-button class="text-primary" (click)="openAddContractDialog(item)">
-                                        <mat-icon>edit</mat-icon>
+                                    <mat-menu #activeTabActionsMenu xPosition="before">
+                                        <ng-template matMenuContent>
+                                            <button mat-menu-item type="button" (click)="openAddContractDialog(item)">
+                                                <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                                <span>Edit</span>
+                                            </button>
+                                        </ng-template>
+                                    </mat-menu>
+                                    <button type="button" mat-icon-button [matMenuTriggerFor]="activeTabActionsMenu">
+                                        <mat-icon>more_vert</mat-icon>
                                     </button>
                                 </td>
                             </tr>
@@ -129,8 +137,16 @@
                                     </span>
                                 </td>
                                 <td class="actions">
-                                    <button type="button" mat-icon-button class="text-primary" (click)="openAddContractDialog(item)">
-                                        <mat-icon>edit</mat-icon>
+                                    <mat-menu #inactiveTabActionsMenu xPosition="before">
+                                        <ng-template matMenuContent>
+                                            <button mat-menu-item type="button" (click)="openAddContractDialog(item)">
+                                                <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                                <span>Edit</span>
+                                            </button>
+                                        </ng-template>
+                                    </mat-menu>
+                                    <button type="button" mat-icon-button [matMenuTriggerFor]="inactiveTabActionsMenu">
+                                        <mat-icon>more_vert</mat-icon>
                                     </button>
                                 </td>
                             </tr>

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BillDetailsComponent } from './bill-details/bill-details.component';
 import { BillingComponent } from './billing/billing.component';
-import { GenerateBillInvoiceComponent } from './generate-bill-invoice/generate-bill-invoice.component';
 import { InvoicesComponent } from './invoices/invoices.component';
 
 const routes: Routes = [
