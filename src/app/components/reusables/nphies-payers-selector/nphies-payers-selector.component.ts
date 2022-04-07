@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-nphies-payers-selector',
@@ -8,6 +9,9 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
   styleUrls: ['./nphies-payers-selector.component.css']
 })
 export class NphiesPayersSelectorComponent implements OnInit {
+
+  @Input() Form: FormGroup;
+  @Input() isSubmitted;
 
   @Output('payerSelected')
   payerSelectionEmitter: EventEmitter<any> = new EventEmitter();
@@ -52,5 +56,23 @@ export class NphiesPayersSelectorComponent implements OnInit {
         this.errorMessage = errorEvent.error;
       }
     });
+  }
+
+  selectPayer(event) {
+    if (event.value) {
+      const payerNphiesIdValue = event.value;
+      let organizationNphiesIdValue = '';
+
+      this.organizations.forEach(x => {
+        if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+          organizationNphiesIdValue = x.code;
+        }
+      });
+
+      this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
+    } else {
+      this.selectionChange.emit({ value: '' });
+    }
+
   }
 }

@@ -41,7 +41,8 @@ export class EligibilityTransactionsComponent implements OnInit {
     beneficiaryId: [''],
     documentId: [''],
     beneficiaryName: [''],
-    status: ['']
+    status: [''],
+    destinationId: ['']
   });
 
   isSubmitted = false;
@@ -90,6 +91,12 @@ export class EligibilityTransactionsComponent implements OnInit {
         // tslint:disable-next-line:radix
         this.FormEligibilityTransaction.controls.payerId.patchValue(params.payerId);
       }
+
+      if (params.destinationId != null) {
+        // tslint:disable-next-line:radix
+        this.FormEligibilityTransaction.controls.destinationId.patchValue(params.destinationId);
+      }
+
 
       if (params.eligibilityId != null) {
         // tslint:disable-next-line:radix
@@ -222,6 +229,10 @@ export class EligibilityTransactionsComponent implements OnInit {
         model.payerId = this.FormEligibilityTransaction.controls.payerId.value;
       }
 
+      if (this.FormEligibilityTransaction.controls.destinationId.value) {
+        model.destinationId = this.FormEligibilityTransaction.controls.destinationId.value;
+      }
+
       // tslint:disable-next-line:max-line-length
       if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
         model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
@@ -276,6 +287,10 @@ export class EligibilityTransactionsComponent implements OnInit {
       path += `payerId=${this.FormEligibilityTransaction.controls.payerId.value}&`;
     }
 
+    if (this.FormEligibilityTransaction.controls.destinationId.value) {
+      path += `destinationId=${this.FormEligibilityTransaction.controls.destinationId.value}&`;
+    }
+
     if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
       path += `eligibilityId=${this.FormEligibilityTransaction.controls.eligibilityId.value}&`;
     }
@@ -320,6 +335,13 @@ export class EligibilityTransactionsComponent implements OnInit {
 
     //   }
     // });
+  }
+
+  selectPayer(event) {
+    this.FormEligibilityTransaction.patchValue({
+      payerId: event.value.payerNphiesId,
+      destinationId: event.value.organizationNphiesId != '-1'? event.value.organizationNphiesId : null
+    });
   }
 
 }
