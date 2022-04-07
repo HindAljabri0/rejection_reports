@@ -46,6 +46,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   endDateControl = new FormControl();
   endDateError: string;
   selectedPayer: string;
+  selectedDestination: string;
   selectedPayerError: string;
   purposeRadioButton: string;
   isBenefits = false;
@@ -136,6 +137,11 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     } else {
       return false;
     }
+  }
+
+  selectPayer(event) {
+    this.selectedPayer = event.value.payerNphiesId;
+    this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId
   }
 
   searchBeneficiaries(IsSubscriber = null) {
@@ -250,7 +256,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.isBenefits = false;
       this.isValidation = false;
 
-      if (this.selectedPayer == null || this.payers.findIndex(payer => payer.nphiesId == this.selectedPayer) == -1) {
+      if (this.selectedPayer == null) {
         this.selectedPayerError = "Please select a payer first";
         requestHasErrors = true;
       }
@@ -289,7 +295,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer: this.transfer
+      transfer: this.transfer,
+      destinationId: this.selectedDestination
     };
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {

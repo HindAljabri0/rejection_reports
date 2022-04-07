@@ -23,7 +23,16 @@
                 <p *ngIf="errors != null" class="error-card">{{errors}}</p>
                 <button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
             </div>
-            <p class="copyright">&copy; Copyright {{getYear()}} Waseel ASP LTD. All rights reserved.</p>
+            <div class="text-center">
+                <ul class="social-links">
+                    <li><a href="https://twitter.com/waseelasp"><img src="./assets/ic-twitter.svg" alt="Twitter"></a></li>
+                    <li><a href="https://www.facebook.com/waseelASP"><img src="./assets/ic-facebook.svg" alt="Facebook"></a></li>
+                    <li><a href="https://instagram.com/waseelasp"><img src="./assets/ic-instagram.svg" alt="Instagram"></a></li>
+                    <li><a href="https://www.youtube.com/channel/UCPf6zNYQmbWxBWEVhgQDD7g"><img src="./assets/ic-youtube.svg" alt="YouTube"></a></li>
+                    <li><a href="https://www.linkedin.com/company/waseel-asp-ltd."><img src="./assets/ic-linkedin.svg" alt="Linkedin"></a></li>
+                </ul>
+                <p class="copyright">&copy; Copyright {{getYear()}} Waseel ASP LTD. All rights reserved.</p>
+            </div>
         </div>
         <div class="right-block" [class.ramadan-poster]="isRamadan">
             <ng-container *ngIf="!isRamadan">

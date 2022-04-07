@@ -907,7 +907,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-card h4{font-size: 20px;line-height: 26px;font-weight: 500;padding-bottom: 4px;}
 .login-card h6{color: #707070;}
 .login-card .login-text{padding-bottom: 24px;}
-.login-wrapper .copyright{padding: 24px 0 0;color: #707070;text-align: center;}
+.login-wrapper .social-links{display: inline-flex;align-items: center;justify-content: center;padding-top: 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.login-wrapper .social-links img{display: block;height: 24px;width: 24px;}
+.login-wrapper .social-links a{display: block;padding: 8px;border-radius: 50px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.56;}
+.login-wrapper .social-links:hover a{opacity: 0.32;}
+.login-wrapper .social-links a:hover,.login-wrapper .social-links a:focus,.login-wrapper .social-links a:active{opacity: 0.8;}
+.login-wrapper .copyright{padding: 24px 0 0;color: #707070;}
 .login-language-switch{position: absolute;top: 16px;right: calc(50% + 16px);}
 .login-wrapper .right-block.ramadan-poster{padding-top: 0;}
 .ramadan-poster .artwork{width: 494px;height: 601px;display: block;margin: 0 auto 54px;max-width: 100%;}

@@ -13,4 +13,5 @@ export class EligibilityRequestModel {
   discovery: boolean;
   validation: boolean;
   transfer: boolean;
+  destinationId: string;
 }
