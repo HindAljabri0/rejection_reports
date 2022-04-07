@@ -296,7 +296,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       discovery: this.isDiscovery,
       validation: this.isValidation,
       transfer: this.transfer,
-      destinationId: this.selectedDestination
+      destinationId: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).tpaNphiesId : this.selectedDestination
     };
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {

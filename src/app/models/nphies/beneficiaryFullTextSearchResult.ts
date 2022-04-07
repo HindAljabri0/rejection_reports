@@ -42,6 +42,7 @@ export class BeneficiariesSearchResult {
     memberCardId: string;
     primary: boolean;
     payerNphiesId: string;
+    tpaNphiesId: string;
     coverageType: string;
     relationWithSubscriber: string;
   }[];
