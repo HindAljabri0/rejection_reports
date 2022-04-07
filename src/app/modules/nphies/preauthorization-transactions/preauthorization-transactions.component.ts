@@ -53,7 +53,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     beneficiaryId: [''],
     beneficiaryName: [''],
     documentId: [''],
-    status: ['']
+    status: [''],
+    preAuthRefNo: ['']
   });
 
   payersList = [];
@@ -65,9 +66,14 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   statusList = [
     { value: 'queued', name: 'Queued' },
-    { value: 'Processing Complete', name: 'Processing Complete' },
+    // { value: 'Processing Complete', name: 'Processing Complete' },
     { value: 'error', name: 'Error' },
-    { value: 'Partial Processing', name: 'Partial Processing' },
+    // { value: 'Partial Processing', name: 'Partial Processing' },
+    { value: 'approved', name: 'Approved' },
+    { value: 'rejected', name: 'Rejected' },
+    { value: 'partial', name: 'Partially Approved' },
+    { value: 'not-required', name: 'Not Required' },
+    { value: 'pended', name: 'Pended' }
   ];
 
   constructor(
@@ -130,6 +136,16 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (params.status != null) {
         this.FormPreAuthTransaction.controls.status.patchValue(params.status);
+      }
+
+      if (params.preAuthRefNo != null) {
+        const preAuthValue = params.preAuthRefNo.split(',').map(x => {
+          const model: any = {};
+          model.display = x.trim();
+          model.value = x.trim();
+          return model;
+        });
+        this.FormPreAuthTransaction.controls.preAuthRefNo.patchValue(preAuthValue);
       }
 
       if (params.page != null) {
@@ -262,6 +278,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         model.status = this.FormPreAuthTransaction.controls.status.value;
       }
 
+      if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+        model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+          return x.value;
+        });
+      }
+
+
       model.page = this.page;
       model.pageSize = this.pageSize;
 
@@ -321,6 +344,12 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
     if (this.FormPreAuthTransaction.controls.status.value) {
       path += `status=${this.FormPreAuthTransaction.controls.status.value}&`;
+    }
+
+    if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+      path += `preAuthRefNo=${ this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+        return x.value;
+      })}&`;
     }
 
     if (this.page > 0) {
