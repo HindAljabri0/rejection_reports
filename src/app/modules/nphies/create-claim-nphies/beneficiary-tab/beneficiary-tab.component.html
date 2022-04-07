@@ -343,16 +343,18 @@
             <td class="maxw260">
               <div class="form-group m-0"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')}">
-                <mat-form-field class="form-control custom-select-control">
+                <!-- <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanPayerId">
                     <mat-option value="">Select Payer</mat-option>
                     <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">
                       {{payer.englistName}}({{payer.arabicName}})</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')">
+                -->
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormNphiesClaim" [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
+                <!-- <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')">
                   <span class="error-text">Please select Payer</span>
-                </div>
+                </div> -->
               </div>
             </td>
             <td>

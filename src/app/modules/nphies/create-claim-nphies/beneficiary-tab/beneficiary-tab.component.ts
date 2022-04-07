@@ -459,4 +459,16 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
     }
   }
 
+  selectPayer(event) {
+    if (event.value) {
+      this.FormNphiesClaim.patchValue({
+        insurancePlanPayerId: event.value.payerNphiesId,
+        destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    } else {
+      this.FormNphiesClaim.controls.insurancePlanPayerId.setValue('');
+      this.FormNphiesClaim.controls.destinationId.setValue('');
+    }
+  }
+
 }
