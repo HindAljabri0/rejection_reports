@@ -144,13 +144,7 @@
           <div class="form-group" [class.has-error]="selectedPayerError?.trim().length > 0"
             [matTooltip]="selectedPayerError">
             <label class="control-label">Payer<span class="asterisk">*</span></label>
-            <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedPayer" (selectionChange)="selectedPayer = $event.value">
-                <mat-option *ngFor="let payer of payers" [value]="payer.nphiesId">
-                  {{payer.englistName}} ({{payer.arabicName}})
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
           </div>
         </div>
 
