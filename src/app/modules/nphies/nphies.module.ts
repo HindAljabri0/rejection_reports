@@ -59,6 +59,7 @@ import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-benefici
 import { PhysiciansComponent } from './physicians/physicians.component';
 import { UploadPhysiciansDialogComponent } from './upload-physicians-dialog/upload-physicians-dialog.component';
 import { AddPhysicianDialogComponent } from './add-physician-dialog/add-physician-dialog.component';
+import { TagInputModule } from 'ngx-chips';
 
 
 
@@ -117,6 +118,7 @@ import { AddPhysicianDialogComponent } from './add-physician-dialog/add-physicia
     CarouselModule,
     StoreModule.forFeature('configurationState', configurationReducer),
     EffectsModule.forFeature([ConfigurationsEffects]),
+    TagInputModule
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
