@@ -152,7 +152,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectPayer(event) {
     this.selectedPayer = event.value.payerNphiesId;
-    this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId
+    this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId;
   }
 
   searchBeneficiaries(IsSubscriber = null) {

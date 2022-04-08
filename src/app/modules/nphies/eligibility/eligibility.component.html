@@ -39,7 +39,7 @@
 
       <div *ngIf="isNewBorn" class="d-flex">
         <div class="form-group flex-grow-1"  [ngClass]="{'has-error' : IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))}">
-          <label class="control-label">Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
+          <label class="control-label">Select a Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
           <input type="text" class="form-control search-box"
             placeholder="Search for subscriber by name or document ID..." [formControl]="subscriberSearchController"
             [matAutocomplete]="auto2" (keyup)="searchBeneficiaries(true)">

@@ -142,7 +142,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
         model.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
         model.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
         model.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
-        model.primary = this.FormNphiesClaim.controls.insurancePrimary.value;
+        model.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
         model.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
         this.insurancePlans.push(model);
       }
@@ -402,10 +402,21 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].expiryDate);
       this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].memberCardId);
-      this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber.toLowerCase() : '');
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber.toLowerCase() : '');
       this.FormNphiesClaim.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+
+      this.FormNphiesClaim.controls.insurancePlanPayerName.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+      this.FormNphiesClaim.controls.insurancePayerNphiesId.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
+      //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      this.FormNphiesClaim.controls.insurancePlanPrimary.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
       // this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
     }
   }
