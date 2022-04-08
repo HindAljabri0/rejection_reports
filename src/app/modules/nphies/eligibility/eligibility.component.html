@@ -116,7 +116,7 @@
             <mat-checkbox color="primary" [checked]="isValidation" (change)="isValidation = $event.checked"
               [disabled]="purposeRadioButton != '1'">
               Validation</mat-checkbox>
-            <mat-radio-button value="2" color="primary" [checked]="purposeRadioButton == '2'">Discovery
+            <mat-radio-button value="2" color="primary" [checked]="purposeRadioButton == '2'" [disabled]="isNewBorn">Discovery
             </mat-radio-button>
           </mat-radio-group>
           <!--

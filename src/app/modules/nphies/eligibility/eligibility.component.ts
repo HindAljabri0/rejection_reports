@@ -122,9 +122,20 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.isNewBorn = !isNewBorn;
 
     if (this.isNewBorn) {
+      this.purposeRadioButton = '1';
       this.subscriberSearchController.setValidators([Validators.required]);
       this.subscriberSearchController.updateValueAndValidity();
     } else {
+      // tslint:disable-next-line:max-line-length
+      if (this.selectedBeneficiary.plans != null && this.selectedBeneficiary.plans instanceof Array && this.selectedBeneficiary.plans.length > 0) {
+        this.purposeRadioButton = '1';
+        const primaryPlanIndex = this.selectedBeneficiary.plans.findIndex(plan => plan.primary);
+        if (primaryPlanIndex != -1) {
+          this.selectedPlanId = this.selectedBeneficiary.plans[primaryPlanIndex].planId;
+        }
+      } else {
+        this.purposeRadioButton = '2';
+      }
       this.subscriberSearchController.clearValidators();
       this.subscriberSearchController.updateValueAndValidity();
     }
