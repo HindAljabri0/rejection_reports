@@ -30,7 +30,7 @@ input, .mat-badge-content, .mat-h1, .mat-headline, .mat-typography h1, .mat-h2, 
 * { outline: none !important; }
 a{transition: all 0.3s;}
 html, body { min-width: 320px; min-height: 100vh; }
-body { font-size: 14px; line-height: 20px; font-family: 'Poppins', sans-serif; -ms-overflow-style: scrollbar; -webkit-font-smoothing: subpixel-antialiased;background-color: #e9e9e9; color: #333;}
+body { font-size: 14px; line-height: 20px; font-family: 'Poppins', sans-serif; -ms-overflow-style: scrollbar; -webkit-font-smoothing: subpixel-antialiased;background-color: #efefef; color: #333;}
 a,a:hover { color: #000; text-decoration: none; }
 h1, h2, h3, h4, h5, h6 { line-height: 1.2em; }
 h2{font-size: 24px;line-height: 30px;}
@@ -603,7 +603,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-footer>.middle-block{margin-left: auto;}
 .block-footer>.left-block{padding-right: 12px;flex-grow:1;}
 .block-card{background: #fff;border-radius: 8px;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
-.block-card .block-header,.block-card .block-body,.block-card .block-filter-panel, .block-card .block-footer:not(.sticky),.block-card .claim-status-header{background: none;}
+.block-card .block-header,.block-card .block-body,.block-card .block-filter-panel, .block-card .block-footer:not(.sticky){background: none;}
 .block-card .claim-status-header{border-top-left-radius: 8px;}
 .block-card .block-footer.sticky{border-radius: 0 0 8px 8px;}
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}
@@ -748,7 +748,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* Claim status header
 --------------------------------------------------------------------------------------------------------*/
-.claim-status-header{padding: 12px 14px;background:#fff;border-left:14px solid currentColor;border-bottom:1px solid #e1e1e1;}
+.claim-status-header{padding: 12px 14px;border-left:14px solid currentColor;border-bottom:1px solid #e1e1e1;}
 .claim-status-header .summary{display: flex;flex-wrap: wrap;}
 .claim-status-header .summary span{color:#505050;}
 .claim-status-header p{padding-right: 24px;}

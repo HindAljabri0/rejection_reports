@@ -119,8 +119,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanRelationWithSubscriber: ['', Validators.required],
     insurancePlanCoverageType: ['', Validators.required],
     insurancePlanPayerName: [''],
-    insurancePrimary: [''],
+    insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
+    insurancePlanTpaNphiesId: [],
     isNewBorn: [false],
   });
 
@@ -162,7 +163,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanRelationWithSubscriber: [''],
     insurancePlanCoverageType: [''],
     insurancePlanPayerName: [''],
-    insurancePrimary: [''],
+    insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
   });
 
@@ -1197,12 +1198,20 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.subscriber = null;
       }
 
+      this.model.destinationId = this.FormNphiesClaim.controls.destinationId.value;
+
       this.model.insurancePlan = {};
       this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
       this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+
+      this.model.insurancePlan.payerName = this.FormNphiesClaim.controls.insurancePlanPayerName.value;
+      this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
+      // this.model.insurancePlan.planId = this.FormNphiesClaim.controls.insurancePlanId.value;
+      this.model.insurancePlan.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
+      this.model.insurancePlan.tpaNphiesId = this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value;
 
       const now = new Date(Date.now());
       if (this.pageMode === 'EDIT') {
@@ -1847,7 +1856,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.primary) {
-        this.FormNphiesClaim.controls.insurancePrimary.setValue(this.otherDataModel.beneficiary.insurancePlan.primary);
+        this.FormNphiesClaim.controls.insurancePlanPrimary.setValue(this.otherDataModel.beneficiary.insurancePlan.primary);
       }
 
       this.otherDataModel.insurancePlan = this.otherDataModel.beneficiary.insurancePlan.coverageType;

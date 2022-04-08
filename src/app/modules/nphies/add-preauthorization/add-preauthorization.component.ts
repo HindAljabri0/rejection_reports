@@ -108,8 +108,9 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanRelationWithSubscriber: [''],
     insurancePlanCoverageType: [''],
     insurancePlanPayerName: [''],
-    insurancePrimary: [''],
+    insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
+    insurancePlanTpaNphiesId: [],
     isNewBorn: [false],
     transfer: [false],
     subscriberName: ['']
@@ -386,7 +387,7 @@ export class AddPreauthorizationComponent implements OnInit {
   onPayeeTypeChange() {
     if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiId === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
     this.FormPreAuthorization.controls.payeeType.disable();
     this.FormPreAuthorization.controls.payee.disable();
@@ -540,6 +541,17 @@ export class AddPreauthorizationComponent implements OnInit {
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber);
       this.FormPreAuthorization.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+
+      this.FormPreAuthorization.controls.insurancePlanPayerName.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+      this.FormPreAuthorization.controls.insurancePayerNphiesId.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
+      //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      this.FormPreAuthorization.controls.insurancePlanPrimary.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
     }
   }
@@ -1225,12 +1237,19 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.subscriber = null;
       }
 
+      this.model.destinationId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
+
       this.model.insurancePlan = {};
       this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
       this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
       this.model.insurancePlan.expiryDate = this.FormPreAuthorization.controls.insurancePlanExpiryDate.value;
+      this.model.insurancePlan.payerName = this.FormPreAuthorization.controls.insurancePlanPayerName.value;
+      this.model.insurancePlan.payerNphiesId = this.FormPreAuthorization.controls.insurancePayerNphiesId.value;
+      // this.model.insurancePlan.planId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.insurancePlan.primary = this.FormPreAuthorization.controls.insurancePlanPrimary.value;
+      this.model.insurancePlan.tpaNphiesId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
       // this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       // this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 

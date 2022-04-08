@@ -16,8 +16,7 @@
               <mat-option *ngFor="let product of productList" [value]="product">{{product.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div
-            *ngIf="(isSubmitted || FormVisionSpecification.get('product').touched) && FormVisionSpecification.get('product').hasError('required')">
+          <div *ngIf="(isSubmitted || FormVisionSpecification.get('product').touched) && FormVisionSpecification.get('product').hasError('required')">
             <span class="error-text">Please select Product</span>
           </div>
         </div>
@@ -49,13 +48,11 @@
         <div class="form-group"
           [ngClass]="{'has-error' : (IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('sphere').touched) && FormVisionSpecification.get('sphere').hasError('required'))) || sphereError}">
           <label class="control-label">Sphere<span class="asterisk">*</span></label>
-          <input type="number" class="form-control" placeholder="Enter sphere" formControlName="sphere"
-            (keyup)="checkSphere()">
+          <input type="number" class="form-control" placeholder="Enter sphere" formControlName="sphere" (keyup)="checkSphere()">
           <div *ngIf="sphereError">
             <span class="error-text">{{sphereError}}</span>
           </div>
-          <div
-            *ngIf="IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('sphere').touched) && FormVisionSpecification.get('sphere').hasError('required'))">
+          <div *ngIf="IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('sphere').touched) && FormVisionSpecification.get('sphere').hasError('required'))">
             <span class="error-text">Please enter sphere</span>
           </div>
         </div>
@@ -64,26 +61,22 @@
         <div class="form-group"
           [ngClass]="{'has-error' : (IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('lensPower').touched) && FormVisionSpecification.get('lensPower').hasError('required'))) || powerError}">
           <label class="control-label">Power<span class="asterisk">*</span></label>
-          <input type="number" class="form-control" placeholder="Enter power" formControlName="lensPower"
-            (keyup)="checkPower()">
+          <input type="number" class="form-control" placeholder="Enter power" formControlName="lensPower" (keyup)="checkPower()">
           <div *ngIf="powerError">
             <span class="error-text">{{powerError}}</span>
           </div>
-          <div
-            *ngIf="IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('lensPower').touched) && FormVisionSpecification.get('lensPower').hasError('required'))">
+          <div *ngIf="IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('lensPower').touched) && FormVisionSpecification.get('lensPower').hasError('required'))">
             <span class="error-text">Please enter power</span>
           </div>
         </div>
       </div>
-      <div class="col"
-        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+      <div class="col" *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
         <div class="form-group">
           <label class="control-label">Back Curve</label>
           <input type="number" class="form-control" placeholder="Enter back curve" formControlName="lensBackCurve">
         </div>
       </div>
-      <div class="col"
-        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+      <div class="col" *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
         <div class="form-group">
           <label class="control-label">Diameter</label>
           <input type="number" class="form-control" placeholder="Enter diameter" formControlName="lensDiameter">
@@ -93,13 +86,11 @@
         <div class="form-group"
           [ngClass]="{'has-error' : (IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))) || cylinderError}">
           <label class="control-label">Cylinder<span *ngIf="IsCylinderRequired" class="asterisk">*</span></label>
-          <input type="number" class="form-control" placeholder="Enter cylinder" formControlName="cylinder"
-            (keyup)="checkCylinder()">
+          <input type="number" class="form-control" placeholder="Enter cylinder" formControlName="cylinder" (keyup)="checkCylinder()">
           <div *ngIf="cylinderError">
             <span class="error-text">{{cylinderError}}</span>
           </div>
-          <div
-            *ngIf="IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))">
+          <div *ngIf="IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))">
             <span class="error-text">Please enter cylinder</span>
           </div>
         </div>
@@ -108,13 +99,11 @@
         <div class="form-group"
           [ngClass]="{'has-error' : (IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))) || axisError}">
           <label class="control-label">Axis<span *ngIf="IsAxisRequired" class="asterisk">*</span></label>
-          <input type="number" class="form-control" placeholder="Enter axis" formControlName="axis"
-            (keyup)="checkAxis()">
+          <input type="number" class="form-control" placeholder="Enter axis" formControlName="axis" (keyup)="checkAxis()">
           <div *ngIf="axisError">
             <span class="error-text">{{axisError}}</span>
           </div>
-          <div
-            *ngIf="IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))">
+          <div *ngIf="IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))">
             <span class="error-text">Please enter axis</span>
           </div>
         </div>
@@ -122,8 +111,7 @@
       <div class="col">
         <div class="form-group" [ngClass]="{'has-error' : addError}">
           <label class="control-label">Add</label>
-          <input type="number" class="form-control" placeholder="Enter add" formControlName="multifocalPower"
-            (keyup)="checkAdd()">
+          <input type="number" class="form-control" placeholder="Enter add" formControlName="multifocalPower" (keyup)="checkAdd()">
           <div *ngIf="addError">
             <span class="error-text">{{addError}}</span>
           </div>
@@ -131,8 +119,7 @@
       </div>
     </div>
     <div class="row small-gutter">
-      <div class="col-4 col-lg-3"
-        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+      <div class="col-4 col-lg-3" *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
         <div class="form-group">
           <label class="control-label">Duration</label>
           <div class="row extra-small-gutter">
@@ -147,22 +134,19 @@
                   <mat-option *ngFor="let unit of durationUnitList" [value]="unit">{{unit.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <div
-                *ngIf="(isSubmitted || FormVisionSpecification.get('lensDurationUnit').touched) && FormVisionSpecification.get('lensDurationUnit').hasError('required')">
+              <div *ngIf="(isSubmitted || FormVisionSpecification.get('lensDurationUnit').touched) && FormVisionSpecification.get('lensDurationUnit').hasError('required')">
                 <span class="error-text">Please select Duration Unit</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-4 col-lg-3"
-        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'contact'">
+      <div class="col-4 col-lg-3" *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'contact'">
         <div class="form-group" [ngClass]="{'has-error' : prismAmountError}">
           <label class="control-label">Prism</label>
           <div class="row extra-small-gutter">
             <div class="col">
-              <input type="number" class="form-control" placeholder="Prism amount" formControlName="prismAmount"
-                (keyup)="checkPrismAmount()">
+              <input type="number" class="form-control" placeholder="Prism amount" formControlName="prismAmount" (keyup)="checkPrismAmount()">
               <div *ngIf="prismAmountError">
                 <span class="error-text">{{prismAmountError}}</span>
               </div>
@@ -175,8 +159,7 @@
                   <mat-option *ngFor="let base of baseList" [value]="base">{{base.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <div
-                *ngIf="(isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')">
+              <div *ngIf="(isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')">
                 <span class="error-text">Please select Base</span>
               </div>
             </div>
@@ -193,7 +176,7 @@
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-      <button type="button" mat-button (click)="closeDialog()">Cancel</button>
+      <button type="button" mat-button (click)="closeDialog()">Close</button>
       <button mat-flat-button color="primary" type="submit">
         <span *ngIf="!data.item">Add</span>
         <span *ngIf="data.item">Save</span>
