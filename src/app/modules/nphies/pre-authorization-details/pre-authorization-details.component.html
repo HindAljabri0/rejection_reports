@@ -253,7 +253,7 @@
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">New born?</div>
-      <p class="form-control-static">{{data.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
+      <p class="form-control-static">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4">
@@ -272,6 +272,52 @@
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
       <p class="form-control-static">{{data.beneficiary.email}}</p>
+    </div>
+  </div>
+</div>
+<!-- beneficiary details end -->
+
+
+
+<!-- subscriber section start -->
+<h5 class="form-title" *ngIf="data.subscriber">
+  Subscriber Details
+</h5>
+<div class="row" *ngIf="data.subscriber">
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Name</div>
+      <p class="form-control-static">{{data.subscriber.beneficiaryName}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Document</div>
+      <p class="form-control-static">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Gender</div>
+      <p class="form-control-static">{{data.subscriber.gender}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Date of Birth</div>
+      <p class="form-control-static">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Contact No.</div>
+      <p class="form-control-static">{{data.subscriber.contactNumber}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Email</div>
+      <p class="form-control-static">{{data.subscriber.email}}</p>
     </div>
   </div>
 </div>

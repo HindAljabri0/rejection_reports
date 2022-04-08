@@ -217,6 +217,14 @@
       </ng-template>
       <app-beneficiary-tab [(pageMode)]="pageMode" [otherDataModel]="otherDataModel"></app-beneficiary-tab>
     </mat-tab>
+    <mat-tab *ngIf="FormNphiesClaim.controls.isNewBorn.value">
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-1" *ngIf="checkErrorSubscriberInfo === true" [class.text-danger]="checkErrorSubscriberInfo === true">
+          error</mat-icon>
+        <span [class.text-danger]="checkErrorSubscriberInfo === true">Subscriber</span>
+      </ng-template>
+      <app-beneficiary-tab [IsSubscriber]="true" [(pageMode)]="pageMode" [otherDataModel]="otherDataModel"></app-beneficiary-tab>
+    </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="IsCareTeamRequired" [class.text-danger]="IsCareTeamRequired">

@@ -23,7 +23,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 export class EligibilityTransactionsComponent implements OnInit {
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  paginatorPagesNumbers: number[]=[];
+  paginatorPagesNumbers: number[] = [];
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
   page: number;
@@ -319,7 +319,6 @@ export class EligibilityTransactionsComponent implements OnInit {
   }
 
   openDetailsDialog(transactionResponseId: number) {
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
     dialogConfig.data = {
@@ -340,7 +339,7 @@ export class EligibilityTransactionsComponent implements OnInit {
   selectPayer(event) {
     this.FormEligibilityTransaction.patchValue({
       payerId: event.value.payerNphiesId,
-      destinationId: event.value.organizationNphiesId != '-1'? event.value.organizationNphiesId : null
+      destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
     });
   }
 
