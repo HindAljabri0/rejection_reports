@@ -190,7 +190,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   selectPayer(event) {
     this.FormPreAuthTransaction.patchValue({
       payerId: event.value.payerNphiesId,
-      destinationId: event.value.organizationNphiesId != '-1'? event.value.organizationNphiesId : null
+      destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
     });
   }
 
@@ -362,7 +362,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }
 
     if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
-      path += `preAuthRefNo=${ this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+      path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
         return x.value;
       })}&`;
     }
