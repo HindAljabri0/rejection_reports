@@ -304,7 +304,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
-        this.eligibilityResponseModel = event.body as EligibilityResponseModel
+        this.eligibilityResponseModel = event.body as EligibilityResponseModel;
         this.showDetails = true;
       }
     }, errorEvent => {

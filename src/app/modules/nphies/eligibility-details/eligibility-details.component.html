@@ -17,6 +17,15 @@
         <p></p>
       </div>
     </div>
+    <div *ngIf="eligibilityResponse.subscriberName" class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">Subscriber Name</div>
+        <p class="form-control-static">
+          {{eligibilityResponse.subscriberName}}
+        </p>
+        <p></p>
+      </div>
+    </div>
     <div class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Outcome</div>
