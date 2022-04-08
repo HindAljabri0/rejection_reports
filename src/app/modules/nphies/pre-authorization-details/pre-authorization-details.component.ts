@@ -59,6 +59,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       this.data.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.data.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.data.beneficiary.documentType)[0].name : '-';
     }
 
+    if (this.data.subscriber && this.data.subscriber.documentType) {
+      // tslint:disable-next-line:max-line-length
+      this.data.subscriber.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.data.subscriber.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.data.subscriber.documentType)[0].name : '-';
+    }
+
     if (this.data.accident && this.data.accident.date) {
       this.data.accident.date = moment(this.data.accident.date).format('DD-MM-YYYY');
     }

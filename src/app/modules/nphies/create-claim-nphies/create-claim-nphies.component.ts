@@ -1777,10 +1777,12 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.disposition = response.disposition;
     this.otherDataModel.insurer = response.insurer;
     this.otherDataModel.batchInfo = response.batchInfo;
-    this.otherDataModel.beneficiary = response.beneficiary;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
+    this.otherDataModel.isNewBorn = response.isNewBorn;
+    this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
 
+    this.otherDataModel.beneficiary = response.beneficiary;
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.beneficiary.documentType)[0].name : '-';
@@ -1788,8 +1790,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (this.otherDataModel.beneficiary) {
       // tslint:disable-next-line:max-line-length
-
-      this.FormNphiesClaim.controls.isNewBorn.setValue(this.otherDataModel.beneficiary.isNewBorn);
       this.FormNphiesClaim.controls.firstName.setValue(this.otherDataModel.beneficiary.firstName);
       this.FormNphiesClaim.controls.middleName.setValue(this.otherDataModel.beneficiary.secondName);
       this.FormNphiesClaim.controls.lastName.setValue(this.otherDataModel.beneficiary.thirdName);
@@ -1822,8 +1822,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
       this.FormNphiesClaim.controls.postalCode.setValue(this.otherDataModel.beneficiary.postalCode);
     }
-    if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.insurancePlan) {
 
+    if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.insurancePlan) {
 
       if (this.otherDataModel.beneficiary.insurancePlan.coverageType) {
         this.FormNphiesClaim.controls.insurancePlanCoverageType.setValue(this.otherDataModel.beneficiary.insurancePlan.coverageType);
@@ -1858,6 +1858,47 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.otherDataModel.expiryDate = this.otherDataModel.beneficiary.insurancePlan.expiryDate;
     }
 
+    this.otherDataModel.subscriber = response.subscriber;
+    if (this.otherDataModel.subscriber && this.otherDataModel.subscriber.documentType) {
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.subscriber.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.otherDataModel.subscriber.documentType)[0].name : '-';
+    }
+
+    if (this.otherDataModel.subscriber) {
+      // tslint:disable-next-line:max-line-length
+
+      this.FormSubscriber.controls.firstName.setValue(this.otherDataModel.subscriber.firstName);
+      this.FormSubscriber.controls.middleName.setValue(this.otherDataModel.subscriber.secondName);
+      this.FormSubscriber.controls.lastName.setValue(this.otherDataModel.subscriber.thirdName);
+      this.FormSubscriber.controls.familyName.setValue(this.otherDataModel.subscriber.familyName);
+      this.FormSubscriber.controls.fullName.setValue(this.otherDataModel.subscriber.fullName);
+      this.FormSubscriber.controls.beneficiaryFileld.setValue(this.otherDataModel.subscriber.fileId);
+      this.FormSubscriber.controls.dob.setValue(this.otherDataModel.subscriber.dob);
+      this.FormSubscriber.controls.gender.setValue(this.otherDataModel.subscriber.gender);
+      this.FormSubscriber.controls.documentType.setValue(this.otherDataModel.subscriber.documentType);
+      this.FormSubscriber.controls.documentId.setValue(this.otherDataModel.subscriber.documentId);
+      this.FormSubscriber.controls.eHealthId.setValue(this.otherDataModel.subscriber.eHealthId);
+      this.FormSubscriber.controls.nationality.setValue(this.otherDataModel.subscriber.nationality);
+      // tslint:disable-next-line:max-line-length
+      this.FormSubscriber.controls.nationalityName.setValue(nationalities.filter(x => x.Code === this.otherDataModel.subscriber.nationality)[0] ? nationalities.filter(x => x.Code === this.otherDataModel.subscriber.nationality)[0].Name : '');
+      this.FormSubscriber.controls.residencyType.setValue(this.otherDataModel.subscriber.residencyType);
+      this.FormSubscriber.controls.contactNumber.setValue(this.otherDataModel.subscriber.contactNumber);
+      this.FormSubscriber.controls.martialStatus.setValue(this.otherDataModel.subscriber.maritalStatus);
+      this.FormSubscriber.controls.bloodGroup.setValue(this.otherDataModel.subscriber.bloodGroup);
+      this.FormSubscriber.controls.preferredLanguage.setValue(this.otherDataModel.subscriber.preferredLanguage);
+      this.FormSubscriber.controls.emergencyNumber.setValue(this.otherDataModel.subscriber.emergencyPhoneNumber);
+      this.FormSubscriber.controls.email.setValue(this.otherDataModel.subscriber.email);
+      this.FormSubscriber.controls.addressLine.setValue(this.otherDataModel.subscriber.addressLine);
+      this.FormSubscriber.controls.streetLine.setValue(this.otherDataModel.subscriber.streetLine);
+      this.FormSubscriber.controls.bcity.setValue(this.otherDataModel.subscriber.city);
+      this.FormSubscriber.controls.bstate.setValue(this.otherDataModel.subscriber.state);
+      this.FormSubscriber.controls.bcountry.setValue(this.otherDataModel.subscriber.country);
+      if (this.otherDataModel.subscriber.country) {
+        // tslint:disable-next-line:max-line-length
+        this.FormSubscriber.controls.bcountryName.setValue(this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.subscriber.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == this.otherDataModel.subscriber.country.toLowerCase())[0].Name : '');
+      }
+      this.FormSubscriber.controls.postalCode.setValue(this.otherDataModel.subscriber.postalCode);
+    }
 
     this.otherDataModel.accident = response.accident;
     this.otherDataModel.provClaimNo = response.provClaimNo;
