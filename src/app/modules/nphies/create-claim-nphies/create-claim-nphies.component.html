@@ -867,7 +867,7 @@
 
     </mat-tab>
 
-    <mat-tab *ngIf="responseId">
+    <mat-tab *ngIf="responseId && otherDataModel.status !== 'Error' && otherDataModel.status !== 'Accepted' && otherDataModel.status !== 'Failed' && otherDataModel.status !== 'NotAccepted'">
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication</span>
@@ -1026,7 +1026,7 @@
         </ul>
       </div>
     </mat-tab>
-    <mat-tab [label]="'Errors'">
+    <mat-tab *ngIf="otherDataModel.status !== 'approved' && otherDataModel.status !== 'rejected' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'"  [label]="'Errors'">
       <div class="table-responsive" *ngIf="otherDataModel.errors">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
@@ -2214,7 +2214,7 @@
 
           </div>
         </mat-tab>
-        <mat-tab [label]="'Errors'" *ngIf="pageMode == 'EDIT'">
+        <mat-tab *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'rejected' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
           <div class="table-responsive" *ngIf="otherDataModel.errors">
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
               <thead>

@@ -17,7 +17,7 @@
         </app-pre-authorization-details>
       </div>
     </mat-tab>
-    <mat-tab>
+    <mat-tab *ngIf="data.detailsModel.outcome !== 'Error'">
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication</span>
