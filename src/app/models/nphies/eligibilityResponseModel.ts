@@ -7,6 +7,7 @@ export class EligibilityResponseModel {
   outgoingTransactionId: string;
   eligibilityRequestId: string;
   beneficiaryName: string;
+  subscriberName: string;
   status: string;
   outcome: string;
   disposition: string;
