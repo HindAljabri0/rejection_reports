@@ -13,6 +13,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
   @Input() Form: FormGroup;
   @Input() isSubmitted;
 
+  @Input() insurancePayer: any;
+
   @Output('payerSelected')
   payerSelectionEmitter: EventEmitter<any> = new EventEmitter();
 
@@ -21,6 +23,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
 
   @Input('isMatSelect')
   isMatSelect = true;
+
+  selectedPayer: any;
 
   organizations: {
     id: string
@@ -40,7 +44,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
   constructor(private nphiesSearchService: ProviderNphiesSearchService) { }
 
   ngOnInit() {
-    this.getPayers()
+    this.getPayers();
   }
 
   getPayers() {
