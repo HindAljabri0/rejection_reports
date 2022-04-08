@@ -289,13 +289,15 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       isNewBorn: this.isNewBorn,
       beneficiary: this.selectedBeneficiary,
       subscriber: this.isNewBorn ? this.selectedSubscriber : null,
-      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null },
+      // tslint:disable-next-line:max-line-length
+      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null, payerNphiesId: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
       transfer: this.transfer,
+      // tslint:disable-next-line:max-line-length
       destinationId: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).tpaNphiesId : this.selectedDestination
     };
 
@@ -308,6 +310,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
+        // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage(errorEvent.error.message, 'Transaction Id: ' + errorEvent.error.transactionId, 'alert', true, 'OK', errorEvent.error.errors);
         // this.dialog.open(ApiErrorsDialogComponent, {
         //   panelClass: ['primary-dialog', 'dialog-lg'],

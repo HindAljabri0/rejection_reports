@@ -6,8 +6,5 @@ export class InsurancePlan {
     isPrimary?: boolean;
     relationWithSubscriber: string;
     coverageType: string;
-
-
-
-
+    payerNphiesId: string;
 }
