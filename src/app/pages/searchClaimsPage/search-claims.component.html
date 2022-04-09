@@ -450,17 +450,25 @@
                                                 [matTooltip]="claim.numOfAttachments + ' attachments'" class="text-primary">
                                                 <mat-icon>attach_file</mat-icon>
                                             </button>
-                                            <button mat-icon-button
-                                                *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
-                                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                                (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit" class="text-primary">
-                                                <mat-icon>create</mat-icon>
-                                            </button>
-                                            <button mat-icon-button
-                                                *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
-                                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                                (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)" matTooltip="Delete" class="text-primary">
-                                                <mat-icon>delete_outline</mat-icon>
+                                            <mat-menu #actionsMenu xPosition="before">
+                                                <ng-template matMenuContent>
+                                                    <button mat-menu-item type="button"
+                                                        [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                                                        (click)="showClaim(claim.status, claim.claimId, true)">
+                                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                                        <span>Edit</span>
+                                                    </button>
+                                                    <button mat-menu-item type="button"
+                                                        [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                                                        (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
+                                                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                                        <span>Delete</span>
+                                                    </button>
+                                                </ng-template>
+                                            </mat-menu>
+                                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                                *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'">
+                                                <mat-icon>more_vert</mat-icon>
                                             </button>
                                         </td>
                                     </tr>

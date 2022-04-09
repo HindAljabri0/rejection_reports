@@ -7,6 +7,8 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 @Component({
   selector: 'app-search-beneficiary',
@@ -14,8 +16,8 @@ import { SharedServices } from 'src/app/services/shared.services';
 
 })
 export class SearchBeneficiaryComponent implements OnInit {
-  beneficiaries: BeneficiarySearch[] ;
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
+  beneficiaries: BeneficiarySearch[];
+  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService,private downloadService: DownloadService) { }
 
   length = 100;
   pageSize = 10;
@@ -30,9 +32,11 @@ export class SearchBeneficiaryComponent implements OnInit {
   fileIdController: FormControl = new FormControl();
   memberCardidController: FormControl = new FormControl();
 
+  detailTopActionIcon = 'ic-download.svg';
+
 
   handlePageEvent(event: PageEvent) {
-   // this.beneficiaries = [];
+    // this.beneficiaries = [];
     this.length = event.length;
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -47,7 +51,7 @@ export class SearchBeneficiaryComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.beneficiaries = [];
-         
+
         this.beneficiaries = event.body["content"] as BeneficiarySearch[];
         this.length = event.body["totalElements"]
       }
@@ -65,7 +69,7 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   searchByCriteria() {
 
-      this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
+    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
       this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
       this.fileIdController.value, this.contactNoController.value, this.pageIndex, this.pageSize).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -87,3 +91,5 @@ export class SearchBeneficiaryComponent implements OnInit {
   }
 
 }
+
+

@@ -56,6 +56,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { configurationReducer } from './nphies-configurations/store/configurations.reducer';
 import { ConfigurationsEffects } from './nphies-configurations/store/configurations.effects';
 import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-beneficiary.component';
+import { PhysiciansComponent } from './physicians/physicians.component';
+import { UploadPhysiciansDialogComponent } from './upload-physicians-dialog/upload-physicians-dialog.component';
+import { AddPhysicianDialogComponent } from './add-physician-dialog/add-physician-dialog.component';
+import { TagInputModule } from 'ngx-chips';
 
 
 
@@ -96,7 +100,10 @@ import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-benefici
     ReuseApprovalModalComponent,
     UploadsHistoryComponent,
     NphiesConfigurationsComponent,
-    UploadBeneficiaryComponent
+    UploadBeneficiaryComponent,
+    PhysiciansComponent,
+    UploadPhysiciansDialogComponent,
+    AddPhysicianDialogComponent
   ],
   imports: [
     CommonModule,
@@ -111,6 +118,7 @@ import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-benefici
     CarouselModule,
     StoreModule.forFeature('configurationState', configurationReducer),
     EffectsModule.forFeature([ConfigurationsEffects]),
+    TagInputModule
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,
@@ -125,7 +133,9 @@ import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-benefici
     AddCommunicationDialogComponent,
     CancelReasonModalComponent,
     AddEditItemDetailsModalComponent,
-    ReuseApprovalModalComponent
+    ReuseApprovalModalComponent,
+    UploadPhysiciansDialogComponent,
+    AddPhysicianDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent

@@ -32,12 +32,12 @@
       <div class="custom-file-upload" [class.disabled]="selectedProvider===undefined  || (!notEditMode && !isEdit)">
         <div class="content" *ngIf="!isFileUploded">
           <img src="./assets/ic-upload.svg" alt="Upload" />
-          <p>Drag & drop .p12 file here, or click here to upload files</p>
+          <p>Drag and drop .p12 file here or <span class="semibold text-primary">browse</span></p>
           <span>Only .p12 files allowed</span>
         </div>
         <div class="content" *ngIf="isFileUploded">
           <img src="./assets/file-types/ic-csv.svg" alt=".p12 File" />
-          <p class="text-normal-color">{{fileName}}</p>
+          <p>{{fileName}}</p>
           <span>File Size: {{fileSize}}</span>
           <button type="button" *ngIf="isEdit" class="icon" (click)="deleteFile()" matRipple title="Delete File?">
             <mat-icon class="size-20">close</mat-icon>

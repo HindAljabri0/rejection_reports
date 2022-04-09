@@ -6,8 +6,7 @@
     <div class="primary-dialog-body pb-0">
         <div class="form-group" [ngClass]="{'has-error' : addPaymentForm.submitted && !payerStatmentModel.amount}">
             <label class="control-label">Amount</label>
-            <input type="text" class="form-control" placeholder="Enter amount" [(ngModel)]='payerStatmentModel.amount'
-                #amount='ngModel' name="amount" required />
+            <input type="text" class="form-control" placeholder="Enter amount" [(ngModel)]='payerStatmentModel.amount' #amount='ngModel' name="amount" required />
             <div *ngIf="addPaymentForm.submitted && amount.invalid">
                 <span class="error-text">Please select a amount</span>
             </div>
@@ -15,8 +14,8 @@
         <div class="form-group" [ngClass]="{'has-error' : addPaymentForm.submitted && !payerStatmentModel.paymentDate}">
             <label class="control-label">Payment Date</label>
             <div class="date-picker">
-                <input [matDatepicker]="paymentDates" class="form-control" placeholder="Select payment date"
-                    [(ngModel)]='payerStatmentModel.paymentDate' #paymentDate='ngModel' name="paymentDate" />
+                <input [matDatepicker]="paymentDates" class="form-control" placeholder="Select payment date" [(ngModel)]='payerStatmentModel.paymentDate' #paymentDate='ngModel'
+                    name="paymentDate" />
                 <mat-datepicker-toggle [for]="paymentDates"></mat-datepicker-toggle>
                 <mat-datepicker #paymentDates></mat-datepicker>
             </div>
@@ -40,7 +39,7 @@
     </div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
-            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button mat-button (click)="closeDialog()">Close</button>
             <button type="submit" mat-flat-button color="primary">Add Payment</button>
         </div>
     </div>

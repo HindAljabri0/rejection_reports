@@ -38,10 +38,17 @@ export class AddPreauthorizationComponent implements OnInit {
   paymentAmount = 0;
 
   beneficiarySearchController = new FormControl();
+  subscriberSearchController = new FormControl();
+
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
+  subscriberSearchResult: BeneficiariesSearchResult[] = [];
+
   selectedBeneficiary: BeneficiariesSearchResult;
+  selectedSubscriber: BeneficiariesSearchResult;
+
   selectedPlanId: string;
   selectedPlanIdError: string;
+  IsSubscriberRequired = false;
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -101,10 +108,44 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanRelationWithSubscriber: [''],
     insurancePlanCoverageType: [''],
     insurancePlanPayerName: [''],
-    insurancePrimary: [''],
+    insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
+    insurancePlanTpaNphiesId: [],
     isNewBorn: [false],
-    transfer: [false]
+    transfer: [false],
+    subscriberName: ['']
+  });
+
+  FormSubscriber: FormGroup = this.formBuilder.group({
+    beneficiaryName: ['', Validators.required],
+    beneficiaryId: ['', Validators.required],
+    firstName: [''],
+    middleName: [''],
+    lastName: [''],
+    familyName: [''],
+    fullName: ['', Validators.required],
+    beneficiaryFileld: [''],
+    dob: ['', Validators.required],
+    gender: ['', Validators.required],
+    documentType: ['', Validators.required],
+    documentId: ['', Validators.required],
+    eHealthId: [''],
+    nationality: [''],
+    nationalityName: [''],
+    residencyType: [''],
+    contactNumber: [''],
+    martialStatus: [''],
+    bloodGroup: [''],
+    preferredLanguage: [''],
+    emergencyNumber: [''],
+    email: [''],
+    addressLine: [''],
+    streetLine: [''],
+    bcity: [''],
+    bstate: [''],
+    bcountry: [''],
+    bcountryName: [''],
+    postalCode: ['']
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -346,7 +387,7 @@ export class AddPreauthorizationComponent implements OnInit {
   onPayeeTypeChange() {
     if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiId === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
     this.FormPreAuthorization.controls.payeeType.disable();
     this.FormPreAuthorization.controls.payee.disable();
@@ -377,13 +418,23 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  searchBeneficiaries() {
+  searchBeneficiaries(IsSubscriber = null) {
+    let searchStr = '';
+    if (!IsSubscriber) {
+      searchStr = this.FormPreAuthorization.controls.beneficiaryName.value;
+    } else {
+      searchStr = this.FormPreAuthorization.controls.subscriberName.value;
+    }
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthorization.controls.beneficiaryName.value).subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
+          if (!IsSubscriber) {
+            this.beneficiariesSearchResult = body;
+          } else {
+            this.subscriberSearchResult = body;
+          }
         }
       }
     }, errorEvent => {
@@ -398,7 +449,44 @@ export class AddPreauthorizationComponent implements OnInit {
     this.FormPreAuthorization.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
+      firstName: beneficiary.firstName ? beneficiary.firstName : '',
+      middleName: beneficiary.secondName ? beneficiary.secondName : '',
+      lastName: beneficiary.thirdName ? beneficiary.thirdName : '',
+      familyName: beneficiary.familyName ? beneficiary.familyName : '',
+      fullName: beneficiary.fullName ? beneficiary.fullName : '',
+      beneficiaryFileld: beneficiary.fileId ? beneficiary.fileId : '',
+      dob: beneficiary.dob ? beneficiary.dob : '',
+      gender: beneficiary.gender ? beneficiary.gender : '',
+      documentType: beneficiary.documentType ? beneficiary.documentType : '',
+      documentId: beneficiary.documentId ? beneficiary.documentId : '',
+      eHealthId: beneficiary.eHealthId ? beneficiary.eHealthId : '',
+      nationality: beneficiary.nationality ? beneficiary.nationality : '',
+      // tslint:disable-next-line:max-line-length
+      nationalityName: beneficiary.nationality ? (this.nationalities.filter(x => x.Code === beneficiary.nationality)[0] ? this.nationalities.filter(x => x.Code === beneficiary.nationality)[0].Name : '') : '',
+      residencyType: beneficiary.residencyType ? beneficiary.residencyType : '',
+      contactNumber: beneficiary.contactNumber ? beneficiary.contactNumber : '',
+      martialStatus: beneficiary.maritalStatus ? beneficiary.maritalStatus : '',
+      bloodGroup: beneficiary.bloodGroup ? beneficiary.bloodGroup : '',
+      preferredLanguage: beneficiary.preferredLanguage ? beneficiary.preferredLanguage : '',
+      emergencyNumber: beneficiary.emergencyPhoneNumber ? beneficiary.emergencyPhoneNumber : '',
+      email: beneficiary.email ? beneficiary.email : '',
+      addressLine: beneficiary.addressLine ? beneficiary.addressLine : '',
+      streetLine: beneficiary.streetLine ? beneficiary.streetLine : '',
+      bcity: beneficiary.city ? beneficiary.city : '',
+      bstate: beneficiary.state ? beneficiary.state : '',
+      bcountry: beneficiary.country ? beneficiary.country : '',
+      // tslint:disable-next-line:max-line-length
+      bcountryName: beneficiary.country ? (this.nationalities.filter(x => x.Name.toLowerCase() === beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == beneficiary.country.toLowerCase())[0].Name : '') : '',
+      postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
+    });
+  }
 
+  selectSubscriber(beneficiary: BeneficiariesSearchResult) {
+    this.selectedSubscriber = beneficiary;
+    this.FormPreAuthorization.controls.subscriberName.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
+    this.FormSubscriber.patchValue({
+      beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
+      beneficiaryId: beneficiary.id,
       firstName: beneficiary.firstName ? beneficiary.firstName : '',
       middleName: beneficiary.secondName ? beneficiary.secondName : '',
       lastName: beneficiary.thirdName ? beneficiary.thirdName : '',
@@ -453,6 +541,17 @@ export class AddPreauthorizationComponent implements OnInit {
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber);
       this.FormPreAuthorization.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+
+      this.FormPreAuthorization.controls.insurancePlanPayerName.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+      this.FormPreAuthorization.controls.insurancePayerNphiesId.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
+      //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      this.FormPreAuthorization.controls.insurancePlanPrimary.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
     }
   }
@@ -1077,9 +1176,9 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
       }
 
-      this.model.beneficiary = {};
+      this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
 
-      this.model.beneficiary.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
+      this.model.beneficiary = {};
       this.model.beneficiary.firstName = this.FormPreAuthorization.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormPreAuthorization.controls.middleName.value;
       this.model.beneficiary.thirdName = this.FormPreAuthorization.controls.lastName.value;
@@ -1106,12 +1205,51 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.beneficiary.country = this.FormPreAuthorization.controls.bcountry.value;
       this.model.beneficiary.postalCode = this.FormPreAuthorization.controls.postalCode.value;
 
+      if (this.FormPreAuthorization.controls.subscriberName.value) {
+        this.model.subscriber = {};
+
+        this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
+        this.model.subscriber.secondName = this.FormSubscriber.controls.middleName.value;
+        this.model.subscriber.thirdName = this.FormSubscriber.controls.lastName.value;
+        this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
+        this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
+        this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
+        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
+        this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
+        this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
+        this.model.subscriber.eHealthId = this.FormSubscriber.controls.eHealthId.value;
+        this.model.subscriber.nationality = this.FormSubscriber.controls.nationality.value;
+        this.model.subscriber.residencyType = this.FormSubscriber.controls.residencyType.value;
+        this.model.subscriber.contactNumber = this.FormSubscriber.controls.contactNumber.value;
+        this.model.subscriber.maritalStatus = this.FormSubscriber.controls.martialStatus.value;
+        this.model.subscriber.bloodGroup = this.FormSubscriber.controls.bloodGroup.value;
+        this.model.subscriber.preferredLanguage = this.FormSubscriber.controls.preferredLanguage.value;
+        this.model.subscriber.emergencyPhoneNumber = this.FormSubscriber.controls.emergencyNumber.value;
+        this.model.subscriber.email = this.FormSubscriber.controls.email.value;
+        this.model.subscriber.addressLine = this.FormSubscriber.controls.addressLine.value;
+        this.model.subscriber.streetLine = this.FormSubscriber.controls.streetLine.value;
+        this.model.subscriber.city = this.FormSubscriber.controls.bcity.value;
+        this.model.subscriber.state = this.FormSubscriber.controls.bstate.value;
+        this.model.subscriber.country = this.FormSubscriber.controls.bcountry.value;
+        this.model.subscriber.postalCode = this.FormSubscriber.controls.postalCode.value;
+      } else {
+        this.model.subscriber = null;
+      }
+
+      this.model.destinationId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
+
       this.model.insurancePlan = {};
       this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
       this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
       this.model.insurancePlan.expiryDate = this.FormPreAuthorization.controls.insurancePlanExpiryDate.value;
+      this.model.insurancePlan.payerName = this.FormPreAuthorization.controls.insurancePlanPayerName.value;
+      this.model.insurancePlan.payerNphiesId = this.FormPreAuthorization.controls.insurancePayerNphiesId.value;
+      // this.model.insurancePlan.planId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.insurancePlan.primary = this.FormPreAuthorization.controls.insurancePlanPrimary.value;
+      this.model.insurancePlan.tpaNphiesId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
       // this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       // this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
@@ -1471,6 +1609,18 @@ export class AddPreauthorizationComponent implements OnInit {
     } else {
       const objectURL = `data:image/${fileExt};base64,` + attachment;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
+  }
+
+  onNewBornChangeState(event) {
+    if (event.checked) {
+      this.FormPreAuthorization.controls.subscriberName.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.subscriberName.updateValueAndValidity();
+      this.IsSubscriberRequired = true;
+    } else {
+      this.FormPreAuthorization.controls.subscriberName.clearValidators();
+      this.FormPreAuthorization.controls.subscriberName.updateValueAndValidity();
+      this.IsSubscriberRequired = false;
     }
   }
 

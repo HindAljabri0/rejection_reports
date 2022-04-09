@@ -210,7 +210,7 @@
   Errors
 </h5>
 <div class="table-responsive" *ngIf="data.errors">
-  <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
     <thead>
       <tr>
         <th class="light-bg-danger text-danger">Code</th>
@@ -253,7 +253,7 @@
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">New born?</div>
-      <p class="form-control-static">{{data.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
+      <p class="form-control-static">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4">
@@ -272,6 +272,52 @@
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
       <p class="form-control-static">{{data.beneficiary.email}}</p>
+    </div>
+  </div>
+</div>
+<!-- beneficiary details end -->
+
+
+
+<!-- subscriber section start -->
+<h5 class="form-title" *ngIf="data.subscriber">
+  Subscriber Details
+</h5>
+<div class="row" *ngIf="data.subscriber">
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Name</div>
+      <p class="form-control-static">{{data.subscriber.beneficiaryName}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Document</div>
+      <p class="form-control-static">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Gender</div>
+      <p class="form-control-static">{{data.subscriber.gender}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Date of Birth</div>
+      <p class="form-control-static">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Contact No.</div>
+      <p class="form-control-static">{{data.subscriber.contactNumber}}</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Email</div>
+      <p class="form-control-static">{{data.subscriber.email}}</p>
     </div>
   </div>
 </div>
@@ -306,7 +352,7 @@
   Items
 </h5>
 <div class="table-responsive">
-  <table class="primary-grid manual-row-color no-borders">
+  <table class="primary-grid">
     <thead>
       <tr>
         <th width="10"></th>
@@ -352,7 +398,7 @@
               <h5 class="align-self-center medium pb-2">Adjudication</h5>
               <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
 
-              <table class="primary-grid no-borders">
+              <table class="primary-grid">
                 <thead>
                   <tr>
                     <th>Category</th>
@@ -508,7 +554,7 @@
                         <td class="label">Quantity</td>
                         <td>{{item.quantity}} {{item.quantityCode}}</td>
                       </tr>
-                      
+
                       <tr>
                         <td class="label">Discount(%)</td>
                         <td>{{item.discountPercent}} %</td>
@@ -609,7 +655,7 @@
             </div>
             <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
               <h5 class="align-self-center medium pb-2">Item Detail</h5>
-              <table class="primary-grid manual-row-color claim-view-table no-borders">
+              <table class="primary-grid claim-view-table">
                 <thead>
                   <tr>
                     <th>Seq.</th>
@@ -725,7 +771,7 @@
     <strong class="medium">Lens Specifications</strong>
   </h5>
   <div class="table-responsive">
-    <table class="primary-grid manual-row-color no-borders">
+    <table class="primary-grid">
       <thead>
         <tr>
           <th>Sequence</th>

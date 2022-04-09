@@ -6,12 +6,12 @@
     <div class="custom-file-upload">
         <div class="content" *ngIf="!currentFileUpload">
             <img src="./assets/ic-upload.svg" alt="Upload" />
-            <p>Drag & drop file here, or click here to upload files</p>
+            <p>Drag and drop file here or <span class="semibold text-primary">browse</span></p>
             <span>Only .PDF files allowed</span>
         </div>
         <div class="content" *ngIf="currentFileUpload">
             <img src="./assets/ic-pdf-lg.svg" alt="PDF File" />
-            <p class="text-normal-color">{{currentFileUpload.name}}</p>
+            <p>{{currentFileUpload.name}}</p>
             <span>File Size: {{sizeInMB}}</span>
         </div>
         <input type="file" name="" id="" accept=".pdf" class="upload-control" (change)="selectFile($event)" />
@@ -20,7 +20,7 @@
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-button (click)="closeDialog()">Close</button>
         <button mat-flat-button color="primary" (click)="upload()" [disabled]="common.loading">Upload</button>
     </div>
 </div>

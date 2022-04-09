@@ -1,0 +1,60 @@
+<ng-container *ngIf="!isMatSelect else matSelect">
+  <ng-container *ngFor="let organization of organizations">
+    <h5 *ngIf="organization.code != '-1'" class="menu-opt-group" style="font-weight: normal;">
+      {{organization.display}}</h5>
+    <button *ngFor="let payer of organization.subList"
+      (click)="payerSelectionEmitter.emit({organization: organization, payer: payer})" mat-menu-item>
+      <span>{{payer.display}}</span>
+    </button>
+  </ng-container>
+</ng-container>
+<ng-template #matSelect>
+  <mat-form-field *ngIf="!Form && !insurancePayer" class="form-control custom-select-control">
+    <mat-select (selectionChange)="selectionChange.emit($event)" [value]="-1">
+      <mat-option [value]="-1">Select Payer</mat-option>
+      <ng-container *ngFor="let organization of organizations">
+        <h5 *ngIf="organization.code != '-1'" class="menu-opt-group" style="font-weight: normal;">
+          {{organization.display}} ({{organization.displayAlt}})</h5>
+        <mat-option *ngFor="let payer of organization.subList"
+          [value]="{payerNphiesId: payer.code, organizationNphiesId: organization.code}">{{payer.display}}
+          ({{payer.displayAlt}})</mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+  <ng-container *ngIf="Form">
+    <form [formGroup]="Form">
+      <div class="form-group m-0"
+        [ngClass]="{'has-error' : (isSubmitted || Form.get('insurancePlanPayerId').touched) && Form.get('insurancePlanPayerId').hasError('required')}">
+        <mat-form-field class="form-control custom-select-control">
+          <mat-select formControlName="insurancePlanPayerId" (selectionChange)="selectPayer($event)" [value]="">
+            <mat-option value="">Select Payer</mat-option>
+            <ng-container *ngFor="let organization of organizations">
+              <h5 *ngIf="organization.code != '-1'" class="menu-opt-group" style="font-weight: normal;">
+                {{organization.display}} ({{organization.displayAlt}})</h5>
+              <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">{{payer.display}}
+                ({{payer.displayAlt}})</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <div
+          *ngIf="(isSubmitted || Form.get('insurancePlanPayerId').touched) && Form.get('insurancePlanPayerId').hasError('required')">
+          <span class="error-text">Please select Payer</span>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="insurancePayer">
+    <mat-form-field class="form-control custom-select-control">
+      <mat-select (selectionChange)="selectPayer($event)" [value]="insurancePayer">
+        <mat-option [value]="">Select Payer</mat-option>
+        <ng-container *ngFor="let organization of organizations">
+          <h5 *ngIf="organization.code != '-1'" class="menu-opt-group" style="font-weight: normal;">
+            {{organization.display}} ({{organization.displayAlt}})</h5>
+          <mat-option *ngFor="let payer of organization.subList"
+            [value]="payer.code">{{payer.display}}
+            ({{payer.displayAlt}})</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+</ng-template>

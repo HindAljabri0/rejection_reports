@@ -40,13 +40,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Payer</label>
-                <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="payerId">
-                    <mat-option value="">Select Payer</mat-option>
-                    <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
-                      ({{payer.arabicName}})</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -72,6 +66,13 @@
                 </mat-form-field>
               </div>
             </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Pre Auth Reference No</label>
+                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
+                </tag-input>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <button type="submit" mat-flat-button color="primary">Search</button>
@@ -80,7 +81,7 @@
       </div>
       <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
         <div class="fixed-height fixed-height-sm">
-          <table class="primary-grid sticky-header no-borders" cellpadding="0" cellspacing="0" border="0">
+          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
                 <th>Beneficiary Name</th>
@@ -95,8 +96,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let transaction of transactions">
-                  <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
-                    {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.memberCardID}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
@@ -121,14 +122,21 @@
                 <td class="actions">
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item *ngIf="transaction.status === 'Processing Complete'"
-                        (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)"><span>Reuse</span></button>
-                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')"><span>Cancel</span></button>
-                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'nullify')"><span>Nullify/Soft
-                          Delete</span></button>
+                      <button mat-menu-item *ngIf="transaction.status === 'Processing Complete'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                        <mat-icon class="material-icons-outlined">replay</mat-icon>
+                        <span>Follow Up/Add Related</span>
+                      </button>
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')">
+                        <mat-icon class="material-icons-outlined">close</mat-icon>
+                        <span>Cancel</span>
+                      </button>
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'nullify')">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Nullify/Soft Delete</span>
+                      </button>
                       <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                     </mat-menu>
-                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
                       <mat-icon>more_vert</mat-icon>
                     </button>
                   </ng-container>
