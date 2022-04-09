@@ -82,7 +82,7 @@ export class ProvidersBeneficiariesService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file, file.name);
-    const req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryUpload/file`, formdata, {
+    const req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/upload`, formdata, {
       reportProgress: true,
     });
 
@@ -109,28 +109,14 @@ export class ProvidersBeneficiariesService {
     });
   }
 
-  /*downloadSampleFile(providerId: string) {
-    const requestUrl = `/providers/${providerId}/beneficiaryUpload/file/get-file`;
-    const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
-    return this.httpClient.request(request);
-  }*/
-
-  /*download(providerId: string): Observable<Blob> {
-    const requestUrl = `/providers/${providerId}/beneficiaryUpload/file/get-file`;
-    return this.httpClient.get(environment.providersBeneficiariesService + requestUrl, {
-      responseType: 'blob'
-    })
-  }*/
-
-  /*download(providerId: string): Observable<Blob> {
-    const requestUrl = `/providers/${providerId}/beneficiaryUpload/file/get-file`;
-    return this.httpClient.get(environment.providersBeneficiariesService + requestUrl, {
-      responseType: 'blob'
-    });
-  }*/
-
   download(providerId: string){
-    const requestUrl = `/providers/${providerId}/beneficiaryUpload/file/get-file`;
+    const requestUrl = `/providers/${providerId}/beneficiaryFile/download`;
+    const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl, '', { responseType: 'blob', reportProgress: true });
+    return this.httpClient.request(request);
+  }
+
+  downloadCSV(providerId: string){
+    const requestUrl = `/providers/${providerId}/beneficiaryFile/downloadCSV`;
     const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl, '', { responseType: 'text', reportProgress: true });
     return this.httpClient.request(request);
   }

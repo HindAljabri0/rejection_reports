@@ -54,7 +54,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     beneficiaryName: [''],
     documentId: [''],
     status: [''],
-    preAuthRefNo: ['']
+    preAuthRefNo: [''],
+    destinationId: ['']
   });
 
   payersList = [];
@@ -113,6 +114,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (params.payerId != null) {
         // tslint:disable-next-line:radix
         this.FormPreAuthTransaction.controls.payerId.patchValue(params.payerId);
+      }
+
+      if (params.destinationId != null) {
+        // tslint:disable-next-line:radix
+        this.FormPreAuthTransaction.controls.destinationId.patchValue(params.destinationId);
       }
 
       if (params.nphiesRequestId != null) {
@@ -184,7 +190,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   selectPayer(event) {
     this.FormPreAuthTransaction.patchValue({
       payerId: event.value.payerNphiesId,
-      organizationId: event.value.organizationNphiesId != '-1'? event.value.organizationNphiesId : null
+      destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
     });
   }
 
@@ -269,6 +275,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (this.FormPreAuthTransaction.controls.payerId.value) {
         model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
+
+      if (this.FormPreAuthTransaction.controls.destinationId.value) {
+        model.destinationId = this.FormPreAuthTransaction.controls.destinationId.value;
+      }
+
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
         model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
@@ -331,6 +342,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       path += `payerId=${this.FormPreAuthTransaction.controls.payerId.value}&`;
     }
 
+    if (this.FormPreAuthTransaction.controls.destinationId.value) {
+      path += `destinationId=${this.FormPreAuthTransaction.controls.destinationId.value}&`;
+    }
+
     if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
       path += `nphiesRequestId=${this.FormPreAuthTransaction.controls.nphiesRequestId.value}&`;
     }
@@ -347,7 +362,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }
 
     if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
-      path += `preAuthRefNo=${ this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+      path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
         return x.value;
       })}&`;
     }
