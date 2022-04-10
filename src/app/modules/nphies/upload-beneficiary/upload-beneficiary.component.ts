@@ -55,7 +55,7 @@ export class UploadBeneficiaryComponent implements OnInit {
     // this.readFile();
   }
   checkfile() {
-    const validExts = new Array('.xlsx', '.csv');
+    const validExts = new Array('.xlsx');
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
