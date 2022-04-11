@@ -13,8 +13,7 @@
         <div class="icon-wrapper">
           <!-- <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
             alt="{{currentFileUpload.name}}"> -->
-            <img src='./assets/xlsx.svg'
-            alt="{{currentFileUpload.name}}">
+          <img src='./assets/xlsx.svg' alt="{{currentFileUpload.name}}">
           <p class="file-name">{{currentFileUpload.name}}</p>
         </div>
         <div *ngIf="!uploading && !loading" class="btn-list pt-5">
@@ -41,53 +40,53 @@
     </div>
   </div>
   <div class="block-body" *ngIf="data && data != null">
-    
-      <div class="uploaded-card" >
-        <div class="d-flex">
-          <span class="text-medium-grey">Upload Summary</span>
 
-        </div>
-        <hr class="hr separator">
+    <div class="uploaded-card">
+      <div class="d-flex">
+        <span class="text-medium-grey">Upload Summary</span>
+
+      </div>
+      <!-- <hr class="hr separator">
         <div class="d-flex">
           <span class="text-medium-grey">Response Message: {{data.message ? data.message : "Upload Done" }}</span>
 
+        </div> -->
+
+      <hr class="hr separator">
+      <div class="row small-gutter align-items-center">
+      </div>
+      <div class="row small-gutter pt-3">
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Number Of Saved</p>
+          <p class="dashboard-numbers">&ensp;{{data.savedBeneficiaryCount}}</p>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Number Of Failed</p>
+          <p class="dashboard-numbers">&ensp;{{data.failToSaveBeneficiaryCount}}</p>
         </div>
 
         <hr class="hr separator">
-        <div class="row small-gutter align-items-center">
-        </div>
-        <div class="row small-gutter pt-3">
-          <div class="col-6 col-lg-4 col-xl-3 pb-2">
-            <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Number Of Saved</p>
-            <p class="dashboard-numbers">&ensp;{{data.savedBeneficiaryCount}}</p>
-          </div>
-          <div class="col-6 col-lg-4 col-xl-3 pb-2">
-            <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Number Of Failed</p>
-            <p class="dashboard-numbers">&ensp;{{data.failToSaveBeneficiaryCount}}</p>
-          </div>
-
-          <hr class="hr separator">
-        </div>
-        <ng-container *ngIf="data.documentIdNotUpdated != null && data.documentIdNotUpdated.length > 0">
-          <h5 class="form-title">
-            Errors
-          </h5>
-          <div class="table-responsive">
-            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-              <thead>
-                <tr>
-                  
-                  <th class="light-bg-danger text-danger">Row No - Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let error of data.documentIdNotUpdated ">
-                  <td>{{error}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </ng-container>
       </div>
+      <ng-container *ngIf="data.documentIdNotUpdated != null && data.documentIdNotUpdated.length > 0">
+        <h5 class="form-title">
+          Errors
+        </h5>
+        <div class="table-responsive">
+          <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+
+                <th class="light-bg-danger text-danger">Row No - Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let error of data.documentIdNotUpdated ">
+                <td>{{error}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
     </div>
   </div>
+</div>

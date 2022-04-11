@@ -88,6 +88,13 @@ export class UploadBeneficiaryComponent implements OnInit {
       this.uploading = false;
       this.data = value;
       console.log(JSON.stringify(this.data));
+
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: `File Upload Successful`,
+        isError: false
+      })
+
       //this.dialogService.showMessage('Success',"Saved Count : "+value.savedBeneficiaryCount + " Falid Count : "+value.failToSaveBeneficiaryCount, 'success', true, 'OK', null, true);
       this.cancel();
     });
