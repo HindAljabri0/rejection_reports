@@ -55,7 +55,7 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
   }
 
   async loadPayers() {
-    const event = await this.searchService.getPayers().toPromise();
+    const event = await this.searchService.getPayersNotTBA().toPromise();
     if (event instanceof HttpResponse) {
       const body = event.body;
       if (body instanceof Array) {

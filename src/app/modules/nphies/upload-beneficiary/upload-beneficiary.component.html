@@ -5,11 +5,15 @@
   <div class="block-body">
     <div class="semibold pb-3">File Uploading</div>
     <div class="error-card mb-0">Please upload File Containing maximum 5000 records only </div>
+    <div class="form-group btn-list text-right">
+      <button type="button" mat-flat-button color="primary" (click)="downloadBeneSample()">Download Sample</button>
+    </div>
     <div class="file-upload-drag-drop">
       <div class="inner-block" *ngIf="currentFileUpload != undefined">
         <div class="icon-wrapper">
-          <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
-            alt="{{currentFileUpload.name}}">
+          <!-- <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
+            alt="{{currentFileUpload.name}}"> -->
+          <img src='./assets/xlsx.svg' alt="{{currentFileUpload.name}}">
           <p class="file-name">{{currentFileUpload.name}}</p>
         </div>
         <div *ngIf="!uploading && !loading" class="btn-list pt-5">
@@ -20,16 +24,15 @@
       <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop
         (onFileDropped)="selectFile($event)">
         <div class="icon-wrapper">
-          <img src="./assets/csv.svg" alt="CSV File" />
+          <img src="./assets/xlsx.svg" alt="XLSX File" />
         </div>
-        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel or CSV file here , or
+        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel file here , or
             use</span> <button mat-flat-button color="primary" (click)="fileInput.click()">Upload</button>
         </p>
         <p class="error-text" *ngIf="error">{{error}}</p>
         <input hidden type="file" #fileInput id="file" onclick="this.value = null"
           (change)="selectFile($event.target.files)"
-          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
-          <button type="button" mat-flat-button color="secondary" (click)="downloadBeneSample()">Download Sample</button>
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
       </div>
     </div>
     <div class="file-upload-progress-wrapper" *ngIf="uploading">
@@ -37,54 +40,53 @@
     </div>
   </div>
   <div class="block-body" *ngIf="data && data != null">
-    
-      <div class="uploaded-card" >
-        <div class="d-flex">
-          <span class="text-medium-grey">Upload Summary</span>
 
-        </div>
-        <hr class="hr separator">
+    <div class="uploaded-card">
+      <div class="d-flex">
+        <span class="text-medium-grey">Upload Summary</span>
+
+      </div>
+      <!-- <hr class="hr separator">
         <div class="d-flex">
           <span class="text-medium-grey">Response Message: {{data.message ? data.message : "Upload Done" }}</span>
 
+        </div> -->
+
+      <hr class="hr separator">
+      <div class="row small-gutter align-items-center">
+      </div>
+      <div class="row small-gutter pt-3">
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Number Of Saved</p>
+          <p class="dashboard-numbers">&ensp;{{data.savedBeneficiaryCount}}</p>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Number Of Failed</p>
+          <p class="dashboard-numbers">&ensp;{{data.failToSaveBeneficiaryCount}}</p>
         </div>
 
         <hr class="hr separator">
-        <div class="row small-gutter align-items-center">
-        </div>
-        <div class="row small-gutter pt-3">
-          <div class="col-6 col-lg-4 col-xl-3 pb-2">
-            <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Number Of Saved</p>
-            <p class="dashboard-numbers">&ensp;{{data.savedBeneficiaryCount}}</p>
-          </div>
-          <div class="col-6 col-lg-4 col-xl-3 pb-2">
-            <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Number Of Failed</p>
-            <p class="dashboard-numbers">&ensp;{{data.failToSaveBeneficiaryCount}}</p>
-          </div>
-
-          <hr class="hr separator">
-        </div>
-        <ng-container *ngIf="data.documentIdNotUpdated != null && data.documentIdNotUpdated.length > 0">
-          <h5 class="form-title">
-            Errors
-          </h5>
-          <div class="table-responsive">
-            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-              <thead>
-                <tr>
-                  
-                  <th class="light-bg-danger text-danger">Line No - Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let error of data.documentIdNotUpdated ">
-                  
-                  <td>{{error}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </ng-container>
       </div>
+      <ng-container *ngIf="data.documentIdNotUpdated != null && data.documentIdNotUpdated.length > 0">
+        <h5 class="form-title">
+          Errors
+        </h5>
+        <div class="table-responsive">
+          <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+
+                <th class="light-bg-danger text-danger">Row No - Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let error of data.documentIdNotUpdated ">
+                <td>{{error}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
     </div>
   </div>
+</div>
