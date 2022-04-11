@@ -145,13 +145,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       }
 
       if (params.preAuthRefNo != null) {
-        const preAuthValue = params.preAuthRefNo.split(',').map(x => {
-          const model: any = {};
-          model.display = x.trim();
-          model.value = x.trim();
-          return model;
-        });
-        this.FormPreAuthTransaction.controls.preAuthRefNo.patchValue(preAuthValue);
+        // const preAuthValue = params.preAuthRefNo.split(',').map(x => {
+        //   const model: any = {};
+        //   model.display = x.trim();
+        //   model.value = x.trim();
+        //   return model;
+        // });
+        this.FormPreAuthTransaction.controls.preAuthRefNo.patchValue(params.preAuthRefNo);
       }
 
       if (params.page != null) {
@@ -290,9 +290,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       }
 
       if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
-        model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
-          return x.value;
-        });
+        model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value;
+        // model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+        //   return x.value;
+        // });
       }
 
 
@@ -362,9 +363,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }
 
     if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
-      path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
-        return x.value;
-      })}&`;
+      path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value}&`;
+      // path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+      //   return x.value;
+      // })}&`;
     }
 
     if (this.page > 0) {
