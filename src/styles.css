@@ -1543,6 +1543,13 @@ tag tag-ripple{display:none;}
 .config-accordion .mat-expansion-panel-body{border-top:1px solid #e1e1e1; padding: 14px;}
 .config-accordion .mat-expansion-panel-header-title{font-size: 14px;line-height: 20px;color: #333;font-weight: 500;}
 
+/* button chips
+--------------------------------------------------------------------------------------------------------*/
+.button-chips{display: flex;align-items: center;flex-wrap: wrap;margin-bottom: 6px;}
+.chip-button{background: #FFFFFF;border: 1px solid #D5D5D5;border-radius: 6px;padding: 3px 3px 3px 9px;display: flex;align-items: center;font-size: 12px;line-height: 18px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);margin-right: 8px;margin-bottom: 8px;}
+.chip-button>img{height: 20px;width: 20px;display: block;margin-left: 4px;}
+.chip-button:hover,.chip-button:focus,.chip-button:active{background: #f6f6f6;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
