@@ -89,7 +89,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
   documentTypes: { Code: string, Name: string }[] = [
     { Code: 'PRC', Name: 'Resident Card' },
     { Code: 'PPN', Name: 'Passport' },
-    { Code: 'VS', Name: 'Visa' },
+    { Code: 'VP', Name: 'Visa' },
     { Code: 'NI', Name: 'National Card' },
     { Code: 'MR', Name: 'Medical Record Number' }
   ];
@@ -279,6 +279,30 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
       if (this.otherDataModel.beneficiary.insurancePlan.coverageType) {
         this.otherDataModel.beneficiary.insurancePlan.coverageTypeName = this.coverageTypes.filter(x => x.Code.toLowerCase() === this.otherDataModel.beneficiary.insurancePlan.coverageType.toLowerCase())[0] ? this.coverageTypes.filter(x => x.Code.toLowerCase() === this.otherDataModel.beneficiary.insurancePlan.coverageType.toLowerCase())[0].Name : '-';
+      }
+    }
+
+
+    if (this.otherDataModel.subscriber) {
+      this.otherDataModel.subscriber.dobLabel = moment(this.otherDataModel.subscriber.dob, 'YYYY-MM-DD').format('DD-MM-YYYY');
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.genderName = this.genders.filter(x => x.Code === this.otherDataModel.subscriber.gender)[0] ? this.genders.filter(x => x.Code === this.otherDataModel.subscriber.gender)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.documentTypeName = this.documentTypes.filter(x => x.Code === this.otherDataModel.subscriber.documentType)[0] ? this.documentTypes.filter(x => x.Code === this.otherDataModel.subscriber.documentType)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.nationalityName = this.nationalities.filter(x => x.Code === this.otherDataModel.subscriber.nationality)[0] ? this.nationalities.filter(x => x.Code === this.otherDataModel.subscriber.nationality)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.residencyTypeName = this.recedencetypes.filter(x => x.Code === this.otherDataModel.subscriber.residencyType)[0] ? this.recedencetypes.filter(x => x.Code === this.otherDataModel.subscriber.residencyType)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.maritalStatusName = this.maritalStatuses.filter(x => x.Code === this.otherDataModel.subscriber.maritalStatus)[0] ? this.maritalStatuses.filter(x => x.Code === this.otherDataModel.subscriber.maritalStatus)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.bloodGroupName = this.bloodGroup.filter(x => x.Code === this.otherDataModel.subscriber.bloodGroup)[0] ? this.bloodGroup.filter(x => x.Code === this.otherDataModel.subscriber.bloodGroup)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.preferredLanguageName = this.preferredLanguages.filter(x => x.Code === this.otherDataModel.subscriber.preferredLanguage)[0] ? this.preferredLanguages.filter(x => x.Code === this.otherDataModel.subscriber.preferredLanguage)[0].Name : '-';
+
+      if (this.otherDataModel.subscriber.country) {
+        // tslint:disable-next-line:max-line-length
+        this.otherDataModel.subscriber.countryName = this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.subscriber.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.subscriber.country.toLowerCase())[0].Name : '-';
       }
     }
 

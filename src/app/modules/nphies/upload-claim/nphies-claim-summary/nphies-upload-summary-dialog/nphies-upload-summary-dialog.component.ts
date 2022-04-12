@@ -1,23 +1,24 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { SharedServices } from 'src/app/services/shared.services';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
-import { HttpResponse } from '@angular/common/http';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { SharedServices } from 'src/app/services/shared.services';
+import { HttpResponse } from '@angular/common/http';
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Component({
-  selector: 'app-upload-summary-dialog',
-  templateUrl: './upload-summary-dialog.component.html',
-  styles: []
+  selector: 'app-nphies-upload-summary-dialog',
+  templateUrl: './nphies-upload-summary-dialog.component.html',
+  styleUrls: ['./nphies-upload-summary-dialog.component.css']
 })
-export class UploadSummaryDialogComponent implements OnInit {
+export class NphiesUploadSummaryDialogComponent implements OnInit {
+
   @ViewChild('customScrollbar', { static: false }) customScrollbar: NgScrollbar;
 
   dialogData: any;
   currentPage = 0;
   constructor(
-    private dialogRef: MatDialogRef<UploadSummaryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any, private uploadService: UploadService, private commen: SharedServices) {
+    private dialogRef: MatDialogRef<NphiesUploadSummaryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: any, private uploadService: NphiesClaimUploaderService, private commen: SharedServices) {
     this.dialogData = this.data;
   }
 
@@ -35,7 +36,7 @@ export class UploadSummaryDialogComponent implements OnInit {
     this.currentPage = page;
     this.commen.loadingChanged.next(true);
     this.uploadService.getClaimsErrorByFieldName(this.commen.providerId,
-      this.uploadService.summary.uploadSummaryID, this.dialogData.fieldName, page).subscribe(event => {
+      this.uploadService.summary.uploadId, this.dialogData.fieldName, page).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
         this.dialogData.results = event.body;
