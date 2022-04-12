@@ -10,6 +10,7 @@ import { nationalities } from 'src/app/claim-module-components/store/claim.reduc
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
+import { InsurancePlan } from 'src/app/models/nphies/insurancePlan';
 import { Payer } from 'src/app/models/nphies/payer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
@@ -799,7 +800,6 @@ export class BeneficiaryComponent implements OnInit {
           this.setDateforView(this.beneficiaryinfo);
 
         } else {
-          this.beneficiaryinfo = new BeneficiaryModel();
           this.setDateforView(this.beneficiaryinfo);
           this.dialogService.openMessageDialog({
             title: '',
