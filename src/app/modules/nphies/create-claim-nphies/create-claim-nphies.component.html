@@ -757,7 +757,7 @@
                           <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}
                           </td>
                           <td class="row-click">{{d.display ? d.display :"-"}}</td>
-                          <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                          <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') :"-"}}</td>
 
                         </tr>
                       </tbody>
@@ -2015,7 +2015,7 @@
                                 d.nonStandardCode :"-"}}</td>
                               <td class="row-click">{{d.display ? d.display :"-"}}
                               </td>
-                              <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                              <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') :"-"}}</td>
 
                               <td class="actions">
                                 <mat-menu #itemDetailsActionsMenu xPosition="before">
