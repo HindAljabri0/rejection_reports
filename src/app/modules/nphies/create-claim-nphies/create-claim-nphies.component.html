@@ -757,7 +757,7 @@
                           <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}
                           </td>
                           <td class="row-click">{{d.display ? d.display :"-"}}</td>
-                          <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                          <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') :"-"}}</td>
 
                         </tr>
                       </tbody>
@@ -1324,18 +1324,18 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <!-- <div class="form-group"
+              <div class="form-group"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
-                  <label class="control-label">Episode No.</label>
+                  <label class="control-label">Episode No. <span class="asterisk">*</span></label>
                   <input class="form-control" placeholder="Episode No" formControlName="episodeId">
                   <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
                     <span class="error-text">Please enter Episode No</span>
                   </div>
-                </div> -->
-              <div class="form-group">
+                </div>
+              <!-- <div class="form-group">
                 <label class="control-label">Episode No.</label>
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
-              </div>
+              </div> -->
             </div>
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
@@ -2015,7 +2015,7 @@
                                 d.nonStandardCode :"-"}}</td>
                               <td class="row-click">{{d.display ? d.display :"-"}}
                               </td>
-                              <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                              <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') :"-"}}</td>
 
                               <td class="actions">
                                 <mat-menu #itemDetailsActionsMenu xPosition="before">

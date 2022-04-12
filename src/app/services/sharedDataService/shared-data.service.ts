@@ -233,9 +233,9 @@ export class SharedDataService {
   beneficiaryTypeList = [
     { value: 'PRC', name: 'Resident Card' },
     { value: 'PPN', name: 'Passport' },
-    { value: 'VS', name: 'GCC ID' },
+    { value: 'VP', name: 'Visa' },
     { value: 'NI', name: 'National Card' },
-    { value: 'NI', name: 'Border Number' },
+    { value: 'MR', name: 'Medical Record Number' },
   ];
 
   siteEligibility = [

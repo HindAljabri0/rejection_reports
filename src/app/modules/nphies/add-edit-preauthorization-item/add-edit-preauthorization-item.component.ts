@@ -40,7 +40,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     isPackage: [false],
     bodySite: [''],
     subSite: [''],
-    quantity: ['', [Validators.required, Validators.min(1)]],
+    quantity: ['', [Validators.required, Validators.pattern('^(([1-9]+([.][0-9]+)?)|(0[.][0-9]*[1-9]))$')]],
     quantityCode: [''],
     unitPrice: ['', Validators.required],
     discountPercent: [''],
@@ -80,15 +80,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   ngOnInit() {
 
-    // if (this.data.source === 'APPROVAL') {
-    //   this.FormItem.controls.invoiceNo.clearValidators();
-    //   this.FormItem.controls.invoiceNo.updateValueAndValidity();
-    //   this.FormItem.controls.invoiceNo.setValue('');
-    // } else if (this.data.source === 'CLAIM') {
-    //   this.FormItem.controls.invoiceNo.setValidators(Validators.required);
-    //   this.FormItem.controls.invoiceNo.updateValueAndValidity();
-    //   this.FormItem.controls.invoiceNo.setValue('');
-    // }
+    if (this.data.source === 'APPROVAL') {
+      this.FormItem.controls.invoiceNo.clearValidators();
+      this.FormItem.controls.invoiceNo.updateValueAndValidity();
+      this.FormItem.controls.invoiceNo.setValue('');
+    } else if (this.data.source === 'CLAIM') {
+      this.FormItem.controls.invoiceNo.setValidators(Validators.required);
+      this.FormItem.controls.invoiceNo.updateValueAndValidity();
+      this.FormItem.controls.invoiceNo.setValue('');
+    }
 
     if (this.data.type) {
       this.setTypes(this.data.type);
