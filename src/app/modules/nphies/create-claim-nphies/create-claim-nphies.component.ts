@@ -1578,7 +1578,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get checkErrorClaimInfo() {
-    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value ||
+    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || !this.FormNphiesClaim.controls.episodeId.value ||
       !this.FormNphiesClaim.controls.type.value) || (
         this.FormNphiesClaim.controls.preAuthOfflineDate.value && (!this.FormNphiesClaim.controls.preAuthRefNo.value
           || (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length === 0))
