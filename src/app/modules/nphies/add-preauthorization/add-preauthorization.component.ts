@@ -1474,7 +1474,11 @@ export class AddPreauthorizationComponent implements OnInit {
                   });
                 }
                 this.sharedServices.loadingChanged.next(false);
-                this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+                if (body.transactionId) {
+                  this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
+                } else {
+                  this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+                }
 
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');

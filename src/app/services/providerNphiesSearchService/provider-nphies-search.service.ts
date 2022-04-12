@@ -113,6 +113,11 @@ export class ProviderNphiesSearchService {
     const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(httpRequest);
   }
+  getPayersNotTBA() {
+    const requestUrl = `/lovs/allPayers`;
+    const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(httpRequest);
+  }
 
   getTransactionTypes() {
     const requestUrl = `/lovs/transactionTypes`;
