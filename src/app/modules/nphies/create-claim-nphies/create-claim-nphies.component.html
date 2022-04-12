@@ -1326,7 +1326,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
-                  <label class="control-label">Episode No.</label>
+                  <label class="control-label">Episode No. <span class="asterisk">*</span></label>
                   <input class="form-control" placeholder="Episode No" formControlName="episodeId">
                   <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
                     <span class="error-text">Please enter Episode No</span>
