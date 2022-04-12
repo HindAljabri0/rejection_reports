@@ -61,7 +61,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
     preAuthOfflineDate: [''],
-    episodeId: [''],
+    episodeId: ['', Validators.required],
     // preAuthResponseId: [''],
     accidentType: [''],
     streetName: [''],

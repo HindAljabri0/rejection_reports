@@ -132,7 +132,7 @@
               <ng-container>
                 <!-- <mat-option value="">Select Care Team</mat-option> -->
                 <mat-option *ngFor="let item of filteredSupportingInfo  | async" [value]="item">
-                  {{item.categoryName}}
+                  {{item.sequence}} - {{item.categoryName}} <span *ngIf="item.code">- {{item.code}}</span>
                 </mat-option>
               </ng-container>
 
@@ -189,17 +189,17 @@
         </div>
       </div>
       <div *ngIf="data.source === 'CLAIM'" class="col-4 col-lg-3">
-        <!-- <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')}">
           <label class="control-label">Invoice No.<span class="asterisk">*</span></label>
           <input class="form-control" placeholder="Enter invoice number" formControlName="invoiceNo" maxlength="64">
           <div *ngIf="(isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')">
             <span class="error-text">Please enter Invoice No</span>
           </div>
-        </div> -->
-        <div class="form-group">
+        </div>
+        <!-- <div class="form-group">
           <label class="control-label">Invoice No.</label>
           <input class="form-control" placeholder="Enter invoice number" formControlName="invoiceNo" maxlength="64">
-        </div>
+        </div> -->
       </div>
     </div>
     <hr class="hr mb-3">
@@ -211,7 +211,7 @@
         <div class="row small-gutter">
           <div class="col-6">
             <div class="form-group"
-              [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('min')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
+              [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('pattern')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <div class="row extra-small-gutter">
                 <div class="col">
@@ -230,7 +230,7 @@
               <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
                 <span class="error-text">Please enter Quantity</span>
               </div>
-              <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('min')">
+              <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('pattern')">
                 <span class="error-text">Quantity must be greater than 0</span>
               </div>
               <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">

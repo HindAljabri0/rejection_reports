@@ -40,7 +40,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     isPackage: [false],
     bodySite: [''],
     subSite: [''],
-    quantity: ['', [Validators.required, Validators.min(1)]],
+    quantity: ['', [Validators.required, Validators.pattern('^(([1-9]+([.][0-9]+)?)|(0[.][0-9]*[1-9]))$')]],
     quantityCode: [''],
     unitPrice: ['', Validators.required],
     discountPercent: [''],
@@ -59,7 +59,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     careTeamFilter: [''],
     diagnosisSequence: [''],
     diagnosisFilter: [''],
-    invoiceNo: ['']
+    invoiceNo: ['', Validators.required]
   });
 
   isSubmitted = false;

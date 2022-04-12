@@ -20,6 +20,7 @@ import {
 } from 'src/app/pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { Location } from '@angular/common';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { NphiesUploadSummaryDialogComponent } from './nphies-upload-summary-dialog/nphies-upload-summary-dialog.component';
 
 @Component({
   selector: 'app-nphies-claim-summary',
@@ -327,7 +328,7 @@ export class NphiesClaimSummaryComponent implements OnInit {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
           this.results = event.body;
-          const dialogRef = this.dialog.open(UploadSummaryDialogComponent, {
+          const dialogRef = this.dialog.open(NphiesUploadSummaryDialogComponent, {
             panelClass: ['primary-dialog', 'dialog-xl'],
             data: {
               themeColor: this.commen.getCardAccentColor(this.selectedCardKey),
