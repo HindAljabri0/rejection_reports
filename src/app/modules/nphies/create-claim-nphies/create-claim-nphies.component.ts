@@ -1369,7 +1369,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity, 10);
+            dmodel.quantity = parseFloat(y.quantity);
             dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });
@@ -1410,7 +1410,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity, 10);
+            dmodel.quantity = parseFloat(y.quantity);
             return dmodel;
           });
 
