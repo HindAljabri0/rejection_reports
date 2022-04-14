@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error' : IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched) }">
           <label class="control-label">Quantity</label>
           <div class="row extra-small-gutter">
             <div class="col">
@@ -74,6 +74,9 @@
                 </mat-select>
               </mat-form-field>
             </div>
+          </div>
+          <div *ngIf="IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched)">
+            <span class="error-text">Quantity must be greater than 0</span>
           </div>
         </div>
       </div>
