@@ -673,7 +673,7 @@
                     <td class="row-click">{{d.code}} - {{d.description}}</td>
                     <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
                     <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
-                    <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
+                    <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') : '-'}}</td>
                   </tr>
                 </tbody>
               </table>

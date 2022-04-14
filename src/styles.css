@@ -225,7 +225,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 --------------------------------------------------------------------------------------------------------*/
 .mat-select-panel-wrap .mat-select-panel,.cdk-overlay-pane .mat-menu-panel,.mat-datepicker-popup .mat-datepicker-content{background: rgba(255,255,255,0.8);-webkit-backdrop-filter: blur(16px);backdrop-filter: blur(16px);}
 .mat-select-panel-wrap .mat-optgroup-label,.menu-opt-group{color: #3060AA;font-weight: 600;height: auto;line-height: 32px;}
-.menu-opt-group{padding: 0 16px;text-align: left;text-decoration: none;max-width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;font-size: 14px;}
+.menu-opt-group{padding: 6px 16px;text-align: left;text-decoration: none;max-width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;font-size: 14px;line-height: 20px;}
 .mat-select-panel .mat-option:hover:not(.mat-option-disabled), .mat-select-panel .mat-option:focus:not(.mat-option-disabled){background-color: rgba(0,0,0,0.06);}
 
 /* title
@@ -1542,6 +1542,13 @@ tag tag-ripple{display:none;}
 .config-accordion.mat-accordion .mat-expansion-panel:last-of-type,.config-accordion.mat-accordion .mat-expansion-panel:first-of-type,.config-accordion.mat-accordion .mat-expansion-panel.mat-expanded,.config-accordion.mat-accordion .mat-expansion-panel:not(.mat-expanded), .config-accordion .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing){border-radius: 8px;}
 .config-accordion .mat-expansion-panel-body{border-top:1px solid #e1e1e1; padding: 14px;}
 .config-accordion .mat-expansion-panel-header-title{font-size: 14px;line-height: 20px;color: #333;font-weight: 500;}
+
+/* button chips
+--------------------------------------------------------------------------------------------------------*/
+.button-chips{display: flex;align-items: center;flex-wrap: wrap;margin-bottom: 6px;}
+.chip-button{background: #FFFFFF;border: 1px solid #D5D5D5;border-radius: 6px;padding: 3px 3px 3px 9px;display: flex;align-items: center;font-size: 12px;line-height: 18px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);margin-right: 8px;margin-bottom: 8px;}
+.chip-button>img{height: 20px;width: 20px;display: block;margin-left: 4px;}
+.chip-button:hover,.chip-button:focus,.chip-button:active{background: #f6f6f6;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
