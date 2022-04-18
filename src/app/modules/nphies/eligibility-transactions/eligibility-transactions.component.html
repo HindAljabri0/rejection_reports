@@ -88,7 +88,7 @@
         <thead>
           <tr>
             <th>Beneficiary Name</th>
-            <th>Member Card ID</th>
+            <th>Site Eligibility</th>
             <th>Eligibility ID</th>
             <th>Purpose</th>
             <th>Payer</th>
@@ -99,7 +99,7 @@
         <tbody>
           <tr *ngFor="let transaction of transactions">
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.memberId}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.siteEligibility ? transaction.siteEligibility : '-' | titlecase}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
