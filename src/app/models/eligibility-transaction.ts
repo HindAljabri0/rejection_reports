@@ -12,6 +12,7 @@ export class EligibilityTransaction extends Paginateable {
   status: string;
   purpose: string[];
   documentId: number;
+  siteEligibility: string;
 
   constructor(body: {}) {
     super(body);
@@ -26,5 +27,6 @@ export class EligibilityTransaction extends Paginateable {
     this.purpose = body['purpose'];
     this.status = body['status'];
     this.documentId = body['documentId'];
+    this.siteEligibility = body['siteEligibility'];
   }
 }
