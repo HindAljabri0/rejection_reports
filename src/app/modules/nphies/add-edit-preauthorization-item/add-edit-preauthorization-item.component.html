@@ -287,13 +287,14 @@
           </div>
           <div class="col-6">
             <div class="form-group">
-              <label class="control-label">Patient Share (%) <mat-checkbox formControlName="IsTaxApplied" style="cursor: pointer;" (change)="changeTaxApplied()">Tax Applied</mat-checkbox></label>
+              <label class="control-label">Patient Share (%)</label>
               <div class="input-group">
                 <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientSharePercent" (blur)="Calculate('PatientShare')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
               </div>
+              <mat-checkbox formControlName="IsTaxApplied" color="primary" (change)="changeTaxApplied()" class="d-inline-block pt-1">Tax Applied?</mat-checkbox>
             </div>
           </div>
         </div>
