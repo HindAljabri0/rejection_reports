@@ -135,7 +135,7 @@
                 </mat-icon>
               </td>
               <td class="row-click" (click)="toggleRow(i)">
-                {{coverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
+                {{coverage.inforce=="true"? "Yes" : "No" }}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date
                 :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>
