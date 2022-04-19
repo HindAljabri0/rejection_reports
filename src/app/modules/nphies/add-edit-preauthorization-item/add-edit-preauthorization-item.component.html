@@ -211,7 +211,7 @@
         <div class="row small-gutter">
           <div class="col-6">
             <div class="form-group"
-              [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required') || FormItem.get('quantity').hasError('pattern')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
+              [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <div class="row extra-small-gutter">
                 <div class="col">
@@ -230,7 +230,7 @@
               <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
                 <span class="error-text">Please enter Quantity</span>
               </div>
-              <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('pattern')">
+              <div *ngIf="IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched)">
                 <span class="error-text">Quantity must be greater than 0</span>
               </div>
               <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
@@ -294,6 +294,7 @@
                   <span class="input-group-text">%</span>
                 </span>
               </div>
+              <mat-checkbox formControlName="IsTaxApplied" color="primary" (change)="changeTaxApplied()" class="d-inline-block pt-1">Tax Applied?</mat-checkbox>
             </div>
           </div>
         </div>

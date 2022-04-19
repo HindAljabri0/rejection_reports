@@ -1071,6 +1071,97 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
   }
 
+  checkSupposrtingInfoValidation() {
+    let hasError = false;
+
+    this.SupportingInfo.forEach(x => {
+      switch (x.category) {
+
+        case 'info':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'onset':
+
+          if (!x.code || !x.fromDate) {
+            hasError = true;
+          }
+
+          break;
+        case 'attachment':
+
+          if (!x.attachment) {
+            hasError = true;
+          }
+
+          break;
+        case 'missingtooth':
+
+          if (!x.code || !x.fromDate || !x.reason) {
+            hasError = true;
+          }
+
+          break;
+        case 'hospitalized':
+        case 'employmentImpacted':
+
+          if (!x.fromDate || !x.toDate) {
+            hasError = true;
+          }
+
+          break;
+
+        case 'lab-test':
+
+          if (!x.code || !x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'reason-for-visit':
+
+          if (!x.code) {
+            hasError = true;
+          }
+
+          break;
+        case 'days-supply':
+        case 'vital-sign-weight':
+        case 'vital-sign-systolic':
+        case 'vital-sign-diastolic':
+        case 'icu-hours':
+        case 'ventilation-hours':
+        case 'vital-sign-height':
+        case 'temperature':
+        case 'pulse':
+        case 'respiratory-rate':
+        case 'oxygen-saturation':
+        case 'birth-weight':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'chief-complaint':
+
+          if (!x.code && !x.value) {
+            hasError = true;
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return hasError;
+  }
+
   onSubmit() {
     this.isSubmitted = true;
 
@@ -1120,6 +1211,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (this.checkSupposrtingInfoValidation()) {
+      hasError = true;
+    }
 
     if (!this.checkItemCareTeams()) {
       hasError = true;
@@ -1258,13 +1353,22 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.sequence = x.sequence;
         model.category = x.category;
         model.code = x.code;
+        if (x.fromDate) {
+          x.fromDate = this.datePipe.transform(x.fromDate, 'yyyy-MM-dd');
+        }
         model.fromDate = x.fromDate;
+        if (x.toDate) {
+          x.toDate = this.datePipe.transform(x.toDate, 'yyyy-MM-dd');
+        }
         model.toDate = x.toDate;
         model.value = x.value;
         model.reason = x.reason;
-        model.attachment = x.byteArray;
+        model.attachment = x.attachment;
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
+        if (x.attachmentDate) {
+          x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
+        }
         model.attachmentDate = x.attachmentDate;
         return model;
       });
@@ -1369,7 +1473,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity, 10);
+            dmodel.quantity = parseFloat(y.quantity);
             dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });
@@ -1410,7 +1514,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity, 10);
+            dmodel.quantity = parseFloat(y.quantity);
             return dmodel;
           });
 
@@ -2123,15 +2227,27 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
 
-      const codeList = this.sharedDataService.getCodeName(x.category);
+      if (x.category === 'chief-complaint' || x.category === 'onset' || x.category === 'lab-test') {
+        model.description = model.code;
+      }
+
+      const codeList = this.sharedDataService.getCodeName(x.category, x.code);
 
       // tslint:disable-next-line:max-line-length
       if ((x.category === 'missingtooth' || x.category === 'reason-for-visit' || x.category === 'chief-complaint' || x.category === 'onset') && codeList) {
         if (x.category === 'chief-complaint' || x.category === 'onset') {
+
           // tslint:disable-next-line:max-line-length
           model.codeName = codeList.filter(y => y.diagnosisCode === x.code)[0] ? codeList.filter(y => y.diagnosisCode === x.code)[0].diagnosisDescription : '';
         } else {
-          model.codeName = codeList.filter(y => y.value === x.code)[0] ? codeList.filter(y => y.value === x.code)[0].name : '';
+          if (x.category === 'missingtooth') {
+            model.code = parseInt(model.code);
+            // tslint:disable-next-line:max-line-length
+            model.codeName = codeList.filter(y => y.value === parseInt(x.code))[0] ? codeList.filter(y => y.value === parseInt(x.code))[0].name : '';
+          } else {
+            model.codeName = codeList.filter(y => y.value === x.code)[0] ? codeList.filter(y => y.value === x.code)[0].name : '';
+          }
+
         }
       }
 
@@ -2478,6 +2594,97 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   onTabChanged(event) {
     this.selectedTab = event.index;
+  }
+
+  get IsSupposrtingInfoError() {
+    let hasError = false;
+
+    this.SupportingInfo.forEach(x => {
+      switch (x.category) {
+
+        case 'info':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'onset':
+
+          if (!x.code || !x.fromDate) {
+            hasError = true;
+          }
+
+          break;
+        case 'attachment':
+
+          if (!x.attachment) {
+            hasError = true;
+          }
+
+          break;
+        case 'missingtooth':
+
+          if (!x.code || !x.fromDate || !x.reason) {
+            hasError = true;
+          }
+
+          break;
+        case 'hospitalized':
+        case 'employmentImpacted':
+
+          if (!x.fromDate || !x.toDate) {
+            hasError = true;
+          }
+
+          break;
+
+        case 'lab-test':
+
+          if (!x.code || !x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'reason-for-visit':
+
+          if (!x.code) {
+            hasError = true;
+          }
+
+          break;
+        case 'days-supply':
+        case 'vital-sign-weight':
+        case 'vital-sign-systolic':
+        case 'vital-sign-diastolic':
+        case 'icu-hours':
+        case 'ventilation-hours':
+        case 'vital-sign-height':
+        case 'temperature':
+        case 'pulse':
+        case 'respiratory-rate':
+        case 'oxygen-saturation':
+        case 'birth-weight':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'chief-complaint':
+
+          if (!x.code && !x.value) {
+            hasError = true;
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return hasError;
   }
 
 }

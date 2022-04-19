@@ -34,7 +34,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     nonStandardCode: [''],
     display: [''],
     quantity: ['1'],
-    quantityCode :['']
+    quantityCode: ['']
   });
 
   isSubmitted = false;
@@ -173,6 +173,13 @@ export class AddEditItemDetailsModalComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.FormItem.valid) {
+
+      const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
+
+      if (!pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString())) {
+        return;
+      }
+
       const model: any = {};
       model.sequence = this.data.Sequence;
       model.type = this.FormItem.controls.type.value.value;
@@ -181,11 +188,17 @@ export class AddEditItemDetailsModalComponent implements OnInit {
       model.itemDescription = this.FormItem.controls.item.value.description;
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
-      model.quantity = this.FormItem.controls.quantity.value;
+      model.quantity = parseFloat(this.FormItem.controls.quantity.value);
       model.quantityCode = this.FormItem.controls.quantityCode.value;
-      
+
       this.dialogRef.close(model);
     }
+  }
+
+  get IsInvalidQuantity() {
+    const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
+    pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString());
+    return !pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString());
   }
 
   closeDialog() {

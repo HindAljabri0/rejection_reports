@@ -146,7 +146,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           ? this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0].name
           : '';
 
-        const codeList = this.sharedDataService.getCodeName(i.category);
+        const codeList = this.sharedDataService.getCodeName(i.category, i.code);
 
         // tslint:disable-next-line:max-line-length
         if ((i.category === 'missingtooth' || i.category === 'reason-for-visit' || i.category === 'chief-complaint' || i.category === 'onset') && codeList) {
@@ -154,7 +154,13 @@ export class PreAuthorizationDetailsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             i.codeName = codeList.filter(y => y.diagnosisCode === i.code)[0] ? codeList.filter(y => y.diagnosisCode === i.code)[0].diagnosisDescription : '';
           } else {
-            i.codeName = codeList.filter(y => y.value === i.code)[0] ? codeList.filter(y => y.value === i.code)[0].name : '';
+            if (i.category === 'missingtooth') {
+              // tslint:disable-next-line:max-line-length
+              i.codeName = codeList.filter(y => y.value === parseInt(i.code))[0] ? codeList.filter(y => y.value === parseInt(i.code))[0].name : '';
+            } else {
+              i.codeName = codeList.filter(y => y.value === i.code)[0] ? codeList.filter(y => y.value === i.code)[0].name : '';
+            }
+
           }
         }
 

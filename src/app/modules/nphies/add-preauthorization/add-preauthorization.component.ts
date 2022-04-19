@@ -1288,7 +1288,6 @@ export class AddPreauthorizationComponent implements OnInit {
         model.toDate = x.toDate;
         model.value = x.value;
         model.reason = x.reason;
-        // model.attachment = this.sharedServices._base64ToArrayBuffer(x.byteArray);
         model.attachment = x.byteArray;
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
@@ -1398,7 +1397,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantity = parseFloat(y.quantity);
             return dmodel;
           });
 
@@ -1438,7 +1437,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantity = parseFloat(y.quantity);
             dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });

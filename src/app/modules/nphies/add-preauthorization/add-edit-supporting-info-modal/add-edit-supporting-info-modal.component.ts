@@ -319,6 +319,24 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     }
   }
 
+  chiefComplainBlurValidation() {
+    if (this.FormSupportingInfo.controls.category.value && this.FormSupportingInfo.controls.category.value.value === 'chief-complaint') {
+      if (this.FormSupportingInfo.controls.code.value || this.FormSupportingInfo.controls.value.value) {
+        this.FormSupportingInfo.controls.code.clearValidators();
+        this.FormSupportingInfo.controls.code.updateValueAndValidity();
+
+        this.FormSupportingInfo.controls.value.clearValidators();
+        this.FormSupportingInfo.controls.value.updateValueAndValidity();
+      } else {
+        this.FormSupportingInfo.controls.code.setValidators([Validators.required]);
+        this.FormSupportingInfo.controls.code.updateValueAndValidity();
+
+        this.FormSupportingInfo.controls.value.setValidators([Validators.required]);
+        this.FormSupportingInfo.controls.value.updateValueAndValidity();
+      }
+    }
+  }
+
   removeValidations() {
 
     this.FormSupportingInfo.controls.value.clearValidators();
@@ -372,6 +390,8 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
           }
         }
       );
+    } else {
+      this.chiefComplainBlurValidation();
     }
   }
 

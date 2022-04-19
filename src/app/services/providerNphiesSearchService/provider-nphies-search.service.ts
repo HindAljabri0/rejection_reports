@@ -293,4 +293,10 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  searchLOINK(providerId: string, searchQuery: string) {
+    const requestURL: string = '/providers/' + providerId + '/approval/loinc?code=' + searchQuery;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
 }

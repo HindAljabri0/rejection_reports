@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th>Beneficiary Name</th>
-          <th>Member Card ID</th>
+          <th>Pre Auth Ref No</th>
           <th>Claim ID</th>
           <th>Transaction Date</th>
           <th>Payer</th>
@@ -20,7 +20,7 @@
             {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
           <td class="row-click"
             (click)="showClaim(transaction.requestId, transaction.uploadId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
-            {{transaction.memberCardId}}</td>
+            {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
           <td class="row-click"
             (click)="showClaim(transaction.requestId, transaction.uploadId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
             {{transaction.requestId}}</td>
@@ -32,7 +32,8 @@
             {{transaction.payerName}}</td>
           <td class="row-click"
             (click)="showClaim(transaction.requestId, transaction.uploadId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
-            {{transaction.status}}</td>
+            <span [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status | titlecase}}</span>
+          </td>
           <td class="actions">
             <mat-menu #moreMenu="matMenu" xPosition="before">
               <!-- <button mat-menu-item><span>Reuse</span></button> -->
