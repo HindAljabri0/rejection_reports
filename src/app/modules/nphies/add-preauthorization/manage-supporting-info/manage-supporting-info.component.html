@@ -71,7 +71,7 @@
                 (keyup)="searchLOINK(supportingInfo.description, i)">
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of loinkList"
-                  (click)="addICDDiagnosis(option, i);">
+                  (click)="addLoink(option, i);">
                   {{option.loincNum}} | {{option.shortName}}
                 </mat-option>
               </mat-autocomplete>
