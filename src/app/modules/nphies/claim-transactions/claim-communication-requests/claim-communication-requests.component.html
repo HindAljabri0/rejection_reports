@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>Beneficiary Name</th>
+          <th>Pre Auth Ref No</th>
           <th>Communication ID</th>
           <th>Category</th>
           <th>Claim ID</th>
@@ -14,6 +15,7 @@
       <tbody>
         <tr *ngFor="let req of communicationRequests" [ngClass]="{'text-warning light-bg-warning': req.notificationStatus !== 'read'}">
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.beneficiaryName}} ({{req.documentId}})</td>
+          <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.preAuthRefNo ? req.preAuthRefNo : '-'}}</td>
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.communicationId}}</td>
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.category}}</td>
           <td class="row-click" (click)="showClaim(req.requestId, req.uploadId, req.responseId, req.notificationId, req.notificationStatus)">{{req.requestId}}</td>
