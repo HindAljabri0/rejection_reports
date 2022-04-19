@@ -1609,8 +1609,16 @@
             </app-empty-state>
           </div>
         </mat-tab>
-        <mat-tab [label]="'Supporting Info'">
-          <h5 class="form-title pt-0">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-1" *ngIf="IsSupposrtingInfoError === true" [class.text-danger]="IsSupposrtingInfoError === true">
+              error</mat-icon>
+            <span [class.text-danger]="IsSupposrtingInfoError === true">Supporting Info</span>
+          </ng-template>
+
+          <app-manage-supporting-info [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+
+          <!-- <h5 class="form-title pt-0">
             <span>Supporting Info</span>
             <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
               <mat-icon>add</mat-icon>
@@ -1622,7 +1630,6 @@
                 <tr>
                   <th>Sequence No.</th>
                   <th>Category</th>
-                  <!-- <th>Attachment</th> -->
                   <th>Code</th>
                   <th>Timing</th>
                   <th>Value</th>
@@ -1638,12 +1645,9 @@
                   <td>
                     {{s.categoryName}}
                   </td>
-                  <!-- <td>
-                                            {{s.attachment}}
-                                        </td> -->
+
                   <td>
                     {{s.code ? s.code :"-"}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
-                    <!-- {{s.codeName}} -->
                   </td>
                   <td>
                     <span *ngIf="!s.fromDateStr && !s.toDateStr">-</span>
@@ -1652,7 +1656,6 @@
                   </td>
                   <td>
                     <span *ngIf="s.category=='attachment'">
-                      <!-- {{s.attachment}} -->
                       <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
                     </span>
                     <span *ngIf="s.category != 'attachment'">
@@ -1684,7 +1687,7 @@
             </table>
           </div>
           <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
-          </app-empty-state>
+          </app-empty-state> -->
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
