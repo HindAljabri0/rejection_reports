@@ -93,12 +93,12 @@ export class ManageSupportingInfoComponent implements OnInit {
     return '';
   }
 
-  addICDDiagnosis(diag: any, i: number) {
-    this.supportingInfoList[i].code = diag.loincNum;
-    this.supportingInfoList[i].description = diag.loincNum + ' - ' + diag.shortName;
+  addLoink(data: any, i: number) {
+    this.supportingInfoList[i].code = data.loincNum;
+    this.supportingInfoList[i].description = data.loincNum + ' - ' + data.shortName;
   }
 
-  addLoink(diag: ICDDiagnosis, i: number) {
+  addICDDiagnosis(diag: ICDDiagnosis, i: number) {
     this.supportingInfoList[i].code = diag.diagnosisCode;
     this.supportingInfoList[i].description = diag.diagnosisCode + ' - ' + diag.diagnosisDescription;
   }
