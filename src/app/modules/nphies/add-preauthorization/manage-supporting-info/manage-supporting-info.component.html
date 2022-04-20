@@ -6,7 +6,7 @@
   </button>
 
 </div>
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="supportingInfoList.length > 0">
   <table class="primary-grid claim-view-table">
     <thead>
       <tr>
@@ -313,3 +313,5 @@
     </tbody>
   </table>
 </div>
+<app-empty-state *ngIf="supportingInfoList.length === 0" message='No Supporting Info found!'>
+</app-empty-state>

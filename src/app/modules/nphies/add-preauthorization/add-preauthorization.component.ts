@@ -1085,6 +1085,97 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
+  checkSupposrtingInfoValidation() {
+    let hasError = false;
+
+    this.SupportingInfo.forEach(x => {
+      switch (x.category) {
+
+        case 'info':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'onset':
+
+          if (!x.code || !x.fromDate) {
+            hasError = true;
+          }
+
+          break;
+        case 'attachment':
+
+          if (!x.attachment) {
+            hasError = true;
+          }
+
+          break;
+        case 'missingtooth':
+
+          if (!x.code || !x.fromDate || !x.reason) {
+            hasError = true;
+          }
+
+          break;
+        case 'hospitalized':
+        case 'employmentImpacted':
+
+          if (!x.fromDate || !x.toDate) {
+            hasError = true;
+          }
+
+          break;
+
+        case 'lab-test':
+
+          if (!x.code || !x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'reason-for-visit':
+
+          if (!x.code) {
+            hasError = true;
+          }
+
+          break;
+        case 'days-supply':
+        case 'vital-sign-weight':
+        case 'vital-sign-systolic':
+        case 'vital-sign-diastolic':
+        case 'icu-hours':
+        case 'ventilation-hours':
+        case 'vital-sign-height':
+        case 'temperature':
+        case 'pulse':
+        case 'respiratory-rate':
+        case 'oxygen-saturation':
+        case 'birth-weight':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'chief-complaint':
+
+          if (!x.code && !x.value) {
+            hasError = true;
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return hasError;
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     let hasError = false;
@@ -1154,6 +1245,10 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (this.checkSupposrtingInfoValidation()) {
+      hasError = true;
+    }
 
     if (!this.checkItemCareTeams()) {
       hasError = true;
@@ -1280,17 +1375,39 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {
+        // const model: any = {};
+        // model.sequence = x.sequence;
+        // model.category = x.category;
+        // model.code = x.code;
+        // model.fromDate = x.fromDate;
+        // model.toDate = x.toDate;
+        // model.value = x.value;
+        // model.reason = x.reason;
+        // model.attachment = x.byteArray;
+        // model.attachmentName = x.attachmentName;
+        // model.attachmentType = x.attachmentType;
+        // model.attachmentDate = x.attachmentDate;
+        // return model;
         const model: any = {};
         model.sequence = x.sequence;
         model.category = x.category;
         model.code = x.code;
+        if (x.fromDate) {
+          x.fromDate = this.datePipe.transform(x.fromDate, 'yyyy-MM-dd');
+        }
         model.fromDate = x.fromDate;
+        if (x.toDate) {
+          x.toDate = this.datePipe.transform(x.toDate, 'yyyy-MM-dd');
+        }
         model.toDate = x.toDate;
         model.value = x.value;
         model.reason = x.reason;
-        model.attachment = x.byteArray;
+        model.attachment = x.attachment;
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
+        if (x.attachmentDate) {
+          x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
+        }
         model.attachmentDate = x.attachmentDate;
         return model;
       });
