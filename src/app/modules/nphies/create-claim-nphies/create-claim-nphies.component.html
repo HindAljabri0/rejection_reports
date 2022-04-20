@@ -39,7 +39,7 @@
 
   </ul>
 
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
+  <mat-tab-group class="primary-tab nphies-claim-tab" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -1035,8 +1035,7 @@
         </ul>
       </div>
     </mat-tab>
-    <mat-tab *ngIf="otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'"
-      [label]="'Errors'">
+    <mat-tab *ngIf="otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
       <div class="table-responsive" *ngIf="otherDataModel.errors">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
@@ -1325,13 +1324,13 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group"
-                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
-                  <label class="control-label">Episode No. <span class="asterisk">*</span></label>
-                  <input class="form-control" placeholder="Episode No" formControlName="episodeId">
-                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
-                    <span class="error-text">Please enter Episode No</span>
-                  </div>
+                [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
+                <label class="control-label">Episode No. <span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Episode No" formControlName="episodeId">
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
+                  <span class="error-text">Please enter Episode No</span>
                 </div>
+              </div>
               <!-- <div class="form-group">
                 <label class="control-label">Episode No.</label>
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
@@ -2227,9 +2226,7 @@
 
           </div>
         </mat-tab>
-        <mat-tab
-          *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'"
-          [label]="'Errors'">
+        <mat-tab *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
           <div class="table-responsive" *ngIf="otherDataModel.errors">
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
               <thead>
