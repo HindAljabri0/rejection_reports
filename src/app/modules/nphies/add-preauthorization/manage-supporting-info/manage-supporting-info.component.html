@@ -220,7 +220,7 @@
                   type="number" class="form-control" placeholder="Enter value" [(ngModel)]="supportingInfo.value" />
 
                 <span
-                  *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test'"
+                  *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'days-supply'"
                   class="input-group-append">
                   <span
                     *ngIf="supportingInfo.category === 'vital-sign-weight'|| supportingInfo.category === 'birth-weight'"

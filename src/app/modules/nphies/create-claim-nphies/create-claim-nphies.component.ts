@@ -2281,7 +2281,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.unit = 'cm';
           break;
         case 'days-supply':
-          model.unit = this.sharedDataService.durationUnitList.filter(y => y.value.toLowerCase() === model.unit.toLowerCase())[0].value;
+          model.unit = 'd';
           break;
         case 'temperature':
           model.unit = 'Cel';
