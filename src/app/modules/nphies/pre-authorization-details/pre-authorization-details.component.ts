@@ -175,7 +175,6 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
         }
 
-
         switch (i.category) {
           case 'vital-sign-weight':
           case 'birth-weight':
@@ -193,7 +192,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
             i.unit = 'cm';
             break;
           case 'days-supply':
-            i.unit = this.sharedDataService.durationUnitList.filter(y => y.value.toLowerCase() === i.unit.toLowerCase())[0].value;
+            i.unit = 'd';
             break;
           case 'temperature':
             i.unit = 'Cel';
