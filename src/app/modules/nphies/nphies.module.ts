@@ -60,7 +60,12 @@ import { PhysiciansComponent } from './physicians/physicians.component';
 import { UploadPhysiciansDialogComponent } from './upload-physicians-dialog/upload-physicians-dialog.component';
 import { AddPhysicianDialogComponent } from './add-physician-dialog/add-physician-dialog.component';
 import { TagInputModule } from 'ngx-chips';
-import { NphiesUploadSummaryDialogComponent } from './upload-claim/nphies-claim-summary/nphies-upload-summary-dialog/nphies-upload-summary-dialog.component';
+import {
+  NphiesUploadSummaryDialogComponent
+} from './upload-claim/nphies-claim-summary/nphies-upload-summary-dialog/nphies-upload-summary-dialog.component';
+import { PricelistComponent } from './pricelist/pricelist.component';
+import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
+import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.component';
 
 
 
@@ -105,7 +110,10 @@ import { NphiesUploadSummaryDialogComponent } from './upload-claim/nphies-claim-
     PhysiciansComponent,
     UploadPhysiciansDialogComponent,
     AddPhysicianDialogComponent,
-    NphiesUploadSummaryDialogComponent
+    NphiesUploadSummaryDialogComponent,
+    PricelistComponent,
+    PricelistDetailsComponent,
+    PricelistUploadComponent
   ],
   imports: [
     CommonModule,
@@ -138,7 +146,8 @@ import { NphiesUploadSummaryDialogComponent } from './upload-claim/nphies-claim-
     ReuseApprovalModalComponent,
     UploadPhysiciansDialogComponent,
     AddPhysicianDialogComponent,
-    NphiesUploadSummaryDialogComponent
+    NphiesUploadSummaryDialogComponent,
+    PricelistUploadComponent
   ],
   exports: [
     ApiErrorsDialogComponent

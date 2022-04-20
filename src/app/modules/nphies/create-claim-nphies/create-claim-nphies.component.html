@@ -1616,7 +1616,7 @@
             <span [class.text-danger]="IsSupposrtingInfoError === true">Supporting Info</span>
           </ng-template>
 
-          <app-manage-supporting-info [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+          <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
 
           <!-- <h5 class="form-title pt-0">
             <span>Supporting Info</span>
