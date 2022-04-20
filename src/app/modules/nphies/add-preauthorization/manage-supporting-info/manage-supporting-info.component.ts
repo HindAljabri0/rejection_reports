@@ -13,6 +13,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class ManageSupportingInfoComponent implements OnInit {
 
+  @Input() isSubmitted = false;
   @Input() supportingInfoList = [];
 
   icedOptions: ICDDiagnosis[] = [];
