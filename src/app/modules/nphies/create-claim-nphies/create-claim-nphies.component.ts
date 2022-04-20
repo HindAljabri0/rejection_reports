@@ -4,9 +4,9 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { Observable, ReplaySubject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import {  SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SharedServices } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, SharedServices } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
@@ -30,6 +30,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { controllers } from 'chart.js';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -207,7 +208,11 @@ export class CreateClaimNphiesComponent implements OnInit {
   IsStatusRequired = false;
   IsClassRequired = false;
   IsServiceProviderRequired = false;
-
+  paginationControl: {
+    currentIndex: number;
+    size: number;
+    searchTabCurrentResults: string[];
+  };
   hasErrorClaimInfo = false;
 
   claimId: number;
@@ -239,8 +244,16 @@ export class CreateClaimNphiesComponent implements OnInit {
   ) {
     this.today = new Date();
   }
-
+  
+  InitClaimPagenation(){
+    this.paginationControl = { searchTabCurrentResults : [],size : 0, currentIndex:0};
+    const data=localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
+    this.paginationControl.searchTabCurrentResults = Array.from(data);
+    this.paginationControl.size=data.length;
+    this.paginationControl.currentIndex = 0;
+  }
   ngOnInit() {
+    
     const urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       // this.isLoading = true;
@@ -256,6 +269,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.activatedRoute.data.subscribe(data => {
       this.routeMode = data;
+      
     });
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
@@ -267,8 +281,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:radix
       this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
     }
-
+    
     this.getPayees();
+    this.InitClaimPagenation();
     // if (urlHasEditMode) {
     //   this.pageMode = 'EDIT';
     //   this.disableControls();
@@ -347,7 +362,52 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.enableControls();
     // console.log("Data = " + JSON.stringify(this.otherDataModel));
   }
-
+  goToFirstPage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
+      //this.cancel();
+      this.claimId = + this.paginationControl.searchTabCurrentResults[0];
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { claimId: this.claimId },
+        queryParamsHandling: 'merge'
+      });
+      this.ngOnInit();
+    }
+  }
+  goToPrePage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
+      //this.cancel();
+      this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1];
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { claimId: this.claimId },
+        queryParamsHandling: 'merge'
+      });
+      this.ngOnInit();
+    }
+  }
+  goToNextPage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size) {
+      //this.cancel();
+      this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1];
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { claimId: this.claimId },
+        queryParamsHandling: 'merge'
+      });
+      this.ngOnInit();
+    }
+  }
+  goToLastPage() {
+    //this.cancel();
+    this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1];
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { claimId: this.claimId },
+      queryParamsHandling: 'merge'
+    });
+    this.ngOnInit();
+  }
   cancelEdit() {
     this.pageMode = 'VIEW';
     this.disableControls();
@@ -1893,7 +1953,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
     this.otherDataModel.isNewBorn = response.isNewBorn;
+    this.otherDataModel.totalNetAmount = response.items.reduce((prev,next)=>prev+next.net,0);
+
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
+    
 
     this.otherDataModel.beneficiary = response.beneficiary;
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {

@@ -733,3 +733,4 @@ export class SharedServices {
 }
 
 export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
+export const NPHIES_SEARCH_TAB_RESULTS_KEY = 'nphies_search_tab_result';
