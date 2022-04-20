@@ -418,14 +418,15 @@
           </div>
         </ng-container>
 
+
        <h5 class="form-title">
         <span>Supporting Info</span>
         <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
           <mat-icon>add</mat-icon>
         </button>
       </h5>
-
-        <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
+      <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+       <!--  <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
               <tr>
@@ -448,7 +449,6 @@
                 </td>
                 <td>
                   {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
-                  <!-- {{s.codeName}} -->
                 </td>
                 <td>
                   <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
@@ -456,7 +456,6 @@
                 </td>
                 <td>
                   <span *ngIf="s.category=='attachment'">
-                    <!-- {{s.attachment}} -->
                     <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
                   </span>
                   <span *ngIf="s.category!='attachment'">
@@ -488,7 +487,7 @@
           </table>
         </div>
         <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
-        </app-empty-state>
+        </app-empty-state> -->
 
         <h5 class="form-title">Accident</h5>
         <div class="row small-gutter">
