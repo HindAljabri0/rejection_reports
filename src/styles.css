@@ -69,7 +69,7 @@ input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allo
 
 /* button
 --------------------------------------------------------------------------------------------------------*/
-button.mat-button, button.mat-flat-button, button.mat-icon-button,a.mat-button, a.mat-flat-button, a.mat-icon-button{line-height: 40px;border-radius: 8px;}
+button.mat-button, button.mat-flat-button, button.mat-icon-button,a.mat-button, a.mat-flat-button, a.mat-icon-button{line-height: 40px;border-radius: 8px;font-weight: 600;}
 button.mat-stroked-button, a.mat-stroked-button{line-height: 38px;border-radius: 8px;}
 button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-button[disabled], button.mat-stroked-button[disabled],a.mat-button[disabled], a.mat-flat-button[disabled], a.mat-icon-button[disabled], a.mat-stroked-button[disabled]{cursor: not-allowed;}
@@ -86,6 +86,13 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .btn-primary{background:#3060aa!important;color:#fff!important;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);border:0!important;box-shadow: none!important;}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active{color: #fff!important;background: #264d88!important;box-shadow: none!important;}
 .btn-primary.disabled, .btn-primary:disabled{opacity: 0.5;}
+.btn-light-primary,.btn-light-primary.mat-flat-button{background:rgba(48, 97, 171,0.1)!important;color:#3060aa!important;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);border:0!important;box-shadow: none!important;}
+.btn-light-primary:hover,.btn-light-primary:focus,.btn-light-primary:active,.btn-light-primary.mat-flat-button:hover,.btn-light-primary.mat-flat-button:focus,.btn-light-primary.mat-flat-button:active{color: #3060aa!important;background: rgba(48, 97, 171,0.16)!important;box-shadow: none!important;}
+.btn-light-primary.disabled, .btn-light-primary:disabled{opacity: 0.5;}
+.btn-primary .mat-button-wrapper,.btn-light-primary .mat-button-wrapper{display: flex;align-items: center;}
+.btn-primary .mat-button-wrapper img,.btn-light-primary .mat-button-wrapper img{display: block;height: 22px;width: 22px;}
+.btn-primary .mat-button-wrapper img:first-child,.btn-light-primary .mat-button-wrapper img:first-child{margin-right: 6px;margin-left: -4px;}
+.btn-primary .mat-button-wrapper img:left-child,.btn-light-primary .mat-button-wrapper img:left-child{margin-left: 6px;margin-right: -4px;}
 .btn-icon{padding: 6px;border-radius: 8px;}
 .btn-icon .mat-icon{height: 20px;width: 20px;line-height: 20px;font-size: 20px;display: block;}
 .btn-icon img{display: block;height: 20px;width: 20px;}

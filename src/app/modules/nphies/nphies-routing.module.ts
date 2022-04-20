@@ -15,6 +15,8 @@ import { UploadsHistoryComponent } from './uploads-history/uploads-history.compo
 import { NphiesConfigurationsComponent } from './nphies-configurations/nphies-configurations.component';
 import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-beneficiary.component';
 import { PhysiciansComponent } from './physicians/physicians.component';
+import { PricelistComponent } from './pricelist/pricelist.component';
+import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -34,7 +36,9 @@ const routes: Routes = [
   { path: 'upload/history', component: UploadsHistoryComponent },
   { path: 'summary', component: UploadClaimComponent },
   { path: 'configurations', component: NphiesConfigurationsComponent },
-  { path: 'physicians', component: PhysiciansComponent }
+  { path: 'physicians', component: PhysiciansComponent },
+  { path: 'pricelist', component: PricelistComponent },
+  { path: 'pricelist-details', component: PricelistDetailsComponent }
 ];
 
 @NgModule({

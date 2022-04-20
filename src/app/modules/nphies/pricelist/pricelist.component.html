@@ -1,0 +1,150 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p class="align-self-center">Upload Beneficiary</p>
+        <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2">
+            <img src="./assets/ic-download.svg" alt="Download" />
+            <span>Download Sample</span>
+        </button>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-xl-3 col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select payer" value="">
+                            <mat-option value="">Select payer</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                            <mat-option value="Option 4">Option 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Effective Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="effectiveDatePicker" placeholder="Select effective date" class="form-control">
+                        <mat-datepicker-toggle [for]="effectiveDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #effectiveDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="form-group">
+                    <label class="control-label">From Upload Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromDatePicker" placeholder="Select from date" class="form-control">
+                        <mat-datepicker-toggle [for]="fromDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="form-group">
+                    <label class="control-label">To Upload Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toDatePicker" placeholder="Select to date" class="form-control">
+                        <mat-datepicker-toggle [for]="toDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Payer</th>
+                        <th>Effective Date</th>
+                        <th>Upload Date</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">Tawuniya</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">27/05/2015</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">27/05/2015</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">Malath</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">04/03/2016</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">04/03/2016</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">Al-Sagar</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">02/08/2019</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">02/08/2019</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">AXA</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">18/07/2017</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">18/07/2017</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">Tawuniya</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">12/10/2013</td>
+                        <td class="row-click" routerLink="/nphies/pricelist-details">12/10/2013</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <mat-menu #actionsMenu xPosition="before">
+                <ng-template matMenuContent>
+                    <button mat-menu-item type="button">
+                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    <button mat-menu-item type="button">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                </ng-template>
+            </mat-menu>
+
+        </div>
+
+    </ng-scrollbar>
+    <div class="block-footer sticky">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" [length]="25" [pageSize]="5" aria-label="Select page">
+            </mat-paginator>
+        </div>
+    </div>
+</div>
+
+<button mat-fab color="primary" (click)="openUploadPricelistDialog()" class="page-fab">
+    <mat-icon class="material-icons-outlined">file_upload</mat-icon>
+</button>
