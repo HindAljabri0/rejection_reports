@@ -265,6 +265,12 @@ export class ManageSupportingInfoComponent implements OnInit {
         model.value = '';
         break;
 
+      case 'last-menstrual-period':
+        model.IsFromDateRequired = true;
+        model.fromDate = '';
+
+        break;
+
       default:
         break;
     }
