@@ -471,7 +471,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           if (this.searchResult.content.length > 0) {
             this.claims = this.searchResult.content;
-            
+
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
@@ -552,7 +552,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.PageclaimIds = this.claims.map(claim => claim.claimId);
       localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, this.PageclaimIds.join(','));
 
-      //localStorage.setItem(NPHIES_CURRENT_INDEX_KEY,"0");
     } else {
       localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
     }
@@ -608,8 +607,15 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.commen.loading) {
       return;
     }
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
     this.commen.loadingChanged.next(true);
-    this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims, this.params.uploadId,
+    this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
+      this.params.uploadId, this.params.claimRefNo, this.params.to,
+      payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
+      this.params.patientFileNo, this.params.from, this.params.nationalId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
