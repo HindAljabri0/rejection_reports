@@ -146,6 +146,10 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           ? this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0].name
           : '';
 
+        if (i.category === 'chief-complaint' || i.category === 'onset' || i.category === 'lab-test') {
+          i.description = i.code;
+        }
+
         const codeList = this.sharedDataService.getCodeName(i.category, i.code);
 
         // tslint:disable-next-line:max-line-length
@@ -171,9 +175,37 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
         }
 
-        i.unit = this.sharedDataService.durationUnitList.filter(y => y.value === i.unit)[0];
+        switch (i.category) {
+          case 'vital-sign-weight':
+          case 'birth-weight':
+            i.unit = 'kg';
+            break;
+          case 'vital-sign-systolic':
+          case 'vital-sign-diastolic':
+            i.unit = 'mm[Hg]';
+            break;
+          case 'icu-hours':
+          case 'ventilation-hours':
+            i.unit = 'h';
+            break;
+          case 'vital-sign-height':
+            i.unit = 'cm';
+            break;
+          case 'days-supply':
+            i.unit = 'd';
+            break;
+          case 'temperature':
+            i.unit = 'Cel';
+            break;
+          case 'pulse':
+          case 'respiratory-rate':
+            i.unit = 'Min';
+            break;
+          case 'oxygen-saturation':
+            i.unit = '%';
+            break;
+        }
         i.byteArray = i.attachment;
-        // i.file = this.getImageOfBlob();
       });
     }
 

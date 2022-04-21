@@ -2290,6 +2290,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
 
+      model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0]
+      ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name
+      : '';
+
       if (x.category === 'chief-complaint' || x.category === 'onset' || x.category === 'lab-test') {
         model.description = model.code;
       }
@@ -2314,11 +2318,14 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }
 
-      model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0]
-        ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name
-        : '';
-      model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
-      model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
+      if (x.fromDate) {
+        model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
+      }
+
+      if (x.toDate) {
+        model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
+      }
+
 
       switch (model.category) {
         case 'vital-sign-weight':
@@ -2747,7 +2754,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     });
 
-    return hasError;
+    return hasError && this.isSubmitted;
   }
 
 }
