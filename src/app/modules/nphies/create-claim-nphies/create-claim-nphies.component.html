@@ -30,7 +30,7 @@
 
       <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
       <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-      <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? otherDataModel.totalNetAmount : '-'}}</strong></p>
+      <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}}</strong></p>
     </div>
   </div>
   <ul class="claim-totals"
@@ -50,7 +50,7 @@
         <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
       </ng-template>
 
-      <div *ngIf="otherDataModel" class="row">
+      <div *ngIf="otherDataModel" class="row"> 
         <div class="col-4">
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
@@ -1208,7 +1208,7 @@
         </p>
         <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-        <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? otherDataModel.totalNetAmount : '-'}}</strong></p>
+        <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}}</strong></p>
       </div>
     </div>
     <ul class="claim-totals"
