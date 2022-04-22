@@ -4,9 +4,9 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { Observable, ReplaySubject } from 'rxjs';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import {  SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY,NPHIES_CURRENT_INDEX_KEY, SharedServices } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
@@ -244,22 +244,22 @@ export class CreateClaimNphiesComponent implements OnInit {
   ) {
     this.today = new Date();
   }
-  
-  InitClaimPagenation(){
-    this.paginationControl = { searchTabCurrentResults : [],size : 0, currentIndex:0};
-    const data=localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
+
+  InitClaimPagenation() {
+    this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
+    const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
     this.paginationControl.searchTabCurrentResults = Array.from(data);
-    this.paginationControl.size=data.length;
-    this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId+"");
+    this.paginationControl.size = data.length;
+    this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + "");
   }
   ngOnInit() {
-    
+
     const urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
       // this.isLoading = true;
       // tslint:disable-next-line:radix
       this.claimId = this.claimId == null ? parseInt(this.activatedRoute.snapshot.queryParams.claimId) : this.claimId;
-      
+
     } else {
 
       this.pageMode = 'CREATE';
@@ -269,7 +269,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.activatedRoute.data.subscribe(data => {
       this.routeMode = data;
-      
+
     });
 
     if (this.activatedRoute.snapshot.queryParams.uploadId) {
@@ -281,7 +281,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:radix
       this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
     }
-    
+
     this.getPayees();
     this.InitClaimPagenation();
     // if (urlHasEditMode) {
@@ -365,44 +365,44 @@ export class CreateClaimNphiesComponent implements OnInit {
   goToFirstPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
       //this.cancel();
-      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY,"0");
+      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, "0");
       this.claimId = + this.paginationControl.searchTabCurrentResults[0];
       //this.location.go(this.location.path().replace('#edit', ''));
-      console.log("Next Claim Id = " + this.claimId + " current Index = "+(this.paginationControl.currentIndex));
+      console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       this.ngOnInit();
     }
   }
   goToPrePage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
       //this.cancel();
-      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY,(this.paginationControl.currentIndex - 1) +"");
+      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex - 1) + "");
       this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1];
-      console.log("Next Claim Id = " + this.claimId + " current Index = "+(this.paginationControl.currentIndex));
+      console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       //this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
     }
   }
   goToNextPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size) {
-      
-      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY,(this.paginationControl.currentIndex + 1) +"");
+
+      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex + 1) + "");
 
       this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1];
-      
-      console.log("Next Claim Id = " + this.claimId + " current Index = "+(this.paginationControl.currentIndex));
+
+      console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       //this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
     }
   }
   goToLastPage() {
     //this.cancel();
-    localStorage.setItem(NPHIES_CURRENT_INDEX_KEY,(this.paginationControl.size - 1) +"");
+    localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.size - 1) + "");
     this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1];
-    console.log("Next Claim Id = " + this.claimId + " current Index = "+(this.paginationControl.currentIndex));
+    console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
     //this.location.go(this.location.path().replace('#edit', ''));
     this.ngOnInit();
   }
-  
+
   cancelEdit() {
     this.pageMode = 'VIEW';
     this.disableControls();
@@ -522,7 +522,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.pageMode == 'RESUBMIT') {
       this.FormNphiesClaim.controls.documentType.disable();
       this.FormNphiesClaim.controls.documentId.disable();
-      
+
     }
   }
 
@@ -1361,7 +1361,12 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
       // this.model.insurancePlan.planId = this.FormNphiesClaim.controls.insurancePlanId.value;
       this.model.insurancePlan.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
-      this.model.insurancePlan.tpaNphiesId = this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value;
+
+      if (this.model.destinationId != null) {
+        this.model.insurancePlan.tpaNphiesId = this.model.destinationId;
+      } else {
+        this.model.insurancePlan.tpaNphiesId = this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value;
+      }
 
       const now = new Date(Date.now());
       if (this.pageMode === 'EDIT') {
@@ -1948,10 +1953,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
     this.otherDataModel.isNewBorn = response.isNewBorn;
-    this.otherDataModel.totalNetAmount = response.items.reduce((prev,next)=>prev+next.net,0);
+    this.otherDataModel.totalNetAmount = response.items.reduce((prev, next) => prev + next.net, 0);
 
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
-    this.uploadId = this.uploadId==null ? response.uploadId : this.uploadId;
+    this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;
 
     this.otherDataModel.beneficiary = response.beneficiary;
     if (this.otherDataModel.beneficiary && this.otherDataModel.beneficiary.documentType) {
@@ -2286,8 +2291,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
 
       model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0]
-      ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name
-      : '';
+        ? this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0].name
+        : '';
 
       if (x.category === 'chief-complaint' || x.category === 'onset' || x.category === 'lab-test') {
         model.description = model.code;
