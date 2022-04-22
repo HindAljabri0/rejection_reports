@@ -66,7 +66,7 @@
             <div class="form-group mb-0"
               [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
               <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
-              <input type="text" class="form-control search-box" placeholder="Search Loink code here..."
+              <input type="text" class="form-control search-box" placeholder="Select LOINC Code"
                 [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
                 (keyup)="searchLOINK(supportingInfo.description, i)">
               <mat-autocomplete #auto="matAutocomplete">
@@ -88,7 +88,7 @@
             <div class="form-group mb-0"
               [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
               <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
-              <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..."
+              <input type="text" class="form-control search-box" placeholder="Select ICD-10 Code"
                 [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
                 (keyup)="searchICDCodes(supportingInfo.description, i)">
               <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
@@ -130,7 +130,7 @@
               <!-- <label class="control-label">Timing<span class="asterisk"
                   *ngIf="supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'vital-sign-weight' && supportingInfo.category !== 'vital-sign-systolic' && supportingInfo.category !== 'vital-sign-diastolic' && supportingInfo.category !== 'icu-hours' && supportingInfo.category !== 'ventilation-hours' && supportingInfo.category !== 'vital-sign-height' && supportingInfo.category !== 'temperature' && supportingInfo.category !== 'pulse' && supportingInfo.category !== 'oxygen-saturation' && supportingInfo.category !== 'respiratory-rate'">*</span></label> -->
               <div class="date-picker">
-                <input [matDatepicker]="timingDateCtrl" class="form-control" placeholder="Select date ordered"
+                <input [matDatepicker]="timingDateCtrl" class="form-control" placeholder="Select Date"
                   [(ngModel)]="supportingInfo.fromDate">
                 <mat-datepicker-toggle [for]="timingDateCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #timingDateCtrl></mat-datepicker>
@@ -151,7 +151,7 @@
                   [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
                   <!-- <label class="control-label">Timing Period From<span class="asterisk">*</span></label> -->
                   <div class="date-picker">
-                    <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select date ordered"
+                    <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select Start Date"
                       [(ngModel)]="supportingInfo.fromDate" [max]="supportingInfo.toDate">
                     <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
                     <mat-datepicker #timingPeriodFromCtrl></mat-datepicker>
@@ -167,7 +167,7 @@
                   [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate}">
                   <!-- <label class="control-label">Timing Period To<span class="asterisk">*</span></label> -->
                   <div class="date-picker">
-                    <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select date ordered"
+                    <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select End Date"
                       [(ngModel)]="supportingInfo.toDate" [min]="supportingInfo.fromDate">
                     <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>
                     <mat-datepicker #timingPeriodToCtrl></mat-datepicker>
