@@ -88,23 +88,23 @@
         <thead>
           <tr>
             <th>Beneficiary Name</th>
-            <th>Site Eligibility</th>
             <th>Eligibility ID</th>
             <th>Purpose</th>
             <th>Payer</th>
             <th>Transaction Date</th>
+            <th>Site Eligibility</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let transaction of transactions">
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.siteEligibility ? transaction.siteEligibility : '-' | titlecase}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
               'dd-MM-yyyy'}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">{{transaction.siteEligibility ? transaction.siteEligibility : '-'}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
             <!-- <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">

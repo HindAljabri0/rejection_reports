@@ -69,14 +69,14 @@
             <p class="smaller-label short-text-height"><span class="bg-under-processing"></span>Pended</p>
             <p class="dashboard-numbers">&ensp;{{data.pended}}</p>
         </div>
-        <hr class="hr separator">
-        <div class="d-flex">
-            <span class="text-grey d-flex align-items-center">
-                <mat-icon class="material-icons-outlined size-18 mr-2">event</mat-icon> {{data.uploadDate | date : 'EEEE, d MMMM, y'}}
-            </span>
-            <span class="text-grey ml-auto text-right d-flex align-items-center">
-                <mat-icon class="material-icons-outlined size-18 mr-2">schedule</mat-icon> {{data.uploadDate | date : 'hh:mm a'}}
-            </span>
-        </div>
+    </div>
+    <hr class="hr separator">
+    <div class="d-flex">
+        <span class="text-grey d-flex align-items-center">
+            <mat-icon class="material-icons-outlined size-18 mr-2">event</mat-icon> {{data.uploadDate | date : 'EEEE, d MMMM, y'}}
+        </span>
+        <span class="text-grey ml-auto text-right d-flex align-items-center">
+            <mat-icon class="material-icons-outlined size-18 mr-2">schedule</mat-icon> {{data.uploadDate | date : 'hh:mm a'}}
+        </span>
     </div>
 </div>
