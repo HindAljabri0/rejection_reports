@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
+import { SharedServices } from 'src/app/services/shared.services';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pricelist-upload',
@@ -8,11 +13,90 @@ import { MatDialogRef } from '@angular/material';
 })
 export class PricelistUploadComponent implements OnInit {
 
+  FormPriceList: FormGroup = this.formBuilder.group({
+    payerNphiesId: ['', Validators.required],
+    effectiveDate: ['', Validators.required],
+    file: ['', Validators.required],
+  });
+
+  isSubmitted = false;
+  uploadContainerClass = '';
+  error = '';
+
   constructor(
-    private dialogRef: MatDialogRef<PricelistUploadComponent>
+    private sharedService: SharedServices,
+    private dialogRef: MatDialogRef<PricelistUploadComponent>,
+    private datePipe: DatePipe,
+    private formBuilder: FormBuilder,
+    private nphiesConfigurationService: NphiesConfigurationService
   ) { }
 
   ngOnInit() {
+  }
+
+  selectPayer(event) {
+    if (event.value) {
+      this.FormPriceList.patchValue({
+        payerNphiesId: event.value.payerNphiesId,
+        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    } else {
+      this.FormPriceList.controls.payerNphiesId.setValue('');
+      // this.FormPriceList.controls.destinationId.setValue('');
+    }
+  }
+
+  selectFile(event) {
+    this.FormPriceList.controls.file.setValue(event.item(0));
+    if (!this.checkfile()) {
+      this.FormPriceList.controls.file.setValue('');
+    }
+    // this.readFile();
+  }
+
+  checkfile() {
+    const validExts = new Array('.xlsx', '.csv');
+    let fileExt = this.FormPriceList.controls.file.value.name;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+    if (validExts.indexOf(fileExt) < 0) {
+      this.showError('Invalid file selected, valid files are of ' +
+        validExts.toString() + ' types.');
+      return false;
+    } else {
+      this.uploadContainerClass = '';
+      this.error = '';
+      return true;
+    }
+  }
+
+  showError(error: string) {
+    this.FormPriceList.controls.file.setValue('');
+    this.uploadContainerClass = 'has-error';
+    this.error = error;
+    // this.common.loadingChanged.next(false);
+  }
+
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.FormPriceList.valid) {
+      this.sharedService.loadingChanged.next(true);
+      const model: any = this.FormPriceList.value;
+      model.effectiveDate = this.datePipe.transform(model.effectiveDate, 'yyyy/MM/dd');
+      this.nphiesConfigurationService.uploadPriceList(this.sharedService.providerId, model).subscribe((event: any) => {
+        if (event instanceof HttpResponse) {
+          if (event.status === 200) {
+            const body: any = event.body;
+            this.dialogRef.close(model.payerNphiesId);
+          }
+          this.sharedService.loadingChanged.next(false);
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          this.sharedService.loadingChanged.next(false);
+        }
+        console.log(error);
+      });
+    }
   }
 
   closeDialog() {

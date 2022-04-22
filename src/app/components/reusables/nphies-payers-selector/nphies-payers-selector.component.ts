@@ -12,6 +12,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
 
   @Input() Form: FormGroup;
   @Input() isSubmitted;
+  @Input() isRequired = true;
 
   @Input() insurancePayer: any;
 
