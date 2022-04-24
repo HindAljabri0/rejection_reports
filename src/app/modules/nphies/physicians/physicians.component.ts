@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { NphiesConfigurationsSearchService } from 'src/app/services/nphiesConfigurationsService/nphies-configurations-service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { AddPhysicianDialogComponent } from '../add-physician-dialog/add-physician-dialog.component';
 import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upload-physicians-dialog.component';
 
@@ -10,9 +13,10 @@ import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upl
 })
 export class PhysiciansComponent implements OnInit {
 
-  constructor(
-    private dialog: MatDialog
-  ) { }
+  constructor(private dialog: MatDialog,
+    private sharedServices: SharedServices,
+    nphiesConfigurationsSearchService:NphiesConfigurationsSearchService ,
+    private providerNphiesSearchService: ProviderNphiesSearchService ) { }
 
   ngOnInit() {
   }

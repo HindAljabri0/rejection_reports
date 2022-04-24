@@ -336,7 +336,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
 
-    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
+    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId  ;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
 
