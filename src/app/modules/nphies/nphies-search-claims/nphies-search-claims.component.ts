@@ -26,7 +26,7 @@ import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY,NPHIES_CURRENT_INDEX_KEY, SharedServices } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices } from 'src/app/services/shared.services';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
@@ -98,7 +98,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   selectedClaimsCountOfPage = 0;
   allCheckBoxIsIndeterminate: boolean;
   allCheckBoxIsChecked: boolean;
-  PageclaimIds : string[];
+  PageclaimIds: string[];
   paginatorPagesNumbers: number[];
   manualPage = null;
 
@@ -200,7 +200,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async fetchData() {
-    console.log("test"+this.commen.providerId)
+    console.log("test" + this.commen.providerId)
     this.commen.searchIsOpenChange.next(true);
     this.claims = new Array();
     this.summaries = new Array();
@@ -264,6 +264,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     let rejectedByPayerIsDone = false;
     let readyForSubmissionIsDone = false;
     let paidIsDone = false;
+    let failedDone = false
     let invalidIsDone = false;
     let isAllDone = false;
     for (let status of statuses) {
@@ -279,10 +280,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         rejectedByPayerIsDone = true;
       } else if (this.isReadyForSubmissionStatus(status)) {
         if (!readyForSubmissionIsDone) {
-          await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
+          await this.getSummaryOfStatus([ClaimStatus.Accepted]);
         }
         readyForSubmissionIsDone = true;
-      } else if (this.isPaidStatus(status)) {
+      } else if (this.isFailedStatus(status)) {
+        if (!failedDone) {
+          await this.getSummaryOfStatus(['Failed']);
+        }
+        failedDone = true;
+
+      }
+      else if (this.isPaidStatus(status)) {
         if (!paidIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
         }
@@ -341,7 +349,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
 
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
-    this.claimSearchCriteriaModel.providerId=this.commen.providerId;
+    this.claimSearchCriteriaModel.providerId = this.commen.providerId;
 
     event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
 
@@ -447,7 +455,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   getClaimTransactions(key?: number, page?: number) {
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
-    console.log("getClaimTransactions"+this.commen.providerId);
+    console.log("getClaimTransactions" + this.commen.providerId);
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
     this.claimSearchCriteriaModel.statuses = key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
     this.claimSearchCriteriaModel.page = this.pageIndex;
@@ -947,8 +955,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   isReadyForSubmissionStatus(status: string) {
     status = status.toUpperCase();
-    return status == ClaimStatus.Accepted.toUpperCase() ||
-      status == 'FAILED';
+    return status == ClaimStatus.Accepted.toUpperCase();
+  }
+
+  isFailedStatus(status: string) {
+    status = status.toUpperCase();
+    return status == 'FAILED';
   }
 
   isPaidStatus(status: string) {
@@ -1023,14 +1035,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.params.filter_drName = ClaimListFilterSelection.DR_NAME ? this.claimList.drName : this.params.filter_drName;
     this.params.filter_nationalId = ClaimListFilterSelection.NATIONALID ? this.claimList.nationalId : this.params.filter_nationalId;
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
-    this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
+      this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
     console.log(this.setParamsValueSummary.toString);
   }
 
-    clearFilters(name: string, key = false) {
+  clearFilters(name: string, key = false) {
     if (this.appliedFilters.length > 0) {
       if (!key) {
         const findKey = this.allFilters.find(subele => subele.value === name);
@@ -1313,7 +1325,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return false;
     }
     status = status.trim().toLowerCase();
-    const validStatus = ['accepted', 'cancelled','failed', 'notaccepted', 'batched', 'error'];
+    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {
