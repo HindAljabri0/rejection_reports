@@ -264,6 +264,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     let rejectedByPayerIsDone = false;
     let readyForSubmissionIsDone = false;
     let paidIsDone = false;
+    let failedDone = false
     let invalidIsDone = false;
     let isAllDone = false;
     for (let status of statuses) {
@@ -279,10 +280,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         rejectedByPayerIsDone = true;
       } else if (this.isReadyForSubmissionStatus(status)) {
         if (!readyForSubmissionIsDone) {
-          await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
+          await this.getSummaryOfStatus([ClaimStatus.Accepted]);
         }
         readyForSubmissionIsDone = true;
-      } else if (this.isPaidStatus(status)) {
+      } else if (this.isFailedStatus(status)) {
+        if (!failedDone) {
+          await this.getSummaryOfStatus(['Failed']);
+        }
+        failedDone = true;
+
+      }
+      else if (this.isPaidStatus(status)) {
         if (!paidIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
         }
@@ -947,8 +955,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   isReadyForSubmissionStatus(status: string) {
     status = status.toUpperCase();
-    return status == ClaimStatus.Accepted.toUpperCase() ||
-      status == 'FAILED';
+    return status == ClaimStatus.Accepted.toUpperCase();
+  }
+
+  isFailedStatus(status: string) {
+    status = status.toUpperCase();
+    return status == 'FAILED';
   }
 
   isPaidStatus(status: string) {
