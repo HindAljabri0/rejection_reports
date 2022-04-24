@@ -351,7 +351,7 @@ export class SharedServices {
         switch (status.toLowerCase()) {
             case ClaimStatus.Accepted.toLowerCase():
                 return 'ready-submission';
-            case ClaimStatus.NotAccepted.toLowerCase(): case ClaimStatus.Error.toLowerCase():
+            case ClaimStatus.NotAccepted.toLowerCase():
                 return 'rejected-waseel';
             case ClaimStatus.ALL.toLowerCase():
                 return 'all-claim';
@@ -373,7 +373,7 @@ export class SharedServices {
                 return 'not-saved';
             case ClaimStatus.Downloadable.toLowerCase():
                 return 'downloadable';
-            case ClaimStatus.INVALID.toLowerCase():
+            case ClaimStatus.INVALID.toLowerCase() :case ClaimStatus.Error.toLowerCase():
                 return 'invalid';
             case ClaimStatus.DUPLICATE.toLowerCase():
                 return 'duplicate';
@@ -409,7 +409,8 @@ export class SharedServices {
             case ClaimStatus.Queued.toLowerCase():
                 return 'Queued By NPHIES';
             case ClaimStatus.Error.toLowerCase():
-                return 'Rejected By NPHIES';
+                return 'Invalid';
+                //return 'Rejected By NPHIES';
             default:
                 return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
         }
