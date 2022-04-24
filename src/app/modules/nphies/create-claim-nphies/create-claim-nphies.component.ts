@@ -2088,7 +2088,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     // this.otherDataModel.claimEncounter = response.claimEncounter;
 
-    this.otherDataModel.errors = response.errors;
+    this.otherDataModel.errors = (this.uploadId == 601 && response.disposition != null && response.disposition != "" && response.disposition != "-") ? null : response.errors;
     this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
