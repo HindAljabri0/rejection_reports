@@ -37,11 +37,11 @@ export class NphiesUploadCardComponent implements OnInit {
             null, null, null, null, null, null, null, null, null, null, null, null)
             .subscribe(event => {
               if (event instanceof HttpResponse) {
-                this.dialogService.openMessageDialog({
-                  title: '',
-                  message: `upload ${this.data.uploadName} Deleted Successfully`,
-                  isError: false
-                });
+                this.dialogService.openMessageDialog(new MessageDialogData('',
+                `upload ${this.data.uploadName} Deleted Successfully`,
+                false)).subscribe(afterColse => location.reload());
+                
+                
                 if (this.totalClaims == 0) {
                   this.data.uploadName += ' [DELETED]';
                 }
