@@ -2362,6 +2362,81 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
       }
 
+      switch (model.category) {
+
+        case 'info':
+
+          model.IsValueRequired = true;
+
+          break;
+        case 'onset':
+
+          model.IsCodeRequired = true;
+          model.IsFromDateRequired = true;
+
+          break;
+        case 'attachment':
+
+          model.IsAttachmentRequired = true;
+
+          break;
+        case 'missingtooth':
+
+          model.IsCodeRequired = true;
+          model.IsFromDateRequired = true;
+          model.IsReasonRequired = true;
+
+          break;
+        case 'hospitalized':
+        case 'employmentImpacted':
+
+          model.IsFromDateRequired = true;
+          model.IsToDateRequired = true;
+
+          break;
+
+        case 'lab-test':
+
+          model.IsCodeRequired = true;
+          model.IsValueRequired = true;
+
+          break;
+        case 'reason-for-visit':
+
+          model.IsCodeRequired = true;
+
+          break;
+        case 'days-supply':
+        case 'vital-sign-weight':
+        case 'vital-sign-systolic':
+        case 'vital-sign-diastolic':
+        case 'icu-hours':
+        case 'ventilation-hours':
+        case 'vital-sign-height':
+        case 'temperature':
+        case 'pulse':
+        case 'respiratory-rate':
+        case 'oxygen-saturation':
+        case 'birth-weight':
+
+          model.IsValueRequired = true;
+
+          break;
+        case 'chief-complaint':
+
+          model.IsCodeRequired = true;
+          model.IsValueRequired = true;
+          break;
+
+        case 'last-menstrual-period':
+          model.IsFromDateRequired = true;
+
+          break;
+
+        default:
+          break;
+      }
+
 
       switch (model.category) {
         case 'vital-sign-weight':
