@@ -1947,6 +1947,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.submissionDate = response.submissionDate;
     this.otherDataModel.claimId = response.claimId;
     this.otherDataModel.outcome = response.outcome;
+    this.otherDataModel.statusDesc = response.statusDesc;
     this.otherDataModel.disposition = response.disposition;
     this.otherDataModel.insurer = response.insurer;
     this.otherDataModel.batchInfo = response.batchInfo;
