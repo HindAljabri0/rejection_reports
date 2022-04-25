@@ -36,13 +36,17 @@
             <p class="dashboard-numbers">&ensp;{{data.rejectedByPayer}}</p>
         </div>
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
-            <p class="smaller-label short-text-height"><span class="bg-invalid"></span>Invalid</p>
+            <p class="smaller-label short-text-height"><span class="bg-rejected"></span>Rejected By NPHIES</p>
             <p class="dashboard-numbers">&ensp;{{data.rejectedByNphies}}</p>
         </div>
-        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+        <!-- <div class="col-6 col-lg-4 col-xl-3 pb-2">
             <p class="smaller-label short-text-height"><span class="bg-under-processing"></span>Under Processing</p>
             <p class="dashboard-numbers">&ensp;{{data.underProcessing}}</p>
-        </div>
+        </div> -->
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-cancelled"></span>Cancelled</p>
+          <p class="dashboard-numbers">&ensp;{{data.cancelled}}</p>
+      </div>
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
             <p class="smaller-label short-text-height"><span class="bg-partially-paid"></span>Partially Paid</p>
             <p class="dashboard-numbers">&ensp;{{data.partiallyPaid}}</p>

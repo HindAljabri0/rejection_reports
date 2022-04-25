@@ -70,7 +70,7 @@ export class NphiesUploadCardComponent implements OnInit {
   }
   get totalClaims() {
     return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
-      + this.data.underProcessing + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
+      + this.data.cancelled + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
       + this.data.rejectedByNphies + this.data.approved + this.data.partialApproved
       + this.data.queuedByNphies + this.data.pended;
   }

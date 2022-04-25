@@ -354,8 +354,38 @@ export class CreateClaimNphiesComponent implements OnInit {
     };
     this.FormNphiesClaim.patchValue({
       beneficiaryName: this.otherDataModel.beneficiary.beneficiaryName + ' (' + this.otherDataModel.beneficiary.documentId + ')',
-      beneficiaryId: this.otherDataModel.beneficiary.id
+      beneficiaryId: this.otherDataModel.beneficiary.beneficiaryId,
+      dob: this.otherDataModel.beneficiary.dob,
+      documentId: this.otherDataModel.beneficiary.documentId,
+      documentType: this.otherDataModel.beneficiary.documentType,
+      fullName: this.otherDataModel.beneficiary.fullName,
+      gender: this.otherDataModel.beneficiary.gender,
+      insurancePlanMemberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+      insurancePlanCoverageType: this.otherDataModel.beneficiary.insurancePlan.coverageType,
+      insurancePayerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
+      insurancePlanRelationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
+
+      insurancePlanExpiryDate: this.otherDataModel.beneficiary.insurancePlan.expiryDate,
+      insurancePlanPrimary: this.otherDataModel.beneficiary.insurancePlan.primary,
+      // tslint:disable-next-line:max-line-length
+      insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].payerName : '',
+
+      // tslint:disable-next-line:max-line-length
+      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
     });
+
+    if (this.otherDataModel.subscriber) {
+      this.FormSubscriber.patchValue({
+        beneficiaryName: this.otherDataModel.subscriber.beneficiaryName + ' (' + this.otherDataModel.subscriber.documentId + ')',
+        beneficiaryId: this.otherDataModel.subscriber.id,
+        dob: this.otherDataModel.subscriber.dob,
+        documentId: this.otherDataModel.subscriber.documentId,
+        documentType: this.otherDataModel.subscriber.documentType,
+        fullName: this.otherDataModel.subscriber.fullName,
+        gender: this.otherDataModel.subscriber.gender,
+      });
+    }
+
     if (this.otherDataModel.payerNphiesId) {
       this.FormNphiesClaim.controls.insurancePlanId.setValue(this.otherDataModel.payerNphiesId.toString());
     }
@@ -1218,6 +1248,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
+
     this.isSubmitted = true;
 
     let hasError = false;
@@ -1721,7 +1752,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       !this.FormNphiesClaim.controls.dob.value ||
       !this.FormNphiesClaim.controls.gender.value ||
       !this.FormNphiesClaim.controls.documentType.value ||
-      !this.FormNphiesClaim.controls.documentId.value)) {
+      !this.FormNphiesClaim.controls.documentId.value ||
+      !this.FormNphiesClaim.controls.insurancePlanPayerId.value ||
+      !this.FormNphiesClaim.controls.insurancePlanMemberCardId.value ||
+      !this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value ||
+      !this.FormNphiesClaim.controls.insurancePlanCoverageType.value)) {
       return true;
     } else {
       return false;

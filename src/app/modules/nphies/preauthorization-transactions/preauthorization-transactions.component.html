@@ -122,7 +122,7 @@
                 <td class="actions">
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item *ngIf="transaction.status === 'Processing Complete'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                      <button mat-menu-item *ngIf="transaction.status === 'approved'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
                         <span>Follow Up/Add Related</span>
                       </button>
