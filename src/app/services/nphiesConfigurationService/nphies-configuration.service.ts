@@ -35,8 +35,8 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
 //fetchAllPhysician
-  getPhysicianList(providerId: string) {
-    const requestURL = `/providers/${providerId}/physciains`;
+  getPhysicianList(providerId: string,page: number,size: number) {
+    const requestURL = `/providers/${providerId}/physciains?page=${page}&size=${size}`;
     const request = new HttpRequest('GET', environment.NphiesConfigurationsService + requestURL);
     return this.http.request(request);
 }

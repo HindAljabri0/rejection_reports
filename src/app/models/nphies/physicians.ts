@@ -9,4 +9,8 @@ export class Physicians{
 
     physician_role: string;
 
+    page:number;
+
+    size : number;
+
 }
