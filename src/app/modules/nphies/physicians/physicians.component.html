@@ -1,135 +1,82 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
-    <div class="block-header">
-        <p class="align-self-center">Physicians</p>
-        <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2">
-            <img src="./assets/ic-download.svg" alt="Download" />
-            <span>Download Sample</span>
-        </button>
-    </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-        <div class="fixed-height">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
-                    <tr>
-                        <th>Physician ID</th>
-                        <th>Physician Name</th>
-                        <th>Speciality</th>
-                        <th>Role</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Hisham Elsayed Marey</td>
-                        <td>01.00</td>
-                        <td>Doctor</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Huaida Mardi Ahmed</td>
-                        <td>01.00</td>
-                        <td>Nurse</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Muhammad Aslam Khushk</td>
-                        <td>01.00</td>
-                        <td>Researcher</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Fathy Farid Fooshan</td>
-                        <td>01.00</td>
-                        <td>Teacher</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Saeed Saad Alshelwi</td>
-                        <td>01.00</td>
-                        <td>Dentist</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-    </ng-scrollbar>
-    <div class="block-footer">
-        <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page">
-                <img src="./assets/ic-page-first.svg" alt="First" />
-            </button>
-            <button matRipple type="button" title="Previous Page">
-                <img src="./assets/ic-page-prev.svg" alt="Previous" />
-            </button>
-            <p class="page-info">
-                1<small>/5</small>
-            </p>
-            <button matRipple type="button" title="Next Page">
-                <img src="./assets/ic-page-next.svg" alt="Next" />
-            </button>
-            <button matRipple type="button" title="Last Page">
-                <img src="./assets/ic-page-last.svg" alt="Last" />
-            </button>
-        </div>
-    </div>
-    <mat-menu #actionsMenu xPosition="before">
-        <ng-template matMenuContent>
-            <button type="button" mat-menu-item>
-                <mat-icon class="material-icons-outlined">edit</mat-icon>
-                <span>Edit</span>
-            </button>
-            <button type="button" mat-menu-item>
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Delete</span>
-            </button>
-        </ng-template>
-    </mat-menu>
-
-    <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="addPhysicianMenu">
-        <mat-icon>add</mat-icon>
+  <div class="block-header">
+    <p class="align-self-center">Physicians</p>
+    <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2">
+      <img src="./assets/ic-download.svg" alt="Download" />
+      <span>Download Sample</span>
     </button>
+  </div>
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+    <div class="fixed-height">
+      <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>Physician ID Test </th>
+            <th>Physician Name</th>
+            <th>Speciality</th>
+            <th>Role</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let Physicians of physiciansList">
+            <td>{{Physicians.physician_id}}</td>
+            <td>{{Physicians.physician_name}}</td>
+            <td>{{Physicians.speciality_code}}</td>
+            <td>{{Physicians.physician_role}}</td>
+            <td class="actions">
+              <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <mat-menu #addPhysicianMenu yPosition="above" xPosition="before">
-        <ng-template matMenuContent>
-            <button type="button" mat-menu-item (click)="openUploadPhysiciansDialog()">
-                <span class="d-flex align-items-center">
-                    <mat-icon class="material-icons-outlined">file_upload</mat-icon>
-                    <span>Upload Physicians</span>
-                </span>
-            </button>
-            <button type="button" mat-menu-item (click)="openAddPhysicianDialog()">
-                <span class="d-flex align-items-center">
-                    <mat-icon class="material-icons-outlined">add</mat-icon>
-                    <span>Add Physician</span>
-                </span>
-            </button>
-        </ng-template>
-    </mat-menu>
+    </div>
+
+  </ng-scrollbar>
+
+  <div class="block-footer sticky" *ngIf="physiciansList && physiciansList.length>0">
+    <div class="left-block">
+      <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
+        [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex" aria-label="Select page">
+      </mat-paginator>
+    </div>
+  </div>
+
+
+  <mat-menu #actionsMenu xPosition="before">
+    <ng-template matMenuContent>
+      <button type="button" mat-menu-item>
+        <mat-icon class="material-icons-outlined">edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button type="button" mat-menu-item>
+        <mat-icon class="material-icons-outlined">delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </ng-template>
+  </mat-menu>
+
+  <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="addPhysicianMenu">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <mat-menu #addPhysicianMenu yPosition="above" xPosition="before">
+    <ng-template matMenuContent>
+      <button type="button" mat-menu-item (click)="openUploadPhysiciansDialog()">
+        <span class="d-flex align-items-center">
+          <mat-icon class="material-icons-outlined">file_upload</mat-icon>
+          <span>Upload Physicians</span>
+        </span>
+      </button>
+      <button type="button" mat-menu-item (click)="openAddPhysicianDialog()">
+        <span class="d-flex align-items-center">
+          <mat-icon class="material-icons-outlined">add</mat-icon>
+          <span>Add Physician</span>
+        </span>
+      </button>
+    </ng-template>
+  </mat-menu>
 </div>
