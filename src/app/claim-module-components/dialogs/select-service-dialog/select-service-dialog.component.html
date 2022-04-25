@@ -9,8 +9,7 @@
             <tr style="cursor: unset !important;">
                 <th style="width: 5%;" *ngIf="!isSelectingOne">
                     <mat-checkbox [checked]="selectedServices.length == retrievedServices.length"
-                        [indeterminate]="selectedServices.length > 0 && selectedServices.length < retrievedServices.length"
-                        (change)="selectAll($event.checked)"></mat-checkbox>
+                        [indeterminate]="selectedServices.length > 0 && selectedServices.length < retrievedServices.length" (change)="selectAll($event.checked)"></mat-checkbox>
                 </th>
                 <th>Service No</th>
                 <th style="width: 20%;">Service Code</th>
@@ -22,8 +21,7 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let item of retrievedServices; let i = index">
-                <tr *ngIf="!item.used"
-                [ngClass]="{'disabled': item.decision.approvedQuantity == 0}" (click)="onServiceCLicked(i)">
+                <tr *ngIf="!item.used" [ngClass]="{'disabled': item.decision.approvedQuantity == 0}" (click)="onServiceCLicked(i)">
                     <td style="width: 5%;" *ngIf="!isSelectingOne">
                         <mat-checkbox [checked]="isChecked(i)" disabled style="cursor: pointer;"></mat-checkbox>
                     </td>
@@ -32,11 +30,11 @@
                     <td style="width: 40%;">{{item.service.serviceDescription}}</td>
                     <td style="width: 10%">{{item.decision.approvedQuantity}}</td>
                     <td style="width: 20%;">
-                        {{(item.decision.approvedQuantity == 0 || item.decision.serviceGDPN.net.value != 0? item.decision.serviceGDPN.net.value : item.service.serviceGDPN.net.value)}}
+                        {{(item.decision.approvedQuantity == 0 || item.decision.serviceGDPN.net.value != 0? item.decision.serviceGDPN.net.value :
+                        item.service.serviceGDPN.net.value)}}
                     </td>
                     <td style="width: 5%;">
-                        <mat-icon style="color: #E9AD33;"
-                            [matTooltip]="'requested quantity: ' +  item.service.requestedQuantity"
+                        <mat-icon style="color: #E9AD33;" [matTooltip]="'requested quantity: ' +  item.service.requestedQuantity"
                             *ngIf="item.decision.approvedQuantity != item.service.requestedQuantity">
                             error
                         </mat-icon>
@@ -48,8 +46,7 @@
 </div>
 <div mat-dialog-actions style="text-align: end; margin-top: 10px;">
 
-    <button class="formElement" mat-button color="primary" style="margin-left: auto;"
-        (click)="onCancelClicked()">Cancel</button>
+    <button class="formElement" mat-button color="primary" style="margin-left: auto;" (click)="onCancelClicked()">Close</button>
     <button *ngIf="!isSelectingOne" class="formElement" mat-raised-button color="primary" (click)="onAddClicked()">Add
         to Current
         Invoice</button>

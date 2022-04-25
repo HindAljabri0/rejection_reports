@@ -26,7 +26,7 @@ import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { SEARCH_TAB_RESULTS_KEY, SharedServices } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY,NPHIES_CURRENT_INDEX_KEY, SharedServices } from 'src/app/services/shared.services';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
@@ -98,7 +98,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   selectedClaimsCountOfPage = 0;
   allCheckBoxIsIndeterminate: boolean;
   allCheckBoxIsChecked: boolean;
-
+  PageclaimIds : string[];
   paginatorPagesNumbers: number[];
   manualPage = null;
 
@@ -161,7 +161,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   ngOnDestroy(): void {
 
-    localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
+    localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
     this.routerSubscription.unsubscribe();
   }
 
@@ -471,6 +471,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           if (this.searchResult.content.length > 0) {
             this.claims = this.searchResult.content;
+
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
@@ -548,11 +549,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
-      const claimsIds = this.claims.map(claim => claim.claimId);
-      localStorage.setItem(SEARCH_TAB_RESULTS_KEY, claimsIds.join(','));
-      console.log(claimsIds.join(','))
+      this.PageclaimIds = this.claims.map(claim => claim.claimId);
+      localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, this.PageclaimIds.join(','));
+
     } else {
-      localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
+      localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
     }
   }
 
@@ -606,8 +607,15 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.commen.loading) {
       return;
     }
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
     this.commen.loadingChanged.next(true);
-    this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims, this.params.uploadId,
+    this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
+      this.params.uploadId, this.params.claimRefNo, this.params.to,
+      payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
+      this.params.patientFileNo, this.params.from, this.params.nationalId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -1305,7 +1313,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return false;
     }
     status = status.trim().toLowerCase();
-    const validStatus = ['accepted', 'cancelled','failed', 'notaccepted', 'batched'];
+    const validStatus = ['accepted', 'cancelled','failed', 'notaccepted', 'batched', 'error'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {

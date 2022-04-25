@@ -17,6 +17,15 @@
         <p></p>
       </div>
     </div>
+    <div *ngIf="eligibilityResponse.subscriberName" class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">Subscriber Name</div>
+        <p class="form-control-static">
+          {{eligibilityResponse.subscriberName}}
+        </p>
+        <p></p>
+      </div>
+    </div>
     <div class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Outcome</div>
@@ -126,7 +135,7 @@
                 </mat-icon>
               </td>
               <td class="row-click" (click)="toggleRow(i)">
-                {{coverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
+                {{coverage.inforce=="true"? "Yes" : "No" }}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date
                 :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>

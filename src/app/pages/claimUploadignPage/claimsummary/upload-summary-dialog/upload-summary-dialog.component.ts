@@ -35,16 +35,15 @@ export class UploadSummaryDialogComponent implements OnInit {
     this.currentPage = page;
     this.commen.loadingChanged.next(true);
     this.uploadService.getClaimsErrorByFieldName(this.commen.providerId,
-      this.uploadService.summary.uploadSummaryID,
-      this.dialogData.fieldName,
-      page).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          this.commen.loadingChanged.next(false);
-          this.dialogData.results = event.body;
-        }
-      }), (eventError) => {
+      this.uploadService.summary.uploadSummaryID, this.dialogData.fieldName, page).subscribe(event => {
+      if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
-      };
+        this.dialogData.results = event.body;
+      }
+    }, eventError => {
+      this.commen.loadingChanged.next(false);
+      console.log(eventError);
+    });
   }
 
 }

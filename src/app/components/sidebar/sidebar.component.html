@@ -274,7 +274,7 @@
                 <span class="text">Beneficiary List</span>
               </a>
             </li>
-            <li *ngIf="!envProd">
+            <li>
               <a routerLink="/nphies/beneficiary/upload" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                 <span class="text">Upload Beneficiaries</span>
               </a>
@@ -389,6 +389,11 @@
         <li>
           <a routerLink="/nphies/physicians" routerLinkActive="is-active">
             <span class="text">Physicians</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/nphies/pricelist" routerLinkActive="is-active">
+            <span class="text">Price List</span>
           </a>
         </li>
       </ul>

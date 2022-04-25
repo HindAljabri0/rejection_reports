@@ -43,13 +43,14 @@
         <div class="col-4 col-xxl-3">
           <div class="form-group">
             <label class="control-label">Payer</label>
-            <mat-form-field class="form-control custom-select-control">
+            <!-- <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="payerId">
                 <mat-option value="">Select Payer</mat-option>
                 <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
                   ({{payer.arabicName}})</mat-option>
               </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
+            <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -87,23 +88,23 @@
         <thead>
           <tr>
             <th>Beneficiary Name</th>
-            <th>Member Card ID</th>
             <th>Eligibility ID</th>
             <th>Purpose</th>
             <th>Payer</th>
             <th>Transaction Date</th>
+            <th>Site Eligibility</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let transaction of transactions">
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.memberId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
               'dd-MM-yyyy'}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">{{transaction.siteEligibility ? transaction.siteEligibility : '-'}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
             <!-- <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">

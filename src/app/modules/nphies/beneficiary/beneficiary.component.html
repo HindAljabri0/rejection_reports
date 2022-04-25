@@ -101,7 +101,7 @@
                                 <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option> -->
                 <mat-option value="PRC">Resident Card</mat-option>
                 <mat-option value="PPN">Passport</mat-option>
-                <mat-option value="VS">visa</mat-option>
+                <mat-option value="VP">Visa</mat-option>
                 <mat-option value="NI">National Card</mat-option>
                 <mat-option value="MR">Medical Record Number</mat-option>
               </mat-select>
@@ -310,15 +310,18 @@
                 <td>
                   <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
                     [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+
+                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId" [insurancePayer]="insurancePlan.selectePayer"></app-nphies-payers-selector>
+
+                    <!-- <mat-form-field class="form-control custom-select-control">
+                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="selectedPayer2($event.value); insurancePlan.selectePayer = $event.value;" #Payer>
                         <mat-option [value]="insurancePlan.selectePayer">{{addMode?
                           selectedPayer(insurancePlan.selectePayer):"Select payer"}}
                         </mat-option>
                         <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
                           {{payer.englistName}}({{payer.arabicName}})</mat-option>
                       </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
                 </td>
                 <td>
@@ -510,7 +513,7 @@
 
                 <mat-option value="PRC">Resident Card</mat-option>
                 <mat-option value="PPN">Passport</mat-option>
-                <mat-option value="VS">visa</mat-option>
+                <mat-option value="VP">Visa</mat-option>
                 <mat-option value="NI">National Card</mat-option>
                 <mat-option value="MR">Medical Record Number</mat-option>
               </mat-select>
@@ -708,11 +711,12 @@
                   </mat-radio-button>
                 </td>
 
-
                 <td>
                   <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
                     [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-                    <mat-form-field class="form-control custom-select-control">
+                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId" [insurancePayer]="insurancePlan.selectePayer"></app-nphies-payers-selector>
+
+                    <!-- <mat-form-field class="form-control custom-select-control">
                       <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
                         <mat-option [value]="insurancePlan.selectePayer">{{editMode &&
                           selectedPayer(insurancePlan.selectePayer)!=null?
@@ -722,7 +726,7 @@
                           {{payer.englistName}}({{payer.arabicName}})</mat-option>
 
                       </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
                 </td>
                 <td>

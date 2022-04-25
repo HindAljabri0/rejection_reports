@@ -113,6 +113,11 @@ export class ProviderNphiesSearchService {
     const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(httpRequest);
   }
+  getPayersNotTBA() {
+    const requestUrl = `/lovs/allPayers`;
+    const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(httpRequest);
+  }
 
   getTransactionTypes() {
     const requestUrl = `/lovs/transactionTypes`;
@@ -284,6 +289,12 @@ export class ProviderNphiesSearchService {
 
   searchICDCode(searchQuery: string) {
     const requestURL: string = '/diagnosis/search?query=' + searchQuery;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
+  searchLOINK(providerId: string, searchQuery: string) {
+    const requestURL: string = '/providers/' + providerId + '/approval/loinc?code=' + searchQuery;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }

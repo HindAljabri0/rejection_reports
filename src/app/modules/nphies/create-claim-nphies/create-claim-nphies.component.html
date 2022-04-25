@@ -2,44 +2,37 @@
   <div class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
     <p class="title">View Claim</p>
     <div class="summary">
-      <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
-          otherDataModel.provClaimNo : '-' }}</strong></p>
-      <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId ?
-          otherDataModel.claimResourceId : '-'}}</strong>
+      <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong></p>
+      <p *ngIf="otherDataModel.claimResourceId"><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
-      <p>
+      <p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
         <span>Related Claim ID:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-"
-              +otherDataModel.relatedClaimId) : '-' }} </strong></span>
+          <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
         </strong>
       </p>
-      <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
-          otherDataModel.claimRefNo : '-'}}</strong></p>
-      <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
-          otherDataModel.providertransactionlogId : '-'}}</strong></p>
-      <p><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo ? (otherDataModel.batchInfo.batchId ?
-          otherDataModel.batchInfo.batchId : '-') : '-'}}</strong></p>
-      <p>
-        <span>Submission Date:</span>&nbsp;<strong>
-          <span *ngIf="otherDataModel.submissionDate">{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</span>
-          <span *ngIf="!otherDataModel.submissionDate">-</span>
-        </strong>
-      </p>
-
-      <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
-      <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-
+      <p *ngIf="otherDataModel.claimRefNo"><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
+      <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId}}</strong></p>
+      <p *ngIf="otherDataModel.batchInfo && otherDataModel.batchInfo.batchId"><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo.batchId}}</strong></p>
+      <p *ngIf="otherDataModel.submissionDate"><span>Submission Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</strong></p>
+      <p *ngIf="otherDataModel.outcome"><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome}}</strong></p>
+      <p *ngIf="otherDataModel.status"><span>Status:</span>&nbsp;<strong class="text-capitalize">{{otherDataModel.status}}</strong></p>
+      <p *ngIf="otherDataModel.statusDesc"><span>Status Description:</span>&nbsp;<strong class="text-capitalize">{{otherDataModel.statusDesc}}</strong></p>
+      <p *ngIf="otherDataModel.disposition"><span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong></p>
     </div>
   </div>
   <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
 
+    <li>
+      Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+    </li>
+    <li class="separator" *ngIf="otherDataModel.responseDecision.claimResDecisionCategories.length>0"></li>
     <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-      {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+      <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
     </li>
 
   </ul>
 
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab nphies-claim-tab" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
+  <mat-tab-group class="primary-tab nphies-claim-tab" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
@@ -153,13 +146,6 @@
         </div>
         <div class="col-4">
           <div class="form-group form-group-static">
-            <div class="control-label">Disposition</div>
-            <p class="form-control-static">{{otherDataModel.disposition ? otherDataModel.disposition : '-'}}
-            </p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
             <div class="control-label">Episode No</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ?
               FormNphiesClaim.controls.episodeId.value : '-'}}</p>
@@ -216,6 +202,15 @@
         <span [class.text-danger]="checkErrorBeneficiaryInfo === true">Beneficiary</span>
       </ng-template>
       <app-beneficiary-tab [(pageMode)]="pageMode" [otherDataModel]="otherDataModel"></app-beneficiary-tab>
+    </mat-tab>
+    <mat-tab *ngIf="FormNphiesClaim.controls.isNewBorn.value">
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-1" *ngIf="checkErrorSubscriberInfo === true" [class.text-danger]="checkErrorSubscriberInfo === true">
+          error</mat-icon>
+        <span [class.text-danger]="checkErrorSubscriberInfo === true">Subscriber</span>
+      </ng-template>
+      <app-beneficiary-tab [IsSubscriber]="true" [(pageMode)]="pageMode" [otherDataModel]="otherDataModel">
+      </app-beneficiary-tab>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -749,7 +744,8 @@
                           <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :"-"}}
                           </td>
                           <td class="row-click">{{d.display ? d.display :"-"}}</td>
-                          <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                          <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '')
+                            :"-"}}</td>
 
                         </tr>
                       </tbody>
@@ -867,7 +863,8 @@
 
     </mat-tab>
 
-    <mat-tab *ngIf="responseId">
+    <mat-tab
+      *ngIf="responseId && otherDataModel.status !== 'Error' && otherDataModel.status !== 'Accepted' && otherDataModel.status !== 'Failed' && otherDataModel.status !== 'NotAccepted'">
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication</span>
@@ -1026,7 +1023,7 @@
         </ul>
       </div>
     </mat-tab>
-    <mat-tab [label]="'Errors'">
+    <mat-tab *ngIf="otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
       <div class="table-responsive" *ngIf="otherDataModel.errors">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
@@ -1099,6 +1096,23 @@
     </mat-tab>
   </mat-tab-group>
   <div class="block-footer sticky" *ngIf="!isLoading">
+    <div class="left-block custom-paginator" *ngIf="paginationControl != null && paginationControl.size > 0">
+      <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="paginationControl.currentIndex==0">
+        <img src="./assets/ic-page-first.svg" alt="First" />
+      </button>
+      <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="paginationControl.currentIndex==0">
+        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+      </button>
+      <p class="page-info">
+        {{(paginationControl.currentIndex+1)}}<small>/{{paginationControl.size}}</small>
+      </p>
+      <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
+        <img src="./assets/ic-page-next.svg" alt="Next" />
+      </button>
+      <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
+        <img src="./assets/ic-page-last.svg" alt="Last" />
+      </button>
+    </div>
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
       <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">{{
@@ -1109,7 +1123,7 @@
 
 
 <div class="animate__animated animate__faster animate__fadeIn" *ngIf="pageMode && pageMode !== 'VIEW'"
-  [class.block-card]="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
+  [class.block-card]="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED' || routeMode.routeMode=='page'">
   <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate" class="page-top-loader">
   </mat-progress-bar>
 
@@ -1148,7 +1162,7 @@
         </p>
         <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-
+        <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}}</strong></p>
       </div>
     </div>
     <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
@@ -1314,18 +1328,18 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <!-- <div class="form-group"
-                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
-                  <label class="control-label">Episode No.</label>
-                  <input class="form-control" placeholder="Episode No" formControlName="episodeId">
-                  <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
-                    <span class="error-text">Please enter Episode No</span>
-                  </div>
-                </div> -->
-              <div class="form-group">
+              <div class="form-group"
+                [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
+                <label class="control-label">Episode No. <span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Episode No" formControlName="episodeId">
+                <div *ngIf="(isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')">
+                  <span class="error-text">Please enter Episode No</span>
+                </div>
+              </div>
+              <!-- <div class="form-group">
                 <label class="control-label">Episode No.</label>
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
-              </div>
+              </div> -->
             </div>
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
@@ -1599,8 +1613,16 @@
             </app-empty-state>
           </div>
         </mat-tab>
-        <mat-tab [label]="'Supporting Info'">
-          <h5 class="form-title pt-0">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-1" *ngIf="IsSupposrtingInfoError === true" [class.text-danger]="IsSupposrtingInfoError === true">
+              error</mat-icon>
+            <span [class.text-danger]="IsSupposrtingInfoError === true">Supporting Info</span>
+          </ng-template>
+
+          <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+
+          <!-- <h5 class="form-title pt-0">
             <span>Supporting Info</span>
             <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
               <mat-icon>add</mat-icon>
@@ -1612,7 +1634,6 @@
                 <tr>
                   <th>Sequence No.</th>
                   <th>Category</th>
-                  <!-- <th>Attachment</th> -->
                   <th>Code</th>
                   <th>Timing</th>
                   <th>Value</th>
@@ -1628,12 +1649,9 @@
                   <td>
                     {{s.categoryName}}
                   </td>
-                  <!-- <td>
-                                            {{s.attachment}}
-                                        </td> -->
+
                   <td>
                     {{s.code ? s.code :"-"}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
-                    <!-- {{s.codeName}} -->
                   </td>
                   <td>
                     <span *ngIf="!s.fromDateStr && !s.toDateStr">-</span>
@@ -1642,7 +1660,6 @@
                   </td>
                   <td>
                     <span *ngIf="s.category=='attachment'">
-                      <!-- {{s.attachment}} -->
                       <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
                     </span>
                     <span *ngIf="s.category != 'attachment'">
@@ -1674,7 +1691,7 @@
             </table>
           </div>
           <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
-          </app-empty-state>
+          </app-empty-state> -->
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
@@ -2005,7 +2022,8 @@
                                 d.nonStandardCode :"-"}}</td>
                               <td class="row-click">{{d.display ? d.display :"-"}}
                               </td>
-                              <td class="row-click">{{d.quantity ? d.quantity +" "+d.quantityCode :"-"}}</td>
+                              <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode :
+                                '') :"-"}}</td>
 
                               <td class="actions">
                                 <mat-menu #itemDetailsActionsMenu xPosition="before">
@@ -2214,7 +2232,7 @@
 
           </div>
         </mat-tab>
-        <mat-tab [label]="'Errors'" *ngIf="pageMode == 'EDIT'">
+        <mat-tab *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
           <div class="table-responsive" *ngIf="otherDataModel.errors">
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
               <thead>
@@ -2287,6 +2305,7 @@
         </mat-tab>
       </mat-tab-group>
       <div class="block-footer sticky">
+
         <div class="right-block btn-list" *ngIf="pageMode == 'CREATE'">
           <button type="submit" mat-flat-button color="primary">Save</button>
         </div>

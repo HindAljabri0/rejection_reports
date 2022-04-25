@@ -280,7 +280,7 @@
             </div>
             <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
                 <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
-                    {{selectedClaims.length==0?" All":"Selection"}}</button>
+                    {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
                 <ng-container *ngIf="summaries[this.selectedCardKey].statuses[0] === statusSelected.Accepted.toLowerCase()
                     || summaries[this.selectedCardKey].statuses[0] === statusSelected.Downloadable.toLowerCase()">
                 </ng-container>

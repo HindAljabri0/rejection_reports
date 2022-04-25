@@ -26,7 +26,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
   page: number;
-  pageSize: number;
+  pageSize: number = 10;
 
   communicationRequestModel: PaginatedResult<CommunicationRequest>;
   communicationRequests = [];
@@ -60,11 +60,11 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
           });
-          const pages = Math.ceil((this.communicationRequestModel.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.communicationRequestModel.totalElements / this.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.communicationRequestModel.number;
-          this.paginator.pageIndex = this.communicationRequestModel.number;
-          this.paginator.pageSize = this.communicationRequestModel.numberOfElements;
+          this.page = this.communicationRequestModel.number;
+          this.pageSize = this.communicationRequestModel.numberOfElements;
         }
         this.sharedServices.loadingChanged.next(false);
       }

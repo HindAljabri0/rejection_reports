@@ -1,13 +1,17 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Physicians</p>
+        <p class="align-self-center">Physicians</p>
+        <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2">
+            <img src="./assets/ic-download.svg" alt="Download" />
+            <span>Download Sample</span>
+        </button>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th>Physician ID </th>
+                        <th>Physician ID Test </th>
                         <th>Physician Name</th>
                         <th>Speciality</th>
                         <th>Role</th>
@@ -15,55 +19,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Hisham Elsayed Marey</td>
-                        <td>01.00</td>
-                        <td>Doctor</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Huaida Mardi Ahmed</td>
-                        <td>01.00</td>
-                        <td>Nurse</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Muhammad Aslam Khushk</td>
-                        <td>01.00</td>
-                        <td>Researcher</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Fathy Farid Fooshan</td>
-                        <td>01.00</td>
-                        <td>Teacher</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Saeed Saad Alshelwi</td>
-                        <td>01.00</td>
-                        <td>Dentist</td>
+                    <tr *ngFor="let Physicians of physiciansmodel">
+                        <td>{{Physicians.physician_id}}</td>
+                        <td>{{Physicians.physician_name}}</td>
+                        <td>{{Physicians.speciality_code}}</td>
+                        <td>{{Physicians.physician_role}}</td>
                         <td class="actions">
                             <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                                 <mat-icon>more_vert</mat-icon>

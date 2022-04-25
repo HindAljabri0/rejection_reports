@@ -4,9 +4,11 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidation/claim-files-validation.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
+
+import { HttpErrorResponse, HttpHeaderResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-beneficiary',
@@ -18,7 +20,7 @@ export class UploadBeneficiaryComponent implements OnInit {
   uploading = false;
   currentFileUpload: File;
   selectedFiles: FileList;
-  
+
   payerIdsFromCurrentFile: string[] = [];
   serviceCodeValidationDisabledMessages: string[] = [];
   priceListDoesNotExistMessages: string[] = [];
@@ -26,11 +28,12 @@ export class UploadBeneficiaryComponent implements OnInit {
   fileUploads: Observable<string[]>;
   uploadContainerClass = '';
   error = '';
-  data :any;
+  data: any;
   isVertical = true;
+
+  detailTopActionIcon = 'ic-download.svg';
   constructor(public beneficiaryService: ProvidersBeneficiariesService, public common: SharedServices,
-    private dialogService: DialogService, private adminService: AdminService,
-    private fileValidationService: ClaimFilesValidationService) { }
+    private dialogService: DialogService, private adminService: AdminService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
   }
@@ -52,7 +55,7 @@ export class UploadBeneficiaryComponent implements OnInit {
     // this.readFile();
   }
   checkfile() {
-    const validExts = new Array('.xlsx', '.csv');
+    const validExts = new Array('.xlsx');
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -85,6 +88,13 @@ export class UploadBeneficiaryComponent implements OnInit {
       this.uploading = false;
       this.data = value;
       console.log(JSON.stringify(this.data));
+
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: `File Upload Successful`,
+        isError: false
+      })
+
       //this.dialogService.showMessage('Success',"Saved Count : "+value.savedBeneficiaryCount + " Falid Count : "+value.failToSaveBeneficiaryCount, 'success', true, 'OK', null, true);
       this.cancel();
     });
@@ -104,5 +114,28 @@ export class UploadBeneficiaryComponent implements OnInit {
     this.selectedFiles = null;
     this.priceListDoesNotExistMessages = [];
   }
+
+  downloadBeneSample() {
+
+    this.beneficiaryService.download(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null) {
+          var data = new Blob([event.body as BlobPart], { type: 'application/octet-stream' });
+          const FileSaver = require('file-saver');
+          FileSaver.saveAs(data, "SampleBeneficiaryDownload.xlsx");
+        }
+      }
+    }
+      , err => {
+        if (err instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `Unable to download File at this moment`,
+            isError: true
+          });
+        }
+      });
+  }
+
 
 }

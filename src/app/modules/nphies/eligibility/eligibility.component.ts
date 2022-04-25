@@ -46,6 +46,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   endDateControl = new FormControl();
   endDateError: string;
   selectedPayer: string;
+  selectedDestination: string;
   selectedPayerError: string;
   purposeRadioButton: string;
   isBenefits = false;
@@ -121,9 +122,20 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.isNewBorn = !isNewBorn;
 
     if (this.isNewBorn) {
+      this.purposeRadioButton = '1';
       this.subscriberSearchController.setValidators([Validators.required]);
       this.subscriberSearchController.updateValueAndValidity();
     } else {
+      // tslint:disable-next-line:max-line-length
+      if (this.selectedBeneficiary.plans != null && this.selectedBeneficiary.plans instanceof Array && this.selectedBeneficiary.plans.length > 0) {
+        this.purposeRadioButton = '1';
+        const primaryPlanIndex = this.selectedBeneficiary.plans.findIndex(plan => plan.primary);
+        if (primaryPlanIndex != -1) {
+          this.selectedPlanId = this.selectedBeneficiary.plans[primaryPlanIndex].planId;
+        }
+      } else {
+        this.purposeRadioButton = '2';
+      }
       this.subscriberSearchController.clearValidators();
       this.subscriberSearchController.updateValueAndValidity();
     }
@@ -136,6 +148,11 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     } else {
       return false;
     }
+  }
+
+  selectPayer(event) {
+    this.selectedPayer = event.value.payerNphiesId;
+    this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId;
   }
 
   searchBeneficiaries(IsSubscriber = null) {
@@ -250,7 +267,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.isBenefits = false;
       this.isValidation = false;
 
-      if (this.selectedPayer == null || this.payers.findIndex(payer => payer.nphiesId == this.selectedPayer) == -1) {
+      if (this.selectedPayer == null) {
         this.selectedPayerError = "Please select a payer first";
         requestHasErrors = true;
       }
@@ -283,24 +300,28 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       isNewBorn: this.isNewBorn,
       beneficiary: this.selectedBeneficiary,
       subscriber: this.isNewBorn ? this.selectedSubscriber : null,
-      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null },
+      // tslint:disable-next-line:max-line-length
+      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null, payerNphiesId: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation,
-      transfer: this.transfer
+      transfer: this.transfer,
+      // tslint:disable-next-line:max-line-length
+      destinationId: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).tpaNphiesId : this.selectedDestination
     };
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
-        this.eligibilityResponseModel = event.body as EligibilityResponseModel
+        this.eligibilityResponseModel = event.body as EligibilityResponseModel;
         this.showDetails = true;
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
+        // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage(errorEvent.error.message, 'Transaction Id: ' + errorEvent.error.transactionId, 'alert', true, 'OK', errorEvent.error.errors);
         // this.dialog.open(ApiErrorsDialogComponent, {
         //   panelClass: ['primary-dialog', 'dialog-lg'],

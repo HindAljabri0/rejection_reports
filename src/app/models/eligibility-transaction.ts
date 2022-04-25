@@ -2,6 +2,7 @@ import { Paginateable } from './paginateable';
 
 export class EligibilityTransaction extends Paginateable {
   responseId: number;
+  eligibilityResponseId: string;
   memberId: string;
   eligibilityId: string;
   transactionDate: string;
@@ -11,10 +12,12 @@ export class EligibilityTransaction extends Paginateable {
   status: string;
   purpose: string[];
   documentId: number;
+  siteEligibility: string;
 
   constructor(body: {}) {
     super(body);
     this.responseId = body['responseId'];
+    this.eligibilityResponseId = body['eligibilityResponseId'];
     this.memberId = body['memberId'];
     this.eligibilityId = body['eligibilityId'];
     this.transactionDate = body['transactionDate'];
@@ -24,5 +27,6 @@ export class EligibilityTransaction extends Paginateable {
     this.purpose = body['purpose'];
     this.status = body['status'];
     this.documentId = body['documentId'];
+    this.siteEligibility = body['siteEligibility'];
   }
 }

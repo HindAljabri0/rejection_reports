@@ -17,8 +17,7 @@
               <mat-option *ngFor="let reason of cancelReasonList" [value]="reason">{{reason.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div
-            *ngIf="(isSubmitted || FormCancel.get('cancelReason').touched) && FormCancel.get('cancelReason').hasError('required')">
+          <div *ngIf="(isSubmitted || FormCancel.get('cancelReason').touched) && FormCancel.get('cancelReason').hasError('required')">
             <span class="error-text">Please enter reason</span>
           </div>
         </div>
@@ -26,7 +25,7 @@
     </div>
     <div class="primary-dialog-footer has-border">
       <div class="btn-list text-right">
-        <button type="button" mat-button (click)="closeDialog()">Cancel</button>
+        <button type="button" mat-button (click)="closeDialog()">Close</button>
         <button type="submit" mat-flat-button color="primary">
           <span>Confirm</span>
         </button>

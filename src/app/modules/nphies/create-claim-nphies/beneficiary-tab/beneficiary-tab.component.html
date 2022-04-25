@@ -1,14 +1,14 @@
 <ng-container *ngIf="FormNphiesClaim && pageMode && pageMode !== 'VIEW'">
   <form [formGroup]="FormNphiesClaim">
-    <ng-container *ngIf="pageMode === 'CREATE'">
-      <h5 class="form-title pt-0">Beneficary Info</h5>
+    <ng-container>
+      <h5 *ngIf="!IsSubscriber" class="form-title pt-0">Beneficary Info</h5>
       <div *ngIf="!IsSubscriber" class="form-group">
         <label class="control-label pb-0" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">&nbsp;</label>
         <div class="checkbox-group inline">
           <mat-checkbox color="primary" formControlName="isNewBorn">New born?</mat-checkbox>
         </div>
       </div>
-      <div class="d-flex">
+      <div *ngIf="pageMode === 'CREATE'" class="d-flex">
         <div class="form-group flex-grow-1"
           [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
           <label class="control-label">Select a {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}<span *ngIf="(!IsSubscriber) || (IsSubscriber && IsNewBorn)"
@@ -36,7 +36,7 @@
       </div>
 
 
-      <div *ngIf="!IsSubscriber" class="row small-gutter">
+      <div *ngIf="!IsSubscriber && pageMode === 'CREATE'" class="row small-gutter">
         <div class="col-md-4" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
           <div class="form-group" [matTooltip]="selectedPlanIdError"
             [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
@@ -343,16 +343,18 @@
             <td class="maxw260">
               <div class="form-group m-0"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')}">
-                <mat-form-field class="form-control custom-select-control">
+                <!-- <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="insurancePlanPayerId">
                     <mat-option value="">Select Payer</mat-option>
                     <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">
                       {{payer.englistName}}({{payer.arabicName}})</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')">
+                -->
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormNphiesClaim" [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
+                <!-- <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')">
                   <span class="error-text">Please select Payer</span>
-                </div>
+                </div> -->
               </div>
             </td>
             <td>
@@ -413,7 +415,7 @@
     </app-empty-state>
   </form>
 </ng-container>
-<ng-container *ngIf="otherDataModel && otherDataModel.beneficiary && pageMode === 'VIEW'">
+<ng-container *ngIf="!IsSubscriber && otherDataModel && otherDataModel.beneficiary && pageMode === 'VIEW'">
   <h5 class="form-title">Personal Information</h5>
   <div class="row small-gutter">
     <div class="col-4 col-lg-3">
@@ -446,10 +448,10 @@
         <p class="form-control-static">{{otherDataModel.beneficiary.fullName}}</p>
       </div>
     </div>
-    <div *ngIf="!IsSubscriber" class="col-4 col-lg-3">
+    <div class="col-4 col-lg-3">
       <div class="form-group form-group-static">
         <div class="control-label">New born?</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.isNewBorn ? 'Yes' : 'No'}}</p>
+        <p class="form-control-static">{{otherDataModel.isNewBorn ? 'Yes' : 'No'}}</p>
       </div>
     </div>
     <div class="col-4 col-lg-3">
@@ -621,4 +623,166 @@
   <app-empty-state [className]="'mb-2'" *ngIf="!IsSubscriber && otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan"
     [message]="'No insurance plans found!'">
   </app-empty-state>
+</ng-container>
+<ng-container *ngIf="IsSubscriber && otherDataModel && otherDataModel.subscriber && pageMode === 'VIEW'">
+  <h5 class="form-title">Personal Information</h5>
+  <div class="row small-gutter">
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">First Name</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.firstName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Second Name</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.secondName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Third Name</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.thirdName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Family Name</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.familyName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Full Name</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.fullName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Beneficiary File ID</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.beneficiaryFileld}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Date of Birth</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.dobLabel}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Gender</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.gender}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Document Type</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.documentTypeName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Document ID</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.documentId}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">E-Health ID</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.eHealthId}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Nationality</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.nationalityName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Residency Type</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.residencyTypeName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Contact Number</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.contactNumber}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Marital Status</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.maritalStatusName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Blood Group</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.bloodGroupName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Preferred Language</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.preferredLanguageName}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Emergency Phone Number</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.emergencyPhoneNumber}}</p>
+      </div>
+    </div>
+    <div class="col-4 col-lg-3">
+      <div class="form-group form-group-static">
+        <div class="control-label">Email</div>
+        <p class="form-control-static">{{otherDataModel.subscriber.email}}</p>
+      </div>
+    </div>
+  </div>
+
+  <h5 class="form-title">
+    <span>Address</span>
+  </h5>
+
+  <div class="table-responsive ">
+    <table class="primary-grid claim-view-table">
+      <thead>
+        <tr>
+          <th>House No./Appartment</th>
+          <th>Street Name</th>
+          <th>City</th>
+          <th>State/Province</th>
+          <th>Country</th>
+          <th>Postal Code</th>
+          <th width="10"></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="align-middle">
+          <td>
+            {{otherDataModel.subscriber.addressLine}}
+          </td>
+          <td>
+            {{otherDataModel.subscriber.streetLine}}
+          </td>
+          <td>
+            {{otherDataModel.subscriber.city}}
+          </td>
+          <td>
+            {{otherDataModel.subscriber.state}}
+          </td>
+          <td>
+            {{otherDataModel.subscriber.countryName}}
+          </td>
+          <td>
+            {{otherDataModel.subscriber.postalCode}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </ng-container>

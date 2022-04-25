@@ -89,7 +89,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
   documentTypes: { Code: string, Name: string }[] = [
     { Code: 'PRC', Name: 'Resident Card' },
     { Code: 'PPN', Name: 'Passport' },
-    { Code: 'VS', Name: 'Visa' },
+    { Code: 'VP', Name: 'Visa' },
     { Code: 'NI', Name: 'National Card' },
     { Code: 'MR', Name: 'Medical Record Number' }
   ];
@@ -142,7 +142,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
         model.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
         model.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
         model.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
-        model.primary = this.FormNphiesClaim.controls.insurancePrimary.value;
+        model.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
         model.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
         this.insurancePlans.push(model);
       }
@@ -282,6 +282,30 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
       }
     }
 
+
+    if (this.otherDataModel.subscriber) {
+      this.otherDataModel.subscriber.dobLabel = moment(this.otherDataModel.subscriber.dob, 'YYYY-MM-DD').format('DD-MM-YYYY');
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.genderName = this.genders.filter(x => x.Code === this.otherDataModel.subscriber.gender)[0] ? this.genders.filter(x => x.Code === this.otherDataModel.subscriber.gender)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.documentTypeName = this.documentTypes.filter(x => x.Code === this.otherDataModel.subscriber.documentType)[0] ? this.documentTypes.filter(x => x.Code === this.otherDataModel.subscriber.documentType)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.nationalityName = this.nationalities.filter(x => x.Code === this.otherDataModel.subscriber.nationality)[0] ? this.nationalities.filter(x => x.Code === this.otherDataModel.subscriber.nationality)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.residencyTypeName = this.recedencetypes.filter(x => x.Code === this.otherDataModel.subscriber.residencyType)[0] ? this.recedencetypes.filter(x => x.Code === this.otherDataModel.subscriber.residencyType)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.maritalStatusName = this.maritalStatuses.filter(x => x.Code === this.otherDataModel.subscriber.maritalStatus)[0] ? this.maritalStatuses.filter(x => x.Code === this.otherDataModel.subscriber.maritalStatus)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.bloodGroupName = this.bloodGroup.filter(x => x.Code === this.otherDataModel.subscriber.bloodGroup)[0] ? this.bloodGroup.filter(x => x.Code === this.otherDataModel.subscriber.bloodGroup)[0].Name : '-';
+      // tslint:disable-next-line:max-line-length
+      this.otherDataModel.subscriber.preferredLanguageName = this.preferredLanguages.filter(x => x.Code === this.otherDataModel.subscriber.preferredLanguage)[0] ? this.preferredLanguages.filter(x => x.Code === this.otherDataModel.subscriber.preferredLanguage)[0].Name : '-';
+
+      if (this.otherDataModel.subscriber.country) {
+        // tslint:disable-next-line:max-line-length
+        this.otherDataModel.subscriber.countryName = this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.subscriber.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() === this.otherDataModel.subscriber.country.toLowerCase())[0].Name : '-';
+      }
+    }
+
     this.IsLoading = false;
 
   }
@@ -402,10 +426,21 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].expiryDate);
       this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].memberCardId);
-      this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber.toLowerCase() : '');
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber.toLowerCase() : '');
       this.FormNphiesClaim.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+
+      this.FormNphiesClaim.controls.insurancePlanPayerName.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+      this.FormNphiesClaim.controls.insurancePayerNphiesId.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
+      //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      this.FormNphiesClaim.controls.insurancePlanPrimary.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
       // this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
     }
   }
@@ -456,6 +491,18 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
       if (payer.payerId == payerId) {
         return payer.englistName + '(' + payer.arabicName + ')';
       }
+    }
+  }
+
+  selectPayer(event) {
+    if (event.value) {
+      this.FormNphiesClaim.patchValue({
+        insurancePlanPayerId: event.value.payerNphiesId,
+        destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    } else {
+      this.FormNphiesClaim.controls.insurancePlanPayerId.setValue('');
+      this.FormNphiesClaim.controls.destinationId.setValue('');
     }
   }
 

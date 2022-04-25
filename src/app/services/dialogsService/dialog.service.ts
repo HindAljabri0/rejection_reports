@@ -129,7 +129,7 @@ export class DialogService {
     });
   }
 
-  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, closeOnOk = null) {
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, closeOnOk = null, _transactionId = null) {
     if (!dontCloseAll) {
       this.closeAll();
     }
@@ -137,6 +137,7 @@ export class DialogService {
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
+      transactionId: _transactionId ? _transactionId: '',
       mainMessage: _mainMessage,
       subMessage: _subMessage,
       mode: _mode,

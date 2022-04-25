@@ -69,8 +69,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Pre Auth Reference No</label>
-                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
-                </tag-input>
+                <input placeholder="Enter Preauth Ref No" class="form-control" formControlName="preAuthRefNo">
               </div>
             </div>
           </div>
@@ -85,7 +84,7 @@
             <thead>
               <tr>
                 <th>Beneficiary Name</th>
-                <th>Member Card ID</th>
+                <th>Pre Auth Ref No</th>
                 <th>Pre Authorization ID</th>
                 <th>Transaction Date</th>
                 <th>Payer</th>
@@ -99,15 +98,16 @@
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
-                  {{transaction.memberCardID}}</td>
+                  {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.nphiesRequestId}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.transactionDate | date:
-                  'dd-MM-yyyy'}}</td>
+                  'dd-MM-yyyy hh:mm aa'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.payerName}}</td>
-                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.status}}
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  <span [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status | titlecase}}</span>
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
@@ -124,7 +124,7 @@
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item *ngIf="transaction.status === 'Processing Complete'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
-                        <span>Reuse</span>
+                        <span>Follow Up/Add Related</span>
                       </button>
                       <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')">
                         <mat-icon class="material-icons-outlined">close</mat-icon>

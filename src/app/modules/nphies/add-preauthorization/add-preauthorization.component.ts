@@ -108,8 +108,9 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanRelationWithSubscriber: [''],
     insurancePlanCoverageType: [''],
     insurancePlanPayerName: [''],
-    insurancePrimary: [''],
+    insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
+    insurancePlanTpaNphiesId: [],
     isNewBorn: [false],
     transfer: [false],
     subscriberName: ['']
@@ -386,7 +387,7 @@ export class AddPreauthorizationComponent implements OnInit {
   onPayeeTypeChange() {
     if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiId === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
     this.FormPreAuthorization.controls.payeeType.disable();
     this.FormPreAuthorization.controls.payee.disable();
@@ -540,6 +541,17 @@ export class AddPreauthorizationComponent implements OnInit {
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber);
       this.FormPreAuthorization.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+
+      this.FormPreAuthorization.controls.insurancePlanPayerName.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+      this.FormPreAuthorization.controls.insurancePayerNphiesId.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
+      //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+      this.FormPreAuthorization.controls.insurancePlanPrimary.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
     }
   }
@@ -1073,6 +1085,97 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
+  checkSupposrtingInfoValidation() {
+    let hasError = false;
+
+    this.SupportingInfo.forEach(x => {
+      switch (x.category) {
+
+        case 'info':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'onset':
+
+          if (!x.code || !x.fromDate) {
+            hasError = true;
+          }
+
+          break;
+        case 'attachment':
+
+          if (!x.attachment) {
+            hasError = true;
+          }
+
+          break;
+        case 'missingtooth':
+
+          if (!x.code || !x.fromDate || !x.reason) {
+            hasError = true;
+          }
+
+          break;
+        case 'hospitalized':
+        case 'employmentImpacted':
+
+          if (!x.fromDate || !x.toDate) {
+            hasError = true;
+          }
+
+          break;
+
+        case 'lab-test':
+
+          if (!x.code || !x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'reason-for-visit':
+
+          if (!x.code) {
+            hasError = true;
+          }
+
+          break;
+        case 'days-supply':
+        case 'vital-sign-weight':
+        case 'vital-sign-systolic':
+        case 'vital-sign-diastolic':
+        case 'icu-hours':
+        case 'ventilation-hours':
+        case 'vital-sign-height':
+        case 'temperature':
+        case 'pulse':
+        case 'respiratory-rate':
+        case 'oxygen-saturation':
+        case 'birth-weight':
+
+          if (!x.value) {
+            hasError = true;
+          }
+
+          break;
+        case 'chief-complaint':
+
+          if (!x.code && !x.value) {
+            hasError = true;
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return hasError;
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     let hasError = false;
@@ -1142,6 +1245,10 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (this.checkSupposrtingInfoValidation()) {
+      hasError = true;
+    }
 
     if (!this.checkItemCareTeams()) {
       hasError = true;
@@ -1225,12 +1332,19 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.subscriber = null;
       }
 
+      this.model.destinationId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
+
       this.model.insurancePlan = {};
       this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
       this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
       this.model.insurancePlan.expiryDate = this.FormPreAuthorization.controls.insurancePlanExpiryDate.value;
+      this.model.insurancePlan.payerName = this.FormPreAuthorization.controls.insurancePlanPayerName.value;
+      this.model.insurancePlan.payerNphiesId = this.FormPreAuthorization.controls.insurancePayerNphiesId.value;
+      // this.model.insurancePlan.planId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.insurancePlan.primary = this.FormPreAuthorization.controls.insurancePlanPrimary.value;
+      this.model.insurancePlan.tpaNphiesId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
       // this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       // this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
@@ -1261,18 +1375,39 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {
+        // const model: any = {};
+        // model.sequence = x.sequence;
+        // model.category = x.category;
+        // model.code = x.code;
+        // model.fromDate = x.fromDate;
+        // model.toDate = x.toDate;
+        // model.value = x.value;
+        // model.reason = x.reason;
+        // model.attachment = x.byteArray;
+        // model.attachmentName = x.attachmentName;
+        // model.attachmentType = x.attachmentType;
+        // model.attachmentDate = x.attachmentDate;
+        // return model;
         const model: any = {};
         model.sequence = x.sequence;
         model.category = x.category;
         model.code = x.code;
+        if (x.fromDate) {
+          x.fromDate = this.datePipe.transform(x.fromDate, 'yyyy-MM-dd');
+        }
         model.fromDate = x.fromDate;
+        if (x.toDate) {
+          x.toDate = this.datePipe.transform(x.toDate, 'yyyy-MM-dd');
+        }
         model.toDate = x.toDate;
         model.value = x.value;
         model.reason = x.reason;
-        // model.attachment = this.sharedServices._base64ToArrayBuffer(x.byteArray);
-        model.attachment = x.byteArray;
+        model.attachment = x.attachment;
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
+        if (x.attachmentDate) {
+          x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
+        }
         model.attachmentDate = x.attachmentDate;
         return model;
       });
@@ -1379,7 +1514,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantity = parseFloat(y.quantity);
             return dmodel;
           });
 
@@ -1419,7 +1554,7 @@ export class AddPreauthorizationComponent implements OnInit {
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseInt(y.quantity);
+            dmodel.quantity = parseFloat(y.quantity);
             dmodel.quantityCode = y.quantityCode;
             return dmodel;
           });
@@ -1455,7 +1590,11 @@ export class AddPreauthorizationComponent implements OnInit {
                   });
                 }
                 this.sharedServices.loadingChanged.next(false);
-                this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+                if (body.transactionId) {
+                  this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
+                } else {
+                  this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+                }
 
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
