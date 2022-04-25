@@ -295,6 +295,18 @@ export class AddPreauthorizationComponent implements OnInit {
             documentType: res.beneficiary.documentType,
             fullName: res.beneficiary.fullName,
             gender: res.beneficiary.gender,
+            insurancePlanMemberCardId: res.beneficiary.insurancePlan.memberCardId,
+            insurancePlanCoverageType: res.beneficiary.insurancePlan.coverageType,
+            insurancePayerNphiesId: res.beneficiary.insurancePlan.payerId,
+            insurancePlanPayerId: res.beneficiary.insurancePlan.payerId,
+            insurancePlanRelationWithSubscriber: res.beneficiary.insurancePlan.relationWithSubscriber,
+            insurancePlanExpiryDate: res.beneficiary.insurancePlan.expiryDate,
+            insurancePlanPrimary: res.beneficiary.insurancePlan.primary,
+            // tslint:disable-next-line:max-line-length
+            insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].payerName : '',
+
+            // tslint:disable-next-line:max-line-length
+            insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
           });
 
           if (res.beneficiary && res.beneficiary.insurancePlan && res.beneficiary.insurancePlan.payerId) {
