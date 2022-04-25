@@ -14,7 +14,81 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+  deleteClaimById(providerId: string, claimId: string) {
+    const requestUrl = `/providers/${providerId}/remove/${claimId}`;
+    const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
+  deleteClaimByCriteria(
+    providerId: string, payerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
+    claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
+    claimIDs: string[], fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string, netAmount?: string, batchNo?: string) {
 
+    let requestURL = `/providers/${providerId}/criteria?`;
+    if (claimIDs != null && claimIDs.length > 0) {
+      requestURL += `claimIDs=${claimIDs}`;
+    } else {
+      if (payerId != null && uploadId == null) {
+        requestURL += `payerId=${payerId}&`;
+      }
+      if (organizationId != null && uploadId == null) {
+        requestURL += `organizationId=${organizationId}&`
+      }
+
+      if (batchId != null) {
+        requestURL += `batchId=${batchId}&`;
+      }
+      if (uploadId != null) {
+        requestURL += `uploadId=${uploadId}&`;
+      }
+
+      if (caseTypes != null) {
+        requestURL += `caseTypes=${caseTypes}&`;
+      }
+      if (invoiceNo != null) {
+        requestURL += `invoiceNo=${invoiceNo}&`;
+      }
+      if (policyNo != null) {
+        requestURL += `policyNo=${policyNo}&`;
+      }
+      if (statuses != null) {
+        requestURL += `statuses=${statuses}&`;
+      }
+      if (fromDate != null) {
+        requestURL += `fromDate=${fromDate}&`;
+      }
+      if (toDate != null) {
+        requestURL += `toDate=${toDate}&`;
+      }
+      if (claimRefNo != null) {
+        requestURL += `claimRefNo=${claimRefNo}&`;
+      }
+      if (patientFileNo != null) {
+        requestURL += `patientFileNo=${patientFileNo}&`;
+      }
+      if (memberId != null) {
+        requestURL += `memberId=${memberId}&`;
+      }
+      if (drname != null && drname !== '' && drname !== undefined) {
+        requestURL += `drname=${drname}&`;
+      }
+      if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+        requestURL += `nationalId=${nationalId}&`;
+      }
+      if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+        requestURL += `claimDate=${claimDate}`;
+      }
+      if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+        requestURL += `netAmount=${netAmount}`;
+      }
+      if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+        requestURL += `batchNo=${batchNo}`;
+      }
+    }
+
+    const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
+    return this.http.request(request);
+  }
   getApprovalRequestTransactions(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approvals/fetch/criteria`;
     const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
