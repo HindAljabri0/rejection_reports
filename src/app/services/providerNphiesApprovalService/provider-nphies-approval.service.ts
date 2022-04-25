@@ -24,7 +24,7 @@ export class ProviderNphiesApprovalService {
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
     claimIDs: string[], fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string, netAmount?: string, batchNo?: string) {
 
-    let requestURL = `/providers/${providerId}/criteria?`;
+    let requestURL = `/providers/${providerId}/remove/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
       requestURL += `claimIDs=${claimIDs}`;
     } else {

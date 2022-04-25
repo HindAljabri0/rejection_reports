@@ -37,10 +37,11 @@ export class NphiesUploadCardComponent implements OnInit {
             null, null, null, null, null, null, null, null, null, null, null, null)
             .subscribe(event => {
               if (event instanceof HttpResponse) {
-                this.data.downloadable = 0;
-                this.data.invalid = 0;
-                this.data.ready_for_submission = 0;
-                this.data.rejected_by_waseel = 0;
+                this.dialogService.openMessageDialog({
+                  title: '',
+                  message: `upload ${this.data.uploadName} Deleted Successfully`,
+                  isError: false
+                });
                 if (this.totalClaims == 0) {
                   this.data.uploadName += ' [DELETED]';
                 }
@@ -69,14 +70,14 @@ export class NphiesUploadCardComponent implements OnInit {
   }
   get totalClaims() {
     return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
-      + this.data.underProcessing + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
+      + this.data.cancelled + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
       + this.data.rejectedByNphies + this.data.approved + this.data.partialApproved
       + this.data.queuedByNphies + this.data.pended;
   }
 
   get canBeDeleted() {
     return ((this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim))
-      || (this.data.readyForSubmission + this.data.rejectedByWaseel) > 0;
+      && (this.data.readyForSubmission + this.data.rejectedByWaseel) > 0;
   }
 
 }
