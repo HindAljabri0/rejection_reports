@@ -1319,7 +1319,33 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
   }
+  deleteClaim(claimId: string, refNumber: string) {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Claim?',
+        `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.providerNphiesApprovalService.deleteClaimById(this.providerId, claimId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('',
+                `Claim with reference ${refNumber} was deleted successfully.`,
+                false))
+                .subscribe(afterColse => this.fetchData());
 
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+            }
+          });
+        }
+      });
+  }
   showColumns(selectedCardKey: number, status: string) {
     if (selectedCardKey == 0) {
       return false;
@@ -1334,6 +1360,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
+    return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
+  }
+  claimIsDeletable(status: string) {
     return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
   }
   claimIsCancelled(status: string) {

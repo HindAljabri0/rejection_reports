@@ -1,11 +1,11 @@
 <div class="uploaded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
     <div class="d-flex">
         <span class="medium text-primary align-self-center">{{data.uploadName}}</span>
-        <!-- <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
-          (click)="$event.stopPropagation();"
-          matTooltip="Delete All Not Submitted Claims (Ready For Submission, Rejected By Waseel, Downloadable, and Invalid)">
-          <mat-icon class="d-block">delete_outline</mat-icon>
-      </span> -->
+        <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
+            (click)="$event.stopPropagation(); deleteUpload()"
+            matTooltip="Delete All Not Submitted Claims (Ready For Submission, Rejected By Waseel, Falid, and Error)">
+            <mat-icon class="d-block">delete_outline</mat-icon>
+        </span>
     </div>
     <hr class="hr separator">
     <div class="row small-gutter align-items-center">
@@ -73,10 +73,12 @@
     <hr class="hr separator">
     <div class="d-flex">
         <span class="text-grey d-flex align-items-center">
-            <mat-icon class="material-icons-outlined size-18 mr-2">event</mat-icon> {{data.uploadDate | date : 'EEEE, d MMMM, y'}}
+            <mat-icon class="material-icons-outlined size-18 mr-2">event</mat-icon> {{data.uploadDate | date : 'EEEE, d
+            MMMM, y'}}
         </span>
         <span class="text-grey ml-auto text-right d-flex align-items-center">
-            <mat-icon class="material-icons-outlined size-18 mr-2">schedule</mat-icon> {{data.uploadDate | date : 'hh:mm a'}}
+            <mat-icon class="material-icons-outlined size-18 mr-2">schedule</mat-icon> {{data.uploadDate | date : 'hh:mm
+            a'}}
         </span>
     </div>
 </div>
