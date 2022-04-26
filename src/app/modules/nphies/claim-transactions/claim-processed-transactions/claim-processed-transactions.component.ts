@@ -26,7 +26,7 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
   page: number;
-  pageSize: number;
+  pageSize: number = 10;
 
   processedTransactionModel: PaginatedResult<ProcessedTransaction>;
   processedTransactions = [];
@@ -62,11 +62,11 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
           });
-          const pages = Math.ceil((this.processedTransactionModel.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.processedTransactionModel.totalElements / this.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.processedTransactionModel.number;
-          this.paginator.pageIndex = this.processedTransactionModel.number;
-          this.paginator.pageSize = this.processedTransactionModel.numberOfElements;
+          this.page = this.processedTransactionModel.number;
+          this.pageSize = this.processedTransactionModel.numberOfElements;
         }
         this.sharedServices.loadingChanged.next(false);
       }

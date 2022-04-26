@@ -12,6 +12,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
 
   @Input() Form: FormGroup;
   @Input() isSubmitted;
+  @Input() isRequired = true;
 
   @Input() insurancePayer: any;
 
@@ -50,9 +51,10 @@ export class NphiesPayersSelectorComponent implements OnInit {
   getPayers() {
     this.nphiesSearchService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
-        let body = event.body;
+        const body = event.body;
         if (body instanceof Array) {
           this.organizations = body;
+          this.setDestinationId();
         }
       }
     }, errorEvent => {
@@ -60,6 +62,18 @@ export class NphiesPayersSelectorComponent implements OnInit {
         this.errorMessage = errorEvent.error;
       }
     });
+  }
+
+  // For extracted claims which has invalid destination Id
+  setDestinationId() {
+    if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
+      const payerNphiesIdValue = this.Form.controls.insurancePlanPayerId.value;
+      this.organizations.forEach(x => {
+        if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+          this.Form.controls.destinationId.setValue(x.code);
+        }
+      });
+    }
   }
 
   selectPayer(event) {

@@ -67,7 +67,7 @@ import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficia
     LabResultsComponent,
     PbmCommentsComponent,
     CreateClaimNphiesComponent,
-    BeneficiaryTabComponent
+    BeneficiaryTabComponent,
   ],
   imports: [
     RouterModule.forChild([

@@ -29,13 +29,14 @@ export const environment = {
     approvalDetailInquiryService: `${host}:8333`,
     providersBeneficiariesService: `${host}:8995`,
     providerNphiesEligibility: `${host}:8022`,
-    providerNphiesSearch: `${host}:8090`,
+    providerNphiesSearch: `https://api.qa-eclaims.waseel.com/provider-nphies-search`,
     providerNphiesApproval: `${host}:8025`,
     nphiesClaimUploader: `${host}:8088`,
     claimsDownloadsService: `${host}:8052`,
     nphiesPollManagement: `${host}:9991`,
     contractManagementService: `${host}:8099`,
-    claimReviewService: `${host}:8100`
+    claimReviewService: `${host}:8100`,
+    nphiesConfigurationService: `${host}:8092`
 };
 
 /*

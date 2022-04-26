@@ -146,7 +146,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           ? this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0].name
           : '';
 
-        const codeList = this.sharedDataService.getCodeName(i.category);
+        if (i.category === 'chief-complaint' || i.category === 'onset' || i.category === 'lab-test') {
+          i.description = i.code;
+        }
+
+        const codeList = this.sharedDataService.getCodeName(i.category, i.code);
 
         // tslint:disable-next-line:max-line-length
         if ((i.category === 'missingtooth' || i.category === 'reason-for-visit' || i.category === 'chief-complaint' || i.category === 'onset') && codeList) {
@@ -154,7 +158,13 @@ export class PreAuthorizationDetailsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             i.codeName = codeList.filter(y => y.diagnosisCode === i.code)[0] ? codeList.filter(y => y.diagnosisCode === i.code)[0].diagnosisDescription : '';
           } else {
-            i.codeName = codeList.filter(y => y.value === i.code)[0] ? codeList.filter(y => y.value === i.code)[0].name : '';
+            if (i.category === 'missingtooth') {
+              // tslint:disable-next-line:max-line-length
+              i.codeName = codeList.filter(y => y.value === parseInt(i.code))[0] ? codeList.filter(y => y.value === parseInt(i.code))[0].name : '';
+            } else {
+              i.codeName = codeList.filter(y => y.value === i.code)[0] ? codeList.filter(y => y.value === i.code)[0].name : '';
+            }
+
           }
         }
 
@@ -165,9 +175,112 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           i.toDateStr = moment(i.toDate).format('DD-MM-YYYY');
         }
 
-        i.unit = this.sharedDataService.durationUnitList.filter(y => y.value === i.unit)[0];
+        switch (i.category) {
+
+          case 'info':
+
+            i.IsValueRequired = true;
+
+            break;
+          case 'onset':
+
+            i.IsCodeRequired = true;
+            i.IsFromDateRequired = true;
+
+            break;
+          case 'attachment':
+
+            i.IsAttachmentRequired = true;
+
+            break;
+          case 'missingtooth':
+
+            i.IsCodeRequired = true;
+            i.IsFromDateRequired = true;
+            i.IsReasonRequired = true;
+
+            break;
+          case 'hospitalized':
+          case 'employmentImpacted':
+
+            i.IsFromDateRequired = true;
+            i.IsToDateRequired = true;
+
+            break;
+
+          case 'lab-test':
+
+            i.IsCodeRequired = true;
+            i.IsValueRequired = true;
+
+            break;
+          case 'reason-for-visit':
+
+            i.IsCodeRequired = true;
+
+            break;
+          case 'days-supply':
+          case 'vital-sign-weight':
+          case 'vital-sign-systolic':
+          case 'vital-sign-diastolic':
+          case 'icu-hours':
+          case 'ventilation-hours':
+          case 'vital-sign-height':
+          case 'temperature':
+          case 'pulse':
+          case 'respiratory-rate':
+          case 'oxygen-saturation':
+          case 'birth-weight':
+
+            i.IsValueRequired = true;
+
+            break;
+          case 'chief-complaint':
+
+            i.IsCodeRequired = true;
+            i.IsValueRequired = true;
+            break;
+
+          case 'last-menstrual-period':
+            i.IsFromDateRequired = true;
+
+            break;
+
+          default:
+            break;
+        }
+
+        switch (i.category) {
+          case 'vital-sign-weight':
+          case 'birth-weight':
+            i.unit = 'kg';
+            break;
+          case 'vital-sign-systolic':
+          case 'vital-sign-diastolic':
+            i.unit = 'mm[Hg]';
+            break;
+          case 'icu-hours':
+          case 'ventilation-hours':
+            i.unit = 'h';
+            break;
+          case 'vital-sign-height':
+            i.unit = 'cm';
+            break;
+          case 'days-supply':
+            i.unit = 'd';
+            break;
+          case 'temperature':
+            i.unit = 'Cel';
+            break;
+          case 'pulse':
+          case 'respiratory-rate':
+            i.unit = 'Min';
+            break;
+          case 'oxygen-saturation':
+            i.unit = '%';
+            break;
+        }
         i.byteArray = i.attachment;
-        // i.file = this.getImageOfBlob();
       });
     }
 
