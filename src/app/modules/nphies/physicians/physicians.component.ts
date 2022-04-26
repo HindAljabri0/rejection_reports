@@ -8,6 +8,7 @@ import { NphiesConfigurationService } from 'src/app/services/nphiesConfiguration
 import { SharedServices } from 'src/app/services/shared.services';
 import { AddPhysicianDialogComponent } from '../add-physician-dialog/add-physician-dialog.component';
 import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upload-physicians-dialog.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-physicians',
@@ -18,7 +19,7 @@ export class PhysiciansComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
     private sharedServices: SharedServices,
-    private nphiesConfigurationsService: NphiesConfigurationService) { }
+    private nphiesConfigurationsService: NphiesConfigurationService, private dialogService: DialogService) { }
 
   length = 100;
   pageSize = 10;
@@ -65,6 +66,29 @@ export class PhysiciansComponent implements OnInit {
         console.log(err.message)
       }
     });
+  }
+
+  DownloadPhysicianSample() {
+
+    this.nphiesConfigurationsService.downloadPhysicianSample(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null) {
+          var data = new Blob([event.body as BlobPart], { type: 'application/octet-stream' });
+          const FileSaver = require('file-saver');
+          FileSaver.saveAs(data, "SamplePhyscianDownload.xlsx");
+        }
+      }
+    }
+      , err => {
+        if (err instanceof HttpErrorResponse) {
+          console.log(err)
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `Unable to download File at this moment`,
+            isError: true
+          });
+        }
+      });
   }
 
 }

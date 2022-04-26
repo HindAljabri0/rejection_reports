@@ -41,4 +41,10 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
 
+  downloadPhysicianSample(providerId: string) {
+    const requestUrl = `/providers/${providerId}/physciains/download`;
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
+    return this.http.request(request);
+  }
+
 }
