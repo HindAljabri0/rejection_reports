@@ -107,7 +107,7 @@
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.payerName}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
-                  <span [ngClass]="transaction.status === 'queued' ? 'text-orange' : (transaction.status === 'error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status}}</span>
+                  <span [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status | titlecase}}</span>
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
@@ -122,7 +122,7 @@
                 <td class="actions">
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item *ngIf="transaction.status === 'Processing Complete'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                      <button mat-menu-item *ngIf="transaction.status === 'approved'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
                         <span>Follow Up/Add Related</span>
                       </button>

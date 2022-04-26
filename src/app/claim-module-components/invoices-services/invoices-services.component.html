@@ -452,7 +452,7 @@
 </div>
 
 
-<mat-menu #editServiceCodeMenu class="primary-menu" xPosition="before">
+<mat-menu #editServiceCodeMenu class="primary-menu" xPosition="before" (closed)="servicesOptions = [];">
     <p *ngIf="!priceListExist" class="d-flex text-orange">
         <mat-icon class="mr-1">error</mat-icon>
         <span class="align-self-center">Price list does not exist!</span>

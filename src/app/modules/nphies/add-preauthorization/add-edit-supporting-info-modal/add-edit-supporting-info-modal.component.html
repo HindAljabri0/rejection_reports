@@ -69,12 +69,12 @@
       FormSupportingInfo.controls.category.value.value === 'birth-weight'">
         <div class="col-6">
           <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('value').touched) && FormSupportingInfo.get('value').hasError('required')}">
-            <label class="control-label">Value<span class="asterisk">*</span></label>
+            <label class="control-label">Value<span *ngIf="!(FormSupportingInfo.controls.category.value && FormSupportingInfo.controls.category.value.value === 'chief-complaint' && FormSupportingInfo.controls.code.value)" class="asterisk">*</span></label>
             <div class="input-group">
 
               <input
                 *ngIf="FormSupportingInfo.controls.category.value.value === 'info' || FormSupportingInfo.controls.category.value.value === 'chief-complaint' || FormSupportingInfo.controls.category.value.value === 'lab-test'"
-                type="text" class="form-control" placeholder="Enter value" formControlName="value" />
+                type="text" class="form-control" placeholder="Enter value" formControlName="value" (blur)="chiefComplainBlurValidation()" />
               <input
                 *ngIf="FormSupportingInfo.controls.category.value.value !== 'info' && FormSupportingInfo.controls.category.value.value !== 'chief-complaint' && FormSupportingInfo.controls.category.value.value !== 'lab-test'"
                 type="number" class="form-control" placeholder="Enter value" formControlName="value" />
@@ -116,7 +116,7 @@
           FormSupportingInfo.controls.category.value.value === 'temperature' ||
           FormSupportingInfo.controls.category.value.value === 'pulse' ||
           FormSupportingInfo.controls.category.value.value === 'oxygen-saturation' ||
-          FormSupportingInfo.controls.category.value.value === 'respiratory-rate' 
+          FormSupportingInfo.controls.category.value.value === 'respiratory-rate'
           ">
         <div class="col-6">
           <div class="form-group"
@@ -197,12 +197,12 @@
       FormSupportingInfo.controls.category.value.value === 'chief-complaint'">
         <div class=" col-6">
           <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('code').touched) && FormSupportingInfo.get('code').hasError('required')}">
-            <label class="control-label">Code<span class="asterisk">*</span></label>
+            <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && FormSupportingInfo.controls.category.value.value === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label>
             <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..." formControlName="code" [matAutocomplete]="auto"
               (keyup)="searchICDCodes()">
             <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
+              <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option); chiefComplainBlurValidation();">
                 {{option.diagnosisCode}} | {{option.diagnosisDescription}}
               </mat-option>
             </mat-autocomplete>

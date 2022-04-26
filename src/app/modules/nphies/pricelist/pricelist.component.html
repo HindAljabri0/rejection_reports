@@ -1,0 +1,122 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+  <div class="block-header">
+    <p class="align-self-center">Price List</p>
+    <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadSample()">
+      <img src="./assets/ic-download.svg" alt="Download" />
+      <span>Download Sample</span>
+    </button>
+  </div>
+  <div class="block-filter-panel">
+    <form [formGroup]="FormPriceList" (ngSubmit)="onSubmit()">
+      <div class="row small-gutter">
+        <div class="col-xl-3 col-md-6">
+          <div class="form-group">
+            <label class="control-label">Payer</label>
+            <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormPriceList" [isRequired]="false"
+              [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="form-group">
+            <label class="control-label">Effective Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="effectiveDatePicker" placeholder="Select effective date" class="form-control"
+                formControlName="effectiveDate">
+              <mat-datepicker-toggle [for]="effectiveDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #effectiveDatePicker></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="form-group">
+            <label class="control-label">From Upload Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select effective date" class="form-control"
+                formControlName="uploadFromDate">
+              <mat-datepicker-toggle [for]="fromUploadDateDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromUploadDateDatePicker></mat-datepicker>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="form-group">
+            <label class="control-label">To Upload Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="toUploadDatePicker" placeholder="Select effective date" class="form-control"
+                formControlName="uploadToDate">
+              <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #toUploadDatePicker></mat-datepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group text-right">
+        <button type="submit" mat-flat-button color="primary">Search</button>
+      </div>
+    </form>
+  </div>
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+    *ngIf="priceListModel && priceLists.length > 0">
+    <div class="fixed-height">
+      <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>Payer</th>
+            <th>Effective Date</th>
+            <th>Upload Date</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of priceLists">
+            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.payerName}}</td>
+            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.effectiveDate}}</td>
+            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.uploadedDate}}</td>
+            <td class="actions">
+              <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-menu #actionsMenu xPosition="before">
+        <ng-template matMenuContent>
+          <button mat-menu-item type="button">
+            <mat-icon class="material-icons-outlined">edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item type="button">
+            <mat-icon class="material-icons-outlined">delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </ng-template>
+      </mat-menu>
+
+    </div>
+
+  </ng-scrollbar>
+  <app-empty-state *ngIf="priceListModel && priceLists.length === 0" message='No Price List found!'>
+  </app-empty-state>
+  <div class="block-footer sticky">
+    <div class="pagination-header" *ngIf="!(priceListModel && priceLists.length === 0)">
+      <div class="form-group page-select">
+        <label class="control-label">Go to page: </label>
+        <mat-form-field class="form-control custom-select-control">
+          <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="material-paginator">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button mat-fab color="primary" (click)="openUploadPricelistDialog()" class="page-fab">
+  <mat-icon class="material-icons-outlined">file_upload</mat-icon>
+</button>

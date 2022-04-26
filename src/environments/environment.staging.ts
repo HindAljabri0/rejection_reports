@@ -30,6 +30,7 @@ export const environment = {
     contractManagementService: `${host}/contract-billing`,
 
     claimsDownloadsService: `${host}/downloads`,
-    claimReviewService: `${host}/review`
+    claimReviewService: `${host}/review`,
+    nphiesConfigurationService: `${host}/nphies-configurations`
 
 };
