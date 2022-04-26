@@ -1,0 +1,85 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" routerLink="/nphies/pricelist" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p>Tawuniya - 27/05/2015</p>
+        </div>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-md-7">
+                <div class="form-group">
+                    <input placeholder="Search service type, standard code, non-standard code, description" class="form-control search-box">
+                </div>
+            </div>
+            <div class="col-md-auto">
+                <div class="form-group">
+                    <button mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Service Type</th>
+                        <th>Standard Code</th>
+                        <th>Non-Standard Code</th>
+                        <th>Non-Standard Description</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Medical Devices</td>
+                        <td>10994</td>
+                        <td>568</td>
+                        <td>Shoe electrical conductivity tester</td>
+                        <td>293 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medical Devices</td>
+                        <td>10995</td>
+                        <td>6584</td>
+                        <td>Contact lens thermal cleaner, line-powered</td>
+                        <td>219 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medical Devices</td>
+                        <td>11010</td>
+                        <td>6984</td>
+                        <td>Infusion controller, line-powered</td>
+                        <td>275 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medication Codes</td>
+                        <td>11049</td>
+                        <td>214</td>
+                        <td>Infant bed crib top</td>
+                        <td>475 <span class="currency">SR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medication Codes</td>
+                        <td>11052</td>
+                        <td>362</td>
+                        <td>Cricothyrotome, single-use</td>
+                        <td>589 <span class="currency">SR</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </ng-scrollbar>
+    <div class="block-footer sticky">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" [length]="25" [pageSize]="5" aria-label="Select page">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

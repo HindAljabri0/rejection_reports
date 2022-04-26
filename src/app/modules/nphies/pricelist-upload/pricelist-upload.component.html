@@ -1,0 +1,49 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Upload Price List</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+  <form [formGroup]="FormPriceList" (ngSubmit)="onSubmit()">
+    <div class="row small-gutter">
+        <div class="col-sm-6">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceList.get('payerNphiesId').touched) && FormPriceList.get('payerNphiesId').hasError('required')}">
+                <label class="control-label">Payer</label>
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormPriceList" [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceList.get('effectiveDate').touched) && FormPriceList.get('effectiveDate').hasError('required')}">
+                <label class="control-label">Effective Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="effectiveDatePicker" placeholder="Select effective date" class="form-control" formControlName="effectiveDate">
+                    <mat-datepicker-toggle [for]="effectiveDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #effectiveDatePicker></mat-datepicker>
+                </div>
+
+                <div *ngIf="(isSubmitted || FormPriceList.get('effectiveDate').touched) && FormPriceList.get('effectiveDate').hasError('required')">
+                  <span class="error-text">Please select Effective Date</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceList.get('file').touched) && FormPriceList.get('file').hasError('required')}">
+        <div class="custom-file-upload" appDragdrop (onFileDropped)="selectFile($event)">
+            <div class="content">
+                <img src="./assets/ic-upload.svg" alt="Upload" />
+                <p>Drag and drop file here or <span class="semibold text-primary">browse</span></p>
+                <span>Maximum Size: 2 MB</span>
+                <p class="error-text" *ngIf="error">{{error}}</p>
+                <p *ngIf="FormPriceList.controls.file.value && !error" class="file-name">{{FormPriceList.controls.file.value.name}}</p>
+            </div>
+            <input type="file" class="upload-control" (change)="selectFile($event.target.files)" />
+        </div>
+        <div *ngIf="(isSubmitted || FormPriceList.get('file').touched) && FormPriceList.get('file').hasError('required')">
+          <span class="error-text">Please select File</span>
+        </div>
+    </div>
+    <div class="btn-list text-right">
+        <button type="button" mat-button (click)="closeDialog()">Close</button>
+        <button type="submit" mat-flat-button color="primary">Upload</button>
+    </div>
+  </form>
+</div>

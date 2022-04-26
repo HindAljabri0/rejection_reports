@@ -12,14 +12,13 @@
     </div>
     <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
         <div class="icon-wrapper">
-            <img src="./assets/csv.svg" alt="CSV File" />
+            <img src="./assets/xlsx.svg" alt="XLSX File" />
         </div>
-        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel or CSV file here , or use</span> <button mat-flat-button color="primary"
+        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel file here , or use</span> <button mat-flat-button color="primary"
                 (click)="fileInput.click()">Upload</button>
         </p>
         <p class="error-text" *ngIf="error">{{error}}</p>
-        <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
+        <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept=".xlsx,.xls" />
     </div>
 </div>
 <div class="file-upload-progress-wrapper" *ngIf="uploading">
