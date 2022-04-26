@@ -386,7 +386,7 @@
           </a>
           <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>
-        <li>
+        <li *ngIf="!envStaging && !envProd">
           <a routerLink="/nphies/physicians" routerLinkActive="is-active">
             <span class="text">Physicians</span>
           </a>
