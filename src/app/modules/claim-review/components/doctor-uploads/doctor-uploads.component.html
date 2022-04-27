@@ -15,73 +15,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="align-middle">
-                                <td class="row-click" routerLink="/review/doctor/claims">
-                                    TEST_TWN_claims_10-2.xlsx
-                                    <p class="text-grey">Wednesday, 22 December, 2021 | 12:03 PM</p>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <h4 class="text-primary">10</h4>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <mat-icon class="text-primary">arrow_forward</mat-icon>
-                                </td>
-                            </tr>
-                            <tr class="align-middle">
-                                <td class="row-click" routerLink="/review/doctor/claims">
-                                    601_12_2021_Manual
-                                    <p class="text-grey">Tuesday, 14 December, 2021 | 12:22 PM</p>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <h4 class="text-primary">4</h4>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <mat-icon class="text-primary">arrow_forward</mat-icon>
-                                </td>
-                            </tr>
-                            <tr class="align-middle">
-                                <td class="row-click" routerLink="/review/doctor/claims">
-                                    TEST_TWN_claims_1000.xlsx
-                                    <p class="text-grey">Friday, 12 November, 2021 | 10:52 AM</p>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <h4 class="text-primary">999</h4>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <mat-icon class="text-primary">arrow_forward</mat-icon>
-                                </td>
-                            </tr>
-                            <tr class="align-middle">
-                                <td class="row-click" routerLink="/review/doctor/claims">
-                                    TWN_claims_5000.xlsx
-                                    <p class="text-grey">Thursday, 4 November, 2021 | 01:50 PM</p>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <h4 class="text-primary">5000</h4>
-                                </td>
-                                <td class="text-center row-click" routerLink="/review/doctor/claims">
-                                    <mat-icon class="text-primary">arrow_forward</mat-icon>
-                                </td>
-                            </tr>
+                            <ng-container *ngFor="let upload of (newUploads$|async).uploads">
+                                <tr class="align-middle">
+                                    <td class="row-click" routerLink="/review/doctor/claims">
+                                        {{ upload.name }}
+                                        <p class="text-grey">{{upload.date}}</p>
+                                    </td>
+                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                        <h4 class="text-primary">{{upload.totalClaims}}</h4>
+                                    </td>
+                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                        <mat-icon class="text-primary">arrow_forward</mat-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </tbody>
                     </table>
                 </div>
             </ng-scrollbar>
             <div class="block-footer sticky">
                 <div class="left-block custom-paginator">
-                    <button matRipple type="button" title="First Page">
+                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
                         <img src="./assets/ic-page-first.svg" alt="First" />
                     </button>
-                    <button matRipple type="button" title="Previous Page">
+                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
                         <img src="./assets/ic-page-prev.svg" alt="Previous" />
                     </button>
                     <p class="page-info">
                         1<small>/5</small>
                     </p>
-                    <button matRipple type="button" title="Next Page">
+                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
                         <img src="./assets/ic-page-next.svg" alt="Next" />
                     </button>
-                    <button matRipple type="button" title="Last Page">
+                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
                         <img src="./assets/ic-page-last.svg" alt="Last" />
                     </button>
                 </div>

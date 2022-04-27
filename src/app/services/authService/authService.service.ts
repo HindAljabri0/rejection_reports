@@ -129,7 +129,13 @@ export class AuthService {
                 const authorities: Array<any> = event.body['authorities'];
                 const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
                     || element['authority'].split('|')[1] == '22.0'
-                    || element['authority'].split('|')[1] == '24.0' || element['authority'].split('|')[1] == '25.0' || element['authority'].split('|')[1] == '99.0');
+                    || element['authority'].split('|')[1] == '24.0' 
+                    || element['authority'].split('|')[1] == '25.0' 
+                    || element['authority'].split('|')[1] == '99.0'
+                    || element['authority'].split('|')[1] == '24.41'
+                    || element['authority'].split('|')[1] == '24.42'
+                    || element['authority'].split('|')[1] == '24.43'
+                    );
                 if (hasClaimPrivileges) {
                     authorities.forEach(element => {
                         const key = element['authority'].split('|')[0] + element['authority'].split('|')[2];
