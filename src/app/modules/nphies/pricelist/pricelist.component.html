@@ -71,8 +71,8 @@
         <tbody>
           <tr *ngFor="let p of priceLists">
             <td class="row-click" routerLink="/nphies/pricelist-details">{{p.payerName}}</td>
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.effectiveDate}}</td>
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.uploadedDate}}</td>
+            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.effectiveDate | date: 'dd-MM-yyyy'}}</td>
+            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.uploadedDate | date: 'dd-MM-yyyy'}}</td>
             <td class="actions">
               <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>

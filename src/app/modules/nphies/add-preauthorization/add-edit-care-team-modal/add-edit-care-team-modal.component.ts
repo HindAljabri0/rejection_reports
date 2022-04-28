@@ -177,10 +177,10 @@ export class AddEditCareTeamModalComponent implements OnInit {
     this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.specialityList = event.body;
-        if (this.data.item && this.data.item.speciality) {
-          if (this.specialityList.filter(x => x.speciallityName === this.data.item.speciality)[0]) {
+        if (this.data.item && this.data.item.specialityCode) {
+          if (this.specialityList.filter(x => x.speciallityCode === this.data.item.specialityCode)[0]) {
             this.FormCareTeam.patchValue({
-              speciality: this.specialityList.filter(x => x.speciallityName === this.data.item.speciality)[0]
+              speciality: this.specialityList.filter(x => x.speciallityCode === this.data.item.specialityCode)[0]
             });
           } else {
             this.FormCareTeam.patchValue({

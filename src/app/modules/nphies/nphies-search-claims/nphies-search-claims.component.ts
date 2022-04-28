@@ -183,7 +183,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
-
       if (value != null) {
         this.reloadClaim(value);
       }
@@ -200,7 +199,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async fetchData() {
-    console.log("test" + this.commen.providerId)
     this.commen.searchIsOpenChange.next(true);
     this.claims = new Array();
     this.summaries = new Array();
@@ -344,7 +342,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
 
-    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId  ;
+    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
 
@@ -762,14 +760,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.claimDialogRef = null;
       this.params.claimId = null;
       this.params.editMode = null;
-      //this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
-      //reload search data
-      this.fetchData();
-      location.reload();
-      //const statuses = this.summaries[0].statuses;
-      //this.loadStatues(statuses.filter(status => status.toUpperCase() != 'ALL'));
+      this.resetURL();
+      setTimeout(() => {
+        this.fetchData();
+      }, 500);
+      // location.reload();
     });
   }
 
