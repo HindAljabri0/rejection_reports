@@ -3,6 +3,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, PageEvent } from '@angular/material';
+import { Observable } from 'rxjs';
 import { Physicians } from 'src/app/models/nphies/physicians';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -47,7 +48,9 @@ export class PhysiciansComponent implements OnInit {
   openAddPhysicianDialog() {
     const dialogRef = this.dialog.open(AddPhysicianDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-sm'],
+
       autoFocus: false
+
     });
   }
   getData() {
@@ -67,4 +70,6 @@ export class PhysiciansComponent implements OnInit {
     });
   }
 
+
+  downloadSample(){}
 }
