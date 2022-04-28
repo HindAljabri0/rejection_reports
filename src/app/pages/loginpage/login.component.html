@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <app-language-switcher class="login-language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
     </app-language-switcher>
-    <div class="login-wrapper" [ngClass]="{'national-day': isCloseToNationalDay() && !isRamadan}">
+    <div class="login-wrapper" [class.eid]="isEid" [ngClass]="{'national-day': isCloseToNationalDay() && !isRamadan  && !isEid}">
         <div class="left-block">
             <div class="login-card">
                 <div class="login-text">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="right-block" [class.ramadan-poster]="isRamadan">
-            <ng-container *ngIf="!isRamadan">
+            <ng-container *ngIf="!isRamadan && !isEid">
                 <img *ngIf="!isCloseToNationalDay()" src="./assets/login-upper-art.svg" class="upper-art" alt="Abstract art" />
                 <img *ngIf="isCloseToNationalDay()" src="./assets/login-upper-art-national-day.svg" class="upper-art" alt="Abstract art" />
                 <div class="middle">
@@ -72,6 +72,13 @@
                 <img src="./assets/ramadan-artwork.svg" alt="Ramadan" class="artwork" />
                 <img src="./assets/logo.svg" alt="Waseel" class="logo" />
                 <p class="contact">customercare@waseel.com<br>9200 12099</p>
+            </ng-container>
+            <ng-container *ngIf="isEid">
+                <img src="./assets/eid-top-artwork.svg" alt="Eid" class="top-artwork" />
+                <img src="./assets/logo-eid.svg" alt="Waseel" class="logo" />
+                <p class="contact">customercare@waseel.com<br>9200 12099</p>
+                <img src="./assets/eid-text-artwork.svg" alt="Eid" class="text-artwork" />
+                <img src="./assets/eid-bottom-artwork.svg" alt="Eid" class="bottom-artwork" />
             </ng-container>
         </div>
 
