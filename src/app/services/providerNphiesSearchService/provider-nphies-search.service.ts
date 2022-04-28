@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
+import { NumericLiteral } from 'typescript';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,34 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+  getItemList(providerId: string, itemType: string, query: string, payerNphiesId: string, claimType: string, requestDate: string, pageNumber: number, pageSize: number) {
+    let requestURL = '/providers/' + providerId + '/items?';
 
+    if (itemType != null && itemType.trim().length > 0) {
+      requestURL += `itemType=${itemType}&`;
+    }
+    if (query != null && query.trim().length > 0) {
+      query += `query=${query}&`;
+    }
+    if (payerNphiesId != null && payerNphiesId.trim().length > 0) {
+      requestURL += `payerNphiesId=${payerNphiesId}&`;
+    }
+    if (claimType != null && claimType.trim().length > 0) {
+      requestURL += `claimType=${claimType}&`;
+    }
+    if (requestDate != null && requestDate.trim().length > 0) {
+      requestURL += `requestDate=${requestDate}&`;
+    }
+
+    if (pageNumber != null) {
+      requestURL += `pageNumber=${pageNumber}&`;
+    }
+    if (pageSize != null) {
+      requestURL += `pageSize=${pageSize}&`;
+    }
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
   searchTransactionsLog(
     transactionId?: string,
     providerId?: string,
