@@ -869,7 +869,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
-
+              x.requestDate=this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -60,10 +60,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisSequence: [''],
     diagnosisFilter: [''],
     invoiceNo: [''],
-    IsTaxApplied: [true]
+    IsTaxApplied: [true],
+    searchQuery: ['']
   });
 
   isSubmitted = false;
+  typeListSearchResult = [];
 
   typeList = this.sharedDataService.itemTypeList;
   bodySiteList = [];
@@ -563,7 +565,37 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.updatePatientShare();
     this.updatePayerShare();
   }
+  searchItems() {
+    let itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
+    let searchStr = this.FormItem.controls.searchQuery.value;
+    let claimType = this.data.type;
+    let RequestDate = this.data.requestDate;
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, null, claimType, RequestDate, 0, 10).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        this.typeListSearchResult = body['content'];
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
 
+      }
+    });
+  }
+  selectItem(type) {
+    console.log(type);
+    if (type) {
+      this.FormItem.patchValue({
+        type: this.typeList.filter(x => x.value === type.itemType)[0],
+        nonStandardCode: type.nonStandardCode,
+        item: this.itemList.filter(x => x.code === type.code)[0],
+        display: type.nonStandardDescription,
+        unitPrice: type.unitPrice,
+        discount: type.discount,
+
+      });
+    }
+  }
   onSubmit() {
     this.isSubmitted = true;
 
