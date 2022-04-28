@@ -1503,7 +1503,7 @@ export class AddPreauthorizationComponent implements OnInit {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
-          model.itemCode = x.itemCode.toString();
+          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
@@ -1531,7 +1531,7 @@ export class AddPreauthorizationComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
+            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
@@ -1544,7 +1544,7 @@ export class AddPreauthorizationComponent implements OnInit {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
-          model.itemCode = x.itemCode.toString();
+          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
@@ -1571,7 +1571,7 @@ export class AddPreauthorizationComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
+            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;

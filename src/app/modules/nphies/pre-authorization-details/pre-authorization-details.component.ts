@@ -176,6 +176,81 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         }
 
         switch (i.category) {
+
+          case 'info':
+
+            i.IsValueRequired = true;
+
+            break;
+          case 'onset':
+
+            i.IsCodeRequired = true;
+            i.IsFromDateRequired = true;
+
+            break;
+          case 'attachment':
+
+            i.IsAttachmentRequired = true;
+
+            break;
+          case 'missingtooth':
+
+            i.IsCodeRequired = true;
+            i.IsFromDateRequired = true;
+            i.IsReasonRequired = true;
+
+            break;
+          case 'hospitalized':
+          case 'employmentImpacted':
+
+            i.IsFromDateRequired = true;
+            i.IsToDateRequired = true;
+
+            break;
+
+          case 'lab-test':
+
+            i.IsCodeRequired = true;
+            i.IsValueRequired = true;
+
+            break;
+          case 'reason-for-visit':
+
+            i.IsCodeRequired = true;
+
+            break;
+          case 'days-supply':
+          case 'vital-sign-weight':
+          case 'vital-sign-systolic':
+          case 'vital-sign-diastolic':
+          case 'icu-hours':
+          case 'ventilation-hours':
+          case 'vital-sign-height':
+          case 'temperature':
+          case 'pulse':
+          case 'respiratory-rate':
+          case 'oxygen-saturation':
+          case 'birth-weight':
+
+            i.IsValueRequired = true;
+
+            break;
+          case 'chief-complaint':
+
+            i.IsCodeRequired = true;
+            i.IsValueRequired = true;
+            break;
+
+          case 'last-menstrual-period':
+            i.IsFromDateRequired = true;
+
+            break;
+
+          default:
+            break;
+        }
+
+        switch (i.category) {
           case 'vital-sign-weight':
           case 'birth-weight':
             i.unit = 'kg';

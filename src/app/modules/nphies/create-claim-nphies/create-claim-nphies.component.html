@@ -20,15 +20,16 @@
       <p *ngIf="otherDataModel.disposition"><span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong></p>
     </div>
   </div>
-  <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
-
+  <ul class="claim-totals">
     <li>
       Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
-    <li class="separator" *ngIf="otherDataModel.responseDecision.claimResDecisionCategories.length>0"></li>
-    <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-      <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
-    </li>
+    <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
+      <li class="separator"></li>
+      <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+        <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+      </li>
+    </ng-container>
 
   </ul>
 
