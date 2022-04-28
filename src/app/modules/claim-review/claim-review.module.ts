@@ -12,11 +12,23 @@ import { EffectsModule } from '@ngrx/effects';
 import { claimReviewReducer } from './store/claimReview.reducer';
 import { ClaimReviewEffects } from './store/claimReview.effects';
 import { UploadsAssigningTabContentComponent } from './components/uploads-assigning-tab-content/uploads-assigning-tab-content.component';
+import { DoctorUploadsComponent } from './components/doctor-uploads/doctor-uploads.component';
+import { DoctorUploadsClaimListComponent } from './components/doctor-uploads-claim-list/doctor-uploads-claim-list.component';
+import {
+    DoctorUploadsClaimDetailsDialogComponent
+} from './components/doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
 
 
 
 @NgModule({
-    declarations: [UploadsAssigningComponent, UploadAssigningCardComponent, UploadsAssigningTabContentComponent],
+    declarations: [
+        UploadsAssigningComponent,
+        UploadAssigningCardComponent,
+        UploadsAssigningTabContentComponent,
+        DoctorUploadsComponent,
+        DoctorUploadsClaimListComponent,
+        DoctorUploadsClaimDetailsDialogComponent
+    ],
     imports: [
         CommonModule,
         SharedModule,
