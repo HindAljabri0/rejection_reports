@@ -88,13 +88,13 @@ export class UploadPhysiciansDialogComponent implements OnInit {
 
           }
           this.common.loadingChanged.next(false);
-          this.closeDialog();
+this.closeDialog();
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
           this.common.loadingChanged.next(false);
 
-          this.uploading = false;
+      this.uploading = false;
 
         }
         console.log(error);
@@ -107,6 +107,6 @@ export class UploadPhysiciansDialogComponent implements OnInit {
     }
     this.currentFileUpload = null;
     this.selectedFiles = null;
-    this.PhysiciansListDoesNotExistMessages = [];
+    this. PhysiciansListDoesNotExistMessages = [];
   }
 }

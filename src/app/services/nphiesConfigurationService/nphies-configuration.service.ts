@@ -29,7 +29,7 @@ export class NphiesConfigurationService {
 
   downloadSample(providerId: string): Observable<any> {
     const requestUrl = `/providers/${providerId}/pricelist/download`;
-    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl);
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -68,7 +68,7 @@ export class NphiesConfigurationService {
   }
 
   downloadPhysicianList(providerId: string){
-    const requestUrl = `/providers/${providerId}/download`;
+    const requestUrl = `/providers/${providerId}/physciains/download`;
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl);
     return this.http.request(request);
   }
