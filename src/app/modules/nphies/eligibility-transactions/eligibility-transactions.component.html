@@ -104,7 +104,9 @@
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
               'dd-MM-yyyy'}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">{{transaction.siteEligibility ? transaction.siteEligibility : '-'}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">
+              <span [ngClass]="!transaction.siteEligibility ? '': (transaction.siteEligibility === 'eligible' ? 'text-success' : 'text-danger')">{{transaction.siteEligibility ? transaction.siteEligibility : '-'}}</span>
+            </td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
             <!-- <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">
