@@ -61,14 +61,18 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
-  getItemList(providerId: string, itemType: string, query: string, payerNphiesId: string, claimType: string, requestDate: string, pageNumber: number, pageSize: number) {
+
+  getItemList(
+    providerId: string, itemType: string, query: string, payerNphiesId: string,
+    claimType: string, requestDate: string, pageNumber: number, pageSize: number) {
+
     let requestURL = '/providers/' + providerId + '/items?';
 
     if (itemType != null && itemType.trim().length > 0) {
       requestURL += `itemType=${itemType}&`;
     }
     if (query != null && query.trim().length > 0) {
-      query += `query=${query}&`;
+      requestURL += `query=${query}&`;
     }
     if (payerNphiesId != null && payerNphiesId.trim().length > 0) {
       requestURL += `payerNphiesId=${payerNphiesId}&`;
@@ -89,6 +93,7 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+
   searchTransactionsLog(
     transactionId?: string,
     providerId?: string,
