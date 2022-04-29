@@ -249,7 +249,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  typeChange() {
+  selectItem(type) {
+    if (type) {
+      this.FormItem.patchValue({
+        type: this.typeList.filter(x => x.value === type.itemType)[0],
+        nonStandardCode: type.nonStandardCode,
+        display: type.nonStandardDescription,
+        unitPrice: type.unitPrice,
+        discount: type.discount,
+      });
+      this.typeChange(type);
+    }
+  }
+
+  typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
       this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -258,10 +271,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.quantityCode.updateValueAndValidity();
     }
     this.FormItem.controls.item.setValue('');
-    this.getItemList();
+    if (type) {
+      this.getItemList(type);
+    } else {
+      this.getItemList();
+    }
   }
 
-  getItemList() {
+  getItemList(type = null) {
     if (this.FormItem.controls.type.value) {
       this.sharedServices.loadingChanged.next(true);
       this.IsItemLoading = true;
@@ -273,6 +290,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           if (this.data.item && this.data.item.itemCode) {
             this.FormItem.patchValue({
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
+            });
+          } else {
+            this.FormItem.patchValue({
+              item: this.itemList.filter(x => x.code === type.code)[0]
             });
           }
           this.filteredItem.next(this.itemList.slice());
@@ -565,11 +586,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.updatePatientShare();
     this.updatePayerShare();
   }
+
   searchItems() {
-    let itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
-    let searchStr = this.FormItem.controls.searchQuery.value;
-    let claimType = this.data.type;
-    let RequestDate = this.data.requestDate;
+    const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
+    const searchStr = this.FormItem.controls.searchQuery.value;
+    const claimType = this.data.type;
+    const RequestDate = this.data.requestDate;
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, null, claimType, RequestDate, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -582,20 +604,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
     });
   }
-  selectItem(type) {
-    console.log(type);
-    if (type) {
-      this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === type.itemType)[0],
-        nonStandardCode: type.nonStandardCode,
-        item: this.itemList.filter(x => x.code === type.code)[0],
-        display: type.nonStandardDescription,
-        unitPrice: type.unitPrice,
-        discount: type.discount,
 
-      });
-    }
-  }
   onSubmit() {
     this.isSubmitted = true;
 

@@ -247,10 +247,13 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   InitClaimPagenation() {
     this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
-    const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
-    this.paginationControl.searchTabCurrentResults = Array.from(data);
-    this.paginationControl.size = data.length;
-    this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + "");
+    if (localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY)) {
+      const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
+      this.paginationControl.searchTabCurrentResults = Array.from(data);
+      this.paginationControl.size = data.length;
+      this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + '');
+    }
+
   }
   ngOnInit() {
 
@@ -869,7 +872,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
-              x.requestDate=this.otherDataModel.submissionDate;
+              x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {
