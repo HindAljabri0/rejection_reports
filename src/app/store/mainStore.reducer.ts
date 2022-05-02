@@ -36,7 +36,9 @@ export interface UserPrivileges {
             canAccessPreAuthorization: boolean,
             canAccessClaim: boolean,
             canAccessBeneficiary: boolean,
-            canAccessPaymentReconciliation: boolean
+            canAccessPaymentReconciliation: boolean,
+            canAccessPriceList: boolean,
+            canAccessPhysician: boolean
         }
     }
 }
@@ -82,7 +84,9 @@ export const initState: MainState = {
                 canAccessPreAuthorization: false,
                 canAccessClaim: false,
                 canAccessBeneficiary: false,
-                canAccessPaymentReconciliation: false
+                canAccessPaymentReconciliation: false,
+                canAccessPriceList: false,
+                canAccessPhysician: false
             }
         }
     }
