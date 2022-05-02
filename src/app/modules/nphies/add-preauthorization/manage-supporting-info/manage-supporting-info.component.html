@@ -10,7 +10,7 @@
   <table class="primary-grid claim-view-table">
     <thead>
       <tr>
-        <th>Sequence No.</th>
+        <th>No.</th>
         <th>Category</th>
         <th>Code</th>
         <th>Timing</th>
@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let supportingInfo of supportingInfoList; let i = index" class="align-middle">
+      <tr *ngFor="let supportingInfo of supportingInfoList; let i = index">
         <td>{{supportingInfo.sequence}}</td>
         <td>
           {{supportingInfo.categoryName}}
@@ -31,7 +31,7 @@
           supportingInfo.category === 'reason-for-visit' ||
           supportingInfo.category === 'missingtooth'">
 
-            <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
+            <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
               <!-- <label class="control-label">Code<span class="asterisk">*</span></label> -->
 
               <!-- <input *ngIf="supportingInfo.category === 'lab-test'" type="text" class="form-control"
@@ -60,7 +60,7 @@
           <ng-container *ngIf="
           supportingInfo.category === 'lab-test'">
 
-            <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
+            <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
               <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
               <input type="text" class="form-control search-box" placeholder="Select LOINC Code" [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
                 (keyup)="searchLOINK(supportingInfo.description, i)">
@@ -79,7 +79,7 @@
           supportingInfo.category === 'onset' ||
           supportingInfo.category === 'chief-complaint'">
 
-            <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
+            <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
               <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
               <input type="text" class="form-control search-box" placeholder="Select ICD-10 Code" [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
                 (keyup)="searchICDCodes(supportingInfo.description, i)">
@@ -94,7 +94,7 @@
               </div>
             </div>
           </ng-container>
-          <!-- <div class="form-group mb-0">
+          <!-- <div class="form-group mb-n1 mt-n1">
             <input type="text" class="form-control" placeholder="Enter code here" />
           </div> -->
         </td>
@@ -116,7 +116,7 @@
            supportingInfo.category === 'respiratory-rate'
            ">
 
-            <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
+            <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
               <!-- <label class="control-label">Timing<span class="asterisk"
                   *ngIf="supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'vital-sign-weight' && supportingInfo.category !== 'vital-sign-systolic' && supportingInfo.category !== 'vital-sign-diastolic' && supportingInfo.category !== 'icu-hours' && supportingInfo.category !== 'ventilation-hours' && supportingInfo.category !== 'vital-sign-height' && supportingInfo.category !== 'temperature' && supportingInfo.category !== 'pulse' && supportingInfo.category !== 'oxygen-saturation' && supportingInfo.category !== 'respiratory-rate'">*</span></label> -->
               <div class="date-picker">
@@ -134,9 +134,9 @@
           <ng-container *ngIf="
           supportingInfo.category === 'hospitalized' ||
           supportingInfo.category === 'employmentImpacted'">
-            <div class="row">
+            <div class="row small-gutter">
               <div class="col-6">
-                <div class="form-group" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
+                <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
                   <!-- <label class="control-label">Timing Period From<span class="asterisk">*</span></label> -->
                   <div class="date-picker">
                     <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select Start Date" [(ngModel)]="supportingInfo.fromDate"
@@ -151,7 +151,7 @@
               </div>
 
               <div class="col-6">
-                <div class="form-group" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate}">
+                <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate}">
                   <!-- <label class="control-label">Timing Period To<span class="asterisk">*</span></label> -->
                   <div class="date-picker">
                     <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select End Date" [(ngModel)]="supportingInfo.toDate"
@@ -166,7 +166,7 @@
               </div>
             </div>
           </ng-container>
-          <!-- <div class="form-group mb-0">
+          <!-- <div class="form-group mb-n1 mt-n1">
             <div class="date-picker">
               <input [matDatepicker]="supportingInfoDatePicker1" class="form-control" placeholder="Select timing">
               <mat-datepicker-toggle [for]="supportingInfoDatePicker1"></mat-datepicker-toggle>
@@ -192,7 +192,7 @@
           supportingInfo.category === 'respiratory-rate' ||
           supportingInfo.category === 'birth-weight'">
 
-            <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && !supportingInfo.value && supportingInfo.IsValueRequired}">
+            <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && !supportingInfo.value && supportingInfo.IsValueRequired}">
               <!-- <label class="control-label">Value<span
                   *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.code.value)"
                   class="asterisk">*</span></label> -->
@@ -220,13 +220,13 @@
             </div>
 
           </ng-container>
-          <!-- <div class="form-group mb-0">
+          <!-- <div class="form-group mb-n1 mt-n1">
             <input type="text" class="form-control" placeholder="Enter value" />
           </div> -->
         </td>
         <td>
           <ng-container *ngIf="supportingInfo.category === 'attachment'">
-            <div class="form-group mb-0">
+            <div class="form-group mb-n1 mt-n1">
               <!-- <label class="control-label">{{supportingInfo.currentFileUploadName?'Selected Attachment':'Upload Attachment'}} <span class="asterisk">*</span></label> -->
               <div class="file-upload-wrapper">
                 <div class="content">
@@ -253,7 +253,7 @@
         </td>
         <td>
           <ng-container *ngIf="supportingInfo.category === 'missingtooth'">
-            <div class="form-group mb-0" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsReasonRequired && !supportingInfo.reason}">
+            <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsReasonRequired && !supportingInfo.reason}">
               <!-- <label class="control-label">Reason<span class="asterisk">*</span></label> -->
               <mat-form-field class="form-control custom-select-control">
                 <mat-select [(ngModel)]="supportingInfo.reason">
@@ -266,11 +266,11 @@
               </div>
             </div>
           </ng-container>
-          <!-- <div class="form-group mb-0">
+          <!-- <div class="form-group mb-n1 mt-n1">
             <input type="text" class="form-control" placeholder="Enter reason" />
           </div> -->
         </td>
-        <td class="actions">
+        <td class="actions vertical-middle">
           <mat-menu #supportingInfoActionsMenu1 xPosition="before">
             <ng-template matMenuContent>
               <button mat-menu-item type="button" (click)="removeSupportingInfo(i)">
