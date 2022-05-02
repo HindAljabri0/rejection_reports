@@ -184,6 +184,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .primary-link:hover,.primary-link:focus,.primary-link:active{color:#3060AA;text-decoration: underline;}
 .primary-link.disabled:hover,.primary-link.disabled:focus,.primary-link.disabled:active{color:#8d8d8d;text-decoration: underline;}
 .primary-link.underlined,.primary-link.underlined:hover,.primary-link.underlined:focus,.primary-link.underlined:active{text-decoration: underline;}
+.primary-link.small{font-size: 12px;font-weight: 500;}
 
 /* rejection card
 --------------------------------------------------------------------------------------------------------*/
@@ -283,6 +284,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .action-with-text>.mat-icon{margin-right:4px;}
 .primary-grid textarea.form-control.comment-box,.comment-box{height:80px;}
 .vertical-bottom{vertical-align: bottom!important;}
+.vertical-middle{vertical-align: middle!important;}
 .error-btn{display: flex;align-items:center;background: none;border:0;color: #CD4949;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
 .error-btn>span{padding-left: 4px;}
 .status{display: inline-block;vertical-align: middle;background: #3060AA;color: #fff;padding: 6px 12px;border-radius: 8px;}
