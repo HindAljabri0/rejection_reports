@@ -292,9 +292,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
             });
           } else {
-            this.FormItem.patchValue({
-              item: this.itemList.filter(x => x.code === type.code)[0]
-            });
+            if (type) {
+              this.FormItem.patchValue({
+                item: this.itemList.filter(x => x.code === type.code)[0]
+              });
+            }
           }
           this.filteredItem.next(this.itemList.slice());
           this.IsItemLoading = false;

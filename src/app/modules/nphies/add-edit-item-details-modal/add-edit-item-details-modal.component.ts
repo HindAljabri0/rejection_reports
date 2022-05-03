@@ -34,10 +34,12 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     nonStandardCode: [''],
     display: [''],
     quantity: ['1'],
-    quantityCode: ['']
+    quantityCode: [''],
+    searchQuery: ['']
   });
 
   isSubmitted = false;
+  typeListSearchResult = [];
 
   typeList = this.sharedDataService.itemTypeList;
 
@@ -123,7 +125,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     }
   }
 
-  getItemList() {
+  getItemList(type = null) {
     this.IsItemLoading = true;
     this.FormItem.controls.item.disable();
     // tslint:disable-next-line:max-line-length
@@ -134,6 +136,12 @@ export class AddEditItemDetailsModalComponent implements OnInit {
           this.FormItem.patchValue({
             item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
           });
+        } else {
+          if (type) {
+            this.FormItem.patchValue({
+              item: this.itemList.filter(x => x.code === type.code)[0]
+            });
+          }
         }
         this.filteredItem.next(this.itemList.slice());
         this.IsItemLoading = false;
@@ -169,6 +177,36 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     );
   }
 
+  searchItems() {
+    const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
+    const searchStr = this.FormItem.controls.searchQuery.value;
+    const claimType = this.data.type;
+    const RequestDate = this.data.requestDate;
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, null, claimType, RequestDate, 0, 10).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        this.typeListSearchResult = body['content'];
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
+  }
+
+  selectItem(type) {
+    if (type) {
+      this.FormItem.patchValue({
+        type: this.typeList.filter(x => x.value === type.itemType)[0],
+        nonStandardCode: type.nonStandardCode,
+        display: type.nonStandardDescription,
+        unitPrice: type.unitPrice,
+        discount: type.discount,
+      });
+      this.getItemList(type);
+    }
+  }
 
   onSubmit() {
     this.isSubmitted = true;
