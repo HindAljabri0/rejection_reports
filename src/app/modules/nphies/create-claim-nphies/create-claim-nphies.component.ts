@@ -824,6 +824,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   openAddEditItemDialog(itemModel: any = null) {
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -835,7 +836,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormNphiesClaim.controls.type.value.value,
-      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -960,7 +962,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
-      type: this.FormNphiesClaim.controls.type.value.value
+      type: this.FormNphiesClaim.controls.type.value.value,
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
