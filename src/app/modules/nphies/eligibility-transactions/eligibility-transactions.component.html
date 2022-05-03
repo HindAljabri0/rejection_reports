@@ -103,7 +103,7 @@
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
-              'dd-MM-yyyy'}}</td>
+              'dd-MM-yyyy hh:mm aa'}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">
               <span [ngClass]="!transaction.siteEligibility ? '': (transaction.siteEligibility === 'eligible' ? 'text-success' : 'text-danger')">{{transaction.siteEligibility ? transaction.siteEligibility : '-'}}</span>
             </td>

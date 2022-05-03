@@ -411,12 +411,29 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   updateNet() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-      // tslint:disable-next-line:max-line-length
-      const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
+    // if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
+    // tslint:disable-next-line:max-line-length
+    //   // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
 
+    // tslint:disable-next-line:max-line-length
+    //   const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+    //   this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
+    // } else {
+    //   this.FormItem.controls.net.setValue('');
+    // }
+
+    // tslint:disable-next-line:max-line-length
+    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
       // tslint:disable-next-line:max-line-length
-      // const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+      // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
+
+      let discount = 0;
+
+      if (this.FormItem.controls.discount.value) {
+        discount = parseFloat(this.FormItem.controls.discount.value);
+      }
+      // tslint:disable-next-line:max-line-length
+      const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount + parseFloat(this.FormItem.controls.tax.value);
       this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
@@ -450,8 +467,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   updateTax() {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.taxPercent.value) {
-      // tslint:disable-next-line:max-line-length
-      const taxValue = ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
+
+      let taxValue = 0;
+      if (this.FormItem.controls.discount.value) {
+        // tslint:disable-next-line:max-line-length
+        taxValue = (((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
+      } else {
+        // tslint:disable-next-line:max-line-length
+        taxValue = ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
+      }
       this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
     } else {
       this.FormItem.controls.tax.setValue(0);
@@ -483,8 +507,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   updateTaxPercent() {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.tax.value) {
+
+      let discount = 0
+      if (this.FormItem.controls.discount.value) {
+        discount = parseFloat(this.FormItem.controls.discount.value);
+      }
       // tslint:disable-next-line:max-line-length
-      const taxPerValue = (parseFloat(this.FormItem.controls.tax.value) * 100) / (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value));
+      const taxPerValue = (parseFloat(this.FormItem.controls.tax.value) * 100) / ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount);
       this.FormItem.controls.taxPercent.setValue(parseFloat(taxPerValue.toFixed(2)));
     } else {
       this.FormItem.controls.taxPercent.setValue(0);
@@ -509,6 +538,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         this.updateFactor();
         this.updateDiscount();
+        this.updateTax();
         this.updateNet();
         this.updatePatientShare();
 
@@ -558,6 +588,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         this.updateDiscountPercent();
         this.updateDiscount();
+        this.updateTax();
         this.updateNet();
         this.updatePatientShare();
 
@@ -567,6 +598,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         this.updateDiscount();
         this.updateFactor();
+        this.updateTax();
         this.updateNet();
         this.updatePatientShare();
 
