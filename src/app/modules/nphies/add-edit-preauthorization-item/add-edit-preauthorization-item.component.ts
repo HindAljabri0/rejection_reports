@@ -625,9 +625,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
     const searchStr = this.FormItem.controls.searchQuery.value;
     const claimType = this.data.type;
-    const RequestDate = this.data.requestDate;
+    const RequestDate = this.data.dateOrdered;
+    const payerNphiesId = this.data.payerNphiesId;
+
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, null, claimType, RequestDate, 0, 10).subscribe(event => {
+    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         this.typeListSearchResult = body['content'];

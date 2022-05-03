@@ -775,7 +775,8 @@ export class AddPreauthorizationComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormPreAuthorization.controls.type.value.value,
-      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -901,7 +902,9 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
-      type: this.FormPreAuthorization.controls.type.value.value
+      type: this.FormPreAuthorization.controls.type.value.value,
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
