@@ -134,7 +134,7 @@ export class AuthService {
                     || element['authority'].split('|')[1] == '99.0'
                     || element['authority'].split('|')[1] == '24.41'
                     || element['authority'].split('|')[1] == '24.42'
-                    || element['authority'].split('|')[1] == '24.43'
+                    || element['authority'].split('|')[1] == '24.4'
                     );
                 if (hasClaimPrivileges) {
                     authorities.forEach(element => {

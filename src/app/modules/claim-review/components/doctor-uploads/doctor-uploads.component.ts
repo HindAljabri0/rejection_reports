@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { setupMaster } from 'cluster';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { PageControls, UploadsPage } from '../../models/claimReviewState.model';
-import { loadUploadsUnderReviewOfSelectedTab, uploadsReviewTabAction } from '../../store/claimReview.actions';
+import { Upload } from '../../models/upload.model';
+import { loadUploadsUnderReviewOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewTabAction } from '../../store/claimReview.actions';
 import { newClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, completedClaimsUnderReviewPage } from '../../store/claimReview.reducer';
 
 @Component({
@@ -13,7 +17,7 @@ import { newClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, completedCla
 })
 export class DoctorUploadsComponent implements OnInit {
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private router : Router) { }
 
   private pageControl: PageControls;
 
@@ -25,7 +29,7 @@ export class DoctorUploadsComponent implements OnInit {
     this.newUploads$ = this.store.select(newClaimsUnderReviewPage);
     this.inProgressUploads$ = this.store.select(inProgressClaimsUnderReviewPage);
     this.completedUploads$ = this.store.select(completedClaimsUnderReviewPage);
-    this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+    this.getScrubbingClaims();
     this.fillPageControls();
   }
 
@@ -68,7 +72,14 @@ export class DoctorUploadsComponent implements OnInit {
 
   getScrubbingClaims(){
     this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+  }
 
-  } 
+  dispatchTabChangeEvent(event: MatTabChangeEvent) {
+    this.store.dispatch(uploadsReviewTabAction({ index: event.index }));
+    this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+  }
 
+  selectDetailView(upload : Upload){
+    this.router.navigate(["/review/doctor/claims/" + upload.id]);
+  }
 }

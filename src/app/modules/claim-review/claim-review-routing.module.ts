@@ -7,7 +7,9 @@ import { UploadsAssigningComponent } from './components/uploads-assigning/upload
 const routes: Routes = [
     { path: 'uploads', component: UploadsAssigningComponent },
     { path: 'doctor/uploads', component: DoctorUploadsComponent },
-    { path: 'doctor/claims', component: DoctorUploadsClaimListComponent }
+    { path: 'doctor/claims/:id', component: DoctorUploadsClaimListComponent },
+    { path: 'coder/uploads', component: DoctorUploadsComponent },
+    { path: 'coder/claims/:id', component: DoctorUploadsClaimListComponent }
 ];
 
 @NgModule({
