@@ -20,8 +20,8 @@ export class UploadsPage {
         this.uploads = [];
     }
 
-    static fromBackendResponse(response: HttpResponse<any>) {
-        const body = response.body;
+    static fromBackendResponse(response: any) {
+        const body = response;
         const pageNumber = body.number;
         const pageSize = body.size;
         let uploadsPage = new UploadsPage(pageNumber, pageSize);

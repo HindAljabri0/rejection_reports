@@ -27,8 +27,8 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    
-  
+
+
     if (!this.authService.loggedIn) {
       return this.router.createUrlTree(['/login']);
     }
@@ -39,12 +39,15 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       case ClaimpageComponent:
         return true;
       case DashboardComponent:
-        if(this._isOnlyPayerUser()){
+        if (this._isOnlyPayerUser()) {
           return this.router.navigate(['/reports/payer-claims-report']);
         }
         if (this._isOnlyAdmin()) {
           return this.router.createUrlTree(['administration']);
         } else if (this._isOnlyRcm()) {
+          if (this._isDoctorOrCoder()) {
+            return this.router.createUrlTree(['review', 'uploads']);
+          }
           return this.router.createUrlTree(['administration', 'switch-provider']);
         } else {
           return true;
@@ -148,6 +151,11 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       return userPrivileges != null && userPrivileges.split('|').includes('3.0');
     });
     return !isProvider && item != null && (item.includes('|24') || item.startsWith('24'));
+  }
+
+  private _isDoctorOrCoder(): boolean {
+    const item = localStorage.getItem('101101');
+    return item != null && (item.includes('|24.41') || item.startsWith('24.41') || item.includes('|24.42') || item.startsWith('24.42'));
   }
 
   private _isOnlyPayerUser(): boolean {
