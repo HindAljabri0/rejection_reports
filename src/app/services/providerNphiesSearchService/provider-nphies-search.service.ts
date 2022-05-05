@@ -94,6 +94,29 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  searchPriceList(
+    providerId: string, priceListId: string, query: string, pageNumber: number, pageSize: number) {
+
+    let requestURL = '/providers/' + providerId + '/items/pricelist/search?';
+
+
+    if (query && query.trim().length > 0) {
+      requestURL += `query=${query}&`;
+    }
+    if (priceListId) {
+      requestURL += `priceListId=${priceListId}&`;
+    }
+
+    if (pageNumber !== null && pageNumber !== undefined) {
+      requestURL += `pageNumber=${pageNumber}&`;
+    }
+    if (pageSize) {
+      requestURL += `pageSize=${pageSize}&`;
+    }
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
   searchTransactionsLog(
     transactionId?: string,
     providerId?: string,

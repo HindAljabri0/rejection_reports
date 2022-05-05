@@ -65,23 +65,23 @@
             <th>Payer</th>
             <th>Effective Date</th>
             <th>Upload Date</th>
-            <th width="10"></th>
+            <!-- <th width="10"></th> -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let p of priceLists">
-            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate)">{{p.payerName}}</td>
-            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate)">{{p.effectiveDate | date:'dd/MM/yyyy'}}</td>
-            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate)">{{p.uploadedDate | date:'dd/MM/yyyy'}}</td>
-            <td class="actions">
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.payerName}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.effectiveDate | date:'dd/MM/yyyy'}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.uploadedDate | date:'dd/MM/yyyy'}}</td>
+            <!-- <td class="actions">
               <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
-      <mat-menu #actionsMenu xPosition="before">
+      <!-- <mat-menu #actionsMenu xPosition="before">
         <ng-template matMenuContent>
           <button mat-menu-item type="button">
             <mat-icon class="material-icons-outlined">edit</mat-icon>
@@ -92,7 +92,7 @@
             <span>Delete</span>
           </button>
         </ng-template>
-      </mat-menu>
+      </mat-menu> -->
 
     </div>
 
