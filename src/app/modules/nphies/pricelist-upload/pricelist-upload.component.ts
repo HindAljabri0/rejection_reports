@@ -88,6 +88,9 @@ export class PricelistUploadComponent implements OnInit {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
             const body: any = event.body;
+            if (body.response) {
+              this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+            }
             this.dialogRef.close(model.payerNphiesId);
           }
           this.sharedService.loadingChanged.next(false);
