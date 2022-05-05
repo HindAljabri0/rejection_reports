@@ -2774,7 +2774,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   // }
 
   disabledAddItemsButton() {
-    return !this.FormNphiesClaim.controls.type.value
+    return !this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePlanId.value
       || (this.FormNphiesClaim.controls.type.value
         && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
@@ -2873,6 +2874,30 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
 
     return hasError && this.isSubmitted;
+  }
+
+  ItemsAddButtonToolTip() {
+    let result = false;
+    if (!this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePlanId.value) {
+      result = true;
+    }
+
+    if (result) {
+      if (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      } else if (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
+        return 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
+      } else if (!this.FormNphiesClaim.controls.type.value) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      }
+    } else {
+      return '';
+    }
+
   }
 
 }
