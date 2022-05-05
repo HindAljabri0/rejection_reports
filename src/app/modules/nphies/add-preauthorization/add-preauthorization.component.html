@@ -795,7 +795,7 @@
 
         <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
           <span>Items<span class="asterisk">*</span></span>
-          <div class="ml-auto" matTooltip="Add Care Team to enable adding Items" [matTooltipDisabled]="!disableItemsButton()">
+          <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disableItemsButton()">
             <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
               <mat-icon>add</mat-icon>
             </button>

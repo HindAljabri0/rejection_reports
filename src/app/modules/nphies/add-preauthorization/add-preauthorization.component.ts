@@ -1779,10 +1779,33 @@ export class AddPreauthorizationComponent implements OnInit {
 
   disableItemsButton() {
     return !this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
-      || !this.FormPreAuthorization.controls.insurancePayerNphiesId.value
+      || !this.FormPreAuthorization.controls.insurancePlanId.value
       || (this.FormPreAuthorization.controls.type.value
         && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
+  }
+
+  ItemsAddButtonToolTip() {
+    let result = false;
+    if (!this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
+      || !this.FormPreAuthorization.controls.insurancePlanId.value) {
+      result = true;
+    }
+
+    if (result) {
+      if (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      } else if (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
+        return 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
+      } else if (!this.FormPreAuthorization.controls.type.value) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      }
+    } else {
+      return '';
+    }
   }
 
 }
