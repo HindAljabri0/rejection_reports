@@ -23,6 +23,7 @@ export class PricelistDetailsComponent implements OnInit {
   page = 0;
   pageSize = 10;
 
+  priceListId: string;
   payerName: string;
   payerNphiesId: string;
   uploadedDate: string;
@@ -42,6 +43,7 @@ export class PricelistDetailsComponent implements OnInit {
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService) {
 
+    this.priceListId = this.activateRoute.snapshot.queryParams.priceListId;
     this.payerNphiesId = this.activateRoute.snapshot.queryParams.payerNphiesId;
     this.uploadedDate = this.activateRoute.snapshot.queryParams.uploadedDate;
   }
@@ -106,7 +108,7 @@ export class PricelistDetailsComponent implements OnInit {
     // const RequestDate = this.data.dateOrdered;
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, null, this.searchQuery, this.payerNphiesId, null, null, this.page, this.pageSize).subscribe(event => {
+    this.providerNphiesSearchService.searchPriceList(this.sharedServices.providerId, this.priceListId, this.searchQuery, this.page, this.pageSize).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         this.priceDetailModel = new PaginatedResult(body, PriceDetailModel);

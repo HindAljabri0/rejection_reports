@@ -120,10 +120,18 @@ export class PricelistComponent implements OnInit {
   }
 
   selectPayer(event) {
-    this.FormPriceList.patchValue({
-      payerNphiesId: event.value.payerNphiesId,
-      // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
-    });
+    if (event.value) {
+      this.FormPriceList.patchValue({
+        payerNphiesId: event.value.payerNphiesId,
+        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    } else {
+      this.FormPriceList.patchValue({
+        payerNphiesId: '',
+        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    }
+
   }
 
   updateManualPage(index) {
@@ -267,9 +275,9 @@ export class PricelistComponent implements OnInit {
     this.location.go(path);
   }
 
-  RedirectToDetails(payerNphiesId: string, uploadedDate: string) {
+  RedirectToDetails(payerNphiesId: string, uploadedDate: string, priceListId: number) {
     uploadedDate = this.datePipe.transform(uploadedDate, 'dd/MM/yyyy');
-    this.router.navigate(['/nphies/pricelist-details/'], { queryParams: { payerNphiesId: payerNphiesId, uploadedDate: uploadedDate } });
+    this.router.navigate(['/nphies/pricelist-details/'], { queryParams: { payerNphiesId: payerNphiesId, uploadedDate: uploadedDate, priceListId: priceListId } });
   }
 
   openUploadPricelistDialog() {
