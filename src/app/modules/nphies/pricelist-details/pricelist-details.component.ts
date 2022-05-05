@@ -103,6 +103,12 @@ export class PricelistDetailsComponent implements OnInit {
     });
   }
 
+  search() {
+    this.page = 0;
+    this.pageSize = 10;
+    this.searchItems();
+  }
+
   searchItems() {
     this.sharedServices.loadingChanged.next(true);
     // const RequestDate = this.data.dateOrdered;
