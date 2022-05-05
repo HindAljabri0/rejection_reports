@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PriceListModel } from 'src/app/models/price-list-model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
@@ -41,6 +41,7 @@ export class PricelistComponent implements OnInit {
   payersList = [];
 
   constructor(
+    private router: Router,
     private dialog: MatDialog,
     private sharedService: SharedServices,
     private dialogService: DialogService,
@@ -264,6 +265,11 @@ export class PricelistComponent implements OnInit {
       path = path.substr(0, path.length - 1);
     }
     this.location.go(path);
+  }
+
+  RedirectToDetails(payerNphiesId: string, uploadedDate: string) {
+    uploadedDate = this.datePipe.transform(uploadedDate, 'dd/MM/yyyy');
+    this.router.navigate(['/nphies/pricelist-details/'], { queryParams: { payerNphiesId: payerNphiesId, uploadedDate: uploadedDate } });
   }
 
   openUploadPricelistDialog() {

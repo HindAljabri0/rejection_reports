@@ -5,6 +5,7 @@ import { NphiesConfigurationService } from 'src/app/services/nphiesConfiguration
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-pricelist-upload',
@@ -27,6 +28,7 @@ export class PricelistUploadComponent implements OnInit {
     private sharedService: SharedServices,
     private dialogRef: MatDialogRef<PricelistUploadComponent>,
     private datePipe: DatePipe,
+    private dialogService: DialogService,
     private formBuilder: FormBuilder,
     private nphiesConfigurationService: NphiesConfigurationService
   ) { }
@@ -55,7 +57,7 @@ export class PricelistUploadComponent implements OnInit {
   }
 
   checkfile() {
-    const validExts = new Array('.xlsx', '.csv');
+    const validExts = new Array('.xlsx');
     let fileExt = this.FormPriceList.controls.file.value.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -93,8 +95,10 @@ export class PricelistUploadComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           this.sharedService.loadingChanged.next(false);
+          if (error.status === 500) {
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+          }
         }
-        console.log(error);
       });
     }
   }
