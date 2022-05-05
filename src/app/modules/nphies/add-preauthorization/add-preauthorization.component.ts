@@ -290,7 +290,7 @@ export class AddPreauthorizationComponent implements OnInit {
           this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
-            dob : res.beneficiary.dob,
+            dob: res.beneficiary.dob,
             documentId: res.beneficiary.documentId,
             documentType: res.beneficiary.documentType,
             fullName: res.beneficiary.fullName,
@@ -1778,7 +1778,11 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   disableItemsButton() {
-    return !this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
+    return !this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
+      || !this.FormPreAuthorization.controls.insurancePayerNphiesId.value
+      || (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0);
   }
 
 }

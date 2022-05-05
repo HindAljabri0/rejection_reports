@@ -2774,7 +2774,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   // }
 
   disabledAddItemsButton() {
-    return !this.FormNphiesClaim.controls.type.value
+    return !this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePayerNphiesId.value
       || (this.FormNphiesClaim.controls.type.value
         && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
