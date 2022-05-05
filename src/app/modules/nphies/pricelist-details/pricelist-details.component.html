@@ -6,14 +6,15 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p>Tawuniya - 27/05/2015</p>
+            <p>{{payerName}} - {{uploadedDate}}</p>
         </div>
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col-md-7">
                 <div class="form-group">
-                    <input placeholder="Search service type, standard code, non-standard code, description" class="form-control search-box">
+                    <input placeholder="Search service type, standard code, non-standard code, description"
+                    class="form-control search-box" [(ngModel)]="searchQuery">
                 </div>
             </div>
             <div class="col-md-auto">
@@ -23,8 +24,8 @@
             </div>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-        <div class="fixed-height">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(priceDetailModel && priceDetails.length === 0)">
+        <div class="fixed-height" *ngIf="priceDetailModel && priceDetails.length > 0">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -36,50 +37,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let pd of priceDetails">
                         <td>Medical Devices</td>
-                        <td>10994</td>
-                        <td>568</td>
-                        <td>Shoe electrical conductivity tester</td>
-                        <td>293 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>Medical Devices</td>
-                        <td>10995</td>
-                        <td>6584</td>
-                        <td>Contact lens thermal cleaner, line-powered</td>
-                        <td>219 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>Medical Devices</td>
-                        <td>11010</td>
-                        <td>6984</td>
-                        <td>Infusion controller, line-powered</td>
-                        <td>275 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>Medication Codes</td>
-                        <td>11049</td>
-                        <td>214</td>
-                        <td>Infant bed crib top</td>
-                        <td>475 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>Medication Codes</td>
-                        <td>11052</td>
-                        <td>362</td>
-                        <td>Cricothyrotome, single-use</td>
-                        <td>589 <span class="currency">SR</span></td>
+                        <td>{{pd.code}}</td>
+                        <td>{{pd.nonStandardCode}}</td>
+                        <td>{{pd.nonStandardDescription}}</td>
+                        <td>{{pd.unitPrice}} <span class="currency">SR</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
     </ng-scrollbar>
+    <app-empty-state *ngIf="priceDetailModel && priceDetails.length === 0" message='No Price List Detail found!'>
+    </app-empty-state>
     <div class="block-footer sticky">
-        <div class="left-block">
-            <mat-paginator #paginator class="primary-paginator" [length]="25" [pageSize]="5" aria-label="Select page">
-            </mat-paginator>
+      <div class="pagination-header" *ngIf="!(priceDetailModel && priceDetails.length === 0)">
+        <div class="form-group page-select">
+          <label class="control-label">Go to page: </label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+              <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+        <div class="material-paginator">
+          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+          </mat-paginator>
+        </div>
+      </div>
     </div>
 </div>

@@ -31,7 +31,7 @@
           <div class="form-group">
             <label class="control-label">From Upload Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select effective date" class="form-control"
+              <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select From Upload Date" class="form-control"
                 formControlName="uploadFromDate">
               <mat-datepicker-toggle [for]="fromUploadDateDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #fromUploadDateDatePicker></mat-datepicker>
@@ -43,7 +43,7 @@
           <div class="form-group">
             <label class="control-label">To Upload Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="toUploadDatePicker" placeholder="Select effective date" class="form-control"
+              <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control"
                 formControlName="uploadToDate">
               <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #toUploadDatePicker></mat-datepicker>
@@ -70,9 +70,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let p of priceLists">
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.payerName}}</td>
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.effectiveDate}}</td>
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.uploadedDate}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate)">{{p.payerName}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate)">{{p.effectiveDate | date:'dd/MM/yyyy'}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate)">{{p.uploadedDate | date:'dd/MM/yyyy'}}</td>
             <td class="actions">
               <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>
