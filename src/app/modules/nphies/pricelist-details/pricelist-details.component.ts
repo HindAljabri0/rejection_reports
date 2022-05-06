@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PriceDetailModel } from 'src/app/models/price-detail-model';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { Location, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pricelist-details',
@@ -39,6 +40,7 @@ export class PricelistDetailsComponent implements OnInit {
   constructor(
     private activateRoute: ActivatedRoute,
     private sharedDataService: SharedDataService,
+    private location: Location,
     private sharedServices: SharedServices,
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService) {
@@ -130,6 +132,14 @@ export class PricelistDetailsComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
       console.log(err);
     });
+  }
+
+  typeName(type){
+    return this.typeList.filter(x => x.value === type)[0] ? this.typeList.filter(x => x.value === type)[0].name : '-';
+  }
+
+  goBack(){
+    this.location.back();
   }
 
 }

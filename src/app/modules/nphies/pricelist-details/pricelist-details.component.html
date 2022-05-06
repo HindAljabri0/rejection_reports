@@ -2,7 +2,7 @@
     <div class="block-header">
         <div class="d-flex align-items-center">
             <div class="actions mr-2 my-n2 ml-n1">
-                <button matRipple type="button" routerLink="/nphies/pricelist" class="action-btn">
+                <button matRipple type="button" (click)="goBack()" class="action-btn">
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
@@ -34,15 +34,17 @@
                         <th>Non-Standard Code</th>
                         <th>Non-Standard Description</th>
                         <th>Unit Price</th>
+                        <th>Discount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let pd of priceDetails">
-                        <td>Medical Devices</td>
+                        <td>{{typeName(pd.itemType)}}</td>
                         <td>{{pd.code}}</td>
                         <td>{{pd.nonStandardCode}}</td>
                         <td>{{pd.nonStandardDescription}}</td>
                         <td>{{pd.unitPrice}} <span class="currency">SR</span></td>
+                        <td>{{pd.discount}}</td>
                     </tr>
                 </tbody>
             </table>
