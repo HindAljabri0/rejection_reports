@@ -7,7 +7,7 @@
     </button>
   </div>
   <div class="block-filter-panel">
-    <form [formGroup]="FormPriceList" (ngSubmit)="onSubmit()">
+    <form [formGroup]="FormPriceList" (ngSubmit)="search()">
       <div class="row small-gutter">
         <div class="col-xl-3 col-md-6">
           <div class="form-group">
@@ -62,6 +62,7 @@
       <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
+            <th>PriceList ID</th>
             <th>Payer</th>
             <th>Effective Date</th>
             <th>Upload Date</th>
@@ -70,9 +71,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let p of priceLists">
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.priceListId}}</td>
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.payerName}}</td>
-            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.effectiveDate | date:'dd/MM/yyyy'}}</td>
-            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.uploadedDate | date:'dd/MM/yyyy'}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.effectiveDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
             <!-- <td class="actions">
               <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>

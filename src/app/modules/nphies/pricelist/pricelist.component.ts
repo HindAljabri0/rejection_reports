@@ -189,6 +189,12 @@ export class PricelistComponent implements OnInit {
     });
   }
 
+  search() {
+    this.page = 0;
+    this.pageSize = 10;
+    this.onSubmit();
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.FormPriceList.valid) {
@@ -287,12 +293,12 @@ export class PricelistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.FormPriceList.patchValue({
-          payerNphiesId: result,
-          effectiveDate: '',
-          uploadFromDate: '',
-          uploadToDate: ''
-        });
+        // this.FormPriceList.patchValue({
+        //   payerNphiesId: result,
+        //   effectiveDate: '',
+        //   uploadFromDate: '',
+        //   uploadToDate: ''
+        // });
         this.onSubmit();
       }
     });
