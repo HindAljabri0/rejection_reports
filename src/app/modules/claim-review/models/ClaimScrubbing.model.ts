@@ -24,7 +24,7 @@ export class claimScrubbing {
     gender : string;
     gross : number;
     height : string;
-    idNumber : string;
+    isnumber : string;
     illnessduration : string;
     lastname : string;
     lmp : Date;
