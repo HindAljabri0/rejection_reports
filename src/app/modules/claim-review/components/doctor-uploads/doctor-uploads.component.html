@@ -42,7 +42,7 @@
                         <img src="./assets/ic-page-prev.svg" alt="Previous" />
                     </button>
                     <p class="page-info">
-                        1<small>/5</small>
+                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
                     </p>
                     <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
                         <img src="./assets/ic-page-next.svg" alt="Next" />
@@ -68,21 +68,27 @@
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let upload of (inProgressUploads$|async).uploads">
-                                <tr class="align-middle">
-                                    <td class="row-click" routerLink="/review/doctor/claims">
+                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                    <td class="row-click">
                                         {{ upload.name }}
                                         <p class="text-grey">{{upload.date}}</p>
                                     </td>
-                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                    <td class="text-center row-click">
                                         <h4 class="text-primary">{{upload.totalClaims}}</h4>
                                     </td>
-                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                    <td class="text-center row-click" *ngIf='isDoctor'>
                                         <h4 class="text-primary">{{upload.pendingClaimsOfDoctor}}</h4>
                                     </td>
-                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                    <td class="text-center row-click" *ngIf='isCoder'>
+                                        <h4 class="text-primary">{{upload.pendingClaimsOfCoder}}</h4>
+                                    </td>
+                                    <td class="text-center row-click" *ngIf='isDoctor'>
                                         <h4 class="text-primary">{{upload.reviewedClaimsOfDoctor}}</h4>
                                     </td>
-                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                    <td class="text-center row-click" *ngIf='isCoder'>
+                                        <h4 class="text-primary">{{upload.reviewedClaimsOfCoder}}</h4>
+                                    </td>
+                                    <td class="text-center row-click">
                                         <mat-icon class="text-primary">arrow_forward</mat-icon>
                                     </td>
                                 </tr>
@@ -100,7 +106,7 @@
                         <img src="./assets/ic-page-prev.svg" alt="Previous" />
                     </button>
                     <p class="page-info">
-                        1<small>/5</small>
+                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
                     </p>
                     <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
                         <img src="./assets/ic-page-next.svg" alt="Next" />
@@ -124,15 +130,15 @@
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let upload of (completedUploads$|async).uploads">
-                                <tr class="align-middle">
-                                    <td class="row-click" routerLink="/review/doctor/claims">
+                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                    <td class="row-click">
                                         {{ upload.name }}
                                         <p class="text-grey">{{upload.date}}</p>
                                     </td>
-                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                    <td class="text-center row-click">
                                         <h4 class="text-primary">{{upload.totalClaims}}</h4>
                                     </td>
-                                    <td class="text-center row-click" routerLink="/review/doctor/claims">
+                                    <td class="text-center row-click">
                                         <mat-icon class="text-primary">arrow_forward</mat-icon>
                                     </td>
                                 </tr>
@@ -143,19 +149,19 @@
             </ng-scrollbar>
             <div class="block-footer sticky">
                 <div class="left-block custom-paginator">
-                    <button matRipple type="button" title="First Page">
+                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
                         <img src="./assets/ic-page-first.svg" alt="First" />
                     </button>
-                    <button matRipple type="button" title="Previous Page">
+                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
                         <img src="./assets/ic-page-prev.svg" alt="Previous" />
                     </button>
                     <p class="page-info">
-                        1<small>/5</small>
+                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
                     </p>
-                    <button matRipple type="button" title="Next Page">
+                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
                         <img src="./assets/ic-page-next.svg" alt="Next" />
                     </button>
-                    <button matRipple type="button" title="Last Page">
+                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
                         <img src="./assets/ic-page-last.svg" alt="Last" />
                     </button>
                 </div>

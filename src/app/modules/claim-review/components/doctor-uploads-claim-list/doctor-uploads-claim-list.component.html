@@ -30,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let data of claimDetails">
+                    <ng-container *ngFor="let data of claimData">
                         <tr class="align-middle">
                             <td>
                                 <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
@@ -40,52 +40,15 @@
                                     <mat-icon class="text-grey">schedule</mat-icon>
                                 </button>
                             </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{ data.provclaimno }}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{data.claimDetails.doctorName}}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{ data.provclaimno }}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{data.claimDetails.doctorName}}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{ data.provclaimno }}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{data.claimDetails.doctorName}}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{ data.provclaimno }}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{data.claimDetails.doctorName}}</h4>
-                            </td>
-                            <td class="text-center row-click">
-                                <h4 class="text-primary">{{ data.provclaimno }}</h4>
-                            </td>                            
-                        </tr>
-                        <tr>
-                            <td>
-                                <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                            </td>
-                            <td class="actions">
-                                <button type="button" mat-icon-button>
-                                    <mat-icon class="text-grey">schedule</mat-icon>
-                                </button>
-                            </td>
-                            <td class="text-monospace">OP0990990</td>
-                            <td>Mohamed Sami Youssef Abdou</td>
-                            <td class="text-monospace">823641440372884</td>
-                            <td class="text-monospace">1619753013</td>
-                            <td class="text-monospace">1449971</td>
-                            <td>25-09-2021</td>
-                            <td>617 <span class="currency">SAR</span></td>
-                            <td>0.4 <span class="currency">SAR</span></td>
-                            <td class="text-monospace">4783</td>
+                            <td class="text-monospace">{{ data.provclaimno }}</td>
+                            <td class="text-monospace">{{ data.physicianname }}</td>
+                            <td class="text-monospace">{{ data.memberid }}</td>
+                            <td class="text-monospace">{{ data.idNumber }}</td>
+                            <td class="text-monospace">{{ data.claimDetails.patientFileNumber }}</td>
+                            <td class="text-monospace">{{ data.visitdate | date : 'dd-MM-yyyy' }}</td>
+                            <td class="text-monospace">{{ data.net }}<span class="currency">SAR</span></td>
+                            <td class="text-monospace">{{ data.netvatamount }}<span class="currency">SAR</span></td>
+                            <td class="text-monospace">Batch Number</td>                          
                         </tr>
                     </ng-container>
                 </tbody>
@@ -94,19 +57,19 @@
     </ng-scrollbar>
     <div class="block-footer sticky">
         <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page">
+            <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
                 <img src="./assets/ic-page-first.svg" alt="First" />
             </button>
-            <button matRipple type="button" title="Previous Page">
+            <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
-                1<small>/5</small>
+                {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
             </p>
-            <button matRipple type="button" title="Next Page">
+            <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
             </button>
-            <button matRipple type="button" title="Last Page">
+            <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>
