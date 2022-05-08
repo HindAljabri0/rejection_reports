@@ -3,7 +3,7 @@ import { Paginateable } from './paginateable';
 export class PriceDetailModel extends Paginateable {
 
   code: string;
-  discount: number;
+  factor: number;
   display: string;
   itemType: string;
   nonStandardCode: string;
@@ -14,7 +14,7 @@ export class PriceDetailModel extends Paginateable {
     super(body);
 
     this.code = body['code'];
-    this.discount = body['discount'];
+    this.factor = body['factor'];
     this.display = body['display'];
     this.itemType = body['itemType'];
     this.nonStandardCode = body['nonStandardCode'];
