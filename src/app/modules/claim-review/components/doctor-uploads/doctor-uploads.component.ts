@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { setupMaster } from 'cluster';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { PageControls, UploadsPage } from '../../models/claimReviewState.model';
-import { loadUploadsUnderReviewOfSelectedTab, uploadsReviewTabAction } from '../../store/claimReview.actions';
+import { Upload } from '../../models/upload.model';
+import { loadUploadsUnderReviewOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewTabAction } from '../../store/claimReview.actions';
 import { newClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, completedClaimsUnderReviewPage } from '../../store/claimReview.reducer';
 
 @Component({
@@ -13,9 +17,11 @@ import { newClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, completedCla
 })
 export class DoctorUploadsComponent implements OnInit {
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private router : Router) { }
 
-  private pageControl: PageControls;
+  pageControl: PageControls;
+  isDoctor : boolean;
+  isCoder : boolean;
 
   newUploads$: Observable<UploadsPage>;
   inProgressUploads$: Observable<UploadsPage>;
@@ -25,50 +31,64 @@ export class DoctorUploadsComponent implements OnInit {
     this.newUploads$ = this.store.select(newClaimsUnderReviewPage);
     this.inProgressUploads$ = this.store.select(inProgressClaimsUnderReviewPage);
     this.completedUploads$ = this.store.select(completedClaimsUnderReviewPage);
-    this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
-    this.fillPageControls();
+    this.getScrubbingClaims();
+    this.fillPageControls('New');
+    this.isDoctor = localStorage.getItem('101101').includes('|24.41') || localStorage.getItem('101101').startsWith('24.41');
+    this.isCoder = localStorage.getItem('101101').includes('|24.42') || localStorage.getItem('101101').startsWith('24.42');
   }
 
-  fillPageControls() {
-    this.newUploads$.subscribe((upload) => {
-      console.log('upload', upload);
-      this.pageControl = upload.pageControls
-    })
+  fillPageControls(name : string) {
+    if (name == "New"){
+      this.newUploads$.subscribe((upload) => {
+        this.pageControl = upload.pageControls
+      })
+    }else if(name == "In Progress"){
+      this.inProgressUploads$.subscribe((upload) => {
+        this.pageControl = upload.pageControls
+      })
+    }else{
+      this.completedUploads$.subscribe((upload) => {
+        this.pageControl = upload.pageControls
+      })
+    }
   }
 
   goToFirstPage() {
-    console.log("goToFirstPage");
     if (this.pageControl.pageNumber != 0) {
       this.pageControl.pageNumber = 0;
       this.getScrubbingClaims();
     }
   }
   goToPrePage() {
-    console.log("goToPrePage");
     if (this.pageControl.pageNumber != 0) {
       this.pageControl.pageNumber = this.pageControl.pageNumber - 1;
       this.getScrubbingClaims();
     }
   }
   goToNextPage() {
-    console.log("goToNextPage");
     if ((this.pageControl.pageNumber + 1) < this.pageControl.totalPages) {
       this.pageControl.pageNumber = this.pageControl.pageNumber + 1;
       this.getScrubbingClaims();
     }
   }
   goToLastPage() {
-    console.log("goToLastPage");
     if (this.pageControl.pageNumber != (this.pageControl.totalPages - 1)) {
       this.pageControl.pageNumber = this.pageControl.totalPages - 1;
       this.getScrubbingClaims();
-
     }
   }
 
   getScrubbingClaims(){
     this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+  }
 
-  } 
+  dispatchTabChangeEvent(event: MatTabChangeEvent) {
+    this.store.dispatch(uploadsReviewTabAction({ index: event.index }));
+    this.fillPageControls(event.tab.textLabel);
+    this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+  }
 
+  selectDetailView(upload : Upload){                      
+    this.router.navigate(["/review/doctor/claims/" + upload.id]);
+  }
 }
