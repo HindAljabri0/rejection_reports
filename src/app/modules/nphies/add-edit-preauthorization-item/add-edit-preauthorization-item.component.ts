@@ -256,7 +256,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: type.nonStandardCode,
         display: type.nonStandardDescription,
         unitPrice: type.unitPrice,
-        discount: type.discount,
+        factor: type.factor,
       });
       this.typeChange(type);
     }
