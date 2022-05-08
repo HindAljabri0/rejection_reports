@@ -259,6 +259,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         factor: type.factor,
       });
       this.typeChange(type);
+      this.Calculate('Factor');
     }
   }
 
