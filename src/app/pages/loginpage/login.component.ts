@@ -32,7 +32,10 @@ export class LoginComponent implements OnInit {
 
   expired: boolean;
 
-  isRamadan = true;
+  isRamadan = false;
+
+  isEid = true;
+
   constructor(
     public authService: AuthService,
     public router: Router,
