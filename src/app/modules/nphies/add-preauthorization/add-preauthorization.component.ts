@@ -1697,6 +1697,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   reset() {
+    location.reload();
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();
