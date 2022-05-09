@@ -209,11 +209,39 @@
             <mat-icon>add</mat-icon>
           </button>
         </h5>
-        <!-- <div class="table-responsive">
+        <!-- <div class="row small-gutter">
+          <div class="col-xxl-4 col-lg-6">
+            <div class="d-flex">
+              <div class="form-group flex-grow-1">
+                <label class="control-label">Select Practitioner to add<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select value="">
+                    <mat-option value="">Select Practitioner</mat-option>
+                    <mat-option value="Option 1">Option 1</mat-option>
+                    <mat-option value="Option 2">Option 2</mat-option>
+                    <mat-option value="Option 3">Option 3</mat-option>
+                    <mat-option value="Option 4">Option 4</mat-option>
+                    <mat-option value="Option 5">Option 5</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
+              </div>
+              <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button type="button" mat-flat-button class="text-nowrap" color="primary">Add Manually</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
           <table class="primary-grid claim-view-table">
             <thead>
               <tr>
-                <th>Practitioner<span class="asterisk">*</span></th>
+                <th>Practitioner ID<span class="asterisk">*</span></th>
+                <th>Practitioner Name<span class="asterisk">*</span></th>
                 <th>Qualification<span class="asterisk">*</span></th>
                 <th>Care Team Role<span class="asterisk">*</span></th>
                 <th>Practitioner Role<span class="asterisk">*</span></th>
@@ -221,82 +249,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr class="align-middle">
                 <td>
                   <div class="form-group mb-n1 mt-n1">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
-                        <mat-option value="">Select Practitioner</mat-option>
-                        <mat-option value="Option 1">Option 1</mat-option>
-                        <mat-option value="Option 2">Option 2</mat-option>
-                        <mat-option value="Option 3">Option 3</mat-option>
-                        <mat-option value="Option 4">Option 4</mat-option>
-                        <mat-option value="Option 5">Option 5</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <a href="#" class="primary-link small" title="Can’t find practitioner?">Can’t find practitioner?</a>
+                    <input type="text" class="form-control" placeholder="ID">
                   </div>
                 </td>
                 <td>
                   <div class="form-group mb-n1 mt-n1">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
-                        <mat-option value="">Select qualification</mat-option>
-                        <mat-option value="Option 1">Option 1</mat-option>
-                        <mat-option value="Option 2">Option 2</mat-option>
-                        <mat-option value="Option 3">Option 3</mat-option>
-                        <mat-option value="Option 4">Option 4</mat-option>
-                        <mat-option value="Option 5">Option 5</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group mb-n1 mt-n1">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
-                        <mat-option value="">Select care team role</mat-option>
-                        <mat-option value="Option 1">Option 1</mat-option>
-                        <mat-option value="Option 2">Option 2</mat-option>
-                        <mat-option value="Option 3">Option 3</mat-option>
-                        <mat-option value="Option 4">Option 4</mat-option>
-                        <mat-option value="Option 5">Option 5</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group mb-n1 mt-n1">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select value="">
-                        <mat-option value="">Select practitioner role</mat-option>
-                        <mat-option value="Option 1">Option 1</mat-option>
-                        <mat-option value="Option 2">Option 2</mat-option>
-                        <mat-option value="Option 3">Option 3</mat-option>
-                        <mat-option value="Option 4">Option 4</mat-option>
-                        <mat-option value="Option 5">Option 5</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td class="actions">
-                  <button type="button" mat-icon-button [matMenuTriggerFor]="careTeamTableActionMenu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="form-group mb-n1 mt-n1">
-                    <div class="row extra-small-gutter">
-                      <div class="col-4">
-                        <input type="text" class="form-control" placeholder="ID">
-                      </div>
-                      <div class="col-8">
-                        <input type="text" class="form-control" placeholder="Name">
-                      </div>
-                    </div>
-                    <a href="#" class="primary-link small" title="Choose existing practitioner">Choose existing practitioner</a>
+                    <input type="text" class="form-control" placeholder="Name">
                   </div>
                 </td>
                 <td>
