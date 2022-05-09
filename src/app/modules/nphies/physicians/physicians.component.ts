@@ -72,7 +72,6 @@ export class PhysiciansComponent implements OnInit {
   }
 
   DownloadPhysicianSample() {
-
     this.nphiesConfigurationsService.downloadPhysicianList(this.sharedServices.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null) {
