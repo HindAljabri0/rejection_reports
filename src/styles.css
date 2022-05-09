@@ -245,6 +245,12 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .form-title .mat-slide-toggle{font-weight: 400;}
 .form-title.no-border{padding-bottom: 0;border-bottom: 0;margin-bottom: 0;}
 
+/* pre auth items
+--------------------------------------------------------------------------------------------------------*/
+.mat-autocomplete-panel.pre-auth-items{padding: 6px 0;}
+.pre-auth-items .mat-option{height: auto;padding: 10px 16px;line-height: 20px;}
+.pre-auth-items .non-standard-code{font-size: 14px;display: block;}
+
 /* misc
 --------------------------------------------------------------------------------------------------------*/
 .spacer {flex: 1 1 auto;}
