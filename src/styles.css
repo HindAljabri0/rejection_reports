@@ -619,8 +619,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .view-claim .create-claim-body .mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
 .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 261px);}
 .mat-dialog-container .create-claim-body{background: #fff;}
-.mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 181px);overflow: auto;}
-.mat-dialog-container .claim-totals ~ .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
+.mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 231px);overflow: auto;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/
