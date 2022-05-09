@@ -11,14 +11,13 @@
           <p>Drag and drop file here or <span class="semibold text-primary">browse</span></p>
           <span>Maximum Size: 2 MB</span>
           <p class="error-text" *ngIf="error">{{error}}</p>
-          <p *ngIf="FormPhysiciansList.controls.file.value && !error" class="file-name">
-            {{FormPhysiciansList.controls.file.value.name}}</p>
+          <p *ngIf="FormPhysiciansList.controls.file.value && !error" class="file-name">{{FormPhysiciansList.controls.file.value.name}}</p>
         </div>
+        <input type="file" class="upload-control" (change)="selectFile($event.target.files)" />
         <div
           *ngIf="( isSubmitted || FormPhysiciansList.get('file').touched) && FormPhysiciansList.get('file').hasError('required')">
           <span class="error-text">Please select File</span>
         </div>
-        <input type="file" class="upload-control" (change)="selectFile($event.target.files)" />
       </div>
       <div class="btn-list text-right">
         <button type="submit" mat-flat-button color="primary">Upload</button>
