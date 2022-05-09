@@ -68,19 +68,19 @@ export class ProviderNphiesSearchService {
 
     let requestURL = '/providers/' + providerId + '/items?';
 
-    if (itemType && itemType.trim().length > 0) {
+    if (itemType != null && itemType.trim().length > 0) {
       requestURL += `itemType=${itemType}&`;
     }
-    if (query && query.trim().length > 0) {
+    if (query != null && query.trim().length > 0) {
       requestURL += `query=${query}&`;
     }
-    if (payerNphiesId && payerNphiesId.trim().length > 0) {
+    if (payerNphiesId != null && payerNphiesId.trim().length > 0) {
       requestURL += `payerNphiesId=${payerNphiesId}&`;
     }
-    if (claimType && claimType.trim().length > 0) {
+    if (claimType != null && claimType.trim().length > 0) {
       requestURL += `claimType=${claimType}&`;
     }
-    if (requestDate && requestDate.trim().length > 0) {
+    if (requestDate != null && requestDate.trim().length > 0) {
       requestURL += `requestDate=${requestDate}&`;
     }
 
