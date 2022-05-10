@@ -66,6 +66,7 @@ import {
 import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.component';
+import { ManageDiagnosisComponent } from './manage-diagnosis/manage-diagnosis.component';
 
 
 
@@ -113,7 +114,8 @@ import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.co
     NphiesUploadSummaryDialogComponent,
     PricelistComponent,
     PricelistDetailsComponent,
-    PricelistUploadComponent
+    PricelistUploadComponent,
+    ManageDiagnosisComponent
   ],
   imports: [
     CommonModule,

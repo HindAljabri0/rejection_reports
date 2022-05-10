@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -20,9 +21,8 @@ export class UploadPhysiciansDialogComponent implements OnInit {
   currentFileUpload: File;
   selectedFiles: FileList;
   uploading = false;
-  title = 'testing';
   errorChange: Subject<string> = new Subject();
-  PhysiciansListDoesNotExistMessages: string[] = [];
+
   FormPhysiciansList: FormGroup = this.formBuilder.group({
     file: ['', Validators.required]
   });
@@ -32,7 +32,9 @@ export class UploadPhysiciansDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<UploadPhysiciansDialogComponent>,
     private formBuilder: FormBuilder,
     private nphiesConfigurationService: NphiesConfigurationService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+
+
   ) { }
 
   ngOnInit() { }
@@ -82,31 +84,39 @@ export class UploadPhysiciansDialogComponent implements OnInit {
       console.log(this.FormPhysiciansList.value);
       this.nphiesConfigurationService.uploadPhysicianList(this.common.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
-          const errors: any[] = [];
-          const body: any = event.body;
           if (event.status === 200) {
+            const body: any = event.body;
 
+            if (body.errormessage != null && body.errormessage instanceof Array) {
+              this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}<br><br>Error info:<br>${body.errormessage.join('<br>')}`, 'info', true, 'OK');
+
+              this.dialogRef.close(model.file);
+            } else {
+              this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`,'info', true, 'OK');
+            }
           }
+
           this.common.loadingChanged.next(false);
-this.closeDialog();
+
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
           this.common.loadingChanged.next(false);
-
-      this.uploading = false;
+          if (error.status === 500) {
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+          }
 
         }
-        console.log(error);
       });
     }
   }
+
+
   cancel() {
     if (this.common.loading || this.uploading) {
       return;
     }
     this.currentFileUpload = null;
     this.selectedFiles = null;
-    this. PhysiciansListDoesNotExistMessages = [];
   }
 }

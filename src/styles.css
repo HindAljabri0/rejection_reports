@@ -245,6 +245,12 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .form-title .mat-slide-toggle{font-weight: 400;}
 .form-title.no-border{padding-bottom: 0;border-bottom: 0;margin-bottom: 0;}
 
+/* pre auth items
+--------------------------------------------------------------------------------------------------------*/
+.mat-autocomplete-panel.pre-auth-items{padding: 6px 0;}
+.pre-auth-items .mat-option{height: auto;padding: 10px 16px;line-height: 20px;}
+.pre-auth-items .non-standard-code{font-size: 14px;display: block;}
+
 /* misc
 --------------------------------------------------------------------------------------------------------*/
 .spacer {flex: 1 1 auto;}
@@ -619,8 +625,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .view-claim .create-claim-body .mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
 .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 261px);}
 .mat-dialog-container .create-claim-body{background: #fff;}
-.mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 181px);overflow: auto;}
-.mat-dialog-container .claim-totals ~ .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
+.mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 231px);overflow: auto;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/

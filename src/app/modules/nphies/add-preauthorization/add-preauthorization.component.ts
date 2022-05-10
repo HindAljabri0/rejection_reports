@@ -181,6 +181,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
   currentOpenItem: number = null;
 
+  claimType: string;
+
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -415,6 +417,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onTypeChange($event) {
     if ($event.value) {
+      this.claimType = $event.value.value;
       switch ($event.value.value) {
         case 'institutional':
           this.subTypeList = [
@@ -434,7 +437,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
       this.VisionSpecifications = [];
       this.Items = [];
-      this.Diagnosises = [];
+      // this.Diagnosises = [];
     }
   }
 
@@ -1199,6 +1202,14 @@ export class AddPreauthorizationComponent implements OnInit {
     return hasError;
   }
 
+  checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1269,6 +1280,10 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (!this.checkDiagnosisErrorValidation()) {
+      hasError = true;
+    }
 
     if (this.checkSupposrtingInfoValidation()) {
       hasError = true;
@@ -1647,7 +1662,7 @@ export class AddPreauthorizationComponent implements OnInit {
               this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
             }
           } else if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
           } else if (error.status === 503) {
             const errors: any[] = [];
             if (error.error.errors) {
@@ -1697,6 +1712,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   reset() {
+    location.reload();
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();

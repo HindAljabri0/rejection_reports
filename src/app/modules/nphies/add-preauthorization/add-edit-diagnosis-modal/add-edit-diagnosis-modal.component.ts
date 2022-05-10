@@ -33,6 +33,8 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     isSubmitted = false;
 
     typeList = this.sharedDataService.diagnosisTypeList;
+
+    selectedDiagnosis:ICDDiagnosis = null;
     // [
     //   { value: 'admitting', name: 'Admitting Diagnosis' },
     //   // { value: 'clinical', name: 'Clinical Diagnosis' },
@@ -120,6 +122,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     }
 
     addICDDiagnosis(diag: ICDDiagnosis) {
+        this.selectedDiagnosis = diag;
         this.FormDiagnosis.controls.code.setValue(diag.diagnosisCode);
         this.FormDiagnosis.controls.description.setValue(diag.diagnosisCode + ' - ' + diag.diagnosisDescription);
     }
@@ -142,7 +145,10 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     onSubmit() {
         this.isSubmitted = true;
         // tslint:disable-next-line:max-line-length
-        if (!this.data.item && this.FormDiagnosis.controls.type.value && this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
+        if(this.selectedDiagnosis == null){
+            this.primaryValidationMsg = 'Please select a diagnosis from the list by clicking on it.';
+            return;
+        } else if (!this.data.item && this.FormDiagnosis.controls.type.value && this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
             this.primaryValidationMsg = 'There can be only one principal Type';
             return;
         } else {
@@ -151,8 +157,8 @@ export class AddEditDiagnosisModalComponent implements OnInit {
         if (this.FormDiagnosis.valid) {
             const model: any = {};
             model.sequence = this.data.Sequence;
-            model.diagnosisCode = this.FormDiagnosis.controls.code.value;
-            model.diagnosisDescription = this.FormDiagnosis.controls.description.value.replace(model.diagnosisCode + ' - ', '');
+            model.diagnosisCode = this.selectedDiagnosis.diagnosisCode;
+            model.diagnosisDescription = this.selectedDiagnosis.diagnosisDescription;
             model.type = this.FormDiagnosis.controls.type.value ? this.FormDiagnosis.controls.type.value.value : '';
             if (this.IsOnAdmissionRequired) {
                 model.onAdmission = this.FormDiagnosis.controls.onAdmission.value ? this.FormDiagnosis.controls.onAdmission.value.value : '';

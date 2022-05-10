@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest, HttpResponse, HttpEventType, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, Subject } from 'rxjs';
+import { SinglePhysician } from 'src/app/models/nphies/SinglePhysicianModel';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,13 @@ export class NphiesConfigurationService {
   getPhysicianList(providerId: string, page: number, size: number) {
     const requestURL = `/providers/${providerId}/physciains?page=${page}&size=${size}`;
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
+    return this.http.request(request);
+  }
+
+  addSinglePhysician(providerId: string, PhysicianModel: SinglePhysician) {
+    const requestUrl = `/providers/${providerId}/physciains`;
+    let body: any = { ...PhysicianModel };
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
     return this.http.request(request);
   }
 
