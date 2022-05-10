@@ -226,6 +226,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   routeMode;
   selectedTab = 0;
+  claimType: string;
 
   constructor(
 
@@ -598,6 +599,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   onTypeChange($event) {
     if ($event.value) {
+      this.claimType = $event.value.value;
       switch ($event.value.value) {
         case 'institutional':
           this.subTypeList = [
@@ -1254,6 +1256,14 @@ export class CreateClaimNphiesComponent implements OnInit {
     return hasError;
   }
 
+  checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1304,6 +1314,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (!this.checkDiagnosisErrorValidation()) {
+      hasError = true;
+    }
 
     if (this.checkSupposrtingInfoValidation()) {
       hasError = true;
@@ -2153,6 +2167,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     // tslint:disable-next-line:max-line-length
     this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0] : '');
+    this.claimType = response.preAuthorizationInfo.type;
 
     switch (response.preAuthorizationInfo.type) {
       case 'institutional':

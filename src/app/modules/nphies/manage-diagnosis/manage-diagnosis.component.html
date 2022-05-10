@@ -56,14 +56,14 @@
         <td>
           <div *ngIf="IsOnAdmissionRequired">
             <div class="form-group  mb-n1 mt-n1"
-              [ngClass]="{'has-error' : IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission}">
+              [ngClass]="{'has-error' : IsOnAdmissionRequired && diagnosis.IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission}">
               <mat-form-field class="form-control custom-select-control">
                 <mat-select [(ngModel)]="diagnosis.onAdmission">
                   <mat-option value="">Select On Admission</mat-option>
                   <mat-option *ngFor="let a of onAdmissionList" [value]="a.value">{{a.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission">
+              <div *ngIf="IsOnAdmissionRequired && diagnosis.IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission">
                 <span class="error-text">Please select a On Admission </span>
               </div>
             </div>

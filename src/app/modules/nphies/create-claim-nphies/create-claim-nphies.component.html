@@ -1447,7 +1447,14 @@
               error</mat-icon>
             <span [class.text-danger]="IsDiagnosisRequired">Diagnosis</span>
           </ng-template>
-          <h5 class="form-title pt-0">
+          <app-manage-diagnosis
+          [(isSubmitted)]="isSubmitted"
+          [(IsDiagnosisRequired)]="IsDiagnosisRequired"
+          [(diagnosisList)]="Diagnosises"
+          [(claimType)]="claimType"
+          [pageMode]="pageMode">
+          </app-manage-diagnosis>
+          <!-- <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
             <div class="ml-auto" matTooltip="Select Claim Type to enable adding diagnosis" [matTooltipDisabled]="(FormNphiesClaim.controls.type.value)?true:false">
               <button type="button" class="btn-icon btn-primary" (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
@@ -1504,7 +1511,7 @@
           <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
           </app-empty-state>
           <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
-          </app-empty-state>
+          </app-empty-state> -->
         </mat-tab>
         <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
           <ng-template mat-tab-label>

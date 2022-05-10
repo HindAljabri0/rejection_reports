@@ -253,16 +253,36 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     if (type) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === type.itemType)[0],
-        nonStandardCode: type.nonStandardCode,
-        display: type.nonStandardDescription,
+        nonStandardCode: type.nonStandardCode, 
+        display: type.nonStandardDescription, 
         unitPrice: type.unitPrice,
         factor: type.factor,
       });
-      this.typeChange(type);
+      this.SetSingleRecord(type);
       this.Calculate('Factor');
     }
   }
+  SetSingleRecord(type = null) {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    } else {
+      this.FormItem.controls.quantityCode.clearValidators();
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    }
+    this.FormItem.controls.item.setValue('');
+    this.itemList = [{ "code": type.code, "description": type.display }];
 
+
+    if (type) {
+      this.FormItem.patchValue({
+        item: this.itemList.filter(x => x.code === type.code)[0]
+      });
+    }
+
+    this.filteredItem.next(this.itemList.slice());
+
+  }
   typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
@@ -288,6 +308,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.itemList = event.body;
+
           if (this.data.item && this.data.item.itemCode) {
             this.FormItem.patchValue({
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
