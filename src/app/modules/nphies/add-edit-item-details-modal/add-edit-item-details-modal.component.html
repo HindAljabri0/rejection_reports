@@ -5,6 +5,18 @@
 </div>
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
   <div class="primary-dialog-body pb-0">
+    <div class="col-10 col-lg-12">
+      <div class="form-group flex-grow-1">
+        <input type="text" class="form-control search-box" placeholder="Search for item ..."
+          formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
+            {{type.code}} ({{type.display}})
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+    </div>
+    <hr class="hr mb-3">
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">

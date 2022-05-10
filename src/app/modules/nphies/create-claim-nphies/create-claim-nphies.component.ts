@@ -247,10 +247,13 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   InitClaimPagenation() {
     this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
-    const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
-    this.paginationControl.searchTabCurrentResults = Array.from(data);
-    this.paginationControl.size = data.length;
-    this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + "");
+    if (localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY)) {
+      const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
+      this.paginationControl.searchTabCurrentResults = Array.from(data);
+      this.paginationControl.size = data.length;
+      this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + '');
+    }
+
   }
   ngOnInit() {
 
@@ -821,6 +824,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   openAddEditItemDialog(itemModel: any = null) {
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -832,7 +836,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormNphiesClaim.controls.type.value.value,
-      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -869,7 +874,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
-
+              x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {
@@ -957,7 +962,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
-      type: this.FormNphiesClaim.controls.type.value.value
+      type: this.FormNphiesClaim.controls.type.value.value,
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1532,7 +1539,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
-          model.itemCode = x.itemCode.toString();
+          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
@@ -1560,7 +1567,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
+            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
@@ -1574,7 +1581,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
-          model.itemCode = x.itemCode.toString();
+          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
@@ -1601,7 +1608,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
+            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
@@ -2556,7 +2563,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
       model.type = x.type;
-      model.itemCode = x.itemCode.toString();
+      model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
       model.display = x.nonStandardDesc;
@@ -2767,7 +2774,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   // }
 
   disabledAddItemsButton() {
-    return !this.FormNphiesClaim.controls.type.value
+    return !this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePlanId.value
       || (this.FormNphiesClaim.controls.type.value
         && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
@@ -2866,6 +2874,30 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
 
     return hasError && this.isSubmitted;
+  }
+
+  ItemsAddButtonToolTip() {
+    let result = false;
+    if (!this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePlanId.value) {
+      result = true;
+    }
+
+    if (result) {
+      if (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      } else if (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
+        return 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
+      } else if (!this.FormNphiesClaim.controls.type.value) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      }
+    } else {
+      return '';
+    }
+
   }
 
 }

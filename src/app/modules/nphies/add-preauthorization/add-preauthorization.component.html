@@ -209,6 +209,116 @@
             <mat-icon>add</mat-icon>
           </button>
         </h5>
+        <!-- <div class="row small-gutter">
+          <div class="col-xxl-4 col-lg-6">
+            <div class="d-flex">
+              <div class="form-group flex-grow-1">
+                <label class="control-label">Select Practitioner to add<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select value="">
+                    <mat-option value="">Select Practitioner</mat-option>
+                    <mat-option value="Option 1">Option 1</mat-option>
+                    <mat-option value="Option 2">Option 2</mat-option>
+                    <mat-option value="Option 3">Option 3</mat-option>
+                    <mat-option value="Option 4">Option 4</mat-option>
+                    <mat-option value="Option 5">Option 5</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
+              </div>
+              <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button type="button" mat-flat-button class="text-nowrap" color="primary">Add Manually</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="primary-grid claim-view-table">
+            <thead>
+              <tr>
+                <th>Practitioner ID<span class="asterisk">*</span></th>
+                <th>Practitioner Name<span class="asterisk">*</span></th>
+                <th>Qualification<span class="asterisk">*</span></th>
+                <th>Care Team Role<span class="asterisk">*</span></th>
+                <th>Practitioner Role<span class="asterisk">*</span></th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="align-middle">
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <input type="text" class="form-control" placeholder="ID">
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <input type="text" class="form-control" placeholder="Name">
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select value="">
+                        <mat-option value="">Select qualification</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                        <mat-option value="Option 2">Option 2</mat-option>
+                        <mat-option value="Option 3">Option 3</mat-option>
+                        <mat-option value="Option 4">Option 4</mat-option>
+                        <mat-option value="Option 5">Option 5</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select value="">
+                        <mat-option value="">Select care team role</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                        <mat-option value="Option 2">Option 2</mat-option>
+                        <mat-option value="Option 3">Option 3</mat-option>
+                        <mat-option value="Option 4">Option 4</mat-option>
+                        <mat-option value="Option 5">Option 5</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select value="">
+                        <mat-option value="">Select practitioner role</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                        <mat-option value="Option 2">Option 2</mat-option>
+                        <mat-option value="Option 3">Option 3</mat-option>
+                        <mat-option value="Option 4">Option 4</mat-option>
+                        <mat-option value="Option 5">Option 5</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td class="actions">
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="careTeamTableActionMenu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <mat-menu #careTeamTableActionMenu xPosition="before">
+          <ng-template matMenuContent>
+            <button mat-menu-item type="button">
+              <mat-icon class="material-icons-outlined">delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </ng-template>
+        </mat-menu> -->
         <div *ngIf="CareTeams.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
@@ -268,6 +378,92 @@
             </button>
           </div>
         </h5>
+        <!-- <div class="table-responsive">
+          <table class="primary-grid claim-view-table">
+            <thead>
+              <tr>
+                <th>Code - Description<span class="asterisk">*</span></th>
+                <th>Type<span class="asterisk">*</span></th>
+                <th>On Admission</th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <input type="text" class="form-control search-box" placeholder="Search code-description">
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select value="">
+                        <mat-option value="">Select type</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                        <mat-option value="Option 2">Option 2</mat-option>
+                        <mat-option value="Option 3">Option 3</mat-option>
+                        <mat-option value="Option 4">Option 4</mat-option>
+                        <mat-option value="Option 5">Option 5</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select value="">
+                        <mat-option value="">Select on admission</mat-option>
+                        <mat-option value="Yes">Yes</mat-option>
+                        <mat-option value="No">No</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td class="actions">
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="diagnosisTableActionMenu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <input type="text" class="form-control search-box" placeholder="Search code-description">
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group mb-n1 mt-n1">
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select value="">
+                        <mat-option value="">Select type</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                        <mat-option value="Option 2">Option 2</mat-option>
+                        <mat-option value="Option 3">Option 3</mat-option>
+                        <mat-option value="Option 4">Option 4</mat-option>
+                        <mat-option value="Option 5">Option 5</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </td>
+                <td>-</td>
+                <td class="actions">
+                  <button type="button" mat-icon-button [matMenuTriggerFor]="diagnosisTableActionMenu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <mat-menu #diagnosisTableActionMenu xPosition="before">
+          <ng-template matMenuContent>
+            <button mat-menu-item type="button">
+              <mat-icon class="material-icons-outlined">delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </ng-template>
+        </mat-menu>-->
         <div *ngIf="Diagnosises.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
@@ -419,14 +615,14 @@
         </ng-container>
 
 
-       <h5 class="form-title">
-        <span>Supporting Info</span>
-        <!-- <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
+        <h5 class="form-title">
+          <span>Supporting Info</span>
+          <!-- <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
           <mat-icon>add</mat-icon>
         </button> -->
-      </h5>
-      <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
-       <!--  <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
+        </h5>
+        <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+        <!--  <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
               <tr>
@@ -560,7 +756,7 @@
 
         <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
           <span>Items<span class="asterisk">*</span></span>
-          <div class="ml-auto" matTooltip="Add Care Team to enable adding Items" [matTooltipDisabled]="!disableItemsButton()">
+          <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disableItemsButton()">
             <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
               <mat-icon>add</mat-icon>
             </button>

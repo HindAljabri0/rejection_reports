@@ -3,8 +3,21 @@
   <h5 *ngIf="data.item" class="primary-dialog-title">Edit Item</h5>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
+
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
   <div class="primary-dialog-body pb-0">
+    <div class="form-group flex-grow-1">
+
+      <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
+      <mat-autocomplete #auto="matAutocomplete" class="pre-auth-items">
+        <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
+          <span>{{type.code}} ({{type.display}})</span>
+          <span class="text-primary non-standard-code">{{type.nonStandardCode}} ({{type.nonStandardDescription}})</span>
+        </mat-option>
+      </mat-autocomplete>
+
+    </div>
+    <hr class="hr mb-3">
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
