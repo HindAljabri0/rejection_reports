@@ -11,6 +11,7 @@ import { AddPhysicianDialogComponent } from '../add-physician-dialog/add-physici
 import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upload-physicians-dialog.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
+
 @Component({
   selector: 'app-physicians',
   templateUrl: './physicians.component.html',
@@ -27,6 +28,8 @@ export class PhysiciansComponent implements OnInit {
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100];
   physiciansList: Physicians[];
+
+
 
   ngOnInit() {
     this.getData();
@@ -92,5 +95,9 @@ export class PhysiciansComponent implements OnInit {
         }
       });
   }
+
+
+
+
 
 }
