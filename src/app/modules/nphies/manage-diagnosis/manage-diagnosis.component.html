@@ -1,0 +1,94 @@
+<h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
+  <span>Diagnosis<span class="asterisk">*</span></span>
+  <div class="ml-auto" matTooltip="Select Claim Type to enable adding Diagnosis"
+    [matTooltipDisabled]="(claimType)?true:false">
+    <button type="button" class="btn-icon btn-primary" (click)="addDiagnosis()"
+      [disabled]="!claimType">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</h5>
+<div class="table-responsive" *ngIf="diagnosisList.length > 0">
+  <table class="primary-grid claim-view-table">
+    <thead>
+      <tr>
+        <th>Code - Description<span class="asterisk">*</span></th>
+        <th>Type<span class="asterisk">*</span></th>
+        <th>On Admission</th>
+        <th width="10"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let diagnosis of diagnosisList; let i = index">
+        <td>
+          <div class="form-group  mb-n1 mt-n1"
+            [ngClass]="{'has-error' : isSubmitted && !diagnosis.diagnosisCode}">
+            <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..."
+              [(ngModel)]="diagnosis.diagnosisDescription" [matAutocomplete]="auto" (keyup)="searchICDCodes(diagnosis.diagnosisDescription, i)">
+            <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option, i)">
+                {{option.diagnosisCode}} | {{option.diagnosisDescription}}
+              </mat-option>
+            </mat-autocomplete>
+            <div *ngIf="isSubmitted && !diagnosis.diagnosisCode">
+              <span class="error-text">Please select a Code-Description</span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && (!diagnosis.type || diagnosis.typeError)}">
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select [(ngModel)]="diagnosis.type" (selectionChange)="changeDiagnosisType($event, i)">
+                <mat-option value="">Select Type</mat-option>
+                <mat-option *ngFor="let type of typeList" [value]="type.value">{{type.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="isSubmitted && !diagnosis.type">
+              <span class="error-text">Please select a Type</span>
+            </div>
+            <div *ngIf="isSubmitted && diagnosis.typeError">
+              <span class="error-text">{{diagnosis.typeError}}</span>
+            </div>
+
+          </div>
+        </td>
+        <td>
+          <div *ngIf="IsOnAdmissionRequired">
+            <div class="form-group  mb-n1 mt-n1"
+              [ngClass]="{'has-error' : IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission}">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select [(ngModel)]="diagnosis.onAdmission">
+                  <mat-option value="">Select On Admission</mat-option>
+                  <mat-option *ngFor="let a of onAdmissionList" [value]="a.value">{{a.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission">
+                <span class="error-text">Please select a On Admission </span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="actions">
+          <button type="button" mat-icon-button [matMenuTriggerFor]="diagnosisTableActionMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #diagnosisTableActionMenu xPosition="before">
+            <ng-template matMenuContent>
+              <button mat-menu-item type="button" (click)="removeDiagnosis(i)">
+                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                <span>Delete</span>
+              </button>
+            </ng-template>
+          </mat-menu>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<app-empty-state *ngIf="!IsDiagnosisRequired && diagnosisList.length === 0" message='No Diagnosis found!'>
+</app-empty-state>
+<app-empty-state *ngIf="IsDiagnosisRequired && diagnosisList.length === 0" message='Diagnosis required!'>
+</app-empty-state>
