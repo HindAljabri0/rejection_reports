@@ -370,14 +370,20 @@
         <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
         </app-empty-state>
 
-        <h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
+        <app-manage-diagnosis
+        [(isSubmitted)]="isSubmitted"
+        [(IsDiagnosisRequired)]="IsDiagnosisRequired"
+        [(diagnosisList)]="Diagnosises"
+        [(claimType)]="claimType">
+        </app-manage-diagnosis>
+        <!-- <h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
           <span>Diagnosis<span class="asterisk">*</span></span>
           <div class="ml-auto" matTooltip="Select Claim Type to enable adding Diagnosis" [matTooltipDisabled]="(FormPreAuthorization.controls.type.value)?true:false">
             <button type="button" class="btn-icon btn-primary" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
               <mat-icon>add</mat-icon>
             </button>
           </div>
-        </h5>
+        </h5> -->
         <!-- <div class="table-responsive">
           <table class="primary-grid claim-view-table">
             <thead>
@@ -464,7 +470,7 @@
             </button>
           </ng-template>
         </mat-menu>-->
-        <div *ngIf="Diagnosises.length > 0" class="table-responsive">
+        <!-- <div *ngIf="Diagnosises.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
               <tr>
@@ -509,7 +515,7 @@
         <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
         </app-empty-state>
         <app-empty-state *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
-        </app-empty-state>
+        </app-empty-state> -->
 
         <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
           <h5 class="form-title">
