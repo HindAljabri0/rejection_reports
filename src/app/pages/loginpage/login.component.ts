@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
 
   isRamadan = false;
 
-  isEid = true;
+
+  isEid = false;
 
   constructor(
     public authService: AuthService,

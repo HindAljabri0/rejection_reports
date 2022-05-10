@@ -1163,14 +1163,18 @@
         </p>
         <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-        <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}}</strong></p>
       </div>
     </div>
-    <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
-
-      <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-        {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+    <ul class="claim-totals">
+      <li>
+        Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}} <span class="currency">SR</span></span>
       </li>
+      <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
+        <li class="separator"></li>
+        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+          {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+        </li>
+      </ng-container>
 
     </ul>
 
@@ -1775,7 +1779,7 @@
           </ng-template>
           <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
-            <div class="ml-auto" matTooltip="Add Care Team to enable adding Items" [matTooltipDisabled]="!disabledAddItemsButton()">
+            <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disabledAddItemsButton()">
               <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disabledAddItemsButton()">
                 <mat-icon>add</mat-icon>
               </button>

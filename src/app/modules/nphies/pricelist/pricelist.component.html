@@ -7,7 +7,7 @@
     </button>
   </div>
   <div class="block-filter-panel">
-    <form [formGroup]="FormPriceList" (ngSubmit)="onSubmit()">
+    <form [formGroup]="FormPriceList" (ngSubmit)="search()">
       <div class="row small-gutter">
         <div class="col-xl-3 col-md-6">
           <div class="form-group">
@@ -31,7 +31,7 @@
           <div class="form-group">
             <label class="control-label">From Upload Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select effective date" class="form-control"
+              <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select From Upload Date" class="form-control"
                 formControlName="uploadFromDate">
               <mat-datepicker-toggle [for]="fromUploadDateDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #fromUploadDateDatePicker></mat-datepicker>
@@ -43,7 +43,7 @@
           <div class="form-group">
             <label class="control-label">To Upload Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="toUploadDatePicker" placeholder="Select effective date" class="form-control"
+              <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control"
                 formControlName="uploadToDate">
               <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #toUploadDatePicker></mat-datepicker>
@@ -62,26 +62,28 @@
       <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
+            <th>PriceList ID</th>
             <th>Payer</th>
             <th>Effective Date</th>
             <th>Upload Date</th>
-            <th width="10"></th>
+            <!-- <th width="10"></th> -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let p of priceLists">
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.payerName}}</td>
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.effectiveDate}}</td>
-            <td class="row-click" routerLink="/nphies/pricelist-details">{{p.uploadedDate}}</td>
-            <td class="actions">
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.priceListId}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.payerName}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.effectiveDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">{{p.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
+            <!-- <td class="actions">
               <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
-      <mat-menu #actionsMenu xPosition="before">
+      <!-- <mat-menu #actionsMenu xPosition="before">
         <ng-template matMenuContent>
           <button mat-menu-item type="button">
             <mat-icon class="material-icons-outlined">edit</mat-icon>
@@ -92,7 +94,7 @@
             <span>Delete</span>
           </button>
         </ng-template>
-      </mat-menu>
+      </mat-menu> -->
 
     </div>
 

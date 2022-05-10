@@ -3,11 +3,14 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, PageEvent } from '@angular/material';
+import { Observable } from 'rxjs';
 import { Physicians } from 'src/app/models/nphies/physicians';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { AddPhysicianDialogComponent } from '../add-physician-dialog/add-physician-dialog.component';
 import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upload-physicians-dialog.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+
 
 @Component({
   selector: 'app-physicians',
@@ -18,13 +21,15 @@ export class PhysiciansComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
     private sharedServices: SharedServices,
-    private nphiesConfigurationsService: NphiesConfigurationService) { }
+    private nphiesConfigurationsService: NphiesConfigurationService, private dialogService: DialogService) { }
 
   length = 100;
   pageSize = 10;
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100];
   physiciansList: Physicians[];
+
+
 
   ngOnInit() {
     this.getData();
@@ -47,7 +52,9 @@ export class PhysiciansComponent implements OnInit {
   openAddPhysicianDialog() {
     const dialogRef = this.dialog.open(AddPhysicianDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-sm'],
+
       autoFocus: false
+
     });
   }
   getData() {
@@ -66,5 +73,31 @@ export class PhysiciansComponent implements OnInit {
       }
     });
   }
+
+  DownloadPhysicianSample() {
+    this.nphiesConfigurationsService.downloadPhysicianList(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null) {
+          var data = new Blob([event.body as BlobPart], { type: 'application/octet-stream' });
+          const FileSaver = require('file-saver');
+          FileSaver.saveAs(data, "SamplePhyscianDownload.xlsx");
+        }
+      }
+    }
+      , err => {
+        if (err instanceof HttpErrorResponse) {
+          console.log(err)
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `Unable to download File at this moment`,
+            isError: true
+          });
+        }
+      });
+  }
+
+
+
+
 
 }

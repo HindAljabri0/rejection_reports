@@ -1,0 +1,171 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Uploads</p>
+    </div>
+    <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab no-body-padding">
+        <mat-tab [label]="'New'">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                <div class="fixed-height fixed-height-sm">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Upload</th>
+                                <th width="196" class="text-center">Total Claims</th>
+                                <th width="60"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let upload of (newUploads$|async).uploads">
+                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                    <td class="row-click">
+                                        {{ upload.name }}
+                                        <p class="text-grey">{{upload.date}}</p>
+                                    </td>
+                                    <td class="text-center row-click">
+                                        <h4 class="text-primary">{{upload.totalClaims}}</h4>
+                                    </td>
+                                    <td class="text-center row-click">
+                                        <mat-icon class="text-primary">arrow_forward</mat-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+            <div class="block-footer sticky">
+                <div class="left-block custom-paginator">
+                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
+                        <img src="./assets/ic-page-first.svg" alt="First" />
+                    </button>
+                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
+                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                    </button>
+                    <p class="page-info">
+                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
+                    </p>
+                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
+                        <img src="./assets/ic-page-next.svg" alt="Next" />
+                    </button>
+                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
+                        <img src="./assets/ic-page-last.svg" alt="Last" />
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'In Progress'">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                <div class="fixed-height fixed-height-sm">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Upload</th>
+                                <th width="150" class="text-center">Total Claims</th>
+                                <th width="170" class="text-center">Pending Claims</th>
+                                <th width="200" class="text-center">Reviewed Claims</th>
+                                <th width="60"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let upload of (inProgressUploads$|async).uploads">
+                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                    <td class="row-click">
+                                        {{ upload.name }}
+                                        <p class="text-grey">{{upload.date}}</p>
+                                    </td>
+                                    <td class="text-center row-click">
+                                        <h4 class="text-primary">{{upload.totalClaims}}</h4>
+                                    </td>
+                                    <td class="text-center row-click" *ngIf='isDoctor'>
+                                        <h4 class="text-primary">{{upload.pendingClaimsOfDoctor}}</h4>
+                                    </td>
+                                    <td class="text-center row-click" *ngIf='isCoder'>
+                                        <h4 class="text-primary">{{upload.pendingClaimsOfCoder}}</h4>
+                                    </td>
+                                    <td class="text-center row-click" *ngIf='isDoctor'>
+                                        <h4 class="text-primary">{{upload.reviewedClaimsOfDoctor}}</h4>
+                                    </td>
+                                    <td class="text-center row-click" *ngIf='isCoder'>
+                                        <h4 class="text-primary">{{upload.reviewedClaimsOfCoder}}</h4>
+                                    </td>
+                                    <td class="text-center row-click">
+                                        <mat-icon class="text-primary">arrow_forward</mat-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+            <div class="block-footer sticky">
+                <div class="left-block custom-paginator">
+                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
+                        <img src="./assets/ic-page-first.svg" alt="First" />
+                    </button>
+                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
+                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                    </button>
+                    <p class="page-info">
+                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
+                    </p>
+                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
+                        <img src="./assets/ic-page-next.svg" alt="Next" />
+                    </button>
+                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
+                        <img src="./assets/ic-page-last.svg" alt="Last" />
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Completed'">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                <div class="fixed-height fixed-height-sm">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Upload</th>
+                                <th width="196" class="text-center">Total Claims</th>
+                                <th width="60"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let upload of (completedUploads$|async).uploads">
+                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                    <td class="row-click">
+                                        {{ upload.name }}
+                                        <p class="text-grey">{{upload.date}}</p>
+                                    </td>
+                                    <td class="text-center row-click">
+                                        <h4 class="text-primary">{{upload.totalClaims}}</h4>
+                                    </td>
+                                    <td class="text-center row-click">
+                                        <mat-icon class="text-primary">arrow_forward</mat-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+            <div class="block-footer sticky">
+                <div class="left-block custom-paginator">
+                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
+                        <img src="./assets/ic-page-first.svg" alt="First" />
+                    </button>
+                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
+                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                    </button>
+                    <p class="page-info">
+                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
+                    </p>
+                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
+                        <img src="./assets/ic-page-next.svg" alt="Next" />
+                    </button>
+                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
+                        <img src="./assets/ic-page-last.svg" alt="Last" />
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

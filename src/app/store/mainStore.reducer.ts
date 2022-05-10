@@ -36,7 +36,9 @@ export interface UserPrivileges {
             canAccessPreAuthorization: boolean,
             canAccessClaim: boolean,
             canAccessBeneficiary: boolean,
-            canAccessPaymentReconciliation: boolean
+            canAccessPaymentReconciliation: boolean,
+            canAccessPriceList: boolean,
+            canAccessPhysician: boolean
         }
     }
 }
@@ -82,7 +84,9 @@ export const initState: MainState = {
                 canAccessPreAuthorization: false,
                 canAccessClaim: false,
                 canAccessBeneficiary: false,
-                canAccessPaymentReconciliation: false
+                canAccessPaymentReconciliation: false,
+                canAccessPriceList: false,
+                canAccessPhysician: false
             }
         }
     }
@@ -100,8 +104,8 @@ const _mainReducer = createReducer(
                 isPAM: AuthService.hasPrivilege('101', '101', '22'),
                 RCM: {
                     isAdmin: AuthService.hasPrivilege('101', '101', '24.0'),
-                    isDoctor: AuthService.hasPrivilege('101', '101', '24.?'),
-                    isCoder: AuthService.hasPrivilege('101', '101', '24.?')
+                    isDoctor: AuthService.hasPrivilege('101', '101', '24.41'),
+                    isCoder: AuthService.hasPrivilege('101', '101', '24.42')
                 }
             },
             ProviderPrivileges: {
@@ -128,7 +132,9 @@ const _mainReducer = createReducer(
                     canAccessPreAuthorization: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.2'),
                     canAccessClaim: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.3'),
                     canAccessBeneficiary: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.4'),
-                    canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.6')
+                    canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.6'),
+                    canAccessPriceList: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.7'),
+                    canAccessPhysician: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.6'),
                 }
             }
         };

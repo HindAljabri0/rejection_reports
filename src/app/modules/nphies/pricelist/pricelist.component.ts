@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PriceListModel } from 'src/app/models/price-list-model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
@@ -41,6 +41,7 @@ export class PricelistComponent implements OnInit {
   payersList = [];
 
   constructor(
+    private router: Router,
     private dialog: MatDialog,
     private sharedService: SharedServices,
     private dialogService: DialogService,
@@ -119,10 +120,18 @@ export class PricelistComponent implements OnInit {
   }
 
   selectPayer(event) {
-    this.FormPriceList.patchValue({
-      payerNphiesId: event.value.payerNphiesId,
-      // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
-    });
+    if (event.value) {
+      this.FormPriceList.patchValue({
+        payerNphiesId: event.value.payerNphiesId,
+        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    } else {
+      this.FormPriceList.patchValue({
+        payerNphiesId: '',
+        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+      });
+    }
+
   }
 
   updateManualPage(index) {
@@ -178,6 +187,12 @@ export class PricelistComponent implements OnInit {
         });
       }
     });
+  }
+
+  search() {
+    this.page = 0;
+    this.pageSize = 10;
+    this.onSubmit();
   }
 
   onSubmit() {
@@ -266,6 +281,11 @@ export class PricelistComponent implements OnInit {
     this.location.go(path);
   }
 
+  RedirectToDetails(payerNphiesId: string, uploadedDate: string, priceListId: number) {
+    uploadedDate = this.datePipe.transform(uploadedDate, 'dd/MM/yyyy');
+    this.router.navigate(['/nphies/pricelist-details/'], { queryParams: { payerNphiesId: payerNphiesId, uploadedDate: uploadedDate, priceListId: priceListId } });
+  }
+
   openUploadPricelistDialog() {
     const dialogRef = this.dialog.open(PricelistUploadComponent, {
       panelClass: ['primary-dialog', 'dialog-lg']
@@ -273,12 +293,12 @@ export class PricelistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.FormPriceList.patchValue({
-          payerNphiesId: result,
-          effectiveDate: '',
-          uploadFromDate: '',
-          uploadToDate: ''
-        });
+        // this.FormPriceList.patchValue({
+        //   payerNphiesId: result,
+        //   effectiveDate: '',
+        //   uploadFromDate: '',
+        //   uploadToDate: ''
+        // });
         this.onSubmit();
       }
     });

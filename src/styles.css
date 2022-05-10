@@ -50,7 +50,7 @@ strong,.bold{font-weight: 700;}
 .semibold{font-weight: 600!important;}
 .medium{font-weight: 500!important;}
 .text-sm{font-size: 12px;line-height: 16px;}
-.text-monospace{font-family: 'Courier Prime', monospace!important;font-size: 111%;letter-spacing: -0.6px;line-height: 111%;}
+.text-monospace{font-family: 'Courier Prime', monospace!important;font-size: 16px!important;letter-spacing: -0.6px;line-height: 22px!important;}
 input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allowed;}
 .w-130{width: 130px;}
 .w-160{width: 160px;}
@@ -184,6 +184,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .primary-link:hover,.primary-link:focus,.primary-link:active{color:#3060AA;text-decoration: underline;}
 .primary-link.disabled:hover,.primary-link.disabled:focus,.primary-link.disabled:active{color:#8d8d8d;text-decoration: underline;}
 .primary-link.underlined,.primary-link.underlined:hover,.primary-link.underlined:focus,.primary-link.underlined:active{text-decoration: underline;}
+.primary-link.small{font-size: 12px;font-weight: 500;}
 
 /* rejection card
 --------------------------------------------------------------------------------------------------------*/
@@ -244,6 +245,12 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .form-title .mat-slide-toggle{font-weight: 400;}
 .form-title.no-border{padding-bottom: 0;border-bottom: 0;margin-bottom: 0;}
 
+/* pre auth items
+--------------------------------------------------------------------------------------------------------*/
+.mat-autocomplete-panel.pre-auth-items{padding: 6px 0;}
+.pre-auth-items .mat-option{height: auto;padding: 10px 16px;line-height: 20px;}
+.pre-auth-items .non-standard-code{font-size: 14px;display: block;}
+
 /* misc
 --------------------------------------------------------------------------------------------------------*/
 .spacer {flex: 1 1 auto;}
@@ -283,6 +290,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .action-with-text>.mat-icon{margin-right:4px;}
 .primary-grid textarea.form-control.comment-box,.comment-box{height:80px;}
 .vertical-bottom{vertical-align: bottom!important;}
+.vertical-middle{vertical-align: middle!important;}
 .error-btn{display: flex;align-items:center;background: none;border:0;color: #CD4949;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
 .error-btn>span{padding-left: 4px;}
 .status{display: inline-block;vertical-align: middle;background: #3060AA;color: #fff;padding: 6px 12px;border-radius: 8px;}
@@ -617,8 +625,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .view-claim .create-claim-body .mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
 .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 261px);}
 .mat-dialog-container .create-claim-body{background: #fff;}
-.mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 181px);overflow: auto;}
-.mat-dialog-container .claim-totals ~ .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 230px);}
+.mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 231px);overflow: auto;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/

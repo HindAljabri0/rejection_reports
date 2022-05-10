@@ -95,7 +95,8 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
                         path: 'review',
                         loadChildren: () => import('./claim-review/claim-review.module').then(m => m.ClaimReviewModule),
                         canActivate: [RouteCanActiveService]
-                    }
+                    },
+                    { path: '**', component: DashboardComponent, canActivate: [RouteCanActiveService] },
                 ]
             }
         ])
