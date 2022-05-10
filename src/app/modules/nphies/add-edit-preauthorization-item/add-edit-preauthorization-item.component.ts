@@ -258,10 +258,26 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         unitPrice: type.unitPrice,
         discount: type.discount,
       });
-      this.typeChange(type);
+      //this.SetSingleRecord()(type);
     }
   }
-
+  SetSingleRecord(type = null) {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    } else {
+      this.FormItem.controls.quantityCode.clearValidators();
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    }
+    this.FormItem.controls.item.setValue('');
+    this.itemList = [{"code":type.code,"description":type.display}];
+    this.FormItem.patchValue({
+      item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
+    });
+    this.filteredItem.next(this.itemList.slice());
+    console.log("item = "+this.itemList.filter(x => x.code === this.data.item.itemCode)[0]);
+  
+  }
   typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
