@@ -253,8 +253,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     if (type) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === type.itemType)[0],
-        nonStandardCode: type.nonStandardCode, 
-        display: type.nonStandardDescription, 
+        nonStandardCode: type.nonStandardCode,
+        display: type.nonStandardDescription,
         unitPrice: type.unitPrice,
         factor: type.factor,
       });
@@ -416,7 +416,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       const factorValue: number = (1 - (parseFloat(this.FormItem.controls.discountPercent.value) / 100));
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
-      this.FormItem.controls.factor.setValue(1);
+      if (!this.FormItem.controls.factor.value) {
+        this.FormItem.controls.factor.setValue(1);
+      }
     }
   }
 
