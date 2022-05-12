@@ -36,7 +36,9 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      if (changes && changes.claimType && changes.claimType.previousValue !== changes.claimType.currentValue) {
+      if ((changes && changes.claimType && changes.claimType.previousValue !== changes.claimType.currentValue) || (
+        changes && changes.pageMode && changes.pageMode.previousValue !== changes.pageMode.currentValue
+      )) {
         this.setOnAdmissionRequirement();
       }
     }
@@ -50,10 +52,13 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
     if (this.pageMode !== 'EDIT') {
       if (this.claimType && this.claimType === 'institutional') {
         this.IsOnAdmissionRequired = true;
+        this.diagnosisList.map(x => x.IsOnAdmissionRequired = true);
       } else {
+        this.diagnosisList.map(x => x.IsOnAdmissionRequired = false);
         this.IsOnAdmissionRequired = false;
       }
     } else {
+      this.diagnosisList.map(x => x.IsOnAdmissionRequired = false);
       this.IsOnAdmissionRequired = true;
     }
   }
@@ -116,6 +121,7 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
     model.type = '';
     if (this.IsOnAdmissionRequired) {
       model.onAdmission = '';
+      model.IsOnAdmissionRequired = true;
     }
     this.diagnosisList.push(model);
   }
