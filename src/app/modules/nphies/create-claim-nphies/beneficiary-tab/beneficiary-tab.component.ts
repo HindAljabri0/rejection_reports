@@ -415,7 +415,6 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
   }
 
   selectPlan(plan) {
-
     this.insurancePlans = [];
     if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]) {
       this.insurancePlans.push(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]);

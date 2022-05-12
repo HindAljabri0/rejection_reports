@@ -52,7 +52,7 @@
               <ng-container *ngIf="!IsPractitionerLading">
                 <mat-option value="">Select Practitioner</mat-option>
                 <mat-option *ngFor="let practitioner of filteredPractitioner  | async" [value]="practitioner">
-                  {{practitioner.name}}
+                  {{practitioner.physician_name}}
                 </mat-option>
               </ng-container>
 

@@ -484,5 +484,28 @@
       </div>
     </mat-expansion-panel>
 
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          NPHIES Polling Configuration
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container>
+        <div class="form-group">
+          <label class="control-label pb-0 text-primary medium">Polling Preference</label>
+          <mat-radio-group class="radio-group inline">
+            <mat-radio-button color="primary" value="ALL">Poll for All</mat-radio-button>
+            <mat-radio-button color="primary" value="CLAIM">Claim, Claim Communication-Request & Payment Reconciliation</mat-radio-button>
+            <mat-radio-button color="primary" value="PRE_AUTH">Preauthorization & Preauthorization Communication-Request</mat-radio-button>
+            <mat-radio-button color="primary" value="STOP">Stop Polling</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </ng-container>
+      <!-- <div class="inline-loader">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div> -->
+    </mat-expansion-panel>
+
+
   </mat-accordion>
 </app-detailscard>

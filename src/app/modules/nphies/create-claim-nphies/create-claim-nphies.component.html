@@ -20,7 +20,7 @@
       <p *ngIf="otherDataModel.disposition"><span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong></p>
     </div>
   </div>
-  <ul class="claim-totals">
+  <ul class="claim-totals" *ngIf="otherDataModel.totalNetAmount">
     <li>
       Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
@@ -150,6 +150,20 @@
             <div class="control-label">Episode No</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ?
               FormNphiesClaim.controls.episodeId.value : '-'}}</p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group form-group-static">
+            <div class="control-label">Request Bundle ID</div>
+            <p class="form-control-static">{{otherDataModel.requestBundleId ? otherDataModel.requestBundleId : '-'}}
+            </p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group form-group-static">
+            <div class="control-label">Response Bundle ID</div>
+            <p class="form-control-static">{{otherDataModel.responseBundleId ? otherDataModel.responseBundleId : '-'}}
+            </p>
           </div>
         </div>
       </div>
@@ -1163,15 +1177,18 @@
         </p>
         <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
-        <p><span>Total Net:</span>&nbsp;<strong>{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}}</strong></p>
       </div>
     </div>
-    <ul class="claim-totals" *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
-
-      <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-        {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+    <ul class="claim-totals" *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'">
+      <li>
+        Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}} <span class="currency">SR</span></span>
       </li>
-
+      <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
+        <li class="separator"></li>
+        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+          {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+        </li>
+      </ng-container>
     </ul>
 
     <div class="create-claim-body nphies-create">
@@ -1443,7 +1460,14 @@
               error</mat-icon>
             <span [class.text-danger]="IsDiagnosisRequired">Diagnosis</span>
           </ng-template>
-          <h5 class="form-title pt-0">
+          <app-manage-diagnosis
+          [(isSubmitted)]="isSubmitted"
+          [(IsDiagnosisRequired)]="IsDiagnosisRequired"
+          [(diagnosisList)]="Diagnosises"
+          [(claimType)]="claimType"
+          [pageMode]="pageMode">
+          </app-manage-diagnosis>
+          <!-- <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
             <div class="ml-auto" matTooltip="Select Claim Type to enable adding diagnosis" [matTooltipDisabled]="(FormNphiesClaim.controls.type.value)?true:false">
               <button type="button" class="btn-icon btn-primary" (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
@@ -1500,7 +1524,7 @@
           <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
           </app-empty-state>
           <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
-          </app-empty-state>
+          </app-empty-state> -->
         </mat-tab>
         <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
           <ng-template mat-tab-label>
@@ -1775,7 +1799,7 @@
           </ng-template>
           <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
-            <div class="ml-auto" matTooltip="Add Care Team to enable adding Items" [matTooltipDisabled]="!disabledAddItemsButton()">
+            <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disabledAddItemsButton()">
               <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disabledAddItemsButton()">
                 <mat-icon>add</mat-icon>
               </button>

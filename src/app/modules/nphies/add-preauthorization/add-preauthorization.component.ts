@@ -61,6 +61,7 @@ export class AddPreauthorizationComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
     city: [''],
@@ -181,6 +182,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
   currentOpenItem: number = null;
 
+  claimType: string;
+
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -290,7 +293,7 @@ export class AddPreauthorizationComponent implements OnInit {
           this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
-            dob : res.beneficiary.dob,
+            dob: res.beneficiary.dob,
             documentId: res.beneficiary.documentId,
             documentType: res.beneficiary.documentType,
             fullName: res.beneficiary.fullName,
@@ -415,6 +418,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onTypeChange($event) {
     if ($event.value) {
+      this.claimType = $event.value.value;
       switch ($event.value.value) {
         case 'institutional':
           this.subTypeList = [
@@ -434,7 +438,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
       this.VisionSpecifications = [];
       this.Items = [];
-      this.Diagnosises = [];
+      // this.Diagnosises = [];
     }
   }
 
@@ -775,7 +779,8 @@ export class AddPreauthorizationComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormPreAuthorization.controls.type.value.value,
-      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -901,7 +906,9 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
-      type: this.FormPreAuthorization.controls.type.value.value
+      type: this.FormPreAuthorization.controls.type.value.value,
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1196,6 +1203,14 @@ export class AddPreauthorizationComponent implements OnInit {
     return hasError;
   }
 
+  checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1266,6 +1281,10 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (!this.checkDiagnosisErrorValidation()) {
+      hasError = true;
+    }
 
     if (this.checkSupposrtingInfoValidation()) {
       hasError = true;
@@ -1388,6 +1407,12 @@ export class AddPreauthorizationComponent implements OnInit {
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
 
+      if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
+        this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
+          return x.value;
+        });
+      }
+
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
       preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
@@ -1503,7 +1528,7 @@ export class AddPreauthorizationComponent implements OnInit {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
-          model.itemCode = x.itemCode.toString();
+          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
@@ -1531,7 +1556,7 @@ export class AddPreauthorizationComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
+            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
@@ -1544,7 +1569,7 @@ export class AddPreauthorizationComponent implements OnInit {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
-          model.itemCode = x.itemCode.toString();
+          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
@@ -1571,7 +1596,7 @@ export class AddPreauthorizationComponent implements OnInit {
             const dmodel: any = {};
             dmodel.sequence = y.sequence;
             dmodel.type = y.type;
-            dmodel.code = y.itemCode.toString();
+            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
             dmodel.description = y.itemDescription;
             dmodel.nonStandardCode = y.nonStandardCode;
             dmodel.nonStandardDesc = y.display;
@@ -1644,7 +1669,7 @@ export class AddPreauthorizationComponent implements OnInit {
               this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
             }
           } else if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
           } else if (error.status === 503) {
             const errors: any[] = [];
             if (error.error.errors) {
@@ -1694,6 +1719,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   reset() {
+    location.reload();
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();
@@ -1775,7 +1801,34 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   disableItemsButton() {
-    return !this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy' && this.CareTeams.length === 0);
+    return !this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
+      || !this.FormPreAuthorization.controls.insurancePlanId.value
+      || (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0);
+  }
+
+  ItemsAddButtonToolTip() {
+    let result = false;
+    if (!this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
+      || !this.FormPreAuthorization.controls.insurancePlanId.value) {
+      result = true;
+    }
+
+    if (result) {
+      if (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      } else if (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
+        return 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
+      } else if (!this.FormPreAuthorization.controls.type.value) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      }
+    } else {
+      return '';
+    }
   }
 
 }

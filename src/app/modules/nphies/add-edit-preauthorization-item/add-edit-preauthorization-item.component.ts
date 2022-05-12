@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -60,10 +60,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisSequence: [''],
     diagnosisFilter: [''],
     invoiceNo: [''],
-    IsTaxApplied: [true]
+    IsTaxApplied: [true],
+    searchQuery: ['']
   });
 
   isSubmitted = false;
+  typeListSearchResult = [];
 
   typeList = this.sharedDataService.itemTypeList;
   bodySiteList = [];
@@ -247,7 +249,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  typeChange() {
+  selectItem(type) {
+    if (type) {
+      this.FormItem.patchValue({
+        type: this.typeList.filter(x => x.value === type.itemType)[0],
+        nonStandardCode: type.nonStandardCode, 
+        display: type.nonStandardDescription, 
+        unitPrice: type.unitPrice,
+        factor: type.factor,
+      });
+      this.SetSingleRecord(type);
+      this.Calculate('Factor');
+    }
+  }
+  SetSingleRecord(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
       this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -256,10 +271,34 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.quantityCode.updateValueAndValidity();
     }
     this.FormItem.controls.item.setValue('');
-    this.getItemList();
+    this.itemList = [{ "code": type.code, "description": type.display }];
+
+    if (type) {
+      this.FormItem.patchValue({
+        item: this.itemList.filter(x => x.code === type.code)[0]
+      });
+    }
+
+    this.filteredItem.next(this.itemList.slice());
+
+  }
+  typeChange(type = null) {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    } else {
+      this.FormItem.controls.quantityCode.clearValidators();
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    }
+    this.FormItem.controls.item.setValue('');
+    if (type) {
+      this.getItemList(type);
+    } else {
+      this.getItemList();
+    }
   }
 
-  getItemList() {
+  getItemList(type = null) {
     if (this.FormItem.controls.type.value) {
       this.sharedServices.loadingChanged.next(true);
       this.IsItemLoading = true;
@@ -268,10 +307,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.itemList = event.body;
+
           if (this.data.item && this.data.item.itemCode) {
             this.FormItem.patchValue({
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
             });
+          } else {
+            if (type) {
+              this.FormItem.patchValue({
+                item: this.itemList.filter(x => x.code === type.code)[0]
+              });
+            }
           }
           this.filteredItem.next(this.itemList.slice());
           this.IsItemLoading = false;
@@ -369,7 +415,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       const factorValue: number = (1 - (parseFloat(this.FormItem.controls.discountPercent.value) / 100));
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
-      this.FormItem.controls.factor.setValue(1);
+      if (!this.FormItem.controls.factor.value) {
+        this.FormItem.controls.factor.setValue(1);
+      }
     }
   }
 
@@ -386,12 +434,29 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   updateNet() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-      // tslint:disable-next-line:max-line-length
-      const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
+    // if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
+    // tslint:disable-next-line:max-line-length
+    //   // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
 
+    // tslint:disable-next-line:max-line-length
+    //   const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+    //   this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
+    // } else {
+    //   this.FormItem.controls.net.setValue('');
+    // }
+
+    // tslint:disable-next-line:max-line-length
+    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
       // tslint:disable-next-line:max-line-length
-      // const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+      // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
+
+      let discount = 0;
+
+      if (this.FormItem.controls.discount.value) {
+        discount = parseFloat(this.FormItem.controls.discount.value);
+      }
+      // tslint:disable-next-line:max-line-length
+      const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount + parseFloat(this.FormItem.controls.tax.value);
       this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
@@ -425,8 +490,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   updateTax() {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.taxPercent.value) {
-      // tslint:disable-next-line:max-line-length
-      const taxValue = ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
+
+      let taxValue = 0;
+      if (this.FormItem.controls.discount.value) {
+        // tslint:disable-next-line:max-line-length
+        taxValue = (((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
+      } else {
+        // tslint:disable-next-line:max-line-length
+        taxValue = ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
+      }
       this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
     } else {
       this.FormItem.controls.tax.setValue(0);
@@ -458,8 +530,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   updateTaxPercent() {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.tax.value) {
+
+      let discount = 0
+      if (this.FormItem.controls.discount.value) {
+        discount = parseFloat(this.FormItem.controls.discount.value);
+      }
       // tslint:disable-next-line:max-line-length
-      const taxPerValue = (parseFloat(this.FormItem.controls.tax.value) * 100) / (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value));
+      const taxPerValue = (parseFloat(this.FormItem.controls.tax.value) * 100) / ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount);
       this.FormItem.controls.taxPercent.setValue(parseFloat(taxPerValue.toFixed(2)));
     } else {
       this.FormItem.controls.taxPercent.setValue(0);
@@ -484,6 +561,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         this.updateFactor();
         this.updateDiscount();
+        this.updateTax();
         this.updateNet();
         this.updatePatientShare();
 
@@ -533,6 +611,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         this.updateDiscountPercent();
         this.updateDiscount();
+        this.updateTax();
         this.updateNet();
         this.updatePatientShare();
 
@@ -542,6 +621,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         this.updateDiscount();
         this.updateFactor();
+        this.updateTax();
         this.updateNet();
         this.updatePatientShare();
 
@@ -562,6 +642,26 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   changeTaxApplied() {
     this.updatePatientShare();
     this.updatePayerShare();
+  }
+
+  searchItems() {
+    const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
+    const searchStr = this.FormItem.controls.searchQuery.value;
+    const claimType = this.data.type;
+    const RequestDate = this.data.dateOrdered;
+    const payerNphiesId = this.data.payerNphiesId;
+
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        this.typeListSearchResult = body['content'];
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
   }
 
   onSubmit() {

@@ -67,9 +67,6 @@ import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.component';
 
-
-
-
 @NgModule({
   declarations: [
     EligibilityComponent,

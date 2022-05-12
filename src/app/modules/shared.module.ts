@@ -11,6 +11,7 @@ import { EmptyStateComponent } from '../components/reusables/empty-state/empty-s
 import { ScrollableDirective } from '../directives/scrollable/scrollable.directive';
 import { NphiesPayersSelectorComponent } from '../components/reusables/nphies-payers-selector/nphies-payers-selector.component';
 import { ManageSupportingInfoComponent } from './nphies/add-preauthorization/manage-supporting-info/manage-supporting-info.component';
+import { ManageDiagnosisComponent } from './nphies/manage-diagnosis/manage-diagnosis.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ManageSupportingInfoComponent } from './nphies/add-preauthorization/man
     UploadHistoryCardComponent,
     ScrollableDirective,
     NphiesPayersSelectorComponent,
-    ManageSupportingInfoComponent
+    ManageSupportingInfoComponent,
+    ManageDiagnosisComponent
   ],
   imports: [
     MaterialModule,
@@ -38,7 +40,8 @@ import { ManageSupportingInfoComponent } from './nphies/add-preauthorization/man
     UploadHistoryCardComponent,
     ScrollableDirective,
     NphiesPayersSelectorComponent,
-    ManageSupportingInfoComponent
+    ManageSupportingInfoComponent,
+    ManageDiagnosisComponent
   ]
 })
 export class SharedModule { }

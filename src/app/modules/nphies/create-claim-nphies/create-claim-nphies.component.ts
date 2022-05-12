@@ -226,6 +226,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   routeMode;
   selectedTab = 0;
+  claimType: string;
 
   constructor(
 
@@ -247,10 +248,13 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   InitClaimPagenation() {
     this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
-    const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
-    this.paginationControl.searchTabCurrentResults = Array.from(data);
-    this.paginationControl.size = data.length;
-    this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + "");
+    if (localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY)) {
+      const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
+      this.paginationControl.searchTabCurrentResults = Array.from(data);
+      this.paginationControl.size = data.length;
+      this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + '');
+    }
+
   }
   ngOnInit() {
 
@@ -595,6 +599,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   onTypeChange($event) {
     if ($event.value) {
+      this.claimType = $event.value.value;
       switch ($event.value.value) {
         case 'institutional':
           this.subTypeList = [
@@ -821,6 +826,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   openAddEditItemDialog(itemModel: any = null) {
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -832,7 +838,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormNphiesClaim.controls.type.value.value,
-      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -869,7 +876,7 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
-
+              x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {
@@ -957,7 +964,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
-      type: this.FormNphiesClaim.controls.type.value.value
+      type: this.FormNphiesClaim.controls.type.value.value,
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1247,6 +1256,14 @@ export class CreateClaimNphiesComponent implements OnInit {
     return hasError;
   }
 
+  checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1297,6 +1314,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (!this.checkDiagnosisErrorValidation()) {
+      hasError = true;
+    }
 
     if (this.checkSupposrtingInfoValidation()) {
       hasError = true;
@@ -1989,7 +2010,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
     this.otherDataModel.isNewBorn = response.isNewBorn;
-    this.otherDataModel.totalNetAmount = response.items.reduce((prev, next) => prev + next.net, 0);
+    this.otherDataModel.requestBundleId = response.requestBundleId;
+    this.otherDataModel.responseBundleId = response.responseBundleId;
+    this.otherDataModel.totalNetAmount = response.totalNet;
 
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;
@@ -2146,6 +2169,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     // tslint:disable-next-line:max-line-length
     this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0] : '');
+    this.claimType = response.preAuthorizationInfo.type;
 
     switch (response.preAuthorizationInfo.type) {
       case 'institutional':
@@ -2733,7 +2757,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null
-      && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
+      && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed', 'invalid'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
   get IsPreAuthRefRequired() {
@@ -2767,7 +2791,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   // }
 
   disabledAddItemsButton() {
-    return !this.FormNphiesClaim.controls.type.value
+    return !this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePlanId.value
       || (this.FormNphiesClaim.controls.type.value
         && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
@@ -2866,6 +2891,30 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
 
     return hasError && this.isSubmitted;
+  }
+
+  ItemsAddButtonToolTip() {
+    let result = false;
+    if (!this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value
+      || !this.FormNphiesClaim.controls.insurancePlanId.value) {
+      result = true;
+    }
+
+    if (result) {
+      if (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy'
+        && this.CareTeams.length === 0) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      } else if (this.FormNphiesClaim.controls.type.value
+        && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
+        return 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
+      } else if (!this.FormNphiesClaim.controls.type.value) {
+        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+      }
+    } else {
+      return '';
+    }
+
   }
 
 }
