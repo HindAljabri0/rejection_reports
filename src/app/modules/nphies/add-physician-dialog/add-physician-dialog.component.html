@@ -3,28 +3,28 @@
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="primary-dialog-body pb-0">
-    <div class="form-group mb-0">
+    <div class="form-group mb-0" physicianForm='ngForm' >
         <mat-form-field appearance="fill">
             <mat-label>Physician ID</mat-label>
-            <input matInput placeholder="Enter physician ID" type="text">
+            <input matInput placeholder="Enter physician ID" type="text"  [formControl]="physicianIdController">
         </mat-form-field>
     </div>
     <div class="form-group mb-0">
         <mat-form-field appearance="fill">
             <mat-label>Physician Name</mat-label>
-            <input matInput placeholder="Enter physician name" type="text">
+            <input matInput placeholder="Enter physician name" type="text" [formControl]="physicianNameController">
         </mat-form-field>
     </div>
     <div class="form-group mb-0">
         <mat-form-field appearance="fill">
             <mat-label>Speciality</mat-label>
-            <input matInput placeholder="Enter speciality" type="text">
+            <input matInput placeholder="Enter speciality" type="text" [formControl]="specialtyCodeController">
         </mat-form-field>
     </div>
     <div class="form-group mb-0">
         <mat-form-field appearance="fill">
             <mat-label>Role</mat-label>
-            <mat-select value="-1">
+            <mat-select value="-1" [formControl]="physicianRoleController">
                 <mat-option value="-1">Select Role</mat-option>
                 <mat-option value="Doctor">Doctor</mat-option>
                 <mat-option value="Nurse">Nurse</mat-option>
@@ -42,6 +42,6 @@
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">Close</button>
-        <button mat-flat-button color="primary" (click)="closeDialog()">Add</button>
+        <button mat-flat-button color="primary" (click)="addPhysician()">Add</button>
     </div>
 </div>

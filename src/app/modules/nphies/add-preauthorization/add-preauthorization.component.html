@@ -201,6 +201,16 @@
               </div>
             </div>
           </div>
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Preauthorization Reference No</label>
+              <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
+              </tag-input>
+              <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
+                <span class="error-text">Please enter Preauthorization Reference No</span>
+              </div> -->
+            </div>
+          </div>
         </div>
 
         <h5 class="form-title" [ngClass]="{'text-danger': IsCareTeamRequired}">
@@ -310,8 +320,8 @@
               </tr>
             </tbody>
           </table>
-        </div>
-        <mat-menu #careTeamTableActionMenu xPosition="before">
+        </div> -->
+        <!-- <mat-menu #careTeamTableActionMenu xPosition="before">
           <ng-template matMenuContent>
             <button mat-menu-item type="button">
               <mat-icon class="material-icons-outlined">delete</mat-icon>

@@ -20,7 +20,7 @@
       <p *ngIf="otherDataModel.disposition"><span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong></p>
     </div>
   </div>
-  <ul class="claim-totals">
+  <ul class="claim-totals" *ngIf="otherDataModel.totalNetAmount">
     <li>
       Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
@@ -150,6 +150,20 @@
             <div class="control-label">Episode No</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ?
               FormNphiesClaim.controls.episodeId.value : '-'}}</p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group form-group-static">
+            <div class="control-label">Request Bundle ID</div>
+            <p class="form-control-static">{{otherDataModel.requestBundleId ? otherDataModel.requestBundleId : '-'}}
+            </p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group form-group-static">
+            <div class="control-label">Response Bundle ID</div>
+            <p class="form-control-static">{{otherDataModel.responseBundleId ? otherDataModel.responseBundleId : '-'}}
+            </p>
           </div>
         </div>
       </div>
@@ -1165,7 +1179,7 @@
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
       </div>
     </div>
-    <ul class="claim-totals">
+    <ul class="claim-totals" *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'">
       <li>
         Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}} <span class="currency">SR</span></span>
       </li>
@@ -1175,7 +1189,6 @@
           {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
         </li>
       </ng-container>
-
     </ul>
 
     <div class="create-claim-body nphies-create">

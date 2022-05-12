@@ -273,7 +273,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.FormItem.controls.item.setValue('');
     this.itemList = [{ "code": type.code, "description": type.display }];
 
-
     if (type) {
       this.FormItem.patchValue({
         item: this.itemList.filter(x => x.code === type.code)[0]
@@ -416,7 +415,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       const factorValue: number = (1 - (parseFloat(this.FormItem.controls.discountPercent.value) / 100));
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
-      this.FormItem.controls.factor.setValue(1);
+      if (!this.FormItem.controls.factor.value) {
+        this.FormItem.controls.factor.setValue(1);
+      }
     }
   }
 

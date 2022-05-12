@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AdminService } from 'src/app/services/adminService/admin.service';
 import { takeUntil } from 'rxjs/operators';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MatSelect, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subject, ReplaySubject } from 'rxjs';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
+import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-add-edit-care-team-modal',
@@ -20,7 +21,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   @ViewChild('practitionerSelect', { static: true }) practitionerSelect: MatSelect;
   practitionerList: any = [];
-  filteredPractitioner: ReplaySubject<{ physicianId: { physicianCode: string }, name: string }[]> = new ReplaySubject<{ physicianId: { physicianCode: string }, name: string }[]>(1);
+  filteredPractitioner: ReplaySubject<{ id:string, physician_name: string, speciality_code:string, physician_role:string }[]> = new ReplaySubject<{ id: string, physician_name: string,speciality_code:string,physician_role:string }[]>(1);
   IsPractitionerLading = false;
   selectedPractitioner = '';
 
@@ -55,7 +56,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
   constructor(
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditCareTeamModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
-    private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService,
+    private sharedServices: SharedServices, private formBuilder: FormBuilder, private configurationService: NphiesConfigurationService,
     private providerNphiesSearchService: ProviderNphiesSearchService) {
     this.providerId = this.sharedServices.providerId;
   }
@@ -106,7 +107,8 @@ export class AddEditCareTeamModalComponent implements OnInit {
   }
 
   PractitionerChange() {
-    if (this.FormCareTeam.controls.practitioner.value) {
+    let selectedPractitioner =this.FormCareTeam.controls.practitioner.value;
+    if (selectedPractitioner) {
       this.FormCareTeam.controls.practitionerName.clearValidators();
       this.FormCareTeam.controls.practitionerName.updateValueAndValidity();
       this.FormCareTeam.controls.practitionerName.setValue('');
@@ -119,19 +121,26 @@ export class AddEditCareTeamModalComponent implements OnInit {
       this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
       this.FormCareTeam.controls.practitioner.updateValueAndValidity();
       this.IsPractitionerRequired = true;
+
+      console.log("Specialty = "+JSON.stringify(this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0]));
+      this.FormCareTeam.patchValue({
+        speciality: this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0],
+
+        practitionerRole: this.practitionerRoleList.filter(x => x.value === selectedPractitioner.physician_role.toLowerCase())[0],
+      });
     }
   }
 
   getPractitionerList() {
     this.IsPractitionerLading = true;
     this.FormCareTeam.controls.practitioner.disable();
-    this.adminService.getPractitionerList(this.providerId).subscribe(event => {
+    this.configurationService.getPractitionerList(this.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.practitionerList = event.body;
+        this.practitionerList = event.body['content'];
         if (this.data.item && this.data.item.practitionerName) {
-          if (this.practitionerList.filter(x => x.name === this.data.item.practitionerName)[0]) {
+          if (this.practitionerList.filter(x => x.physician_name === this.data.item.practitionerName)[0]) {
             this.FormCareTeam.patchValue({
-              practitioner: this.practitionerList.filter(x => x.name === this.data.item.practitionerName)[0]
+              practitioner: this.practitionerList.filter(x => x.physician_name === this.data.item.practitionerName)[0]
             });
 
             this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
@@ -218,7 +227,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
     }
     // filter the nations
     this.filteredPractitioner.next(
-      this.practitionerList.filter(practitioner => practitioner.name.toLowerCase().indexOf(search) > -1)
+      this.practitionerList.filter(practitioner => practitioner.physician_name.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -243,14 +252,15 @@ export class AddEditCareTeamModalComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.FormCareTeam.valid) {
+      
       const model: any = {};
       model.sequence = this.data.Sequence;
       if (this.FormCareTeam.controls.practitionerName.value) {
         model.practitionerName = this.FormCareTeam.controls.practitionerName.value;
         model.physicianCode = this.FormCareTeam.controls.practitionerId.value;
       } else {
-        model.practitionerName = this.FormCareTeam.controls.practitioner.value.name;
-        model.physicianCode = this.FormCareTeam.controls.practitioner.value.physicianId.physicianCode;
+        model.practitionerName = this.FormCareTeam.controls.practitioner.value.physician_name;
+        model.physicianCode = this.FormCareTeam.controls.practitioner.value.physician_id;
       }
       model.practitionerRole = this.FormCareTeam.controls.practitionerRole.value.value;
       model.careTeamRole = this.FormCareTeam.controls.careTeamRole.value.value;
@@ -259,6 +269,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
       model.qualificationCode = this.FormCareTeam.controls.speciality.value.speciallityCode;
       model.practitionerRoleName = this.FormCareTeam.controls.practitionerRole.value.name;
       model.careTeamRoleName = this.FormCareTeam.controls.careTeamRole.value.name;
+      console.log("Model = "+JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
@@ -266,7 +277,4 @@ export class AddEditCareTeamModalComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-
-
-
 }
