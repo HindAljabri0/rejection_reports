@@ -253,8 +253,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     if (type) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === type.itemType)[0],
-        nonStandardCode: type.nonStandardCode,
-        display: type.nonStandardDescription,
+        nonStandardCode: type.nonStandardCode, 
+        display: type.nonStandardDescription, 
         unitPrice: type.unitPrice,
         factor: type.factor,
       });
@@ -272,7 +272,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     this.FormItem.controls.item.setValue('');
     this.itemList = [{ "code": type.code, "description": type.display }];
-
 
     if (type) {
       this.FormItem.patchValue({
