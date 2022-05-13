@@ -1,5 +1,11 @@
 <div class="primary-dialog-header has-border">
-  <h5 *ngIf="data.type === 'cancel'" class="primary-dialog-title">Cancel</h5>
+  <h5 *ngIf="data.type === 'cancel'" class="primary-dialog-title">Cancel
+    <ng-container *ngIf="data.cancelType">
+      <span *ngIf="data.cancelType === 'all'"> All</span>
+      <span *ngIf="data.cancelType === 'selected'"> Selected</span> Claims
+    </ng-container>
+
+  </h5>
   <h5 *ngIf="data.type === 'nullify'" class="primary-dialog-title">Nullify/Soft
     Delete</h5>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
@@ -9,7 +15,8 @@
     <div class="row small-gutter">
 
       <div class="col-12 col-lg-12">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormCancel.get('cancelReason').touched) && FormCancel.get('cancelReason').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormCancel.get('cancelReason').touched) && FormCancel.get('cancelReason').hasError('required')}">
           <label class="control-label">Reason</label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="cancelReason">
@@ -17,7 +24,8 @@
               <mat-option *ngFor="let reason of cancelReasonList" [value]="reason">{{reason.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div *ngIf="(isSubmitted || FormCancel.get('cancelReason').touched) && FormCancel.get('cancelReason').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormCancel.get('cancelReason').touched) && FormCancel.get('cancelReason').hasError('required')">
             <span class="error-text">Please enter reason</span>
           </div>
         </div>

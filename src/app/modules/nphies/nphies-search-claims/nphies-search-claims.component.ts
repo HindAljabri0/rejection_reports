@@ -384,7 +384,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   getResultsOfStatus(key: number, page?: number) {
-    console.log(key)
+
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
@@ -1364,5 +1364,107 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
   claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase())
+  }
+
+  get showCancelAll() {
+    return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
+  openReasonModalMultiClaims() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+
+    if (this.selectedClaims.length === 0) {
+      const payerIds: string[] = [];
+      if (this.params.payerId) {
+        payerIds.push(this.params.payerId);
+      }
+
+      const model: any = {};
+      model.providerId = this.providerId;
+      model.selectedClaims = this.selectedClaims;
+      model.uploadId = this.params.uploadId;
+      model.claimRefNo = this.params.claimRefNo;
+      model.to = this.params.to;
+      model.payerIds = payerIds;
+      model.batchId = this.params.batchId;
+      model.memberId = this.params.memberId;
+      model.invoiceNo = this.params.invoiceNo;
+      model.patientFileNo = this.params.patientFileNo;
+      model.from = this.params.from;
+      model.nationalId = this.params.nationalId;
+      model.statuses = [];
+      model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+
+      dialogConfig.data = {
+        cancelData: model,
+        cancelType: 'all',
+        type: 'cancel'
+      };
+
+      const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.Success) {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', result.Message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        } else if ((result && !result.Success && result.Error)) {
+          this.handleCancelErrors(result.Error);
+        }
+      });
+
+    } else {
+      const model: any = {};
+      model.providerId = this.providerId;
+      model.selectedClaims = this.selectedClaims;
+
+      dialogConfig.data = {
+        cancelData: model,
+        cancelType: 'selected',
+        type: 'cancel'
+      };
+
+      const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.Success) {
+          this.deSelectAll();
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', result.Message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        } else if ((result && !result.Success && result.Error)) {
+          this.handleCancelErrors(result.Error);
+        }
+      });
+    }
+  }
+
+  handleCancelErrors(error) {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 400) {
+        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+      } else if (error.status === 404) {
+        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+      } else if (error.status === 500) {
+        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+      } else if (error.status === 503) {
+        const errors: any[] = [];
+        if (error.error.errors) {
+          error.error.errors.forEach(x => {
+            errors.push(x);
+          });
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+        } else {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+        }
+      }
+    }
   }
 }

@@ -178,7 +178,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (batchId) {
-      requestURL += `batchId=${batchId}`;
+      requestURL += `&batchId=${batchId}`;
     }
 
     if (uploadId) {
@@ -194,7 +194,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (invoiceNo) {
-      requestURL += `invoiceNo=${invoiceNo}`;
+      requestURL += `&invoiceNo=${invoiceNo}`;
     }
 
     if (patientFileNo) {
@@ -218,7 +218,82 @@ export class ProviderNphiesApprovalService {
     // }
 
     if (documentId) {
-      requestURL += `documentId=${documentId}`;
+      requestURL += `&documentId=${documentId}`;
+    }
+
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    return this.http.request(request);
+  }
+
+  cancelClaims(
+    providerId: string,
+    cancelReason: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    documentId?: string,
+    statuses?: string[]
+  ) {
+
+    let requestURL = `/providers/${providerId}/approval/cancelAll/request?`;
+
+    if (cancelReason) {
+      requestURL += `cancelReason=${cancelReason}`;
+    }
+
+    if (provderClaimReferenceNumber) {
+      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+    }
+
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    if (uploadId) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+
+    if (claimDate) {
+      requestURL += `&claimDate=${claimDate}`;
+    }
+
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+
+    if (statuses && statuses.length > 0) {
+      requestURL += `&statuses=${statuses.join(',')}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
