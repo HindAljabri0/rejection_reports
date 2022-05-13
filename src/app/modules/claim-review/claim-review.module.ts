@@ -40,6 +40,9 @@ import {
         SmoothScrollModule,
         StoreModule.forFeature('claimReviewState', claimReviewReducer),
         EffectsModule.forFeature([ClaimReviewEffects]),
+    ],
+    entryComponents: [
+        DoctorUploadsClaimDetailsDialogComponent
     ]
 })
 export class ClaimReviewModule { }
