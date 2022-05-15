@@ -3,13 +3,12 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, PageEvent } from '@angular/material';
-import { Observable } from 'rxjs';
 import { Physicians } from 'src/app/models/nphies/physicians';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { AddPhysicianDialogComponent } from '../add-physician-dialog/add-physician-dialog.component';
 import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upload-physicians-dialog.component';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 
 @Component({

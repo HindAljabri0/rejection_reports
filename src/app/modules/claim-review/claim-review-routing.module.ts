@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PhysiciansComponent } from '../nphies/physicians/physicians.component';
 import { DoctorUploadsClaimListComponent } from './components/doctor-uploads-claim-list/doctor-uploads-claim-list.component';
 import { DoctorUploadsComponent } from './components/doctor-uploads/doctor-uploads.component';
 
