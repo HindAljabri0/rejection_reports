@@ -1,10 +1,12 @@
-import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { time } from 'console';
+import { ActivatedRoute } from '@angular/router';
 import { PageControls } from '../../models/claimReviewState.model';
 import { claimScrubbing } from '../../models/ClaimScrubbing.model';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
+import { MatDialog } from '@angular/material';
+import {
+  DoctorUploadsClaimDetailsDialogComponent
+} from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
 
 @Component({
   selector: 'app-doctor-uploads-claim-list',
@@ -13,11 +15,15 @@ import { ClaimReviewService } from '../../services/claim-review-service/claim-re
 })
 export class DoctorUploadsClaimListComponent implements OnInit {
 
-  public id : number;
-  public claimData : claimScrubbing[]; 
+  public id: number;
+  public claimData: claimScrubbing[];
   pageControl: PageControls;
-  constructor(private router : ActivatedRoute,private claimReviewService : ClaimReviewService) { 
-    this.pageControl = new PageControls(0,5);
+  constructor(
+    private router: ActivatedRoute,
+    private claimReviewService: ClaimReviewService,
+    private dialog: MatDialog
+  ) {
+    this.pageControl = new PageControls(0, 5);
   }
   ngOnInit() {
     this.id = this.router.snapshot.params.id;
@@ -26,12 +32,12 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.refreshData();
   }
 
-  refreshData(){
-    this.claimReviewService.selectDetailView(this.id,this.pageControl.pageNumber,this.pageControl.pageSize).subscribe(response => {
+  refreshData() {
+    this.claimReviewService.selectDetailView(this.id, this.pageControl.pageNumber, this.pageControl.pageSize).subscribe(response => {
       if (response instanceof Object) {
-        let body : any = response["content"];
+        const body: any = response['content'];
         this.claimData = body as claimScrubbing[];
-        this.pageControl.totalPages = response["totalPages"];
+        this.pageControl.totalPages = response['totalPages'];
       }
     });
   }
@@ -40,7 +46,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     if (this.pageControl.pageNumber != 0) {
       this.pageControl.pageNumber = 0;
     }
-    this.refreshData()
+    this.refreshData();
   }
   goToPrePage() {
     if (this.pageControl.pageNumber != 0) {
@@ -59,6 +65,12 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       this.pageControl.pageNumber = this.pageControl.totalPages - 1;
     }
     this.refreshData();
+  }
+
+  openDoctorClaimViewDialog() {
+    const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog']
+    });
   }
 
 }

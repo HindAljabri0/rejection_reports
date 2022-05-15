@@ -124,6 +124,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
       ///console.log("Specialty = "+JSON.stringify(this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0]));
       this.FormCareTeam.patchValue({
         speciality: this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0],
+
         practitionerRole: this.practitionerRoleList.filter(x => x.value === selectedPractitioner.physician_role.toLowerCase())[0],
       });
     }

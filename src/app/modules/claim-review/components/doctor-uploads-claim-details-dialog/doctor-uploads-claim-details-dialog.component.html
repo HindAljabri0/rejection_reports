@@ -1,1 +1,440 @@
-<p>doctor-uploads-claim-details-dialog works!</p>
+<div class="primary-dialog-header has-border align-items-center">
+    <h5 class="primary-dialog-title semibold">View Claim</h5>
+    <span class="status-badge ml-auto warning">
+        <img src="./assets/ic-clock.svg" alt="Clock" />
+        <span>Review Pending</span>
+    </span>
+    <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
+</div>
+<mat-tab-group class="primary-tab doctor-review-tab">
+    <mat-tab [label]="'Diagnosis & Services'">
+        <div class="diagnosis-tab">
+            <div class="form-group form-group-static p-14 pb-0">
+                <div class="control-label">Chief Complaint Symptoms</div>
+                <p class="form-control-static">Dental Caries</p>
+            </div>
+            <div class="service-wrapper">
+                <ul class="services">
+                    <li class="head">Services</li>
+                    <li>
+                        <p>GDDC6105</p>
+                        <span class="text-grey">PARTIAL PULPOTOMY (EXCLUDING FILLING)</span>
+                    </li>
+                    <li>
+                        <p>MDDC3108</p>
+                        <span class="text-grey">PARTIAL PULPOTOMY (EXCLUDING FILLING)</span>
+                    </li>
+                    <li>
+                        <p>FH65G97J</p>
+                        <span class="text-grey">PARTIAL PULPOTOMY (EXCLUDING FILLING)</span>
+                    </li>
+                </ul>
+                <div class="diagnosis">
+                    <div class="table-responsive">
+                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid claim-view-table sticky-header">
+                            <thead>
+                                <tr>
+                                    <th>Diagnosis Code</th>
+                                    <th>Diagnosis Description</th>
+                                    <th>Doctor’s Remarks</th>
+                                    <th>Coder’s Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="align-middle">
+                                    <td>Z01.2</td>
+                                    <td>Dental examination</td>
+                                    <td>
+                                        <div class="form-group mb-n1 mt-n1">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group mb-n1 mt-n1">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td>A02.8</td>
+                                    <td>Other specified salmonella infections</td>
+                                    <td>
+                                        <div class="form-group mb-n1 mt-n1">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group mb-n1 mt-n1">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td>C05.2</td>
+                                    <td>Malignant neoplasm of uvula</td>
+                                    <td>
+                                        <div class="form-group mb-n1 mt-n1">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group mb-n1 mt-n1">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab [label]="'General info'">
+        <div class="general-info-tab">
+            <div class="left-block">
+                <h5 class="semibold pb-14">Patient & Payer Info</h5>
+                <div class="row small-gutter">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Full Name</div>
+                            <p class="form-control-static">Ahmed Al Zahrani</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Gender</div>
+                            <p class="form-control-static">Male</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Department</div>
+                            <p class="form-control-static">General Practice</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Payer</div>
+                            <p class="form-control-static">Tawuniya</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Claim Date</div>
+                            <p class="form-control-static">26/07/2019</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Nationality</div>
+                            <p class="form-control-static">Saudi Arabia</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">National / Iqama ID</div>
+                            <p class="form-control-static text-grey">N/A</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Member ID</div>
+                            <p class="form-control-static">002308799663001</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Policy No.</div>
+                            <p class="form-control-static">85964</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Date of Birth</div>
+                            <p class="form-control-static">01/01/1996</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Age</div>
+                            <p class="form-control-static">25 Years</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Eligibility No.</div>
+                            <p class="form-control-static">8596</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Approval No.</div>
+                            <p class="form-control-static">968955147</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Physician Category</div>
+                            <p class="form-control-static">Consultant</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Physician Name</div>
+                            <p class="form-control-static">Shagufta Sultana Arshad</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Physician ID</div>
+                            <p class="form-control-static">8009</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Account Code</div>
+                            <p class="form-control-static">Waseel ASP Ltd</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Duration of Illness</div>
+                            <p class="form-control-static">1 Day</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Visit Type</div>
+                            <p class="form-control-static">New</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Patient File No.</div>
+                            <p class="form-control-static">2629624</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Contact No.</div>
+                            <p class="form-control-static text-grey">N/A</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Case Type</div>
+                            <p class="form-control-static">Inpatient</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="form-group form-group-static">
+                            <div class="control-label">Plan Type</div>
+                            <p class="form-control-static text-grey">N/A</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-block">
+                <h5 class="semibold pb-14">Medical Info</h5>
+                <div class="form-group form-group-static">
+                    <div class="control-label">Chief Complaint Symptoms</div>
+                    <p class="form-control-static">Dental Caries</p>
+                </div>
+                <div class="form-group form-group-static">
+                    <div class="control-label">Radiology Report</div>
+                    <p class="form-control-static text-grey">N/A</p>
+                </div>
+                <div class="form-group form-group-static">
+                    <div class="control-label">Other Condition</div>
+                    <p class="form-control-static text-grey">N/A</p>
+                </div>
+                <div class="form-group form-group-static">
+                    <div class="control-label">Comment Report</div>
+                    <p class="form-control-static">Common report</p>
+                </div>
+                <div class="form-group form-group-static">
+                    <div class="control-label">Significant Sign</div>
+                    <p class="form-control-static text-grey">N/A</p>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab [label]="'Illness'">
+        <div class="primary-button-toggle inline">
+            <mat-button-toggle [disabled]="true" value="N/A">N/A</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Ambulance">Ambulance</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Dialysis">Dialysis</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Checkup">Checkup</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Chronic">Chronic</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Circumcision">Circumcision</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Cleaning">Cleaning</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Congenital">Congenital</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Infertility">Infertility</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Maternity complications">Maternity complications</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Preexisting">Preexisting</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Orthodontics">Orthodontics</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Pregnancy">Pregnancy</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Psychiatry">Psychiatry</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Rta">Rta</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Sports">Sports</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Vaccination">Vaccination</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Wra">Wra</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Regular dental treatment">Regular dental treatment</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Emergency resuscitation">Emergency resuscitation</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Emergency">Emergency</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Emergency urgent">Emergency urgent</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Emergency less urgent">Emergency less urgent</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" value="Emergency not urgent">Emergency not urgent</mat-button-toggle>
+        </div>
+    </mat-tab>
+    <mat-tab [label]="'Vital Signs'">
+        <div class="row small-gutter">
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Temperature</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Blood Pressure</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Respiratory Rate</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Pulse</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Weight</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Height</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group-static">
+                    <div class="control-label">Last Menstruation Period</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab [label]="'Admission'">
+        <div class="row small-gutter">
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group static">
+                    <div class="control-label">Admission Date & Time</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group static">
+                    <div class="control-label">Discharge Date & Time</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group static">
+                    <div class="control-label">Length of Stay</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group static">
+                    <div class="control-label">Unit of Stay</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group static">
+                    <div class="control-label">Room Number</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-group static">
+                    <div class="control-label">Bed Number</div>
+                    <p class="form-control-static">lorem ipsum</p>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab [label]="'Attachments'">
+    </mat-tab>
+    <mat-tab [label]="'Lab Results'">
+    </mat-tab>
+    <mat-tab [label]="'Errors'">
+        <div class="table-responsive">
+            <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
+                <thead class="header-primary">
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Error Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-rejected-waseel">
+                        <td>lorem ipsum</td>
+                        <td>lorem ipsum</td>
+                    </tr>
+                    <tr class="text-rejected-waseel">
+                        <td>lorem ipsum</td>
+                        <td>lorem ipsum</td>
+                    </tr>
+                    <tr class="text-rejected-waseel">
+                        <td>lorem ipsum</td>
+                        <td>lorem ipsum</td>
+                    </tr>
+                    <tr class="text-rejected-waseel">
+                        <td>lorem ipsum</td>
+                        <td>lorem ipsum</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+
+<div class="p-14 pb-0 border-top">
+    <h5 class="semibold pb-14">Doctor’s Remarks</h5>
+    <div class="form-group">
+        <textarea class="form-control doctor-review" placeholder="Enter doctor's remarks here..."></textarea>
+    </div>
+</div>
+
+<div class="block-footer sticky">
+    <div class="left-block custom-paginator">
+        <button matRipple type="button" title="First Page">
+            <img src="./assets/ic-page-first.svg" alt="First" />
+        </button>
+        <button matRipple type="button" title="Previous Page">
+            <img src="./assets/ic-page-prev.svg" alt="Previous" />
+        </button>
+        <p class="page-info">1<small>/5</small>
+        </p>
+        <button matRipple type="button" title="Next Page">
+            <img src="./assets/ic-page-next.svg" alt="Next" />
+        </button>
+        <button matRipple type="button" title="Last Page">
+            <img src="./assets/ic-page-last.svg" alt="Last" />
+        </button>
+    </div>
+    <div class="right-block btn-list">
+        <button mat-flat-button color="primary">Mark as Done</button>
+    </div>
+</div>

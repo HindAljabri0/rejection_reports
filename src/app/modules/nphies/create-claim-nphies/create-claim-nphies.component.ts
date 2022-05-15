@@ -2011,7 +2011,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
     this.otherDataModel.isNewBorn = response.isNewBorn;
-    this.otherDataModel.totalNetAmount = response.items.reduce((prev, next) => prev + next.net, 0);
+    this.otherDataModel.requestBundleId = response.requestBundleId;
+    this.otherDataModel.responseBundleId = response.responseBundleId;
+    this.otherDataModel.totalNetAmount = response.totalNet;
 
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;
@@ -2756,7 +2758,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null
-      && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
+      && ['accepted', 'cancelled', 'notaccepted', 'error', 'failed', 'invalid'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
   get IsPreAuthRefRequired() {

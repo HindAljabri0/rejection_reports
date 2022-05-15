@@ -61,6 +61,7 @@ export class AddPreauthorizationComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
     city: [''],
@@ -1405,6 +1406,12 @@ export class AddPreauthorizationComponent implements OnInit {
       preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
+
+      if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
+        this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
+          return x.value;
+        });
+      }
 
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
