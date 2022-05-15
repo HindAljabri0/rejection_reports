@@ -58,6 +58,11 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
+  searchPractitioner(providerId: string,searchQuery: string) {
+    const requestURL: string =  `/providers/${providerId}/physciains/search?query=` + searchQuery;
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
+    return this.http.request(request);
+  }
   getPractitionerList(providerId: string) {
     const requestURL = '/providers/' + providerId + '/physciains?skipPagination=true';
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);

@@ -121,7 +121,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
       this.FormCareTeam.controls.practitioner.setValidators(Validators.required);
       this.FormCareTeam.controls.practitioner.updateValueAndValidity();
       this.IsPractitionerRequired = true;
-      console.log("Specialty = "+JSON.stringify(this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0]));
+      ///console.log("Specialty = "+JSON.stringify(this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0]));
       this.FormCareTeam.patchValue({
         speciality: this.specialityList.filter(x => +x.speciallityCode === selectedPractitioner.speciality_code)[0],
         practitionerRole: this.practitionerRoleList.filter(x => x.value === selectedPractitioner.physician_role.toLowerCase())[0],

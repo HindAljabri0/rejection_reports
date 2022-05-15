@@ -203,12 +203,7 @@
           </div>
         </div>
 
-        <h5 class="form-title" [ngClass]="{'text-danger': IsCareTeamRequired}">
-          <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
-          <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
-            <mat-icon>add</mat-icon>
-          </button>
-        </h5>
+        
         <!-- <div class="row small-gutter">
           <div class="col-xxl-4 col-lg-6">
             <div class="d-flex">
@@ -319,7 +314,7 @@
             </button>
           </ng-template>
         </mat-menu> -->
-        <div *ngIf="CareTeams.length > 0" class="table-responsive">
+        <!--div *ngIf="CareTeams.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
               <tr>
@@ -368,7 +363,11 @@
         <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
         </app-empty-state>
         <app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
-        </app-empty-state>
+        </app-empty-state-->
+        <app-manage-care-team
+        [(isSubmitted)]="isSubmitted"
+        [(CareTeams)]="CareTeams">
+        </app-manage-care-team>
 
         <app-manage-diagnosis
         [(isSubmitted)]="isSubmitted"
