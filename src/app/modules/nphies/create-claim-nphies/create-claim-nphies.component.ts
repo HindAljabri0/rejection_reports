@@ -30,8 +30,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
-import { controllers } from 'chart.js';
-import { C } from '@angular/cdk/keycodes';
+
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -2508,6 +2507,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
         model.specialityCode = x.specialityCode;
+        model.practitionerRoleSelect = this.sharedDataService.practitionerRoleList.filter(role => role.value === x.practitionerRole)[0];
+        model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value ===  x.careTeamRole)[0];
+        model.specialitySelect = this.sharedService.GetSpeciality(x.specialityCode);
         // tslint:disable-next-line:max-line-length
         model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
         // tslint:disable-next-line:max-line-length

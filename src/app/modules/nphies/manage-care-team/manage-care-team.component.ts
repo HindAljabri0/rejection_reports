@@ -87,6 +87,7 @@ export class ManageCareTeamComponent implements OnInit {
 
   }
   SpecialtyChange(newSpec: any, i: number) {
+    console.log("values changed = " + JSON.stringify(newSpec));
     this.CareTeams[i].specialityCode = newSpec.speciallityCode;
     this.CareTeams[i].qualificationCode = newSpec.speciallityCode;
     this.CareTeams[i].speciality = newSpec.speciallityName;
@@ -94,11 +95,11 @@ export class ManageCareTeamComponent implements OnInit {
   }
   careTeamRoleChange(newRole: any, i: number) {
     this.CareTeams[i].careTeamRole = newRole.value;
-    console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
+    //console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
   }
   practitionerRoleChange(newRole: any, i: number) {
     this.CareTeams[i].practitionerRole = newRole.value;
-    console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
+    //console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
   }
   searchPhysician(name, i) {
     this.PhysicianOptions = [];
