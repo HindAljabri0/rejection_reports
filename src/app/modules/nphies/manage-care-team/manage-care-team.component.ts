@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSelect } from '@angular/material';
-import { Subject,ReplaySubject } from 'rxjs';
+import { Subject, ReplaySubject } from 'rxjs';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -21,7 +21,7 @@ export class ManageCareTeamComponent implements OnInit {
   providerId;
   @ViewChild('practitionerSelect', { static: true }) practitionerSelect: MatSelect;
   practitionerList: any = [];
-  filteredPractitioner: ReplaySubject<{ id:string, physician_name: string, speciality_code:string, physician_role:string }[]> = new ReplaySubject<{ id: string, physician_name: string,speciality_code:string,physician_role:string }[]>(1);
+  filteredPractitioner: ReplaySubject<{ id: string, physician_name: string, speciality_code: string, physician_role: string }[]> = new ReplaySubject<{ id: string, physician_name: string, speciality_code: string, physician_role: string }[]>(1);
   IsPractitionerLading = false;
   selectedPractitioner = '';
 
@@ -36,10 +36,10 @@ export class ManageCareTeamComponent implements OnInit {
   careTeamRoleList = this.sharedDataService.careTeamRoleList;
   PhysicianOptions: any[] = [];
 
-  constructor(private sharedDataService: SharedDataService,private sharedServices: SharedServices
-    , private configurationService: NphiesConfigurationService,private providerNphiesSearchService:ProviderNphiesSearchService) { 
-      this.providerId = this.sharedServices.providerId;
-    }
+  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices
+    , private configurationService: NphiesConfigurationService, private providerNphiesSearchService: ProviderNphiesSearchService) {
+    this.providerId = this.sharedServices.providerId;
+  }
 
 
   ngOnInit() {
@@ -47,7 +47,7 @@ export class ManageCareTeamComponent implements OnInit {
   }
   getSpecialityList() {
     this.IsSpecialityLading = true;
-    
+
     this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.specialityList = event.body;
@@ -61,9 +61,9 @@ export class ManageCareTeamComponent implements OnInit {
               speciality: ''
             });
           }*/
-        }
-        this.filteredSpeciality.next(this.specialityList.slice());
-        this.IsSpecialityLading = false;
+      }
+      this.filteredSpeciality.next(this.specialityList.slice());
+      this.IsSpecialityLading = false;
     }, error => {
       if (error instanceof HttpErrorResponse) {
         console.log(error);
@@ -71,30 +71,45 @@ export class ManageCareTeamComponent implements OnInit {
     });
   }
   addPractitioner(diag: any, i: number) {
-     //Set Selected Values
-     this.CareTeams[i].practitionerRoleSelect = this.practitionerRoleList.filter(role => role.value === diag.physician_role)[0];
-     this.CareTeams[i].specialitySelect = this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code)[0],
-     //Set Model Data
-    this.CareTeams[i].physicianCode = diag.physician_id;
+    //Set Selected Values
+    this.CareTeams[i].practitionerRoleSelect = this.practitionerRoleList.filter(role => role.value === diag.physician_role.toLowerCase())[0];
+    this.CareTeams[i].specialitySelect = this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code || x.speciallityCode === diag.speciality_code)[0],
+      //Set Model Data
+      this.CareTeams[i].physicianCode = diag.physician_id;
     this.CareTeams[i].practitionerName = diag.physician_name;
     this.CareTeams[i].practitionerRole = diag.physician_role;
-    this.CareTeams[i].specialityCode = diag.speciality_code;
-    this.CareTeams[i].qualificationCode = diag.speciality_code;
-    this.CareTeams[i].speciality = this.CareTeams[i].specialitySelect.speciallityName;
-   
+    if (this.CareTeams[i].specialitySelect) {
+      this.CareTeams[i].specialityCode = this.CareTeams[i].specialitySelect.speciallityCode;
+      this.CareTeams[i].qualificationCode = this.CareTeams[i].specialitySelect.speciallityCode;
+      this.CareTeams[i].speciality = this.CareTeams[i].specialitySelect.speciallityName;
+    }
     console.log(this.CareTeams[i]);
-    
+
   }
-  searchPhysician(name,i){
-    this.PhysicianOptions=[];
+  SpecialtyChange(newSpec: any, i: number) {
+    this.CareTeams[i].specialityCode = newSpec.speciallityCode;
+    this.CareTeams[i].qualificationCode = newSpec.speciallityCode;
+    this.CareTeams[i].speciality = newSpec.speciallityName;
+    //console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
+  }
+  careTeamRoleChange(newRole: any, i: number) {
+    this.CareTeams[i].careTeamRole = newRole.value;
+    console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
+  }
+  practitionerRoleChange(newRole: any, i: number) {
+    this.CareTeams[i].practitionerRole = newRole.value;
+    console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
+  }
+  searchPhysician(name, i) {
+    this.PhysicianOptions = [];
     if (name) {
-      this.configurationService.searchPractitioner(this.sharedServices.providerId,name).subscribe(
+      this.configurationService.searchPractitioner(this.sharedServices.providerId, name).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
               Object.keys(event.body).forEach(key => {
                 //if (this.descriptionList.findIndex(diagnosis => diagnosis.diagnosisCode === event.body[key]['icddiagnosisCode']) === -1) {
-                  this.PhysicianOptions.push(event.body[key]);
+                this.PhysicianOptions.push(event.body[key]);
                 //}
               });
             }
@@ -108,14 +123,14 @@ export class ManageCareTeamComponent implements OnInit {
     const model: any = {};
     model.sequence = this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1);
     model.practitionerName = '';
-    model.physicianCode ='';
+    model.physicianCode = '';
     model.practitionerRole = 'doctor';
-    model.careTeamRole ='primary';
+    model.careTeamRole = 'primary';
     model.speciality = '';
     model.specialityCode = '';
     model.qualificationCode = '';
     //Selections
-    model.careTeamRoleSelect =  this.careTeamRoleList.filter(role => role.value === 'primary')[0];;
+    model.careTeamRoleSelect = this.careTeamRoleList.filter(role => role.value === 'primary')[0];;
     model.practitionerRoleSelect = this.practitionerRoleList.filter(role => role.value === 'doctor')[0];
     model.specialitySelect = '';
     this.CareTeams.push(model);

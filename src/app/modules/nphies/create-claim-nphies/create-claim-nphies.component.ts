@@ -1506,7 +1506,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
-      console.log("Care Team = "+this.CareTeams);
+      console.log("Care Team = "+JSON.stringify(this.CareTeams));
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -1519,7 +1519,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.qualificationCode = x.qualificationCode;
         return model;
       });
-      console.log("Mapped Care Team = "+this.model.careTeam);
+      console.log("Mapped Care Team = "+JSON.stringify(this.model.careTeam));
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length

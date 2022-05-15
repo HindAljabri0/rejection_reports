@@ -41,7 +41,7 @@
                         [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerRole) }">
 
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="careTeam.practitionerRoleSelect">
+                            <mat-select [(ngModel)]="careTeam.practitionerRoleSelect" (ngModelChange)="practitionerRoleChange($event, i)">
                                 <mat-option value="">Select Type</mat-option>
                                 <mat-option *ngFor="let prt of practitionerRoleList" [value]="prt">{{prt.name}}
                                 </mat-option>
@@ -59,7 +59,7 @@
                         [ngClass]="{'has-error' : isSubmitted && !careTeam.careTeamRole}">
 
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="careTeam.careTeamRoleSelect">
+                            <mat-select [(ngModel)]="careTeam.careTeamRoleSelect" (ngModelChange)="careTeamRoleChange($event, i)">
                                 <mat-option value="">Select Type</mat-option>
                                 <mat-option *ngFor="let ctr of careTeamRoleList" [value]="ctr">{{ctr.name}}</mat-option>
                             </mat-select>
@@ -75,7 +75,7 @@
                     <div class="mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
 
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="careTeam.specialitySelect" [disabled]="IsSpecialityLading" required
+                            <mat-select [(ngModel)]="careTeam.specialitySelect" (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required
                                 #specialitySelect>
                                 <mat-option>
                                     <!--ngx-mat-select-search placeholderLabel="Search Speciality"
