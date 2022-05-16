@@ -21,6 +21,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   claim$: Observable<Claim>;
   services$: Observable<Service[]>;
   selectedIllnesses$: Observable<string[]>;
+  selectedIllnesses: string[] = [];
+
 
   // selectedIllnesses: string[] = ['NA'];
 
@@ -38,29 +40,27 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store) { }
-  
+
 
 
   ngOnInit() {
     this.claim$ = this.store.select(getSingleClaim);
     this.services$ = this.store.select(getSingleClaimServices);
-    this.claim$.subscribe(clm =>{
-
-      console.log('clm.caseInformation.caseDescription.illnessCategory.inllnessCode', clm.caseInformation.caseDescription.illnessCategory.inllnessCode);
-    })
     this.selectedIllnesses$ = this.store.select(getSelectedIllnessCodes)
-    this.selectedIllnesses$.subscribe(code =>{
-      console.log('code', code);
-      console.log('type of code', typeof code);
+    this.selectedIllnesses$.subscribe(selectedIllnesses => {
+      console.log('selectedIllnesses', selectedIllnesses);
+      this.selectedIllnesses = selectedIllnesses
     })
-    // this.claim$.subscribe(data =>{
-    //   console.log('data', data);
-    // })
   }
 
-  // isIllnessSelected(illnessCode: string){
-  //   this.claim$.subscribe()
-  // }
+  isSelected(illnessCode: string): boolean {
+    const codeIndex = this.selectedIllnesses.findIndex(code => {
+      return code.toUpperCase() === illnessCode.toUpperCase();
+    });
+
+    return codeIndex !== -1
+
+  }
   closeDialog() {
     this.dialogRef.close();
   }

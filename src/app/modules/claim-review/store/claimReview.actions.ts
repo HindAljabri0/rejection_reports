@@ -1,7 +1,6 @@
 import { PageEvent } from "@angular/material";
 import { createAction, props } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
-import { claimReview } from "../models/claim-view.model";
 import { UploadsPage } from "../models/claimReviewState.model";
 
 

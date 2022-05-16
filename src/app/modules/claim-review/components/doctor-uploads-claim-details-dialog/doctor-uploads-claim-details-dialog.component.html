@@ -66,13 +66,13 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Full Name</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.patient.fullName}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.fullName}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Gender</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.patient.gender}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.gender}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
@@ -90,13 +90,13 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Claim Date</div>
-                            <p class="form-control-static">{{(claim$|async).visitInformation.visitDate}}</p>
+                            <p class="form-control-static">{{(claim$|async).visitInformation?.visitDate}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Nationality</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.patient.nationality}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.nationality}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
@@ -108,25 +108,25 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Member ID</div>
-                            <p class="form-control-static">{{(claim$|async).member.memberID}}</p>
+                            <p class="form-control-static">{{(claim$|async).member?.memberID}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Policy No.</div>
-                            <p class="form-control-static">{{(claim$|async).member.policyNumber}}</p>
+                            <p class="form-control-static">{{(claim$|async).member?.policyNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Date of Birth</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.patient.dob}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.dob}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Age</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.patient.age}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.age}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
@@ -138,53 +138,53 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Approval No.</div>
-                            <p class="form-control-static">{{(claim$|async).claimIdentities.approvalNumber}}</p>
+                            <p class="form-control-static">{{(claim$|async).claimIdentities?.approvalNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician Category</div>
                             <p class="form-control-static">
-                                {{(claim$|async).caseInformation.physician.physicianCategory}}</p>
+                                {{(claim$|async).caseInformation?.physician?.physicianCategory}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician Name</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.physician.physicianName}}
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.physician?.physicianName}}
                             </p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician ID</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.physician.physicianID}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.physician.physicianID}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Account Code</div>
-                            <p class="form-control-static">{{(claim$|async).member.accCode}}</p>
+                            <p class="form-control-static">{{(claim$|async).member?.accCode}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Duration of Illness</div>
                             <p class="form-control-static">
-                                {{(claim$|async).caseInformation.caseDescription.illnessDuration}}
-                                {{(claim$|async).caseInformation.caseDescription.illnessCategory}}</p>
+                                {{(claim$|async).caseInformation?.caseDescription.illnessDuration}}
+                                {{(claim$|async).caseInformation?.caseDescription.illnessCategory}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Visit Type</div>
-                            <p class="form-control-static">{{(claim$|async).visitInformation.visitType}}</p>
+                            <p class="form-control-static">{{(claim$|async).visitInformation?.visitType}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Patient File No.</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.patient.patientFileNumber}}
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.patientFileNumber}}
                             </p>
                         </div>
                     </div>
@@ -192,19 +192,19 @@
                         <div class="form-group form-group-static">
                             <div class="control-label">Contact No.</div>
                             <p class="form-control-static text-grey">
-                                {{(claim$|async).caseInformation.patient.contactNumber}}</p>
+                                {{(claim$|async).caseInformation?.patient?.contactNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Case Type</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation.caseType}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.caseType}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Plan Type</div>
-                            <p class="form-control-static text-grey">{{(claim$|async).member.planType}}</p>
+                            <p class="form-control-static text-grey">{{(claim$|async).member?.planType}}</p>
                         </div>
                     </div>
                 </div>
@@ -214,11 +214,11 @@
                 <div class="form-group form-group-static">
                     <div class="control-label">Chief Complaint Symptoms</div>
                     <p class="form-control-static">
-                        {{(claim$|async).caseInformation.caseDescription.chiefComplaintSymptoms}}</p>
+                        {{(claim$|async).caseInformation?.caseDescription?.chiefComplaintSymptoms}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Radiology Report</div>
-                    <p class="form-control-static text-grey">{{(claim$|async).caseInformation.radiologyReport}}</p>
+                    <p class="form-control-static text-grey">{{(claim$|async).caseInformation?.radiologyReport}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Other Condition</div>
@@ -241,16 +241,16 @@
             <!-- <mat-button-toggle *ngFor="let code of illnessOptionsList" [value]="code" disabled="true" checked="true">
                 {{beautifyCode(code)}}</mat-button-toggle> -->
             <!-- <mat-button-toggle-group #group="matButtonToggleGroup" > -->
-                 <mat-button-toggle [disabled]="true"  value="N/A">N/A</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" checked="true" value="Ambulance">Ambulance</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" checked="true" value="Dialysis">Dialysis</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Checkup">Checkup</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Chronic">Chronic</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Circumcision">Circumcision</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Cleaning">Cleaning</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Congenital">Congenital</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Infertility">Infertility</mat-button-toggle>
-                <mat-button-toggle [disabled]="true" value="Maternity complications">Maternity complications
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('NA')}}" value="N/A">N/A</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Ambulance')}}" value="Ambulance">Ambulance</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Dialysis')}}" value="Dialysis">Dialysis</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Checkup')}}" value="Checkup">Checkup</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Chronic')}}" value="Chronic">Chronic</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Circumcision')}}" value="Circumcision">Circumcision</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Cleaning')}}" value="Cleaning">Cleaning</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Congenital')}}" value="Congenital">Congenital</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Infertility')}}" value="Infertility">Infertility</mat-button-toggle>
+                <mat-button-toggle [disabled]="true" checked="{{isSelected('Maternity complications')}}" value="Maternity complications">Maternity complications
                 </mat-button-toggle>
                 <mat-button-toggle [disabled]="true" value="Preexisting">Preexisting</mat-button-toggle>
                 <mat-button-toggle [disabled]="true" value="Orthodontics">Orthodontics</mat-button-toggle>
