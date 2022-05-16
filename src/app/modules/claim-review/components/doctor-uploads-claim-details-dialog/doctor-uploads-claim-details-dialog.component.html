@@ -16,18 +16,12 @@
             <div class="service-wrapper">
                 <ul class="services">
                     <li class="head">Services</li>
-                    <li>
-                        <p>GDDC6105</p>
-                        <span class="text-grey">PARTIAL PULPOTOMY (EXCLUDING FILLING)</span>
+                    <div *ngFor="let service of (services$|async)">
+                        <li>
+                            <p>{{service.serviceCode}}</p>
+                        <span class="text-grey">{{service.serviceDescription}}</span>
                     </li>
-                    <li>
-                        <p>MDDC3108</p>
-                        <span class="text-grey">PARTIAL PULPOTOMY (EXCLUDING FILLING)</span>
-                    </li>
-                    <li>
-                        <p>FH65G97J</p>
-                        <span class="text-grey">PARTIAL PULPOTOMY (EXCLUDING FILLING)</span>
-                    </li>
+                </div>
                 </ul>
                 <div class="diagnosis">
                     <div class="table-responsive">
@@ -41,45 +35,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="align-middle">
-                                    <td>Z01.2</td>
-                                    <td>Dental examination</td>
+                                <tr class="align-middle" *ngFor="let diag of (claim$|async).caseInformation?.caseDescription?.diagnosis">
+                                    <td>{{diag.diagnosisCode}}</td>
+                                    <td>{{diag.diagnosisDescription}}</td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input type="text" class="form-control" />
+                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input type="text" class="form-control" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td>A02.8</td>
-                                    <td>Other specified salmonella infections</td>
-                                    <td>
-                                        <div class="form-group mb-n1 mt-n1">
-                                            <input type="text" class="form-control" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group mb-n1 mt-n1">
-                                            <input type="text" class="form-control" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td>C05.2</td>
-                                    <td>Malignant neoplasm of uvula</td>
-                                    <td>
-                                        <div class="form-group mb-n1 mt-n1">
-                                            <input type="text" class="form-control" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group mb-n1 mt-n1">
-                                            <input type="text" class="form-control" />
+                                            <input value="{{diag.coderRemarks}}" type="text" class="form-control" />
                                         </div>
                                     </td>
                                 </tr>

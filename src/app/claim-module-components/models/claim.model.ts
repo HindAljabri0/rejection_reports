@@ -20,6 +20,8 @@ export class Claim {
     commreport: string;
     admission: Admission;
     attachment: AttachmentRequest[];
+    doctorRemarks?: string;
+    coderRemarks?: string;
 
     constructor(claimType: string, providerClaimNumber: string) {
         const type = claimType === 'INPATIENT' ? 'INPATIENT' : 'OUTPATIENT';
