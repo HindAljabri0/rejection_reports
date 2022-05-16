@@ -1262,6 +1262,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
               });
             });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+          }else{
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
           }
           this.getClaimTransactions(this.params.status, this.params.page);
         }

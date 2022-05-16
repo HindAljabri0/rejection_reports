@@ -75,21 +75,16 @@
                     <div class="mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
 
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="careTeam.specialitySelect" (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required
+                            <mat-select [(ngModel)]="careTeam.specialitySelect"  (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required
                                 #specialitySelect>
-                                <mat-option>
-                                    <!--ngx-mat-select-search placeholderLabel="Search Speciality"
-                                        noEntriesFoundLabel="No specialities found" formControlName="specialityFilter"
-                                        name='searchedSpeciality'>
-                                    </ngx-mat-select-search-->
-                                </mat-option>
+                               
                                 <ng-container *ngIf="IsSpecialityLading">
                                     <mat-option value="">Loading Qualifications ...</mat-option>
                                 </ng-container>
                                 <ng-container *ngIf="!IsSpecialityLading">
                                     <mat-option value="">Select Qualification</mat-option>
-                                    <mat-option *ngFor="let speciality of filteredSpeciality  | async"
-                                        [value]="speciality">
+                                    <mat-option *ngFor="let speciality of specialityList"
+                                        [value]="speciality.speciallityCode">
                                         {{speciality.speciallityName}}
                                     </mat-option>
                                 </ng-container>

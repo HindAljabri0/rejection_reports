@@ -17,7 +17,11 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
-
+  getSpecialityByCode(providerId: string,code:string) {
+    const requestURL = '/providers/' + providerId + '/speciallity/get/specialityname?speciallityCode='+code;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
   NphisBeneficiarySearchByCriteria(
     providerId: string, nationality: string, fullName: string, memberCardId: string, fileId: string,
     contactNumber: string, page: number, size: number) {
