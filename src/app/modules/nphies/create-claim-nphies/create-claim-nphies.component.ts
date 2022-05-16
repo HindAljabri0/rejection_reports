@@ -227,7 +227,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   routeMode;
   selectedTab = 0;
   claimType: string;
-
+  IsResubmitMode = false;
   constructor(
 
     private activatedRoute: ActivatedRoute,
@@ -1507,7 +1507,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
-
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -1520,7 +1519,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.qualificationCode = x.qualificationCode;
         return model;
       });
-
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
@@ -1696,6 +1694,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
                 if (this.pageMode == 'RESUBMIT') {
+                  this.IsResubmitMode = true;
                   this.claimId = body.claimId;
                   this.uploadId = body.uploadId;
                   this.getPayees();
@@ -2774,7 +2773,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    this.location.back();
+    if (this.IsResubmitMode) {
+      // tslint:disable-next-line:max-line-length
+      this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
+      setTimeout(() => {
+        location.reload();
+      }, 200);
+    } else {
+      this.location.back();
+    }
   }
 
   viewAttachment(e, item) {
