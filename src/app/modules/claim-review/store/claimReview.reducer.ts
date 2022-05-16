@@ -1,5 +1,4 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { claimReview } from "../models/claim-view.model";
 import { ClaimReviewState, UploadsPage } from "../models/claimReviewState.model";
 import { loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
@@ -73,3 +72,4 @@ export const getSingleClaim = createSelector(claimReviewStateSelector, (state) =
 
 
 export const getSingleClaimServices = createSelector(claimReviewStateSelector, (state) => state.singleClaim ? state.singleClaim.invoice.map(invoice => invoice.service ? invoice.service : []).reduce((serviceList1, serviceList2) => { let res = []; res.push(...serviceList1); res.push(...serviceList2); return res; }) : [] );
+export const getSelectedIllnessCodes = createSelector(claimReviewStateSelector, (state) => state.singleClaim && state.singleClaim.caseInformation && state.singleClaim.caseInformation.caseDescription && state.singleClaim.caseInformation.caseDescription.illnessCategory ? state.singleClaim.caseInformation.caseDescription.illnessCategory.inllnessCode : [] );

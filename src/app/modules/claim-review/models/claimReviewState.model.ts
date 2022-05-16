@@ -1,5 +1,4 @@
-import { HttpResponse } from "@angular/common/http";
-import { claimReview } from "./claim-view.model";
+import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { Upload } from "./upload.model";
 
 export interface ClaimReviewState {
@@ -9,7 +8,7 @@ export interface ClaimReviewState {
         completed: UploadsPage
     }
     selectedUploadsTab: 'new' | 'inProgress' | 'completed'
-    singleClaim: claimReview
+    singleClaim: Claim
 }
 
 
