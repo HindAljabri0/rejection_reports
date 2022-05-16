@@ -296,11 +296,14 @@
         </mat-paginator>
 
       </div>
+
       <div class="right-block btn-list" *ngIf="showCancelAll === true">
         <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary">Cancel
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
       </div>
       <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
+        <button mat-button *ngIf="showDeleteAll === true" (click)="deleteClaimByCriteria()">Delete
+          {{selectedClaims.length==0?" All":"Selection"}}</button>
         <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <ng-container *ngIf="summaries[this.selectedCardKey].statuses[0] === statusSelected.Accepted.toLowerCase()

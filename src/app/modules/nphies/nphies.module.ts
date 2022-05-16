@@ -66,7 +66,6 @@ import {
 import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.component';
-import { ManageCareTeamComponent } from './manage-care-team/manage-care-team.component';
 
 @NgModule({
   declarations: [
@@ -111,8 +110,8 @@ import { ManageCareTeamComponent } from './manage-care-team/manage-care-team.com
     NphiesUploadSummaryDialogComponent,
     PricelistComponent,
     PricelistDetailsComponent,
-    PricelistUploadComponent,
-    ManageCareTeamComponent
+    PricelistUploadComponent
+    
   ],
   imports: [
     CommonModule,

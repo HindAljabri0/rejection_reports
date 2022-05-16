@@ -1393,7 +1393,7 @@
               error</mat-icon>
             <span [class.text-danger]="IsCareTeamRequired">Care Team</span>
           </ng-template>
-          <h5 class="form-title pt-0">
+          <!--h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk">*</span></span>
             <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
               <mat-icon>add</mat-icon>
@@ -1452,7 +1452,11 @@
           <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
           </app-empty-state>
           <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}" *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
-          </app-empty-state>
+          </app-empty-state-->
+          <app-manage-care-team
+          [(isSubmitted)]="isSubmitted"
+          [(CareTeams)]="CareTeams">
+          </app-manage-care-team>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
