@@ -30,7 +30,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AddCommunicationDialogComponent } from '../add-communication-dialog/add-communication-dialog.component';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
-import { controllers } from 'chart.js';
+
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -1505,7 +1505,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
-
+      console.log("Care Team = "+JSON.stringify(this.CareTeams));
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -1518,7 +1518,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.qualificationCode = x.qualificationCode;
         return model;
       });
-
+      console.log("Mapped Care Team = "+JSON.stringify(this.model.careTeam));
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
@@ -2507,6 +2507,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
         model.specialityCode = x.specialityCode;
+        model.practitionerRoleSelect = this.sharedDataService.practitionerRoleList.filter(role => role.value === x.practitionerRole)[0];
+        model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value ===  x.careTeamRole)[0];
+        model.specialitySelect = this.sharedService.GetSpeciality(x.specialityCode);
         // tslint:disable-next-line:max-line-length
         model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
         // tslint:disable-next-line:max-line-length

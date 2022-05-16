@@ -1,0 +1,124 @@
+<h5 class="form-title" [ngClass]="{'text-danger': IsCareTeamRequired}">
+    <span>Care Team<span *ngIf="IsCareTeamRequired" class="asterisk">*</span></span>
+    <button type="button" class="btn-icon btn-primary ml-auto" (click)="addCareTeam()">
+        <mat-icon>add</mat-icon>
+    </button>
+</h5>
+<div *ngIf="CareTeams.length > 0" class="table-responsive">
+    <table class="primary-grid claim-view-table">
+        <thead>
+            <tr>
+                <th>Practitioner<label><span class="asterisk">*</span></label></th>
+                <th>Practitioner Role<label><span class="asterisk">*</span></label></th>
+                <th>Care Team Role<label><span class="asterisk">*</span></label></th>
+                <th>Qualification<label><span class="asterisk">*</span></label></th>
+                <th width="10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let careTeam of CareTeams; let i = index">
+                <td>
+                    <div class="mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : isSubmitted && !careTeam.physicianCode}">
+                        <input type="text" class="form-control search-box" placeholder="Search practitioner name here..."
+                            [(ngModel)]="careTeam.practitionerName" [matAutocomplete]="auto"
+                            (keyup)="searchPhysician(careTeam.practitionerName, i)">
+                        <!--p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}
+                        </p-->
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let option of PhysicianOptions" (click)="addPractitioner(option, i)">
+                                {{option.physician_id}} | {{option.physician_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div *ngIf="isSubmitted && !careTeam.physicianCode">
+                            <span class="error-text">Please select Practitioner </span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+
+                    <div class="mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerRole) }">
+
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [(ngModel)]="careTeam.practitionerRoleSelect" (ngModelChange)="practitionerRoleChange($event, i)">
+                                <mat-option value="">Select Type</mat-option>
+                                <mat-option *ngFor="let prt of practitionerRoleList" [value]="prt">{{prt.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="isSubmitted && !careTeam.practitionerRole">
+                            <span class="error-text">Please select a practitioner Role</span>
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+
+                    <div class="mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : isSubmitted && !careTeam.careTeamRole}">
+
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [(ngModel)]="careTeam.careTeamRoleSelect" (ngModelChange)="careTeamRoleChange($event, i)">
+                                <mat-option value="">Select Type</mat-option>
+                                <mat-option *ngFor="let ctr of careTeamRoleList" [value]="ctr">{{ctr.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="isSubmitted && !careTeam.careTeamRole">
+                            <span class="error-text">Please select a Care Team Role </span>
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+
+                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
+
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [(ngModel)]="careTeam.specialitySelect" (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required
+                                #specialitySelect>
+                                <mat-option>
+                                    <!--ngx-mat-select-search placeholderLabel="Search Speciality"
+                                        noEntriesFoundLabel="No specialities found" formControlName="specialityFilter"
+                                        name='searchedSpeciality'>
+                                    </ngx-mat-select-search-->
+                                </mat-option>
+                                <ng-container *ngIf="IsSpecialityLading">
+                                    <mat-option value="">Loading Qualifications ...</mat-option>
+                                </ng-container>
+                                <ng-container *ngIf="!IsSpecialityLading">
+                                    <mat-option value="">Select Qualification</mat-option>
+                                    <mat-option *ngFor="let speciality of filteredSpeciality  | async"
+                                        [value]="speciality">
+                                        {{speciality.speciallityName}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="isSubmitted && !careTeam.speciality">
+                            <span class="error-text">Please select a Qualification </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="actions">
+                    <mat-menu #careTeamActionsMenu xPosition="before">
+                        <ng-template matMenuContent>
+
+                            <button mat-menu-item type="button" (click)="removeCareTeam(i)">
+                                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </ng-template>
+                    </mat-menu>
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="careTeamActionsMenu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
+</app-empty-state>
+<app-empty-state *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
+</app-empty-state>
