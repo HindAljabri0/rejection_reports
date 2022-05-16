@@ -653,9 +653,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-
-
-
   get hasData() {
     this.extraNumbers = new Array();
     this.extraCards = 6 - this.summaries.length;
@@ -1370,6 +1367,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showDeleteAll() {
+    return ['accepted', 'notaccepted', 'failed', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   openReasonModalMultiClaims() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
@@ -1466,5 +1467,60 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
       }
     }
+  }
+
+  deleteClaimByCriteria() {
+    // tslint:disable-next-line:max-line-length
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Claims?',
+        // tslint:disable-next-line:max-line-length
+        `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+          this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId,
+            this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
+            this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status,
+            this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to,
+            this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate,
+            this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
+              if (event instanceof HttpResponse) {
+                this.commen.loadingChanged.next(false);
+                const status = event.body['status'];
+                if (status === 'Deleted') {
+                  this.dialogService.openMessageDialog(
+                    new MessageDialogData('',
+                      `Your claims deleted successfully.`,
+                      false))
+                    .subscribe(afterColse => {
+                      this.router.navigate(['/nphies/uploads']);
+                    });
+                } else if (status === 'AlreadySumitted') {
+                  this.dialogService.openMessageDialog(
+                    // tslint:disable-next-line:max-line-length
+                    new MessageDialogData('', `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                      false))
+                    .subscribe(afterColse => {
+                      this.router.navigate(['/nphies/uploads']);
+                    });
+                } else {
+                  const error = event.body['errors'];
+                  this.dialogService.openMessageDialog(
+                    new MessageDialogData('',
+                      error[0].description,
+                      false));
+                }
+              }
+            }, errorEvent => {
+              if (errorEvent instanceof HttpErrorResponse) {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+              }
+            });
+        }
+      });
   }
 }
