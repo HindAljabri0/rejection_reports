@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-doctor-uploads-claim-details-dialog',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>
+  ) { }
 
   ngOnInit() {
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
 }

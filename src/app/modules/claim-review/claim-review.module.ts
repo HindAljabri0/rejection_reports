@@ -42,6 +42,9 @@ import { ClaimReviewViewComponent } from './components/claim-review-view/claim-r
         SmoothScrollModule,
         StoreModule.forFeature('claimReviewState', claimReviewReducer),
         EffectsModule.forFeature([ClaimReviewEffects]),
+    ],
+    entryComponents: [
+        DoctorUploadsClaimDetailsDialogComponent
     ]
 })
 export class ClaimReviewModule { }

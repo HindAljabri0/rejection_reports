@@ -7,6 +7,10 @@ import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
+import { MatDialog } from '@angular/material';
+import {
+  DoctorUploadsClaimDetailsDialogComponent
+} from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
 
 
 @Component({

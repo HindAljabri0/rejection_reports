@@ -111,6 +111,7 @@ import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.co
     PricelistComponent,
     PricelistDetailsComponent,
     PricelistUploadComponent
+    
   ],
   imports: [
     CommonModule,

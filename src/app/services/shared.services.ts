@@ -13,6 +13,7 @@ import { SearchService } from './serchService/search.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from '../store/mainStore.reducer';
+import { ProviderNphiesSearchService } from './providerNphiesSearchService/provider-nphies-search.service';
 
 @Injectable({
   providedIn: 'root'
@@ -87,7 +88,8 @@ export class SharedServices {
     private notifications: NotificationsService,
     private announcements: AnnouncementsService,
     private searchService: SearchService,
-    private store: Store
+    private store: Store,
+    private providerNphiesSearchService:ProviderNphiesSearchService
   ) {
 
 
@@ -166,7 +168,21 @@ export class SharedServices {
     this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
 
   }
-
+  GetSpeciality(code) {
+    let specialityList:any=[];
+    this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        specialityList = event.body;
+ 
+      }
+      
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+      }
+    });
+    return specialityList.filter(x => +x.speciallityCode === code)[0];
+  }
   getNotifications() {
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
