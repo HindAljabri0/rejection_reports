@@ -742,8 +742,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.editMode = `${edit}`;
     } else if (ReSubmit) {
       this.params.reSubmitMode = `${ReSubmit}`;
-    }
-    else {
+    } else {
       this.params.editMode = null;
     }
     this.resetURL();

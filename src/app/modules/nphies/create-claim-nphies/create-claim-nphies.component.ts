@@ -227,7 +227,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   routeMode;
   selectedTab = 0;
   claimType: string;
-
+  IsResubmitMode = false;
   constructor(
 
     private activatedRoute: ActivatedRoute,
@@ -1505,7 +1505,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
-      console.log("Care Team = "+JSON.stringify(this.CareTeams));
+      console.log("Care Team = " + JSON.stringify(this.CareTeams));
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -1518,7 +1518,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.qualificationCode = x.qualificationCode;
         return model;
       });
-      console.log("Mapped Care Team = "+JSON.stringify(this.model.careTeam));
+      console.log("Mapped Care Team = " + JSON.stringify(this.model.careTeam));
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
@@ -1694,6 +1694,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
                 if (this.pageMode == 'RESUBMIT') {
+                  this.IsResubmitMode = true;
                   this.claimId = body.claimId;
                   this.uploadId = body.uploadId;
                   this.getPayees();
@@ -2508,7 +2509,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.speciality = x.speciality;
         model.specialityCode = x.specialityCode;
         model.practitionerRoleSelect = this.sharedDataService.practitionerRoleList.filter(role => role.value === x.practitionerRole)[0];
-        model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value ===  x.careTeamRole)[0];
+        model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value === x.careTeamRole)[0];
         model.specialitySelect = this.sharedService.GetSpeciality(x.specialityCode);
         // tslint:disable-next-line:max-line-length
         model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
@@ -2745,7 +2746,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    this.location.back();
+    if (this.IsResubmitMode) {
+      // tslint:disable-next-line:max-line-length
+      this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
+      setTimeout(() => {
+        location.reload();
+      }, 200);
+    } else {
+      this.location.back();
+    }
   }
 
   viewAttachment(e, item) {
