@@ -8,7 +8,7 @@ import { AuthService } from "src/app/services/authService/authService.service";
 import { SharedServices } from "src/app/services/shared.services";
 import { UploadsPage } from "../models/claimReviewState.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { loadUploadsUnderReviewOfSelectedTab, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
+import { loadSingleClaim, loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +33,27 @@ export class ClaimReviewEffects {
             map(response => {
                 this.sharedServices.loadingChanged.next(false);
                 return setUploadsPageOfSelectedTab(UploadsPage.fromBackendResponse(response as HttpResponse<any>))
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ));
+
+    onLoadSingleClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(loadSingleClaim),
+        // map(values => (console.log('values', values), this.sharedServices.loadingChanged.next(true), { tabName: values[0][0][1], pageControl: values[0][1], hasContent: values[1] })),
+
+        switchMap(data => this.claimReviewService.selectSingleClaim(
+            data.data.uploadId,
+            data.data.provClaimNo
+        ).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(response => {
+                console.log('response', response);
+                this.sharedServices.loadingChanged.next(false);
+                return setSingleClaim(response)
             }),
             catchError(errorResponse => {
                 this.sharedServices.loadingChanged.next(false);

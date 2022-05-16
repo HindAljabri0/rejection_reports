@@ -1,12 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { MatCheckboxChange, PageEvent } from '@angular/material';
+import { MatCheckboxChange, MatDialog, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+// import { ActivatedRoute } from '@angular/router';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
+import { loadSingleClaim } from '../../store/claimReview.actions';
+// import { loadSingleClaim } from "../claim-review/store/claimReview.actions";
+// import * as actions from '../../store/claimReview.actions';
+
+import {
+  DoctorUploadsClaimDetailsDialogComponent
+} from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
 
 
 @Component({
@@ -27,7 +36,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   allCheckBoxIsIndeterminate: boolean;
 
   pageControl: PageControls;
-  constructor(private activatedRoute: ActivatedRoute, private route: Router, private claimReviewService: ClaimReviewService, private sharedServices: SharedServices, private authService: AuthService) {
+  constructor(private activatedRoute: ActivatedRoute, private route: Router, private claimReviewService: ClaimReviewService, private sharedServices: SharedServices, private authService: AuthService, private dialog: MatDialog, private store: Store) {
     this.pageControl = new PageControls(0, 5);
   }
 
@@ -36,6 +45,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.pageControl.pageSize = 10;
     this.pageControl.pageNumber = 0;
     this.refreshData();
+
   }
 
   refreshData() {
@@ -95,8 +105,11 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.refreshData();
   }
 
-  viewSingleClaim(claim: ClaimSummary) {
-    this.route.navigate([`/claim/${claim.provClaimNo}`], {relativeTo: this.activatedRoute});
+  openDoctorClaimViewDialog(provClaimNo: string) {
+    this.store.dispatch(loadSingleClaim({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
+    const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+    });
   }
 
 }

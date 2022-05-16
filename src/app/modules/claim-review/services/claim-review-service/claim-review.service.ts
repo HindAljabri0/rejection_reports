@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { environment } from 'src/environments/environment';
+
 
 @Injectable({
     providedIn: 'root'
@@ -20,5 +22,10 @@ export class ClaimReviewService {
     selectDetailView(uploadId: number, pageNumber: number, pageSize: number, isDoctor: boolean, isCoder: boolean) {
         const requestUrl = `/scrubbing/upload/` + uploadId + `/claim`;
         return this.http.post(environment.claimReviewService + requestUrl, { "page": pageNumber, "pageSize": pageSize, "doctor": isDoctor, "coder": isCoder });
+    }
+    
+    selectSingleClaim(uploadId: number, provClaimNo: string) {
+        const requestUrl = `/scrubbing/upload/` + uploadId + `/claim/` + provClaimNo;
+        return this.http.get<Claim>(environment.claimReviewService + requestUrl);
     }
 }

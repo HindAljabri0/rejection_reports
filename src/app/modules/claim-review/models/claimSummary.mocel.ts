@@ -1,4 +1,5 @@
 export class ClaimSummary {
+    uploadId : string;
     provClaimNo : string;
 	memberId : string;
     idNumber : number;
