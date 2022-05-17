@@ -9,7 +9,6 @@
         <div class="content">
           <img src="./assets/ic-upload.svg" alt="Upload" />
           <p>Drag and drop file here or <span class="semibold text-primary">browse</span></p>
-          <span>Maximum Size: 2 MB</span>
           <p class="error-text" *ngIf="error">{{error}}</p>
           <p *ngIf="FormPhysiciansList.controls.file.value && !error" class="file-name">{{FormPhysiciansList.controls.file.value.name}}</p>
         </div>

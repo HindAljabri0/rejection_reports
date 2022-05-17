@@ -1,47 +1,73 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add/Edit Physician</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+  <h5 class="primary-dialog-title">Add/Edit Physician</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body pb-0">
-    <div class="form-group mb-0" physicianForm='ngForm' >
-        <mat-form-field appearance="fill">
-            <mat-label>Physician ID</mat-label>
-            <input matInput placeholder="Enter physician ID" type="text"  [formControl]="physicianIdController">
-        </mat-form-field>
+<form [formGroup]="FormPhysician" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0">
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPhysician.get('physicianId').touched) && FormPhysician.get('physicianId').hasError('required')}">
+      <label class="control-label">Physician ID<span class="asterisk">*</span></label>
+      <input class="form-control" placeholder="Enter physician ID" type="text" formControlName="physicianId">
+      <div
+        *ngIf="(isSubmitted || FormPhysician.get('physicianId').touched) && FormPhysician.get('physicianId').hasError('required')">
+        <span class="error-text">Please enter Physician ID </span>
+      </div>
     </div>
-    <div class="form-group mb-0">
-        <mat-form-field appearance="fill">
-            <mat-label>Physician Name</mat-label>
-            <input matInput placeholder="Enter physician name" type="text" [formControl]="physicianNameController">
-        </mat-form-field>
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPhysician.get('physicianName').touched) && FormPhysician.get('physicianName').hasError('required')}">
+      <label class="control-label">Physician Name<span class="asterisk">*</span></label>
+      <input class="form-control" placeholder="Enter physician name" type="text" formControlName="physicianName">
+      <div
+        *ngIf="(isSubmitted || FormPhysician.get('physicianName').touched) && FormPhysician.get('physicianName').hasError('required')">
+        <span class="error-text">Please enter Physician Name</span>
+      </div>
     </div>
-    <div class="form-group mb-0">
-        <mat-form-field appearance="fill">
-            <mat-label>Speciality</mat-label>
-            <input matInput placeholder="Enter speciality" type="text" [formControl]="specialtyCodeController">
-        </mat-form-field>
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPhysician.get('specialityCode').touched) && FormPhysician.get('specialityCode').hasError('required')}">
+      <label class="control-label">Speciality<span class="asterisk">*</span></label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select formControlName="specialityCode" [disabled]="IsSpecialityLading" required #specialitySelect>
+          <mat-option>
+            <ngx-mat-select-search placeholderLabel="Search Speciality" noEntriesFoundLabel="No specialities found"
+              formControlName="specialityFilter" name='searchedSpeciality'>
+            </ngx-mat-select-search>
+          </mat-option>
+          <ng-container *ngIf="IsSpecialityLading">
+            <mat-option value="">Loading Specialities ...</mat-option>
+          </ng-container>
+          <ng-container *ngIf="!IsSpecialityLading">
+            <mat-option value="">Select Speciality</mat-option>
+            <mat-option *ngFor="let speciality of filteredSpeciality  | async" [value]="speciality">
+              {{speciality.speciallityName}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <div
+        *ngIf="(isSubmitted || FormPhysician.get('specialityCode').touched) && FormPhysician.get('specialityCode').hasError('required')">
+        <span class="error-text">Please select a Speciality </span>
+      </div>
     </div>
-    <div class="form-group mb-0">
-        <mat-form-field appearance="fill">
-            <mat-label>Role</mat-label>
-            <mat-select value="-1" [formControl]="physicianRoleController">
-                <mat-option value="-1">Select Role</mat-option>
-                <mat-option value="Doctor">Doctor</mat-option>
-                <mat-option value="Nurse">Nurse</mat-option>
-                <mat-option value="Pharmacist">Pharmacist</mat-option>
-                <mat-option value="Researcher">Researcher</mat-option>
-                <mat-option value="Teacher">Teacher</mat-option>
-                <mat-option value="Dentist">Dentist</mat-option>
-                <mat-option value="Physio">Physio</mat-option>
-                <mat-option value="Speech">Speech</mat-option>
-                <mat-option value="ICT">ICT</mat-option>
-            </mat-select>
-        </mat-form-field>
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPhysician.get('physicianRole').touched) && FormPhysician.get('physicianRole').hasError('required')}">
+      <label class="control-label">Role<span class="asterisk">*</span></label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select formControlName="physicianRole">
+          <mat-option value="">Select Role</mat-option>
+          <mat-option *ngFor="let p of practitionerRoleList" [value]="p.value">{{p.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div
+        *ngIf="(isSubmitted || FormPhysician.get('physicianRole').touched) && FormPhysician.get('physicianRole').hasError('required')">
+        <span class="error-text">Please select a Role </span>
+      </div>
     </div>
-</div>
-<div class="primary-dialog-footer has-border">
+
+  </div>
+  <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Close</button>
-        <button mat-flat-button color="primary" (click)="addPhysician()">Add</button>
+      <button mat-button (click)="closeDialog()">Close</button>
+      <button mat-flat-button color="primary" type="submit">Add</button>
     </div>
-</div>
+  </div>
+</form>
