@@ -181,12 +181,22 @@ export class AuditTrailComponent implements OnInit {
   }
 
   viewJSON(objectId: string, log: AuditLog) {
-    var json='';
-    if(log.eventType=='NphiesEligibility'){
-      json=log.eligibilityData;
-    }else if(log.eventType=='BeneficairyManipulation'){
+    let json='';
+
+    if(log.eventType=='BeneficairyManipulation'){
+      console.log('Inside BeneficairyManipulation' +JSON.stringify(log.beneficiaryJSON));
       json=log.beneficiaryJSON;
-    }else{
+    }else if(log.eventType=='NphiesEligibility'){
+      console.log('Inside NphiesEligibility' +JSON.stringify(log.eligibilityData));
+      json=log.eligibilityData;
+    }else if(log.eventType=='NphiesPreAuth'){
+      console.log('Inside NphiesPreAuth' +JSON.stringify(log.preAuthData));
+      json=log.preAuthData;
+    }else if(log.eventType=='NphiesClaimManipulation'){
+      console.log('Inside NphiesClaimManipulation' +JSON.stringify(log.claimData));
+      json=log.claimData;
+    }else if(log.eventType=='ClaimManipulation'){
+      console.log('Inside ClaimManipulation' +JSON.stringify(log.newClaimData));
       json=log.newClaimData;
     }
 
