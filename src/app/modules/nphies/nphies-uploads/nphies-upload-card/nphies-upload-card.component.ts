@@ -33,15 +33,16 @@ export class NphiesUploadCardComponent implements OnInit {
       .subscribe(result => {
         if (result === true) {
           this.sharedServices.loadingChanged.next(true);
-          this.providerNphiesApprovalService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null)
+          // tslint:disable-next-line:max-line-length
+          this.providerNphiesApprovalService.deleteClaimByCriteria(this.sharedServices.providerId, null, this.data.uploadId + '', null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null)
             .subscribe(event => {
               if (event instanceof HttpResponse) {
                 this.dialogService.openMessageDialog(new MessageDialogData('',
                 `upload ${this.data.uploadName} Deleted Successfully`,
                 false)).subscribe(afterColse => location.reload());
-                
-                
+
+
                 if (this.totalClaims == 0) {
                   this.data.uploadName += ' [DELETED]';
                 }

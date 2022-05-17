@@ -20,18 +20,20 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
   deleteClaimByCriteria(
-    providerId: string, payerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
+    providerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
-    claimIDs: string[], fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string,
+    claimIDs: string[], fromDate: string, toDate: string, payerIds?: string[], drname?: string, nationalId?: string, claimDate?: string,
     netAmount?: string, batchNo?: string) {
 
     let requestURL = `/providers/${providerId}/remove/criteria?`;
     if (claimIDs && claimIDs.length > 0) {
-      requestURL += `claimIDs=${claimIDs}`;
+      requestURL += `claimIds=${claimIDs}`;
     } else {
-      if (payerId && !uploadId) {
-        requestURL += `payerId=${payerId}&`;
+
+      if (payerIds && payerIds.length > 0) {
+        requestURL += `payerIds=${payerIds.join(',')}&`;
       }
+
       if (organizationId && !uploadId) {
         requestURL += `organizationId=${organizationId}&`;
       }
