@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { DoctorUploadsClaimListComponent } from './components/doctor-uploads-claim-list/doctor-uploads-claim-list.component';
 import { DoctorUploadsComponent } from './components/doctor-uploads/doctor-uploads.component';
-import { UploadsAssigningComponent } from './components/uploads-assigning/uploads-assigning.component';
 
 const routes: Routes = [
-    { path: 'uploads', component: UploadsAssigningComponent },
-    { path: 'doctor/uploads', component: DoctorUploadsComponent },
-    { path: 'doctor/claims/:id', component: DoctorUploadsClaimListComponent },
-    { path: 'coder/uploads', component: DoctorUploadsComponent },
-    { path: 'coder/claims/:id', component: DoctorUploadsClaimListComponent }
+    { path: 'scrubbing/upload', component: DoctorUploadsComponent },
+    { path: 'scrubbing/upload/:uploadId/claim', component: DoctorUploadsClaimListComponent },
+    { path: 'scrubbing/upload/:uploadId/claim/:uploadId', component: DoctorUploadsClaimListComponent },
 ];
 
 @NgModule({
