@@ -7,7 +7,6 @@ import { NphiesConfigurationService } from 'src/app/services/nphiesConfiguration
 import { SharedServices } from 'src/app/services/shared.services';
 import { AddPhysicianDialogComponent } from '../add-physician-dialog/add-physician-dialog.component';
 import { UploadPhysiciansDialogComponent } from '../upload-physicians-dialog/upload-physicians-dialog.component';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 
