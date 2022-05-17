@@ -80,4 +80,14 @@ export class DbMappingService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+  savePollConfiguration(body, providerId) {
+    const requestURL: string = `/providers/` + providerId + `/poll-configuration`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
+    return this.http.request(request);
+  }
+  getPollConfiguration(providerId) {
+    const requestURL: string = `/providers/` + providerId + `/poll-configuration`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
 }

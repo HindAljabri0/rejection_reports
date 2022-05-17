@@ -162,23 +162,26 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          NPHIES Polling Configuration
+          NPHIES Polling 
+          <span *ngIf="errors.pollTypeConfigurationSaveError != null" class="text-danger ml-auto">{{errors.pollTypeConfigurationSaveError}}</span>
+          <span *ngIf="success.pollTypeConfigurationSaveSuccess != null" class="text-success ml-auto">{{success.pollTypeConfigurationSaveSuccess}}</span>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <ng-container>
+      <ng-container *ngIf="(errors.pollTypeConfigurationError == null || errors.pollTypeConfigurationError == '') && !componentLoading.pollType">
         <div class="form-group">
           <label class="control-label pb-0 text-primary medium">Polling Preference</label>
-          <mat-radio-group class="radio-group inline">
-            <mat-radio-button color="primary" value="ALL">Poll for All</mat-radio-button>
-            <mat-radio-button color="primary" value="CLAIM">Claim, Claim Communication-Request & Payment Reconciliation</mat-radio-button>
-            <mat-radio-button color="primary" value="PRE_AUTH">Preauthorization & Preauthorization Communication-Request</mat-radio-button>
+          <mat-radio-group class="radio-group inline" [formControl]="pollTypeController">
+            <mat-radio-button color="primary" value="ALL">All Transactions</mat-radio-button>
+            <mat-radio-button color="primary" value="CLAIM">Claims Only</mat-radio-button>
+            <mat-radio-button color="primary" value="PRE_AUTH">Preauth Only</mat-radio-button>
             <mat-radio-button color="primary" value="STOP">Stop Polling</mat-radio-button>
           </mat-radio-group>
         </div>
       </ng-container>
-      <!-- <div class="inline-loader">
-            <mat-spinner diameter="48"></mat-spinner>
-          </div> -->
+      <p *ngIf="errors.pollTypeConfigurationError != null && errors.pollTypeConfigurationError != '' && !componentLoading.pollType" class="error-card mb-0">{{errors.pollTypeConfigurationError}}</p>
+      <div class="inline-loader" *ngIf="componentLoading.pollType">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
