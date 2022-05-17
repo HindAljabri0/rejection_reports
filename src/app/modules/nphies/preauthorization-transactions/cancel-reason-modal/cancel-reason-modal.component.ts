@@ -162,6 +162,7 @@ export class CancelReasonModalComponent implements OnInit {
               const resModel: any = {};
               resModel.Success = true;
               resModel.Message = body.message;
+              resModel.Errors = body.errors;
               this.dialogRef.close(resModel);
             }
           }
