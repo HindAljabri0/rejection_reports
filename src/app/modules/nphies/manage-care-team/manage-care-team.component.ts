@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material';
 import { Subject, ReplaySubject } from 'rxjs';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
@@ -86,13 +87,13 @@ export class ManageCareTeamComponent implements OnInit {
     
     this.CareTeams[i].specialityCode = code;
     this.CareTeams[i].qualificationCode = code;
-    this.CareTeams[i].speciality = code;
+    this.CareTeams[i].speciality = this.specialityList.filter(x => +x.speciallityCode === code || x.speciallityCode === code)[0].speciallityName;
     
     console.log(this.CareTeams[i]);
 
   }
   SpecialtyChange(newSpec: any, i: number) {
-    console.log("values changed = " + JSON.stringify(newSpec));
+    //console.log("values changed = " + JSON.stringify(newSpec));
     this.CareTeams[i].specialityCode = newSpec;
     this.CareTeams[i].qualificationCode = newSpec;
     this.CareTeams[i].speciality = this.specialityList.filter(x => +x.speciallityCode === newSpec || x.speciallityCode === newSpec)[0].speciallityName;
@@ -107,6 +108,7 @@ export class ManageCareTeamComponent implements OnInit {
     //console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
   }
   searchPhysician(name, i) {
+    this.CareTeams[i].physicianCode = null;
     this.PhysicianOptions = [];
     if (name) {
       this.configurationService.searchPractitioner(this.sharedServices.providerId, name).subscribe(
@@ -128,7 +130,7 @@ export class ManageCareTeamComponent implements OnInit {
 
     const model: any = {};
     model.sequence = this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1);
-    model.practitionerName = '';
+    model.practitionerName ='';
     model.physicianCode = '';
     model.practitionerRole = 'doctor';
     model.careTeamRole = 'primary';
@@ -147,3 +149,7 @@ export class ManageCareTeamComponent implements OnInit {
   }
 
 }
+function forbiddenNamesValidator(options: any): import("@angular/forms").ValidatorFn {
+  throw new Error('Function not implemented.');
+}
+
