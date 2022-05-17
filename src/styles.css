@@ -357,7 +357,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .bg-ready-submission,.bg-parrot{background-color: #67CD23!important;}
 .bg-downloadable,.bg-light-parrot{background-color: #95dc65!important;}
 .bg-rejected-waseel,.bg-magenta{background-color: #FF144D!important;}
-.bg-not-saved,.bg-orange,.bg-warning{background-color: #E6AE24!important;}
+.bg-not-saved,.bg-orange,.bg-warning,.bg-failed {background-color: #E6AE24!important;}
 .bg-under-submission,.bg-cyan{background-color: #00D8E7!important;}
 .bg-rejected,.bg-light-pink{background-color: #FF53A3!important;}
 .bg-paid,.bg-green{background-color: #1C7C26!important;}
