@@ -36,7 +36,7 @@ export class ManageCareTeamComponent implements OnInit {
   practitionerRoleList = this.sharedDataService.practitionerRoleList;
   careTeamRoleList = this.sharedDataService.careTeamRoleList;
   PhysicianOptions: any[] = [];
-
+  PhysicianSearchRequet;
   constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices
     , private configurationService: NphiesConfigurationService, private providerNphiesSearchService: ProviderNphiesSearchService) {
     this.providerId = this.sharedServices.providerId;
@@ -53,7 +53,7 @@ export class ManageCareTeamComponent implements OnInit {
   }
   getSpecialityList() {
     this.IsSpecialityLading = true;
-    this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
+    const request=this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.specialityList = event.body;
         /*if (this.data.item && this.data.item.specialityCode) {
@@ -74,6 +74,7 @@ export class ManageCareTeamComponent implements OnInit {
         console.log(error);
       }
     });
+    
   }
   addPractitioner(diag: any, i: number) {
     //Set Selected Values
@@ -108,10 +109,13 @@ export class ManageCareTeamComponent implements OnInit {
     //console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
   }
   searchPhysician(name, i) {
+    if(this.PhysicianSearchRequet){
+      this.PhysicianSearchRequet.unsubscribe();
+    }
     this.CareTeams[i].physicianCode = null;
     this.PhysicianOptions = [];
     if (name) {
-      this.configurationService.searchPractitioner(this.sharedServices.providerId, name).subscribe(
+      this.PhysicianSearchRequet= this.configurationService.searchPractitioner(this.sharedServices.providerId, name).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {

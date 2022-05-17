@@ -19,15 +19,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let Physicians of physiciansList">
-            <td>{{Physicians.physician_id}}</td>
-            <td>{{Physicians.physician_name}}</td>
-            <td>{{Physicians.speciality_code}}</td>
-            <td>{{Physicians.physician_role}}</td>
+          <tr *ngFor="let physician of physiciansList">
+            <td>{{physician.physician_id}}</td>
+            <td>{{physician.physician_name}}</td>
+            <td>{{physician.speciality_code}}<span *ngIf="physician.specialityName"> - {{physician.specialityName}}</span></td>
+            <td>{{physician.physician_role}}</td>
             <td class="actions">
               <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>
               </button>
+
+              <mat-menu #actionsMenu xPosition="before">
+                <ng-template matMenuContent>
+                  <button type="button" mat-menu-item (click)="openAddPhysicianDialog(physician)">
+                    <mat-icon class="material-icons-outlined">edit</mat-icon>
+                    <span>Edit</span>
+                  </button>
+                  <button type="button" mat-menu-item (click)="DeletePhysician(physician.id)">
+                    <mat-icon class="material-icons-outlined">delete</mat-icon>
+                    <span>Delete</span>
+                  </button>
+                </ng-template>
+              </mat-menu>
             </td>
           </tr>
         </tbody>
@@ -44,20 +57,6 @@
       </mat-paginator>
     </div>
   </div>
-
-
-  <mat-menu #actionsMenu xPosition="before">
-    <ng-template matMenuContent>
-      <button type="button" mat-menu-item>
-        <mat-icon class="material-icons-outlined">edit</mat-icon>
-        <span>Edit</span>
-      </button>
-      <button type="button" mat-menu-item>
-        <mat-icon class="material-icons-outlined">delete</mat-icon>
-        <span>Delete</span>
-      </button>
-    </ng-template>
-  </mat-menu>
 
   <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="addPhysicianMenu">
     <mat-icon>add</mat-icon>

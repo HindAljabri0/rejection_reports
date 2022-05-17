@@ -58,23 +58,31 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
+
   searchPractitioner(providerId: string,searchQuery: string) {
     const requestURL: string =  `/providers/${providerId}/physciains/search?query=` + searchQuery;
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
+
   getPractitionerList(providerId: string) {
     const requestURL = '/providers/' + providerId + '/physciains?skipPagination=true';
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
-  addSinglePhysician(providerId: string, PhysicianModel: SinglePhysician) {
+
+  addUpdateSinglePhysician(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/physciains`;
-    let body: any = { ...PhysicianModel };
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
     return this.http.request(request);
   }
 
+  deletePhysician(providerId: string, physicianId: string) {
+    const requestUrl = `/providers/${providerId}/physciains/${physicianId}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('DELETE', environment.nphiesConfigurationService + requestUrl, {}, {headers});
+    return this.http.request(request);
+  }
 
   uploadPhysicianList(providerId: string, body: any): Observable<any> {
     const formdata: FormData = new FormData();
@@ -86,6 +94,7 @@ export class NphiesConfigurationService {
 
   downloadPhysicianList(providerId: string) {
     const requestUrl = `/providers/${providerId}/physciains/download`;
+    // tslint:disable-next-line:max-line-length
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }

@@ -66,7 +66,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   isSubmitted = false;
   typeListSearchResult = [];
-
+  SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
   bodySiteList = [];
   subSiteList = [];
@@ -645,6 +645,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   searchItems() {
+    if(this.SearchRequest){
+      this.SearchRequest.unsubscribe();
+    }
     const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
     const searchStr = this.FormItem.controls.searchQuery.value;
     const claimType = this.data.type;
@@ -652,7 +655,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
+    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         this.typeListSearchResult = body['content'];
