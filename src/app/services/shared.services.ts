@@ -89,7 +89,7 @@ export class SharedServices {
     private announcements: AnnouncementsService,
     private searchService: SearchService,
     private store: Store,
-    private providerNphiesSearchService:ProviderNphiesSearchService
+    private providerNphiesSearchService: ProviderNphiesSearchService
   ) {
 
 
@@ -168,21 +168,7 @@ export class SharedServices {
     this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
 
   }
-  GetSpeciality(code) {
-    let specialityList:any=[];
-    this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        specialityList = event.body;
- 
-      }
-      
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        console.log(error);
-      }
-    });
-    return specialityList.filter(x => +x.speciallityCode === code)[0];
-  }
+  
   getNotifications() {
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
@@ -429,9 +415,9 @@ export class SharedServices {
       case ClaimStatus.Error.toLowerCase():
         // return 'Invalid';
         return 'Rejected By NPHIES';
-        case ClaimStatus.CANCELLED.toLowerCase():
-          // return 'Invalid';
-          return 'Cancelled';
+      case ClaimStatus.CANCELLED.toLowerCase():
+        // return 'Invalid';
+        return 'Cancelled';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
@@ -645,7 +631,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -663,7 +649,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

@@ -181,7 +181,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   encounterReAdmissionList = this.sharedDataService.encounterReAdmissionList;
   encounterDischargeDispositionList = this.sharedDataService.encounterDischargeDispositionList;
   beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
-
+  specialityList: any = [];
   VisionSpecifications = [];
   SupportingInfo = [];
   CareTeams = [];
@@ -288,6 +288,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.getPayees();
     this.InitClaimPagenation();
+    this.getSpecialityList();
     // if (urlHasEditMode) {
     //   this.pageMode = 'EDIT';
     //   this.disableControls();
@@ -456,6 +457,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.pageMode = 'EDIT';
             this.disableControls();
             this.getClaimDetails();
+
           } else if (this.claimId && !urlHasEditMode) {
             this.pageMode = 'VIEW';
             if (this.responseId) {
@@ -1505,7 +1507,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
-      console.log("Care Team = " + JSON.stringify(this.CareTeams));
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -1518,7 +1519,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.qualificationCode = x.qualificationCode;
         return model;
       });
-      console.log("Mapped Care Team = " + JSON.stringify(this.model.careTeam));
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
@@ -1982,6 +1982,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (event.status === 200) {
           const body: any = event.body;
           this.setData(body);
+
         } else {
           this.sharedServices.loadingChanged.next(false);
         }
@@ -1993,7 +1994,31 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     });
   }
+  getSpecialityList() {
+    this.providerNphiesSearchService.getSpecialityList(this.sharedService.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.specialityList = event.body;
+        this.specialityList.slice();
+      }
 
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+      }
+    });
+  }
+  /*GetSpecialityList(code) {
+    let speciality:any;
+    this.providerNphiesSearchService.getSpecialityByCode(this.sharedService.providerId, code).subscribe(event => {
+      
+      if (event instanceof HttpResponse) {
+        event => speciality = event.body;
+        console.log("body = "+JSON.stringify(speciality));
+        return event.body;
+      }
+    });
+    return speciality;
+  }*/
   setData(response) {
 
     this.sharedServices.loadingChanged.next(true);
@@ -2508,9 +2533,11 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
         model.specialityCode = x.specialityCode;
+        model.qualificationCode =x.specialityCode;
         model.practitionerRoleSelect = this.sharedDataService.practitionerRoleList.filter(role => role.value === x.practitionerRole)[0];
         model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value === x.careTeamRole)[0];
-        model.specialitySelect = this.sharedService.GetSpeciality(x.specialityCode);
+        model.specialitySelect=x.specialityCode;
+        //console.log("Return Specialty = " + JSON.stringify(model.specialitySelect));
         // tslint:disable-next-line:max-line-length
         model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
         // tslint:disable-next-line:max-line-length

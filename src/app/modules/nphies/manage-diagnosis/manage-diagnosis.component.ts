@@ -46,6 +46,9 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setOnAdmissionRequirement();
+    if (this.pageMode !== 'EDIT') {
+      this.addDiagnosis();
+    }
   }
 
   setOnAdmissionRequirement() {
@@ -57,7 +60,9 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
         this.diagnosisList.map(x => x.IsOnAdmissionRequired = false);
         this.IsOnAdmissionRequired = false;
       }
+      
     } else {
+      
       this.diagnosisList.map(x => x.IsOnAdmissionRequired = false);
       this.IsOnAdmissionRequired = true;
     }

@@ -44,10 +44,14 @@ export class ManageCareTeamComponent implements OnInit {
 
   ngOnInit() {
     this.getSpecialityList();
+    /*if(this.pageMode == 'EDIT'){
+    this.CareTeams.forEach(element => 
+      element.specialitySelect = element.specialityCode,
+      );
+    }*/
   }
   getSpecialityList() {
     this.IsSpecialityLading = true;
-
     this.providerNphiesSearchService.getSpecialityList(this.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.specialityList = event.body;
@@ -72,25 +76,26 @@ export class ManageCareTeamComponent implements OnInit {
   }
   addPractitioner(diag: any, i: number) {
     //Set Selected Values
+    let code=this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code || x.speciallityCode === diag.speciality_code)[0].speciallityCode;
     this.CareTeams[i].practitionerRoleSelect = this.practitionerRoleList.filter(role => role.value === diag.physician_role.toLowerCase())[0];
-    this.CareTeams[i].specialitySelect = this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code || x.speciallityCode === diag.speciality_code)[0],
-      //Set Model Data
-      this.CareTeams[i].physicianCode = diag.physician_id;
+    this.CareTeams[i].specialitySelect = code;
+    //Set Model Data
+    this.CareTeams[i].physicianCode = diag.physician_id;
     this.CareTeams[i].practitionerName = diag.physician_name;
     this.CareTeams[i].practitionerRole = diag.physician_role;
-    if (this.CareTeams[i].specialitySelect) {
-      this.CareTeams[i].specialityCode = this.CareTeams[i].specialitySelect.speciallityCode;
-      this.CareTeams[i].qualificationCode = this.CareTeams[i].specialitySelect.speciallityCode;
-      this.CareTeams[i].speciality = this.CareTeams[i].specialitySelect.speciallityName;
-    }
+    
+    this.CareTeams[i].specialityCode = code;
+    this.CareTeams[i].qualificationCode = code;
+    this.CareTeams[i].speciality = code;
+    
     console.log(this.CareTeams[i]);
 
   }
   SpecialtyChange(newSpec: any, i: number) {
     console.log("values changed = " + JSON.stringify(newSpec));
-    this.CareTeams[i].specialityCode = newSpec.speciallityCode;
-    this.CareTeams[i].qualificationCode = newSpec.speciallityCode;
-    this.CareTeams[i].speciality = newSpec.speciallityName;
+    this.CareTeams[i].specialityCode = newSpec;
+    this.CareTeams[i].qualificationCode = newSpec;
+    this.CareTeams[i].speciality = this.specialityList.filter(x => +x.speciallityCode === newSpec || x.speciallityCode === newSpec)[0].speciallityName;
     //console.log("values changed = " + JSON.stringify(this.CareTeams[i]));
   }
   careTeamRoleChange(newRole: any, i: number) {
