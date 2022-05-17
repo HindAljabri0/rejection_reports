@@ -53,6 +53,8 @@ export class ProvidersConfigComponent implements OnInit {
     pbmConfigurationSaveError?: string,
     netAmountConfigurationError?: string,
     netAmountConfigurationSaveError?: string,
+    pollTypeConfigurationError?: string,
+    pollTypeConfigurationSaveError?: string,
   } = {};
   success: {
     serviceCodeSaveSuccess?: string,
@@ -65,6 +67,7 @@ export class ProvidersConfigComponent implements OnInit {
     providerMappingSaveSuccess?: string,
     pbmConfigurationSaveSuccess?: string,
     netAmountConfigurationSaveSuccess?: string
+    pollTypeConfigurationSaveSuccess?: string
 
   } = {};
   componentLoading = {
@@ -77,7 +80,8 @@ export class ProvidersConfigComponent implements OnInit {
     payerMapping: true,
     NphiesPayerMapping: true,
     providerMapping: true,
-    netAmount: true
+    netAmount: true,
+    pollType: true
   };
 
   selectedProvider: string;
@@ -124,6 +128,8 @@ export class ProvidersConfigComponent implements OnInit {
   exisingServiceAndPriceValidationData: any = [];
   netAmountController: FormControl = new FormControl('');
   netAmountValue: number;
+  pollTypeController: FormControl = new FormControl('');
+  pollTypeValue: string;
 
   isBothSame = true;
   dbConfigs = [];
@@ -327,6 +333,8 @@ export class ProvidersConfigComponent implements OnInit {
 
     // Changes on 19-07-2021
     this.getNetAmountAccuracy();
+
+    this.getPollConfiguration();
   }
 
   save() {
@@ -339,7 +347,8 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.midtable ||
       this.componentLoading.payerMapping ||
       this.componentLoading.NphiesPayerMapping ||
-      this.componentLoading.providerMapping) {
+      this.componentLoading.providerMapping ||
+      this.componentLoading.pollType) {
       return;
     }
 
@@ -357,10 +366,11 @@ export class ProvidersConfigComponent implements OnInit {
     const providerFlag = this.addProviderMapping();
     const priceListFlag = this.updatePriceListValidationSetting();
     const netAmountFlag = this.setNetAmountAccuracy();
+    const pollConfigFlag = this.savePollConfiguration();
     // change on 02-01-2021 end
     // && priceUnitFlag && serviceCodeFlag
     if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-      && payerFlag && providerFlag && pbmFlag && priceListFlag && netAmountFlag) {
+      && payerFlag && providerFlag && pbmFlag && priceListFlag && netAmountFlag && pollConfigFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -1067,8 +1077,8 @@ export class ProvidersConfigComponent implements OnInit {
     // );
 
     const newPayerMapping = this.existingPayers.filter(payer =>
-   
-      (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingValue[payer.payerId] != payer.mappingName) || (this.newPayerMappingValue[payer.payerId].trim() != ''&&this.newPayerMappingEnable[payer.payerId] != payer.enabled)
+
+      (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingValue[payer.payerId] != payer.mappingName) || (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingEnable[payer.payerId] != payer.enabled)
     );
     this.addPayerMappingList = newPayerMapping.map(payer => payer.payerId);
     const toDeletePayerMapping = this.existingPayers.filter(payer =>
@@ -1331,6 +1341,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.addDbConfigForm.reset();
     this.providerMappingController.setValue('');
     this.restrictExtractionDateController.setValue(new Date(2021, 0, 1));
+    this.pollTypeController.setValue('');
   }
   getNetAmountAccuracy() {
     this.componentLoading.netAmount = true;
@@ -1398,6 +1409,68 @@ export class ProvidersConfigComponent implements OnInit {
       return false;
     });
     return false;
+  }
+
+  savePollConfiguration() {
+    this.errors.pollTypeConfigurationSaveError = null;
+    this.success.pollTypeConfigurationSaveSuccess = null;
+    if (this.pollTypeController.value != null && this.pollTypeController.value != this.pollTypeValue) {
+      const body = {
+        pollType: this.pollTypeController.value
+      };
+      this.componentLoading.pollType = true;
+      this.dbMapping.savePollConfiguration(body, this.selectedProvider).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.pollTypeValue = body.pollType;
+          const data = event.body;
+          if (data != null) {
+            this.getProviderMapping();
+            this.success.pollTypeConfigurationSaveSuccess = 'Settings were saved successfully.';
+          } else {
+            this.errors.pollTypeConfigurationSaveError = 'Could not save poll configuration details !';
+          }
+          this.componentLoading.pollType = false;
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status != 404) {
+            this.errors.pollTypeConfigurationSaveError = 'Could not save poll configuration, please try again later.';
+          }
+        }
+        this.componentLoading.pollType = false;
+      });
+      return false;
+    }
+    return true;
+  }
+
+  getPollConfiguration() {
+    this.componentLoading.pollType = true;
+    this.errors.pollTypeConfigurationError = null;
+    this.errors.pollTypeConfigurationSaveError = null;
+    this.success.pollTypeConfigurationSaveSuccess = null;
+    this.dbMapping.getPollConfiguration(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data = event.body;
+        if (data != null) {
+          this.pollTypeController.setValue(data['pollType']);
+          this.pollTypeValue = data['pollType'];
+        } else {
+          this.pollTypeController.setValue(null);
+        }
+      }
+      this.componentLoading.pollType = false;
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 404) {
+          this.pollTypeController.setValue('ALL');
+        }
+        if (error.status != 404) {
+          this.errors.pollTypeConfigurationError = 'Could not load provider settings, please try again later.';
+        }
+      }
+      this.componentLoading.pollType = false;
+    });
   }
 
   // get isWaseelMidTables() {

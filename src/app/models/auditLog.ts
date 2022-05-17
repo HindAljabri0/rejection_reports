@@ -11,6 +11,8 @@ export class AuditLog {
   newClaimData?: string;
   beneficiaryJSON?:string;
   eligibilityData?:string;
+  preAuthData?:string;
+  claimData?:string;
 
   deserialize(input: any): this {
     Object.assign(this, input);
