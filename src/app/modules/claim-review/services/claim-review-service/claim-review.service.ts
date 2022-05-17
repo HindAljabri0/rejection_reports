@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { environment } from 'src/environments/environment';
+import { FieldError } from '../../store/claimReview.reducer';
 
 
 @Injectable({
@@ -27,5 +28,10 @@ export class ClaimReviewService {
     selectSingleClaim(uploadId: number, provClaimNo: string) {
         const requestUrl = `/scrubbing/upload/` + uploadId + `/claim/` + provClaimNo;
         return this.http.get<Claim>(environment.claimReviewService + requestUrl);
+    }
+
+    selectSingleClaimErrors(uploadId: number, provClaimNo: string) {
+        const requestUrl = `/scrubbing/upload/` + uploadId + `/claim/` + provClaimNo + `/errors`;
+        return this.http.get<FieldError[]>(environment.claimReviewService + requestUrl);
     }
 }

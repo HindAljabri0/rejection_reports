@@ -1,14 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Service } from 'src/app/claim-module-components/models/service.model';
-import { getIllnessCode } from 'src/app/claim-module-components/store/claim.reducer';
-// import { Service } from 'src/app/models/service';
-// import { UploadsPage } from '../../models/claimReviewState.model';
-import { getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
+// import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
+import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
 
 
 @Component({
@@ -22,19 +19,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   services$: Observable<Service[]>;
   selectedIllnesses$: Observable<string[]>;
   selectedIllnesses: string[] = [];
-
-
-  // selectedIllnesses: string[] = ['NA'];
-
-  // beautifyCode(code: string) {
-  //   if (code == 'NA') { return 'N/A'; }
-  //   let str = code.substr(0, 1) + code.substr(1).toLowerCase();
-  //   if (str.includes('_')) {
-  //     const split = str.split('_');
-  //     str = split[0] + ' ' + this.beautifyCode(split[1].toUpperCase());
-  //   }
-  //   return str;
-  // }
+  errors$: Observable<{errors: FieldError[]}>;
 
   constructor(
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
@@ -48,8 +33,11 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     this.services$ = this.store.select(getSingleClaimServices);
     this.selectedIllnesses$ = this.store.select(getSelectedIllnessCodes)
     this.selectedIllnesses$.subscribe(selectedIllnesses => {
-      console.log('selectedIllnesses', selectedIllnesses);
       this.selectedIllnesses = selectedIllnesses
+    })
+    this.errors$ = this.store.select(getClaimErrors)
+    this.errors$.subscribe(data =>{
+      console.log('errors: ', data);
     })
   }
 

@@ -9,7 +9,7 @@ import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
-import { loadSingleClaim } from '../../store/claimReview.actions';
+import { loadSingleClaim, loadSingleClaimErrors } from '../../store/claimReview.actions';
 // import { loadSingleClaim } from "../claim-review/store/claimReview.actions";
 // import * as actions from '../../store/claimReview.actions';
 
@@ -107,6 +107,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
 
   openDoctorClaimViewDialog(provClaimNo: string) {
     this.store.dispatch(loadSingleClaim({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
+    this.store.dispatch(loadSingleClaimErrors({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
     });

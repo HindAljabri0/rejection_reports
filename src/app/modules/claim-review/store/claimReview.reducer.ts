@@ -1,6 +1,6 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { ClaimReviewState, UploadsPage } from "../models/claimReviewState.model";
-import { loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
+import { loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
 
 const initState: ClaimReviewState = {
@@ -10,7 +10,8 @@ const initState: ClaimReviewState = {
         completed: new UploadsPage(0, 10)
     },
     selectedUploadsTab: 'new',
-    singleClaim: null
+    claimErrors: null,
+    singleClaim: null,
 }
 
 
@@ -53,6 +54,10 @@ const _claimReviewReducer = createReducer(
     on(setSingleClaim, (state, claim) => {
             return ({ ...state, singleClaim: claim});
     })
+    ,
+    on(setSingleClaimErrors, (state, errors) => {
+            return ({ ...state, claimErrors: errors});
+    })
 
 );
 
@@ -70,6 +75,13 @@ export const currentSelectedTabPageControls = createSelector(claimReviewStateSel
 export const currentSelectedTabHasContent = createSelector(claimReviewStateSelector, (state) => state.uploads[state.selectedUploadsTab].uploads != null && state.uploads[state.selectedUploadsTab].uploads.length > 0);
 export const getSingleClaim = createSelector(claimReviewStateSelector, (state) => state.singleClaim );
 
-
 export const getSingleClaimServices = createSelector(claimReviewStateSelector, (state) => state.singleClaim ? state.singleClaim.invoice.map(invoice => invoice.service ? invoice.service : []).reduce((serviceList1, serviceList2) => { let res = []; res.push(...serviceList1); res.push(...serviceList2); return res; }) : [] );
 export const getSelectedIllnessCodes = createSelector(claimReviewStateSelector, (state) => state.singleClaim && state.singleClaim.caseInformation && state.singleClaim.caseInformation.caseDescription && state.singleClaim.caseInformation.caseDescription.illnessCategory ? state.singleClaim.caseInformation.caseDescription.illnessCategory.inllnessCode : [] );
+export const getClaimErrors = createSelector(claimReviewStateSelector, (state) => state.claimErrors);
+
+
+
+
+export type FieldError =  { fieldName?: string, code?: string, description?: string } ;
+// export type FieldErrors = { fieldErrors: { fieldName?: string, code?: string, description?: string }[] };
+
