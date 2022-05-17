@@ -109,11 +109,14 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
   }
 
   changeDiagnosisType($event, i) {
-    if ($event.value === 'principal' && this.diagnosisList.find(x => x.type === $event.value)) {
-      this.diagnosisList[i].typeError = 'There can be only one principal Type';
+    
+    if ($event.value === 'principal' && this.diagnosisList.filter(x => x.type === $event.value).length > 1) {
+      console.log("New Value = "+($event.value === 'principal') + " Condition diagnosisCode = "+(this.diagnosisList.filter(x => x.type === $event.value).length > 1));
+      this.diagnosisList[i].typeError = 'There should be only one principal Type';
     }
 
     if ($event.value !== 'principal' && this.diagnosisList.filter(x => x.type === 'principal').length === 1) {
+      console.log("also here");
       this.diagnosisList.map(x => x.typeError = '');
     }
   }

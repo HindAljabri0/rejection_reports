@@ -1082,13 +1082,22 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  // checkCareTeamValidation() {
-  //   if (this.CareTeams.length === 0) {
-  //     this.IsCareTeamRequired = true;
-  //   } else {
-  //     this.IsCareTeamRequired = false;
-  //   }
-  // }
+  checkCareTeamValidation() {
+    let hasError=false;
+    if (this.CareTeams.length !== 0) {
+      this.CareTeams.forEach(element => {
+        console.log("physicianCode = " + element.physicianCode + " practitionerName = "+element.practitionerName );
+        if (element.physicianCode  == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
+          element.error = "Please Select Valid Practitioner";
+          hasError= true;
+        }else{
+          element.error = "";
+        }
+      });
+      console.log(hasError);
+      return hasError;
+    }
+  }
 
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
@@ -1313,7 +1322,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
 
-    // this.checkCareTeamValidation();
+    //this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
 
@@ -1328,7 +1337,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (!this.checkItemCareTeams()) {
       hasError = true;
     }
-
+    console.log("Validation result = "+this.checkCareTeamValidation());
+    if (this.checkCareTeamValidation()) {
+      hasError = true;
+    }
     if (!this.checkItemsCodeForSupportingInfo()) {
       hasError = true;
     }
@@ -2533,10 +2545,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
         model.specialityCode = x.specialityCode;
-        model.qualificationCode =x.specialityCode;
+        model.qualificationCode = x.specialityCode;
         model.practitionerRoleSelect = this.sharedDataService.practitionerRoleList.filter(role => role.value === x.practitionerRole)[0];
         model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value === x.careTeamRole)[0];
-        model.specialitySelect=x.specialityCode;
+        model.specialitySelect = x.specialityCode;
         //console.log("Return Specialty = " + JSON.stringify(model.specialitySelect));
         // tslint:disable-next-line:max-line-length
         model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
