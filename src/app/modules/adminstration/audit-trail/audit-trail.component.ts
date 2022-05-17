@@ -183,6 +183,8 @@ export class AuditTrailComponent implements OnInit {
   viewJSON(objectId: string, log: AuditLog) {
     var json='';
     if(log.eventType=='NphiesEligibility'){
+      json=log.eligibilityData;
+    }else if(log.eventType=='BeneficairyManipulation'){
       json=log.beneficiaryJSON;
     }else{
       json=log.newClaimData;

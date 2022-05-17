@@ -10,6 +10,7 @@ export class AuditLog {
 
   newClaimData?: string;
   beneficiaryJSON?:string;
+  eligibilityData?:string;
 
   deserialize(input: any): this {
     Object.assign(this, input);

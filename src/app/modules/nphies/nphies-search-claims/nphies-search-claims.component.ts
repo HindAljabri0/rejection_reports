@@ -1408,12 +1408,20 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.Success) {
-          this.dialogService.openMessageDialog(
-            new MessageDialogData('Success', result.Message, false)
-          ).subscribe(res => {
-            this.resetURL();
-            this.fetchData();
-          });
+          if (result.Errors && result.Errors.length > 0) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessageObservable(result.Message, '', 'alert', true, 'OK', result.Errors, true).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Success', result.Message, false)
+            ).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          }
         } else if ((result && !result.Success && result.Error)) {
           this.handleCancelErrors(result.Error);
         }
@@ -1435,12 +1443,21 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.Success) {
           this.deSelectAll();
-          this.dialogService.openMessageDialog(
-            new MessageDialogData('Success', result.Message, false)
-          ).subscribe(res => {
-            this.resetURL();
-            this.fetchData();
-          });
+          if (result.Errors && result.Errors.length > 0) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessageObservable(result.Message, '', 'alert', true, 'OK', result.Errors, true).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Success', result.Message, false)
+            ).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          }
+
         } else if ((result && !result.Success && result.Error)) {
           this.handleCancelErrors(result.Error);
         }
@@ -1482,10 +1499,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (result === true) {
           this.commen.loadingChanged.next(true);
           const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-          this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.organizationId,
+          const payerIds: string[] = [];
+          if (this.params.payerId) {
+            payerIds.push(this.params.payerId);
+          }
+          this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.params.organizationId,
             this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
             this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status,
-            this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to,
+            this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to, payerIds,
             this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate,
             this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
               if (event instanceof HttpResponse) {

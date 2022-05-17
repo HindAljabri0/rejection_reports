@@ -89,7 +89,7 @@
                         <td class="actions">
                             <mat-menu #actionsMenu xPosition="before">
                                 <ng-template matMenuContent>
-                                    <button mat-menu-item *ngIf="log.newClaimData != null || log.beneficiaryJSON != null" (click)="viewJSON(log.objectId, log)">View JSON</button>
+                                    <button mat-menu-item *ngIf="log.newClaimData != null || log.beneficiaryJSON != null || log.eligibilityData != null" (click)="viewJSON(log.objectId, log)">View JSON</button>
                                     <button mat-menu-item *ngIf="log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse'" (click)="viewXml(log)">View
                                         XML</button>
                                 </ng-template>
