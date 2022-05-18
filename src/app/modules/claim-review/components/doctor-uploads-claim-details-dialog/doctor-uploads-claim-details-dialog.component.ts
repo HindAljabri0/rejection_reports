@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
 import { Service } from 'src/app/claim-module-components/models/service.model';
-import { setDiagnnosisRemarks } from '../../store/claimReview.actions';
+import { SharedServices } from 'src/app/services/shared.services';
+import { markAsDone, setDiagnnosisRemarks } from '../../store/claimReview.actions';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
 
 
@@ -31,7 +32,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute, 
+    private sharedServices: SharedServices) { }
 
 
 
@@ -75,10 +77,13 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
       diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: this.uploadId}}));
   }
 
-  // coderDiagRemarksfocusOut(diagnosis: Diagnosis, remarks: string) {
-  //   this.store.dispatch(setDiagnnosisRemarks({data: { remarks: remarks, coder: true, doctor: false, 
-  //     diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: this.uploadId}}));
-  // }
+  markAsDone(){
+    // const isDoctor = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor
+    // this.store.dispatch(markAsDone({data: {
+    //    coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder, 
+    //    doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor, 
+    //    provClaimNo: this.provClaimNo, uploadId: this.uploadId}, uploadId: this.uploadId, provClaimNo: this.pro}));
+  }
 
   nextTab() {
     if (this.selectedTabIndex !== 7) {

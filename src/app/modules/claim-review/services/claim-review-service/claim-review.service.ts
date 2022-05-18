@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { environment } from 'src/environments/environment';
-import { DiagnosisRemarksUpdateRequest, FieldError } from '../../store/claimReview.reducer';
+import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone } from '../../store/claimReview.reducer';
 
 
 @Injectable({
@@ -38,5 +38,10 @@ export class ClaimReviewService {
     updateDiagnosisRemarks(body: DiagnosisRemarksUpdateRequest) {
         const requestUrl = `/scrubbing/upload/claim/diagnosis`;
         return this.http.post(environment.claimReviewService + requestUrl, body);
+    }
+
+    markClaimAsDone(body: MarkAsDone, uploadId: number, provClaimNo: string) {
+        const requestUrl = `/scrubbing/upload/` + uploadId + `/claim/` + provClaimNo;
+        return this.http.post<Claim>(environment.claimReviewService + requestUrl, body);
     }
 }
