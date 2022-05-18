@@ -395,7 +395,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.setAllCheckBoxIsIndeterminate();
     }
     this.selectedCardKey = key;
-    alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    // alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     this.resetURL();
 
 
@@ -1355,13 +1355,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
+    return ['accepted', 'notaccepted', 'failed', 'error', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsDeletable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase())
+    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsCancelled(status: string) {
-    return ['cancelled'].includes(status.trim().toLowerCase())
+    return ['cancelled'].includes(status.trim().toLowerCase());
   }
 
   get showCancelAll() {
