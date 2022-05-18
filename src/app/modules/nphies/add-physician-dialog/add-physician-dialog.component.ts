@@ -74,9 +74,9 @@ export class AddPhysicianDialogComponent implements OnInit {
       if (event instanceof HttpResponse) {
         this.specialityList = event.body;
         if (this.data.physician && this.data.physician.speciality_code) {
-          if (this.specialityList.filter(x => x.speciallityCode === this.data.physician.speciality_code)[0]) {
+          if (this.specialityList.filter(x => x.speciallityCode === this.data.physician.speciality_code.toString())[0]) {
             this.FormPhysician.patchValue({
-              specialityCode: this.specialityList.filter(x => x.speciallityCode === this.data.physician.speciality_code)[0]
+              specialityCode: this.specialityList.filter(x => x.speciallityCode === this.data.physician.speciality_code.toString())[0]
             });
           } else {
             this.FormPhysician.patchValue({
@@ -139,18 +139,18 @@ export class AddPhysicianDialogComponent implements OnInit {
             if (body.errormessage && body.errormessage.length > 0) {
               if (this.data && this.data.physician) {
                 // tslint:disable-next-line:max-line-length
-                this.dialogService.showMessage('Summary:', `Updated Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}<br><br>Error info:<br>${body.errormessage.join('<br>')}`, 'info', true, 'OK');
+                this.dialogService.showMessage('Error', `${body.errormessage.join('<br>')}`, 'alert', true, 'OK');
               } else {
                 // tslint:disable-next-line:max-line-length
-                this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}<br><br>Error info:<br>${body.errormessage.join('<br>')}`, 'info', true, 'OK');
+                this.dialogService.showMessage('Error:', `${body.errormessage.join('<br>')}`, 'alert', true, 'OK');
               }
             } else {
               if (this.data && this.data.physician) {
                 // tslint:disable-next-line:max-line-length
-                this.dialogService.showMessage('Summary:', `Updated Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`, 'info', true, 'OK');
+                this.dialogService.showMessage('Success', 'Physician Updated Successfully', 'success', true, 'OK');
               } else {
                 // tslint:disable-next-line:max-line-length
-                this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`, 'info', true, 'OK');
+                this.dialogService.showMessage('Success', 'Physician Added Successfully', 'success', true, 'OK');
               }
 
             }
@@ -161,10 +161,24 @@ export class AddPhysicianDialogComponent implements OnInit {
         }
 
       }, error => {
+        this.common.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
-          this.common.loadingChanged.next(false);
-          if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 500) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
           }
         }
       });

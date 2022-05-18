@@ -53,14 +53,33 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
 
-  getPhysicianList(providerId: string, page: number, size: number) {
-    const requestURL = `/providers/${providerId}/physciains?page=${page}&size=${size}`;
+  getPhysicianList(
+    providerId: string, page: number, size: number, physicianId: string,
+    physicianName: string, specialityCode: string, physicianRole: string) {
+    let requestURL = `/providers/${providerId}/physciains?page=${page}&size=${size}`;
+
+    if (physicianId) {
+      requestURL += `&physician_id=${physicianId}`;
+    }
+
+    if (physicianName) {
+      requestURL += `&physician_name=${physicianName}`;
+    }
+
+    if (specialityCode) {
+      requestURL += `&speciality_code=${specialityCode}`;
+    }
+
+    if (physicianRole) {
+      requestURL += `&physician_role=${physicianRole}`;
+    }
+
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
 
-  searchPractitioner(providerId: string,searchQuery: string) {
-    const requestURL: string =  `/providers/${providerId}/physciains/search?query=` + searchQuery;
+  searchPractitioner(providerId: string, searchQuery: string) {
+    const requestURL: string = `/providers/${providerId}/physciains/search?query=` + searchQuery;
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
@@ -80,7 +99,7 @@ export class NphiesConfigurationService {
   deletePhysician(providerId: string, physicianId: string) {
     const requestUrl = `/providers/${providerId}/physciains/${physicianId}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
-    const request = new HttpRequest('DELETE', environment.nphiesConfigurationService + requestUrl, {}, {headers});
+    const request = new HttpRequest('DELETE', environment.nphiesConfigurationService + requestUrl, {}, { headers });
     return this.http.request(request);
   }
 
