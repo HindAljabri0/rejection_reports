@@ -190,9 +190,9 @@
 
                     <td class="actions">
                       <ng-container
-                        *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId) || claimIsEditable(claim.status) || claimIsCancelled(claim.status))">
+                        *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId && claim.status != 'Queued' && showCancelAll === true) || claimIsEditable(claim.status) || claimIsCancelled(claim.status) || claimIsDeletable(claim.status))">
                         <mat-menu #moreMenu="matMenu" xPosition="before">
-                          <ng-container *ngIf="showColumns(selectedCardKey,claim.status) && claim.claimResponseId">
+                          <ng-container *ngIf="showColumns(selectedCardKey,claim.status) && claim.claimResponseId && claim.status != 'Queued' && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
                             <button mat-menu-item
@@ -303,7 +303,7 @@
       </div>
       <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
         <button mat-button *ngIf="showDeleteAll === true" (click)="deleteClaimByCriteria()">Delete
-          {{selectedClaims.length==0?" All":"Selection"}}</button>
+          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <ng-container *ngIf="summaries[this.selectedCardKey].statuses[0] === statusSelected.Accepted.toLowerCase()
