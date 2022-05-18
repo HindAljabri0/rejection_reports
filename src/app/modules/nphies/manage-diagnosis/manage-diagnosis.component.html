@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let diagnosis of diagnosisList; let i = index">
+      <tr *ngFor="let diagnosis of diagnosisList; let i = index" class="align-middle">
         <td>
           <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && !diagnosis.diagnosisCode}">
             <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..." [(ngModel)]="diagnosis.diagnosisDescription" [matAutocomplete]="auto"
@@ -66,17 +66,9 @@
           </div>
         </td>
         <td class="actions">
-          <button type="button" mat-icon-button [matMenuTriggerFor]="diagnosisTableActionMenu">
-            <mat-icon>more_vert</mat-icon>
+          <button type="button" mat-icon-button (click)="removeDiagnosis(i)" class="text-primary">
+            <mat-icon class="material-icons-outlined">delete</mat-icon>
           </button>
-          <mat-menu #diagnosisTableActionMenu xPosition="before">
-            <ng-template matMenuContent>
-              <button mat-menu-item type="button" (click)="removeDiagnosis(i)">
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Delete</span>
-              </button>
-            </ng-template>
-          </mat-menu>
         </td>
       </tr>
     </tbody>
