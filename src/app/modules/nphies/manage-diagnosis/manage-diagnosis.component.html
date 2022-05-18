@@ -1,9 +1,7 @@
-<h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
+<h5 class="form-title pt-4" [ngClass]="{'text-danger': IsDiagnosisRequired}">
   <span>Diagnosis<span class="asterisk">*</span></span>
-  <div class="ml-auto" matTooltip="Select Claim Type to enable adding Diagnosis"
-    [matTooltipDisabled]="(claimType)?true:false">
-    <button type="button" class="btn-icon btn-primary" (click)="addDiagnosis()"
-      [disabled]="!claimType">
+  <div class="ml-auto" matTooltip="Select Claim Type to enable adding Diagnosis" [matTooltipDisabled]="(claimType)?true:false">
+    <button type="button" class="btn-icon btn-primary" (click)="addDiagnosis()" [disabled]="!claimType">
       <mat-icon>add</mat-icon>
     </button>
   </div>
@@ -21,10 +19,9 @@
     <tbody>
       <tr *ngFor="let diagnosis of diagnosisList; let i = index">
         <td>
-          <div class="form-group  mb-n1 mt-n1"
-            [ngClass]="{'has-error' : isSubmitted && !diagnosis.diagnosisCode}">
-            <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..."
-              [(ngModel)]="diagnosis.diagnosisDescription" [matAutocomplete]="auto" (keyup)="searchICDCodes(diagnosis.diagnosisDescription, i)">
+          <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && !diagnosis.diagnosisCode}">
+            <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..." [(ngModel)]="diagnosis.diagnosisDescription" [matAutocomplete]="auto"
+              (keyup)="searchICDCodes(diagnosis.diagnosisDescription, i)">
             <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option, i)">
@@ -55,8 +52,7 @@
         </td>
         <td>
           <div *ngIf="IsOnAdmissionRequired">
-            <div class="form-group  mb-n1 mt-n1"
-              [ngClass]="{'has-error' : IsOnAdmissionRequired && diagnosis.IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission}">
+            <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : IsOnAdmissionRequired && diagnosis.IsOnAdmissionRequired && isSubmitted && !diagnosis.onAdmission}">
               <mat-form-field class="form-control custom-select-control">
                 <mat-select [(ngModel)]="diagnosis.onAdmission">
                   <mat-option value="">Select On Admission</mat-option>

@@ -6,12 +6,62 @@
       <span>Download Sample</span>
     </button>
   </div>
+  <div class="block-filter-panel">
+    <div class="row small-gutter">
+      <div class="col-lg col-md-6">
+        <div class="form-group">
+          <label class="control-label">Physician ID</label>
+          <input placeholder="Enter Physician ID" class="form-control">
+        </div>
+      </div>
+      <div class="col-lg col-md-6">
+        <div class="form-group">
+          <label class="control-label">Physician Name</label>
+          <input placeholder="Enter Physician Name" class="form-control">
+        </div>
+      </div>
+      <div class="col-lg col-md-6">
+        <div class="form-group">
+          <label class="control-label">Speciality</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select placeholder="Select Speciality">
+              <mat-option value="Option 1">Option 1</mat-option>
+              <mat-option value="Option 2">Option 2</mat-option>
+              <mat-option value="Option 3">Option 3</mat-option>
+              <mat-option value="Option 4">Option 4</mat-option>
+              <mat-option value="Option 5">Option 5</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-lg col-md-6">
+        <div class="form-group">
+          <label class="control-label">Role</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select placeholder="Select Role">
+              <mat-option value="Option 1">Option 1</mat-option>
+              <mat-option value="Option 2">Option 2</mat-option>
+              <mat-option value="Option 3">Option 3</mat-option>
+              <mat-option value="Option 4">Option 4</mat-option>
+              <mat-option value="Option 5">Option 5</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-lg-auto">
+        <div class="form-group text-right">
+          <label class="control-label d-lg-block d-none">&nbsp;</label>
+          <button mat-flat-button color="primary">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="physiciansList && physiciansList.length > 0">
     <div class="fixed-height">
       <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
-            <th>Physician ID  </th>
+            <th>Physician ID </th>
             <th>Physician Name</th>
             <th>Speciality</th>
             <th>Role</th>
@@ -53,8 +103,8 @@
   </app-empty-state>
   <div class="block-footer sticky" *ngIf="physiciansList && physiciansList.length > 0">
     <div class="left-block">
-      <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
-        [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex" aria-label="Select page">
+      <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="pageIndex" aria-label="Select page">
       </mat-paginator>
     </div>
   </div>
