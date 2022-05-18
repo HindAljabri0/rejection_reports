@@ -100,6 +100,7 @@ export class UploadPhysiciansDialogComponent implements OnInit {
 
         }
       }, error => {
+        this.common.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
@@ -119,7 +120,6 @@ export class UploadPhysiciansDialogComponent implements OnInit {
             }
           }
         }
-        this.common.loadingChanged.next(false);
       });
     }
   }
