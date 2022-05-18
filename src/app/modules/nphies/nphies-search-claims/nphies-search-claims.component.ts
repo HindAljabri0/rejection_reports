@@ -396,6 +396,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.setAllCheckBoxIsIndeterminate();
     }
     this.selectedCardKey = key;
+
     this.resetURL();
 
 
@@ -1258,8 +1259,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
               });
             });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-          }else{
-            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
+          } else {
+            this.dialogService.showMessage(body.message, '', 'success', true, 'OK');
           }
           this.getClaimTransactions(this.params.status, this.params.page);
         }
@@ -1346,7 +1347,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return false;
     }
     status = status.trim().toLowerCase();
-    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error'];
+    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'queued'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {
