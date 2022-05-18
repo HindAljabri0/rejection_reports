@@ -133,8 +133,7 @@ export class AddPhysicianDialogComponent implements OnInit {
       this.nphiesConfigurationService.addUpdateSinglePhysician(this.common.providerId, model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
-            const content: any = event.body;
-            const body: any = content.body;
+            const body: any = event.body;
 
             if (body.errormessage && body.errormessage.length > 0) {
               if (this.data && this.data.physician) {
