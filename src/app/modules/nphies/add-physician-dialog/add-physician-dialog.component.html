@@ -41,7 +41,7 @@
           <ng-container *ngIf="!IsSpecialityLading">
             <mat-option value="">Select Speciality</mat-option>
             <mat-option *ngFor="let speciality of filteredSpeciality  | async" [value]="speciality">
-              {{speciality.speciallityName}}
+              {{speciality.speciallityCode}} - {{speciality.speciallityName}}
             </mat-option>
           </ng-container>
         </mat-select>
@@ -69,7 +69,7 @@
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-      <button mat-button (click)="closeDialog()">Close</button>
+      <button mat-button (click)="closeDialog()" type="button">Close</button>
       <button mat-flat-button color="primary" type="submit">
         <span *ngIf="!data || (data && !data.physician)">Add</span>
         <span *ngIf="data && data.physician">Edit</span>

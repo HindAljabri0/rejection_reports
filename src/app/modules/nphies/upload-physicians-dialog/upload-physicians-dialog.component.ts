@@ -87,12 +87,13 @@ export class UploadPhysiciansDialogComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
 
-            if (body.errormessage != null && body.errormessage instanceof Array) {
+            if (body.errormessage && body.errormessage.length > 0) {
+              // tslint:disable-next-line:max-line-length
               this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}<br><br>Error info:<br>${body.errormessage.join('<br>')}`, 'info', true, 'OK');
-
               this.dialogRef.close(model.file);
             } else {
-              this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`,'info', true, 'OK');
+              // tslint:disable-next-line:max-line-length
+              this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`, 'info', true, 'OK');
             }
           }
 
