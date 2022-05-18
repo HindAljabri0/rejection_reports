@@ -1347,7 +1347,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return false;
     }
     status = status.trim().toLowerCase();
-    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'queued'];
+    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {
