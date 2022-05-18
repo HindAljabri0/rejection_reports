@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatTab, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
+import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
 import { Service } from 'src/app/claim-module-components/models/service.model';
 // import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
@@ -20,6 +21,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   selectedIllnesses$: Observable<string[]>;
   selectedIllnesses: string[] = [];
   errors$: Observable<{errors: FieldError[]}>;
+  selectedTabIndex = 0
 
   constructor(
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
@@ -49,8 +51,36 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     return codeIndex !== -1
 
   }
+
   closeDialog() {
     this.dialogRef.close();
   }
+
+
+  focusOutFunction(diagnosis: Diagnosis, value: string){
+    console.log('value: ', value);
+    console.log('diagnosis: ', diagnosis);
+  }
+
+  nextTab() {
+    if( this.selectedTabIndex !== 7){
+      this.selectedTabIndex = this.selectedTabIndex + 1
+    }
+      
+ }
+
+ prevTab() {
+  if( this.selectedTabIndex !== 0){
+    this.selectedTabIndex = this.selectedTabIndex - 1
+  }
+}
+
+firstTab() {
+  this.selectedTabIndex = 0
+}
+
+lastTab() {
+  this.selectedTabIndex = 7
+}
 
 }
