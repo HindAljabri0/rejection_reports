@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MatTab, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
 import { Service } from 'src/app/claim-module-components/models/service.model';
-// import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
+import { setDiagnnosisRemarks } from '../../store/claimReview.actions';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
 
 
@@ -20,13 +21,17 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   services$: Observable<Service[]>;
   selectedIllnesses$: Observable<string[]>;
   selectedIllnesses: string[] = [];
-  errors$: Observable<{errors: FieldError[]}>;
+  errors$: Observable<{ errors: FieldError[] }>;
   selectedTabIndex = 0
+
+  uploadId
+  provClaimNo
 
   constructor(
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private store: Store) { }
+    private store: Store,
+    private activatedRoute: ActivatedRoute) { }
 
 
 
@@ -38,8 +43,16 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
       this.selectedIllnesses = selectedIllnesses
     })
     this.errors$ = this.store.select(getClaimErrors)
-    this.errors$.subscribe(data =>{
-      console.log('errors: ', data);
+    this.errors$.subscribe(data => {
+      // console.log('errors: ', data);
+    })
+    
+    this.initVariables();
+  }
+  initVariables() {
+    this.uploadId = this.activatedRoute.snapshot.params.uploadId;
+    this.claim$.subscribe(claim => {
+      this.provClaimNo = claim.claimIdentities.providerClaimNumber
     })
   }
 
@@ -57,30 +70,35 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
 
-  focusOutFunction(diagnosis: Diagnosis, value: string){
-    console.log('value: ', value);
-    console.log('diagnosis: ', diagnosis);
+  diagRemarksfocusOut(diagnosis: Diagnosis, remarks: string, coder: boolean, doctor: boolean) {
+    this.store.dispatch(setDiagnnosisRemarks({data: { remarks: remarks, coder: coder, doctor: doctor, 
+      diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: this.uploadId}}));
   }
+
+  // coderDiagRemarksfocusOut(diagnosis: Diagnosis, remarks: string) {
+  //   this.store.dispatch(setDiagnnosisRemarks({data: { remarks: remarks, coder: true, doctor: false, 
+  //     diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: this.uploadId}}));
+  // }
 
   nextTab() {
-    if( this.selectedTabIndex !== 7){
+    if (this.selectedTabIndex !== 7) {
       this.selectedTabIndex = this.selectedTabIndex + 1
     }
-      
- }
 
- prevTab() {
-  if( this.selectedTabIndex !== 0){
-    this.selectedTabIndex = this.selectedTabIndex - 1
   }
-}
 
-firstTab() {
-  this.selectedTabIndex = 0
-}
+  prevTab() {
+    if (this.selectedTabIndex !== 0) {
+      this.selectedTabIndex = this.selectedTabIndex - 1
+    }
+  }
 
-lastTab() {
-  this.selectedTabIndex = 7
-}
+  firstTab() {
+    this.selectedTabIndex = 0
+  }
+
+  lastTab() {
+    this.selectedTabIndex = 7
+  }
 
 }

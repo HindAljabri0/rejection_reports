@@ -6,7 +6,7 @@ import { DoctorUploadsComponent } from './components/doctor-uploads/doctor-uploa
 const routes: Routes = [
     { path: 'scrubbing/upload', component: DoctorUploadsComponent },
     { path: 'scrubbing/upload/:uploadId/claim', component: DoctorUploadsClaimListComponent },
-    { path: 'scrubbing/upload/:uploadId/claim/:uploadId', component: DoctorUploadsClaimListComponent },
+    // { path: 'scrubbing/upload/:uploadId/claim/:provClaimNo', component: DoctorUploadsClaimListComponent },
 ];
 
 @NgModule({

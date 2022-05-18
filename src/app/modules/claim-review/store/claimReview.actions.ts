@@ -2,7 +2,7 @@ import { PageEvent } from "@angular/material";
 import { createAction, props } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { UploadsPage } from "../models/claimReviewState.model";
-import { FieldError } from "./claimReview.reducer";
+import { DiagnosisRemarksUpdateRequest, FieldError } from "./claimReview.reducer";
 
 
 export const uploadsReviewPageAction = createAction("[ Claims Review ] page changing action in uploads page", props<PageEvent>());
@@ -14,3 +14,5 @@ export const loadSingleClaim = createAction("[ Claims Review ] load single claim
 export const setSingleClaim = createAction("[ Claims Review ] set single claim", props<Claim>());
 export const loadSingleClaimErrors = createAction("[ Claims Review ] load claim errors", props<{ data: {uploadId: number, provClaimNo: string} }>());
 export const setSingleClaimErrors = createAction("[ Claims Review ] set claim errors", props<{errors: FieldError[]}>());
+
+export const setDiagnnosisRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
