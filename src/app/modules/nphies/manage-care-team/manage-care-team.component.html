@@ -16,13 +16,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let careTeam of CareTeams; let i = index">
+            <tr *ngFor="let careTeam of CareTeams; let i = index" class="align-middle">
                 <td>
                     <div class="mb-n1 mt-n1" [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerName) }">
-                        <input type="text" class="form-control search-box" placeholder="Search practitioner name here..."
-                        
-                            [(ngModel)]="careTeam.practitionerName"  [matAutocomplete]="auto" 
-                            (keyup)="searchPhysician(careTeam.practitionerName, i)" required>
+                        <input type="text" class="form-control search-box" placeholder="Search practitioner name here..." [(ngModel)]="careTeam.practitionerName"
+                            [matAutocomplete]="auto" (keyup)="searchPhysician(careTeam.practitionerName, i)" required>
                         <!--p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}
                         </p-->
                         <mat-autocomplete #auto="matAutocomplete">
@@ -37,8 +35,7 @@
                 </td>
                 <td>
 
-                    <div class="mb-n1 mt-n1"
-                        [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerRole) }">
+                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerRole) }">
 
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="careTeam.practitionerRoleSelect" (ngModelChange)="practitionerRoleChange($event, i)">
@@ -55,8 +52,7 @@
                 </td>
                 <td>
 
-                    <div class="mb-n1 mt-n1"
-                        [ngClass]="{'has-error' : isSubmitted && !careTeam.careTeamRole}">
+                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && !careTeam.careTeamRole}">
 
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="careTeam.careTeamRoleSelect" (ngModelChange)="careTeamRoleChange($event, i)">
@@ -75,16 +71,15 @@
                     <div class="mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
 
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="careTeam.specialitySelect"  (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required
+                            <mat-select [(ngModel)]="careTeam.specialitySelect" (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required
                                 #specialitySelect>
-                               
+
                                 <ng-container *ngIf="IsSpecialityLading">
                                     <mat-option value="">Loading Qualifications ...</mat-option>
                                 </ng-container>
                                 <ng-container *ngIf="!IsSpecialityLading">
                                     <mat-option value="">Select Qualification</mat-option>
-                                    <mat-option *ngFor="let speciality of specialityList"
-                                        [value]="speciality.speciallityCode">
+                                    <mat-option *ngFor="let speciality of specialityList" [value]="speciality.speciallityCode">
                                         {{speciality.speciallityName}}
                                     </mat-option>
                                 </ng-container>
@@ -96,17 +91,8 @@
                     </div>
                 </td>
                 <td class="actions">
-                    <mat-menu #careTeamActionsMenu xPosition="before">
-                        <ng-template matMenuContent>
-
-                            <button mat-menu-item type="button" (click)="removeCareTeam(i)">
-                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                <span>Delete</span>
-                            </button>
-                        </ng-template>
-                    </mat-menu>
-                    <button type="button" mat-icon-button [matMenuTriggerFor]="careTeamActionsMenu">
-                        <mat-icon>more_vert</mat-icon>
+                    <button type="button" mat-icon-button class="text-primary" (click)="removeCareTeam(i)">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
                     </button>
                 </td>
             </tr>
