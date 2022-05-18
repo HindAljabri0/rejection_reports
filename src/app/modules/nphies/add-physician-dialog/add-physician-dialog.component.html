@@ -1,5 +1,8 @@
 <div class="primary-dialog-header has-border">
-  <h5 class="primary-dialog-title">Add/Edit Physician</h5>
+  <h5 class="primary-dialog-title">
+    <span *ngIf="!data || (data && !data.physician)">Add</span>
+    <span *ngIf="data && data.physician">Edit</span> Physician
+  </h5>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormPhysician" (ngSubmit)="onSubmit()">
@@ -67,7 +70,10 @@
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
       <button mat-button (click)="closeDialog()">Close</button>
-      <button mat-flat-button color="primary" type="submit">Add</button>
+      <button mat-flat-button color="primary" type="submit">
+        <span *ngIf="!data || (data && !data.physician)">Add</span>
+        <span *ngIf="data && data.physician">Edit</span>
+      </button>
     </div>
   </div>
 </form>

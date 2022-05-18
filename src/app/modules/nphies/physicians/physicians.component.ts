@@ -87,9 +87,11 @@ export class PhysiciansComponent implements OnInit {
       if (data instanceof HttpResponse) {
         const body: any = data.body;
         this.physiciansList = body["content"] as Physicians[];
-        this.physiciansList.map(x => {
-          // tslint:disable-next-line:max-line-length
-          x.specialityName = this.specialityList.filter(y => y.speciallityCode === x.speciality_code)[0] ? this.specialityList.filter(y => y.speciallityCode === x.speciality_code)[0].speciallityName : '';
+        this.physiciansList.forEach(x => {
+          if (x.speciality_code) {
+            // tslint:disable-next-line:max-line-length
+            x.specialityName = this.specialityList.filter(y => y.speciallityCode === x.speciality_code.toString())[0] ? this.specialityList.filter(y => y.speciallityCode === x.speciality_code.toString())[0].speciallityName : '';
+          }
         });
         this.length = body["totalElements"];
         this.sharedServices.loadingChanged.next(false);
@@ -107,7 +109,7 @@ export class PhysiciansComponent implements OnInit {
         if (event.body != null) {
           var data = new Blob([event.body as BlobPart], { type: 'application/octet-stream' });
           const FileSaver = require('file-saver');
-          FileSaver.saveAs(data, "SamplePhyscianDownload.xlsx");
+          FileSaver.saveAs(data, "SamplePhysicianDownload.xlsx");
         }
       }
     }
@@ -138,11 +140,25 @@ export class PhysiciansComponent implements OnInit {
 
     }, error => {
       if (error instanceof HttpErrorResponse) {
-        this.sharedServices.loadingChanged.next(false);
-        if (error.status === 500) {
-          this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+        if (error.status === 400) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
         }
       }
+      this.sharedServices.loadingChanged.next(false);
     });
   }
 

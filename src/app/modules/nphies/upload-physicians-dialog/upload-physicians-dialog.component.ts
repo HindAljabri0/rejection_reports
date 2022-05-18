@@ -101,12 +101,25 @@ export class UploadPhysiciansDialogComponent implements OnInit {
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          this.common.loadingChanged.next(false);
-          if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 500) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
           }
-
         }
+        this.common.loadingChanged.next(false);
       });
     }
   }
