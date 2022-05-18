@@ -39,7 +39,7 @@
                 <ng-container *ngIf="!IsSpecialityLading">
                   <mat-option value="">Select Speciality</mat-option>
                   <mat-option *ngFor="let speciality of filteredSpeciality  | async" [value]="speciality">
-                    {{speciality.speciallityName}}
+                    {{speciality.speciallityCode}} - {{speciality.speciallityName}}
                   </mat-option>
                 </ng-container>
               </mat-select>
