@@ -98,7 +98,7 @@ export class UploadPhysiciansDialogComponent implements OnInit {
           }
 
           this.common.loadingChanged.next(false);
-
+          this.dialogRef.close(true);
         }
       }, error => {
         this.common.loadingChanged.next(false);
