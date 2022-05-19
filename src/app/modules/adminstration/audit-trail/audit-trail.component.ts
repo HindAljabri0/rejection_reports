@@ -7,6 +7,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { MatDialog } from '@angular/material';
 import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
 import { XmlViewDialogComponent } from 'src/app/components/dialogs/xml-view-dialog/xml-view-dialog.component';
+import { I } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-audit-trail',
@@ -47,6 +48,8 @@ export class AuditTrailComponent implements OnInit {
       { value: 'StartOfBatchRequestAuditLogType', text: 'StartOfBatchRequest' },
       { value: 'StartOfBatchResponseAuditLogType', text: 'StartOfBatchResponse' },
       { value: 'NphiesClaimAuditLogType', text: 'NphiesClaimManipulation' },
+      { value: 'NphiesEligibilityAuditLogType', text: 'NphiesEligibility' },
+      { value: 'NphiesPreAuthAuditLogType', text: 'NphiesPreAuth' },
       { value: 'BeneficiaryManipulationAuditLogType', text: 'BeneficairyManipulation' },
 
     ];
@@ -177,7 +180,26 @@ export class AuditTrailComponent implements OnInit {
     return objectIdMatches && userIdMatches && providerIdMatches && eventTypeMatches;
   }
 
-  viewJSON(objectId: string, json: string) {
+  viewJSON(objectId: string, log: AuditLog) {
+    let json='';
+
+    if(log.eventType=='BeneficairyManipulation'){
+      console.log('Inside BeneficairyManipulation' +JSON.stringify(log.beneficiaryJSON));
+      json=log.beneficiaryJSON;
+    }else if(log.eventType=='NphiesEligibility'){
+      console.log('Inside NphiesEligibility' +JSON.stringify(log.eligibilityData));
+      json=log.eligibilityData;
+    }else if(log.eventType=='NphiesPreAuth'){
+      console.log('Inside NphiesPreAuth' +JSON.stringify(log.preAuthData));
+      json=log.preAuthData;
+    }else if(log.eventType=='NphiesClaimManipulation'){
+      console.log('Inside NphiesClaimManipulation' +JSON.stringify(log.claimData));
+      json=log.claimData;
+    }else if(log.eventType=='ClaimManipulation'){
+      console.log('Inside ClaimManipulation' +JSON.stringify(log.newClaimData));
+      json=log.newClaimData;
+    }
+
     this.dialog.open(JsonViewDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg', 'json-dialog'],
       data: {

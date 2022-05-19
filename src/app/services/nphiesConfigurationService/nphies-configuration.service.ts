@@ -53,19 +53,55 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
 
-  getPhysicianList(providerId: string, page: number, size: number) {
-    const requestURL = `/providers/${providerId}/physciains?page=${page}&size=${size}`;
+  getPhysicianList(
+    providerId: string, page: number, size: number, physicianId: string,
+    physicianName: string, specialityCode: string, physicianRole: string) {
+    let requestURL = `/providers/${providerId}/physciains?page=${page}&size=${size}`;
+
+    if (physicianId) {
+      requestURL += `&physician_id=${physicianId}`;
+    }
+
+    if (physicianName) {
+      requestURL += `&physician_name=${physicianName}`;
+    }
+
+    if (specialityCode) {
+      requestURL += `&speciality_code=${specialityCode}`;
+    }
+
+    if (physicianRole) {
+      requestURL += `&physician_role=${physicianRole}`;
+    }
+
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
 
-  addSinglePhysician(providerId: string, PhysicianModel: SinglePhysician) {
+  searchPractitioner(providerId: string, searchQuery: string) {
+    const requestURL: string = `/providers/${providerId}/physciains/search?query=` + searchQuery;
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
+    return this.http.request(request);
+  }
+
+  getPractitionerList(providerId: string) {
+    const requestURL = '/providers/' + providerId + '/physciains?skipPagination=true';
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
+    return this.http.request(request);
+  }
+
+  addUpdateSinglePhysician(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/physciains`;
-    let body: any = { ...PhysicianModel };
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
     return this.http.request(request);
   }
 
+  deletePhysician(providerId: string, physicianId: string) {
+    const requestUrl = `/providers/${providerId}/physciains/${physicianId}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('DELETE', environment.nphiesConfigurationService + requestUrl, {}, { headers });
+    return this.http.request(request);
+  }
 
   uploadPhysicianList(providerId: string, body: any): Observable<any> {
     const formdata: FormData = new FormData();
@@ -77,6 +113,7 @@ export class NphiesConfigurationService {
 
   downloadPhysicianList(providerId: string) {
     const requestUrl = `/providers/${providerId}/physciains/download`;
+    // tslint:disable-next-line:max-line-length
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }

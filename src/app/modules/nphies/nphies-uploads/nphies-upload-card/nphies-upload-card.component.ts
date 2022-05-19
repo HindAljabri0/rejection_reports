@@ -33,15 +33,16 @@ export class NphiesUploadCardComponent implements OnInit {
       .subscribe(result => {
         if (result === true) {
           this.sharedServices.loadingChanged.next(true);
-          this.providerNphiesApprovalService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null)
+          // tslint:disable-next-line:max-line-length
+          this.providerNphiesApprovalService.deleteClaimByCriteria(this.sharedServices.providerId, null, this.data.uploadId + '', null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null)
             .subscribe(event => {
               if (event instanceof HttpResponse) {
                 this.dialogService.openMessageDialog(new MessageDialogData('',
-                `upload ${this.data.uploadName} Deleted Successfully`,
-                false)).subscribe(afterColse => location.reload());
-                
-                
+                  `upload ${this.data.uploadName} Deleted Successfully`,
+                  false)).subscribe(afterColse => location.reload());
+
+
                 if (this.totalClaims == 0) {
                   this.data.uploadName += ' [DELETED]';
                 }
@@ -72,12 +73,13 @@ export class NphiesUploadCardComponent implements OnInit {
     return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
       + this.data.cancelled + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
       + this.data.rejectedByNphies + this.data.approved + this.data.partialApproved
-      + this.data.queuedByNphies + this.data.pended;
+      + this.data.queuedByNphies + this.data.pended + this.data.failed + this.data.invalid;
   }
 
   get canBeDeleted() {
-    return ((this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim))
-      && (this.data.readyForSubmission + this.data.rejectedByWaseel) > 0;
+    return ((this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.isAdmin
+      || this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim))
+      && (this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.cancelled) > 0;
   }
 
 }

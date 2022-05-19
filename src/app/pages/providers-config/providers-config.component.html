@@ -162,6 +162,31 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
+          NPHIES Polling 
+          <span *ngIf="errors.pollTypeConfigurationSaveError != null" class="text-danger ml-auto">{{errors.pollTypeConfigurationSaveError}}</span>
+          <span *ngIf="success.pollTypeConfigurationSaveSuccess != null" class="text-success ml-auto">{{success.pollTypeConfigurationSaveSuccess}}</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="(errors.pollTypeConfigurationError == null || errors.pollTypeConfigurationError == '') && !componentLoading.pollType">
+        <div class="form-group">
+          <label class="control-label pb-0 text-primary medium">Polling Preference</label>
+          <mat-radio-group class="radio-group inline" [formControl]="pollTypeController">
+            <mat-radio-button color="primary" value="ALL">All Transactions</mat-radio-button>
+            <mat-radio-button color="primary" value="CLAIM">Claims Only</mat-radio-button>
+            <mat-radio-button color="primary" value="PRE_AUTH">Preauth Only</mat-radio-button>
+            <mat-radio-button color="primary" value="STOP">Stop Polling</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </ng-container>
+      <p *ngIf="errors.pollTypeConfigurationError != null && errors.pollTypeConfigurationError != '' && !componentLoading.pollType" class="error-card mb-0">{{errors.pollTypeConfigurationError}}</p>
+      <div class="inline-loader" *ngIf="componentLoading.pollType">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
           Payer Selection & Mapping
           <span class="text-danger ml-auto" *ngIf="errors.payerMappingSaveError != null">{{errors.payerMappingSaveError}}</span>
           <span class="text-success ml-auto" *ngIf="success.payerMappingSaveSuccess != null">{{success.payerMappingSaveSuccess}}</span>
@@ -483,6 +508,7 @@
         <mat-spinner diameter="48"></mat-spinner>
       </div>
     </mat-expansion-panel>
+
 
   </mat-accordion>
 </app-detailscard>

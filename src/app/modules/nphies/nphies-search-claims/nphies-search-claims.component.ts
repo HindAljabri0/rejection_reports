@@ -34,6 +34,7 @@ import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesAp
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 import { nlLocale } from 'ngx-bootstrap/chronos';
+import { couldStartTrivia } from 'typescript';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -384,7 +385,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   getResultsOfStatus(key: number, page?: number) {
-    console.log(key)
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
@@ -396,6 +396,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.setAllCheckBoxIsIndeterminate();
     }
     this.selectedCardKey = key;
+    // alert(this.selectedCardKey);
+    // alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     this.resetURL();
 
 
@@ -653,9 +655,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-
-
-
   get hasData() {
     this.extraNumbers = new Array();
     this.extraCards = 6 - this.summaries.length;
@@ -745,8 +744,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.editMode = `${edit}`;
     } else if (ReSubmit) {
       this.params.reSubmitMode = `${ReSubmit}`;
-    }
-    else {
+    } else {
       this.params.editMode = null;
     }
     this.resetURL();
@@ -1262,6 +1260,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
               });
             });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(body.message, '', 'success', true, 'OK');
           }
           this.getClaimTransactions(this.params.status, this.params.page);
         }
@@ -1348,7 +1348,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return false;
     }
     status = status.trim().toLowerCase();
-    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error'];
+    // tslint:disable-next-line:max-line-length
+    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'NotSaved'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {
@@ -1357,12 +1358,208 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
+    return ['accepted', 'notaccepted', 'failed', 'error', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsDeletable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error'].includes(status.trim().toLowerCase())
+    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsCancelled(status: string) {
-    return ['cancelled'].includes(status.trim().toLowerCase())
+    return ['cancelled'].includes(status.trim().toLowerCase());
+  }
+
+  get showCancelAll() {
+    return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
+  get showDeleteAll() {
+    // tslint:disable-next-line:max-line-length
+    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
+  openReasonModalMultiClaims() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+
+    if (this.selectedClaims.length === 0) {
+      const payerIds: string[] = [];
+      if (this.params.payerId) {
+        payerIds.push(this.params.payerId);
+      }
+
+      const model: any = {};
+      model.providerId = this.providerId;
+      model.selectedClaims = this.selectedClaims;
+      model.uploadId = this.params.uploadId;
+      model.claimRefNo = this.params.claimRefNo;
+      model.to = this.params.to;
+      model.payerIds = payerIds;
+      model.batchId = this.params.batchId;
+      model.memberId = this.params.memberId;
+      model.invoiceNo = this.params.invoiceNo;
+      model.patientFileNo = this.params.patientFileNo;
+      model.from = this.params.from;
+      model.nationalId = this.params.nationalId;
+      model.statuses = [];
+      model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+
+      dialogConfig.data = {
+        cancelData: model,
+        cancelType: 'all',
+        type: 'cancel'
+      };
+
+      const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.Success) {
+          if (result.Errors && result.Errors.length > 0) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessageObservable(result.Message, '', 'alert', true, 'OK', result.Errors, true).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Success', result.Message, false)
+            ).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          }
+        } else if ((result && !result.Success && result.Error)) {
+          this.handleCancelErrors(result.Error);
+        }
+      });
+
+    } else {
+      const model: any = {};
+      model.providerId = this.providerId;
+      model.selectedClaims = this.selectedClaims;
+
+      dialogConfig.data = {
+        cancelData: model,
+        cancelType: 'selected',
+        type: 'cancel'
+      };
+
+      const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.Success) {
+          this.deSelectAll();
+          if (result.Errors && result.Errors.length > 0) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessageObservable(result.Message, '', 'alert', true, 'OK', result.Errors, true).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Success', result.Message, false)
+            ).subscribe(res => {
+              this.resetURL();
+              this.fetchData();
+            });
+          }
+
+        } else if ((result && !result.Success && result.Error)) {
+          this.handleCancelErrors(result.Error);
+        }
+      });
+    }
+  }
+
+  handleCancelErrors(error) {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 400) {
+        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+      } else if (error.status === 404) {
+        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+      } else if (error.status === 500) {
+        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+      } else if (error.status === 503) {
+        const errors: any[] = [];
+        if (error.error.errors) {
+          error.error.errors.forEach(x => {
+            errors.push(x);
+          });
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+        } else {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+        }
+      }
+    }
+  }
+
+  deleteClaimByCriteria() {
+    // tslint:disable-next-line:max-line-length
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Claims?',
+        // tslint:disable-next-line:max-line-length
+        `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+          const payerIds: string[] = [];
+          if (this.params.payerId) {
+            payerIds.push(this.params.payerId);
+          }
+          this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.params.organizationId,
+            this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
+            this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status,
+            this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to, payerIds,
+            this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate,
+            this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
+              if (event instanceof HttpResponse) {
+                this.commen.loadingChanged.next(false);
+                const status = event.body['status'];
+                if (status === 'Deleted') {
+                  this.dialogService.openMessageDialog(
+                    new MessageDialogData('',
+                      `Your claims deleted successfully.`,
+                      false))
+                    .subscribe(afterColse => {
+                      const uploadId = this.params.uploadId;
+
+                      if (this.selectedClaims.length == this.summaries[0].totalClaims) {
+                        this.router.navigate(['/nphies/uploads']);
+                      } else {
+                        this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
+                          queryParams: { uploadId }
+                        }).then(() => {
+                          window.location.reload();
+                        });
+                        /*this.selectedCardKey=0;
+                        this.resetURL();
+                        location.reload();*/
+                      }
+                    });
+                } else if (status === 'AlreadySumitted') {
+                  this.dialogService.openMessageDialog(
+                    // tslint:disable-next-line:max-line-length
+                    new MessageDialogData('', `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                      false))
+                    .subscribe(afterColse => {
+                      this.router.navigate(['/nphies/uploads']);
+                    });
+                } else {
+                  const error = event.body['errors'];
+                  this.dialogService.openMessageDialog(
+                    new MessageDialogData('',
+                      error[0].description,
+                      false));
+                }
+              }
+            }, errorEvent => {
+              if (errorEvent instanceof HttpErrorResponse) {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+              }
+            });
+        }
+      });
   }
 }

@@ -17,6 +17,7 @@ import { DoctorUploadsClaimListComponent } from './components/doctor-uploads-cla
 import {
     DoctorUploadsClaimDetailsDialogComponent
 } from './components/doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
+import { ClaimReviewViewComponent } from './components/claim-review-view/claim-review-view.component';
 
 
 
@@ -27,7 +28,8 @@ import {
         UploadsAssigningTabContentComponent,
         DoctorUploadsComponent,
         DoctorUploadsClaimListComponent,
-        DoctorUploadsClaimDetailsDialogComponent
+        DoctorUploadsClaimDetailsDialogComponent,
+        ClaimReviewViewComponent
     ],
     imports: [
         CommonModule,
@@ -40,6 +42,9 @@ import {
         SmoothScrollModule,
         StoreModule.forFeature('claimReviewState', claimReviewReducer),
         EffectsModule.forFeature([ClaimReviewEffects]),
+    ],
+    entryComponents: [
+        DoctorUploadsClaimDetailsDialogComponent
     ]
 })
 export class ClaimReviewModule { }

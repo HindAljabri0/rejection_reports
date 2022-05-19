@@ -61,6 +61,7 @@ export class AddPreauthorizationComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
     city: [''],
@@ -181,6 +182,9 @@ export class AddPreauthorizationComponent implements OnInit {
 
   currentOpenItem: number = null;
 
+  claimType: string;
+  defualtPageMode = "CREATE";
+
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -205,6 +209,8 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   setReuseValues() {
+    this.FormPreAuthorization.controls.preAuthRefNo.setValue(this.data.preAuthDetails);
+
     const date = moment(this.data.preAuthorizationInfo.dateOrdered, 'DD-MM-YYYY').format('YYYY-MM-DD');
     // tslint:disable-next-line:max-line-length
     this.FormPreAuthorization.controls.dateOrdered.setValue(date);
@@ -214,6 +220,7 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
     }
+    this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
     this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
     switch (this.data.preAuthorizationInfo.type) {
@@ -267,7 +274,29 @@ export class AddPreauthorizationComponent implements OnInit {
     }
     this.Diagnosises = this.data.diagnosis;
     this.SupportingInfo = this.data.supportingInfo;
-    this.CareTeams = this.data.careTeam;
+    //this.CareTeams = this.data.careTeam;
+    if (this.data.careTeam) {
+      this.CareTeams = this.data.careTeam.map(x => {
+        const model: any = {};
+        model.sequence = x.sequence;
+        model.practitionerName = x.practitionerName;
+        model.physicianCode = x.physicianCode;
+        model.practitionerRole = x.practitionerRole;
+        model.careTeamRole = x.careTeamRole;
+        model.speciality = x.speciality;
+        model.specialityCode = x.specialityCode;
+        model.qualificationCode = x.specialityCode;
+        model.practitionerRoleSelect = this.sharedDataService.practitionerRoleList.filter(role => role.value === x.practitionerRole)[0];
+        model.careTeamRoleSelect = this.sharedDataService.careTeamRoleList.filter(role => role.value === x.careTeamRole)[0];
+        model.specialitySelect = x.specialityCode;
+        //console.log("Return Specialty = " + JSON.stringify(model.specialitySelect));
+        // tslint:disable-next-line:max-line-length
+        model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        model.careTeamRoleName = this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0] ? this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0].name : '';
+        return model;
+      }).sort((a, b) => a.sequence - b.sequence);
+    }
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
       this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
       this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
@@ -415,6 +444,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onTypeChange($event) {
     if ($event.value) {
+      this.claimType = $event.value.value;
       switch ($event.value.value) {
         case 'institutional':
           this.subTypeList = [
@@ -434,7 +464,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
       this.VisionSpecifications = [];
       this.Items = [];
-      this.Diagnosises = [];
+      // this.Diagnosises = [];
     }
   }
 
@@ -1199,6 +1229,14 @@ export class AddPreauthorizationComponent implements OnInit {
     return hasError;
   }
 
+  checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1269,6 +1307,10 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+
+    if (!this.checkDiagnosisErrorValidation()) {
+      hasError = true;
+    }
 
     if (this.checkSupposrtingInfoValidation()) {
       hasError = true;
@@ -1390,6 +1432,12 @@ export class AddPreauthorizationComponent implements OnInit {
       preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
+
+      if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
+        this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
+          return x.value;
+        });
+      }
 
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');

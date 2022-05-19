@@ -66,7 +66,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   isSubmitted = false;
   typeListSearchResult = [];
-
+  SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
   bodySiteList = [];
   subSiteList = [];
@@ -253,16 +253,35 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     if (type) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === type.itemType)[0],
-        nonStandardCode: type.nonStandardCode,
-        display: type.nonStandardDescription,
+        nonStandardCode: type.nonStandardCode, 
+        display: type.nonStandardDescription, 
         unitPrice: type.unitPrice,
         factor: type.factor,
       });
-      this.typeChange(type);
+      this.SetSingleRecord(type);
       this.Calculate('Factor');
     }
   }
+  SetSingleRecord(type = null) {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    } else {
+      this.FormItem.controls.quantityCode.clearValidators();
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+    }
+    this.FormItem.controls.item.setValue('');
+    this.itemList = [{ "code": type.code, "description": type.display }];
 
+    if (type) {
+      this.FormItem.patchValue({
+        item: this.itemList.filter(x => x.code === type.code)[0]
+      });
+    }
+
+    this.filteredItem.next(this.itemList.slice());
+
+  }
   typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
@@ -288,6 +307,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.itemList = event.body;
+
           if (this.data.item && this.data.item.itemCode) {
             this.FormItem.patchValue({
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
@@ -395,7 +415,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       const factorValue: number = (1 - (parseFloat(this.FormItem.controls.discountPercent.value) / 100));
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
-      this.FormItem.controls.factor.setValue(1);
+      if (!this.FormItem.controls.factor.value) {
+        this.FormItem.controls.factor.setValue(1);
+      }
     }
   }
 
@@ -623,6 +645,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   searchItems() {
+    if(this.SearchRequest){
+      this.SearchRequest.unsubscribe();
+    }
     const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
     const searchStr = this.FormItem.controls.searchQuery.value;
     const claimType = this.data.type;
@@ -630,7 +655,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
+    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         this.typeListSearchResult = body['content'];

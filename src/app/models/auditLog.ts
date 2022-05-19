@@ -9,6 +9,10 @@ export class AuditLog {
   eventDescription: string;
 
   newClaimData?: string;
+  beneficiaryJSON?:string;
+  eligibilityData?:string;
+  preAuthData?:string;
+  claimData?:string;
 
   deserialize(input: any): this {
     Object.assign(this, input);

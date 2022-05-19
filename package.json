@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start4G": "node --max-old-space-size=4040 ./node_modules/@angular/cli/bin/ng serve --aot",
     "start8G": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve --aot",
     "startAr": "ng serve --configuration=dev-ar",
     "startQAAr": "ng serve --configuration=qa-ar",

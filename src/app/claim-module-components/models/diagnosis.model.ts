@@ -4,5 +4,7 @@ export class Diagnosis {
     diagnosisCode: string;
     diagnosisType?: string;
     diagnosisDescription: string;
+    doctorRemarks?: string;
+    coderRemarks?: string;
 
 }

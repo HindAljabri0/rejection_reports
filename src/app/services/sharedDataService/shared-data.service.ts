@@ -359,7 +359,7 @@ export class SharedDataService {
       }
     );
   }
-
+  
   getBodySite(type: string) {
 
     let bodySite: any = [];

@@ -29,6 +29,7 @@ export class claimScrubbing {
     lastname : string;
     lmp : Date;
     memberid : string;
+    idnumber : string;
     middlename : string;
     nationality : string;
     acccode : string;

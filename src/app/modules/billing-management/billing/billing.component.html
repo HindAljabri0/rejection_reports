@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label class="control-label">Patient</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select Department" [formControl]="billingControllerPatient" [(value)]="selectedPatient">
+                        <mat-select placeholder="Select Patient" [formControl]="billingControllerPatient" [(value)]="selectedPatient">
                             <mat-option *ngFor="let patient of beneficiaries" [value]="patient.documentId">{{patient.fullName}}</mat-option>
                         </mat-select>
                     </mat-form-field>

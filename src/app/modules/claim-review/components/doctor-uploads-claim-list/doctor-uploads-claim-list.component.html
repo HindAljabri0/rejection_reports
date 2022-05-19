@@ -15,7 +15,9 @@
                 <thead>
                     <tr>
                         <th width="10">
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                            <mat-checkbox (change)="toggleAllClaims($event)" [(ngModel)]="allCheckBoxIsChecked"
+                                [(indeterminate)]="allCheckBoxIsIndeterminate" class="grid-checkbox" color="primary">
+                            </mat-checkbox>
                         </th>
                         <th width="10"></th>
                         <th>Claim Ref. No.</th>
@@ -26,29 +28,36 @@
                         <th>Claim Date</th>
                         <th>Net Amount</th>
                         <th>Net Vat</th>
-                        <th>Batch No.</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let data of claimData">
-                        <tr class="align-middle">
+                    <ng-container *ngFor="let data of claimSummary; let i = index">
+                        <tr class="align-middle" >
                             <td>
-                                <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                <mat-checkbox class="grid-checkbox"
+                                    [checked]="selectedClaimNumberIds.includes(data.provClaimNo)"
+                                    (change)="toggleClaim($event, data.provClaimNo)" color="primary">
+                                </mat-checkbox>
                             </td>
-                            <td class="actions">
+                            <td class="actions row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">
                                 <button type="button" mat-icon-button>
-                                    <mat-icon class="text-grey">schedule</mat-icon>
+                                    <div
+                                        *ngIf="(data.claimReviewStatus != null && data.claimReviewStatus.trim() === '1') else checkIcon">
+                                        <mat-icon class="text-grey">check</mat-icon>
+                                    </div>
+                                    <ng-template #checkIcon>
+                                        <mat-icon class="text-grey">schedule</mat-icon>
+                                    </ng-template>
                                 </button>
                             </td>
-                            <td class="text-monospace">{{ data.provclaimno }}</td>
-                            <td class="text-monospace">{{ data.physicianname }}</td>
-                            <td class="text-monospace">{{ data.memberid }}</td>
-                            <td class="text-monospace">{{ data.idnumber }}</td>
-                            <td class="text-monospace">{{ data.claimDetails.patientFileNumber }}</td>
-                            <td class="text-monospace">{{ data.visitdate | date : 'dd-MM-yyyy' }}</td>
-                            <td class="text-monospace">{{ data.net }}<span class="currency">SAR</span></td>
-                            <td class="text-monospace">{{ data.netvatamount }}<span class="currency">SAR</span></td>
-                            <td class="text-monospace">Batch Number</td>                          
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.provClaimNo }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.physicianName }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.memberId }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.idNumber }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.patientFileNumber }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.claimDate | date : 'dd-MM-yyyy' }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.net }}<span class="currency">SAR</span></td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.netVatAmount }}<span class="currency">SAR</span></td>
                         </tr>
                     </ng-container>
                 </tbody>
@@ -56,22 +65,11 @@
         </div>
     </ng-scrollbar>
     <div class="block-footer sticky">
-        <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
-                <img src="./assets/ic-page-first.svg" alt="First" />
-            </button>
-            <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
-                <img src="./assets/ic-page-prev.svg" alt="Previous" />
-            </button>
-            <p class="page-info">
-                {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
-            </p>
-            <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
-                <img src="./assets/ic-page-next.svg" alt="Next" />
-            </button>
-            <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
-                <img src="./assets/ic-page-last.svg" alt="Last" />
-            </button>
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)"
+                [length]="pageControl.totalUploads" [pageSize]="pageControl.pageSize" [showFirstLastButtons]="true"
+                [pageSizeOptions]="[5, 10, 20, 50, 100]" [pageIndex]="pageControl.pageNumber">
+            </mat-paginator>
         </div>
         <div class="right-block">
             <button type="button" mat-flat-button color="primary">Mark as Done</button>

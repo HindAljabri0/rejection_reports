@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material';
-import { Router } from '@angular/router';
+import { MatTabChangeEvent, PageEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { setupMaster } from 'cluster';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { PageControls, UploadsPage } from '../../models/claimReviewState.model';
+import { UploadsPage } from '../../models/claimReviewState.model';
 import { Upload } from '../../models/upload.model';
-import { loadUploadsUnderReviewOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewTabAction } from '../../store/claimReview.actions';
-import { newClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, completedClaimsUnderReviewPage } from '../../store/claimReview.reducer';
+import { loadUploadsUnderReviewOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from '../../store/claimReview.actions';
+import { completedClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, newClaimsUnderReviewPage } from '../../store/claimReview.reducer';
 
 @Component({
   selector: 'app-doctor-uploads',
@@ -17,78 +15,44 @@ import { newClaimsUnderReviewPage, inProgressClaimsUnderReviewPage, completedCla
 })
 export class DoctorUploadsComponent implements OnInit {
 
-  constructor(private store: Store, private router : Router) { }
+  constructor(private store: Store, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  pageControl: PageControls;
-  isDoctor : boolean;
-  isCoder : boolean;
+  isDoctor: boolean;
+  isCoder: boolean;
 
   newUploads$: Observable<UploadsPage>;
   inProgressUploads$: Observable<UploadsPage>;
   completedUploads$: Observable<UploadsPage>;
+
+  pageSizeOptions = [10, 20, 50, 100];
 
   ngOnInit() {
     this.newUploads$ = this.store.select(newClaimsUnderReviewPage);
     this.inProgressUploads$ = this.store.select(inProgressClaimsUnderReviewPage);
     this.completedUploads$ = this.store.select(completedClaimsUnderReviewPage);
     this.getScrubbingClaims();
-    this.fillPageControls('New');
     this.isDoctor = localStorage.getItem('101101').includes('|24.41') || localStorage.getItem('101101').startsWith('24.41');
     this.isCoder = localStorage.getItem('101101').includes('|24.42') || localStorage.getItem('101101').startsWith('24.42');
   }
 
-  fillPageControls(name : string) {
-    if (name == "New"){
-      this.newUploads$.subscribe((upload) => {
-        this.pageControl = upload.pageControls
-      })
-    }else if(name == "In Progress"){
-      this.inProgressUploads$.subscribe((upload) => {
-        this.pageControl = upload.pageControls
-      })
-    }else{
-      this.completedUploads$.subscribe((upload) => {
-        this.pageControl = upload.pageControls
-      })
-    }
-  }
-
-  goToFirstPage() {
-    if (this.pageControl.pageNumber != 0) {
-      this.pageControl.pageNumber = 0;
-      this.getScrubbingClaims();
-    }
-  }
-  goToPrePage() {
-    if (this.pageControl.pageNumber != 0) {
-      this.pageControl.pageNumber = this.pageControl.pageNumber - 1;
-      this.getScrubbingClaims();
-    }
-  }
-  goToNextPage() {
-    if ((this.pageControl.pageNumber + 1) < this.pageControl.totalPages) {
-      this.pageControl.pageNumber = this.pageControl.pageNumber + 1;
-      this.getScrubbingClaims();
-    }
-  }
-  goToLastPage() {
-    if (this.pageControl.pageNumber != (this.pageControl.totalPages - 1)) {
-      this.pageControl.pageNumber = this.pageControl.totalPages - 1;
-      this.getScrubbingClaims();
-    }
-  }
-
-  getScrubbingClaims(){
+  getScrubbingClaims() {
     this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
   }
 
   dispatchTabChangeEvent(event: MatTabChangeEvent) {
     this.store.dispatch(uploadsReviewTabAction({ index: event.index }));
-    this.fillPageControls(event.tab.textLabel);
     this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
   }
 
-  selectDetailView(upload : Upload){                      
-    this.router.navigate(["/review/doctor/claims/" + upload.id]);
+  viewUploadClaims(upload: Upload) {
+    console.log('I am in viewUploadClaims');
+    console.log('upload.id', upload.id);
+    this.router.navigate([upload.id, "claim"], {relativeTo: this.activatedRoute});
+    // this.router.navigate(["/review/scrubbing/uploads/" + upload.id]);
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.store.dispatch(uploadsReviewPageAction(event));
+    this.getScrubbingClaims();
   }
 }
