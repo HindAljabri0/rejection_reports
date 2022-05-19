@@ -74,7 +74,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     { value: 'rejected', name: 'Rejected' },
     { value: 'partial', name: 'Partially Approved' },
     { value: 'not-required', name: 'Not Required' },
-    { value: 'pended', name: 'Pended' }
+    { value: 'pended', name: 'Pended' },
+    { value: 'cancelled', name: 'Cancelled' }
   ];
 
   constructor(

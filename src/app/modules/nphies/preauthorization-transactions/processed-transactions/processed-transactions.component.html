@@ -30,7 +30,7 @@
           </td>
           <td class="actions">
             <mat-menu #moreMenu="matMenu" xPosition="before">
-              <button mat-menu-item>
+              <button mat-menu-item *ngIf="transaction.status === 'approved' || transaction.status === 'pended'">
                 <mat-icon class="material-icons-outlined">replay</mat-icon>
                 <span>Follow Up/Add Related</span>
               </button>

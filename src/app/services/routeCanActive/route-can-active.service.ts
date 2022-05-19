@@ -45,8 +45,10 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         if (this._isOnlyAdmin()) {
           return this.router.createUrlTree(['administration']);
         } else if (this._isOnlyRcm()) {
+          console.log('_isOnlyRcm');
           if (this._isDoctorOrCoder()) {
-            return this.router.createUrlTree(['review', 'uploads']);
+            console.log('_isDoctorOrCoder');
+            return this.router.createUrlTree(['review', 'scrubbing', 'upload']);
           }
           return this.router.createUrlTree(['administration', 'switch-provider']);
         } else {

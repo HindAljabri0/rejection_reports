@@ -282,7 +282,7 @@ export class BeneficiaryComponent implements OnInit {
     this.familyNameController.setValue(beneficiaryinfo.familyName);
     this.fullNameController.setValue(beneficiaryinfo.fullName);
     this.dobFormControl.setValue(beneficiaryinfo.dob);
-    this.selectedGender = beneficiaryinfo.gender;
+    this.selectedGender = beneficiaryinfo.gender==null?'null':beneficiaryinfo.gender.toLocaleUpperCase();
     this.selectedNationality = beneficiaryinfo.nationality;
     this.contactNumberController.setValue(beneficiaryinfo.contactNumber);
     this.emailController.setValue(beneficiaryinfo.email);

@@ -16,7 +16,8 @@
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let upload of (newUploads$|async).uploads">
-                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                <!-- <tr class="align-middle" (click)="viewUploadClaims(upload)"> -->
+                                <tr class="align-middle" (click)="viewUploadClaims(upload)">
                                     <td class="row-click">
                                         {{ upload.name }}
                                         <p class="text-grey">{{upload.date}}</p>
@@ -34,22 +35,10 @@
                 </div>
             </ng-scrollbar>
             <div class="block-footer sticky">
-                <div class="left-block custom-paginator">
-                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
-                        <img src="./assets/ic-page-first.svg" alt="First" />
-                    </button>
-                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
-                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                    </button>
-                    <p class="page-info">
-                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
-                    </p>
-                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
-                        <img src="./assets/ic-page-next.svg" alt="Next" />
-                    </button>
-                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
-                        <img src="./assets/ic-page-last.svg" alt="Last" />
-                    </button>
+                <div class="left-block">
+                    <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="(newUploads$|async).pageControls.totalUploads" [pageSize]="(newUploads$|async).pageControls.pageSize"
+                        [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions" [pageIndex]="(newUploads$|async).pageControls.pageNumber">
+                    </mat-paginator>
                 </div>
             </div>
         </mat-tab>
@@ -68,7 +57,7 @@
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let upload of (inProgressUploads$|async).uploads">
-                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                <tr class="align-middle" (click)="viewUploadClaims(upload)">
                                     <td class="row-click">
                                         {{ upload.name }}
                                         <p class="text-grey">{{upload.date}}</p>
@@ -98,22 +87,10 @@
                 </div>
             </ng-scrollbar>
             <div class="block-footer sticky">
-                <div class="left-block custom-paginator">
-                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
-                        <img src="./assets/ic-page-first.svg" alt="First" />
-                    </button>
-                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
-                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                    </button>
-                    <p class="page-info">
-                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
-                    </p>
-                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
-                        <img src="./assets/ic-page-next.svg" alt="Next" />
-                    </button>
-                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
-                        <img src="./assets/ic-page-last.svg" alt="Last" />
-                    </button>
+                <div class="left-block">
+                    <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="(inProgressUploads$|async).pageControls.totalUploads" [pageSize]="(inProgressUploads$|async).pageControls.pageSize"
+                        [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions" [pageIndex]="(inProgressUploads$|async).pageControls.pageNumber">
+                    </mat-paginator>
                 </div>
             </div>
         </mat-tab>
@@ -130,7 +107,7 @@
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let upload of (completedUploads$|async).uploads">
-                                <tr class="align-middle" (click)="selectDetailView(upload)">
+                                <tr class="align-middle" (click)="viewUploadClaims(upload)">
                                     <td class="row-click">
                                         {{ upload.name }}
                                         <p class="text-grey">{{upload.date}}</p>
@@ -148,22 +125,10 @@
                 </div>
             </ng-scrollbar>
             <div class="block-footer sticky">
-                <div class="left-block custom-paginator">
-                    <button matRipple type="button" title="First Page" (click)="goToFirstPage()">
-                        <img src="./assets/ic-page-first.svg" alt="First" />
-                    </button>
-                    <button matRipple type="button" title="Previous Page" (click)="goToPrePage()">
-                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                    </button>
-                    <p class="page-info">
-                        {{ pageControl.pageNumber + 1 }}<small>/{{ pageControl.totalPages }}</small>
-                    </p>
-                    <button matRipple type="button" title="Next Page" (click)="goToNextPage()">
-                        <img src="./assets/ic-page-next.svg" alt="Next" />
-                    </button>
-                    <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
-                        <img src="./assets/ic-page-last.svg" alt="Last" />
-                    </button>
+                <div class="left-block">
+                    <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="(completedUploads$|async).pageControls.totalUploads" [pageSize]="(completedUploads$|async).pageControls.pageSize"
+                        [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions" [pageIndex]="(completedUploads$|async).pageControls.pageNumber">
+                    </mat-paginator>
                 </div>
             </div>
         </mat-tab>

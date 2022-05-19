@@ -1,10 +1,22 @@
-import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatCheckboxChange, MatDialog, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { time } from 'console';
+import { Store } from '@ngrx/store';
+import { AuthService } from 'src/app/services/authService/authService.service';
+import { SharedServices } from 'src/app/services/shared.services';
+import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+// import { ActivatedRoute } from '@angular/router';
 import { PageControls } from '../../models/claimReviewState.model';
-import { claimScrubbing } from '../../models/ClaimScrubbing.model';
+import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
+import { loadSingleClaim } from '../../store/claimReview.actions';
+// import { loadSingleClaim } from "../claim-review/store/claimReview.actions";
+// import * as actions from '../../store/claimReview.actions';
+
+import {
+  DoctorUploadsClaimDetailsDialogComponent
+} from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
+
 
 @Component({
   selector: 'app-doctor-uploads-claim-list',
@@ -13,52 +25,92 @@ import { ClaimReviewService } from '../../services/claim-review-service/claim-re
 })
 export class DoctorUploadsClaimListComponent implements OnInit {
 
-  public id : number;
-  public claimData : claimScrubbing[]; 
+  public uploadId: number;
+  public claimSummary: ClaimSummary[];
+  public visitedPages: number[] = [];
+  selectedClaimNumberIds: string[] = new Array();
+  userPrivileges: UserPrivileges = initState.userPrivileges;
+
+  allCheckBoxIsChecked: boolean;
+  private allCheckBoxIsCheckedForPagination: boolean;
+  allCheckBoxIsIndeterminate: boolean;
+
   pageControl: PageControls;
-  constructor(private router : ActivatedRoute,private claimReviewService : ClaimReviewService) { 
-    this.pageControl = new PageControls(0,5);
-  }
-  ngOnInit() {
-    this.id = this.router.snapshot.params.id;
-    this.pageControl.pageSize = 5;
-    this.pageControl.pageNumber = 0;
-    this.refreshData();
+  constructor(private activatedRoute: ActivatedRoute, private route: Router, private claimReviewService: ClaimReviewService, private sharedServices: SharedServices, private authService: AuthService, private dialog: MatDialog, private store: Store) {
+    this.pageControl = new PageControls(0, 5);
   }
 
-  refreshData(){
-    this.claimReviewService.selectDetailView(this.id,this.pageControl.pageNumber,this.pageControl.pageSize).subscribe(response => {
+  ngOnInit() {
+    this.uploadId = this.activatedRoute.snapshot.params.uploadId;
+    this.pageControl.pageSize = 10;
+    this.pageControl.pageNumber = 0;
+    this.refreshData();
+
+  }
+
+  refreshData() {
+    this.sharedServices.loadingChanged.next(true);
+
+    this.claimReviewService.selectDetailView(this.uploadId, this.pageControl.pageNumber, this.pageControl.pageSize, this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor, this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder).subscribe(response => {
       if (response instanceof Object) {
-        let body : any = response["content"];
-        this.claimData = body as claimScrubbing[];
+        this.claimSummary = response["content"] as ClaimSummary[];
         this.pageControl.totalPages = response["totalPages"];
+        this.pageControl.totalUploads = response["totalElements"];
+        if (this.allCheckBoxIsCheckedForPagination && !this.visitedPages.includes(this.pageControl.pageNumber)) {
+          this.checkAllClaims(this.claimSummary);
+          this.visitedPages.push(this.pageControl.pageNumber);
+        }
+        this.sharedServices.loadingChanged.next(false);
       }
     });
   }
 
-  goToFirstPage() {
-    if (this.pageControl.pageNumber != 0) {
-      this.pageControl.pageNumber = 0;
+  toggleAllClaims(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.allCheckBoxIsChecked = true;
+      this.allCheckBoxIsCheckedForPagination = true;
+      this.checkAllClaims(this.claimSummary);
+    } else {
+      this.allCheckBoxIsChecked = false;
+      this.allCheckBoxIsCheckedForPagination = false;
+      this.selectedClaimNumberIds.length = 0;
     }
-    this.refreshData()
   }
-  goToPrePage() {
-    if (this.pageControl.pageNumber != 0) {
-      this.pageControl.pageNumber = this.pageControl.pageNumber - 1;
-    }
-    this.refreshData();
+
+  checkAllClaims(claimData: ClaimSummary[]) {
+    this.selectedClaimNumberIds = [...this.selectedClaimNumberIds, ...claimData.map(data => data.provClaimNo)]
   }
-  goToNextPage() {
-    if ((this.pageControl.pageNumber + 1) < this.pageControl.totalPages) {
-      this.pageControl.pageNumber = this.pageControl.pageNumber + 1;
+
+  toggleClaim(event: MatCheckboxChange, provclaimno: string) {
+    if (event.checked) {
+      this.selectedClaimNumberIds.push(provclaimno);
+    } else {
+      this.selectedClaimNumberIds.splice(this.selectedClaimNumberIds.indexOf(provclaimno), 1);
     }
-    this.refreshData();
+
+    // refersh boolean indicators for checkall checkbox in every single checkbox change event 
+    if (this.selectedClaimNumberIds.length == this.pageControl.totalUploads) {
+      this.allCheckBoxIsChecked = true
+      this.allCheckBoxIsIndeterminate = false
+    } else if (this.selectedClaimNumberIds.length > 0) {
+      this.allCheckBoxIsChecked = false
+      this.allCheckBoxIsIndeterminate = true
+    }
   }
-  goToLastPage() {
-    if (this.pageControl.pageNumber != (this.pageControl.totalPages - 1)) {
-      this.pageControl.pageNumber = this.pageControl.totalPages - 1;
-    }
+
+  handlePageEvent(event: PageEvent) {
+    this.pageControl.totalUploads = event.length;
+    this.pageControl.pageSize = event.pageSize;
+    this.pageControl.pageNumber = event.pageIndex;
     this.refreshData();
   }
 
+  openDoctorClaimViewDialog(provClaimNo: string) {
+    this.store.dispatch(loadSingleClaim({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
+    const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+    });
+  }
+
 }
+

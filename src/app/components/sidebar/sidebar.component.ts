@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';

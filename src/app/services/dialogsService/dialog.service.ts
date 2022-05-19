@@ -129,7 +129,7 @@ export class DialogService {
     });
   }
 
-  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, closeOnOk = null, _transactionId = null) {
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, closeOnOk = null, _transactionId = null, IsReturn = null) {
     if (!dontCloseAll) {
       this.closeAll();
     }
@@ -137,7 +137,7 @@ export class DialogService {
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
-      transactionId: _transactionId ? _transactionId: '',
+      transactionId: _transactionId ? _transactionId : '',
       mainMessage: _mainMessage,
       subMessage: _subMessage,
       mode: _mode,
@@ -154,6 +154,30 @@ export class DialogService {
         }
       });
     }
+    if (IsReturn) {
+      return dialogRef.afterClosed();
+    }
+  }
+
+  // tslint:disable-next-line:max-line-length
+  showMessageObservable(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, _transactionId = null): Observable<any> {
+    if (!dontCloseAll) {
+      this.closeAll();
+    }
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      transactionId: _transactionId ? _transactionId : '',
+      mainMessage: _mainMessage,
+      subMessage: _subMessage,
+      mode: _mode,
+      hideNoButton: _hideNoButton,
+      yesButtonText: _yesButtonText,
+      errors: _errors
+    };
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+    return dialogRef.afterClosed();
   }
 
   showAlerts(messages: string[]) {

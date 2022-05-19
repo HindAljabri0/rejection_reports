@@ -13,4 +13,7 @@ export class Physicians{
 
     size : number;
 
+    specialityName: string;
+    roleName: string;
+
 }

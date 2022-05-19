@@ -20,68 +20,71 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
   deleteClaimByCriteria(
-    providerId: string, payerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
+    providerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
-    claimIDs: string[], fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string, netAmount?: string, batchNo?: string) {
+    claimIDs: string[], fromDate: string, toDate: string, payerIds?: string[], drname?: string, nationalId?: string, claimDate?: string,
+    netAmount?: string, batchNo?: string) {
 
     let requestURL = `/providers/${providerId}/remove/criteria?`;
-    if (claimIDs != null && claimIDs.length > 0) {
-      requestURL += `claimIDs=${claimIDs}`;
+    if (claimIDs && claimIDs.length > 0) {
+      requestURL += `claimIds=${claimIDs}`;
     } else {
-      if (payerId != null && uploadId == null) {
-        requestURL += `payerId=${payerId}&`;
-      }
-      if (organizationId != null && uploadId == null) {
-        requestURL += `organizationId=${organizationId}&`
+
+      if (payerIds && payerIds.length > 0) {
+        requestURL += `payerIds=${payerIds.join(',')}&`;
       }
 
-      if (batchId != null) {
+      if (organizationId && !uploadId) {
+        requestURL += `organizationId=${organizationId}&`;
+      }
+
+      if (batchId) {
         requestURL += `batchId=${batchId}&`;
       }
-      if (uploadId != null) {
+      if (uploadId) {
         requestURL += `uploadId=${uploadId}&`;
       }
 
-      if (caseTypes != null) {
+      if (caseTypes) {
         requestURL += `caseTypes=${caseTypes}&`;
       }
-      if (invoiceNo != null) {
+      if (invoiceNo) {
         requestURL += `invoiceNo=${invoiceNo}&`;
       }
-      if (policyNo != null) {
+      if (policyNo) {
         requestURL += `policyNo=${policyNo}&`;
       }
-      if (statuses != null) {
+      if (statuses) {
         requestURL += `statuses=${statuses}&`;
       }
-      if (fromDate != null) {
+      if (fromDate) {
         requestURL += `fromDate=${fromDate}&`;
       }
-      if (toDate != null) {
+      if (toDate) {
         requestURL += `toDate=${toDate}&`;
       }
-      if (claimRefNo != null) {
+      if (claimRefNo) {
         requestURL += `claimRefNo=${claimRefNo}&`;
       }
-      if (patientFileNo != null) {
+      if (patientFileNo) {
         requestURL += `patientFileNo=${patientFileNo}&`;
       }
-      if (memberId != null) {
+      if (memberId) {
         requestURL += `memberId=${memberId}&`;
       }
-      if (drname != null && drname !== '' && drname !== undefined) {
+      if (drname) {
         requestURL += `drname=${drname}&`;
       }
-      if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+      if (nationalId) {
         requestURL += `nationalId=${nationalId}&`;
       }
-      if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+      if (claimDate) {
         requestURL += `claimDate=${claimDate}`;
       }
-      if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+      if (netAmount) {
         requestURL += `netAmount=${netAmount}`;
       }
-      if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+      if (batchNo) {
         requestURL += `batchNo=${batchNo}`;
       }
     }
@@ -178,7 +181,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (batchId) {
-      requestURL += `batchId=${batchId}`;
+      requestURL += `&batchId=${batchId}`;
     }
 
     if (uploadId) {
@@ -194,7 +197,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (invoiceNo) {
-      requestURL += `invoiceNo=${invoiceNo}`;
+      requestURL += `&invoiceNo=${invoiceNo}`;
     }
 
     if (patientFileNo) {
@@ -218,7 +221,82 @@ export class ProviderNphiesApprovalService {
     // }
 
     if (documentId) {
-      requestURL += `documentId=${documentId}`;
+      requestURL += `&documentId=${documentId}`;
+    }
+
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    return this.http.request(request);
+  }
+
+  cancelClaims(
+    providerId: string,
+    cancelReason: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    documentId?: string,
+    statuses?: string[]
+  ) {
+
+    let requestURL = `/providers/${providerId}/approval/cancelAll/request?`;
+
+    if (cancelReason) {
+      requestURL += `cancelReason=${cancelReason}`;
+    }
+
+    if (provderClaimReferenceNumber) {
+      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+    }
+
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    if (uploadId) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+
+    if (claimDate) {
+      requestURL += `&claimDate=${claimDate}`;
+    }
+
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+
+    if (statuses && statuses.length > 0) {
+      requestURL += `&statuses=${statuses.join(',')}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});

@@ -32,12 +32,25 @@ export class CancelReasonModalComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.FormCancel.patchValue({
-      approvalRequestId: this.data.approvalRequestId
-    });
+    if (this.data.approvalRequestId) {
+      this.FormCancel.patchValue({
+        approvalRequestId: this.data.approvalRequestId
+      });
+    } else if (this.data.cancelData) {
+      this.FormCancel.controls.approvalRequestId.clearValidators();
+      this.FormCancel.controls.approvalRequestId.updateValueAndValidity();
+    }
   }
 
   onSubmit() {
+    if (this.data.approvalRequestId) {
+      this.cancelSingle();
+    } else if (this.data.cancelData) {
+      this.cancelMultiple();
+    }
+  }
+
+  cancelSingle() {
     this.isSubmitted = true;
     if (this.FormCancel.valid) {
       this.sharedServices.loadingChanged.next(true);
@@ -118,6 +131,49 @@ export class CancelReasonModalComponent implements OnInit {
           }
           this.sharedServices.loadingChanged.next(false);
         }
+      });
+    }
+  }
+
+  cancelMultiple() {
+    this.isSubmitted = true;
+    if (this.FormCancel.valid) {
+      this.sharedServices.loadingChanged.next(true);
+
+      const model: any = {};
+      model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
+
+      let action: any;
+      if (this.data.cancelType === 'all') {
+        action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
+          this.data.cancelData.selectedClaims, this.data.cancelData.uploadId, this.data.cancelData.claimRefNo, this.data.cancelData.to,
+          this.data.cancelData.payerIds, this.data.cancelData.batchId, this.data.cancelData.memberId, this.data.cancelData.invoiceNo,
+          this.data.cancelData.patientFileNo, this.data.cancelData.from, this.data.cancelData.nationalId, this.data.cancelData.statuses);
+      } else if (this.data.cancelType === 'selected') {
+        action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
+          this.data.cancelData.selectedClaims);
+      }
+
+      action.subscribe((event: any) => {
+        if (event instanceof HttpResponse) {
+          if (event.status === 200) {
+            const body: any = event.body;
+            if (body.status === 'OK') {
+              const resModel: any = {};
+              resModel.Success = true;
+              resModel.Message = body.message;
+              resModel.Errors = body.errors;
+              this.dialogRef.close(resModel);
+            }
+          }
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, error => {
+        this.sharedServices.loadingChanged.next(false);
+        const resModel: any = {};
+        resModel.Success = false;
+        resModel.Error = error;
+        this.dialogRef.close(resModel);
       });
     }
   }

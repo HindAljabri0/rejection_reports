@@ -386,7 +386,7 @@
           </a>
           <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>
-        <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin)">
+        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
           <a routerLink="/nphies/physicians" routerLinkActive="is-active">
             <span class="text">Physicians</span>
           </a>
@@ -551,7 +551,7 @@
       <div class="list-container pt-0" *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && !envStaging && !envProd">
         <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder">
           <li>
-            <a routerLink="/review/doctor/uploads" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+            <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
               <span class="text">Claims Scrubbing</span>
             </a>
           </li>

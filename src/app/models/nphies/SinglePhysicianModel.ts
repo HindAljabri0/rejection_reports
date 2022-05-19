@@ -1,10 +1,10 @@
 export class SinglePhysician{
 
-    physicianId: number;
+    physicianId?: number;
 
-    physicianName: string;
+    physicianName?: string;
 
-    specialityCode:number;
+    specialityCode?:number;
 
-    physicianRole: string;
+    physicianRole?: string;
 }

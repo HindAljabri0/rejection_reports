@@ -87,25 +87,39 @@ export class UploadPhysiciansDialogComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
 
-            if (body.errormessage != null && body.errormessage instanceof Array) {
+            if (body.errormessage && body.errormessage.length > 0) {
+              // tslint:disable-next-line:max-line-length
               this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}<br><br>Error info:<br>${body.errormessage.join('<br>')}`, 'info', true, 'OK');
-
               this.dialogRef.close(model.file);
             } else {
-              this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`,'info', true, 'OK');
+              // tslint:disable-next-line:max-line-length
+              this.dialogService.showMessage('Summary:', `Saved Physicians: ${body.savedPhysciainsCount}<br>Failed Physicians: ${body.failToSavePhysciainsCount}`, 'info', true, 'OK');
             }
           }
 
           this.common.loadingChanged.next(false);
-
+          this.dialogRef.close(true);
         }
       }, error => {
+        this.common.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
-          this.common.loadingChanged.next(false);
-          if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 500) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
           }
-
         }
       });
     }
