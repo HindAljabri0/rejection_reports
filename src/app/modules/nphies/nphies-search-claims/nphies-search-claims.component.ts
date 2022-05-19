@@ -397,7 +397,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     this.selectedCardKey = key;
     // alert(this.selectedCardKey);
-    alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    // alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     this.resetURL();
 
 
