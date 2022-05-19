@@ -34,6 +34,7 @@ import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesAp
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 import { nlLocale } from 'ngx-bootstrap/chronos';
+import { couldStartTrivia } from 'typescript';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -1519,7 +1520,20 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                       `Your claims deleted successfully.`,
                       false))
                     .subscribe(afterColse => {
-                      this.router.navigate(['/nphies/uploads']);
+                      const uploadId=this.params.uploadId;
+                      
+                      if (this.selectedClaims.length == this.summaries[0].totalClaims) {
+                        this.router.navigate(['/nphies/uploads']);
+                      }else{
+                        this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
+                          queryParams: { uploadId }
+                        }).then(() => {
+                          window.location.reload();
+                        });
+                        /*this.selectedCardKey=0;
+                        this.resetURL();
+                        location.reload();*/
+                      }
                     });
                 } else if (status === 'AlreadySumitted') {
                   this.dialogService.openMessageDialog(

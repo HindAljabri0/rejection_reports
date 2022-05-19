@@ -46,7 +46,7 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setOnAdmissionRequirement();
-    if (this.pageMode !== 'EDIT') {
+    if (this.pageMode === 'CREATE') {
       this.addDiagnosis();
     }
   }
