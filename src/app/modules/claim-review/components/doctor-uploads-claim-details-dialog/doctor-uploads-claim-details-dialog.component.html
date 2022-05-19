@@ -6,7 +6,7 @@
     </span>
     <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
 </div>
-<mat-tab-group class="primary-tab doctor-review-tab" [selectedIndex]="selectedTabIndex" >
+<mat-tab-group class="primary-tab doctor-review-tab" [selectedIndex]="selectedTabIndex">
     <mat-tab [label]="'Diagnosis & Services'">
         <div class="diagnosis-tab">
             <div class="form-group form-group-static p-14 pb-0">
@@ -42,14 +42,14 @@
                                     <td>{{diag.diagnosisDescription}}</td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control" 
-                                            (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)"/>
+                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control"
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input value="{{diag.coderRemarks}}" type="text" class="form-control" 
-                                            (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)"/>
+                                            <input value="{{diag.coderRemarks}}" type="text" class="form-control"
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)" />
                                         </div>
                                     </td>
                                 </tr>
@@ -394,8 +394,9 @@
 <div class="p-14 pb-0 border-top">
     <h5 class="semibold pb-14">Doctor’s Remarks</h5>
     <div class="form-group">
-        <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review" placeholder="Enter doctor's remarks here..." 
-                                            (focusout)="claimDetailsRemarksfocusOut($event.target.value)"/>
+        <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review"
+            placeholder="Enter doctor's remarks here..."
+            (focusout)="claimDetailsRemarksfocusOut($event.target.value)" />
     </div>
 </div>
 

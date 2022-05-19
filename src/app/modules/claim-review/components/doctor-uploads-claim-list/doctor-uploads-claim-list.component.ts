@@ -42,6 +42,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
 
   ngOnInit() {
     this.uploadId = this.activatedRoute.snapshot.params.uploadId;
+    console.log('this.uploadId in doctor upload claim list component', this.uploadId );
     this.pageControl.pageSize = 10;
     this.pageControl.pageNumber = 0;
     this.refreshData();
@@ -110,6 +111,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.store.dispatch(loadSingleClaimErrors({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
+      data: {
+        uploadId: this.uploadId
+      }
     });
   }
 

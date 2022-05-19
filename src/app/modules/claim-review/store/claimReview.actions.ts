@@ -16,5 +16,5 @@ export const loadSingleClaimErrors = createAction("[ Claims Review ] load claim 
 export const setSingleClaimErrors = createAction("[ Claims Review ] set claim errors", props<{errors: FieldError[]}>());
 
 export const setDiagnnosisRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
-export const setClaimDetailsRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
-export const markAsDone = createAction("[ Claims Review ] mark claim as done", props<{data: MarkAsDone, uploadId: number, provClaimNo: string}>());
+export const setClaimDetailsRemarks = createAction("[ Claims Review ] set claim details remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
+export const markAsDone = createAction("[ Claims Review ] mark claim as done", props<{data: MarkAsDone}>());

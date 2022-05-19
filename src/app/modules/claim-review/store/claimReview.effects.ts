@@ -42,6 +42,10 @@ export class ClaimReviewEffects {
 
     onLoadSingleClaim$ = createEffect(() => this.actions$.pipe(
         ofType(loadSingleClaim),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
         switchMap(data => this.claimReviewService.selectSingleClaim(
             data.data.uploadId,
             data.data.provClaimNo
@@ -60,18 +64,21 @@ export class ClaimReviewEffects {
 
     onLoadSingleClaimErrors$ = createEffect(() => this.actions$.pipe(
         ofType(loadSingleClaimErrors),
+        map(data =>{
+            // this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
         switchMap(data => this.claimReviewService.selectSingleClaimErrors(
             data.data.uploadId,
             data.data.provClaimNo
         ).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(listOfErrs => {
-                console.log('claim errors listOfErrs: ', listOfErrs);
-                this.sharedServices.loadingChanged.next(false);
+                // this.sharedServices.loadingChanged.next(false);
                 return setSingleClaimErrors({errors: listOfErrs})
             }),
             catchError(errorResponse => {
-                this.sharedServices.loadingChanged.next(false);
+                // this.sharedServices.loadingChanged.next(false);
                 return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
             })
         )),
@@ -103,7 +110,7 @@ export class ClaimReviewEffects {
 
     onMarkClaimAsDone$ = createEffect(() => this.actions$.pipe(
         ofType(markAsDone),
-        switchMap(data => this.claimReviewService.markClaimAsDone(data.data, data.uploadId, data.provClaimNo).pipe(
+        switchMap(data => this.claimReviewService.markClaimAsDone(data.data).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             // map(listOfErrs => {
                 // console.log('claim errors listOfErrs: ', listOfErrs);

@@ -84,4 +84,4 @@ export const getClaimErrors = createSelector(claimReviewStateSelector, (state) =
 
 export type FieldError = { fieldName?: string, code?: string, description?: string };
 export type DiagnosisRemarksUpdateRequest = { diagnosisId: number, provClaimNo: string, uploadId: number, remarks?: string, coder: boolean, doctor: boolean };
-export type MarkAsDone = { provClaimNo: string, uploadId: number, coder: boolean, doctor: boolean };
+export type MarkAsDone = { provClaimNo: string, uploadId: number, coder: boolean, doctor: boolean, userName: string };
