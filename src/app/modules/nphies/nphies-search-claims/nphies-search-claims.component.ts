@@ -397,7 +397,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     this.selectedCardKey = key;
     // alert(this.selectedCardKey);
-    // alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     this.resetURL();
 
 
@@ -1348,7 +1348,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       return false;
     }
     status = status.trim().toLowerCase();
-    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error']; // rejected
+    // tslint:disable-next-line:max-line-length
+    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'NotSaved'];
     if (validStatus.indexOf(status) >= 0) {
       return false;
     } else {

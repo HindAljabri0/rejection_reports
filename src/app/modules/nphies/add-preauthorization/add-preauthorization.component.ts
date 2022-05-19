@@ -209,6 +209,8 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   setReuseValues() {
+    this.FormPreAuthorization.controls.preAuthRefNo.setValue(this.data.preAuthDetails);
+
     const date = moment(this.data.preAuthorizationInfo.dateOrdered, 'DD-MM-YYYY').format('YYYY-MM-DD');
     // tslint:disable-next-line:max-line-length
     this.FormPreAuthorization.controls.dateOrdered.setValue(date);
