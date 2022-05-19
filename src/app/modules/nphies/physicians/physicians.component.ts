@@ -112,6 +112,14 @@ export class PhysiciansComponent implements OnInit {
       panelClass: ['primary-dialog'],
       autoFocus: false
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.pageIndex = 0;
+        this.pageSize = 10;
+        this.getData();
+      }
+    });
   }
 
   openAddPhysicianDialog(physicianData: any = null) {
@@ -160,40 +168,45 @@ export class PhysiciansComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.nphiesConfigurationsService.getPhysicianList(this.sharedServices.providerId, this.pageIndex,
       this.pageSize, model.physician_id, model.physician_name, model.speciality_code, model.physician_role).subscribe(data => {
-      if (data instanceof HttpResponse) {
-        const body: any = data.body;
-        this.physiciansList = body["content"] as Physicians[];
-        this.physiciansList.forEach(x => {
-          if (x.speciality_code) {
-            // tslint:disable-next-line:max-line-length
-            x.specialityName = this.specialityList.filter(y => y.speciallityCode === x.speciality_code.toString())[0] ? this.specialityList.filter(y => y.speciallityCode === x.speciality_code.toString())[0].speciallityName : '';
-          }
-        });
-        this.length = body["totalElements"];
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.sharedServices.loadingChanged.next(false);
-        if (error.status === 400) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
-        } else if (error.status === 503) {
-          const errors: any[] = [];
-          if (error.error.errors) {
-            error.error.errors.forEach(x => {
-              errors.push(x);
-            });
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
-          } else {
+        if (data instanceof HttpResponse) {
+          const body: any = data.body;
+          this.physiciansList = body["content"] as Physicians[];
+          this.physiciansList.forEach(x => {
+            if (x.physician_role) {
+              x.physician_role = x.physician_role.toLowerCase();
+              // tslint:disable-next-line:max-line-length
+              x.roleName = this.practitionerRoleList.filter(y => y.value === x.physician_role)[0] ? this.practitionerRoleList.filter(y => y.value === x.physician_role)[0].name : '';
+            }
+            if (x.speciality_code) {
+              // tslint:disable-next-line:max-line-length
+              x.specialityName = this.specialityList.filter(y => y.speciallityCode === x.speciality_code.toString())[0] ? this.specialityList.filter(y => y.speciallityCode === x.speciality_code.toString())[0].speciallityName : '';
+            }
+          });
+          this.length = body["totalElements"];
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          this.sharedServices.loadingChanged.next(false);
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 500) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
           }
         }
-      }
-    });
+      });
   }
 
   DownloadPhysicianSample() {

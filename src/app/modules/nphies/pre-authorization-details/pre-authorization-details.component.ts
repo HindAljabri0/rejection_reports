@@ -53,6 +53,9 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
   setDescriptions() {
 
+    if (this.data.preAuthDetails) {
+      this.data.preAuthDetails = this.data.preAuthDetails.join(',');
+    }
 
     if (this.data.beneficiary && this.data.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length

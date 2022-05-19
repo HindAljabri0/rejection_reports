@@ -396,6 +396,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.setAllCheckBoxIsIndeterminate();
     }
     this.selectedCardKey = key;
+    // alert(this.selectedCardKey);
     // alert(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     this.resetURL();
 
