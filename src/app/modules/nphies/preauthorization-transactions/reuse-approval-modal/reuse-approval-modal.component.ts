@@ -24,6 +24,10 @@ export class ReuseApprovalModalComponent implements OnInit {
 
   setDescriptions() {
 
+    if (this.data.preAuthDetails) {
+      this.data.preAuthDetails = this.data.preAuthDetails.join(',');
+    }
+
     if (this.data.detailsModel.accident && this.data.detailsModel.accident.date) {
       this.data.detailsModel.accident.date = moment(this.data.detailsModel.accident.date).format('DD-MM-YYYY');
     }
