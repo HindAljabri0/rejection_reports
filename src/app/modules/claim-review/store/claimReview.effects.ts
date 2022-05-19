@@ -8,7 +8,7 @@ import { AuthService } from "src/app/services/authService/authService.service";
 import { SharedServices } from "src/app/services/shared.services";
 import { UploadsPage } from "../models/claimReviewState.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { loadSingleClaim, loadSingleClaimErrors, loadUploadsUnderReviewOfSelectedTab, markAsDone, setDiagnnosisRemarks, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
+import { loadSingleClaim, loadSingleClaimErrors, loadUploadsUnderReviewOfSelectedTab, markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -91,6 +91,13 @@ export class ClaimReviewEffects {
             //     this.sharedServices.loadingChanged.next(false);
             //     // return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
             // })
+        )),
+    ), {dispatch: false});
+
+    OnSetClaimDetailsRemarks$ = createEffect(() => this.actions$.pipe(
+        ofType(setClaimDetailsRemarks),
+        switchMap(data => this.claimReviewService.updateClaimDetailsRemarks(data.data).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
         )),
     ), {dispatch: false});
 

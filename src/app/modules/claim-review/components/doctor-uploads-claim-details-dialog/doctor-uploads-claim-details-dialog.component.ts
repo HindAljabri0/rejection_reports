@@ -7,7 +7,7 @@ import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
 import { Service } from 'src/app/claim-module-components/models/service.model';
 import { SharedServices } from 'src/app/services/shared.services';
-import { markAsDone, setDiagnnosisRemarks } from '../../store/claimReview.actions';
+import { markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks } from '../../store/claimReview.actions';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
 
 
@@ -27,6 +27,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
   uploadId
   provClaimNo
+  doctorRemarks
 
   constructor(
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
@@ -52,9 +53,10 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     this.initVariables();
   }
   initVariables() {
-    this.uploadId = this.activatedRoute.snapshot.params.uploadId;
+    this.uploadId = this.activatedRoute.snapshot.params.uploadId;    
     this.claim$.subscribe(claim => {
       this.provClaimNo = claim.claimIdentities.providerClaimNumber
+      this.doctorRemarks = claim.doctorRemarks
     })
   }
 
@@ -75,6 +77,12 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   diagRemarksfocusOut(diagnosis: Diagnosis, remarks: string, coder: boolean, doctor: boolean) {
     this.store.dispatch(setDiagnnosisRemarks({data: { remarks: remarks, coder: coder, doctor: doctor, 
       diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: this.uploadId}}));
+  }
+
+  claimDetailsRemarksfocusOut(remarks : string){    
+    this.store.dispatch(setClaimDetailsRemarks({data: { remarks: remarks, coder: false, doctor: false, 
+      diagnosisId: null, provClaimNo: this.provClaimNo, uploadId: this.uploadId}}));
+    this.doctorRemarks = remarks;
   }
 
   markAsDone(){

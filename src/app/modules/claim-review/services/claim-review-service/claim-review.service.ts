@@ -35,8 +35,15 @@ export class ClaimReviewService {
         return this.http.get<FieldError[]>(environment.claimReviewService + requestUrl);
     }
 
-    updateDiagnosisRemarks(body: DiagnosisRemarksUpdateRequest) {
+    updateDiagnosisRemarks(body: DiagnosisRemarksUpdateRequest) {        
         const requestUrl = `/scrubbing/upload/claim/diagnosis`;
+        return this.http.post(environment.claimReviewService + requestUrl, body);
+    }
+
+    updateClaimDetailsRemarks(body: DiagnosisRemarksUpdateRequest) {
+        console.log(body);
+        
+        const requestUrl = `/scrubbing/upload/claim/details/remarks`;
         return this.http.post(environment.claimReviewService + requestUrl, body);
     }
 
