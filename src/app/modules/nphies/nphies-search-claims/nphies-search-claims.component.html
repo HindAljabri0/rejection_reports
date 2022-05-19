@@ -190,9 +190,9 @@
 
                     <td class="actions">
                       <ng-container
-                        *ngIf="claim.claimId && ((showColumns(selectedCardKey,claim.status) && claim.claimResponseId && claim.status != 'Queued' && showCancelAll === true) || claimIsEditable(claim.status) || claimIsCancelled(claim.status) || claimIsDeletable(claim.status))">
+                        *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status) || claimIsCancelled(claim.status) || claimIsDeletable(claim.status))">
                         <mat-menu #moreMenu="matMenu" xPosition="before">
-                          <ng-container *ngIf="showColumns(selectedCardKey,claim.status) && claim.claimResponseId && claim.status != 'Queued' && showCancelAll === true">
+                          <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
                             <button mat-menu-item
