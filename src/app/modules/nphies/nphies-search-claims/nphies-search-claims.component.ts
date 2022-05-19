@@ -1521,11 +1521,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                       `Your claims deleted successfully.`,
                       false))
                     .subscribe(afterColse => {
-                      const uploadId=this.params.uploadId;
-                      
+                      const uploadId = this.params.uploadId;
+
                       if (this.selectedClaims.length == this.summaries[0].totalClaims) {
                         this.router.navigate(['/nphies/uploads']);
-                      }else{
+                      } else {
                         this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
                           queryParams: { uploadId }
                         }).then(() => {

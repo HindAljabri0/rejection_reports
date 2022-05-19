@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject, Subject } from 'rxjs';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 
 @Component({
@@ -231,40 +232,49 @@ export class PhysiciansComponent implements OnInit {
   }
 
   DeletePhysician(physicianId) {
-    this.sharedServices.loadingChanged.next(false);
-    this.nphiesConfigurationsService.deletePhysician(this.sharedServices.providerId, physicianId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          // tslint:disable-next-line:max-line-length
-          this.dialogService.showMessage('Success:', body.message, 'success', true, 'OK');
-          this.getData();
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Physician?',
+        `This will delete physician with ID: ${physicianId}. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.sharedServices.loadingChanged.next(false);
+          this.nphiesConfigurationsService.deletePhysician(this.sharedServices.providerId, physicianId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              if (event.status === 200) {
+                const body: any = event.body;
+                // tslint:disable-next-line:max-line-length
+                this.dialogService.showMessage('Success:', body.message, 'success', true, 'OK');
+                this.getData();
+              }
+              this.sharedServices.loadingChanged.next(false);
+            }
+      
+          }, error => {
+            this.sharedServices.loadingChanged.next(false);
+            if (error instanceof HttpErrorResponse) {
+              if (error.status === 400) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+              } else if (error.status === 404) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 500) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 503) {
+                const errors: any[] = [];
+                if (error.error.errors) {
+                  error.error.errors.forEach(x => {
+                    errors.push(x);
+                  });
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+                } else {
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+                }
+              }
+            }
+          });
         }
-        this.sharedServices.loadingChanged.next(false);
-      }
-
-    }, error => {
-      this.sharedServices.loadingChanged.next(false);
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
-        } else if (error.status === 503) {
-          const errors: any[] = [];
-          if (error.error.errors) {
-            error.error.errors.forEach(x => {
-              errors.push(x);
-            });
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
-          } else {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
-          }
-        }
-      }
-    });
+      });
   }
 
 }
