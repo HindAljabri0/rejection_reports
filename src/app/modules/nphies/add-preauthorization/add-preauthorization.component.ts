@@ -183,6 +183,7 @@ export class AddPreauthorizationComponent implements OnInit {
   currentOpenItem: number = null;
 
   claimType: string;
+  defualtPageMode = "CREATE";
 
   constructor(
     private sharedDataService: SharedDataService,
