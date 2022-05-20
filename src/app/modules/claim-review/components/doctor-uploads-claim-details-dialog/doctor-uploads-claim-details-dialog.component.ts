@@ -80,6 +80,10 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
 
   diagRemarksfocusOut(diagnosis: Diagnosis, remarks: string, coder: boolean, doctor: boolean) {
+    if(this.provClaimNo)
+    {
+      this.initVariables();
+    }
     this.store.dispatch(setDiagnnosisRemarks({
       data: {
         remarks: remarks, coder: coder, doctor: doctor,
@@ -89,6 +93,10 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   claimDetailsRemarksfocusOut(remarks: string) {
+    if(this.provClaimNo)
+    {
+      this.initVariables();
+    }
     this.store.dispatch(setClaimDetailsRemarks({
       data: {
         remarks: remarks, coder: false, doctor: false,
@@ -99,6 +107,10 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   markAsDone() {
+    if(this.provClaimNo)
+    {
+      this.initVariables();
+    }
     const isDoctor = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor
     this.store.dispatch(markAsDone({
       data: {

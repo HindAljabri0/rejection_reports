@@ -43,13 +43,13 @@
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
                                             <input value="{{diag.doctorRemarks}}" type="text" class="form-control"
-                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)" />
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)" maxlength="100"/>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
                                             <input value="{{diag.coderRemarks}}" type="text" class="form-control"
-                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)" />
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)" maxlength="100"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -396,7 +396,7 @@
     <div class="form-group">
         <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review"
             placeholder="Enter doctor's remarks here..."
-            (focusout)="claimDetailsRemarksfocusOut($event.target.value)" />
+            (focusout)="claimDetailsRemarksfocusOut($event.target.value)" maxlength="100"/>
     </div>
 </div>
 
