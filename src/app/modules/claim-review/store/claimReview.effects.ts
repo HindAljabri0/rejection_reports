@@ -7,8 +7,9 @@ import { catchError, filter, map, switchMap, withLatestFrom } from "rxjs/operato
 import { AuthService } from "src/app/services/authService/authService.service";
 import { SharedServices } from "src/app/services/shared.services";
 import { UploadsPage } from "../models/claimReviewState.model";
+import { claimScrubbing } from "../models/ClaimScrubbing.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { loadSingleClaim, loadSingleClaimErrors, loadUploadsUnderReviewOfSelectedTab, markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
+import { loadSingleClaim, loadSingleClaimErrors, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setMarkAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -88,16 +89,6 @@ export class ClaimReviewEffects {
         ofType(setDiagnnosisRemarks),
         switchMap(data => this.claimReviewService.updateDiagnosisRemarks(data.data).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
-            // map(listOfErrs => {
-                // console.log('claim errors listOfErrs: ', listOfErrs);
-                // this.sharedServices.loadingChanged.next(false);
-                // return setSingleClaimErrors({errors: listOfErrs})
-            // })
-            // ,
-            // catchError(errorResponse => {
-            //     this.sharedServices.loadingChanged.next(false);
-            //     // return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
-            // })
         )),
     ), {dispatch: false});
 
@@ -110,18 +101,54 @@ export class ClaimReviewEffects {
 
     onMarkClaimAsDone$ = createEffect(() => this.actions$.pipe(
         ofType(markAsDone),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
         switchMap(data => this.claimReviewService.markClaimAsDone(data.data).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
-            // map(listOfErrs => {
-                // console.log('claim errors listOfErrs: ', listOfErrs);
-                // this.sharedServices.loadingChanged.next(false);
-                // return setSingleClaimErrors({errors: listOfErrs})
-            // })
-            // ,
-            // catchError(errorResponse => {
-            //     this.sharedServices.loadingChanged.next(false);
-            //     // return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
-            // })
+            map(data => {
+                this.sharedServices.loadingChanged.next(false);
+                return setMarkAsDoneReturn({claimDetails : data});
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ), {dispatch: false});
+
+    onMarkClaimAsDoneAll$ = createEffect(() => this.actions$.pipe(
+        ofType(markAsDoneAll),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.markClaimAsDoneAll(data.data).pipe(
+            map(data => {
+                this.sharedServices.loadingChanged.next(false);
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ), {dispatch: false});
+
+    onMarkAsDoneSelected$ = createEffect(() => this.actions$.pipe(
+        ofType(markAsDoneSelected),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.markClaimAsDoneSelected(data.data.uploadId,data.data.provClaimNo).pipe(
+            map(data => {
+                this.sharedServices.loadingChanged.next(false);
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
         )),
     ), {dispatch: false});
 }
