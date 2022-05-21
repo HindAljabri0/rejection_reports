@@ -9,7 +9,7 @@ import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
-import { loadSingleClaim, loadSingleClaimErrors } from '../../store/claimReview.actions';
+import { loadSingleClaim, loadSingleClaimErrors, markAsDoneAll, markAsDoneSelected } from '../../store/claimReview.actions';
 // import { loadSingleClaim } from "../claim-review/store/claimReview.actions";
 // import * as actions from '../../store/claimReview.actions';
 
@@ -112,10 +112,32 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       data: {
-        uploadId: this.uploadId
+        uploadId: this.uploadId,
+        provClaimNo: provClaimNo
       }
     });
   }
 
-}
+  saveMarkAsDone() {
+    if(this.allCheckBoxIsChecked && this.allCheckBoxIsCheckedForPagination)
+    {
+      this.store.dispatch(markAsDoneAll({
+        data: {
+          coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
+          doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+          provClaimNo: null, uploadId: this.uploadId,
+          userName: this.authService.getUserName()
+        }
+      }));
+    }else{
+      console.log(this.selectedClaimNumberIds);
+      this.store.dispatch(markAsDoneSelected({
+        data: {
+          uploadId: this.uploadId,
+          provClaimNo: this.selectedClaimNumberIds
+        }
+      }));
+    }
+  }
 
+}

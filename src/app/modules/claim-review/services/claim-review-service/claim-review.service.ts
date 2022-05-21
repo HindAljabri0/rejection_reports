@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { environment } from 'src/environments/environment';
+import { claimScrubbing } from '../../models/ClaimScrubbing.model';
 import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone } from '../../store/claimReview.reducer';
 
 
@@ -49,6 +50,16 @@ export class ClaimReviewService {
 
     markClaimAsDone(body: MarkAsDone) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done`;
+        return this.http.post<claimScrubbing>(environment.claimReviewService + requestUrl, body);
+    }
+
+    markClaimAsDoneAll(body: MarkAsDone) {
+        const requestUrl = `/scrubbing/upload/claim/mark-as-done/all`;
         return this.http.post(environment.claimReviewService + requestUrl, body);
+    }
+
+    markClaimAsDoneSelected(uploadId : number, provClaimNo : string[]) {
+        const requestUrl = `/scrubbing/upload/claim/mark-as-done/selected`;
+        return this.http.post(environment.claimReviewService + requestUrl, {"uploadId" : uploadId,"provClaimNo": provClaimNo});
     }
 }
