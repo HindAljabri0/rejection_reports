@@ -7,15 +7,15 @@ import { catchError, filter, map, switchMap, withLatestFrom } from "rxjs/operato
 import { AuthService } from "src/app/services/authService/authService.service";
 import { SharedServices } from "src/app/services/shared.services";
 import { UploadsPage } from "../models/claimReviewState.model";
+import { claimScrubbing } from "../models/ClaimScrubbing.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { loadSingleClaim, loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
+import { loadSingleClaim, loadSingleClaimErrors, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setMarkAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
 export class ClaimReviewEffects {
 
     constructor(private actions$: Actions, private authService: AuthService, private store: Store, private claimReviewService: ClaimReviewService, private sharedServices: SharedServices) { }
-    // this.sharedServices.loadingChanged.next(false);
 
     onLoadingUploadsUnderReviewOfSelectedTab$ = createEffect(() => this.actions$.pipe(
         ofType(loadUploadsUnderReviewOfSelectedTab),
@@ -43,15 +43,16 @@ export class ClaimReviewEffects {
 
     onLoadSingleClaim$ = createEffect(() => this.actions$.pipe(
         ofType(loadSingleClaim),
-        // map(values => (console.log('values', values), this.sharedServices.loadingChanged.next(true), { tabName: values[0][0][1], pageControl: values[0][1], hasContent: values[1] })),
-
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
         switchMap(data => this.claimReviewService.selectSingleClaim(
             data.data.uploadId,
             data.data.provClaimNo
         ).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(response => {
-                console.log('response', response);
                 this.sharedServices.loadingChanged.next(false);
                 return setSingleClaim(response)
             }),
@@ -61,4 +62,93 @@ export class ClaimReviewEffects {
             })
         )),
     ));
+
+    onLoadSingleClaimErrors$ = createEffect(() => this.actions$.pipe(
+        ofType(loadSingleClaimErrors),
+        map(data =>{
+            // this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.selectSingleClaimErrors(
+            data.data.uploadId,
+            data.data.provClaimNo
+        ).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(listOfErrs => {
+                // this.sharedServices.loadingChanged.next(false);
+                return setSingleClaimErrors({errors: listOfErrs})
+            }),
+            catchError(errorResponse => {
+                // this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ));
+
+    onSetDiagnnosisRemarks$ = createEffect(() => this.actions$.pipe(
+        ofType(setDiagnnosisRemarks),
+        switchMap(data => this.claimReviewService.updateDiagnosisRemarks(data.data).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+        )),
+    ), {dispatch: false});
+
+    OnSetClaimDetailsRemarks$ = createEffect(() => this.actions$.pipe(
+        ofType(setClaimDetailsRemarks),
+        switchMap(data => this.claimReviewService.updateClaimDetailsRemarks(data.data).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+        )),
+    ), {dispatch: false});
+
+    onMarkClaimAsDone$ = createEffect(() => this.actions$.pipe(
+        ofType(markAsDone),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.markClaimAsDone(data.data).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(data => {
+                this.sharedServices.loadingChanged.next(false);
+                return setMarkAsDoneReturn({claimDetails : data});
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ), {dispatch: false});
+
+    onMarkClaimAsDoneAll$ = createEffect(() => this.actions$.pipe(
+        ofType(markAsDoneAll),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.markClaimAsDoneAll(data.data).pipe(
+            map(data => {
+                this.sharedServices.loadingChanged.next(false);
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ), {dispatch: false});
+
+    onMarkAsDoneSelected$ = createEffect(() => this.actions$.pipe(
+        ofType(markAsDoneSelected),
+        map(data =>{
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.markClaimAsDoneSelected(data.data.uploadId,data.data.provClaimNo).pipe(
+            map(data => {
+                this.sharedServices.loadingChanged.next(false);
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
+        )),
+    ), {dispatch: false});
 }

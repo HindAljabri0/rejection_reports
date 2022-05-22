@@ -24,4 +24,24 @@ export class Period {
         }
         return '';
     }
+
+    getValue(): number {
+        if (this.years != null && !Number.isNaN(this.years)) {
+            return this.years
+        } else if (this.months != null && !Number.isNaN(this.months)) {
+            return this.months
+        } else {
+            return this.days
+        }
+    }
+
+    getType(): string {
+        if (this.years != null && !Number.isNaN(this.years)) {
+            return 'years'
+        } else if (this.months != null && !Number.isNaN(this.months)) {
+            return 'months'
+        } else {
+            return 'days'
+        }
+    }
 }
