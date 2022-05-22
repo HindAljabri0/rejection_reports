@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { environment } from 'src/environments/environment';
 import { claimScrubbing } from '../../models/ClaimScrubbing.model';
-import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone } from '../../store/claimReview.reducer';
+import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from '../../store/claimReview.reducer';
 
 
 @Injectable({
@@ -21,9 +21,9 @@ export class ClaimReviewService {
         });
     }
 
-    selectDetailView(uploadId: number, pageNumber: number, pageSize: number, isDoctor: boolean, isCoder: boolean) {
+    selectDetailView(uploadId: number, body: UploadClaimsList, data: any) {
         const requestUrl = `/scrubbing/upload/` + uploadId + `/claim`;
-        return this.http.post(environment.claimReviewService + requestUrl, { "page": pageNumber, "pageSize": pageSize, "doctor": isDoctor, "coder": isCoder });
+        return this.http.post(environment.claimReviewService + requestUrl, body);
     }
     
     selectSingleClaim(uploadId: number, provClaimNo: string) {
@@ -58,8 +58,8 @@ export class ClaimReviewService {
         return this.http.post(environment.claimReviewService + requestUrl, body);
     }
 
-    markClaimAsDoneSelected(uploadId : number, provClaimNo : string[]) {
+    markClaimAsDoneSelected(body: MarkAsDone) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done/selected`;
-        return this.http.post(environment.claimReviewService + requestUrl, {"uploadId" : uploadId,"provClaimNo": provClaimNo});
+        return this.http.post(environment.claimReviewService + requestUrl, body);
     }
 }

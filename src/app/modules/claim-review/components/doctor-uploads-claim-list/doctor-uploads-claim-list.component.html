@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let data of claimSummary; let i = index">
+                    <ng-container *ngFor="let data of ($claimSummary | async); let i = index">
                         <tr class="align-middle" >
                             <td>
                                 <mat-checkbox class="grid-checkbox"
