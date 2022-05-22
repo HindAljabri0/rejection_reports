@@ -364,7 +364,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       documentId: this.otherDataModel.beneficiary.documentId,
       documentType: this.otherDataModel.beneficiary.documentType,
       fullName: this.otherDataModel.beneficiary.fullName,
-      gender: this.otherDataModel.beneficiary.gender,
+      gender: this.otherDataModel.beneficiary.gender.toUpperCase(),
       insurancePlanMemberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
       insurancePlanCoverageType: this.otherDataModel.beneficiary.insurancePlan.coverageType,
       insurancePayerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
