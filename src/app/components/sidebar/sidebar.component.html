@@ -386,7 +386,7 @@
           </a>
           <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>
-        <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin)">
+        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
           <a routerLink="/nphies/physicians" routerLinkActive="is-active">
             <span class="text">Physicians</span>
           </a>
