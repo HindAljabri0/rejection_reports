@@ -11,8 +11,9 @@ export interface ClaimReviewState {
     }
     selectedUploadsTab: 'new' | 'inProgress' | 'completed'
     singleClaim: Claim, 
-    claimErrors: {errors: FieldError[] }
-    uploadClaimsSummary: ClaimSummary[]
+    claimErrors: {errors: FieldError[] },
+    uploadClaimsSummary: ClaimSummary[],
+    uploadClaimsSummaryPageControls: PageControls
 }
 
 
@@ -37,6 +38,16 @@ export class UploadsPage {
             uploadsPage.uploads = content.map(incomingUpload => Upload.fromBackendResponse(incomingUpload));
         }
         return uploadsPage;
+    }
+
+    static pageControlfromBackendResponse(response: any) {
+        const body = response;
+        const pageNumber = body.number;
+        const pageSize = body.size;
+        let pageControls = new PageControls(pageNumber, pageSize);
+        pageControls.totalPages = body.totalPages;
+        pageControls.totalUploads = body.totalElements;
+        return pageControls;
     }
 }
 

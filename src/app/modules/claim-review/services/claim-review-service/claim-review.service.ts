@@ -21,7 +21,7 @@ export class ClaimReviewService {
         });
     }
 
-    selectDetailView(uploadId: number, body: UploadClaimsList, data: any) {
+    selectDetailView(uploadId: number, body: UploadClaimsList) {
         const requestUrl = `/scrubbing/upload/` + uploadId + `/claim`;
         return this.http.post(environment.claimReviewService + requestUrl, body);
     }

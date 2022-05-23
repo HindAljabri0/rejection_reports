@@ -1,6 +1,7 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { ClaimReviewState, UploadsPage } from "../models/claimReviewState.model";
-import { loadUploadsUnderReviewOfSelectedTab, markAsDoneSelected, setLoadUploadClaimsList, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
+import { Claim } from "src/app/claim-module-components/models/claim.model";
+import { ClaimReviewState, PageControls, UploadsPage } from "../models/claimReviewState.model";
+import { loadUploadsUnderReviewOfSelectedTab, setLoadUploadClaimsList, setMarkAllAsDone, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
 
 const initState: ClaimReviewState = {
@@ -10,9 +11,10 @@ const initState: ClaimReviewState = {
         completed: new UploadsPage(0, 10)
     },
     selectedUploadsTab: 'new',
-    claimErrors: null,
-    singleClaim: null,
-    uploadClaimsSummary: null
+    claimErrors: {errors: []},
+    singleClaim: new Claim('INPATIENT', '0'),
+    uploadClaimsSummary: null,
+    uploadClaimsSummaryPageControls: new PageControls(0, 10)
 }
 
 
@@ -54,19 +56,24 @@ const _claimReviewReducer = createReducer(
     }),
     on(setSingleClaim, (state, claim) => {
         return ({ ...state, singleClaim: claim });
-    })
-    ,
+    }),
     on(setSingleClaimErrors, (state, errors) => {
         return ({ ...state, claimErrors: errors });
-    })
-    , 
+    }),
     on(setMarkSelectedAsDoneReturn, (state, markAsDone) => {
-        console.log('markAsDone.selectedClaims', markAsDone.selectedClaims);
-        return ({ ...state });
-    })
-    , 
+        let newUploadClaimsSummary = state.uploadClaimsSummary.map(claimSummary => markAsDone.selectedClaims.includes(claimSummary.provClaimNo) ? { ...claimSummary, claimReviewStatus: '1' } : claimSummary)
+        return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
+    }),
+    on(setMarkAllAsDone, (state, markAllAsDone) => {
+        let newUploadClaimsSummary = state.uploadClaimsSummary.map(claimSummary => { return { ...claimSummary, claimReviewStatus: '1' } })
+        return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
+    }),
     on(setLoadUploadClaimsList, (state, claimSummary) => {
-        return ({ ...state, UploadClaimsSummary: claimSummary.data.uploadClaimSummaryList.content});
+        return ({
+            ...state,
+            uploadClaimsSummary: claimSummary.data.uploadClaimSummaryList.content
+            , uploadClaimsSummaryPageControls: claimSummary.data.uploadClaimSummaryList.pageControl
+        });
     })
 
 );
@@ -89,6 +96,7 @@ export const getSingleClaimServices = createSelector(claimReviewStateSelector, (
 export const getSelectedIllnessCodes = createSelector(claimReviewStateSelector, (state) => state.singleClaim && state.singleClaim.caseInformation && state.singleClaim.caseInformation.caseDescription && state.singleClaim.caseInformation.caseDescription.illnessCategory ? state.singleClaim.caseInformation.caseDescription.illnessCategory.inllnessCode : []);
 export const getClaimErrors = createSelector(claimReviewStateSelector, (state) => state.claimErrors);
 export const getUploadClaimsSummary = createSelector(claimReviewStateSelector, (state) => state.uploadClaimsSummary);
+export const getUploadClaimsSummaryPageControls = createSelector(claimReviewStateSelector, (state) => state.uploadClaimsSummaryPageControls);
 
 
 
@@ -96,4 +104,4 @@ export const getUploadClaimsSummary = createSelector(claimReviewStateSelector, (
 export type FieldError = { fieldName?: string, code?: string, description?: string };
 export type DiagnosisRemarksUpdateRequest = { diagnosisId: number, provClaimNo: string, uploadId: number, remarks?: string, coder: boolean, doctor: boolean };
 export type MarkAsDone = { provClaimNo?: string, uploadId: number, coder: boolean, doctor: boolean, userName: string, provClaimNoList?: string[] };
-export type UploadClaimsList = {page: number, pageSize: number, doctor: boolean, coder: boolean};
+export type UploadClaimsList = { page: number, pageSize: number, doctor: boolean, coder: boolean };

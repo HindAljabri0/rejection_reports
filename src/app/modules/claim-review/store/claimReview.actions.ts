@@ -4,7 +4,7 @@ import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { UploadsPage } from "../models/claimReviewState.model";
 import { claimScrubbing } from "../models/ClaimScrubbing.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
-import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList,  } from "./claimReview.reducer";
+import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from "./claimReview.reducer";
 
 
 export const uploadsReviewPageAction = createAction("[ Claims Review ] page changing action in uploads page", props<PageEvent>());
@@ -20,6 +20,7 @@ export const loadSingleClaimErrors = createAction("[ Claims Review ] load claim 
 export const setSingleClaimErrors = createAction("[ Claims Review ] set claim errors", props<{errors: FieldError[]}>());
 export const setMarkAsDoneReturn = createAction("[ Claims Review ] set Mark As Done Return", props<{claimDetails: claimScrubbing}>());
 export const setMarkSelectedAsDoneReturn = createAction("[ Claims Review ] set Mark Selected As Done Return", props<{selectedClaims: string[]}>());
+export const setMarkAllAsDone = createAction("[ Claims Review ] set Mark All As Done ");
 
 
 export const setDiagnnosisRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
