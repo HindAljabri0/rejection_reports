@@ -1337,7 +1337,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (!this.checkItemCareTeams()) {
       hasError = true;
     }
-    console.log("Validation result = " + this.checkCareTeamValidation());
+    
     if (this.checkCareTeamValidation()) {
       hasError = true;
     }

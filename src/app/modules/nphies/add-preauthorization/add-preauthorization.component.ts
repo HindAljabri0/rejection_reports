@@ -1250,7 +1250,22 @@ export class AddPreauthorizationComponent implements OnInit {
       return true;
     }
   }
-
+  checkCareTeamValidation() {
+    let hasError = false;
+    if (this.CareTeams.length !== 0) {
+      this.CareTeams.forEach(element => {
+        console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
+        if (element.physicianCode == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
+          element.error = "Please Select Valid Practitioner";
+          hasError = true;
+        } else {
+          element.error = "";
+        }
+      });
+      console.log(hasError);
+      return hasError;
+    }
+  }
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1321,7 +1336,10 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
-
+    if (this.checkCareTeamValidation()) {
+      hasError = true;
+    }
+    
     if (!this.checkDiagnosisErrorValidation()) {
       hasError = true;
     }
