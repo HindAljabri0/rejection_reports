@@ -60,6 +60,6 @@ export class ClaimReviewService {
 
     markClaimAsDoneSelected(uploadId : number, provClaimNo : string[]) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done/selected`;
-        return this.http.post(environment.claimReviewService + requestUrl, {"uploadId" : uploadId,"provClaimNo": provClaimNo});
+        return this.http.post(environment.claimReviewService + requestUrl, {"uploadId" : uploadId,"provClaimNoList": provClaimNo});
     }
 }
