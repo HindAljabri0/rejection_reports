@@ -183,7 +183,7 @@ export class AddPreauthorizationComponent implements OnInit {
   currentOpenItem: number = null;
 
   claimType: string;
-  defualtPageMode = "CREATE";
+  defualtPageMode = "";
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -205,6 +205,9 @@ export class AddPreauthorizationComponent implements OnInit {
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
       this.setReuseValues();
+      this.defualtPageMode ="";
+    }else{
+      this.defualtPageMode = "CREATE"
     }
   }
 

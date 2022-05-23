@@ -1,7 +1,6 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { claimReview } from "../models/claim-view.model";
 import { ClaimReviewState, UploadsPage } from "../models/claimReviewState.model";
-import { loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
+import { loadUploadsUnderReviewOfSelectedTab, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
 
 const initState: ClaimReviewState = {
@@ -11,7 +10,8 @@ const initState: ClaimReviewState = {
         completed: new UploadsPage(0, 10)
     },
     selectedUploadsTab: 'new',
-    singleClaim: null
+    claimErrors: null,
+    singleClaim: null,
 }
 
 
@@ -52,7 +52,11 @@ const _claimReviewReducer = createReducer(
             return ({ ...state, uploads: { ...state.uploads, completed: { ...state.uploads.completed, pageControls: { ...state.uploads.completed.pageControls, errorMessage: message, isLoading: false } } } });
     }),
     on(setSingleClaim, (state, claim) => {
-            return ({ ...state, singleClaim: claim});
+        return ({ ...state, singleClaim: claim });
+    })
+    ,
+    on(setSingleClaimErrors, (state, errors) => {
+        return ({ ...state, claimErrors: errors });
     })
 
 );
@@ -69,7 +73,15 @@ export const completedClaimsUnderReviewPage = createSelector(claimReviewStateSel
 export const selectedUploadsTab = createSelector(claimReviewStateSelector, (state) => state.selectedUploadsTab);
 export const currentSelectedTabPageControls = createSelector(claimReviewStateSelector, (state) => state.uploads[state.selectedUploadsTab].pageControls);
 export const currentSelectedTabHasContent = createSelector(claimReviewStateSelector, (state) => state.uploads[state.selectedUploadsTab].uploads != null && state.uploads[state.selectedUploadsTab].uploads.length > 0);
-export const getSingleClaim = createSelector(claimReviewStateSelector, (state) => state.singleClaim );
+export const getSingleClaim = createSelector(claimReviewStateSelector, (state) => state.singleClaim);
+
+export const getSingleClaimServices = createSelector(claimReviewStateSelector, (state) => state.singleClaim ? state.singleClaim.invoice.map(invoice => invoice.service ? invoice.service : []).reduce((serviceList1, serviceList2) => { let res = []; res.push(...serviceList1); res.push(...serviceList2); return res; }) : []);
+export const getSelectedIllnessCodes = createSelector(claimReviewStateSelector, (state) => state.singleClaim && state.singleClaim.caseInformation && state.singleClaim.caseInformation.caseDescription && state.singleClaim.caseInformation.caseDescription.illnessCategory ? state.singleClaim.caseInformation.caseDescription.illnessCategory.inllnessCode : []);
+export const getClaimErrors = createSelector(claimReviewStateSelector, (state) => state.claimErrors);
 
 
-export const getSingleClaimServices = createSelector(claimReviewStateSelector, (state) => state.singleClaim ? state.singleClaim.invoice.map(invoice => invoice.service ? invoice.service : []).reduce((serviceList1, serviceList2) => { let res = []; res.push(...serviceList1); res.push(...serviceList2); return res; }) : [] );
+
+
+export type FieldError = { fieldName?: string, code?: string, description?: string };
+export type DiagnosisRemarksUpdateRequest = { diagnosisId: number, provClaimNo: string, uploadId: number, remarks?: string, coder: boolean, doctor: boolean };
+export type MarkAsDone = { provClaimNo: string, uploadId: number, coder: boolean, doctor: boolean, userName: string };

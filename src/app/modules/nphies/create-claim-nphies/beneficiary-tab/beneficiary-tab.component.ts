@@ -78,7 +78,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
   genders: { Code: string, Name: string }[] = [
     { Code: 'MALE', Name: 'Male' },
     { Code: 'FEMALE', Name: 'Female' },
-    { Code: 'unknown', Name: 'unknown' },
+    { Code: 'UNKNOWN', Name: 'unknown' },
     { Code: 'U', Name: 'Undetermined' },
     { Code: 'N', Name: 'Undifferentiated' },
     { Code: 'A', Name: 'Sex changed to Male' },
