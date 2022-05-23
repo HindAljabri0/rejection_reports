@@ -1,5 +1,6 @@
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { FieldError } from "../store/claimReview.reducer";
+import { ClaimSummary } from "./claimSummary.mocel";
 import { Upload } from "./upload.model";
 
 export interface ClaimReviewState {
@@ -11,6 +12,7 @@ export interface ClaimReviewState {
     selectedUploadsTab: 'new' | 'inProgress' | 'completed'
     singleClaim: Claim, 
     claimErrors: {errors: FieldError[] }
+    uploadClaimsSummary: ClaimSummary[]
 }
 
 

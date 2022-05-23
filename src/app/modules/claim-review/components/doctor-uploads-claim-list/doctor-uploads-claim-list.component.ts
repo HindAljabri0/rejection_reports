@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange, MatDialog, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
@@ -9,10 +10,10 @@ import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
-import { loadSingleClaim, loadSingleClaimErrors, markAsDoneAll, markAsDoneSelected } from '../../store/claimReview.actions';
+import { loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, markAsDoneAll, markAsDoneSelected } from '../../store/claimReview.actions';
+import { getUploadClaimsSummary } from '../../store/claimReview.reducer';
 // import { loadSingleClaim } from "../claim-review/store/claimReview.actions";
 // import * as actions from '../../store/claimReview.actions';
-
 import {
   DoctorUploadsClaimDetailsDialogComponent
 } from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
@@ -26,13 +27,13 @@ import {
 export class DoctorUploadsClaimListComponent implements OnInit {
 
   public uploadId: number;
-  public claimSummary: ClaimSummary[];
-  public visitedPages: number[] = [];
+  $claimSummary: Observable<ClaimSummary[]>;
+  // public visitedPages: number[] = [];
   selectedClaimNumberIds: string[] = new Array();
   userPrivileges: UserPrivileges = initState.userPrivileges;
 
   allCheckBoxIsChecked: boolean;
-  private allCheckBoxIsCheckedForPagination: boolean;
+  // private allCheckBoxIsCheckedForPagination: boolean;
   allCheckBoxIsIndeterminate: boolean;
 
   pageControl: PageControls;
@@ -42,7 +43,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
 
   ngOnInit() {
     this.uploadId = this.activatedRoute.snapshot.params.uploadId;
-    console.log('this.uploadId in doctor upload claim list component', this.uploadId );
     this.pageControl.pageSize = 10;
     this.pageControl.pageNumber = 0;
     this.refreshData();
@@ -51,29 +51,43 @@ export class DoctorUploadsClaimListComponent implements OnInit {
 
   refreshData() {
     this.sharedServices.loadingChanged.next(true);
-
-    this.claimReviewService.selectDetailView(this.uploadId, this.pageControl.pageNumber, this.pageControl.pageSize, this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor, this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder).subscribe(response => {
-      if (response instanceof Object) {
-        this.claimSummary = response["content"] as ClaimSummary[];
-        this.pageControl.totalPages = response["totalPages"];
-        this.pageControl.totalUploads = response["totalElements"];
-        if (this.allCheckBoxIsCheckedForPagination && !this.visitedPages.includes(this.pageControl.pageNumber)) {
-          this.checkAllClaims(this.claimSummary);
-          this.visitedPages.push(this.pageControl.pageNumber);
+    this.store.dispatch(loadUploadClaimsList({
+      data: {
+        uploadId: this.uploadId,
+        payload: {
+          page: this.pageControl.pageNumber,
+          pageSize: this.pageControl.pageSize,
+          doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+          coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder
         }
-        this.sharedServices.loadingChanged.next(false);
       }
-    });
+    }))
+    this.$claimSummary = this.store.select(getUploadClaimsSummary)
+    // this.$claimSummary.subscribe(result =>{
+    // })
+    // this.claimReviewService.selectDetailView(this.uploadId, this.pageControl.pageNumber, this.pageControl.pageSize, this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor, this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder).subscribe(response => {
+    //   if (response instanceof Object) {
+    //     this.claimSummary = response["content"] as ClaimSummary[];
+    //     this.pageControl.totalPages = response["totalPages"];
+    //     this.pageControl.totalUploads = response["totalElements"];
+    //     // if (this.allCheckBoxIsCheckedForPagination && !this.visitedPages.includes(this.pageControl.pageNumber)) {
+    //     //   this.checkAllClaims(this.claimSummary);
+    //     //   this.visitedPages.push(this.pageControl.pageNumber);
+    //     // }
+    //     this.sharedServices.loadingChanged.next(false);
+    //   }
+    // });
   }
+
 
   toggleAllClaims(event: MatCheckboxChange) {
     if (event.checked) {
       this.allCheckBoxIsChecked = true;
-      this.allCheckBoxIsCheckedForPagination = true;
-      this.checkAllClaims(this.claimSummary);
+      // this.allCheckBoxIsCheckedForPagination = true;
+      // this.checkAllClaims(this.claimSummary);
     } else {
       this.allCheckBoxIsChecked = false;
-      this.allCheckBoxIsCheckedForPagination = false;
+      // this.allCheckBoxIsCheckedForPagination = false;
       this.selectedClaimNumberIds.length = 0;
     }
   }
@@ -107,8 +121,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   openDoctorClaimViewDialog(provClaimNo: string) {
-    this.store.dispatch(loadSingleClaim({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
-    this.store.dispatch(loadSingleClaimErrors({data: {uploadId: this.uploadId, provClaimNo: provClaimNo}}))
+    this.store.dispatch(loadSingleClaim({ data: { uploadId: this.uploadId, provClaimNo: provClaimNo } }))
+    this.store.dispatch(loadSingleClaimErrors({ data: { uploadId: this.uploadId, provClaimNo: provClaimNo } }))
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       data: {
@@ -119,8 +133,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   saveMarkAsDone() {
-    if(this.allCheckBoxIsChecked && this.allCheckBoxIsCheckedForPagination)
-    {
+    if (this.allCheckBoxIsChecked) {
       this.store.dispatch(markAsDoneAll({
         data: {
           coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
@@ -129,12 +142,15 @@ export class DoctorUploadsClaimListComponent implements OnInit {
           userName: this.authService.getUserName()
         }
       }));
-    }else{
+    } else {
       console.log(this.selectedClaimNumberIds);
       this.store.dispatch(markAsDoneSelected({
         data: {
           uploadId: this.uploadId,
-          provClaimNo: this.selectedClaimNumberIds
+          provClaimNoList: this.selectedClaimNumberIds,
+          coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
+          doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+          userName: this.authService.getUserName()
         }
       }));
     }
