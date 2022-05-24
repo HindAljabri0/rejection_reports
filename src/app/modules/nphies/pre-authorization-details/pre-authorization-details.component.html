@@ -121,6 +121,18 @@
       <p class="text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
     </div>
   </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Cancellation Status</label>
+      <p class="text-primary">{{data.cancelStatus ? data.cancelStatus : '-'}}</p>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Cancellation Status Reason</label>
+      <p class="text-primary">{{data.cancelResponseReason ? data.cancelResponseReason : '-'}}</p>
+    </div>
+  </div>
 </div>
 
 <!-- payment info start -->
@@ -340,6 +352,28 @@
   </div>
 </div>
 <!-- beneficiary details end -->
+
+<!-- Cancellation Errors start -->
+<h5 class="form-title" *ngIf="data.cancelErrors">
+  Cancellation Errors
+</h5>
+<div class="table-responsive" *ngIf="data.cancelErrors">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let error of data.cancelErrors">
+        <td>{{error.code}}</td>
+        <td>{{error.error}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Cancellation Errors end -->
 
 <!-- process notes start -->
 <h5 class="form-title" *ngIf="data.processNotes">
