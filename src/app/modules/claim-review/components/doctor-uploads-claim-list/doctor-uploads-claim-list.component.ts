@@ -28,6 +28,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   selectedClaimNumberIds: string[] = new Array();
   userPrivileges: UserPrivileges = initState.userPrivileges;
 
+  isDialogOpen: boolean = false
+  dialogClaimIndex = 0
+
   allCheckBoxIsChecked: boolean;
   allCheckBoxIsIndeterminate: boolean;
 
@@ -42,6 +45,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.refreshData();
     this.$claimSummary.subscribe(claimSummary => {
       this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => data.provClaimNo)] : []
+      if (this.isDialogOpen) {
+        this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex], this.dialogClaimIndex);
+      }
     })
     this.store.select(getUploadClaimsSummaryPageControls).subscribe(pageControl => {
       this.pageControl = { ...pageControl }
@@ -109,17 +115,82 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.refreshData();
   }
 
-  openDoctorClaimViewDialog(provClaimNo: string) {
+  openDoctorClaimViewDialog(provClaimNo: string, index: number) {
+    this.isDialogOpen = true;
+   this.dispatchActions(this.uploadId, provClaimNo)
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       data: {
         uploadId: this.uploadId,
-        provClaimNo: provClaimNo
+        provClaimNo: provClaimNo,
+        pageControl: this.pageControl,
+        index: index
       }
-    });
+    }).afterClosed()
+      .subscribe(action => {
+        this.onCloseDialog(action, index);
+      });;
   }
 
-    markAllAsDone() {
+  onCloseDialog(action: any, index: number) {
+    switch (action) {
+      case 'next': {
+        if ((index + 1) % this.pageControl.pageSize == 0) {
+          this.handlePageEvent({
+            length: this.pageControl.totalUploads,
+            pageIndex: this.pageControl.pageNumber + 1,
+            pageSize: this.pageControl.pageSize,
+          })
+          this.dialogClaimIndex = 0
+          break;
+        }
+        this.openDoctorClaimViewDialog(this.claimSummaryIds[index + 1], index + 1)
+        break;
+      }
+      case 'prev': {
+        if (index == 0) {
+          this.handlePageEvent({
+            length: this.pageControl.totalUploads,
+            pageIndex: this.pageControl.pageNumber - 1,
+            pageSize: this.pageControl.pageSize
+          })
+          this.dialogClaimIndex = this.pageControl.pageSize - 1
+        break;
+
+        }
+        this.openDoctorClaimViewDialog(this.claimSummaryIds[index - 1], index - 1)
+        break;
+      }
+      case 'first': {
+        this.handlePageEvent({
+          length: this.pageControl.totalUploads,
+          pageIndex: 0,
+          pageSize: this.pageControl.pageSize
+        })
+        this.dialogClaimIndex = 0
+        break;
+      }
+      case 'last': {
+        this.handlePageEvent({
+          length: this.pageControl.totalUploads,
+          pageIndex: this.pageControl.totalPages - 1,
+          pageSize: this.pageControl.pageSize,
+        })
+        this.dialogClaimIndex = (this.pageControl.totalUploads % this.pageControl.pageSize) - 1
+        break;
+      }
+      default: {
+        this.isDialogOpen = false
+      }
+    }
+  }
+
+  dispatchActions(uploadId: number, provClaimNo: string) {
+    this.store.dispatch(loadSingleClaim({ data: { uploadId: uploadId, provClaimNo: provClaimNo } }))
+    this.store.dispatch(loadSingleClaimErrors({ data: { uploadId: uploadId, provClaimNo: provClaimNo } }))
+  }
+
+  markAllAsDone() {
     this.store.dispatch(markAsDoneAll({
       data: {
         coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
@@ -129,8 +200,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       }
     }));
   }
-  
-    markSelectedAsDone() {
+
+  markSelectedAsDone() {
     this.store.dispatch(markAsDoneSelected({
       data: {
         uploadId: this.uploadId,
