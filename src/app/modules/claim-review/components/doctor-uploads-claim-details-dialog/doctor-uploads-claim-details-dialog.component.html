@@ -402,18 +402,18 @@
 
 <div class="block-footer sticky">
     <div class="left-block custom-paginator">
-        <button matRipple type="button" title="First Page" (click)="firstTab()">
+        <button matRipple type="button" title="First Claim" (click)="firstClaim()">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Page" (click)="prevTab()">
+        <button matRipple type="button" title="Previous Claim" (click)="prevClaim()">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
-        <p class="page-info">{{selectedTabIndex + 1}}<small>/8</small>
+        <p class="page-info">{{(data.pageControl.pageNumber *  data.pageControl.pageSize) + data.index + 1}}<small>/{{data.pageControl.totalUploads}}</small>
         </p>
-        <button matRipple type="button" title="Next Page" (click)="nextTab()">
+        <button matRipple type="button" title="Next Claim" (click)="nextClaim()">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Page" (click)="lastTab()">
+        <button matRipple type="button" title="Last Claim" (click)="lastClaim()">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>
