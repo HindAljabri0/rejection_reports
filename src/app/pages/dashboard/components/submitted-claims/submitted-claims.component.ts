@@ -22,7 +22,8 @@ export class SubmittedClaimsComponent implements OnInit {
       hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
       borderColor: ['#fff', '#fff', '#fff', '#fff'],
       hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
-      borderWidth: 1
+      borderWidth: 1,
+      data: []
     }
   ];
 
@@ -32,7 +33,30 @@ export class SubmittedClaimsComponent implements OnInit {
       hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
       borderColor: ['#fff', '#fff', '#fff', '#fff'],
       hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
-      borderWidth: 1
+      borderWidth: 1,
+      data: []
+    }
+  ];
+
+  public discountChartData: ChartDataSets[] = [
+    {
+      backgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      borderColor: ['#fff', '#fff', '#fff', '#fff'],
+      hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
+      borderWidth: 1,
+      data: []
+    }
+  ];
+
+  public patientShareChartData: ChartDataSets[] = [
+    {
+      backgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      borderColor: ['#fff', '#fff', '#fff', '#fff'],
+      hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
+      borderWidth: 1,
+      data: []
     }
   ];
 
@@ -42,7 +66,8 @@ export class SubmittedClaimsComponent implements OnInit {
       hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
       borderColor: ['#fff', '#fff', '#fff', '#fff'],
       hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
-      borderWidth: 1
+      borderWidth: 1,
+      data: []
     }
   ];
 
@@ -52,7 +77,8 @@ export class SubmittedClaimsComponent implements OnInit {
       hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
       borderColor: ['#fff', '#fff', '#fff', '#fff'],
       hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
-      borderWidth: 1
+      borderWidth: 1,
+      data: []
     }
   ];
   public doughnutChartType: ChartType = 'doughnut';
@@ -75,8 +101,121 @@ export class SubmittedClaimsComponent implements OnInit {
     this.store.select(getSubmittedClaims).subscribe(summaries => {
       this.summaries = summaries;
 
+      // tslint:disable-next-line:radix
+      if (parseInt(this.summaries.data.all_total) > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.claimsChartData[0].data = this.generateChartData(
+          this.summaries.data.outstanding_total,
+          this.summaries.data.under_process_total,
+          this.summaries.data.paid_total,
+          this.summaries.data.partially_paid_total,
+          this.summaries.data.returend_Total,
+          this.summaries.data.invalid_Total,
+          this.summaries.data.rejected_Total
+        );
+      }
+
+      // tslint:disable-next-line:radix
+      if (parseFloat(this.summaries.data.all_gross) > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.grossChartData[0].data = this.generateChartData(
+          this.summaries.data.outstanding_gross,
+          this.summaries.data.under_process_gross,
+          this.summaries.data.paid_gross,
+          this.summaries.data.partially_paid_gross,
+          this.summaries.data.returend_gross,
+          this.summaries.data.invalid_gross,
+          this.summaries.data.rejected_gross
+        );
+      }
+
+      // tslint:disable-next-line:radix
+      if (parseFloat(this.summaries.data.all_disCount) > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.discountChartData[0].data = this.generateChartData(
+          this.summaries.data.outstanding_disCount,
+          this.summaries.data.under_process_disCount,
+          this.summaries.data.paid_disCount,
+          this.summaries.data.partially_paid_disCount,
+          this.summaries.data.returend_disCount,
+          this.summaries.data.invalid_disCount,
+          this.summaries.data.rejected_disCount
+        );
+      }
+
+
+      // tslint:disable-next-line:radix
+      if (parseFloat(this.summaries.data.all_Patientshar) > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.patientShareChartData[0].data = this.generateChartData(
+          this.summaries.data.outstanding_Patientshare,
+          this.summaries.data.under_process_Patientshare,
+          this.summaries.data.paid_Patientshare,
+          this.summaries.data.partially_paid_Patientshare,
+          this.summaries.data.returend_Patientshare,
+          this.summaries.data.invalid_Patientshare,
+          this.summaries.data.rejected_Patientshare
+        );
+      }
+
+
+      // tslint:disable-next-line:radix
+      if (parseFloat(this.summaries.data.all_netAmount) > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.netChartData[0].data = this.generateChartData(
+          this.summaries.data.outstanding_netAmount,
+          this.summaries.data.under_process_netAmount,
+          this.summaries.data.paid_netAmount,
+          this.summaries.data.partially_paid_netAmount,
+          this.summaries.data.returend_netAmount,
+          this.summaries.data.invalid_netAmount,
+          this.summaries.data.rejected_netAmount
+        );
+      }
+
+
+      // tslint:disable-next-line:radix
+      if (parseFloat(this.summaries.data.all_VatAmount) > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.vatChartData[0].data = this.generateChartData(
+          this.summaries.data.outstanding_VatAmount,
+          this.summaries.data.under_process_VatAmount,
+          this.summaries.data.paid_VatAmount,
+          this.summaries.data.partially_paid_VatAmount,
+          this.summaries.data.returend_VatAmount,
+          this.summaries.data.invalid_VatAmount,
+          this.summaries.data.rejected_VatAmount
+        );
+      }
+
+
     });
   }
+
+
+  generateChartData(outstanding, underProcess, paid, partiallyPaid, returned, invalid, rejected) {
+    const dataValue = [];
+
+    const d1 = this.checkValue(outstanding) + this.checkValue(underProcess);
+    const d2 = this.checkValue(paid);
+    const d3 = this.checkValue(partiallyPaid);
+    const d4 = this.checkValue(returned) + this.checkValue(invalid) + this.checkValue(rejected);
+    dataValue.push(d1);
+    dataValue.push(d2);
+    dataValue.push(d3);
+    dataValue.push(d4);
+
+    return dataValue;
+  }
+
+  checkValue(value) {
+    if (value) {
+      return parseFloat(value);
+    } else {
+      return 0;
+    }
+  }
+
 
 
   getCardName(status: string) {
@@ -117,5 +256,6 @@ export class SubmittedClaimsComponent implements OnInit {
       return result.toFixed(2);
     }
   }
+
 
 }

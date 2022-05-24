@@ -1337,7 +1337,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (!this.checkItemCareTeams()) {
       hasError = true;
     }
-    
+
     if (this.checkCareTeamValidation()) {
       hasError = true;
     }
@@ -2035,6 +2035,11 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
+
+    this.otherDataModel.cancelStatus = response.cancelStatus;
+    this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
+    this.otherDataModel.cancelErrors = response.cancelErrors;
+
     this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;

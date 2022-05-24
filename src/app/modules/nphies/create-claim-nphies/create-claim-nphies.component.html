@@ -18,6 +18,9 @@
       <p *ngIf="otherDataModel.status"><span>Status:</span>&nbsp;<strong class="text-capitalize">{{otherDataModel.status}}</strong></p>
       <p *ngIf="otherDataModel.statusDesc"><span>Status Description:</span>&nbsp;<strong class="text-capitalize">{{otherDataModel.statusDesc}}</strong></p>
       <p *ngIf="otherDataModel.disposition"><span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong></p>
+
+      <p *ngIf="otherDataModel.cancelStatus"><span>Cancellation Status:</span>&nbsp;<strong>{{otherDataModel.cancelStatus}}</strong></p>
+      <p *ngIf="otherDataModel.cancelResponseReason"><span>Cancellation Status Reason:</span>&nbsp;<strong>{{otherDataModel.cancelResponseReason}}</strong></p>
     </div>
   </div>
   <ul class="claim-totals" *ngIf="otherDataModel.totalNetAmount">
@@ -1056,6 +1059,26 @@
         </table>
       </div>
       <app-empty-state *ngIf="!otherDataModel.errors" message='No Errors found!'>
+      </app-empty-state>
+    </mat-tab>
+    <mat-tab *ngIf="otherDataModel.cancelErrors" [label]="'Cancellation Errors'">
+      <div class="table-responsive" *ngIf="otherDataModel.cancelErrors">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th class="light-bg-danger text-danger">Code</th>
+              <th class="light-bg-danger text-danger">Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let err of otherDataModel.cancelErrors">
+              <td>{{err.code}}</td>
+              <td>{{err.error}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="!otherDataModel.cancelErrors" message='No Cancellation Errors found!'>
       </app-empty-state>
     </mat-tab>
     <mat-tab [label]="'Process Notes'">
