@@ -45,10 +45,7 @@ export class DoctorUploadsComponent implements OnInit {
   }
 
   viewUploadClaims(upload: Upload) {
-    console.log('I am in viewUploadClaims');
-    console.log('upload.id', upload.id);
     this.router.navigate([upload.id, "claim"], {relativeTo: this.activatedRoute});
-    // this.router.navigate(["/review/scrubbing/uploads/" + upload.id]);
   }
 
   handlePageEvent(event: PageEvent) {

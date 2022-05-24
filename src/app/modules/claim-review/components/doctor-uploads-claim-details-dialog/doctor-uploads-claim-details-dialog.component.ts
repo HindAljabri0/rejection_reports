@@ -8,7 +8,7 @@ import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.mode
 import { Service } from 'src/app/claim-module-components/models/service.model';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks } from '../../store/claimReview.actions';
+import { loadSingleClaim, loadSingleClaimErrors, markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks } from '../../store/claimReview.actions';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
 
 
@@ -26,11 +26,11 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   selectedIllnesses: string[] = [];
   errors$: Observable<{ errors: FieldError[] }>;
   selectedTabIndex = 0
-  isDoctor : boolean;
-  isCoder : boolean;
+  isDoctor: boolean;
+  isCoder: boolean;
 
-  uploadId: string;
-  provClaimNo
+  uploadId: string = '0';
+  provClaimNo: string = '0';
   doctorRemarks
 
   constructor(
@@ -38,27 +38,34 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store,
     private sharedServices: SharedServices,
-    private authService: AuthService) { 
-      console.log(data);
-    }
+    private authService: AuthService) {
+  }
 
 
 
   ngOnInit() {
-    this.claim$ = this.store.select(getSingleClaim);
+
+
     this.initVariables();
-    this.services$ = this.store.select(getSingleClaimServices);
+    this.dispatchActions();
+
+  }
+
+  dispatchActions() {
+    this.store.dispatch(loadSingleClaim({ data: { uploadId: +this.uploadId, provClaimNo: this.provClaimNo } }))
+    this.store.dispatch(loadSingleClaimErrors({ data: { uploadId: +this.uploadId, provClaimNo: this.provClaimNo } }))
+  }
+
+  initVariables() {
+    this.claim$ = this.store.select(getSingleClaim);
     this.selectedIllnesses$ = this.store.select(getSelectedIllnessCodes);
     this.selectedIllnesses$.subscribe(selectedIllnesses => {
       this.selectedIllnesses = selectedIllnesses
     });
+    this.services$ = this.store.select(getSingleClaimServices);
     this.errors$ = this.store.select(getClaimErrors);
-  }
-  initVariables() {
-    this.uploadId = this.data.uploadId
-    console.log('this.uploadId', this.uploadId);
-    this.provClaimNo = this.data.provClaimNo
-    console.log('this.provClaimNo', this.provClaimNo);
+    this.uploadId = '161'
+    this.provClaimNo = '34339'
     this.claim$.subscribe(claim => {
       this.doctorRemarks = claim.doctorRemarks
     });
@@ -102,8 +109,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   markAsDone() {
     this.store.dispatch(markAsDone({
       data: {
-        coder : this.isCoder,
-        doctor : this.isDoctor,
+        coder: this.isCoder,
+        doctor: this.isDoctor,
         provClaimNo: this.provClaimNo, uploadId: +this.uploadId,
         userName: this.authService.getUserName()
       }
@@ -131,11 +138,11 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     this.selectedTabIndex = 7
   }
 
-  getTooltipForDoctor(diagnosis : Diagnosis){
+  getTooltipForDoctor(diagnosis: Diagnosis) {
     return diagnosis.doctorRemarks;
   }
 
-  getTooltipForCoder(diagnosis : Diagnosis){
+  getTooltipForCoder(diagnosis: Diagnosis) {
     return diagnosis.coderRemarks;
   }
 }
