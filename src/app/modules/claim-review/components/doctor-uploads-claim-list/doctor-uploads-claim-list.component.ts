@@ -46,6 +46,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.$claimSummary.subscribe(claimSummary => {
       this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => data.provClaimNo)] : []
       if (this.isDialogOpen) {
+        this.isDialogOpen = false;
         this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex], this.dialogClaimIndex);
       }
     })
@@ -116,8 +117,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   openDoctorClaimViewDialog(provClaimNo: string, index: number) {
-    this.isDialogOpen = true;
-   this.dispatchActions(this.uploadId, provClaimNo)
+    this.dispatchActions(this.uploadId, provClaimNo)
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       data: {
@@ -142,6 +142,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
             pageSize: this.pageControl.pageSize,
           })
           this.dialogClaimIndex = 0
+          this.isDialogOpen = true;
+
           break;
         }
         this.openDoctorClaimViewDialog(this.claimSummaryIds[index + 1], index + 1)
@@ -155,7 +157,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
             pageSize: this.pageControl.pageSize
           })
           this.dialogClaimIndex = this.pageControl.pageSize - 1
-        break;
+          this.isDialogOpen = true;
+
+          break;
 
         }
         this.openDoctorClaimViewDialog(this.claimSummaryIds[index - 1], index - 1)
@@ -168,6 +172,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
           pageSize: this.pageControl.pageSize
         })
         this.dialogClaimIndex = 0
+        this.isDialogOpen = true;
+
         break;
       }
       case 'last': {
@@ -177,6 +183,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
           pageSize: this.pageControl.pageSize,
         })
         this.dialogClaimIndex = (this.pageControl.totalUploads % this.pageControl.pageSize) - 1
+        this.isDialogOpen = true;
         break;
       }
       default: {

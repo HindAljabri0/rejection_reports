@@ -1,7 +1,7 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { ClaimReviewState, PageControls, UploadsPage } from "../models/claimReviewState.model";
-import { loadUploadsUnderReviewOfSelectedTab, setLoadUploadClaimsList, setMarkAllAsDone, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
+import { loadUploadsUnderReviewOfSelectedTab, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
 
 const initState: ClaimReviewState = {
@@ -11,7 +11,7 @@ const initState: ClaimReviewState = {
         completed: new UploadsPage(0, 10)
     },
     selectedUploadsTab: 'new',
-    claimErrors: {errors: []},
+    claimErrors: { errors: [] },
     singleClaim: new Claim('INPATIENT', '0'),
     uploadClaimsSummary: null,
     uploadClaimsSummaryPageControls: new PageControls(0, 10)
@@ -66,6 +66,14 @@ const _claimReviewReducer = createReducer(
     }),
     on(setMarkAllAsDone, (state, markAllAsDone) => {
         let newUploadClaimsSummary = state.uploadClaimsSummary.map(claimSummary => { return { ...claimSummary, claimReviewStatus: '1' } })
+        return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
+    }),
+    on(setMarkAsDoneReturn, (state, data) => {
+        let newUploadClaimsSummary = state.uploadClaimsSummary.map(
+            claimSummary => {
+                return claimSummary.provClaimNo === data.data.provClaimNo ?
+                    { ...claimSummary, claimReviewStatus: '1' } : claimSummary
+            })
         return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
     }),
     on(setLoadUploadClaimsList, (state, claimSummary) => {
