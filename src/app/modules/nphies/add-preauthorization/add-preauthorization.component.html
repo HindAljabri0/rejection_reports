@@ -217,7 +217,8 @@
         <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams">
         </app-manage-care-team>
 
-        <app-manage-diagnosis [(isSubmitted)]="isSubmitted" [(IsDiagnosisRequired)]="IsDiagnosisRequired" [(diagnosisList)]="Diagnosises" [(claimType)]="claimType"  [(pageMode)]="defualtPageMode">
+        <app-manage-diagnosis [(isSubmitted)]="isSubmitted" [(IsDiagnosisRequired)]="IsDiagnosisRequired" [(diagnosisList)]="Diagnosises" [(claimType)]="claimType"
+          [(pageMode)]="defualtPageMode">
         </app-manage-diagnosis>
 
         <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
@@ -330,7 +331,8 @@
           <mat-icon>add</mat-icon>
         </button> -->
         </h5>
-        <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+        <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo">
+        </app-manage-supporting-info>
         <!--  <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
@@ -394,8 +396,11 @@
         <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
         </app-empty-state> -->
 
-        <h5 class="form-title">Accident</h5>
-        <div class="row small-gutter">
+        <h5 class="form-title">
+          Accident
+          <mat-slide-toggle class="ml-2" [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}" color="primary"></mat-slide-toggle>
+        </h5>
+        <div *ngIf="IsAccident" class="row small-gutter">
           <div class="col-4 col-xxl-3">
             <div class="form-group"
               [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))}">
