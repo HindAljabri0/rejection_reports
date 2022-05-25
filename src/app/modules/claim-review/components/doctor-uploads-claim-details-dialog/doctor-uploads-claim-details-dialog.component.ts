@@ -133,7 +133,9 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   getPeriod(duration: string): Period {
-    if (duration.startsWith('P')) {
+    if(duration)
+    {
+      if (duration.startsWith('P')) {
         if (duration.indexOf('Y', 1) != -1) {
             const value = Number.parseInt(duration.replace('P', '').replace('Y', ''), 10);
             if (Number.isInteger(value)) {
@@ -150,7 +152,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
                 return new Period(value, 'days');
             }
         }
+      }
     }
-    return null;
+    return new Period(null,null);
 }
 }
