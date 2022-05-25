@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
@@ -209,9 +210,14 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         userName: this.authService.getUserName()
       }
     }));
+    return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
   }
 
   markSelectedAsDone() {
+    if(this.selectedClaimNumberIds.length == 0)
+    {
+      return this.store.dispatch(showSnackBarMessage({ message: 'Please select at least one Claim!' }));
+    }
     this.store.dispatch(markAsDoneSelected({
       data: {
         uploadId: this.uploadId,
@@ -221,6 +227,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         userName: this.authService.getUserName()
       }
     }));
+    return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
   }
   
 
