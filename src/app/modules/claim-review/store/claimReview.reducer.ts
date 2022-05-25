@@ -1,7 +1,7 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { ClaimReviewState, PageControls, UploadsPage } from "../models/claimReviewState.model";
-import { loadUploadsUnderReviewOfSelectedTab, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
+import { loadUploadsUnderReviewOfSelectedTab, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
 
 const initState: ClaimReviewState = {
@@ -82,6 +82,14 @@ const _claimReviewReducer = createReducer(
             uploadClaimsSummary: claimSummary.data.uploadClaimSummaryList.content
             , uploadClaimsSummaryPageControls: claimSummary.data.uploadClaimSummaryList.pageControl
         });
+    }),
+    on(setDiagnosisRemarksReturn, (state, remarkReturn) => {
+        console.log(remarkReturn);
+        let newDiagnosis = state.singleClaim.caseInformation.caseDescription.diagnosis.map(
+            diagnosis => {
+                return diagnosis.diagnosisId === remarkReturn.data.diagnosisId ? {...diagnosis, doctorRemarks : remarkReturn.data.doctorRemarks,coderRemarks : remarkReturn.data.doctorRemarks} : diagnosis
+            })
+        return ({ ...state, singleClaim: {...state.singleClaim,caseInformation:{...state.singleClaim.caseInformation,caseDescription:{...state.singleClaim.caseInformation.caseDescription,diagnosis:{...state.singleClaim.caseInformation.caseDescription.diagnosis,newDiagnosis}}}}});
     })
 
 );

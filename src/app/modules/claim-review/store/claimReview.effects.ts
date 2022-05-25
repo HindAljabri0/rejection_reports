@@ -9,7 +9,7 @@ import { SharedServices } from "src/app/services/shared.services";
 import { PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
+import { loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -86,8 +86,14 @@ export class ClaimReviewEffects {
         ofType(setDiagnnosisRemarks),
         switchMap(data => this.claimReviewService.updateDiagnosisRemarks(data.data).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(data => {
+                return setDiagnosisRemarksReturn({ data: data });
+            }),
+            catchError(errorResponse => {
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+            })
         )),
-    ), { dispatch: false });
+    ));
 
     OnSetClaimDetailsRemarks$ = createEffect(() => this.actions$.pipe(
         ofType(setClaimDetailsRemarks),
