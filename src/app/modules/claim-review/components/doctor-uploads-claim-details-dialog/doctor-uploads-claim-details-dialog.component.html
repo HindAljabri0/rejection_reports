@@ -43,13 +43,13 @@
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
                                             <input value="{{diag.doctorRemarks}}" type="text" class="form-control"
-                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)" maxlength="100" [matTooltip]="getTooltipForDoctor(diag)" [readonly]="isCoder"/>
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)" maxlength="100" [matTooltip]="getTooltipForDoctor(diag)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
                                             <input value="{{diag.coderRemarks}}" type="text" class="form-control"
-                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)" maxlength="100" [matTooltip]="getTooltipForCoder(diag)" [readonly]="isDoctor"/>
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)" maxlength="100" [matTooltip]="getTooltipForCoder(diag)" />
                                         </div>
                                     </td>
                                 </tr>
@@ -160,7 +160,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician ID</div>
-                            <p class="form-control-static">{{(claim$|async).caseInformation?.physician.physicianID}}</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.physician?.physicianID}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
@@ -396,24 +396,24 @@
     <div class="form-group">
         <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review"
             placeholder="Enter doctor's remarks here..."
-            (focusout)="claimDetailsRemarksfocusOut($event.target.value)" maxlength="100" [matTooltip]="doctorRemarks" [readonly]="isCoder"/>
+            (focusout)="claimDetailsRemarksfocusOut($event.target.value)" maxlength="100" [matTooltip]="doctorRemarks" />
     </div>
 </div>
 
 <div class="block-footer sticky">
     <div class="left-block custom-paginator">
-        <button matRipple type="button" title="First Page" (click)="firstTab()">
+        <button matRipple type="button" title="First Claim" (click)="firstClaim()">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Page" (click)="prevTab()">
+        <button matRipple type="button" title="Previous Claim" (click)="prevClaim()">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
-        <p class="page-info">{{selectedTabIndex + 1}}<small>/8</small>
+        <p class="page-info">{{(data.pageControl.pageNumber *  data.pageControl.pageSize) + data.index + 1}}<small>/{{data.pageControl.totalUploads}}</small>
         </p>
-        <button matRipple type="button" title="Next Page" (click)="nextTab()">
+        <button matRipple type="button" title="Next Claim" (click)="nextClaim()">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Page" (click)="lastTab()">
+        <button matRipple type="button" title="Last Claim" (click)="lastClaim()">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>

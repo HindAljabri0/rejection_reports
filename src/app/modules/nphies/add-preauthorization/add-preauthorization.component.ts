@@ -49,6 +49,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanId: string;
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
+  IsAccident = false;
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -205,14 +206,25 @@ export class AddPreauthorizationComponent implements OnInit {
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
       this.setReuseValues();
-      this.defualtPageMode ="";
-    }else{
+      this.defualtPageMode = "";
+    } else {
       this.defualtPageMode = "CREATE"
     }
   }
 
   setReuseValues() {
-    this.FormPreAuthorization.controls.preAuthRefNo.setValue(this.data.preAuthDetails);
+
+    if (this.data.preAuthDetails) {
+      if (this.data.preAuthDetails.filter(x => x === null).length === 0) {
+        const preAuthValue = this.data.preAuthDetails.map(x => {
+          const model: any = {};
+          model.display = x;
+          model.value = x;
+          return model;
+        });
+        this.FormPreAuthorization.controls.preAuthRefNo.setValue(preAuthValue);
+      }
+    }
 
     const date = moment(this.data.preAuthorizationInfo.dateOrdered, 'DD-MM-YYYY').format('YYYY-MM-DD');
     // tslint:disable-next-line:max-line-length
@@ -1239,7 +1251,22 @@ export class AddPreauthorizationComponent implements OnInit {
       return true;
     }
   }
-
+  checkCareTeamValidation() {
+    let hasError = false;
+    if (this.CareTeams.length !== 0) {
+      this.CareTeams.forEach(element => {
+        console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
+        if (element.physicianCode == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
+          element.error = "Please Select Valid Practitioner";
+          hasError = true;
+        } else {
+          element.error = "";
+        }
+      });
+      console.log(hasError);
+      return hasError;
+    }
+  }
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1310,6 +1337,9 @@ export class AddPreauthorizationComponent implements OnInit {
     // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+    if (this.checkCareTeamValidation()) {
+      hasError = true;
+    }
 
     if (!this.checkDiagnosisErrorValidation()) {
       hasError = true;

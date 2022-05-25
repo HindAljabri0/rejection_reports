@@ -72,7 +72,7 @@
       <button mat-button (click)="closeDialog()" type="button">Close</button>
       <button mat-flat-button color="primary" type="submit">
         <span *ngIf="!data || (data && !data.physician)">Add</span>
-        <span *ngIf="data && data.physician">Edit</span>
+        <span *ngIf="data && data.physician">Save</span>
       </button>
     </div>
   </div>

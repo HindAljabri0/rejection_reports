@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let data of claimSummary; let i = index">
+                    <ng-container *ngFor="let data of ($claimSummary | async); let i = index">
                         <tr class="align-middle" >
                             <td>
                                 <mat-checkbox class="grid-checkbox"
@@ -39,7 +39,7 @@
                                     (change)="toggleClaim($event, data.provClaimNo)" color="primary">
                                 </mat-checkbox>
                             </td>
-                            <td class="actions row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">
+                            <td class="actions row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">
                                 <button type="button" mat-icon-button>
                                     <div
                                         *ngIf="(data.claimReviewStatus != null && data.claimReviewStatus.trim() === '1') else checkIcon">
@@ -50,14 +50,14 @@
                                     </ng-template>
                                 </button>
                             </td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.provClaimNo }}</td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.physicianName }}</td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.memberId }}</td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.idNumber }}</td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.patientFileNumber }}</td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.claimDate | date : 'dd-MM-yyyy' }}</td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.net }}<span class="currency">SAR</span></td>
-                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo)">{{ data.netVatAmount }}<span class="currency">SAR</span></td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.provClaimNo }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.physicianName }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.memberId }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.idNumber }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.patientFileNumber }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.claimDate | date : 'dd-MM-yyyy' }}</td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.net }}<span class="currency">SAR</span></td>
+                            <td class="text-monospace row-click" (click)="openDoctorClaimViewDialog(data.provClaimNo, i)">{{ data.netVatAmount }}<span class="currency">SAR</span></td>
                         </tr>
                     </ng-container>
                 </tbody>
@@ -72,7 +72,8 @@
             </mat-paginator>
         </div>
         <div class="right-block">
-            <button type="button" mat-flat-button color="primary" (click)="saveMarkAsDone()">Mark as Done</button>
+            <button type="button" mat-stroked-button color="warn" style="margin-right: 30px" (click)="markAllAsDone()">Mark All as Done</button>
+            <button type="button" mat-flat-button color="primary" (click)="markSelectedAsDone()">Mark as Done</button>
         </div>
     </div>
 </div>

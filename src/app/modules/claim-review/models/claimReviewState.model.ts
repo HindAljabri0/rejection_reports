@@ -1,5 +1,6 @@
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { FieldError } from "../store/claimReview.reducer";
+import { ClaimSummary } from "./claimSummary.mocel";
 import { Upload } from "./upload.model";
 
 export interface ClaimReviewState {
@@ -10,7 +11,9 @@ export interface ClaimReviewState {
     }
     selectedUploadsTab: 'new' | 'inProgress' | 'completed'
     singleClaim: Claim, 
-    claimErrors: {errors: FieldError[] }
+    claimErrors: {errors: FieldError[] },
+    uploadClaimsSummary: ClaimSummary[],
+    uploadClaimsSummaryPageControls: PageControls
 }
 
 
@@ -35,6 +38,16 @@ export class UploadsPage {
             uploadsPage.uploads = content.map(incomingUpload => Upload.fromBackendResponse(incomingUpload));
         }
         return uploadsPage;
+    }
+
+    static pageControlfromBackendResponse(response: any) {
+        const body = response;
+        const pageNumber = body.number;
+        const pageSize = body.size;
+        let pageControls = new PageControls(pageNumber, pageSize);
+        pageControls.totalPages = body.totalPages;
+        pageControls.totalUploads = body.totalElements;
+        return pageControls;
     }
 }
 

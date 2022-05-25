@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
@@ -26,11 +25,11 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   selectedIllnesses: string[] = [];
   errors$: Observable<{ errors: FieldError[] }>;
   selectedTabIndex = 0
-  isDoctor : boolean;
-  isCoder : boolean;
+  isDoctor: boolean;
+  isCoder: boolean;
 
-  uploadId: string;
-  provClaimNo
+  uploadId: string = '0';
+  provClaimNo: string = '0';
   doctorRemarks
 
   constructor(
@@ -38,32 +37,28 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store,
     private sharedServices: SharedServices,
-    private authService: AuthService) { 
-      console.log(data);
-    }
-
-
-
+    private authService: AuthService) {
+  }
+  
   ngOnInit() {
-    this.claim$ = this.store.select(getSingleClaim);
     this.initVariables();
-    this.services$ = this.store.select(getSingleClaimServices);
+  }
+
+  initVariables() {
+    this.claim$ = this.store.select(getSingleClaim);
     this.selectedIllnesses$ = this.store.select(getSelectedIllnessCodes);
     this.selectedIllnesses$.subscribe(selectedIllnesses => {
       this.selectedIllnesses = selectedIllnesses
     });
+    this.services$ = this.store.select(getSingleClaimServices);
     this.errors$ = this.store.select(getClaimErrors);
-  }
-  initVariables() {
-    this.uploadId = this.data.uploadId
-    console.log('this.uploadId', this.uploadId);
-    this.provClaimNo = this.data.provClaimNo
-    console.log('this.provClaimNo', this.provClaimNo);
     this.claim$.subscribe(claim => {
       this.doctorRemarks = claim.doctorRemarks
     });
     this.isCoder = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder
     this.isDoctor = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor
+    this.uploadId = this.data.uploadId
+    this.provClaimNo = this.data.provClaimNo
   }
 
   isSelected(illnessCode: string): boolean {
@@ -102,40 +97,37 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   markAsDone() {
     this.store.dispatch(markAsDone({
       data: {
-        coder : this.isCoder,
-        doctor : this.isDoctor,
+        coder: this.isCoder,
+        doctor: this.isDoctor,
         provClaimNo: this.provClaimNo, uploadId: +this.uploadId,
         userName: this.authService.getUserName()
       }
     }));
   }
 
-  nextTab() {
-    if (this.selectedTabIndex !== 7) {
-      this.selectedTabIndex = this.selectedTabIndex + 1
-    }
+  nextClaim() {
+    this.dialogRef.close('next');
+  }
+
+  prevClaim() {
+    this.dialogRef.close('prev');
 
   }
 
-  prevTab() {
-    if (this.selectedTabIndex !== 0) {
-      this.selectedTabIndex = this.selectedTabIndex - 1
-    }
+  firstClaim() {
+    this.dialogRef.close('first');
+
   }
 
-  firstTab() {
-    this.selectedTabIndex = 0
+  lastClaim() {
+    this.dialogRef.close('last');
   }
 
-  lastTab() {
-    this.selectedTabIndex = 7
-  }
-
-  getTooltipForDoctor(diagnosis : Diagnosis){
+  getTooltipForDoctor(diagnosis: Diagnosis) {
     return diagnosis.doctorRemarks;
   }
 
-  getTooltipForCoder(diagnosis : Diagnosis){
+  getTooltipForCoder(diagnosis: Diagnosis) {
     return diagnosis.coderRemarks;
   }
 }
