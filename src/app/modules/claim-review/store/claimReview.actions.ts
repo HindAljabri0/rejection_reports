@@ -1,6 +1,8 @@
 import { PageEvent } from "@angular/material";
 import { createAction, props } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
+import { Diagnosis } from "src/app/claim-module-components/models/diagnosis.model";
+import { ClaimDetails } from "../models/ClaimDetails.model";
 import { UploadsPage } from "../models/claimReviewState.model";
 import { claimScrubbing } from "../models/ClaimScrubbing.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
@@ -18,12 +20,13 @@ export const loadSingleClaim = createAction("[ Claims Review ] load single claim
 export const setSingleClaim = createAction("[ Claims Review ] set single claim", props<Claim>());
 export const loadSingleClaimErrors = createAction("[ Claims Review ] load claim errors", props<{ data: {uploadId: number, provClaimNo: string} }>());
 export const setSingleClaimErrors = createAction("[ Claims Review ] set claim errors", props<{errors: FieldError[]}>());
-export const setMarkAsDoneReturn = createAction("[ Claims Review ] set Mark As Done Return", props<{claimDetails: claimScrubbing}>());
+export const setMarkAsDoneReturn = createAction("[ Claims Review ] set Mark As Done Return", props<{data: ClaimDetails}>());
 export const setMarkSelectedAsDoneReturn = createAction("[ Claims Review ] set Mark Selected As Done Return", props<{selectedClaims: string[]}>());
 export const setMarkAllAsDone = createAction("[ Claims Review ] set Mark All As Done ");
 
 
 export const setDiagnnosisRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
+export const setDiagnosisRemarksReturn = createAction("[ Claims Review ] set diagnosis remarks Return", props<{data: DiagnosisRemarksUpdateRequest}>());
 export const setClaimDetailsRemarks = createAction("[ Claims Review ] set claim details remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
 export const markAsDone = createAction("[ Claims Review ] mark claim as done", props<{data: MarkAsDone}>());
 export const markAsDoneAll = createAction("[ Claims Review ] mark claim as done For all", props<{data: MarkAsDone}>());

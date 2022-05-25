@@ -40,7 +40,7 @@ export class Period {
             return 'years'
         } else if (this.months != null && !Number.isNaN(this.months)) {
             return 'months'
-        } else {
+        } else if (this.days != null && !Number.isNaN(this.days)){
             return 'days'
         }
     }
