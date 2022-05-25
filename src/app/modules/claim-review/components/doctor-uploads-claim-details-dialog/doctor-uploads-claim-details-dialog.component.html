@@ -413,19 +413,24 @@
 
 <div class="block-footer sticky">
     <div class="left-block custom-paginator">
-        <button matRipple type="button" title="First Claim" (click)="firstClaim()">
+        <button matRipple type="button" [disabled]="data.pageControl.pageNumber == 0 && data.index == 0"
+            title="First Claim" (click)="firstClaim()">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Claim" (click)="prevClaim()">
+        <button matRipple type="button" [disabled]="data.pageControl.pageNumber == 0 && data.index == 0"
+            title="Previous Claim" (click)="prevClaim()">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
         <p class="page-info">{{(data.pageControl.pageNumber * data.pageControl.pageSize) + data.index +
             1}}<small>/{{data.pageControl.totalUploads}}</small>
         </p>
-        <button matRipple type="button" title="Next Claim" (click)="nextClaim()">
+        <button matRipple type="button"
+            [disabled]="data.pageControl.pageNumber == (data.pageControl.totalPages - 1) && data.index == (data.pageControl.totalUploads % data.pageControl.pageSize -1)"
+            title="Next Claim" (click)="nextClaim()">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Claim" (click)="lastClaim()">
+        <button
+        [disabled]="data.pageControl.pageNumber == (data.pageControl.totalPages - 1) && data.index == (data.pageControl.totalUploads % data.pageControl.pageSize -1)" matRipple type="button" title="Last Claim" (click)="lastClaim()">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>
