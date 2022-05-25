@@ -49,6 +49,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanId: string;
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
+  IsAccident = false;
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -1339,7 +1340,7 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.checkCareTeamValidation()) {
       hasError = true;
     }
-    
+
     if (!this.checkDiagnosisErrorValidation()) {
       hasError = true;
     }
