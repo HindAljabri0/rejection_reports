@@ -4,7 +4,8 @@
     <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
       <div class="block-header">
         <p>Request Pre Authorization</p>
-        <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
+        <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary"
+          [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
         </mat-slide-toggle>
 
       </div>
@@ -22,14 +23,17 @@
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
             <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
-            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+            <input type="text" class="form-control search-box"
+              placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
               [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                (click)="selectBeneficiary(beneficiary)">
                 {{beneficiary.name}} ({{beneficiary.documentId}})
               </mat-option>
             </mat-autocomplete>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
               <span class="error-text">Please select a Beneficiary</span>
             </div>
           </div>
@@ -39,7 +43,8 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+              [disabled]="claimReuseId" color="primary">Create New
               Beneficiary</button>
           </div>
         </div>
@@ -48,7 +53,8 @@
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : IsSubscriberRequired && ((isSubmitted || FormPreAuthorization.get('subscriberName').touched) && FormPreAuthorization.get('subscriberName').hasError('required'))}">
             <label class="control-label">Select a Subscriber<span class="asterisk">*</span></label>
-            <input type="text" class="form-control search-box" placeholder="Search for subscriber by name or document ID..." formControlName="subscriberName"
+            <input type="text" class="form-control search-box"
+              placeholder="Search for subscriber by name or document ID..." formControlName="subscriberName"
               [matAutocomplete]="auto" (keyup)="searchBeneficiaries(true)">
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let beneficiary of subscriberSearchResult" (click)="selectSubscriber(beneficiary)">
@@ -66,7 +72,8 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+              [disabled]="claimReuseId" color="primary">Create New
               Subscriber</button>
           </div>
         </div>
@@ -86,7 +93,8 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
                 <span class="error-text">Please select an Insurance Plan</span>
               </div>
             </div>
@@ -101,17 +109,20 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
               <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today" formControlName="dateOrdered">
+                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                  [max]="today" formControlName="dateOrdered">
                 <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #dateOrderedCtrl></mat-datepicker>
               </div>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
                 <span class="error-text">Please enter Date Ordered</span>
               </div>
             </div>
           </div>
           <div class="col-4 col-xxl-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
               <label class="control-label">Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
@@ -119,7 +130,8 @@
                   <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
                 <span class="error-text">Please select a Type</span>
               </div>
             </div>
@@ -147,22 +159,24 @@
           <div class="col-4 col-lg-3">
             <div class="form-group">
               <label class="control-label">Eligibility Response ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityResponseId">
+              <input class="form-control" placeholder="Enter Offline Eligibility ID"
+                formControlName="eligibilityResponseId">
             </div>
           </div>
 
           <div class="col-4 col-lg-3">
             <div class="form-group">
               <label class="control-label">Offline Eligibility ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
+              <input class="form-control" placeholder="Enter Offline Eligibility ID"
+                formControlName="eligibilityOfflineId">
             </div>
           </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Offline Eligibility Date</label>
               <div class="date-picker">
-                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
-                  formControlName="eligibilityOfflineDate">
+                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
+                  placeholder="Select Offline Eligibility Date" [max]="today" formControlName="eligibilityOfflineDate">
                 <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
               </div>
@@ -180,7 +194,8 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
                 <span class="error-text">Please select Payee Type</span>
               </div>
             </div>
@@ -196,7 +211,8 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
                 <span class="error-text">Please select payee</span>
               </div>
             </div>
@@ -217,10 +233,12 @@
         <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams">
         </app-manage-care-team>
 
-        <app-manage-diagnosis [(isSubmitted)]="isSubmitted" [(IsDiagnosisRequired)]="IsDiagnosisRequired" [(diagnosisList)]="Diagnosises" [(claimType)]="claimType"  [(pageMode)]="defualtPageMode">
+        <app-manage-diagnosis [(isSubmitted)]="isSubmitted" [(IsDiagnosisRequired)]="IsDiagnosisRequired"
+          [(diagnosisList)]="Diagnosises" [(claimType)]="claimType" [(pageMode)]="defualtPageMode">
         </app-manage-diagnosis>
 
-        <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
+        <ng-container
+          *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
           <h5 class="form-title">
             Vision Prescription
           </h5>
@@ -228,9 +246,11 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
-                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
+                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
+                    class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
+                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                    formControlName="dateWritten">
                   <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                   <mat-datepicker #visionWrittenDate></mat-datepicker>
                 </div>
@@ -243,7 +263,8 @@
             <div class="col-8 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
-                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
+                    class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="prescriber">
                     <mat-option value="">Select Prescriber</mat-option>
@@ -262,7 +283,8 @@
           <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
             <h5 class="d-flex align-items-center mb-3">
               <strong class="medium">Lens Specifications</strong>
-              <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+              <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()"
+                class="btn-icon btn-primary ml-auto">
                 <mat-icon>add</mat-icon>
               </button>
             </h5>
@@ -294,11 +316,13 @@
                     <td>{{visionSpecification.lensPower}}</td>
                     <td>{{visionSpecification.lensBackCurve}}</td>
                     <td>{{visionSpecification.lensDiameter}}</td>
-                    <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+                    <td>{{visionSpecification.prismAmount}}<span
+                        *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td *ngIf="!claimReuseId" class="actions">
                       <mat-menu #lensSpecificationActionsMenu xPosition="before">
                         <ng-template matMenuContent>
-                          <button mat-menu-item type="button" (click)="openAddEditVisionLensDialog(visionSpecification)">
+                          <button mat-menu-item type="button"
+                            (click)="openAddEditVisionLensDialog(visionSpecification)">
                             <mat-icon class="material-icons-outlined">edit</mat-icon>
                             <span>Edit</span>
                           </button>
@@ -316,9 +340,11 @@
                 </tbody>
               </table>
             </div>
-            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0" message='No Lens Specifications found!'>
+            <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0"
+              message='No Lens Specifications found!'>
             </app-empty-state>
-            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0" message='Lens Specifications reqired!'>
+            <app-empty-state *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
+              message='Lens Specifications reqired!'>
             </app-empty-state>
           </div>
         </ng-container>
@@ -330,7 +356,8 @@
           <mat-icon>add</mat-icon>
         </button> -->
         </h5>
-        <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo"></app-manage-supporting-info>
+        <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo">
+        </app-manage-supporting-info>
         <!--  <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
           <table class="primary-grid">
             <thead>
@@ -394,12 +421,17 @@
         <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
         </app-empty-state> -->
 
-        <h5 class="form-title">Accident</h5>
-        <div class="row small-gutter">
+        <h5 class="form-title">
+          <mat-slide-toggle [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}" color="primary">
+            Accident
+          </mat-slide-toggle>
+        </h5>
+        <div *ngIf="IsAccident" class="row small-gutter">
           <div class="col-4 col-xxl-3">
             <div class="form-group"
               [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))}">
-              <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
+              <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired"
+                  class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="accidentType">
                   <mat-option value="">Select Accident Type</mat-option>
@@ -434,9 +466,11 @@
             <div class="form-group">
               <label class="control-label">Country</label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
+                <mat-select [value]="selectedCountry" formControlName="country"
+                  (selectionChange)="selectedCountry = $event.value;" #Country>
                   <mat-option>
-                    <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
+                    <ngx-mat-select-search placeholderLabel="Select Country"
+                      noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
                     </ngx-mat-select-search>
                   </mat-option>
                   <mat-option value="">Select Country</mat-option>
@@ -451,11 +485,13 @@
               [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
               <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+                <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
+                  formControlName="date">
                 <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
                 <mat-datepicker #accidentDate></mat-datepicker>
               </div>
-              <div *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
+              <div
+                *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
                 <span class="error-text">Please enter date</span>
               </div>
             </div>
@@ -466,7 +502,8 @@
         <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
           <span>Items<span class="asterisk">*</span></span>
           <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disableItemsButton()">
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
+            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary"
+              [disabled]="disableItemsButton()">
               <mat-icon>add</mat-icon>
             </button>
           </div>
@@ -491,7 +528,8 @@
             <tbody>
               <ng-container *ngFor="let item of Items; let i = index">
                 <tr>
-                  <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                  <td class="text-primary text-center row-click" width="10"
+                    (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
                     <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                   </td>
@@ -506,7 +544,8 @@
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                       <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                        <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                        <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span
+                            class="currency">SR</span></span>
                       </ng-container>
                     </ng-container>
                   </td>
@@ -527,7 +566,8 @@
                   <td class="actions">
                     <mat-menu #itemsActionsMenu xPosition="before">
                       <ng-template matMenuContent>
-                        <button mat-menu-item type="button" *ngIf="item.isPackage === true" (click)="openAddEditItemDetailsDialog(item.sequence)">
+                        <button mat-menu-item type="button" *ngIf="item.isPackage === true"
+                          (click)="openAddEditItemDetailsDialog(item.sequence)">
                           <mat-icon class="material-icons-outlined">add</mat-icon>
                           <span>Add Details</span>
                         </button>
@@ -682,7 +722,8 @@
                             <td class="actions">
                               <mat-menu #itemsDetailsActionsMenu xPosition="before">
                                 <ng-template matMenuContent>
-                                  <button mat-menu-item type="button" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                  <button mat-menu-item type="button"
+                                    (click)="openAddEditItemDetailsDialog(item.sequence, d)">
                                     <mat-icon class="material-icons-outlined">edit</mat-icon>
                                     <span>Edit</span>
                                   </button>
