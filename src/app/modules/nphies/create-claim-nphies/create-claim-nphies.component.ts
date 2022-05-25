@@ -265,7 +265,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.claimId = this.claimId == null ? parseInt(this.activatedRoute.snapshot.queryParams.claimId) : this.claimId;
 
     } else {
-
+      this.IsDiagnosisRequired = true;
       this.pageMode = 'CREATE';
       this.isLoading = false;
 
@@ -2750,7 +2750,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       return false;
     }
   }
-
+  
   openAddCommunicationDialog(commRequestId = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];

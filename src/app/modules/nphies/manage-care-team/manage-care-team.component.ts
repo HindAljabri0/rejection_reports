@@ -78,17 +78,17 @@ export class ManageCareTeamComponent implements OnInit {
   }
   addPractitioner(diag: any, i: number) {
     //Set Selected Values
-    let code=this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code || x.speciallityCode === diag.speciality_code)[0].speciallityCode;
+    let code= this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code || x.speciallityCode === diag.speciality_code)[0] ? this.specialityList.filter(x => +x.speciallityCode === diag.speciality_code || x.speciallityCode === diag.speciality_code)[0].speciallityCode : null;
     this.CareTeams[i].practitionerRoleSelect = this.practitionerRoleList.filter(role => role.value === diag.physician_role.toLowerCase())[0];
-    this.CareTeams[i].specialitySelect = code;
+    this.CareTeams[i].specialitySelect = code ? code : null;
     //Set Model Data
     this.CareTeams[i].physicianCode = diag.physician_id;
     this.CareTeams[i].practitionerName = diag.physician_name;
     this.CareTeams[i].practitionerRole = diag.physician_role;
     
-    this.CareTeams[i].specialityCode = code;
-    this.CareTeams[i].qualificationCode = code;
-    this.CareTeams[i].speciality = this.specialityList.filter(x => +x.speciallityCode === code || x.speciallityCode === code)[0].speciallityName;
+    this.CareTeams[i].specialityCode = code ? code : null;
+    this.CareTeams[i].qualificationCode = code ? code : null;
+    this.CareTeams[i].speciality = code ? this.specialityList.filter(x => +x.speciallityCode === code || x.speciallityCode === code)[0].speciallityName: null;
     
     console.log(this.CareTeams[i]);
 
