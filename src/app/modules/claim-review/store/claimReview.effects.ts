@@ -6,6 +6,7 @@ import { of } from "rxjs";
 import { catchError, filter, map, switchMap, withLatestFrom } from "rxjs/operators";
 import { AuthService } from "src/app/services/authService/authService.service";
 import { SharedServices } from "src/app/services/shared.services";
+import { showSnackBarMessage } from "src/app/store/mainStore.actions";
 import { PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
@@ -86,8 +87,8 @@ export class ClaimReviewEffects {
         ofType(setDiagnnosisRemarks),
         switchMap(data => this.claimReviewService.updateDiagnosisRemarks(data.data).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
-            map(data => {
-                return setDiagnosisRemarksReturn({ data: data });
+            map(response => {
+                return setDiagnosisRemarksReturn({ data: data.data });
             }),
             catchError(errorResponse => {
                 return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
@@ -112,6 +113,7 @@ export class ClaimReviewEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(data => {
                 this.sharedServices.loadingChanged.next(false);
+                this.store.dispatch(showSnackBarMessage({ message: 'Claim Marked as Done Successfully!' }));
                 return setMarkAsDoneReturn({ data: data });
             }),
             catchError(errorResponse => {

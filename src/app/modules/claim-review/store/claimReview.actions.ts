@@ -26,7 +26,7 @@ export const setMarkAllAsDone = createAction("[ Claims Review ] set Mark All As 
 
 
 export const setDiagnnosisRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
-export const setDiagnosisRemarksReturn = createAction("[ Claims Review ] set diagnosis remarks Return", props<{data: Diagnosis}>());
+export const setDiagnosisRemarksReturn = createAction("[ Claims Review ] set diagnosis remarks Return", props<{data: DiagnosisRemarksUpdateRequest}>());
 export const setClaimDetailsRemarks = createAction("[ Claims Review ] set claim details remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
 export const markAsDone = createAction("[ Claims Review ] mark claim as done", props<{data: MarkAsDone}>());
 export const markAsDoneAll = createAction("[ Claims Review ] mark claim as done For all", props<{data: MarkAsDone}>());

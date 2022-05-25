@@ -1,5 +1,6 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
+import { Diagnosis } from "src/app/claim-module-components/models/diagnosis.model";
 import { ClaimReviewState, PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { loadUploadsUnderReviewOfSelectedTab, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
@@ -83,13 +84,22 @@ const _claimReviewReducer = createReducer(
             , uploadClaimsSummaryPageControls: claimSummary.data.uploadClaimSummaryList.pageControl
         });
     }),
-    on(setDiagnosisRemarksReturn, (state, remarkReturn) => {
-        console.log(remarkReturn);
-        let newDiagnosis = state.singleClaim.caseInformation.caseDescription.diagnosis.map(
+    on(setDiagnosisRemarksReturn, (state, data) => {
+        console.log(data);
+        let newDiagnosis: Diagnosis[] = state.singleClaim.caseInformation.caseDescription.diagnosis.map(
             diagnosis => {
-                return diagnosis.diagnosisId === remarkReturn.data.diagnosisId ? {...diagnosis, doctorRemarks : remarkReturn.data.doctorRemarks,coderRemarks : remarkReturn.data.doctorRemarks} : diagnosis
+                let diag = { ...diagnosis }
+                //  diagnosis .diagnosisId === data.data.diagnosisId ? {...diagnosis, doctorRemarks : data.data.doctorRemarks,coderRemarks : remarkReturn.data.doctorRemarks} : diagnosis
+                if (diagnosis.diagnosisId === data.data.diagnosisId) {
+                    if (data.data.doctor) {
+                        diag.doctorRemarks = data.data.remarks
+                    } else if (data.data.coder) {
+                        diag.coderRemarks = data.data.remarks
+                    }
+                }
+                return diag
             })
-        return ({ ...state, singleClaim: {...state.singleClaim,caseInformation:{...state.singleClaim.caseInformation,caseDescription:{...state.singleClaim.caseInformation.caseDescription,diagnosis:{...state.singleClaim.caseInformation.caseDescription.diagnosis,newDiagnosis}}}}});
+        return ({ ...state, singleClaim: { ...state.singleClaim, caseInformation: { ...state.singleClaim.caseInformation, caseDescription: { ...state.singleClaim.caseInformation.caseDescription, diagnosis: newDiagnosis } } } });
     })
 
 );

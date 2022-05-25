@@ -24,10 +24,10 @@ export class DoctorUploadsClaimListComponent implements OnInit {
 
   public uploadId: number;
   $claimSummary: Observable<ClaimSummary[]>;
-  claimSummaryIds: string[] = [];
+  claimSummaryIds: { provClaimNo: string, claimReviewStatus: boolean }[] = [];
   selectedClaimNumberIds: string[] = new Array();
   userPrivileges: UserPrivileges = initState.userPrivileges;
-
+  // singleClaimReviewStatus: boolean = true;
   isDialogOpen: boolean = false
   dialogClaimIndex = 0
 
@@ -44,10 +44,11 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.uploadId = this.activatedRoute.snapshot.params.uploadId;
     this.refreshData();
     this.$claimSummary.subscribe(claimSummary => {
-      this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => data.provClaimNo)] : []
+      // this.claimSummaryIds = [{provClaimNo: '', claimReviewStatus: false}]
+      this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => {return {provClaimNo: data.provClaimNo, claimReviewStatus : data.claimReviewStatus === '1'}})] : []
       if (this.isDialogOpen) {
         this.isDialogOpen = false;
-        this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex], this.dialogClaimIndex);
+        this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex].provClaimNo, this.dialogClaimIndex, this.claimSummaryIds[this.dialogClaimIndex].claimReviewStatus);
       }
     })
     this.store.select(getUploadClaimsSummaryPageControls).subscribe(pageControl => {
@@ -84,7 +85,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   private _toggleAllClaims(checked: boolean) {
     if (checked) {
       this.allCheckBoxIsChecked = true;
-      this.selectedClaimNumberIds = this.claimSummaryIds.slice()
+      this.selectedClaimNumberIds = this.claimSummaryIds.map(claimSummary => {return claimSummary.provClaimNo})
     } else {
       this.allCheckBoxIsChecked = false;
       this.allCheckBoxIsIndeterminate = false;
@@ -116,7 +117,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.refreshData();
   }
 
-  openDoctorClaimViewDialog(provClaimNo: string, index: number) {
+  openDoctorClaimViewDialog(provClaimNo: string, index: number, claimReviewStatus: boolean) {
+    console.log('claimReviewStatus: ', claimReviewStatus);
     this.dispatchActions(this.uploadId, provClaimNo)
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
@@ -124,7 +126,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         uploadId: this.uploadId,
         provClaimNo: provClaimNo,
         pageControl: this.pageControl,
-        index: index
+        index: index,
+        markAsDone: claimReviewStatus
       }
     }).afterClosed()
       .subscribe(action => {
@@ -146,7 +149,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
 
           break;
         }
-        this.openDoctorClaimViewDialog(this.claimSummaryIds[index + 1], index + 1)
+        this.openDoctorClaimViewDialog(this.claimSummaryIds[index + 1].provClaimNo, index + 1, this.claimSummaryIds[index + 1].claimReviewStatus)
         break;
       }
       case 'prev': {
@@ -162,7 +165,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
           break;
 
         }
-        this.openDoctorClaimViewDialog(this.claimSummaryIds[index - 1], index - 1)
+        this.openDoctorClaimViewDialog(this.claimSummaryIds[index - 1].provClaimNo, index - 1, this.claimSummaryIds[index - 1].claimReviewStatus)
         break;
       }
       case 'first': {
@@ -219,6 +222,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       }
     }));
   }
+  
 
 
 }

@@ -43,6 +43,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   
   ngOnInit() {
     this.initVariables();
+    console.log('dialog data: ', this.data);
   }
 
   initVariables() {
