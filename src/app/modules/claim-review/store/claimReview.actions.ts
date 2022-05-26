@@ -1,10 +1,8 @@
 import { PageEvent } from "@angular/material";
 import { createAction, props } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
-import { Diagnosis } from "src/app/claim-module-components/models/diagnosis.model";
 import { ClaimDetails } from "../models/ClaimDetails.model";
 import { UploadsPage } from "../models/claimReviewState.model";
-import { claimScrubbing } from "../models/ClaimScrubbing.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from "./claimReview.reducer";
 

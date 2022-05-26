@@ -104,6 +104,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
         userName: this.authService.getUserName()
       }
     }));
+    this.dialogRef.close('mark-as-done');
   }
 
   nextClaim() {

@@ -15,7 +15,8 @@ const initState: ClaimReviewState = {
     claimErrors: { errors: [] },
     singleClaim: new Claim('INPATIENT', '0'),
     uploadClaimsSummary: null,
-    uploadClaimsSummaryPageControls: new PageControls(0, 10)
+    uploadClaimsSummaryPageControls: new PageControls(0, 10),
+    nextAvailableClaimProvNo: null ,
 }
 
 
