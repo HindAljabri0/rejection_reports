@@ -19,6 +19,9 @@ import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, ge
 })
 export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
+  expandedResult = -1;
+  expandedComponent = -1;
+
   // data
   claim$: Observable<Claim>;
   services$: Observable<Service[]>;
@@ -40,7 +43,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     private sharedServices: SharedServices,
     private authService: AuthService) {
   }
-  
+
   ngOnInit() {
     this.initVariables();
   }
@@ -134,27 +137,42 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   getPeriod(duration: string): Period {
-    if(duration)
-    {
+    if (duration) {
       if (duration.startsWith('P')) {
         if (duration.indexOf('Y', 1) != -1) {
-            const value = Number.parseInt(duration.replace('P', '').replace('Y', ''), 10);
-            if (Number.isInteger(value)) {
-                return new Period(value, 'years');
-            }
+          const value = Number.parseInt(duration.replace('P', '').replace('Y', ''), 10);
+          if (Number.isInteger(value)) {
+            return new Period(value, 'years');
+          }
         } else if (duration.indexOf('M', 1) != -1) {
-            const value = Number.parseInt(duration.replace('P', '').replace('M', ''), 10);
-            if (Number.isInteger(value)) {
-                return new Period(value, 'months');
-            }
+          const value = Number.parseInt(duration.replace('P', '').replace('M', ''), 10);
+          if (Number.isInteger(value)) {
+            return new Period(value, 'months');
+          }
         } else if (duration.indexOf('D', 1) != -1) {
-            const value = Number.parseInt(duration.replace('P', '').replace('D', ''), 10);
-            if (Number.isInteger(value)) {
-                return new Period(value, 'days');
-            }
+          const value = Number.parseInt(duration.replace('P', '').replace('D', ''), 10);
+          if (Number.isInteger(value)) {
+            return new Period(value, 'days');
+          }
         }
       }
     }
-    return new Period(null,null);
-}
+    return new Period(null, null);
+  }
+
+  toggleResult(index) {
+    if (this.expandedResult == index) {
+      this.expandedResult = -1;
+    } else {
+      this.expandedResult = index;
+    }
+  }
+
+  toggleComponentExpansion(index) {
+    if (this.expandedComponent == index) {
+      this.expandedComponent = -1;
+    } else {
+      this.expandedComponent = index;
+    }
+  }
 }
