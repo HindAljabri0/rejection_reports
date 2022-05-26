@@ -14,7 +14,7 @@ export interface ClaimReviewState {
     claimErrors: {errors: FieldError[] },
     uploadClaimsSummary: ClaimSummary[],
     uploadClaimsSummaryPageControls: PageControls,
-    nextAvailableClaimProvNo: string
+    nextAvailableClaimProvNo: number
 }
 
 

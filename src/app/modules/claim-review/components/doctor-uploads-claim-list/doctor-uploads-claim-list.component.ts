@@ -10,7 +10,7 @@ import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, markAsDoneAll, markAsDoneSelected } from '../../store/claimReview.actions';
-import { getUploadClaimsSummary, getUploadClaimsSummaryPageControls } from '../../store/claimReview.reducer';
+import { getUploadClaimsSummary, getUploadClaimsSummaryPageControls, getNextAvailableClaimRow } from '../../store/claimReview.reducer';
 import {
   DoctorUploadsClaimDetailsDialogComponent
 } from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
@@ -31,7 +31,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   // singleClaimReviewStatus: boolean = true;
   isDialogOpen: boolean = false
   dialogClaimIndex = 0
-  nextAvailableClaim: { provClaimNo: string, claimReviewStatus: boolean }
+  nextAvailableClaimRow: number
+  // nextAvailableClaim: { provClaimNo: string, claimReviewStatus: boolean }
 
   allCheckBoxIsChecked: boolean;
   allCheckBoxIsIndeterminate: boolean;
@@ -51,6 +52,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => { return { provClaimNo: data.provClaimNo, claimReviewStatus: data.claimReviewStatus === '1' } })] : []
       if (this.isDialogOpen) {
         this.isDialogOpen = false;
+        console.log('claimSummaryIds', this.claimSummaryIds);
+        console.log('this.dialogClaimIndex', this.dialogClaimIndex);
         this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex].provClaimNo, this.dialogClaimIndex, this.claimSummaryIds[this.dialogClaimIndex].claimReviewStatus);
         // this.store.dispatch(findNextUnresolvedClaim({currentProvClaimNo: this.claimSummaryIds[this.dialogClaimIndex].provClaimNo}))
       }
@@ -65,12 +68,10 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     for (let i: number = index + 1; i < this.claimSummaryIds.length; i = i + 1) {
       if (!this.claimSummaryIds[i].claimReviewStatus) {
         this.dialogClaimIndex = i
-        this.nextAvailableClaim = this.claimSummaryIds[i]
+        // this.nextAvailableClaim = this.claimSummaryIds[i]
         return;
       }
     }
-
-
   }
 
   refreshData() {
@@ -131,6 +132,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.pageControl.totalUploads = event.length;
     this.pageControl.pageSize = event.pageSize;
     this.pageControl.pageNumber = event.pageIndex;
+    console.log('this.pageControl', this.pageControl);
     this.refreshData();
   }
 
@@ -205,10 +207,27 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         break;
       }
       case 'mark-as-done': {
-        if (this.nextAvailableClaim) {
-          this.openDoctorClaimViewDialog(this.nextAvailableClaim.provClaimNo, this.claimSummaryIds.indexOf(this.nextAvailableClaim), this.nextAvailableClaim.claimReviewStatus)
-        }
+        this.store.select(getNextAvailableClaimRow).subscribe(nextAvailableClaimRow => {
+          if (nextAvailableClaimRow) {
+            if (nextAvailableClaimRow > this.pageControl.pageSize * (this.pageControl.pageNumber + 1)) {
+              this.handlePageEvent({
+                length: this.pageControl.totalUploads,
+                pageIndex: Math.floor(nextAvailableClaimRow / this.pageControl.pageSize),
+                pageSize: this.pageControl.pageSize
+              })
+              this.isDialogOpen = true;
+              this.dialogClaimIndex = (nextAvailableClaimRow % this.pageControl.pageSize) - 1
+            } else {
+              this.isDialogOpen = false;
+              this.findNextAvailableClaim(index);
+              this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex].provClaimNo, this.dialogClaimIndex, this.claimSummaryIds[this.dialogClaimIndex].claimReviewStatus)
+            }
+          } else {
+            // show no more claims available
+          }
+        });
         break;
+
       }
       default: {
         this.isDialogOpen = false
