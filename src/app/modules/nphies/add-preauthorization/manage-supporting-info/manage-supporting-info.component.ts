@@ -111,7 +111,7 @@ export class ManageSupportingInfoComponent implements OnInit {
     this.supportingInfoList[i].attachmentDate = new Date();
     sizeInMB = this.sharedServices.formatBytes(event.target.files[0].size);
 
-    if (event.target.files[0].size > 10485760) {
+    if (event.target.files[0].size > 9437184) {
       this.supportingInfoList[i].fileError = 'File must be less than or equal to 10 MB';
       this.supportingInfoList[i].uploadContainerClass = 'has-error';
       this.supportingInfoList[i].attachment = null;
