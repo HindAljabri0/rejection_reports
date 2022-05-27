@@ -1245,10 +1245,10 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   checkDiagnosisErrorValidation() {
-    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
-      return false;
-    } else {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
       return true;
+    } else {
+      return false;
     }
   }
   checkCareTeamValidation() {
