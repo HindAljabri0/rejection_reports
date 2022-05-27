@@ -68,7 +68,7 @@
                 </td>
                 <td>
 
-                    <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
+                    <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.specialitySelect}">
 
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="careTeam.specialitySelect" (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required

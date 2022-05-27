@@ -1269,8 +1269,16 @@ export class CreateClaimNphiesComponent implements OnInit {
     return hasError;
   }
 
-  checkDiagnosisErrorValidation() {
-    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
+  get checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  checkDiagnosisErrors() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
       return true;
     } else {
       return false;
@@ -1278,7 +1286,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.isSubmitted = true;
 
     let hasError = false;
@@ -1331,7 +1338,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.checkItemValidation();
 
-    if (!this.checkDiagnosisErrorValidation()) {
+    if (!this.checkDiagnosisErrors()) {
       hasError = true;
     }
 
