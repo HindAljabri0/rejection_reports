@@ -1,7 +1,8 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
+import { Diagnosis } from "src/app/claim-module-components/models/diagnosis.model";
 import { ClaimReviewState, PageControls, UploadsPage } from "../models/claimReviewState.model";
-import { loadUploadsUnderReviewOfSelectedTab, setLoadUploadClaimsList, setMarkAllAsDone, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
+import { loadUploadsUnderReviewOfSelectedTab, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, uploadsReviewPageAction, uploadsReviewTabAction } from "./claimReview.actions";
 
 
 const initState: ClaimReviewState = {
@@ -11,7 +12,7 @@ const initState: ClaimReviewState = {
         completed: new UploadsPage(0, 10)
     },
     selectedUploadsTab: 'new',
-    claimErrors: {errors: []},
+    claimErrors: { errors: [] },
     singleClaim: new Claim('INPATIENT', '0'),
     uploadClaimsSummary: null,
     uploadClaimsSummaryPageControls: new PageControls(0, 10)
@@ -68,12 +69,37 @@ const _claimReviewReducer = createReducer(
         let newUploadClaimsSummary = state.uploadClaimsSummary.map(claimSummary => { return { ...claimSummary, claimReviewStatus: '1' } })
         return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
     }),
+    on(setMarkAsDoneReturn, (state, data) => {
+        let newUploadClaimsSummary = state.uploadClaimsSummary.map(
+            claimSummary => {
+                return claimSummary.provClaimNo === data.data.provClaimNo ?
+                    { ...claimSummary, claimReviewStatus: '1' } : claimSummary
+            })
+        return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
+    }),
     on(setLoadUploadClaimsList, (state, claimSummary) => {
         return ({
             ...state,
             uploadClaimsSummary: claimSummary.data.uploadClaimSummaryList.content
             , uploadClaimsSummaryPageControls: claimSummary.data.uploadClaimSummaryList.pageControl
         });
+    }),
+    on(setDiagnosisRemarksReturn, (state, data) => {
+        console.log(data);
+        let newDiagnosis: Diagnosis[] = state.singleClaim.caseInformation.caseDescription.diagnosis.map(
+            diagnosis => {
+                let diag = { ...diagnosis }
+                //  diagnosis .diagnosisId === data.data.diagnosisId ? {...diagnosis, doctorRemarks : data.data.doctorRemarks,coderRemarks : remarkReturn.data.doctorRemarks} : diagnosis
+                if (diagnosis.diagnosisId === data.data.diagnosisId) {
+                    if (data.data.doctor) {
+                        diag.doctorRemarks = data.data.remarks
+                    } else if (data.data.coder) {
+                        diag.coderRemarks = data.data.remarks
+                    }
+                }
+                return diag
+            })
+        return ({ ...state, singleClaim: { ...state.singleClaim, caseInformation: { ...state.singleClaim.caseInformation, caseDescription: { ...state.singleClaim.caseInformation.caseDescription, diagnosis: newDiagnosis } } } });
     })
 
 );

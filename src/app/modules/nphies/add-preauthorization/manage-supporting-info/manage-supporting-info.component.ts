@@ -109,8 +109,15 @@ export class ManageSupportingInfoComponent implements OnInit {
     this.supportingInfoList[i].attachmentName = event.target.files[0].name;
     this.supportingInfoList[i].attachmentType = event.target.files[0].type;
     this.supportingInfoList[i].attachmentDate = new Date();
-
     sizeInMB = this.sharedServices.formatBytes(event.target.files[0].size);
+
+    if (event.target.files[0].size > 9437184) {
+      this.supportingInfoList[i].fileError = 'File must be less than or equal to 10 MB';
+      this.supportingInfoList[i].uploadContainerClass = 'has-error';
+      this.supportingInfoList[i].attachment = null;
+      return;
+    }
+
     if (!this.checkfile(i)) {
       this.supportingInfoList[i].attachment = null;
       return;
@@ -133,7 +140,6 @@ export class ManageSupportingInfoComponent implements OnInit {
       this.supportingInfoList[i].fileError = 'Invalid file selected, valid files are of ' + validExts.toString() + ' types.';
       this.supportingInfoList[i].uploadContainerClass = 'has-error';
       this.supportingInfoList[i].attachment = null;
-      this.sharedServices.loadingChanged.next(false);
       return false;
     } else {
       this.supportingInfoList[i].uploadContainerClass = '';

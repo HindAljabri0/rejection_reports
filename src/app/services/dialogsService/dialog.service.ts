@@ -129,11 +129,12 @@ export class DialogService {
     });
   }
 
-  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, closeOnOk = null, _transactionId = null, IsReturn = null) {
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null, dontCloseAll = null, closeOnOk = null, _transactionId = null, preventClose = false) {
     if (!dontCloseAll) {
       this.closeAll();
     }
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = preventClose;
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
@@ -154,9 +155,6 @@ export class DialogService {
         }
       });
     }
-    if (IsReturn) {
-      return dialogRef.afterClosed();
-    }
   }
 
   // tslint:disable-next-line:max-line-length
@@ -165,6 +163,7 @@ export class DialogService {
       this.closeAll();
     }
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length

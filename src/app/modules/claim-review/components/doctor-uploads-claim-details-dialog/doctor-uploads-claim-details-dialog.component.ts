@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
+import { Period } from 'src/app/claim-module-components/models/period.type';
 import { Service } from 'src/app/claim-module-components/models/service.model';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -42,6 +43,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   
   ngOnInit() {
     this.initVariables();
+    console.log('dialog data: ', this.data);
   }
 
   initVariables() {
@@ -130,4 +132,29 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   getTooltipForCoder(diagnosis: Diagnosis) {
     return diagnosis.coderRemarks;
   }
+
+  getPeriod(duration: string): Period {
+    if(duration)
+    {
+      if (duration.startsWith('P')) {
+        if (duration.indexOf('Y', 1) != -1) {
+            const value = Number.parseInt(duration.replace('P', '').replace('Y', ''), 10);
+            if (Number.isInteger(value)) {
+                return new Period(value, 'years');
+            }
+        } else if (duration.indexOf('M', 1) != -1) {
+            const value = Number.parseInt(duration.replace('P', '').replace('M', ''), 10);
+            if (Number.isInteger(value)) {
+                return new Period(value, 'months');
+            }
+        } else if (duration.indexOf('D', 1) != -1) {
+            const value = Number.parseInt(duration.replace('P', '').replace('D', ''), 10);
+            if (Number.isInteger(value)) {
+                return new Period(value, 'days');
+            }
+        }
+      }
+    }
+    return new Period(null,null);
+}
 }
