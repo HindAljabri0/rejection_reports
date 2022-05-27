@@ -250,6 +250,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .mat-autocomplete-panel.pre-auth-items{padding: 6px 0;}
 .pre-auth-items .mat-option{height: auto;padding: 10px 16px;line-height: 20px;}
 .pre-auth-items .non-standard-code{font-size: 14px;display: block;}
+.pre-auth-items .strength{padding-bottom: 2px;font-size: 14px;display: block;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -885,11 +886,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* empty state
 --------------------------------------------------------------------------------------------------------*/
-.empty-state{padding: 32px 15px 48px;text-align:center;display: flex;flex-direction: column;justify-content: center;font-size: 18px;line-height: 22px;color: #333;}
+.empty-state{padding: 24px 15px;text-align:center;display: flex;flex-direction: column;justify-content: center;font-size: 18px;line-height: 22px;color: #333;}
 .summary-empty-state .empty-state{min-height: calc(100vh - 475px);}
 .claim-list-empty-state  .empty-state{min-height:calc(100vh - 406px);}
 .reconciliation-report-empty-state .empty-state{min-height: calc(100vh - 293px);}
-.empty-state>img{height: 144px;width: 144px;display: block;margin: 0 auto 16px;}
+.empty-state>img{height: 108px;width: 108px;display: block;margin: 0 auto 12px;}
 
 /* login
 --------------------------------------------------------------------------------------------------------*/

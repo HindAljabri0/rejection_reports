@@ -1077,8 +1077,8 @@ export class ProvidersConfigComponent implements OnInit {
     // );
 
     const newPayerMapping = this.existingPayers.filter(payer =>
-
-      (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingValue[payer.payerId] != payer.mappingName) || (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingEnable[payer.payerId] != payer.enabled)
+      // tslint:disable-next-line:max-line-length
+      this.newPayerMappingValue[payer.payerId] && ((this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingValue[payer.payerId] != payer.mappingName) || (this.newPayerMappingValue[payer.payerId].trim() != '' && this.newPayerMappingEnable[payer.payerId] != payer.enabled))
     );
     this.addPayerMappingList = newPayerMapping.map(payer => payer.payerId);
     const toDeletePayerMapping = this.existingPayers.filter(payer =>

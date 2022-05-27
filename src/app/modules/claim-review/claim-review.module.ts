@@ -17,7 +17,6 @@ import { DoctorUploadsClaimListComponent } from './components/doctor-uploads-cla
 import {
     DoctorUploadsClaimDetailsDialogComponent
 } from './components/doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
-import { ClaimReviewViewComponent } from './components/claim-review-view/claim-review-view.component';
 
 
 
@@ -28,8 +27,7 @@ import { ClaimReviewViewComponent } from './components/claim-review-view/claim-r
         UploadsAssigningTabContentComponent,
         DoctorUploadsComponent,
         DoctorUploadsClaimListComponent,
-        DoctorUploadsClaimDetailsDialogComponent,
-        ClaimReviewViewComponent
+        DoctorUploadsClaimDetailsDialogComponent
     ],
     imports: [
         CommonModule,

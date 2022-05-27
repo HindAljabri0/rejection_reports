@@ -18,7 +18,7 @@
         <tbody>
             <tr *ngFor="let careTeam of CareTeams; let i = index" class="align-middle">
                 <td>
-                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerName) }">
+                    <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : (isSubmitted && careTeam.error) }">
                         <input type="text" class="form-control search-box" placeholder="Search practitioner name here..." [(ngModel)]="careTeam.practitionerName"
                             [matAutocomplete]="auto" (keyup)="searchPhysician(careTeam.practitionerName, i)" required>
                         <!--p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}
@@ -35,7 +35,7 @@
                 </td>
                 <td>
 
-                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerRole) }">
+                    <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : (isSubmitted && !careTeam.practitionerRole) }">
 
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="careTeam.practitionerRoleSelect" (ngModelChange)="practitionerRoleChange($event, i)">
@@ -52,7 +52,7 @@
                 </td>
                 <td>
 
-                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && !careTeam.careTeamRole}">
+                    <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' : isSubmitted && !careTeam.careTeamRole}">
 
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="careTeam.careTeamRoleSelect" (ngModelChange)="careTeamRoleChange($event, i)">
@@ -68,7 +68,7 @@
                 </td>
                 <td>
 
-                    <div class="mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
+                    <div class="form-group  mb-n1 mt-n1" [ngClass]="{'has-error' :isSubmitted && !careTeam.speciality}">
 
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="careTeam.specialitySelect" (ngModelChange)="SpecialtyChange($event, i)" [disabled]="IsSpecialityLading" required

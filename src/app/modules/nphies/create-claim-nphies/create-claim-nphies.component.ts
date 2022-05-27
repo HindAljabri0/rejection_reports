@@ -265,7 +265,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.claimId = this.claimId == null ? parseInt(this.activatedRoute.snapshot.queryParams.claimId) : this.claimId;
 
     } else {
-
+      this.IsDiagnosisRequired = true;
       this.pageMode = 'CREATE';
       this.isLoading = false;
 
@@ -376,7 +376,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
       // tslint:disable-next-line:max-line-length
-      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
+      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
     });
 
     if (this.otherDataModel.subscriber) {
@@ -1083,14 +1083,14 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   checkCareTeamValidation() {
-    let hasError=false;
+    let hasError = false;
     if (this.CareTeams.length !== 0) {
       this.CareTeams.forEach(element => {
-        console.log("physicianCode = " + element.physicianCode + " practitionerName = "+element.practitionerName );
-        if (element.physicianCode  == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
+        console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
+        if (element.physicianCode == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
           element.error = "Please Select Valid Practitioner";
-          hasError= true;
-        }else{
+          hasError = true;
+        } else {
           element.error = "";
         }
       });
@@ -1102,8 +1102,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
       this.IsDiagnosisRequired = true;
+      return false;
     } else {
       this.IsDiagnosisRequired = false;
+      return true;
     }
   }
 
@@ -1269,9 +1271,9 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   checkDiagnosisErrorValidation() {
     if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -1323,7 +1325,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     //this.checkCareTeamValidation();
-    this.checkDiagnosisValidation();
+    if (!this.checkDiagnosisValidation()) {
+      hasError = true;
+    }
+
     this.checkItemValidation();
 
     if (!this.checkDiagnosisErrorValidation()) {
@@ -1337,7 +1342,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (!this.checkItemCareTeams()) {
       hasError = true;
     }
-    console.log("Validation result = "+this.checkCareTeamValidation());
+
     if (this.checkCareTeamValidation()) {
       hasError = true;
     }
@@ -2022,7 +2027,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   /*GetSpecialityList(code) {
     let speciality:any;
     this.providerNphiesSearchService.getSpecialityByCode(this.sharedService.providerId, code).subscribe(event => {
-      
+
       if (event instanceof HttpResponse) {
         event => speciality = event.body;
         console.log("body = "+JSON.stringify(speciality));
@@ -2035,6 +2040,11 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
+
+    this.otherDataModel.cancelStatus = response.cancelStatus;
+    this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
+    this.otherDataModel.cancelErrors = response.cancelErrors;
+
     this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
@@ -2178,14 +2188,23 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.claimRefNo = response.claimRefNo;
     this.otherDataModel.status = response.status;
     this.otherDataModel.totalNet = response.totalNet;
+
+
     this.otherDataModel.preAuthRefNo = response.preAuthDetails;
     this.otherDataModel.responseDecision = response.responseDecision;
     this.otherDataModel.providertransactionlogId = response.providertransactionlogId;
 
     // this.otherDataModel.totalAmount = response.totalAmount;
-
     if (response.preAuthDetails) {
-      this.FormNphiesClaim.controls.preAuthRefNo.setValue(response.preAuthDetails);
+      if (response.preAuthDetails.filter(x => x === null).length === 0) {
+        const preAuthValue = response.preAuthDetails.map(x => {
+          const model: any = {};
+          model.display = x;
+          model.value = x;
+          return model;
+        });
+        this.FormNphiesClaim.controls.preAuthRefNo.setValue(preAuthValue);
+      }
     }
 
     // this.otherDataModel.claimEncounter = response.claimEncounter;

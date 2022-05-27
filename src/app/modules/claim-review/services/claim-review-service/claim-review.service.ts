@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
+import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
 import { environment } from 'src/environments/environment';
+import { ClaimDetails } from '../../models/ClaimDetails.model';
 import { claimScrubbing } from '../../models/ClaimScrubbing.model';
-import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone } from '../../store/claimReview.reducer';
+import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from '../../store/claimReview.reducer';
 
 
 @Injectable({
@@ -21,9 +23,9 @@ export class ClaimReviewService {
         });
     }
 
-    selectDetailView(uploadId: number, pageNumber: number, pageSize: number, isDoctor: boolean, isCoder: boolean) {
+    selectDetailView(uploadId: number, body: UploadClaimsList) {
         const requestUrl = `/scrubbing/upload/` + uploadId + `/claim`;
-        return this.http.post(environment.claimReviewService + requestUrl, { "page": pageNumber, "pageSize": pageSize, "doctor": isDoctor, "coder": isCoder });
+        return this.http.post(environment.claimReviewService + requestUrl, body);
     }
     
     selectSingleClaim(uploadId: number, provClaimNo: string) {
@@ -38,7 +40,7 @@ export class ClaimReviewService {
 
     updateDiagnosisRemarks(body: DiagnosisRemarksUpdateRequest) {        
         const requestUrl = `/scrubbing/upload/claim/diagnosis`;
-        return this.http.post(environment.claimReviewService + requestUrl, body);
+        return this.http.post<Diagnosis>(environment.claimReviewService + requestUrl, body);
     }
 
     updateClaimDetailsRemarks(body: DiagnosisRemarksUpdateRequest) {
@@ -50,7 +52,7 @@ export class ClaimReviewService {
 
     markClaimAsDone(body: MarkAsDone) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done`;
-        return this.http.post<claimScrubbing>(environment.claimReviewService + requestUrl, body);
+        return this.http.post<ClaimDetails>(environment.claimReviewService + requestUrl, body);
     }
 
     markClaimAsDoneAll(body: MarkAsDone) {
@@ -58,8 +60,8 @@ export class ClaimReviewService {
         return this.http.post(environment.claimReviewService + requestUrl, body);
     }
 
-    markClaimAsDoneSelected(uploadId : number, provClaimNo : string[]) {
+    markClaimAsDoneSelected(body: MarkAsDone) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done/selected`;
-        return this.http.post(environment.claimReviewService + requestUrl, {"uploadId" : uploadId,"provClaimNo": provClaimNo});
+        return this.http.post(environment.claimReviewService + requestUrl, body);
     }
 }

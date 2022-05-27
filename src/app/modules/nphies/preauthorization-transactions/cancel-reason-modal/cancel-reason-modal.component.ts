@@ -98,9 +98,9 @@ export class CancelReasonModalComponent implements OnInit {
                   errors.push('Outcome Reason: ' + body.statusReason);
                 }
                 if (errors.length > 0) {
-                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', errors, null, true);
+                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', errors, null, true, null, true);
                 } else {
-                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, null, true);
+                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, null, true, null, true);
                 }
 
                 // this.dialogRef.close(true);
