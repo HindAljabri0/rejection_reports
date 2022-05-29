@@ -376,7 +376,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
       // tslint:disable-next-line:max-line-length
-      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
+      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
     });
 
     if (this.otherDataModel.subscriber) {
@@ -1102,8 +1102,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
       this.IsDiagnosisRequired = true;
+      return false;
     } else {
       this.IsDiagnosisRequired = false;
+      return true;
     }
   }
 
@@ -1267,16 +1269,23 @@ export class CreateClaimNphiesComponent implements OnInit {
     return hasError;
   }
 
-  checkDiagnosisErrorValidation() {
-    if (this.Diagnosises.filter(x => x.type === 'principal').length > 1) {
-      return false;
-    } else {
+  get checkDiagnosisErrorValidation() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
       return true;
+    } else {
+      return false;
+    }
+  }
+
+  checkDiagnosisErrors() {
+    if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
+      return true;
+    } else {
+      return false;
     }
   }
 
   onSubmit() {
-
     this.isSubmitted = true;
 
     let hasError = false;
@@ -1323,10 +1332,13 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     //this.checkCareTeamValidation();
-    this.checkDiagnosisValidation();
+    if (!this.checkDiagnosisValidation()) {
+      hasError = true;
+    }
+
     this.checkItemValidation();
 
-    if (!this.checkDiagnosisErrorValidation()) {
+    if (!this.checkDiagnosisErrors()) {
       hasError = true;
     }
 
@@ -2750,7 +2762,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       return false;
     }
   }
-  
+
   openAddCommunicationDialog(commRequestId = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
