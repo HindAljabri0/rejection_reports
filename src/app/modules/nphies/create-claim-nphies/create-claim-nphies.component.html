@@ -1483,11 +1483,11 @@
           </app-manage-care-team>
         </mat-tab>
         <mat-tab>
-          
+
           <ng-template mat-tab-label>
-            <mat-icon class="mr-1" *ngIf="isSubmitted && checkDiagnosisErrorValidation" [class.text-danger]="isSubmitted && checkDiagnosisErrorValidation">
+            <mat-icon class="mr-1" *ngIf="isSubmitted && checkDiagnosisErrorValidation === false" [class.text-danger]="isSubmitted && checkDiagnosisErrorValidation === false">
               error</mat-icon>
-            <span [class.text-danger]="isSubmitted && checkDiagnosisErrorValidation">Diagnosis</span>
+            <span [class.text-danger]="isSubmitted && checkDiagnosisErrorValidation === false">Diagnosis</span>
           </ng-template>
           <app-manage-diagnosis
           [(isSubmitted)]="isSubmitted"
