@@ -1,12 +1,18 @@
 <div class="primary-dialog-header has-border align-items-center">
     <h5 class="primary-dialog-title semibold">View Claim</h5>
-    <span class="status-badge ml-auto warning">
-        <img src="./assets/ic-clock.svg" alt="Clock" />
-        <span>Review Pending</span>
+    <span class="status-badge ml-auto" [ngClass]="data.markAsDone ? 'success' : 'warning'">
+        <ng-container *ngIf="(data.markAsDone)">
+            <img src="./assets/ic-check.svg" alt="check" />
+            <span>Reviewed</span>
+        </ng-container>
+        <ng-container *ngIf="!(data.markAsDone)">
+            <img src="./assets/ic-clock.svg" alt="Clock" />
+            <span>Review Pending</span>
+        </ng-container>
     </span>
     <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
 </div>
-<mat-tab-group class="primary-tab doctor-review-tab">
+<mat-tab-group class="primary-tab doctor-review-tab" [selectedIndex]="selectedTabIndex">
     <mat-tab [label]="'Diagnosis & Services'">
         <div class="diagnosis-tab">
             <div class="form-group form-group-static p-14 pb-0">
@@ -19,13 +25,14 @@
                     <div *ngFor="let service of (services$|async)">
                         <li>
                             <p>{{service.serviceCode}}</p>
-                        <span class="text-grey">{{service.serviceDescription}}</span>
-                    </li>
-                </div>
+                            <span class="text-grey">{{service.serviceDescription}}</span>
+                        </li>
+                    </div>
                 </ul>
                 <div class="diagnosis">
                     <div class="table-responsive">
-                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid claim-view-table sticky-header">
+                        <table cellspacing="0" cellpadding="0" border="0"
+                            class="primary-grid claim-view-table sticky-header">
                             <thead>
                                 <tr>
                                     <th>Diagnosis Code</th>
@@ -35,17 +42,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="align-middle" *ngFor="let diag of (claim$|async).caseInformation?.caseDescription?.diagnosis">
+                                <tr class="align-middle"
+                                    *ngFor="let diag of (claim$|async).caseInformation?.caseDescription?.diagnosis">
                                     <td>{{diag.diagnosisCode}}</td>
                                     <td>{{diag.diagnosisDescription}}</td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control" />
+                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control"
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)"
+                                                maxlength="100" [matTooltip]="getTooltipForDoctor(diag)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input value="{{diag.coderRemarks}}" type="text" class="form-control" />
+                                            <input value="{{diag.coderRemarks}}" type="text" class="form-control"
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)"
+                                                maxlength="100" [matTooltip]="getTooltipForCoder(diag)" />
                                         </div>
                                     </td>
                                 </tr>
@@ -64,139 +76,149 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Full Name</div>
-                            <p class="form-control-static">Ahmed Al Zahrani</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.fullName}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Gender</div>
-                            <p class="form-control-static">Male</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.gender}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Department</div>
-                            <p class="form-control-static">General Practice</p>
+                            <p class="form-control-static">{{(claim$|async).visitInformation.departmentCode}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Payer</div>
-                            <p class="form-control-static">Tawuniya</p>
+                            <p class="form-control-static">{{(claim$|async).claimIdentities.payerID}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Claim Date</div>
-                            <p class="form-control-static">26/07/2019</p>
+                            <p class="form-control-static">{{(claim$|async).visitInformation?.visitDate}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Nationality</div>
-                            <p class="form-control-static">Saudi Arabia</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.nationality}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">National / Iqama ID</div>
-                            <p class="form-control-static text-grey">N/A</p>
+                            <p class="form-control-static text-grey">{{(claim$|async).member.idNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Member ID</div>
-                            <p class="form-control-static">002308799663001</p>
+                            <p class="form-control-static">{{(claim$|async).member?.memberID}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Policy No.</div>
-                            <p class="form-control-static">85964</p>
+                            <p class="form-control-static">{{(claim$|async).member?.policyNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Date of Birth</div>
-                            <p class="form-control-static">01/01/1996</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.dob}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Age</div>
-                            <p class="form-control-static">25 Years</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.patient?.age}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Eligibility No.</div>
-                            <p class="form-control-static">8596</p>
+                            <p class="form-control-static">{{(claim$|async).claimIdentities?.eligibilityNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Approval No.</div>
-                            <p class="form-control-static">968955147</p>
+                            <p class="form-control-static">{{(claim$|async).claimIdentities?.approvalNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician Category</div>
-                            <p class="form-control-static">Consultant</p>
+                            <p class="form-control-static">
+                                {{(claim$|async).caseInformation?.physician?.physicianCategory}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician Name</div>
-                            <p class="form-control-static">Shagufta Sultana Arshad</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.physician?.physicianName}}
+                            </p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Physician ID</div>
-                            <p class="form-control-static">8009</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.physician?.physicianID}}
+                            </p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Account Code</div>
-                            <p class="form-control-static">Waseel ASP Ltd</p>
+                            <p class="form-control-static">{{(claim$|async).member?.accCode}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Duration of Illness</div>
-                            <p class="form-control-static">1 Day</p>
+                            <p class="form-control-static">
+                                {{getPeriod((claim$|async).caseInformation?.caseDescription?.illnessDuration).getValue()
+                                + " " +
+                                getPeriod((claim$|async).caseInformation?.caseDescription?.illnessDuration).getType()}}
+                                {{(claim$|async).caseInformation?.caseDescription?.illnessCategory}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Visit Type</div>
-                            <p class="form-control-static">New</p>
+                            <p class="form-control-static">{{(claim$|async).visitInformation?.visitType}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Patient File No.</div>
-                            <p class="form-control-static">2629624</p>
+                            <p class="form-control-static">
+                                {{(claim$|async).caseInformation?.patient?.patientFileNumber}}
+                            </p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Contact No.</div>
-                            <p class="form-control-static text-grey">N/A</p>
+                            <p class="form-control-static text-grey">
+                                {{(claim$|async).caseInformation?.patient?.contactNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Case Type</div>
-                            <p class="form-control-static">Inpatient</p>
+                            <p class="form-control-static">{{(claim$|async).caseInformation?.caseType}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Plan Type</div>
-                            <p class="form-control-static text-grey">N/A</p>
+                            <p class="form-control-static text-grey">{{(claim$|async).member?.planType}}</p>
                         </div>
                     </div>
                 </div>
@@ -205,53 +227,66 @@
                 <h5 class="semibold pb-14">Medical Info</h5>
                 <div class="form-group form-group-static">
                     <div class="control-label">Chief Complaint Symptoms</div>
-                    <p class="form-control-static">Dental Caries</p>
+                    <p class="form-control-static">
+                        {{(claim$|async).caseInformation?.caseDescription?.chiefComplaintSymptoms}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Radiology Report</div>
-                    <p class="form-control-static text-grey">N/A</p>
+                    <p class="form-control-static text-grey">{{(claim$|async).caseInformation?.radiologyReport}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Other Condition</div>
-                    <p class="form-control-static text-grey">N/A</p>
+                    <p class="form-control-static text-grey">{{(claim$|async).caseInformation?.otherConditions}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Comment Report</div>
-                    <p class="form-control-static">Common report</p>
+                    <p class="form-control-static"></p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Significant Sign</div>
-                    <p class="form-control-static text-grey">N/A</p>
+                    <p class="form-control-static text-grey"></p>
                 </div>
             </div>
         </div>
     </mat-tab>
     <mat-tab [label]="'Illness'">
         <div class="primary-button-toggle inline">
-            <mat-button-toggle [disabled]="true" value="N/A">N/A</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Ambulance">Ambulance</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Dialysis">Dialysis</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Checkup">Checkup</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Chronic">Chronic</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Circumcision">Circumcision</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Cleaning">Cleaning</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Congenital">Congenital</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Infertility">Infertility</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Maternity complications">Maternity complications</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Preexisting">Preexisting</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Orthodontics">Orthodontics</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Pregnancy">Pregnancy</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Psychiatry">Psychiatry</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Rta">Rta</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Sports">Sports</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Vaccination">Vaccination</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Wra">Wra</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Regular dental treatment">Regular dental treatment</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Emergency resuscitation">Emergency resuscitation</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Emergency">Emergency</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Emergency urgent">Emergency urgent</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Emergency less urgent">Emergency less urgent</mat-button-toggle>
-            <mat-button-toggle [disabled]="true" value="Emergency not urgent">Emergency not urgent</mat-button-toggle>
+
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('NA')}}" value="N/A">N/A</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('AMBULANCE')}}">Ambulance</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('DIALYSIS')}}">Dialysis</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('CHECKUP')}}">Checkup</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('CHRONIC')}}">Chronic</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('CIRCUMCISION')}}">Circumcision
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('CLEANING')}}">Cleaning</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('CONGENITAL')}}">Congenital</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('INFERTILITY')}}">Infertility</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('MATERNITYCOMPLICATIONS')}}">Maternity
+                complications
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('PREEXISTING')}}">Preexisting</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('ORTHODONTICS')}}">Orthodontics
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('PREGNANCY')}}">Pregnancy</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('PSYCHIATRY')}}">Psychiatry</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('RTA')}}">Rta</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('SPORTS')}}">Sports</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('VACCINATION')}}">Vaccination</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('WRA')}}">Wra</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('REGULARDENTALTREATMENT')}}">Regular dental
+                treatment
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('EMERGENCYRESUSCITATION')}}">Emergency
+                resuscitation
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('EMERGENCY')}}">Emergency</mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('EMERGENCYURGENT')}}">Emergency urgent
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('EMERGENCYLESSURGENT')}}">Emergency less urgent
+            </mat-button-toggle>
+            <mat-button-toggle [disabled]="true" checked="{{isSelected('EMERGENCYNOTURGENT')}}">Emergency not urgent
+            </mat-button-toggle>
         </div>
     </mat-tab>
     <mat-tab [label]="'Vital Signs'">
@@ -259,43 +294,44 @@
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Temperature</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.temperature}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Blood Pressure</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.bloodPressure}}
+                    </p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Respiratory Rate</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.respRate}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Pulse</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.pulse}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Weight</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.weight}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Height</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.height}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group-static">
                     <div class="control-label">Last Menstruation Period</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).caseInformation?.caseDescription?.lmp}}</p>
                 </div>
             </div>
         </div>
@@ -305,37 +341,39 @@
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group static">
                     <div class="control-label">Admission Date & Time</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).admission?.admissionDate}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group static">
                     <div class="control-label">Discharge Date & Time</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).admission?.discharge?.dischargeDate}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group static">
                     <div class="control-label">Length of Stay</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">
+                        {{getPeriod((claim$|async).admission?.discharge?.actualLengthOfStay).getValue()}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group static">
                     <div class="control-label">Unit of Stay</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">
+                        {{getPeriod((claim$|async).admission?.discharge?.actualLengthOfStay).getType()}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group static">
                     <div class="control-label">Room Number</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).admission?.roomNumber}}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="form-group form-group static">
                     <div class="control-label">Bed Number</div>
-                    <p class="form-control-static">lorem ipsum</p>
+                    <p class="form-control-static">{{(claim$|async).admission?.bedNumber}}</p>
                 </div>
             </div>
         </div>
@@ -344,7 +382,7 @@
     </mat-tab>
     <mat-tab [label]="'Lab Results'">
     </mat-tab>
-    <mat-tab [label]="'Errors'">
+    <mat-tab [label]="'Errors'" #errs>
         <div class="table-responsive">
             <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
                 <thead class="header-primary">
@@ -354,21 +392,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="text-rejected-waseel">
-                        <td>lorem ipsum</td>
-                        <td>lorem ipsum</td>
-                    </tr>
-                    <tr class="text-rejected-waseel">
-                        <td>lorem ipsum</td>
-                        <td>lorem ipsum</td>
-                    </tr>
-                    <tr class="text-rejected-waseel">
-                        <td>lorem ipsum</td>
-                        <td>lorem ipsum</td>
-                    </tr>
-                    <tr class="text-rejected-waseel">
-                        <td>lorem ipsum</td>
-                        <td>lorem ipsum</td>
+                    <tr *ngFor="let err of (errors$|async).errors" class="text-rejected-waseel">
+                        <td>{{err.fieldName}}</td>
+                        <td>{{err.description}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -379,28 +405,31 @@
 <div class="p-14 pb-0 border-top">
     <h5 class="semibold pb-14">Doctor’s Remarks</h5>
     <div class="form-group">
-        <textarea class="form-control doctor-review" placeholder="Enter doctor's remarks here..."></textarea>
+        <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review"
+            placeholder="Enter doctor's remarks here..." (focusout)="claimDetailsRemarksfocusOut($event.target.value)"
+            maxlength="100" [matTooltip]="doctorRemarks" />
     </div>
 </div>
 
 <div class="block-footer sticky">
     <div class="left-block custom-paginator">
-        <button matRipple type="button" title="First Page">
+        <button matRipple type="button" title="First Claim" (click)="firstClaim()">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Page">
+        <button matRipple type="button" title="Previous Claim" (click)="prevClaim()">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
-        <p class="page-info">1<small>/5</small>
+        <p class="page-info">{{(data.pageControl.pageNumber * data.pageControl.pageSize) + data.index +
+            1}}<small>/{{data.pageControl.totalUploads}}</small>
         </p>
-        <button matRipple type="button" title="Next Page">
+        <button matRipple type="button" title="Next Claim" (click)="nextClaim()">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Page">
+        <button matRipple type="button" title="Last Claim" (click)="lastClaim()">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>
     <div class="right-block btn-list">
-        <button mat-flat-button color="primary">Mark as Done</button>
+        <button mat-flat-button color="primary" (click)="markAsDone()">Mark as Done</button>
     </div>
 </div>
