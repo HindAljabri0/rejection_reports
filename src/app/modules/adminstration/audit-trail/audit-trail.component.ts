@@ -183,6 +183,8 @@ export class AuditTrailComponent implements OnInit {
   viewJSON(objectId: string, log: AuditLog) {
     let json='';
 
+    console.log('Inside viewJSON' +JSON.stringify(log));
+
     if(log.eventType=='BeneficairyManipulation'){
       console.log('Inside BeneficairyManipulation' +JSON.stringify(log.beneficiaryJSON));
       json=log.beneficiaryJSON;
