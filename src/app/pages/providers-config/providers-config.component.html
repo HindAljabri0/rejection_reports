@@ -177,6 +177,25 @@
             <mat-radio-button color="primary" value="STOP">Stop Polling</mat-radio-button>
           </mat-radio-group>
         </div>
+        <div class="form-group mb-0">
+          <label class="control-label text-primary medium">Poll Communication Requests for Claims/Preauth submitted within past:</label>
+          <div class="row small-gutter">
+            <div class="col-auto">
+              <mat-form-field appearance="fill" class="no-label">
+                <input matInput placeholder="Enter number" type="text" />
+              </mat-form-field>
+            </div>
+            <div class="col-auto">
+              <mat-form-field appearance="fill" class="no-label">
+                <mat-select value="days">
+                  <mat-option value="days">days</mat-option>
+                  <mat-option value="months">months</mat-option>
+                  <mat-option value="years">years</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <p *ngIf="errors.pollTypeConfigurationError != null && errors.pollTypeConfigurationError != '' && !componentLoading.pollType" class="error-card mb-0">
         {{errors.pollTypeConfigurationError}}</p>

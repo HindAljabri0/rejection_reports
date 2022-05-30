@@ -194,8 +194,8 @@ export class AuditTrailComponent implements OnInit {
     }else if(log.eventType=='NphiesPreAuth'){
       console.log('Inside NphiesPreAuth' +JSON.stringify(log.preAuthData));
       json=log.preAuthData;
-    }else if(log.eventType=='NphiesClaimManipulation'){
-      console.log('Inside NphiesClaimManipulation' +JSON.stringify(log.claimData));
+    }else if(log.eventType=='NphiesClaim'){
+      console.log('Inside NphiesClaim' +JSON.stringify(log.claimData));
       json=log.claimData;
     }else if(log.eventType=='ClaimManipulation'){
       console.log('Inside ClaimManipulation' +JSON.stringify(log.newClaimData));
