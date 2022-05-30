@@ -25,7 +25,7 @@
                     <div *ngFor="let service of (services$|async)">
                         <li>
                             <p>{{service.serviceCode}}</p>
-                            <span class="text-grey">{{service.serviceDescription}}</span>
+                            <span class="">{{service.serviceDescription}}</span>
                         </li>
                     </div>
                 </ul>
@@ -108,7 +108,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">National / Iqama ID</div>
-                            <p class="form-control-static text-grey">{{(claim$|async).member.idNumber}}</p>
+                            <p class="form-control-static ">{{(claim$|async).member.idNumber}}</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6">
@@ -201,7 +201,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Contact No.</div>
-                            <p class="form-control-static text-grey">
+                            <p class="form-control-static ">
                                 {{(claim$|async).caseInformation?.patient?.contactNumber}}</p>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="form-group form-group-static">
                             <div class="control-label">Plan Type</div>
-                            <p class="form-control-static text-grey">{{(claim$|async).member?.planType}}</p>
+                            <p class="form-control-static ">{{(claim$|async).member?.planType}}</p>
                         </div>
                     </div>
                 </div>
@@ -228,19 +228,19 @@
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Radiology Report</div>
-                    <p class="form-control-static text-grey">{{(claim$|async).caseInformation?.radiologyReport}}</p>
+                    <p class="form-control-static ">{{(claim$|async).caseInformation?.radiologyReport}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Other Condition</div>
-                    <p class="form-control-static text-grey">{{(claim$|async).caseInformation?.otherConditions}}</p>
+                    <p class="form-control-static ">{{(claim$|async).caseInformation?.otherConditions}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Comment Report</div>
-                    <p class="form-control-static"></p>
+                    <p class="form-control-static">{{(claim$|async).commreport}}</p>
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Significant Sign</div>
-                    <p class="form-control-static text-grey"></p>
+                    <p class="form-control-static ">{{(claim$|async).caseInformation?.caseDescription?.signicantSigns}}</p>
                 </div>
             </div>
         </div>
