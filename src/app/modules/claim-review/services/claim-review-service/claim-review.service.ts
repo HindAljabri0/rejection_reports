@@ -52,7 +52,7 @@ export class ClaimReviewService {
 
     markClaimAsDone(body: MarkAsDone) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done`;
-        return this.http.post<ClaimDetails>(environment.claimReviewService + requestUrl, body);
+        return this.http.post<{claimDetails: ClaimDetails, nextAvailableClaimRow: number}>(environment.claimReviewService + requestUrl, body);
     }
 
     markClaimAsDoneAll(body: MarkAsDone) {

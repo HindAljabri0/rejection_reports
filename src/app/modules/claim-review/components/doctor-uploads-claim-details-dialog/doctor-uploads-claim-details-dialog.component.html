@@ -31,8 +31,7 @@
                 </ul>
                 <div class="diagnosis">
                     <div class="table-responsive">
-                        <table cellspacing="0" cellpadding="0" border="0"
-                            class="primary-grid claim-view-table sticky-header">
+                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid claim-view-table sticky-header">
                             <thead>
                                 <tr>
                                     <th>Diagnosis Code</th>
@@ -42,22 +41,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="align-middle"
-                                    *ngFor="let diag of (claim$|async).caseInformation?.caseDescription?.diagnosis">
+                                <tr class="align-middle" *ngFor="let diag of (claim$|async).caseInformation?.caseDescription?.diagnosis">
                                     <td>{{diag.diagnosisCode}}</td>
                                     <td>{{diag.diagnosisDescription}}</td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
                                             <input value="{{diag.doctorRemarks}}" type="text" class="form-control"
-                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)"
-                                                maxlength="100" [matTooltip]="getTooltipForDoctor(diag)" />
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)" maxlength="100" [matTooltip]="getTooltipForDoctor(diag)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
                                             <input value="{{diag.coderRemarks}}" type="text" class="form-control"
-                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)"
-                                                maxlength="100" [matTooltip]="getTooltipForCoder(diag)" />
+                                                (focusout)="diagRemarksfocusOut(diag, $event.target.value, true, false)" maxlength="100" [matTooltip]="getTooltipForCoder(diag)" />
                                         </div>
                                     </td>
                                 </tr>
@@ -379,8 +375,173 @@
         </div>
     </mat-tab>
     <mat-tab [label]="'Attachments'">
+        <app-empty-state message='No attachments found!'>
+        </app-empty-state>
+
+        <div class="row small-gutter">
+            <div class="col-md-6 col-lg-4 col-xxl-3">
+                <div class="attachment">
+                    <button class="thumbnail" type="button">
+                        <!-- <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" /> -->
+                        <img src="assets/file-types/ic-pdf.svg" alt="PDF" />
+                    </button>
+                    <div class="content">
+                        <p class="title">lorem file name</p>
+                        <p>lorem file type</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </mat-tab>
     <mat-tab [label]="'Lab Results'">
+        <div class="custom-paginator">
+            <button matRipple type="button" title="First Page" class="ml-auto">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="primary-grid claim-view-table">
+                <thead>
+                    <tr>
+                        <th width="10"></th>
+                        <th>Serial No.</th>
+                        <th>Test Date</th>
+                        <th>Test Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle">
+                        <td class="text-primary text-center row-click" (click)="toggleResult(0)">
+                            <mat-icon *ngIf="expandedResult != 0" class="size-21">chevron_right</mat-icon>
+                            <mat-icon *ngIf="expandedResult == 0" class="size-21">expand_more</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleResult(0)">1</td>
+                        <td class="row-click" (click)="toggleResult(0)">lorem date</td>
+                        <td class="row-click" (click)="toggleResult(0)">lorem code</td>
+                        <td class="row-click" (click)="toggleResult(0)">lorem description</td>
+                    </tr>
+                    <tr *ngIf="expandedResult == 0">
+                        <td colspan="7">
+                            <div class="box">
+                                <div class="d-flex pb-2">
+                                    <h5 class="align-self-center medium">Components</h5>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="primary-grid claim-view-table">
+                                        <thead>
+                                            <tr>
+                                                <th width="10"></th>
+                                                <th>Serial No.</th>
+                                                <th>Component Code</th>
+                                                <th>LAB Result</th>
+                                                <th>Result Unit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-primary text-center row-click" (click)="toggleComponentExpansion(0)">
+                                                    <mat-icon *ngIf="expandedComponent !== 0" class="size-21">chevron_right</mat-icon>
+                                                    <mat-icon *ngIf="expandedComponent === 0" class="size-21">expand_more</mat-icon>
+                                                </td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(0)">1</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(0)">lorem code</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(0)">lorem result</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(0)">lorem unit</td>
+                                            </tr>
+                                            <tr *ngIf="expandedComponent === 0">
+                                                <td colspan="7" class="p-1">
+                                                    <div class="box">
+                                                        <div class="row small-gutter">
+                                                            <div class="col-lg-4 col-md-6">
+                                                                <div class="form-group form-group-static">
+                                                                    <div class="control-label">Component Code</div>
+                                                                    <p class="form-control-static">lorem code</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-6">
+                                                                <div class="form-group form-group-static">
+                                                                    <div class="control-label">LAB Result</div>
+                                                                    <p class="form-control-static">lorem result</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group form-group-static">
+                                                                    <div class="control-label">Result Unit</div>
+                                                                    <p class="form-control-static">lorem unit</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group form-group-static mb-0">
+                                                            <div class="control-label">Description</div>
+                                                            <p class="form-control-static">lorem description</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-primary text-center row-click" (click)="toggleComponentExpansion(1)">
+                                                    <mat-icon *ngIf="expandedComponent !== 1" class="size-21">chevron_right</mat-icon>
+                                                    <mat-icon *ngIf="expandedComponent === 1" class="size-21">expand_more</mat-icon>
+                                                </td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(1)">1</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(1)">lorem code</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(1)">lorem result</td>
+                                                <td class="row-click" (click)="toggleComponentExpansion(1)">lorem unit</td>
+                                            </tr>
+                                            <tr *ngIf="expandedComponent === 1">
+                                                <td colspan="7" class="p-1">
+                                                    <div class="box">
+                                                        <div class="row small-gutter">
+                                                            <div class="col-lg-4 col-md-6">
+                                                                <div class="form-group form-group-static">
+                                                                    <div class="control-label">Component Code</div>
+                                                                    <p class="form-control-static">lorem code</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-6">
+                                                                <div class="form-group form-group-static">
+                                                                    <div class="control-label">LAB Result</div>
+                                                                    <p class="form-control-static">lorem result</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group form-group-static">
+                                                                    <div class="control-label">Result Unit</div>
+                                                                    <p class="form-control-static">lorem unit</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group form-group-static mb-0">
+                                                            <div class="control-label">Description</div>
+                                                            <p class="form-control-static">lorem description</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <app-empty-state message='No components found!'></app-empty-state>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-empty-state message='No results found!'></app-empty-state>
     </mat-tab>
     <mat-tab [label]="'Errors'" #errs>
         <div class="table-responsive">
@@ -405,27 +566,29 @@
 <div class="p-14 pb-0 border-top">
     <h5 class="semibold pb-14">Doctor’s Remarks</h5>
     <div class="form-group">
-        <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review"
-            placeholder="Enter doctor's remarks here..." (focusout)="claimDetailsRemarksfocusOut($event.target.value)"
-            maxlength="100" [matTooltip]="doctorRemarks" />
+        <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review" placeholder="Enter doctor's remarks here..."
+            (focusout)="claimDetailsRemarksfocusOut($event.target.value)" maxlength="100" [matTooltip]="doctorRemarks" />
     </div>
 </div>
 
 <div class="block-footer sticky">
     <div class="left-block custom-paginator">
-        <button matRipple type="button" title="First Claim" (click)="firstClaim()">
+        <button matRipple type="button" [disabled]="data.pageControl.pageNumber == 0 && data.index == 0" title="First Claim" (click)="firstClaim()">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Claim" (click)="prevClaim()">
+        <button matRipple type="button" [disabled]="data.pageControl.pageNumber == 0 && data.index == 0" title="Previous Claim" (click)="prevClaim()">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
         <p class="page-info">{{(data.pageControl.pageNumber * data.pageControl.pageSize) + data.index +
             1}}<small>/{{data.pageControl.totalUploads}}</small>
         </p>
-        <button matRipple type="button" title="Next Claim" (click)="nextClaim()">
+        <button matRipple type="button"
+            [disabled]="data.pageControl.pageNumber == (data.pageControl.totalPages - 1) && data.index == (data.pageControl.totalUploads % data.pageControl.pageSize -1)"
+            title="Next Claim" (click)="nextClaim()">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Claim" (click)="lastClaim()">
+        <button [disabled]="data.pageControl.pageNumber == (data.pageControl.totalPages - 1) && data.index == (data.pageControl.totalUploads % data.pageControl.pageSize -1)"
+            matRipple type="button" title="Last Claim" (click)="lastClaim()">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>
