@@ -301,7 +301,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       beneficiary: this.selectedBeneficiary,
       subscriber: this.isNewBorn ? this.selectedSubscriber : null,
       // tslint:disable-next-line:max-line-length
-      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null, payerNphiesId: null },
+      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, relationWithSubscriber: null, maxLimit: null, patientShare: null, payerNphiesId: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,
