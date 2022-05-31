@@ -1,9 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
+import { Investigation } from 'src/app/claim-module-components/models/investigation.model';
+import { Observation } from 'src/app/claim-module-components/models/observation.model';
 import { Period } from 'src/app/claim-module-components/models/period.type';
 import { Service } from 'src/app/claim-module-components/models/service.model';
 import { AuthService } from 'src/app/services/authService/authService.service';
@@ -21,6 +25,22 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
   expandedResult = -1;
   expandedComponent = -1;
+  labsPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
+
+  results: Investigation[];
+  resultsControls: {
+    results: Investigation,
+    testDate: FormControl,
+    testCode: FormControl,
+    resultDescription: FormControl,
+    componentsControls: {
+      componentCode: FormControl,
+      componentDescription: FormControl,
+      componentLabResult: FormControl,
+      componentResultUnit: FormControl,
+      isOpen: boolean
+    }[]
+  }[] = [];
 
   // data
   claim$: Observable<Claim>;
@@ -41,11 +61,15 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store,
     private sharedServices: SharedServices,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private datePipe: DatePipe) {
   }
 
   ngOnInit() {
     this.initVariables();
+    this.claim$.subscribe(claim => {
+      this.setData(claim);
+    })
   }
 
   initVariables() {
@@ -168,11 +192,119 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     }
   }
 
-  toggleComponentExpansion(index) {
-    if (this.expandedComponent == index) {
+  toggleComponentExpansion(event, i, j) {
+    event.stopPropagation();
+    if (this.resultsControls[i].componentsControls[j].isOpen) {
       this.expandedComponent = -1;
+      this.resultsControls[i].componentsControls[j].isOpen = false;
+      // this.updateClaimInvestigations();
     } else {
-      this.expandedComponent = index;
+      this.resultsControls[i].componentsControls.forEach(element => {
+        element.isOpen = false;
+      });
+      this.resultsControls[i].componentsControls[j].isOpen = true;
+      this.expandedComponent = j;
     }
+  }
+
+
+
+
+  setData(claim: Claim) {
+    this.resultsControls = [];
+    if (claim.caseInformation.caseDescription.investigation != null) {
+      claim.caseInformation.caseDescription.investigation.forEach(
+        investigation => {
+          const controls = this.createEmptyResultControls();
+          if (investigation.investigationDate != null) {
+            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'));
+          } else {
+            controls.testDate.setValue('');
+          }
+          controls.results = investigation;
+          controls.testCode.setValue(investigation.investigationCode);
+          controls.testSerial.setValue(investigation.investigationType);
+          controls.resultDescription.setValue(investigation.investigationDescription);
+
+          investigation.observation.forEach(observation => {
+            const componentControls = this.createEmptyComponentControls();
+            componentControls.components = observation;
+            componentControls.componentCode.setValue(observation.observationCode);
+
+            componentControls.componentDescription.setValue(observation.observationDescription);
+
+            componentControls.componentLabResult.setValue(observation.observationValue);
+
+            componentControls.componentResultUnit.setValue(observation.observationUnit);
+
+            componentControls.componentResultComment.setValue(observation.observationComment);
+
+            controls.componentsControls.push(componentControls);
+          });
+          this.resultsControls.push(controls);
+        }
+      );
+      if (this.resultsControls.length > 0 && this.expandedResult == -1) {
+        this.toggleResult(0);
+      }
+    }
+  }
+
+
+  createEmptyResultControls() {
+    return {
+      results: new Investigation(),
+      testDate: new FormControl(),
+      testCode: new FormControl(),
+      testSerial: new FormControl(),
+      resultDescription: new FormControl(),
+      componentsControls: []
+    };
+  }
+
+
+  createEmptyComponentControls() {
+    return {
+      components: new Observation(),
+      componentCode: new FormControl(),
+      componentSerial: new FormControl(),
+      componentDescription: new FormControl(),
+      componentLabResult: new FormControl(),
+      componentResultUnit: new FormControl(),
+      componentResultComment: new FormControl(),
+      isOpen: false
+    };
+  }
+
+  get totalLabsPages() {
+    return Math.ceil(this.resultsControls.length/this.labsPaginationControl.size);
+  }
+
+  showFirstLabsPage() {
+    this.labsPaginationControl.page = 0;
+  }
+
+  showNextLabsPage() {
+    if ((this.labsPaginationControl.page + 1) < this.totalLabsPages) {
+      this.labsPaginationControl.page++;
+    }
+  }
+
+  showPreviousLabsPage() {
+    if (this.labsPaginationControl.page > 0) {
+      this.labsPaginationControl.page--;
+    }
+  }
+
+  get currentLabsPage(){
+    return this.labsPaginationControl.page;
+  }
+
+  get currentLabsSize(){
+    return this.labsPaginationControl.size;
+  }
+  
+  showLastLabsPage() {
+    this.labsPaginationControl.page = this.totalLabsPages;
   }
 }
