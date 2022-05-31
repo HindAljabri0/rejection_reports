@@ -3,6 +3,7 @@ import { createAction, props } from "@ngrx/store";
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { ClaimDetails } from "../models/ClaimDetails.model";
 import { UploadsPage } from "../models/claimReviewState.model";
+import { Upload } from "../models/upload.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from "./claimReview.reducer";
 
@@ -29,3 +30,4 @@ export const setClaimDetailsRemarks = createAction("[ Claims Review ] set claim 
 export const markAsDone = createAction("[ Claims Review ] mark claim as done", props<{data: MarkAsDone}>());
 export const markAsDoneAll = createAction("[ Claims Review ] mark claim as done For all", props<{data: MarkAsDone}>());
 export const markAsDoneSelected = createAction("[ Claims Review ] mark claim as done For Selected", props<{data: MarkAsDone}>());
+export const deleteUpload = createAction("[ Claims Review ] Delete the Selected Upload", props<{upload : Upload}>());

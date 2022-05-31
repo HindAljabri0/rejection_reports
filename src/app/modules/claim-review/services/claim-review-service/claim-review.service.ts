@@ -2,9 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
+import { SharedServices } from 'src/app/services/shared.services';
 import { environment } from 'src/environments/environment';
 import { ClaimDetails } from '../../models/ClaimDetails.model';
 import { claimScrubbing } from '../../models/ClaimScrubbing.model';
+import { Upload } from '../../models/upload.model';
 import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from '../../store/claimReview.reducer';
 
 
@@ -13,13 +15,19 @@ import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList
 })
 export class ClaimReviewService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,private sharedService : SharedServices) { }
 
     fetchUnderReviewUploadsOfStatus(status: string, pageNumber: number, pageSize: number, providerId: string) {
-        const requestUrl = `/scrubbing/upload`;
-        return this.http.post(environment.claimReviewService + requestUrl, {
-            "status": status, "page": pageNumber, "pageSize": pageSize, "userName": providerId, "doctor": localStorage.getItem('101101').includes('|24.41') || localStorage.getItem('101101').startsWith('24.41'),
-            "coder": localStorage.getItem('101101').includes('|24.42') || localStorage.getItem('101101').startsWith('24.42')
+        var requestURL = "";
+        if(this.sharedService.userPrivileges.WaseelPrivileges.RCM.isAdmin)
+        {
+            requestURL = '/uploads';
+        }else{
+            requestURL = `/scrubbing/upload`;
+        }
+        return this.http.post(environment.claimReviewService + requestURL, {
+            "status": status, "page": pageNumber, "pageSize": pageSize, "userName": providerId, "doctor": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+            "coder": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isCoder
         });
     }
 
@@ -63,5 +71,10 @@ export class ClaimReviewService {
     markClaimAsDoneSelected(body: MarkAsDone) {
         const requestUrl = `/scrubbing/upload/claim/mark-as-done/selected`;
         return this.http.post(environment.claimReviewService + requestUrl, body);
+    }
+
+    deleteUpload(upload : Upload){
+        const requestUrl = `/scrubbing/delete/` + upload.id;
+        return this.http.delete<any>(environment.claimReviewService + requestUrl);
     }
 }
