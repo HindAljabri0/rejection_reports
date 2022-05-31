@@ -3,6 +3,7 @@ import { MatCheckboxChange, MatDialog, PageEvent } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
@@ -243,15 +244,28 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   markAllAsDone() {
-    this.store.dispatch(markAsDoneAll({
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, {
+      panelClass: ['primary-dialog'],
+      disableClose: true,
+      autoFocus: false,
       data: {
-        coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
-        doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
-        provClaimNo: null, uploadId: this.uploadId,
-        userName: this.authService.getUserName()
+        mainMessage: 'Are you sure you want to Mark All Claim(s) as Done?',
+        mode: 'warning'
       }
-    }));
-    return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.store.dispatch(markAsDoneAll({
+          data: {
+            coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
+            doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+            provClaimNo: null, uploadId: this.uploadId,
+            userName: this.authService.getUserName()
+          }
+        }));
+        return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
+      }
+    }, error => { });
   }
 
   markSelectedAsDone() {
