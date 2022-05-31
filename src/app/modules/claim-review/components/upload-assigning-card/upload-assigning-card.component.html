@@ -8,7 +8,7 @@
                 <p>{{data.name || 'Unknown Extraction Name'}}</p>
                 <span>{{data.date | date: 'EEEE, dd MMMM, yyyy | hh:mm a'}}</span>
             </div>
-            <button type="button" class="btn-action text-primary" matRipple>
+            <button type="button" class="btn-action text-primary" (click)="deleteRecord(data)" matRipple>
                 <mat-icon class="material-icons-outlined">delete</mat-icon>
             </button>
         </div>
