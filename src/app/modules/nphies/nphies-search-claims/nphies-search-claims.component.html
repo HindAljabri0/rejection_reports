@@ -296,18 +296,18 @@
         </mat-paginator>
 
       </div>
-
-      <div class="right-block btn-list" *ngIf="showCancelAll === true && selectedCardKey != 0">
-        <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary">Cancel
+      <div class="right-block btn-list">
+        <!-- <button mat-flat-button color="primary" *ngIf="showInquireAll === true && selectedCardKey != 0">Inquire
+          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button> -->
+        <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary"
+          *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
-      </div>
-      <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
-        <button mat-button *ngIf="showDeleteAll === true && selectedCardKey != 0" (click)="deleteClaimByCriteria()">Delete
-          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
-        <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
-          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
-        <ng-container *ngIf="summaries[this.selectedCardKey].statuses[0] === statusSelected.Accepted.toLowerCase()
-                    || summaries[this.selectedCardKey].statuses[0] === statusSelected.Downloadable.toLowerCase()">
+        <ng-container *ngIf="currentSelectedTab==0">
+          <button mat-button *ngIf="showDeleteAll === true && selectedCardKey != 0"
+            (click)="deleteClaimByCriteria()">Delete
+            {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
+          <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
+            {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         </ng-container>
       </div>
     </div>
