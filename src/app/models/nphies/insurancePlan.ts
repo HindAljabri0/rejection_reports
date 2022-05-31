@@ -7,4 +7,6 @@ export class InsurancePlan {
     relationWithSubscriber: string;
     coverageType: string;
     payerNphiesId: string;
+    maxLimit:number;
+    patientShare:number;
 }
