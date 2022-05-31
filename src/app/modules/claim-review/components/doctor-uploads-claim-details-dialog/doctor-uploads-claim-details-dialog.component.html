@@ -23,7 +23,7 @@
                 <ul class="services">
                     <li class="head">Services</li>
                     <div *ngFor="let service of (services$|async)">
-                        <li>
+                        <li class="pl-14">
                             <p>{{service.serviceCode}}</p>
                             <span class="">{{service.serviceDescription}}</span>
                         </li>
@@ -244,7 +244,8 @@
                 </div>
                 <div class="form-group form-group-static">
                     <div class="control-label">Significant Sign</div>
-                    <p class="form-control-static ">{{(claim$|async).caseInformation?.caseDescription?.signicantSigns}}</p>
+                    <p class="form-control-static ">{{(claim$|async).caseInformation?.caseDescription?.signicantSigns}}
+                    </p>
                 </div>
             </div>
         </div>
@@ -386,7 +387,6 @@
             <div class="col-md-6 col-lg-4 col-xxl-3">
                 <div class="attachment">
                     <button class="thumbnail" type="button">
-                        <!-- <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" /> -->
                         <img src="assets/file-types/ic-pdf.svg" alt="PDF" />
                     </button>
                     <div class="content">
@@ -400,7 +400,7 @@
     <mat-tab [label]="'Lab Results'">
         <div class="lab-result-container">
 
-            <div class="custom-paginator" *ngIf="resultsControls?.length && resultsControls?.length > 10">
+            <div class="custom-paginator" *ngIf="investigations?.length && investigations?.length > 10">
                 <button matRipple type="button" title="First Page" class="ml-auto">
                     <img src="./assets/ic-page-first.svg" alt="First" />
                 </button>
@@ -417,6 +417,7 @@
                     <img src="./assets/ic-page-last.svg" alt="Last" />
                 </button>
             </div>
+            <h4 class="align-self-center medium">Lab Results</h4>
             <div class="table-responsive"
                 *ngIf="(claim$ | async).caseInformation?.caseDescription?.investigation?.length > 0">
                 <table class="primary-grid claim-view-table">
@@ -431,202 +432,83 @@
                     </thead>
                     <tbody>
                         <ng-container
-                            *ngFor="let result of resultsControls| slice:currentLabsPage*currentLabsSize:(currentLabsPage*currentLabsSize)+currentLabsSize; let i = index">
+                            *ngFor="let result of investigations ; let i = index">
 
                             <tr class="align-middle">
                                 <td class="text-primary text-center row-click"
                                     (click)="toggleResult(i+(currentLabsPage*currentLabsSize))">
-                                    <mat-icon *ngIf="expandedResult != i+(currentLabsPage*currentLabsSize)"
+                                    <mat-icon *ngIf="expandedInvestigation != i+(currentLabsPage*currentLabsSize)"
                                         class="size-21">chevron_right</mat-icon>
-                                    <mat-icon *ngIf="expandedResult == i+(currentLabsPage*currentLabsSize)"
+                                    <mat-icon *ngIf="expandedInvestigation == i+(currentLabsPage*currentLabsSize)"
                                         class="size-21">expand_more</mat-icon>
                                 </td>
                                 <td class="row-click" (click)="toggleResult(i+(currentLabsPage*currentLabsSize))">
-                                    {{result.results.investigationId}}</td>
+                                    {{result.investigationId}}</td>
                                 <td class="row-click" (click)="toggleResult(i+(currentLabsPage*currentLabsSize))">
-                                    {{result.results.investigationDate}}</td>
+                                    {{result.investigationDate}}</td>
                                 <td class="row-click" (click)="toggleResult(i+(currentLabsPage*currentLabsSize))">
-                                    {{result.results.investigationCode}}</td>
+                                    {{result.investigationCode}}</td>
                                 <td class="row-click" (click)="toggleResult(i+(currentLabsPage*currentLabsSize))">
-                                    {{result.results.investigationDescription}}</td>
+                                    {{result.investigationDescription}}</td>
                             </tr>
-                            <tr *ngIf="expandedResult == i+(currentLabsPage*currentLabsSize)">
+                            <tr *ngIf="expandedInvestigation == i+(currentLabsPage*currentLabsSize)">
                                 <td colspan="7">
                                     <div class="box">
                                         <div class="d-flex pb-2">
-                                            <h5 class="align-self-center medium">Components</h5>
+                                            <h5 class="align-self-center medium">Observations</h5>
                                         </div>
-                                        <ng-container *ngIf="result.componentsControls?.length > 0">
+                                        <ng-container *ngIf="result.observations?.length > 0">
 
                                             <div class="table-responsive">
                                                 <table class="primary-grid claim-view-table">
                                                     <thead>
                                                         <tr>
-                                                            <th width="10"></th>
                                                             <th>Serial No.</th>
                                                             <th>Component Code</th>
                                                             <th>LAB Result</th>
                                                             <th>Result Unit</th>
+                                                            <th>Observation Description</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <ng-container
-                                                            *ngFor="let component of result.componentsControls; let j = index">
+                                                            *ngFor="let observation of result.observations; let j = index">
 
-                                                            <tr>
-                                                                <td class="text-primary text-center row-click"
-                                                                    (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
-                                                                    <mat-icon *ngIf="!component.isOpen" class="size-21">
-                                                                        chevron_right</mat-icon>
-                                                                    <mat-icon *ngIf="component.isOpen" class="size-21">
-                                                                        expand_more</mat-icon>
-                                                                </td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
-                                                                    1
-                                                                </td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
-                                                                    lorem
-                                                                    code</td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
-                                                                    lorem
-                                                                    result</td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
-                                                                    lorem
-                                                                    unit</td>
-                                                            </tr>
-                                                            <tr *ngIf="expandedComponent === 0">
-                                                                <td colspan="7" class="p-1">
-                                                                    <div class="box">
-                                                                        <div class="row small-gutter">
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div
-                                                                                    class="form-group form-group-static">
-                                                                                    <div class="control-label">Component
-                                                                                        Code
-                                                                                    </div>
-                                                                                    <p class="form-control-static">lorem
-                                                                                        code
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div
-                                                                                    class="form-group form-group-static">
-                                                                                    <div class="control-label">LAB
-                                                                                        Result
-                                                                                    </div>
-                                                                                    <p class="form-control-static">lorem
-                                                                                        result
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-4">
-                                                                                <div
-                                                                                    class="form-group form-group-static">
-                                                                                    <div class="control-label">Result
-                                                                                        Unit
-                                                                                    </div>
-                                                                                    <p class="form-control-static">lorem
-                                                                                        unit
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group form-group-static mb-0">
-                                                                            <div class="control-label">Description</div>
-                                                                            <p class="form-control-static">lorem
-                                                                                description
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-primary text-center row-click"
-                                                                    (click)="toggleComponentExpansion(1)">
-                                                                    <mat-icon *ngIf="expandedComponent !== 1"
+                                                         
+                                                            <tr (click)="toggleObservationExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
+                                                                <!-- <td class="text-primary text-center row-click"
+                                                                    >
+                                                                    <mat-icon *ngIf="expandedObservation !== i+(currentLabsPage*currentLabsSize),j"
                                                                         class="size-21">
                                                                         chevron_right</mat-icon>
-                                                                    <mat-icon *ngIf="expandedComponent === 1"
+                                                                    <mat-icon *ngIf="expandedObservation === i+(currentLabsPage*currentLabsSize),j"
                                                                         class="size-21">
                                                                         expand_more</mat-icon>
+                                                                </td> -->
+                                                                <td >
+                                                                    {{observation.observationId}}
                                                                 </td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion(1)">
-                                                                    1
+                                                                <td >
+                                                                    {{observation.observationCode}}
                                                                 </td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion(1)">
-                                                                    lorem
-                                                                    code</td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion(1)">
-                                                                    lorem
-                                                                    result</td>
-                                                                <td class="row-click"
-                                                                    (click)="toggleComponentExpansion(1)">
-                                                                    lorem
-                                                                    unit</td>
-                                                            </tr>
-                                                            <tr *ngIf="expandedComponent === 1">
-                                                                <td colspan="7" class="p-1">
-                                                                    <div class="box">
-                                                                        <div class="row small-gutter">
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div
-                                                                                    class="form-group form-group-static">
-                                                                                    <div class="control-label">Component
-                                                                                        Code
-                                                                                    </div>
-                                                                                    <p class="form-control-static">lorem
-                                                                                        code
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div
-                                                                                    class="form-group form-group-static">
-                                                                                    <div class="control-label">LAB
-                                                                                        Result
-                                                                                    </div>
-                                                                                    <p class="form-control-static">lorem
-                                                                                        result
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-4">
-                                                                                <div
-                                                                                    class="form-group form-group-static">
-                                                                                    <div class="control-label">Result
-                                                                                        Unit
-                                                                                    </div>
-                                                                                    <p class="form-control-static">lorem
-                                                                                        unit
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group form-group-static mb-0">
-                                                                            <div class="control-label">Description</div>
-                                                                            <p class="form-control-static">lorem
-                                                                                description
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
+                                                                <td >
+                                                                    {{observation.observationValue}}
+                                                                </td>
+                                                                <td >
+                                                                    {{observation.observationUnit}}
+                                                                </td>
+                                                                <td >
+                                                                    {{observation.observationDescription}}
                                                                 </td>
                                                             </tr>
                                                         </ng-container>
-                                                        
+
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <!-- <app-empty-state *ngIf="!(claim$ | async).caseInformation?.caseDescription?.investigation" message='No Lab Result Found!'></app-empty-state> -->
                                         </ng-container>
-                                        <app-empty-state *ngIf="result.componentsControls?.length <= 0"
+                                        <app-empty-state *ngIf="result.observations?.length <= 0"
                                             message='No Components Found!'></app-empty-state>
                                     </div>
                                 </td>

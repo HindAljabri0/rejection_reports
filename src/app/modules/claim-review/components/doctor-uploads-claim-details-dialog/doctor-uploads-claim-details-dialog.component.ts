@@ -12,6 +12,8 @@ import { Period } from 'src/app/claim-module-components/models/period.type';
 import { Service } from 'src/app/claim-module-components/models/service.model';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { ClaimViewObservation } from '../../models/ClaimViewObservation.model';
+import { ClaimViewInvestigation } from '../../models/Investigation.model';
 import { markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks } from '../../store/claimReview.actions';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
 
@@ -23,26 +25,12 @@ import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, ge
 })
 export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
-  expandedResult = -1;
-  expandedComponent = -1;
+  expandedInvestigation = -1;
+  expandedObservation = -1;
   labsPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
 
-  results: Investigation[];
-  resultsControls: {
-    results: Investigation,
-    testDate: FormControl,
-    testCode: FormControl,
-    resultDescription: FormControl,
-    componentsControls: {
-      componentCode: FormControl,
-      componentDescription: FormControl,
-      componentLabResult: FormControl,
-      componentResultUnit: FormControl,
-      isOpen: boolean
-    }[]
-  }[] = [];
+  investigations: ClaimViewInvestigation[] 
 
-  // data
   claim$: Observable<Claim>;
   services$: Observable<Service[]>;
   selectedIllnesses$: Observable<string[]>;
@@ -68,7 +56,10 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   ngOnInit() {
     this.initVariables();
     this.claim$.subscribe(claim => {
-      this.setData(claim);
+      let investigations: Investigation[] = claim.caseInformation.caseDescription.investigation;
+      if(investigations){
+        this.investigations = ClaimViewInvestigation.map(investigations)//this.map(investigations)
+      }
     })
   }
 
@@ -185,70 +176,69 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   toggleResult(index) {
-    if (this.expandedResult == index) {
-      this.expandedResult = -1;
+    if (this.expandedInvestigation == index) {
+      this.expandedInvestigation = -1;
     } else {
-      this.expandedResult = index;
+      this.expandedInvestigation = index;
     }
   }
 
-  toggleComponentExpansion(event, i, j) {
+  toggleObservationExpansion(event, investigationIndex, observationIndex) {
     event.stopPropagation();
-    if (this.resultsControls[i].componentsControls[j].isOpen) {
-      this.expandedComponent = -1;
-      this.resultsControls[i].componentsControls[j].isOpen = false;
-      // this.updateClaimInvestigations();
+    if (this.investigations[investigationIndex].observations[observationIndex].isOpen) {
+      this.expandedObservation = -1;
+      this.investigations[investigationIndex].observations[observationIndex].isOpen = false;
     } else {
-      this.resultsControls[i].componentsControls.forEach(element => {
+      this.investigations[investigationIndex].observations.forEach(element => {
         element.isOpen = false;
       });
-      this.resultsControls[i].componentsControls[j].isOpen = true;
-      this.expandedComponent = j;
+      this.investigations[investigationIndex].observations[observationIndex].isOpen = true;
+      this.expandedObservation = observationIndex;
     }
   }
 
 
 
 
-  setData(claim: Claim) {
-    this.resultsControls = [];
-    if (claim.caseInformation.caseDescription.investigation != null) {
-      claim.caseInformation.caseDescription.investigation.forEach(
-        investigation => {
-          const controls = this.createEmptyResultControls();
-          if (investigation.investigationDate != null) {
-            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'));
-          } else {
-            controls.testDate.setValue('');
-          }
-          controls.results = investigation;
-          controls.testCode.setValue(investigation.investigationCode);
-          controls.testSerial.setValue(investigation.investigationType);
-          controls.resultDescription.setValue(investigation.investigationDescription);
+  // setData(claim: Claim) {
+  //   // this.resultsControls = [];
+  //   if (claim.caseInformation.caseDescription.investigation != null) {
+  //     claim.caseInformation.caseDescription.investigation.forEach(
+  //       investigation => {
+  //         const controls = this.createEmptyResultControls();
+  //         if (investigation.investigationDate != null) {
+  //           controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'));
+  //         } else {
+  //           controls.testDate.setValue('');
+  //         }
+  //         controls.results = investigation;
+  //         controls.testCode.setValue(investigation.investigationCode);
+  //         controls.testSerial.setValue(investigation.investigationType);
+  //         controls.resultDescription.setValue(investigation.investigationDescription);
 
-          investigation.observation.forEach(observation => {
-            const componentControls = this.createEmptyComponentControls();
-            componentControls.components = observation;
-            componentControls.componentCode.setValue(observation.observationCode);
+  //         investigation.observation.forEach(observation => {
+  //           const componentControls = this.createEmptyComponentControls();
+  //           componentControls.components = observation;
+  //           componentControls.componentCode.setValue(observation.observationCode);
 
-            componentControls.componentDescription.setValue(observation.observationDescription);
+  //           componentControls.componentDescription.setValue(observation.observationDescription);
 
-            componentControls.componentLabResult.setValue(observation.observationValue);
+  //           componentControls.componentLabResult.setValue(observation.observationValue);
 
-            componentControls.componentResultUnit.setValue(observation.observationUnit);
+  //           componentControls.componentResultUnit.setValue(observation.observationUnit);
 
-            componentControls.componentResultComment.setValue(observation.observationComment);
+  //           componentControls.componentResultComment.setValue(observation.observationComment);
 
-            controls.componentsControls.push(componentControls);
-          });
-          this.resultsControls.push(controls);
-        }
-      );
-      if (this.resultsControls.length > 0 && this.expandedResult == -1) {
-        this.toggleResult(0);
-      }
-    }
-  }
+  //           controls.componentsControls.push(componentControls);
+  //         });
+  //         this.resultsControls.push(controls);
+  //       }
+  //     );
+  //     if (this.resultsControls.length > 0 && this.expandedResult == -1) {
+  //       this.toggleResult(0);
+  //     }
+  //   }
+  // }
 
 
   createEmptyResultControls() {
@@ -277,7 +267,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   get totalLabsPages() {
-    return Math.ceil(this.resultsControls.length/this.labsPaginationControl.size);
+    return Math.ceil(this.investigations.length / this.labsPaginationControl.size);
   }
 
   showFirstLabsPage() {
@@ -296,14 +286,14 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     }
   }
 
-  get currentLabsPage(){
+  get currentLabsPage() {
     return this.labsPaginationControl.page;
   }
 
-  get currentLabsSize(){
+  get currentLabsSize() {
     return this.labsPaginationControl.size;
   }
-  
+
   showLastLabsPage() {
     this.labsPaginationControl.page = this.totalLabsPages;
   }
