@@ -80,7 +80,11 @@ export class BeneficiaryComponent implements OnInit {
     selecteSubscriberRelationship: string
     selecteCoverageType: string,
     payerErorr: string,
+    patientShare:FormControl,
+    maxLimit:FormControl,
     memberCardIdErorr: string,
+    patientShareErorr: string,
+    maxLimitErorr: string,
     selecteSubscriberRelationshipErorr: string,
     selecteCoverageTypeErorr: string
   }[] = [];
@@ -314,7 +318,9 @@ export class BeneficiaryComponent implements OnInit {
             ? insurancePlans.relationWithSubscriber.toUpperCase()
             : insurancePlans.relationWithSubscriber,
           selecteCoverageType: insurancePlans.coverageType,
-          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
+          maxLimit:insurancePlans.maxLimit?new FormControl(insurancePlans.maxLimit):null,
+          patientShare:insurancePlans.patientShare?new FormControl(insurancePlans.patientShare):null,
+          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null,patientShareErorr: null,
         }
       );
     }
@@ -446,8 +452,12 @@ export class BeneficiaryComponent implements OnInit {
         memberCardId: new FormControl(),
         selecteSubscriberRelationship: '',
         selecteCoverageType: '',
+        patientShare:new FormControl(),
+        maxLimit:new FormControl(),
         payerErorr: null,
         memberCardIdErorr: null,
+        patientShareErorr:null,
+        maxLimitErorr:null,
         selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
       });
 
@@ -582,7 +592,9 @@ export class BeneficiaryComponent implements OnInit {
       memberCardId: insurancePlan.memberCardId.value,
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == '' ? null : insurancePlan.selecteSubscriberRelationship,
       coverageType: insurancePlan.selecteCoverageType == '' ? null : insurancePlan.selecteCoverageType,
-      isPrimary: insurancePlan.iSPrimary
+      isPrimary: insurancePlan.iSPrimary,
+      maxLimit:insurancePlan.maxLimit.value,
+      patientShare:insurancePlan.patientShare.value
     }));
 
   }

@@ -354,7 +354,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         expiryDate: null,
         primary: null,
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
-        relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber
+        relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
+        maxLimit:null,
+        patientShare:null,
       }]
     };
     this.FormNphiesClaim.patchValue({

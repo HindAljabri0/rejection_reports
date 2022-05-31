@@ -1371,6 +1371,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showInquireAll() {
+    // tslint:disable-next-line:max-line-length
+    return ['queued', 'pended', 'failed', 'approved', 'partial', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
@@ -1561,5 +1566,57 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             });
         }
       });
+  }
+
+  inquireClaimByCriteria() {
+
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+
+    const model: any = {};
+    model.providerId = this.providerId;
+    model.selectedClaims = this.selectedClaims;
+    model.uploadId = this.params.uploadId;
+    model.claimRefNo = this.params.claimRefNo;
+    model.to = this.params.to;
+    model.payerIds = payerIds;
+    model.batchId = this.params.batchId;
+    model.memberId = this.params.memberId;
+    model.invoiceNo = this.params.invoiceNo;
+    model.patientFileNo = this.params.patientFileNo;
+    model.from = this.params.from;
+    model.nationalId = this.params.nationalId;
+    model.statuses = [];
+    model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+
+    this.commen.loadingChanged.next(true);
+
+    let action: any;
+    if (this.selectedClaims.length === 0) {
+      action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
+        model.uploadId, model.claimRefNo, model.to,
+        model.payerIds, model.batchId, model.memberId, model.invoiceNo,
+        model.patientFileNo, model.from, model.nationalId, model.statuses);
+    } else {
+      action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
+    }
+
+    action.subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (body.status === 'OK') {
+
+            // Need to Handle Response once API is Done
+
+          }
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, error => {
+      this.commen.loadingChanged.next(false);
+    });
   }
 }
