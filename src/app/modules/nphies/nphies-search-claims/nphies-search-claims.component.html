@@ -129,7 +129,11 @@
 
                   <th
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    Inquiry
+                  </th>
 
+                  <th
+                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                   </th>
 
                 </tr>
@@ -176,6 +180,12 @@
                           Processing Status</span>
                         <span *ngIf="claim.processingStatus" class="pl-1">{{claim.processingStatus}}</span>
                       </div>
+                    </td>
+
+                    <td class="actions text-center">
+                      <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
+                      <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
+                                      <mat-spinner diameter="20"></mat-spinner> -->
                     </td>
 
                     <td class="actions">
