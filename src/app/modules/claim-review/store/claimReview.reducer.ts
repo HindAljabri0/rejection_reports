@@ -16,7 +16,7 @@ const initState: ClaimReviewState = {
     singleClaim: new Claim('INPATIENT', '0'),
     uploadClaimsSummary: null,
     uploadClaimsSummaryPageControls: new PageControls(0, 10),
-    nextAvailableClaimProvNo: null ,
+    nextAvailableClaimProvNo: 0 ,
 
 }
 
@@ -43,11 +43,11 @@ const _claimReviewReducer = createReducer(
     }),
     on(setUploadsPageOfSelectedTab, (state, { uploads, pageControls }) => {
         if (state.selectedUploadsTab == 'new')
-            return ({ ...state, uploads: { ...state.uploads, new: { uploads: uploads, pageControls: pageControls } } });
+            return ({ ...state, nextAvailableClaimProvNo : 0 ,uploads: { ...state.uploads, new: { uploads: uploads, pageControls: pageControls } } });
         else if (state.selectedUploadsTab == 'inProgress')
-            return ({ ...state, uploads: { ...state.uploads, inProgress: { uploads: uploads, pageControls: pageControls } } });
+            return ({ ...state, nextAvailableClaimProvNo : 0 ,uploads: { ...state.uploads, inProgress: { uploads: uploads, pageControls: pageControls } } });
         else
-            return ({ ...state, uploads: { ...state.uploads, completed: { uploads: uploads, pageControls: pageControls } } });
+            return ({ ...state, nextAvailableClaimProvNo : 0 ,uploads: { ...state.uploads, completed: { uploads: uploads, pageControls: pageControls } } });
     }),
     on(setUploadsPageErrorOfSelectedTab, (state, { message }) => {
         if (state.selectedUploadsTab == 'new')
