@@ -380,22 +380,38 @@
         </div>
     </mat-tab>
     <mat-tab [label]="'Attachments'">
-        <app-empty-state message='No attachments found!'>
-        </app-empty-state>
-
+        
+        <ng-container *ngIf="(claim$|async).attachment?.length <= 0">
+            <app-empty-state message='No attachments found!'>
+            </app-empty-state>
+        </ng-container>
         <div class="row small-gutter">
-            <div class="col-md-6 col-lg-4 col-xxl-3">
-                <div class="attachment">
-                    <button class="thumbnail" type="button">
-                        <img src="assets/file-types/ic-pdf.svg" alt="PDF" />
-                    </button>
-                    <div class="content">
-                        <p class="title">lorem file name</p>
-                        <p>lorem file type</p>
+            <ng-container >
+                <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of (claim$|async).attachment; let i = index">
+                    <div class="attachment">
+                        <button class="thumbnail" type="button" (click)="viewAttachment(attachment)">
+                            <img *ngIf="!isPdf(attachment)" [src]="getFileBlob(attachment)" [alt]="attachment.fileName" />
+                            <img *ngIf="isPdf(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
+                        </button>
+                        <div class="content">
+                            <p class="title">{{attachment.fileName}}</p>
+                            <p>{{attachment.fileType}}</p>
+                            <mat-menu #editAttachmentTypeMenu class="primary-menu">
+                                <label class="d-block text-primary pb-2">Edit Attachment Type?</label>
+                                
+                            </mat-menu>
+                            <div class="btn-list">
+                                <a [href]="getFileBlob(attachment)" [download]="attachment.fileName" mat-icon-button class="text-primary mr-0">
+                                    <mat-icon>save_alt</mat-icon>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+            
         </div>
+
     </mat-tab>
     <mat-tab [label]="'Lab Results'">
         <div class="lab-result-container">
@@ -431,8 +447,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container
-                            *ngFor="let result of investigations ; let i = index">
+                        <ng-container *ngFor="let result of investigations ; let i = index">
 
                             <tr class="align-middle">
                                 <td class="text-primary text-center row-click"
@@ -474,8 +489,9 @@
                                                         <ng-container
                                                             *ngFor="let observation of result.observations; let j = index">
 
-                                                         
-                                                            <tr (click)="toggleObservationExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
+
+                                                            <tr
+                                                                (click)="toggleObservationExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
                                                                 <!-- <td class="text-primary text-center row-click"
                                                                     >
                                                                     <mat-icon *ngIf="expandedObservation !== i+(currentLabsPage*currentLabsSize),j"
@@ -485,19 +501,19 @@
                                                                         class="size-21">
                                                                         expand_more</mat-icon>
                                                                 </td> -->
-                                                                <td >
+                                                                <td>
                                                                     {{observation.observationId}}
                                                                 </td>
-                                                                <td >
+                                                                <td>
                                                                     {{observation.observationCode}}
                                                                 </td>
-                                                                <td >
+                                                                <td>
                                                                     {{observation.observationValue}}
                                                                 </td>
-                                                                <td >
+                                                                <td>
                                                                     {{observation.observationUnit}}
                                                                 </td>
-                                                                <td >
+                                                                <td>
                                                                     {{observation.observationDescription}}
                                                                 </td>
                                                             </tr>

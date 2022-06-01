@@ -16,7 +16,7 @@
                     <tr>
                         <th width="10">
                             <mat-checkbox (change)="toggleAllClaims($event)" [(ngModel)]="allCheckBoxIsChecked"
-                                [(indeterminate)]="allCheckBoxIsIndeterminate" class="grid-checkbox" color="primary">
+                                [indeterminate]="selectedClaimNumberIds?.length > 0 && selectedClaimNumberIds.length < claimSummaryIds?.length" class="grid-checkbox" color="primary">
                             </mat-checkbox>
                         </th>
                         <th width="10"></th>
@@ -34,7 +34,7 @@
                     <ng-container *ngFor="let data of ($claimSummary | async); let i = index">
                         <tr class="align-middle" >
                             <td>
-                                <mat-checkbox class="grid-checkbox"
+                                <mat-checkbox class="grid-checkbox" 
                                     [checked]="selectedClaimNumberIds.includes(data.provClaimNo)"
                                     (change)="toggleClaim($event, data.provClaimNo)" color="primary">
                                 </mat-checkbox>
