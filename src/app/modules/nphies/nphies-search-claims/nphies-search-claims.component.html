@@ -297,8 +297,8 @@
 
       </div>
       <div class="right-block btn-list">
-        <!-- <button mat-flat-button color="primary" *ngIf="showInquireAll === true && selectedCardKey != 0">Inquire
-          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button> -->
+        <button (click)="inquireClaimByCriteria()" mat-flat-button color="primary" *ngIf="showInquireAll === true && selectedCardKey != 0">Inquire
+          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary"
           *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
