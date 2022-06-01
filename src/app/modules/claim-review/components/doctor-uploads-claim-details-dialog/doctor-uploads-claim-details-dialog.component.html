@@ -380,31 +380,6 @@
         </div>
     </mat-tab>
     <mat-tab [label]="'Attachments'">
-        <!-- <ng-container *ngIf="(claim$|async).attachment?.length <= 0">
-            <app-empty-state message='No attachments found!'>
-            </app-empty-state>
-        </ng-container>
-        <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of (claim$|async).attachment; let i = index">
-
-            <button class="thumbnail" type="button" (click)="viewAttachment(attachment)">
-                <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
-                <img *ngIf="isPdf(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
-            </button>
-
-            <div class="row small-gutter">
-                <div class="col-md-6 col-lg-4 col-xxl-3">
-                    <div class="attachment">
-                        <button class="thumbnail" type="button">
-                            <img src="assets/file-types/ic-pdf.svg" alt="PDF" />
-                        </button>
-                        <div class="content">
-                            <p class="title">{{attachment.fileName}}</p>
-                            <p>{{attachment.fileType}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         
         <ng-container *ngIf="(claim$|async).attachment?.length <= 0">
             <app-empty-state message='No attachments found!'>

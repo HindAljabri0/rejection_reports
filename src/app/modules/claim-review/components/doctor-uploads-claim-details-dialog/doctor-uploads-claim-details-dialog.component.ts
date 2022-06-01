@@ -60,10 +60,19 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
   ngOnInit() {
     this.initVariables();
+    this.initLabResults();
+  }
+
+  initLabResults() {
     this.claim$.subscribe(claim => {
       let investigations: Investigation[] = claim.caseInformation.caseDescription.investigation;
       if(investigations){
-        this.investigations = ClaimViewInvestigation.map(investigations)//this.map(investigations)
+        this.investigations = ClaimViewInvestigation.map(investigations);
+        // console.log('this.investigations', this.investigations);
+        if(this.investigations && this.investigations.length > 0){
+          this.investigations[0].isOpen = true;
+          this.expandedInvestigation = 0
+        }     
       }
     })
   }
@@ -89,9 +98,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     const codeIndex = this.selectedIllnesses.findIndex(code => {
       return code.toUpperCase() === illnessCode.toUpperCase();
     });
-
     return codeIndex !== -1
-
   }
 
   closeDialog() {

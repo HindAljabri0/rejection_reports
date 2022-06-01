@@ -32,7 +32,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   dialogClaimIndex = 0
   nextAvailableClaimRow: number
   allCheckBoxIsChecked: boolean;
-  allCheckBoxIsIndeterminate: boolean;
   subscription: Subscription[];
 
   pageControl: PageControls;
@@ -132,7 +131,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       this.selectedClaimNumberIds = this.claimSummaryIds.map(claimSummary => { return claimSummary.provClaimNo })
     } else {
       this.allCheckBoxIsChecked = false;
-      this.allCheckBoxIsIndeterminate = false;
       this.selectedClaimNumberIds = [];
     }
   }
@@ -147,10 +145,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     // refersh boolean indicators for checkall checkbox in every single checkbox change event 
     if (this.selectedClaimNumberIds.length == this.pageControl.totalUploads) {
       this.allCheckBoxIsChecked = true
-      this.allCheckBoxIsIndeterminate = false
     } else if (this.selectedClaimNumberIds.length > 0) {
       this.allCheckBoxIsChecked = false
-      this.allCheckBoxIsIndeterminate = true
     }
   }
 
