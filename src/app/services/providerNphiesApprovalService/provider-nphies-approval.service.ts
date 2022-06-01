@@ -385,9 +385,12 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  inquireApprovalRequest(providerId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/approval/inquiry`;
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+  inquireApprovalRequest(providerId: string, requestId: number) {
+    let requestUrl = `/providers/${providerId}/approval/inquiry?`;
+    if (requestId) {
+      requestUrl += `approvalRequestId=${requestId}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
     return this.http.request(request);
   }
 }
