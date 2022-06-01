@@ -155,28 +155,28 @@ export class SharedDataService {
   ];
 
   categoryList = [
-    { value: 'info', name: 'Info' },
-    { value: 'onset', name: 'Onset' },
     { value: 'attachment', name: 'Attachment' },
-    { value: 'missingtooth', name: 'Missing Tooth' },
-    { value: 'hospitalized', name: 'Hospitalized' },
-    { value: 'employmentImpacted', name: 'Employment Impacted' },
-    { value: 'lab-test', name: 'Lab Test' },
-    { value: 'reason-for-visit', name: 'Reason For Visit' },
-    { value: 'days-supply', name: 'Days Supply' },
-    { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
-    { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
-    { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
-    { value: 'icu-hours', name: 'ICU Hours' },
-    { value: 'ventilation-hours', name: 'Ventilation Hours' },
-    { value: 'vital-sign-height', name: 'Vital Sign Height' },
+    { value: 'birth-weight', name: 'Birth Weight' },
     { value: 'chief-complaint', name: 'Chief Complaint' },
-    { value: 'temperature', name: 'Temperature' },
-    { value: 'pulse', name: 'Pulse' },
-    { value: 'oxygen-saturation', name: 'Oxygen Saturation' },
-    { value: 'respiratory-rate', name: 'Respiratory Rate' },
+    { value: 'days-supply', name: 'Days Supply' },
+    { value: 'employmentImpacted', name: 'Employment Impacted' },
+    { value: 'hospitalized', name: 'Hospitalized' },
+    { value: 'icu-hours', name: 'ICU Hours' },
+    { value: 'info', name: 'Info' },
+    { value: 'lab-test', name: 'Lab Test' },
     { value: 'last-menstrual-period', name: 'Last Menstrual Period' },
-    { value: 'birth-weight', name: 'Birth Weight' }
+    { value: 'missingtooth', name: 'Missing Tooth' },
+    { value: 'onset', name: 'Onset' },
+    { value: 'oxygen-saturation', name: 'Oxygen Saturation' },
+    { value: 'pulse', name: 'Pulse' },
+    { value: 'reason-for-visit', name: 'Reason For Visit' },
+    { value: 'respiratory-rate', name: 'Respiratory Rate' },
+    { value: 'temperature', name: 'Temperature' },
+    { value: 'ventilation-hours', name: 'Ventilation Hours' },
+    { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
+    { value: 'vital-sign-height', name: 'Vital Sign Height' },
+    { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
+    { value: 'vital-sign-weight', name: 'Vital Sign Weight' }
   ];
 
   reasonList = [
@@ -239,15 +239,15 @@ export class SharedDataService {
   ];
 
   siteEligibility = [
-    { value: 'eligible', name: 'Eligible'},
+    { value: 'eligible', name: 'Eligible' },
     // tslint:disable-next-line:quotemark
-    { value: 'not-active',	name: "Member's insurance policy is not active"},
-    { value: 'not-covered', 	name: 'Policy does not cover the requested services'},
-    { value: 'not-direct billing',	name: 'Patient is not covered on direct billing basis'},
-    { value: 'out-network',	name: 'Provider outside member Network'},
-    { value: 'limit-exhausted',	name: 'Patient policy/benefit limit is exhausted'},
-    { value: 'coverage-suspended',	name: 'Patient coverage is suspended '},
-    { value: 'provider-contract-suspended',	name: 'Provider contract is suspended'}
+    { value: 'not-active', name: "Member's insurance policy is not active" },
+    { value: 'not-covered', name: 'Policy does not cover the requested services' },
+    { value: 'not-direct billing', name: 'Patient is not covered on direct billing basis' },
+    { value: 'out-network', name: 'Provider outside member Network' },
+    { value: 'limit-exhausted', name: 'Patient policy/benefit limit is exhausted' },
+    { value: 'coverage-suspended', name: 'Patient coverage is suspended ' },
+    { value: 'provider-contract-suspended', name: 'Provider contract is suspended' }
   ];
 
   missingToothCodeList = [
@@ -305,7 +305,7 @@ export class SharedDataService {
     { value: 85, name: 'LOWER RIGHT; DECIDUOUS TEETH # 5' },
   ];
 
-  reasonForVisitCodeList =  [
+  reasonForVisitCodeList = [
     { name: 'New Visit', value: 'new-visit' },
     { name: 'Follow Up', value: 'follow-up' },
     { name: 'Refill', value: 'refill' },
@@ -359,7 +359,7 @@ export class SharedDataService {
       }
     );
   }
-  
+
   getBodySite(type: string) {
 
     let bodySite: any = [];
