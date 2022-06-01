@@ -69,6 +69,12 @@
         {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
       </button>
 
+      <div class="right-block" *ngIf="showInquireAll === true && selectedCardKey != 0">
+        <div class="actions">
+          <button (click)="inquireClaimByCriteria()" mat-flat-button color="primary">Inquire
+            {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
+        </div>
+      </div>
 
     </div>
     <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
@@ -276,8 +282,6 @@
 
       </div>
       <div class="right-block btn-list">
-        <!-- <button mat-flat-button color="primary" *ngIf="showInquireAll === true && selectedCardKey != 0">Inquire
-          {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button> -->
         <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary" *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <ng-container *ngIf="currentSelectedTab==0">
