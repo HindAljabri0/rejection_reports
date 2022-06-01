@@ -7,6 +7,8 @@ export class ViewedClaim {
   casetype: string;
   physicianname: string;
   net: number;
+  totalPatientShare:number;
+  totalPayerShare:number;
   unitofnet: string;
   netvatamount: number;
   unitofnetvatamount: string;

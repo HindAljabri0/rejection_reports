@@ -2070,7 +2070,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.requestBundleId = response.requestBundleId;
     this.otherDataModel.responseBundleId = response.responseBundleId;
     this.otherDataModel.totalNetAmount = response.totalNet;
-
+    this.otherDataModel.totalPatientShare = response.totalPatientShare;
+    this.otherDataModel.totalPayerShare = response.totalPayerShare;
+    
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;
 

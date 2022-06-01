@@ -23,7 +23,7 @@
       <p *ngIf="otherDataModel.cancelResponseReason"><span>Cancellation Status Reason:</span>&nbsp;<strong>{{otherDataModel.cancelResponseReason}}</strong></p>
     </div>
   </div>
-  <ul class="claim-totals" *ngIf="otherDataModel.totalNetAmount">
+  <ul class="claim-totals"  *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
     <li>
       Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
@@ -32,6 +32,24 @@
       <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
         <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
       </li>
+    </ng-container>
+    <li>
+      Total Patient Share:<span class="value">{{otherDataModel.totalPatientShare ? (otherDataModel.totalPatientShare | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+    </li>
+    <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
+      <li class="separator"></li>
+      <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+        <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+      </li>
+    </ng-container>
+      <li>
+        Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+      </li>
+      <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
+        <li class="separator"></li>
+        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+        </li>
     </ng-container>
 
   </ul>
@@ -1202,16 +1220,35 @@
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
       </div>
     </div>
-    <ul class="claim-totals" *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'">
+    <ul class="claim-totals"  *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
       <li>
-        Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ) : '-'}} <span class="currency">SR</span></span>
+        Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
-      <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories && pageMode == 'EDIT'">
+      <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
         <li class="separator"></li>
         <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-          {{res.category}}:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
         </li>
       </ng-container>
+      <li>
+        Total Patient Share:<span class="value">{{otherDataModel.totalPatientShare ? (otherDataModel.totalPatientShare | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+      </li>
+      <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
+        <li class="separator"></li>
+        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+        </li>
+      </ng-container>
+        <li>
+          Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare | number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+        </li>
+        <ng-container *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
+          <li class="separator"></li>
+          <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
+            <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span class="currency">SR</span></span>
+          </li>
+      </ng-container>
+  
     </ul>
 
     <div class="create-claim-body nphies-create">
