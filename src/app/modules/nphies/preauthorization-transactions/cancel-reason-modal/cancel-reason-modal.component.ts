@@ -160,8 +160,9 @@ export class CancelReasonModalComponent implements OnInit {
             const body: any = event.body;
             const resModel: any = {};
             resModel.Success = true;
-            resModel.Message = body.status;
-            resModel.Errors = body.error;
+            resModel.queuedStatus = body.queuedStatus;
+            resModel.Message = body.message;
+            resModel.Errors = body.errors;
             this.dialogRef.close(resModel);
           }
           this.sharedServices.loadingChanged.next(false);

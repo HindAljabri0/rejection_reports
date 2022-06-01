@@ -231,16 +231,16 @@ export class PhysiciansComponent implements OnInit {
       });
   }
 
-  DeletePhysician(physicianId) {
+  DeletePhysician(id, physician_id) {
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Physician?',
-        `This will delete physician with ID: ${physicianId}. Are you sure you want to delete it? This cannot be undone.`,
+        `This will delete physician with ID: ${physician_id}. Are you sure you want to delete it? This cannot be undone.`,
         false,
         true))
       .subscribe(result => {
         if (result === true) {
           this.sharedServices.loadingChanged.next(false);
-          this.nphiesConfigurationsService.deletePhysician(this.sharedServices.providerId, physicianId).subscribe(event => {
+          this.nphiesConfigurationsService.deletePhysician(this.sharedServices.providerId, id).subscribe(event => {
             if (event instanceof HttpResponse) {
               if (event.status === 200) {
                 const body: any = event.body;
