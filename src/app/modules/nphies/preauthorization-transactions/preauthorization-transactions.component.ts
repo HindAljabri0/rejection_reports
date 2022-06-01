@@ -635,18 +635,15 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   inquireApprovalRequest(requestId) {
 
-    const model: any = {};
-    model.approvalRequestId = requestId;
     this.sharedServices.loadingChanged.next(true);
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.inquireApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
+    this.providerNphiesApprovalService.inquireApprovalRequest(this.sharedServices.providerId, requestId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-
-          // Need to Handle Response once API is Done
-
+          this.transactions.filter(x => x.requestId === requestId)[0].status = body.outcome;
+          this.transactions.filter(x => x.requestId === requestId)[0].IsInquirySend = true;
         }
         this.sharedServices.loadingChanged.next(false);
       }

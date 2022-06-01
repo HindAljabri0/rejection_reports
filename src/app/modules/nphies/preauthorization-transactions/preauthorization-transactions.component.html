@@ -90,6 +90,7 @@
                 <th>Payer</th>
                 <th>Status</th>
                 <th>Processing Status</th>
+                <th class="text-center">Inquiry</th>
                 <th></th>
               </tr>
             </thead>
@@ -107,22 +108,33 @@
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.payerName}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
-                  <span [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status | titlecase}}</span>
+                  <span
+                    [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
+                    | titlecase}}</span>
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
-                    <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.responseId)">
+                    <button mat-icon-button matTooltip="Check Status" class="text-primary ml-n2" (click)="checkStatus(transaction.responseId)">
                       <mat-icon>refresh</mat-icon>
                     </button>
-                    <span *ngIf="!transaction.processingStatus" class="pl-1">Check Processing Status</span>
+                    <span *ngIf="!transaction.processingStatus" class="pl-1">Check Status</span>
                     <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
 
                   </div>
                 </td>
+                <td class="actions text-center">
+                  <button *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
+                  (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn" [ngClass]="transaction.IsInquirySend ? 'theme-success': ''" [matTooltip]="transaction.IsInquirySend ? 'Passed' : 'Send Inquiry'">I</button>
+                  <!-- <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
+                  <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
+                  <mat-spinner diameter="20"></mat-spinner> -->
+                </td>
                 <td class="actions">
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' ||transaction.status === 'pended'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                      <button mat-menu-item
+                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' ||transaction.status === 'pended'"
+                        (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
                         <span>Follow Up/Add Related</span>
                       </button>
@@ -134,10 +146,6 @@
                         <mat-icon class="material-icons-outlined">delete</mat-icon>
                         <span>Nullify/Soft Delete</span>
                       </button>
-                      <!-- <button mat-menu-item *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'" (click)="inquireApprovalRequest(transaction.requestId)">
-                        <mat-icon class="material-icons-outlined">contact_support</mat-icon>
-                        <span>Inquiry</span>
-                      </button> -->
                       <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                     </mat-menu>
                     <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">

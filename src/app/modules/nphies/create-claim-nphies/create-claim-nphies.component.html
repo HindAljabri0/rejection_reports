@@ -62,55 +62,63 @@
         <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
       </ng-template>
 
-      <div *ngIf="otherDataModel" class="row">
-        <div class="col-4">
+      <div class="mb-2" *ngIf="otherDataModel && (otherDataModel.requestBundleId || otherDataModel.responseBundleId)">
+        <div class="inline-value-badge" *ngIf="otherDataModel.requestBundleId">
+          Request Bundle ID: <span>{{otherDataModel.requestBundleId}}</span>
+        </div>
+        <div class="inline-value-badge" *ngIf="otherDataModel.responseBundleId">
+          Response Bundle ID: <span>{{otherDataModel.responseBundleId}}</span>
+        </div>
+      </div>
+
+      <div *ngIf="otherDataModel" class="row small-gutter">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
-            <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value | date:
-              'dd-MM-yyyy'}}
+            <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value ? (FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy') : '-'}}
             </p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Type</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.type.value.name}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Sub Type</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.subType.value ?
               FormNphiesClaim.controls.subType.value.name : "-"}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Payee Type</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value.name}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Payee</div>
             <p class="form-control-static">{{otherDataModel.payeeName ? otherDataModel.payeeName : '-'}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Eligibility Response ID</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value ?
               FormNphiesClaim.controls.eligibilityResponseId.value : "-"}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Offline Eligibility ID</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineId.value ?
               FormNphiesClaim.controls.eligibilityOfflineId.value : "-"}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Offline Eligibility Date</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityOfflineDate.value ?
@@ -118,7 +126,7 @@
               'dd-MM-yyyy') : "-"}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Offline Approval Date</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value ?
@@ -126,14 +134,14 @@
               'dd-MM-yyyy') : "-"}}</p>
           </div>
         </div>
-        <!-- <div class="col-4">
+        <!-- <div class="col-4 col-xxl-3">
                     <div class="form-group form-group-static">
                         <div class="control-label">Approval Response IDs</div>
                         <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
                             FormNphiesClaim.controls.preAuthResponseId.value : "-"}}</p>
                     </div>
                 </div> -->
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Pre Authorization Reference No.</div>
             <p class="form-control-static">
@@ -141,13 +149,13 @@
           </div>
         </div>
 
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Insurer</div>
             <p class="form-control-static">{{otherDataModel.insurer ? otherDataModel.insurer : '-'}}</p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Batch Period</div>
             <p class="form-control-static">
@@ -159,78 +167,23 @@
             </p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Batch Number</div>
             <p class="form-control-static">{{otherDataModel.batchClaimNumber ? otherDataModel.batchClaimNumber : '-'}}
             </p>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Episode No</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ?
               FormNphiesClaim.controls.episodeId.value : '-'}}</p>
           </div>
         </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Request Bundle ID</div>
-            <p class="form-control-static">{{otherDataModel.requestBundleId ? otherDataModel.requestBundleId : '-'}}
-            </p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Response Bundle ID</div>
-            <p class="form-control-static">{{otherDataModel.responseBundleId ? otherDataModel.responseBundleId : '-'}}
-            </p>
-          </div>
-        </div>
       </div>
-
-      <!-- <h5 class="form-title">Beneficiary Details</h5>
-      <div class="row" *ngIf="otherDataModel && otherDataModel.beneficiary">
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Name</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.beneficiaryName}}</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Document</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.documentTypeName}}
-              ({{otherDataModel.beneficiary.documentId}})</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Gender</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.gender}}</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Date of Birth</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Contact No.</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.contactNumber ? otherDataModel.beneficiary.contactNumber : '-'}}</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group form-group-static">
-            <div class="control-label">Email</div>
-            <p class="form-control-static">{{otherDataModel.beneficiary.email ?
-              otherDataModel.beneficiary.email:"-"}}</p>
-          </div>
-        </div>
-      </div> -->
     </mat-tab>
+
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true" [class.text-danger]="checkErrorBeneficiaryInfo === true">
@@ -486,60 +439,6 @@
       <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
       </app-empty-state>
     </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="mr-1" *ngIf="checkErrorAccident === true" [class.text-danger]="checkErrorAccident === true">
-          error</mat-icon>
-        <span [class.text-danger]="checkErrorAccident === true">Accident</span>
-      </ng-template>
-      <app-empty-state *ngIf="(!this.otherDataModel || !this.otherDataModel.accident)" message='No Accident found!'>
-      </app-empty-state>
-      <div *ngIf="this.otherDataModel && this.otherDataModel.accident" class="row">
-        <div class="col-4 col-xxl-3">
-          <div class="form-group form-group-static">
-            <label class="control-label">Accident Type</label>
-            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              FormNphiesClaim.controls.accidentType.value.name : "-"}}</p>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group form-group-static">
-            <label class="control-label">Street Name</label>
-            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              FormNphiesClaim.controls.streetName.value : "-"}}</p>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group form-group-static">
-            <label class="control-label">City</label>
-            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              FormNphiesClaim.controls.city.value : "-"}}</p>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group form-group-static">
-            <label class="control-label">State/Province</label>
-            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              FormNphiesClaim.controls.state.value : "-"}}</p>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group form-group-static">
-            <label class="control-label">Country</label>
-            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              FormNphiesClaim.controls.country.value : "-"}}</p>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group form-group-static">
-            <label class="control-label">Date</label>
-            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
-              (FormNphiesClaim.controls.date.value | date: 'dd-MM-yyyy') : '-'}}</p>
-          </div>
-        </div>
-      </div>
-
-    </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>
@@ -645,7 +544,7 @@
                   </div>
                   <div class="box mb-2">
                     <h5 class="align-self-center medium pb-2">Item Info</h5>
-                    <div class="row">
+                    <div class="row small-gutter">
                       <div class="col-4">
                         <table class="inline-label-table">
                           <tbody>
@@ -798,13 +697,69 @@
         </app-empty-state>
       </div>
     </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-1" *ngIf="checkErrorAccident === true" [class.text-danger]="checkErrorAccident === true">
+          error</mat-icon>
+        <span [class.text-danger]="checkErrorAccident === true">Accident</span>
+      </ng-template>
+      <app-empty-state *ngIf="(!this.otherDataModel || !this.otherDataModel.accident)" message='No Accident found!'>
+      </app-empty-state>
+      <div *ngIf="this.otherDataModel && this.otherDataModel.accident" class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Accident Type</label>
+            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+              FormNphiesClaim.controls.accidentType.value.name : "-"}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Street Name</label>
+            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+              FormNphiesClaim.controls.streetName.value : "-"}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">City</label>
+            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+              FormNphiesClaim.controls.city.value : "-"}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">State/Province</label>
+            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+              FormNphiesClaim.controls.state.value : "-"}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Country</label>
+            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+              FormNphiesClaim.controls.country.value : "-"}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Date</label>
+            <p class="form-control-static">{{this.otherDataModel && this.otherDataModel.accident ?
+              (FormNphiesClaim.controls.date.value | date: 'dd-MM-yyyy') : '-'}}</p>
+          </div>
+        </div>
+      </div>
+
+    </mat-tab>
+
     <mat-tab>
       <ng-template mat-tab-label>
         <span>Encounter</span>
       </ng-template>
       <app-empty-state *ngIf="!otherDataModel.claimEncounter " message='No Encounter found!'>
       </app-empty-state>
-      <div class="row" *ngIf="otherDataModel.claimEncounter">
+      <div class="row small-gutter" *ngIf="otherDataModel.claimEncounter">
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Status</label>
@@ -861,7 +816,7 @@
       <h5 class="form-title" *ngIf="otherDataModel.claimEncounter">Hospitalization
       </h5>
 
-      <div class="row" *ngIf="otherDataModel.claimEncounter">
+      <div class="row small-gutter" *ngIf="otherDataModel.claimEncounter">
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Origin</label>
@@ -1059,8 +1014,11 @@
         </ul>
       </div>
     </mat-tab>
-    <mat-tab *ngIf="otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
-      <div class="table-responsive" *ngIf="otherDataModel.errors">
+
+    <mat-tab
+      *ngIf="otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended' && otherDataModel.errors && otherDataModel.errors.length>0"
+      [label]="'Errors'">
+      <div class="table-responsive">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
@@ -1076,11 +1034,10 @@
           </tbody>
         </table>
       </div>
-      <app-empty-state *ngIf="!otherDataModel.errors" message='No Errors found!'>
-      </app-empty-state>
     </mat-tab>
-    <mat-tab *ngIf="otherDataModel.cancelErrors" [label]="'Cancellation Errors'">
-      <div class="table-responsive" *ngIf="otherDataModel.cancelErrors">
+
+    <mat-tab *ngIf="otherDataModel.cancelErrors && otherDataModel.cancelErrors.length>0" [label]="'Cancellation Errors'">
+      <div class="table-responsive">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
@@ -1096,11 +1053,10 @@
           </tbody>
         </table>
       </div>
-      <app-empty-state *ngIf="!otherDataModel.cancelErrors" message='No Cancellation Errors found!'>
-      </app-empty-state>
     </mat-tab>
-    <mat-tab [label]="'Process Notes'">
-      <div *ngIf="otherDataModel.processNotes" class="table-responsive">
+
+    <mat-tab [label]="'Process Notes'" *ngIf="otherDataModel.processNotes && otherDataModel.processNotes.length>0">
+      <div class="table-responsive">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
@@ -1118,11 +1074,10 @@
           </tbody>
         </table>
       </div>
-      <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
-      </app-empty-state>
     </mat-tab>
-    <mat-tab [label]="'Payments'">
-      <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+
+    <mat-tab [label]="'Payments'" *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0">
+      <div class="table-responsive">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
@@ -1147,10 +1102,9 @@
           </tbody>
         </table>
       </div>
-      <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0" message='No Payments found!'>
-      </app-empty-state>
     </mat-tab>
   </mat-tab-group>
+
   <div class="block-footer sticky" *ngIf="!isLoading">
     <div class="left-block custom-paginator" *ngIf="paginationControl != null && paginationControl.size > 0">
       <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="paginationControl.currentIndex==0">
@@ -1513,10 +1467,7 @@
           </app-empty-state>
           <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}" *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
           </app-empty-state-->
-          <app-manage-care-team
-          [(isSubmitted)]="isSubmitted"
-          [(CareTeams)]="CareTeams"
-          [pageMode]="pageMode">
+          <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams" [pageMode]="pageMode">
           </app-manage-care-team>
         </mat-tab>
         <mat-tab>
@@ -1526,12 +1477,8 @@
               error</mat-icon>
             <span [class.text-danger]="isSubmitted && checkDiagnosisErrorValidation === false">Diagnosis</span>
           </ng-template>
-          <app-manage-diagnosis
-          [(isSubmitted)]="isSubmitted"
-          [(IsDiagnosisRequired)]="IsDiagnosisRequired"
-          [(diagnosisList)]="Diagnosises"
-          [(claimType)]="claimType"
-          [pageMode]="pageMode">
+          <app-manage-diagnosis [(isSubmitted)]="isSubmitted" [(IsDiagnosisRequired)]="IsDiagnosisRequired" [(diagnosisList)]="Diagnosises" [(claimType)]="claimType"
+            [pageMode]="pageMode">
           </app-manage-diagnosis>
           <!-- <h5 class="form-title pt-0">
             <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
@@ -1784,79 +1731,7 @@
           <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
           </app-empty-state> -->
         </mat-tab>
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="mr-1" *ngIf="checkErrorAccident === true" [class.text-danger]="checkErrorAccident === true">
-              error</mat-icon>
-            <span [class.text-danger]="checkErrorAccident === true">Accident</span>
-          </ng-template>
-          <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-              <div class="form-group"
-                [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
-                <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
-                <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="accidentType">
-                    <mat-option value="">Select Accident Type</mat-option>
-                    <mat-option *ngFor="let type of accidentTypeList" [value]="type">
-                      {{type.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <div *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))">
-                  <span class="error-text">Please select an Accident Type</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Street Name</label>
-                <input placeholder="Enter street name" class="form-control" formControlName="streetName">
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">City</label>
-                <input placeholder="Enter city" class="form-control" formControlName="city">
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">State/Province</label>
-                <input placeholder="Enter state/province" class="form-control" formControlName="state">
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Country</label>
-                <mat-form-field class="form-control custom-select-control">
-                  <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
-                    <mat-option>
-                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
-                      </ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option value="">Select Country</mat-option>
-                    <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Name">
-                      {{nationality.Name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group"
-                [ngClass]="{'has-error' : IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
-                <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
-                <div class="date-picker">
-                  <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
-                  <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
-                  <mat-datepicker #accidentDate></mat-datepicker>
-                </div>
-                <div *ngIf="IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
-                  <span class="error-text">Please enter date</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-tab>
+
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="IsItemRequired" [class.text-danger]="IsItemRequired">
@@ -2158,6 +2033,81 @@
             </app-empty-state>
           </div>
         </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-1" *ngIf="checkErrorAccident === true" [class.text-danger]="checkErrorAccident === true">
+              error</mat-icon>
+            <span [class.text-danger]="checkErrorAccident === true">Accident</span>
+          </ng-template>
+          <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+              <div class="form-group"
+                [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
+                <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired" class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select formControlName="accidentType">
+                    <mat-option value="">Select Accident Type</mat-option>
+                    <mat-option *ngFor="let type of accidentTypeList" [value]="type">
+                      {{type.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))">
+                  <span class="error-text">Please select an Accident Type</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Street Name</label>
+                <input placeholder="Enter street name" class="form-control" formControlName="streetName">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">City</label>
+                <input placeholder="Enter city" class="form-control" formControlName="city">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">State/Province</label>
+                <input placeholder="Enter state/province" class="form-control" formControlName="state">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Country</label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select [value]="selectedCountry" formControlName="country" (selectionChange)="selectedCountry = $event.value;" #Country>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="">Select Country</mat-option>
+                    <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Name">
+                      {{nationality.Name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group"
+                [ngClass]="{'has-error' : IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
+                <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
+                <div class="date-picker">
+                  <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+                  <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
+                  <mat-datepicker #accidentDate></mat-datepicker>
+                </div>
+                <div *ngIf="IsDateRequired && ((isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
+                  <span class="error-text">Please enter date</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="checkErrorEncounter === true" [class.text-danger]="checkErrorEncounter === true">
@@ -2323,7 +2273,9 @@
 
           </div>
         </mat-tab>
-        <mat-tab *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended'" [label]="'Errors'">
+        <mat-tab
+          *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended' && otherDataModel.errors && otherDataModel.errors.length>0"
+          [label]="'Errors'">
           <div class="table-responsive" *ngIf="otherDataModel.errors">
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
               <thead>
@@ -2340,11 +2292,10 @@
               </tbody>
             </table>
           </div>
-          <app-empty-state *ngIf="!otherDataModel.errors" message='No Errors found!'>
-          </app-empty-state>
         </mat-tab>
-        <mat-tab [label]="'Process Notes'" *ngIf="pageMode == 'EDIT'">
-          <div *ngIf="otherDataModel.processNotes" class="table-responsive">
+
+        <mat-tab [label]="'Process Notes'" *ngIf="pageMode == 'EDIT' && otherDataModel.processNotes && otherDataModel.processNotes.length>0">
+          <div class="table-responsive">
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
               <thead>
                 <tr>
@@ -2362,11 +2313,10 @@
               </tbody>
             </table>
           </div>
-          <app-empty-state *ngIf="!otherDataModel.processNotes" message='No Process Notes found!'>
-          </app-empty-state>
         </mat-tab>
-        <mat-tab [label]="'Payments'" *ngIf="pageMode == 'EDIT'">
-          <div *ngIf="otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0" class="table-responsive">
+
+        <mat-tab [label]="'Payments'" *ngIf="pageMode == 'EDIT' && otherDataModel.paymentReconciliationDetails && otherDataModel.paymentReconciliationDetails.length > 0">
+          <div class="table-responsive">
             <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
               <thead>
                 <tr>
@@ -2391,10 +2341,9 @@
               </tbody>
             </table>
           </div>
-          <app-empty-state *ngIf="!otherDataModel.paymentReconciliationDetails || otherDataModel.paymentReconciliationDetails.length == 0" message='No Payments found!'>
-          </app-empty-state>
         </mat-tab>
       </mat-tab-group>
+
       <div class="block-footer sticky">
 
         <div class="right-block btn-list" *ngIf="pageMode == 'CREATE'">

@@ -1609,13 +1609,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     action.subscribe((event: any) => {
       if (event instanceof HttpResponse) {
-        if (event.status === 200) {
+        if (event.status === 202) {
           const body: any = event.body;
-          if (body.status === 'OK') {
-
-            // Need to Handle Response once API is Done
-
-          }
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', body.message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
         }
         this.commen.loadingChanged.next(false);
       }

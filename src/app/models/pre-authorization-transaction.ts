@@ -14,6 +14,8 @@ export class PreAuthorizationTransaction extends Paginateable{
   documentId: number;
   preAuthRefNo: string;
 
+  IsInquirySend: boolean;
+
   constructor(body: {}) {
     super(body);
     this.requestId = body['requestId'];
@@ -29,5 +31,6 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.beneficiaryName = body['beneficiaryName'];
     this.documentId = body['documentId'];
     this.preAuthRefNo = body['preAuthRefNo'];
+    this.IsInquirySend = false;
   }
 }

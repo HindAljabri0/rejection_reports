@@ -158,13 +158,12 @@ export class CancelReasonModalComponent implements OnInit {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
             const body: any = event.body;
-            if (body.status === 'OK') {
-              const resModel: any = {};
-              resModel.Success = true;
-              resModel.Message = body.message;
-              resModel.Errors = body.errors;
-              this.dialogRef.close(resModel);
-            }
+            const resModel: any = {};
+            resModel.Success = true;
+            resModel.queuedStatus = body.queuedStatus;
+            resModel.Message = body.message;
+            resModel.Errors = body.errors;
+            this.dialogRef.close(resModel);
           }
           this.sharedServices.loadingChanged.next(false);
         }
