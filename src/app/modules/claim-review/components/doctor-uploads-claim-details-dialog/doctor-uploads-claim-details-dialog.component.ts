@@ -1,15 +1,19 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { AttachmentRequest } from 'src/app/claim-module-components/models/attachmentRequest.model';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
 import { Investigation } from 'src/app/claim-module-components/models/investigation.model';
 import { Observation } from 'src/app/claim-module-components/models/observation.model';
 import { Period } from 'src/app/claim-module-components/models/period.type';
 import { Service } from 'src/app/claim-module-components/models/service.model';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ClaimViewObservation } from '../../models/ClaimViewObservation.model';
@@ -49,8 +53,9 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store,
     private sharedServices: SharedServices,
-    private authService: AuthService,
-    private datePipe: DatePipe) {
+    private authService: AuthService, 
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -198,49 +203,6 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
 
-
-
-  // setData(claim: Claim) {
-  //   // this.resultsControls = [];
-  //   if (claim.caseInformation.caseDescription.investigation != null) {
-  //     claim.caseInformation.caseDescription.investigation.forEach(
-  //       investigation => {
-  //         const controls = this.createEmptyResultControls();
-  //         if (investigation.investigationDate != null) {
-  //           controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'));
-  //         } else {
-  //           controls.testDate.setValue('');
-  //         }
-  //         controls.results = investigation;
-  //         controls.testCode.setValue(investigation.investigationCode);
-  //         controls.testSerial.setValue(investigation.investigationType);
-  //         controls.resultDescription.setValue(investigation.investigationDescription);
-
-  //         investigation.observation.forEach(observation => {
-  //           const componentControls = this.createEmptyComponentControls();
-  //           componentControls.components = observation;
-  //           componentControls.componentCode.setValue(observation.observationCode);
-
-  //           componentControls.componentDescription.setValue(observation.observationDescription);
-
-  //           componentControls.componentLabResult.setValue(observation.observationValue);
-
-  //           componentControls.componentResultUnit.setValue(observation.observationUnit);
-
-  //           componentControls.componentResultComment.setValue(observation.observationComment);
-
-  //           controls.componentsControls.push(componentControls);
-  //         });
-  //         this.resultsControls.push(controls);
-  //       }
-  //     );
-  //     if (this.resultsControls.length > 0 && this.expandedResult == -1) {
-  //       this.toggleResult(0);
-  //     }
-  //   }
-  // }
-
-
   createEmptyResultControls() {
     return {
       results: new Investigation(),
@@ -296,5 +258,29 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
   showLastLabsPage() {
     this.labsPaginationControl.page = this.totalLabsPages;
+  }
+
+  viewAttachment(attachment: AttachmentRequest) {
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: { filename: attachment.fileName, attachment: attachment.attachmentFile },
+      panelClass: ['primary-dialog', 'dialog-xl']
+    });
+  }
+
+
+  getFileBlob(attachment: AttachmentRequest) {
+    if (this.isPdf(attachment)) {
+      const objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else {
+      const fileExt = attachment.fileName.split('.').pop();
+      const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
+      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
+  }
+
+  isPdf(attachment: AttachmentRequest) {
+    const fileExt = attachment.fileName.split('.').pop();
+    return fileExt.toLowerCase() == 'pdf';
   }
 }

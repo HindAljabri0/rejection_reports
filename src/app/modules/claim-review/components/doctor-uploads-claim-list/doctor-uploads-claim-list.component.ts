@@ -158,7 +158,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.pageControl.totalUploads = event.length;
     this.pageControl.pageSize = event.pageSize;
     this.pageControl.pageNumber = event.pageIndex;
-    console.log('this.pageControl', this.pageControl);
     this.refreshData();
   }
 
