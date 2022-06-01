@@ -73,7 +73,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   subscribeNextAvailableClaim(): Subscription {
     return this.store.select(getNextAvailableClaimRow).subscribe(nextAvailableClaimRow => {
       if (nextAvailableClaimRow) {
-        if (nextAvailableClaimRow > this.pageControl.pageSize * (this.pageControl.pageNumber + 1)) {
+        if (nextAvailableClaimRow > this.pageControl.pageSize * (this.pageControl.pageNumber + 1) || nextAvailableClaimRow < (this.pageControl.pageSize - 1) * (this.pageControl.pageNumber + 1)) {
           this.handlePageEvent({
             length: this.pageControl.totalUploads,
             pageIndex: Math.floor(nextAvailableClaimRow / this.pageControl.pageSize),
