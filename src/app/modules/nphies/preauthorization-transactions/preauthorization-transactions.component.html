@@ -123,7 +123,8 @@
                   </div>
                 </td>
                 <td class="actions text-center">
-                  <button class="action-letter-btn" matTooltip="Send Inquiry">I</button>
+                  <button *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
+                  (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn" [ngClass]="transaction.IsInquirySend ? 'theme-success': ''" [matTooltip]="transaction.IsInquirySend ? 'Passed' : 'Send Inquiry'">I</button>
                   <!-- <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
                   <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                   <mat-spinner diameter="20"></mat-spinner> -->
@@ -144,12 +145,6 @@
                       <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'nullify')">
                         <mat-icon class="material-icons-outlined">delete</mat-icon>
                         <span>Nullify/Soft Delete</span>
-                      </button>
-                      <button mat-menu-item
-                        *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
-                        (click)="inquireApprovalRequest(transaction.requestId)">
-                        <mat-icon class="material-icons-outlined">contact_support</mat-icon>
-                        <span>Inquiry</span>
                       </button>
                       <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                     </mat-menu>

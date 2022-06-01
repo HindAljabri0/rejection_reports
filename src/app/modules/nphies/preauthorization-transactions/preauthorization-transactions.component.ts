@@ -643,6 +643,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         if (event.status === 200) {
           const body: any = event.body;
           this.transactions.filter(x => x.requestId === requestId)[0].status = body.outcome;
+          this.transactions.filter(x => x.requestId === requestId)[0].IsInquirySend = true;
         }
         this.sharedServices.loadingChanged.next(false);
       }

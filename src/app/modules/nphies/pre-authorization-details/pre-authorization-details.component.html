@@ -264,6 +264,28 @@
 <!-- beneficiary details end -->
 
 <!-- Cancellation Errors start -->
+<h5 class="form-title" *ngIf="data.inquiryError">
+  Inquiry Errors
+</h5>
+<div class="table-responsive" *ngIf="data.inquiryError">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let error of data.inquiryError">
+        <td>{{error.code}}</td>
+        <td>{{error.error}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Cancellation Errors end -->
+
+<!-- Cancellation Errors start -->
 <h5 class="form-title" *ngIf="data.cancelErrors">
   Cancellation Errors
 </h5>
