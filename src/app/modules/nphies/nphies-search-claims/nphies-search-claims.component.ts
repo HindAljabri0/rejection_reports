@@ -799,7 +799,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
           totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
           totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare + claim.totalPatientShare,
-          totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
+         totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
+
           totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName,
@@ -1627,6 +1628,4 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.commen.loadingChanged.next(false);
     });
   }
-
-
 }

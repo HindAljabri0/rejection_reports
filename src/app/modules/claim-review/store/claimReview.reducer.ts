@@ -15,7 +15,9 @@ const initState: ClaimReviewState = {
     claimErrors: { errors: [] },
     singleClaim: new Claim('INPATIENT', '0'),
     uploadClaimsSummary: null,
-    uploadClaimsSummaryPageControls: new PageControls(0, 10)
+    uploadClaimsSummaryPageControls: new PageControls(0, 10),
+    nextAvailableClaimProvNo: 0 ,
+
 }
 
 
@@ -41,11 +43,11 @@ const _claimReviewReducer = createReducer(
     }),
     on(setUploadsPageOfSelectedTab, (state, { uploads, pageControls }) => {
         if (state.selectedUploadsTab == 'new')
-            return ({ ...state, uploads: { ...state.uploads, new: { uploads: uploads, pageControls: pageControls } } });
+            return ({ ...state, nextAvailableClaimProvNo : 0 ,uploads: { ...state.uploads, new: { uploads: uploads, pageControls: pageControls } } });
         else if (state.selectedUploadsTab == 'inProgress')
-            return ({ ...state, uploads: { ...state.uploads, inProgress: { uploads: uploads, pageControls: pageControls } } });
+            return ({ ...state, nextAvailableClaimProvNo : 0 ,uploads: { ...state.uploads, inProgress: { uploads: uploads, pageControls: pageControls } } });
         else
-            return ({ ...state, uploads: { ...state.uploads, completed: { uploads: uploads, pageControls: pageControls } } });
+            return ({ ...state, nextAvailableClaimProvNo : 0 ,uploads: { ...state.uploads, completed: { uploads: uploads, pageControls: pageControls } } });
     }),
     on(setUploadsPageErrorOfSelectedTab, (state, { message }) => {
         if (state.selectedUploadsTab == 'new')
@@ -72,10 +74,10 @@ const _claimReviewReducer = createReducer(
     on(setMarkAsDoneReturn, (state, data) => {
         let newUploadClaimsSummary = state.uploadClaimsSummary.map(
             claimSummary => {
-                return claimSummary.provClaimNo === data.data.provClaimNo ?
+                return claimSummary.provClaimNo === data.data.claimDetails.provClaimNo ?
                     { ...claimSummary, claimReviewStatus: '1' } : claimSummary
             })
-        return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary });
+        return ({ ...state, uploadClaimsSummary: newUploadClaimsSummary, nextAvailableClaimProvNo: data.data.nextAvailableClaimRow });
     }),
     on(setLoadUploadClaimsList, (state, claimSummary) => {
         return ({
@@ -123,6 +125,7 @@ export const getSelectedIllnessCodes = createSelector(claimReviewStateSelector, 
 export const getClaimErrors = createSelector(claimReviewStateSelector, (state) => state.claimErrors);
 export const getUploadClaimsSummary = createSelector(claimReviewStateSelector, (state) => state.uploadClaimsSummary);
 export const getUploadClaimsSummaryPageControls = createSelector(claimReviewStateSelector, (state) => state.uploadClaimsSummaryPageControls);
+export const getNextAvailableClaimRow = createSelector(claimReviewStateSelector, (state) => state.nextAvailableClaimProvNo);
 
 
 

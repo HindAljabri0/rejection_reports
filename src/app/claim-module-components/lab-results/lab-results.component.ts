@@ -294,6 +294,7 @@ export class LabResultsComponent implements OnInit {
       this.labsPaginationControl.page--;
     }
   }
+  
   showLastLabsPage() {
     this.labsPaginationControl.page = this.totalLabsPages;
   }

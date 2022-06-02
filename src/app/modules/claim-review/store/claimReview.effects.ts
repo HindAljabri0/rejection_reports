@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { of } from "rxjs";
+import { BehaviorSubject, of } from "rxjs";
 import { catchError, filter, map, switchMap, withLatestFrom } from "rxjs/operators";
 import { AuthService } from "src/app/services/authService/authService.service";
 import { SharedServices } from "src/app/services/shared.services";
@@ -10,7 +10,7 @@ import { showSnackBarMessage } from "src/app/store/mainStore.actions";
 import { PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
+import { deleteUpload, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -112,6 +112,7 @@ export class ClaimReviewEffects {
         switchMap(data => this.claimReviewService.markClaimAsDone(data.data).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(data => {
+                console.log('data: ', data);
                 this.sharedServices.loadingChanged.next(false);
                 this.store.dispatch(showSnackBarMessage({ message: 'Claim Marked as Done Successfully!' }));
                 return setMarkAsDoneReturn({ data: data });
@@ -184,4 +185,19 @@ export class ClaimReviewEffects {
             })
         )),
     ));
+
+    onDeleteUpload$ = createEffect(() => this.actions$.pipe(
+        ofType(deleteUpload),
+        map(data => {
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.deleteUpload(data.upload).pipe(
+            map( data => {
+                console.log(data);                
+                this.sharedServices.loadingChanged.next(false);
+            })
+        )),
+    ), { dispatch : false });
+
 }
