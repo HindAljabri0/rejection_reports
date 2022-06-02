@@ -321,8 +321,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.commen.loadingChanged.next(true);
     let event;
 
-
-
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
 
     this.claimSearchCriteriaModel.statuses = statuses;
@@ -349,6 +347,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
+    this.claimSearchCriteriaModel.claimDate = this.params.from;
+    this.claimSearchCriteriaModel.toDate = this.params.to;
 
     event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
 
@@ -470,6 +470,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
+
+    this.claimSearchCriteriaModel.claimDate = this.params.from;
+    this.claimSearchCriteriaModel.toDate = this.params.to;
 
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
     ).subscribe((event) => {
@@ -1624,4 +1627,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.commen.loadingChanged.next(false);
     });
   }
+
+
 }
