@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -16,7 +16,6 @@ import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-d
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { ClaimViewObservation } from '../../models/ClaimViewObservation.model';
 import { ClaimViewInvestigation } from '../../models/Investigation.model';
 import { markAsDone, setClaimDetailsRemarks, setDiagnnosisRemarks } from '../../store/claimReview.actions';
 import { FieldError, getClaimErrors, getSelectedIllnessCodes, getSingleClaim, getSingleClaimServices } from '../../store/claimReview.reducer';
@@ -33,10 +32,13 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   expandedObservation = -1;
   labsPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
 
-  investigations: ClaimViewInvestigation[] 
+  investigations: ClaimViewInvestigation[]
 
   claim$: Observable<Claim>;
   services$: Observable<Service[]>;
+  diagnosis: Diagnosis[] = [];
+  globalDoctorRemarks: string = '';
+
   selectedIllnesses$: Observable<string[]>;
   selectedIllnesses: string[] = [];
   errors$: Observable<{ errors: FieldError[] }>;
@@ -46,14 +48,13 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
   uploadId: string = '0';
   provClaimNo: string = '0';
-  doctorRemarks
 
   constructor(
     private dialogRef: MatDialogRef<DoctorUploadsClaimDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store,
     private sharedServices: SharedServices,
-    private authService: AuthService, 
+    private authService: AuthService,
     private dialog: MatDialog,
     private sanitizer: DomSanitizer) {
   }
@@ -63,16 +64,16 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     this.initLabResults();
   }
 
+
   initLabResults() {
     this.claim$.subscribe(claim => {
       let investigations: Investigation[] = claim.caseInformation.caseDescription.investigation;
-      if(investigations){
+      if (investigations) {
         this.investigations = ClaimViewInvestigation.map(investigations);
-        // console.log('this.investigations', this.investigations);
-        if(this.investigations && this.investigations.length > 0){
+        if (this.investigations && this.investigations.length > 0) {
           this.investigations[0].isOpen = true;
           this.expandedInvestigation = 0
-        }     
+        }
       }
     })
   }
@@ -86,7 +87,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
     this.services$ = this.store.select(getSingleClaimServices);
     this.errors$ = this.store.select(getClaimErrors);
     this.claim$.subscribe(claim => {
-      this.doctorRemarks = claim.doctorRemarks
+      this.diagnosis = claim.caseInformation.caseDescription.diagnosis
+      this.globalDoctorRemarks = claim.doctorRemarks
     });
     this.isCoder = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder
     this.isDoctor = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor
@@ -107,22 +109,28 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
 
 
   diagRemarksfocusOut(diagnosis: Diagnosis, remarks: string, coder: boolean, doctor: boolean) {
-    this.store.dispatch(setDiagnnosisRemarks({
-      data: {
-        remarks: remarks, coder: coder, doctor: doctor,
-        diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: +this.uploadId
-      }
-    }));
+
+    let isDataChanged = false
+    isDataChanged = doctor ? diagnosis.doctorRemarks !== remarks : diagnosis.coderRemarks !== remarks
+    if (isDataChanged) {
+      this.store.dispatch(setDiagnnosisRemarks({
+        data: {
+          remarks: remarks, coder: coder, doctor: doctor,
+          diagnosisId: diagnosis.diagnosisId, provClaimNo: this.provClaimNo, uploadId: +this.uploadId
+        }
+      }));
+    }
   }
 
   claimDetailsRemarksfocusOut(remarks: string) {
-    this.store.dispatch(setClaimDetailsRemarks({
-      data: {
-        remarks: remarks, coder: false, doctor: false,
-        diagnosisId: null, provClaimNo: this.provClaimNo, uploadId: +this.uploadId
-      }
-    }));
-    this.doctorRemarks = remarks;
+    if (this.globalDoctorRemarks.trim() !== remarks.trim()) {
+      this.store.dispatch(setClaimDetailsRemarks({
+        data: {
+          remarks: remarks, coder: false, doctor: false,
+          diagnosisId: null, provClaimNo: this.provClaimNo, uploadId: +this.uploadId
+        }
+      }));
+    }
   }
 
   markAsDone() {
