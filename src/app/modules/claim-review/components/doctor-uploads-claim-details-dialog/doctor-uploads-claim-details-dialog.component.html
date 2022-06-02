@@ -17,7 +17,7 @@
         <div class="diagnosis-tab">
             <div class="form-group form-group-static p-14 pb-0">
                 <div class="control-label">Chief Complaint Symptoms</div>
-                <p class="form-control-static">Dental Caries</p>
+                <p class="form-control-static">{{(claim$ | async).caseInformation.caseDescription.chiefComplaintSymptoms}} </p>
             </div>
             <div class="service-wrapper">
                 <ul class="services">
@@ -380,31 +380,6 @@
         </div>
     </mat-tab>
     <mat-tab [label]="'Attachments'">
-        <!-- <ng-container *ngIf="(claim$|async).attachment?.length <= 0">
-            <app-empty-state message='No attachments found!'>
-            </app-empty-state>
-        </ng-container>
-        <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of (claim$|async).attachment; let i = index">
-
-            <button class="thumbnail" type="button" (click)="viewAttachment(attachment)">
-                <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
-                <img *ngIf="isPdf(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
-            </button>
-
-            <div class="row small-gutter">
-                <div class="col-md-6 col-lg-4 col-xxl-3">
-                    <div class="attachment">
-                        <button class="thumbnail" type="button">
-                            <img src="assets/file-types/ic-pdf.svg" alt="PDF" />
-                        </button>
-                        <div class="content">
-                            <p class="title">{{attachment.fileName}}</p>
-                            <p>{{attachment.fileType}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         
         <ng-container *ngIf="(claim$|async).attachment?.length <= 0">
             <app-empty-state message='No attachments found!'>
@@ -421,10 +396,6 @@
                         <div class="content">
                             <p class="title">{{attachment.fileName}}</p>
                             <p>{{attachment.fileType}}</p>
-                            <mat-menu #editAttachmentTypeMenu class="primary-menu">
-                                <label class="d-block text-primary pb-2">Edit Attachment Type?</label>
-                                
-                            </mat-menu>
                             <div class="btn-list">
                                 <a [href]="getFileBlob(attachment)" [download]="attachment.fileName" mat-icon-button class="text-primary mr-0">
                                     <mat-icon>save_alt</mat-icon>
@@ -517,15 +488,7 @@
 
                                                             <tr
                                                                 (click)="toggleObservationExpansion($event,i+(currentLabsPage*currentLabsSize),j)">
-                                                                <!-- <td class="text-primary text-center row-click"
-                                                                    >
-                                                                    <mat-icon *ngIf="expandedObservation !== i+(currentLabsPage*currentLabsSize),j"
-                                                                        class="size-21">
-                                                                        chevron_right</mat-icon>
-                                                                    <mat-icon *ngIf="expandedObservation === i+(currentLabsPage*currentLabsSize),j"
-                                                                        class="size-21">
-                                                                        expand_more</mat-icon>
-                                                                </td> -->
+
                                                                 <td>
                                                                     {{observation.observationId}}
                                                                 </td>
@@ -547,7 +510,6 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <!-- <app-empty-state *ngIf="!(claim$ | async).caseInformation?.caseDescription?.investigation" message='No Lab Result Found!'></app-empty-state> -->
                                         </ng-container>
                                         <app-empty-state *ngIf="result.observations?.length <= 0"
                                             message='No Components Found!'></app-empty-state>
@@ -586,9 +548,9 @@
 <div class="p-14 pb-0 border-top">
     <h5 class="semibold pb-14">Doctor’s Remarks</h5>
     <div class="form-group">
-        <input value="{{doctorRemarks}}" type="text" class="form-control doctor-review"
-            placeholder="Enter doctor's remarks here..." (focusout)="claimDetailsRemarksfocusOut($event.target.value)"
-            maxlength="100" [matTooltip]="doctorRemarks" />
+        <input [value]="(claim$|async).doctorRemarks" type="text" class="form-control doctor-review"
+            placeholder="Enter doctor's remarks here..." (ngModelChange)="globalDoctorRemarks = $event" (focusout)="claimDetailsRemarksfocusOut($event.target.value)"
+            maxlength="100" [matTooltip]="(claim$|async).doctorRemarks" />
     </div>
 </div>
 

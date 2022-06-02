@@ -6,6 +6,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { environment } from 'src/environments/environment';
 import { ClaimDetails } from '../../models/ClaimDetails.model';
 import { claimScrubbing } from '../../models/ClaimScrubbing.model';
+import { SwitchUser } from '../../models/SwitchUser.model';
 import { Upload } from '../../models/upload.model';
 import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList } from '../../store/claimReview.reducer';
 
@@ -76,5 +77,15 @@ export class ClaimReviewService {
     deleteUpload(upload : Upload){
         const requestUrl = `/scrubbing/delete/` + upload.id;
         return this.http.delete<any>(environment.claimReviewService + requestUrl);
+    }
+
+    getCoderList(){
+        const requestUrl = '/users/coder/list';
+        return this.http.get<SwitchUser>(environment.adminServiceHost + requestUrl);
+    }
+
+    getDoctorList(){
+        const requestUrl = '/users/doctor/list';
+        return this.http.get<SwitchUser>(environment.adminServiceHost + requestUrl);
     }
 }
