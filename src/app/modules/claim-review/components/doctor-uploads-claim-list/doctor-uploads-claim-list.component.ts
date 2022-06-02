@@ -72,34 +72,19 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   subscribeNextAvailableClaim(): Subscription {
     return this.store.select(getNextAvailableClaimRow).subscribe(nextAvailableClaimRow => {
       if (nextAvailableClaimRow) {
-        if (nextAvailableClaimRow > this.pageControl.pageSize * (this.pageControl.pageNumber + 1) || nextAvailableClaimRow < (this.pageControl.pageSize - 1) * (this.pageControl.pageNumber + 1)) {
-          this.handlePageEvent({
-            length: this.pageControl.totalUploads,
-            pageIndex: Math.floor(nextAvailableClaimRow / this.pageControl.pageSize),
-            pageSize: this.pageControl.pageSize
-          })
-          this.isDialogOpen = true;
-          this.dialogClaimIndex = (nextAvailableClaimRow % this.pageControl.pageSize) - 1
-        } else {
-          this.isDialogOpen = false;
-          this.findNextAvailableClaim(this.dialogClaimIndex);
-          this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex].provClaimNo,
-            this.dialogClaimIndex, this.claimSummaryIds[this.dialogClaimIndex].claimReviewStatus);
-        }
-      } else {
-        // show no more claims available
+        console.log("NextAvailableClaimRow: ", nextAvailableClaimRow);
+        this.dialogClaimIndex = (nextAvailableClaimRow - 1) % this.pageControl.pageSize;
+        this.isDialogOpen = true;
+        this.handlePageEvent({
+          length: this.pageControl.totalUploads,
+          pageIndex: Math.floor((nextAvailableClaimRow - 1) / this.pageControl.pageSize),
+          pageSize: this.pageControl.pageSize
+        });
+      }
+      else {
+        // return this.store.dispatch(showSnackBarMessage({ message: 'All the Claim(s) are Marked As Successfully!' }));
       }
     });
-  }
-
-  findNextAvailableClaim(index: number) {
-    this.claimSummaryIds[index]
-    for (let i: number = index + 1; i < this.claimSummaryIds.length; i = i + 1) {
-      if (!this.claimSummaryIds[i].claimReviewStatus) {
-        this.dialogClaimIndex = i;
-        return;
-      }
-    }
   }
 
   refreshData() {
@@ -158,7 +143,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   openDoctorClaimViewDialog(provClaimNo: string, index: number, claimReviewStatus: boolean) {
-    this.findNextAvailableClaim(index);
     this.dialogClaimIndex = index
     this.dispatchActions(this.uploadId, provClaimNo)
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
@@ -224,9 +208,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         })
         this.dialogClaimIndex = (this.pageControl.totalUploads % this.pageControl.pageSize) - 1
         this.isDialogOpen = true;
-        break;
-      }
-      case 'mark-as-done': {
         break;
       }
       default: {

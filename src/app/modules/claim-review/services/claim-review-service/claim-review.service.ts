@@ -81,11 +81,11 @@ export class ClaimReviewService {
 
     getCoderList(){
         const requestUrl = '/users/coder/list';
-        return this.http.get<SwitchUser>(requestUrl);
+        return this.http.get<SwitchUser>(environment.adminServiceHost + requestUrl);
     }
 
     getDoctorList(){
         const requestUrl = '/users/doctor/list';
-        return this.http.get<SwitchUser>(requestUrl);
+        return this.http.get<SwitchUser>(environment.adminServiceHost + requestUrl);
     }
 }
