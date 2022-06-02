@@ -133,7 +133,7 @@ const _mainReducer = createReducer(
                     canAccessClaim: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.3'),
                     canAccessBeneficiary: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.4'),
                     canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.5'),
-                    canAccessPriceList: providerId != '101' &&(AuthService.hasPrivilege(providerId, '101', '25.61')),
+                    canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61')),
                     canAccessPhysician: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.62') ),
                 }
             }
