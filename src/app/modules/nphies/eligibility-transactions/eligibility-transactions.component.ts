@@ -235,7 +235,8 @@ export class EligibilityTransactionsComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
+        //model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
+        model.documentId = this.FormEligibilityTransaction.controls.documentId.value;
       }
 
       if (this.FormEligibilityTransaction.controls.status.value) {
