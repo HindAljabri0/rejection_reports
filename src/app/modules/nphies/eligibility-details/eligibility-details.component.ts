@@ -14,9 +14,12 @@ export class EligibilityDetailsComponent implements OnInit {
 
   constructor(private sharedDataService: SharedDataService) { }
 
+  eligibiltyTypeList = this.sharedDataService.beneficiaryTypeList;
+
   ngOnInit() {
     // tslint:disable-next-line:max-line-length
     this.eligibilityResponse.siteEligibilityName = this.sharedDataService.siteEligibility.filter(x => x.value === this.eligibilityResponse.siteEligibility)[0] ? this.sharedDataService.siteEligibility.filter(x => x.value === this.eligibilityResponse.siteEligibility)[0].value + ' ( ' + this.sharedDataService.siteEligibility.filter(x => x.value === this.eligibilityResponse.siteEligibility)[0].name + ' )' : '-';
+    this.eligibilityResponse.documentTypeName = this.eligibiltyTypeList.filter(x => x.value === this.eligibilityResponse.documentType)[0] ? this.eligibiltyTypeList.filter(x => x.value === this.eligibilityResponse.documentType)[0].name : '-';
 
   }
 
