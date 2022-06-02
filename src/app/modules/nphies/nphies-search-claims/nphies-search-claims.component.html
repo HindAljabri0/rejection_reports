@@ -23,16 +23,24 @@
               class="primary-card border-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
               <table>
                 <tr>
-                  <th *ngIf="summary.value.statuses[0] != 'partially_paid'" colspan="2">No. of Claims</th>
+                  <th *ngIf="summary.value.statuses[0] != 'partially_paid'">No. of Claims</th>
+                  <th>Total Patient Share</th>
                   <th *ngIf="summary.value.statuses[0] == 'partially_paid'">No. of Claims</th>
                   <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
                   <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
                 </tr>
                 <tr>
-                  <td *ngIf="summary.value.statuses[0] != 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}" colspan="2">
+                  <td *ngIf="summary.value.statuses[0] != 'partially_paid'"
+                    class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}" >
                     <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                   </td>
-                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                  <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                    <span
+                      class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
+                      *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
+                  </td>
+                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'"
+                    class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
@@ -43,14 +51,20 @@
                     <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
                   </td>
                 </tr>
+               
                 <tr>
                   <th>Total Net</th>
-                  <th *ngIf="summary.value.statuses[0] == 'partially_paid'"></th>
+                  <th>Total Payer Share</th>
                 </tr>
                 <tr>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span *ngIf="summary.value.totalNetAmount!=null"
                       class="currency"> SR</span>
+                  </td>
+                  <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                    <span
+                      class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
+                      *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
                 </tr>
