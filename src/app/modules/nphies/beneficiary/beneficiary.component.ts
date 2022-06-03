@@ -80,8 +80,8 @@ export class BeneficiaryComponent implements OnInit {
     selecteSubscriberRelationship: string
     selecteCoverageType: string,
     payerErorr: string,
-    patientShare:FormControl,
-    maxLimit:FormControl,
+    patientShare: FormControl,
+    maxLimit: FormControl,
     memberCardIdErorr: string,
     patientShareErorr: string,
     maxLimitErorr: string,
@@ -286,7 +286,7 @@ export class BeneficiaryComponent implements OnInit {
     this.familyNameController.setValue(beneficiaryinfo.familyName);
     this.fullNameController.setValue(beneficiaryinfo.fullName);
     this.dobFormControl.setValue(beneficiaryinfo.dob);
-    this.selectedGender = beneficiaryinfo.gender==null?'null':beneficiaryinfo.gender.toLocaleUpperCase();
+    this.selectedGender = beneficiaryinfo.gender == null ? 'null' : beneficiaryinfo.gender.toLocaleUpperCase();
     this.selectedNationality = beneficiaryinfo.nationality;
     this.contactNumberController.setValue(beneficiaryinfo.contactNumber);
     this.emailController.setValue(beneficiaryinfo.email);
@@ -306,7 +306,6 @@ export class BeneficiaryComponent implements OnInit {
     this.selectedCountry = beneficiaryinfo.country;
 
     this.postalCodeController.setValue(beneficiaryinfo.postalCode);
-
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
       this.insurancePlans.push(
         {
@@ -314,13 +313,16 @@ export class BeneficiaryComponent implements OnInit {
           selectePayer: insurancePlans.payerNphiesId,
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
+
           selecteSubscriberRelationship: insurancePlans.relationWithSubscriber
             ? insurancePlans.relationWithSubscriber.toUpperCase()
             : insurancePlans.relationWithSubscriber,
           selecteCoverageType: insurancePlans.coverageType,
-          maxLimit:insurancePlans.maxLimit?new FormControl(insurancePlans.maxLimit):null,
-          patientShare:insurancePlans.patientShare?new FormControl(insurancePlans.patientShare):null,
-          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null,patientShareErorr: null,
+
+          maxLimit: insurancePlans.maxLimit ? new FormControl(insurancePlans.maxLimit) :  new FormControl(),
+          patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) :  new FormControl(),
+          // tslint:disable-next-line:max-line-length
+          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
         }
       );
     }
@@ -337,7 +339,10 @@ export class BeneficiaryComponent implements OnInit {
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private dialogService: DialogService,
     private sharedDataService: SharedDataService
-  ) { }
+  ) {
+    this.beneficiaryinfo = new BeneficiaryModel();
+  }
+
   ngOnInit() {
 
     this.providersBeneficiariesService.getPayers().subscribe(event => {
@@ -452,12 +457,12 @@ export class BeneficiaryComponent implements OnInit {
         memberCardId: new FormControl(),
         selecteSubscriberRelationship: '',
         selecteCoverageType: '',
-        patientShare:new FormControl(),
-        maxLimit:new FormControl(),
+        patientShare: new FormControl(),
+        maxLimit: new FormControl(),
         payerErorr: null,
         memberCardIdErorr: null,
-        patientShareErorr:null,
-        maxLimitErorr:null,
+        patientShareErorr: null,
+        maxLimitErorr: null,
         selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
       });
 
@@ -593,8 +598,8 @@ export class BeneficiaryComponent implements OnInit {
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == '' ? null : insurancePlan.selecteSubscriberRelationship,
       coverageType: insurancePlan.selecteCoverageType == '' ? null : insurancePlan.selecteCoverageType,
       isPrimary: insurancePlan.iSPrimary,
-      maxLimit:insurancePlan.maxLimit.value,
-      patientShare:insurancePlan.patientShare.value
+      maxLimit: insurancePlan.maxLimit.value,
+      patientShare: insurancePlan.patientShare.value
     }));
 
   }
