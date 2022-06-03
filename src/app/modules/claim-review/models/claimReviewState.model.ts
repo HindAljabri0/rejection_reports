@@ -1,6 +1,7 @@
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { FieldError } from "../store/claimReview.reducer";
 import { ClaimSummary } from "./claimSummary.mocel";
+import { SwitchUser } from "./SwitchUser.model";
 import { Upload } from "./upload.model";
 
 export interface ClaimReviewState {
@@ -14,7 +15,13 @@ export interface ClaimReviewState {
     claimErrors: {errors: FieldError[] },
     uploadClaimsSummary: ClaimSummary[],
     uploadClaimsSummaryPageControls: PageControls,
-    nextAvailableClaimProvNo: number
+    nextAvailableClaimProvNo: number,
+    doctorList: SwitchUser[],
+    coderList: SwitchUser[],
+    providerList: any[],
+    doctorId: string,
+    coderId: string,
+    providerId: string
 }
 
 
