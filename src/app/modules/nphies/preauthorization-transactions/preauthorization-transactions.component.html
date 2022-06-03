@@ -86,7 +86,8 @@
                 <th>Beneficiary Name</th>
                 <th>Pre Auth Ref No</th>
                 <th>Pre Authorization ID</th>
-                <th>Transaction Date</th>
+                <th>Requested Date</th>
+                <th>Response Date</th>
                 <th>Payer</th>
                 <th>Status</th>
                 <th>Processing Status</th>
@@ -104,6 +105,9 @@
                   {{transaction.nphiesRequestId}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.transactionDate | date:
+                  'dd-MM-yyyy hh:mm aa'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.responseTimeStamp | date:
                   'dd-MM-yyyy hh:mm aa'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.payerName}}</td>
