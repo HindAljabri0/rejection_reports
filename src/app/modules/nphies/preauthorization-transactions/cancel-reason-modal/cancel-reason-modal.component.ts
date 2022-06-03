@@ -156,7 +156,7 @@ export class CancelReasonModalComponent implements OnInit {
 
       action.subscribe((event: any) => {
         if (event instanceof HttpResponse) {
-          if (event.status === 200) {
+          if (event.status === 202) {
             const body: any = event.body;
             const resModel: any = {};
             resModel.Success = true;
