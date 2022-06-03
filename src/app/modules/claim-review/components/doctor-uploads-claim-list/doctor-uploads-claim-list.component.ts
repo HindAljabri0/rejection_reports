@@ -72,7 +72,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   subscribeNextAvailableClaim(): Subscription {
     return this.store.select(getNextAvailableClaimRow).subscribe(nextAvailableClaimRow => {
       if (nextAvailableClaimRow) {
-        console.log("NextAvailableClaimRow: ", nextAvailableClaimRow);
         this.dialogClaimIndex = (nextAvailableClaimRow - 1) % this.pageControl.pageSize;
         this.isDialogOpen = true;
         this.handlePageEvent({
@@ -208,6 +207,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         })
         this.dialogClaimIndex = (this.pageControl.totalUploads % this.pageControl.pageSize) - 1
         this.isDialogOpen = true;
+        break;
+      }
+      case 'mark-as-done': {
         break;
       }
       default: {

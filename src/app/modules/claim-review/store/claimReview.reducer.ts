@@ -151,6 +151,7 @@ export const getDoctorList = createSelector(claimReviewStateSelector, (state) =>
 export const getCoderList = createSelector(claimReviewStateSelector, (state) => state.coderList);
 export const getDoctorId = createSelector(claimReviewStateSelector, (state) => state.doctorId);
 export const getCoderId = createSelector(claimReviewStateSelector, (state) => state.coderId);
+export const getProviderId = createSelector(claimReviewStateSelector, (state) => state.providerId);
 export const getProviderList = createSelector(claimReviewStateSelector, (state) => state.providerList);
 
 

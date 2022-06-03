@@ -68,6 +68,7 @@ export class UploadsAssigningComponent implements OnInit {
         if (this.selectedDoctor === '-1') {
             this.selectedDoctor = '';
         }
+        this.selectProvider();
         this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: this.selectedDoctor, selectedCoderId: this.selectedCoder, selectedProvider:this.selectedProvider }));
         this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
     }
@@ -79,7 +80,6 @@ export class UploadsAssigningComponent implements OnInit {
             const providerId = this.providerController.value.split('|')[0].trim();
             this.selectedProvider = providerId;
         }
-        console.log(this.selectedProvider);
     }
 
     updateFilter() {
