@@ -60,7 +60,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisSequence: [''],
     diagnosisFilter: [''],
     invoiceNo: [''],
-    IsTaxApplied: [true],
+    IsTaxApplied: [false],
     searchQuery: ['']
   });
 
@@ -71,6 +71,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   bodySiteList = [];
   subSiteList = [];
   IscareTeamSequenceRequired = false;
+
+  IsSupportingInfoSequenceRequired = false;
+  supportingInfoError = '';
+
+  showQuantityCode = true;
 
   today: Date;
   constructor(
@@ -148,6 +153,19 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       this.getItemList();
     } else {
+      if (this.data.beneficiaryPatientShare) {
+        this.FormItem.controls.patientSharePercent.setValue(this.data.beneficiaryPatientShare);
+      }
+      if (this.data.documentId && this.data.documentId === 'NI') {
+        this.FormItem.controls.IsTaxApplied.setValue(false);
+      } else {
+        this.FormItem.controls.IsTaxApplied.setValue(true);
+      }
+
+      if (this.data.subType === 'op') {
+        this.FormItem.controls.quantityCode.setValue('{package}');
+        this.FormItem.controls.quantityCode.disable();
+      }
       this.FormItem.controls.factor.setValue(1);
     }
 
@@ -251,6 +269,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   selectItem(type) {
     if (type) {
+
+      if (type.itemType && type.itemType === 'medication-codes') {
+        this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+      } else {
+        this.FormItem.controls.quantityCode.clearValidators();
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+        this.FormItem.controls.quantityCode.setValue('');
+        this.FormItem.controls.quantityCode.disable();
+        this.showQuantityCode = false;
+      }
+
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === type.itemType)[0],
         nonStandardCode: type.nonStandardCode,
@@ -259,7 +289,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         factor: type.factor,
       });
       this.SetSingleRecord(type);
-      // this.Calculate('Factor');
       this.updateFactor();
       this.updateDiscountPercent();
       this.updateDiscount();
@@ -294,6 +323,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     } else {
       this.FormItem.controls.quantityCode.clearValidators();
       this.FormItem.controls.quantityCode.updateValueAndValidity();
+      this.FormItem.controls.quantityCode.setValue('');
+      this.FormItem.controls.quantityCode.disable();
+      this.showQuantityCode = false;
     }
     this.FormItem.controls.item.setValue('');
     if (type) {
@@ -440,11 +472,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   updateNet() {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-    // tslint:disable-next-line:max-line-length
+      // tslint:disable-next-line:max-line-length
       const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
 
-    // tslint:disable-next-line:max-line-length
-     // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+      // tslint:disable-next-line:max-line-length
+      // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
       this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
@@ -649,7 +681,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   searchItems() {
-    if(this.SearchRequest){
+    if (this.SearchRequest) {
       this.SearchRequest.unsubscribe();
     }
     const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
@@ -671,8 +703,66 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     });
   }
 
+  checkItemsCodeForSupportingInfo() {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormItem.controls.type.value.value === 'medication-codes') {
+
+      if (this.data.supportingInfos.filter(x => x.category === 'days-supply').length === 0) {
+        // tslint:disable-next-line:max-line-length
+        // this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+
+        this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
+        this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+
+        this.IsSupportingInfoSequenceRequired = true;
+        this.supportingInfoError = 'Days-Supply is required in Supporting Info if any medication-code is used';
+
+        return false;
+      } else {
+        const seqNo = this.data.supportingInfos.filter(x => x.category === 'days-supply')[0].sequence;
+
+        if (this.FormItem.controls.type.value.value === 'medication-codes') {
+          // tslint:disable-next-line:max-line-length
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.filter((x) => x.sequence === seqNo).length === 0)) {
+            // tslint:disable-next-line:max-line-length
+            // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
+
+            this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
+            this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+
+            this.IsSupportingInfoSequenceRequired = true;
+            this.supportingInfoError = 'Supporting Info with Days-Supply must be linked with Item of type medication-code';
+            return false;
+          } else {
+            this.IsSupportingInfoSequenceRequired = false;
+            this.supportingInfoError = '';
+            this.FormItem.controls.supportingInfoSequence.clearValidators();
+            this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+            return true;
+          }
+        } else {
+          this.IsSupportingInfoSequenceRequired = false;
+          this.supportingInfoError = '';
+          this.FormItem.controls.supportingInfoSequence.clearValidators();
+          this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+          return true;
+        }
+      }
+
+    } else {
+      this.IsSupportingInfoSequenceRequired = false;
+      this.supportingInfoError = '';
+      this.FormItem.controls.supportingInfoSequence.clearValidators();
+      this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+      return true;
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
+    if (!this.checkItemsCodeForSupportingInfo()) {
+      return;
+    }
 
     if (this.FormItem.valid) {
 
