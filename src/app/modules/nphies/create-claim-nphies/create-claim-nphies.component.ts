@@ -842,6 +842,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormNphiesClaim.controls.type.value.value,
+      subType: this.FormNphiesClaim.controls.subType.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
