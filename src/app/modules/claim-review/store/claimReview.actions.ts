@@ -30,7 +30,7 @@ export const setCoderListReturn = createAction("[ Claims Review ] Setting up the
 export const setDoctorAndCoderData = createAction("[ Claims Review ] Setting Up the Doctor and Coder Id For Search", props<{ selectedDoctorId: string, selectedCoderId: string, selectedProvider: string }>());
 export const loadProviderList = createAction("[ Claims Review ] Get Provider List");
 export const setProviderList = createAction("[ Claims Review ] Set Provider List", props<{ list : any[] }>());
-
+export const updateAssignment = createAction("[ Claims Review ] Update the Assigned Data", props<{ data: {uploadId: number, userNme: string,doctor: boolean,coder: boolean} }>());
 
 export const setDiagnnosisRemarks = createAction("[ Claims Review ] set diagnosis remarks", props<{data: DiagnosisRemarksUpdateRequest}>());
 export const setDiagnosisRemarksReturn = createAction("[ Claims Review ] set diagnosis remarks Return", props<{data: DiagnosisRemarksUpdateRequest}>());

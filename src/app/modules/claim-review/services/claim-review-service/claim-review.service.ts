@@ -18,7 +18,7 @@ export class ClaimReviewService {
 
     constructor(private http: HttpClient,private sharedService : SharedServices) { }
 
-    fetchUnderReviewUploadsOfStatus(status: string, pageNumber: number, pageSize: number, providerId: string,doctorId: string, coderId: string) {
+    fetchUnderReviewUploadsOfStatus(status: string, pageNumber: number, pageSize: number, userName: string,doctorId: string, coderId: string, providerId: string) {
         var requestURL = "";
         if(this.sharedService.userPrivileges.WaseelPrivileges.RCM.isAdmin)
         {
@@ -27,8 +27,8 @@ export class ClaimReviewService {
             requestURL = `/scrubbing/upload`;
         }
         return this.http.post(environment.claimReviewService + requestURL, {
-            "status": status, "page": pageNumber, "pageSize": pageSize, "userName": providerId, "doctor": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isDoctor,
-            "coder": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isCoder, "providerId" : "", "doctorName": doctorId, "coderName": coderId
+            "status": status, "page": pageNumber, "pageSize": pageSize, "userName": userName, "doctor": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+            "coder": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isCoder, "doctorName": doctorId, "coderName": coderId, "providerId" : providerId
         });
     }
 
@@ -97,5 +97,10 @@ export class ClaimReviewService {
     getAvailableProviderList(list : string[]){
         const requestUrl = '/providers/list/ids';
         return this.http.get<any[]>(environment.adminServiceHost + requestUrl + "/" + list + "");
+    }
+
+    updateAssignment( uploadId : number, userName : string, doctor: boolean, coder: boolean ){
+        const requestUrl = '/scrubbing/update/assignment'
+        return this.http.post(environment.claimReviewService + requestUrl, {"uploadId": uploadId,"userName": userName,"doctor": doctor, "coder": coder})
     }
 }
