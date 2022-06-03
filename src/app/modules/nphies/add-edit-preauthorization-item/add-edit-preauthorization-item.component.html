@@ -8,12 +8,14 @@
   <div class="primary-dialog-body pb-0">
     <div class="form-group flex-grow-1">
 
-      <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
+      <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery"
+        [matAutocomplete]="auto" (keyup)="searchItems()">
       <mat-autocomplete #auto="matAutocomplete" class="pre-auth-items">
         <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
           <span>{{type.code}} ({{type.display}})</span>
           <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
-          <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
+          <span class="text-primary non-standard-code"
+            *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
               *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
         </mat-option>
       </mat-autocomplete>
@@ -22,7 +24,8 @@
     <hr class="hr mb-3">
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
           <label class="control-label">Type<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="type" (selectionChange)="typeChange()">
@@ -36,12 +39,14 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter"
+                  noEntriesFoundLabel="No items found" name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
 
@@ -115,19 +120,23 @@
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDate" [max]="today">
+              <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
+                formControlName="startDate" [max]="today">
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDate" [max]="today" [min]="data.dateOrdered">
+              <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
+                formControlName="startDate" [max]="today" [min]="data.dateOrdered">
             </ng-container>
 
             <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
             <mat-datepicker #startDate></mat-datepicker>
           </div>
-          <div *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')">
             <span class="error-text">Please enter start date</span>
           </div>
-          <div *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('matDatepickerMax')">
+          <div
+            *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('matDatepickerMax')">
             <span class="error-text" *ngIf="data.source === 'CLAIM'">Item date must be on or before Claim date</span>
             <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval
               date</span>
@@ -135,13 +144,14 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group">
+        <div class="form-group"
+          [ngClass]="{'has-error' :IsSupportingInfoSequenceRequired || ((isSubmitted || FormItem.get('supportingInfoSequence').touched) && FormItem.get('supportingInfoSequence').hasError('required'))}">
           <label class="control-label">Supporting Info</label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="supportingInfoSequence" multiple placeholder="Select Supporting Info">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="supportingInfoFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found"
-                  name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="supportingInfoFilter"
+                  showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found" name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
               <ng-container>
@@ -150,9 +160,12 @@
                   {{item.sequence}} - {{item.categoryName}} <span *ngIf="item.code">- {{item.code}}</span>
                 </mat-option>
               </ng-container>
-
             </mat-select>
           </mat-form-field>
+          <div
+            *ngIf="IsSupportingInfoSequenceRequired || ((isSubmitted || FormItem.get('supportingInfoSequence').touched) && FormItem.get('supportingInfoSequence').hasError('required'))">
+            <span class="error-text">{{supportingInfoError}}</span>
+          </div>
         </div>
       </div>
       <div class="col-4 col-lg-3">
@@ -162,8 +175,8 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="diagnosisSequence" multiple placeholder="Select Care Team">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="diagnosisFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found"
-                  name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="diagnosisFilter"
+                  showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found" name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
               <ng-container>
@@ -180,13 +193,14 @@
       <div class="col-4 col-lg-3">
         <div class="form-group"
           [ngClass]="{'has-error' :IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))}">
-          <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired" class="asterisk">*</span></label>
+          <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired"
+              class="asterisk">*</span></label>
 
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="careTeamSequence" multiple placeholder="Select Care Team">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="careTeamFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found"
-                  name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="careTeamFilter"
+                  showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found" name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
               <ng-container>
@@ -198,16 +212,19 @@
 
             </mat-select>
           </mat-form-field>
-          <div *ngIf="IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))">
+          <div
+            *ngIf="IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))">
             <span class="error-text">Please select Care Team</span>
           </div>
         </div>
       </div>
       <div *ngIf="data.source === 'CLAIM'" class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')}">
           <label class="control-label">Invoice No.<span class="asterisk">*</span></label>
           <input class="form-control" placeholder="Enter invoice number" formControlName="invoiceNo" maxlength="64">
-          <div *ngIf="(isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')">
             <span class="error-text">Please enter Invoice No</span>
           </div>
         </div>
@@ -230,9 +247,10 @@
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <div class="row extra-small-gutter">
                 <div class="col">
-                  <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Other')">
+                  <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity"
+                    (blur)="Calculate('Other')">
                 </div>
-                <div class="col-auto">
+                <div *ngIf="showQuantityCode" class="col-auto">
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="quantityCode">
                       <mat-option value="">Code<span *ngIf="IsQuantityCodeRequired">*</span></mat-option>
@@ -242,27 +260,32 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
                 <span class="error-text">Please enter Quantity</span>
               </div>
               <div *ngIf="IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched)">
                 <span class="error-text">Quantity must be greater than 0</span>
               </div>
-              <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
+              <div
+                *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
                 <span class="error-text">Please enter Quantity Code</span>
               </div>
             </div>
           </div>
           <div class="col-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
+            <div class="form-group"
+              [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
               <label class="control-label">Unit Price<span class="asterisk">*</span></label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice" (blur)="Calculate('Other')">
+                <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice"
+                  (blur)="Calculate('Other')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
               </div>
-              <div *ngIf="(isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')">
+              <div
+                *ngIf="(isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')">
                 <span class="error-text">Please enter Unit Price</span>
               </div>
             </div>
@@ -271,7 +294,8 @@
             <div class="form-group">
               <label class="control-label">Tax (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter tax" formControlName="taxPercent" (blur)="Calculate('Tax')">
+                <input type="number" class="form-control" placeholder="Enter tax" formControlName="taxPercent"
+                  (blur)="Calculate('Tax')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
@@ -282,7 +306,8 @@
             <div class="form-group">
               <label class="control-label">Discount (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discountPercent" (blur)="Calculate('Factor')">
+                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discountPercent"
+                  (blur)="Calculate('Factor')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
@@ -293,7 +318,8 @@
             <div class="form-group">
               <label class="control-label">Discount Amount</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discount" (blur)="Calculate('DiscountPercent')">
+                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discount"
+                  (blur)="Calculate('DiscountPercent')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -304,12 +330,14 @@
             <div class="form-group">
               <label class="control-label">Patient Share (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientSharePercent" (blur)="Calculate('PatientShare')">
+                <input type="number" class="form-control" placeholder="Enter patient share"
+                  formControlName="patientSharePercent" (blur)="Calculate('PatientShare')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
               </div>
-              <mat-checkbox formControlName="IsTaxApplied" color="primary" (change)="changeTaxApplied()" class="d-inline-block pt-1">Tax Applied?</mat-checkbox>
+              <mat-checkbox formControlName="IsTaxApplied" color="primary" (change)="changeTaxApplied()"
+                class="d-inline-block pt-1">Tax Applied?</mat-checkbox>
             </div>
           </div>
         </div>
@@ -320,7 +348,8 @@
             <div class="form-group">
               <label class="control-label">Tax Amount</label>
               <div class="input-group">
-                <input class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('TaxPercent')">
+                <input class="form-control" placeholder="Enter tax" formControlName="tax"
+                  (blur)="Calculate('TaxPercent')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -336,7 +365,8 @@
                   <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                 </span>
               </label>
-              <input class="form-control" placeholder="Enter factor" formControlName="factor" (blur)="Calculate('Discount')">
+              <input class="form-control" placeholder="Enter factor" formControlName="factor"
+                (blur)="Calculate('Discount')">
               <div *ngIf="(isSubmitted || FormItem.get('factor').touched) && FormItem.get('factor').hasError('min')">
                 <span class="error-text">Factor must be greater than or equal to 0</span>
               </div>
@@ -360,7 +390,8 @@
             <div class="form-group">
               <label class="control-label">Patient Share Amount</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientShare">
+                <input type="number" class="form-control" placeholder="Enter patient share"
+                  formControlName="patientShare">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
