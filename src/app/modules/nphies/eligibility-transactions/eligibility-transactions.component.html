@@ -55,7 +55,7 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group">
-            <label class="control-label">Select a Beneficiary</label>
+            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
             <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
               [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">

@@ -21,7 +21,7 @@
         <div class="d-flex">
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
-            <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
+            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary<span class="asterisk">*</span></label>
             <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
               [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">

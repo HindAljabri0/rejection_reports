@@ -312,21 +312,23 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormNphiesClaim.controls.beneficiaryName.value).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
-          if (!this.FormNphiesClaim.controls.beneficiaryName.value) {
-            this.deSelectBeneficiary();
+    if(this.FormNphiesClaim.controls.beneficiaryName.value.length>2){
+      this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormNphiesClaim.controls.beneficiaryName.value).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body instanceof Array) {
+            this.beneficiariesSearchResult = body;
+            if (!this.FormNphiesClaim.controls.beneficiaryName.value) {
+              this.deSelectBeneficiary();
+            }
           }
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+        }
+      });
+    }
   }
 
   deSelectBeneficiary() {
