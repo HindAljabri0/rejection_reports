@@ -496,22 +496,24 @@ export class AddPreauthorizationComponent implements OnInit {
       searchStr = this.FormPreAuthorization.controls.subscriberName.value;
     }
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          if (!IsSubscriber) {
-            this.beneficiariesSearchResult = body;
-          } else {
-            this.subscriberSearchResult = body;
+    if(searchStr.length>2){
+      this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body instanceof Array) {
+            if (!IsSubscriber) {
+              this.beneficiariesSearchResult = body;
+            } else {
+              this.subscriberSearchResult = body;
+            }
           }
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+        }
+      });
+    }
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {

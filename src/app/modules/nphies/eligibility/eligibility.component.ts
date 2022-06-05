@@ -163,23 +163,25 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       searchStr = this.subscriberSearchController.value;
     }
 
-    this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
+    if(searchStr.length>2){
+      this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body instanceof Array) {
 
-          if (!IsSubscriber) {
-            this.beneficiariesSearchResult = body;
-          } else {
-            this.subscriberSearchResult = body;
+            if (!IsSubscriber) {
+              this.beneficiariesSearchResult = body;
+            } else {
+              this.subscriberSearchResult = body;
+            }
           }
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+        }
+      });
+    }
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {

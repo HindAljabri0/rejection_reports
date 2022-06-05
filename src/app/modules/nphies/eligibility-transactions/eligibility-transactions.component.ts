@@ -142,18 +142,20 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormEligibilityTransaction.controls.beneficiaryName.value).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          this.beneficiariesSearchResult = body;
+    if(this.FormEligibilityTransaction.controls.beneficiaryName.value.length>2){
+      this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormEligibilityTransaction.controls.beneficiaryName.value).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body instanceof Array) {
+            this.beneficiariesSearchResult = body;
+          }
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+        }
+      });
+    }
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
