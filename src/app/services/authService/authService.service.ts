@@ -117,6 +117,7 @@ export class AuthService {
 
     setTokens(body: {}) {
         localStorage.setItem('access_token', body['access_token']);
+        console.log("access token ="+body['access_token']);
         localStorage.setItem('refresh_token', body['refresh_token']);
         if (Date.now() < new Date(body['expires_in']).getTime()) {
             localStorage.setItem('expires_in', body['expires_in']);
@@ -127,10 +128,15 @@ export class AuthService {
         this.getCurrentUserToken().subscribe(event => {
             if (event instanceof HttpResponse) {
                 const authorities: Array<any> = event.body['authorities'];
+                console.log("authorities = "+authorities);
                 const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
                     || element['authority'].split('|')[1] == '22.0'
                     || element['authority'].split('|')[1] == '24.0' 
-                    || element['authority'].split('|')[1] == '25.0' 
+                    || element['authority'].split('|')[1] == '25.0'
+                    || element['authority'].split('|')[1] == '25.1'
+                    || element['authority'].split('|')[1] == '25.2'
+                    || element['authority'].split('|')[1] == '25.3'
+                    || element['authority'].split('|')[1] == '25.6' 
                     || element['authority'].split('|')[1] == '99.0'
                     || element['authority'].split('|')[1] == '24.41'
                     || element['authority'].split('|')[1] == '24.42'
