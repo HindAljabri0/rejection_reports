@@ -10,8 +10,8 @@ import { showSnackBarMessage } from "src/app/store/mainStore.actions";
 import { PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { deleteUpload, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab } from "./claimReview.actions";
-import { currentSelectedTabHasContent, currentSelectedTabPageControls, selectedUploadsTab } from "./claimReview.reducer";
+import { deleteUpload, loadCoderList, loadDoctorList, loadProviderList, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setCoderListReturn, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setDoctorListReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setProviderList, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, updateAssignment } from "./claimReview.actions";
+import { currentSelectedTabHasContent, currentSelectedTabPageControls, getCoderId, getDoctorId, getProviderId, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
 export class ClaimReviewEffects {
@@ -20,15 +20,21 @@ export class ClaimReviewEffects {
 
     onLoadingUploadsUnderReviewOfSelectedTab$ = createEffect(() => this.actions$.pipe(
         ofType(loadUploadsUnderReviewOfSelectedTab),
+        withLatestFrom(this.store.select(getProviderId)),
+        withLatestFrom(this.store.select(getDoctorId)),
+        withLatestFrom(this.store.select(getCoderId)),
         withLatestFrom(this.store.select(selectedUploadsTab)),
         withLatestFrom(this.store.select(currentSelectedTabPageControls)),
         withLatestFrom(this.store.select(currentSelectedTabHasContent)),
-        map(values => (this.sharedServices.loadingChanged.next(true), { tabName: values[0][0][1], pageControl: values[0][1], hasContent: values[1] })),
+        map(values => (this.sharedServices.loadingChanged.next(true), { providerId: values[0][0][0][0][0][1], doctorId: values[0][0][0][0][1], coderId: values[0][0][0][1], tabName: values[0][0][1], pageControl: values[0][1], hasContent: values[1] })),
         switchMap(requestParams => this.claimReviewService.fetchUnderReviewUploadsOfStatus(
             requestParams.tabName,
             requestParams.pageControl.pageNumber,
             requestParams.pageControl.pageSize,
-            this.authService.getUserName()
+            this.authService.getUserName(),
+            requestParams.doctorId,
+            requestParams.coderId,
+            requestParams.providerId
         ).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(response => {
@@ -193,11 +199,57 @@ export class ClaimReviewEffects {
             return data
         }),
         switchMap(data => this.claimReviewService.deleteUpload(data.upload).pipe(
-            map( data => {
-                console.log(data);                
+            map(data => {
+                console.log(data);
                 this.sharedServices.loadingChanged.next(false);
             })
         )),
-    ), { dispatch : false });
+    ), { dispatch: false });
 
+    onLoadingDoctorList$ = createEffect(() => this.actions$.pipe(
+        ofType(loadDoctorList),
+        switchMap(() => this.claimReviewService.getDoctorList().pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(response => {
+                this.sharedServices.loadingChanged.next(false);
+                return setDoctorListReturn({ list: response });
+            })
+        )),
+    ));
+
+    onLoadingCoderList$ = createEffect(() => this.actions$.pipe(
+        ofType(loadCoderList),
+        switchMap(() => this.claimReviewService.getCoderList().pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(response => {
+                this.sharedServices.loadingChanged.next(false);
+                return setCoderListReturn({ list: response });
+            })
+        )),
+    ));
+
+    onLoadProviderList$ = createEffect(() => this.actions$.pipe(
+        ofType(loadProviderList),
+        switchMap(() => this.claimReviewService.getAvailableProviderIds().pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(response => {
+                return response;
+            }), switchMap(data => this.claimReviewService.getAvailableProviderList(data).pipe(
+                filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+                map(response => {
+                    return setProviderList({ list: response });
+                })
+            ))
+        )),
+    ));
+
+    onUpdateAssignment$ = createEffect(() => this.actions$.pipe(
+        ofType(updateAssignment),
+        switchMap(data => this.claimReviewService.updateAssignment(data.data.uploadId,data.data.userNme,data.data.doctor,data.data.coder).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+            map(response => {
+                this.sharedServices.loadingChanged.next(false);
+            })
+        )),
+    ), {dispatch : false});
 }
