@@ -803,6 +803,8 @@ export class BeneficiaryComponent implements OnInit {
       return;
     }
 
+    this.sharedServices.loadingChanged.next(true);
+
     this.providersBeneficiariesService.getBeneficiaryFromCCHI(
       this.providerId,
       this.documentIdCCHIFormControl.value
@@ -824,9 +826,11 @@ export class BeneficiaryComponent implements OnInit {
             isError: true
           });
         }
+        this.sharedServices.loadingChanged.next(false);
       }
 
     }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         this.dialogService.openMessageDialog({
           title: '',
