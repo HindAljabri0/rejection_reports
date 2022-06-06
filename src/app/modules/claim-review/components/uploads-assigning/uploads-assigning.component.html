@@ -31,7 +31,7 @@
                     <!--  -->
                     <label class="control-label">Provider</label>
                     <input type="text" class="form-control search-box" [matAutocomplete]="auto"
-                        [formControl]="providerController" (keyup.enter)="selectProvider()"
+                        [formControl]="providerController" (keyup.enter)="selectProvider()" (input)="updateFilter()"
                         placeholder="Select Provider">
                     <mat-autocomplete autoActiveFirstOption #auto>
                         <mat-option *ngFor="let provider of (providerList$ | async)"
@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <label class="control-label">Doctor</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1" (selectionChange)="onDoctorSelectionChanged($event.value)">
+                        <mat-select value="-1" (selectionChange)="onDoctorSelectionChanged($event.value)" [formControl]="doctorController">
                             <mat-option value="-1">Select Doctor</mat-option>
                             <mat-option *ngFor="let data of (doctorList$ | async)"
                                 value="{{data.switchUserId | lowercase}}">{{data.switchUserId}}</mat-option>
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label class="control-label">Coder</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1" (selectionChange)="onCoderSelectionChanged($event.value)">
+                        <mat-select value="-1" (selectionChange)="onCoderSelectionChanged($event.value)" [formControl]="coderController">
                             <mat-option value="-1">Select Coder</mat-option>
                             <mat-option *ngFor="let data of (coderList$ | async)"
                                 value="{{data.switchUserId | lowercase}}">{{data.switchUserId}}</mat-option>
@@ -62,7 +62,7 @@
                     </mat-form-field>
                 </div>
                 <div class="btn-list text-right">
-                    <button mat-flat-button>Clear</button>
+                    <button mat-flat-button (click)="clearData()">Clear</button>
                     <button mat-flat-button color="primary" (click)="filterData()">Filter</button>
                 </div>
             </div>

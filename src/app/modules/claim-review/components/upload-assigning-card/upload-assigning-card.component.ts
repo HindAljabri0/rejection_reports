@@ -63,7 +63,7 @@ export class UploadAssigningCardComponent implements OnInit {
       this.store.dispatch(showSnackBarMessage({ message : "Please Select a Doctor."}));
       return;
     }
-    else if(coder && this.selectedCoder == '' || this.selectedCoder == null)
+    else if(coder && (this.selectedCoder == '' || this.selectedCoder == null))
     {
       this.store.dispatch(showSnackBarMessage({ message : "Please Select a Coder."}));
       return;
