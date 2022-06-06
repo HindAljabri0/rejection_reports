@@ -27,12 +27,13 @@ export class UploadsAssigningComponent implements OnInit {
     coderList$: Observable<SwitchUser[]>;
     selectedDoctor: string;
     selectedCoder: string;
-    providerList$: Observable<any>;
+    providerList$: Observable<any[]>;
     providerController: FormControl = new FormControl();
     doctorController: FormControl = new FormControl();
     coderController: FormControl = new FormControl();
     selectedProvider: string;
     errors: string;
+    providers: any[] = [];
     filteredProviders: any[] = [];
 
     constructor(private store: Store, private sharedServices: SharedServices) { }
@@ -48,6 +49,14 @@ export class UploadsAssigningComponent implements OnInit {
         this.doctorList$ = this.store.select(getDoctorList);
         this.coderList$ = this.store.select(getCoderList);
         this.providerList$ = this.store.select(getProviderList);
+        // Pending Code
+        this.providerList$ = this.providerList$.pipe(map(provider => {
+            console.log("Filtered Providers : ",provider);
+            this.providers = provider
+            this.filteredProviders = this.providers;
+            return provider
+        }));
+
         this.clearData();
     }
 
@@ -68,17 +77,16 @@ export class UploadsAssigningComponent implements OnInit {
         if (this.selectedCoder == '-1' || this.selectedCoder == null) {
             this.selectedCoder = '';
         }
-        if (this.selectedDoctor == '-1' || this.selectedDoctor == null ) {
+        if (this.selectedDoctor == '-1' || this.selectedDoctor == null) {
             this.selectedDoctor = '';
         }
         this.selectProvider();
-        if(this.providerController.value != '' && this.selectedProvider == '')
+        if (this.providerController.value != '' && this.selectedProvider == '')
             return;
-        if(this.selectedCoder == '' && this.selectedDoctor == '' && this.selectedProvider == '')
-        {
-            return this.store.dispatch(showSnackBarMessage({ message : "Please Select at least one filter."}));
+        if (this.selectedCoder == '' && this.selectedDoctor == '' && this.selectedProvider == '') {
+            return this.store.dispatch(showSnackBarMessage({ message: "Please Select at least one filter." }));
         }
-        this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: this.selectedDoctor, selectedCoderId: this.selectedCoder, selectedProvider:this.selectedProvider }));
+        this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: this.selectedDoctor, selectedCoderId: this.selectedCoder, selectedProvider: this.selectedProvider }));
         this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
     }
 
@@ -86,25 +94,26 @@ export class UploadsAssigningComponent implements OnInit {
         if (providerId !== null)
             this.selectedProvider = providerId;
         else {
-            if(this.providerController.value != null && this.providerController.value != '')
-            {
+            if (this.providerController.value != null && this.providerController.value != '') {
                 const providerId = this.providerController.value.split('|')[0].trim();
-                if(!isNaN(providerId) && !isNaN(parseFloat(providerId)))
-                {
+                if (!isNaN(providerId) && !isNaN(parseFloat(providerId))) {
                     this.selectedProvider = providerId;
-                }else{
+                } else {
                     this.selectedProvider = '';
-                    return this.store.dispatch(showSnackBarMessage({ message : "Please Select a Valid Provider."}));
+                    return this.store.dispatch(showSnackBarMessage({ message: "Please Select a Valid Provider." }));
                 }
             }
-            else{
+            else {
                 this.selectedProvider = '';
             }
         }
     }
 
     updateFilter() {
-        // Pending Code
+        this.filteredProviders = this.providers.filter(provider =>
+            `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
+        );
+        console.log(this.filteredProviders);
     }
 
     clearData() {
@@ -113,7 +122,7 @@ export class UploadsAssigningComponent implements OnInit {
         this.doctorController.setValue("-1");
         this.selectedCoder = "-1";
         this.selectedDoctor = "-1";
-        this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: "", selectedCoderId: "", selectedProvider:"" }));
+        this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: "", selectedCoderId: "", selectedProvider: "" }));
         this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
     }
 }

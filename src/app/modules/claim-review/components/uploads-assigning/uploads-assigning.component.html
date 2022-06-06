@@ -31,7 +31,7 @@
                     <!--  -->
                     <label class="control-label">Provider</label>
                     <input type="text" class="form-control search-box" [matAutocomplete]="auto"
-                        [formControl]="providerController" (keyup.enter)="selectProvider()"
+                        [formControl]="providerController" (keyup.enter)="selectProvider()" (input)="updateFilter()"
                         placeholder="Select Provider">
                     <mat-autocomplete autoActiveFirstOption #auto>
                         <mat-option *ngFor="let provider of (providerList$ | async)"
