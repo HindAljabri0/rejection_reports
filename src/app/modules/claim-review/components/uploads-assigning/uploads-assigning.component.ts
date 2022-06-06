@@ -6,6 +6,8 @@ import { filter } from 'jszip';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { SharedServices } from 'src/app/services/shared.services';
+import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
+import { isNumber } from 'util';
 import { UploadsPage } from '../../models/claimReviewState.model';
 import { SwitchUser } from '../../models/SwitchUser.model';
 import { loadCoderList, loadDoctorList, loadProviderList, loadUploadsUnderReviewOfSelectedTab, setDoctorAndCoderData, uploadsReviewTabAction } from '../../store/claimReview.actions';
@@ -27,6 +29,8 @@ export class UploadsAssigningComponent implements OnInit {
     selectedCoder: string;
     providerList$: Observable<any>;
     providerController: FormControl = new FormControl();
+    doctorController: FormControl = new FormControl();
+    coderController: FormControl = new FormControl();
     selectedProvider: string;
     errors: string;
     filteredProviders: any[] = [];
@@ -44,6 +48,7 @@ export class UploadsAssigningComponent implements OnInit {
         this.doctorList$ = this.store.select(getDoctorList);
         this.coderList$ = this.store.select(getCoderList);
         this.providerList$ = this.store.select(getProviderList);
+        this.clearData();
     }
 
     dispatchTabChangeEvent(event: MatTabChangeEvent) {
@@ -60,15 +65,19 @@ export class UploadsAssigningComponent implements OnInit {
     }
 
     filterData() {
-        console.log("Inside FilterData");
-
-        if (this.selectedCoder === '-1') {
+        if (this.selectedCoder == '-1' || this.selectedCoder == null) {
             this.selectedCoder = '';
         }
-        if (this.selectedDoctor === '-1') {
+        if (this.selectedDoctor == '-1' || this.selectedDoctor == null ) {
             this.selectedDoctor = '';
         }
         this.selectProvider();
+        if(this.providerController.value != '' && this.selectedProvider == '')
+            return;
+        if(this.selectedCoder == '' && this.selectedDoctor == '' && this.selectedProvider == '')
+        {
+            return this.store.dispatch(showSnackBarMessage({ message : "Please Select at least one filter."}));
+        }
         this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: this.selectedDoctor, selectedCoderId: this.selectedCoder, selectedProvider:this.selectedProvider }));
         this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
     }
@@ -80,12 +89,31 @@ export class UploadsAssigningComponent implements OnInit {
             if(this.providerController.value != null && this.providerController.value != '')
             {
                 const providerId = this.providerController.value.split('|')[0].trim();
-                this.selectedProvider = providerId;
+                if(!isNaN(providerId) && !isNaN(parseFloat(providerId)))
+                {
+                    this.selectedProvider = providerId;
+                }else{
+                    this.selectedProvider = '';
+                    return this.store.dispatch(showSnackBarMessage({ message : "Please Select a Valid Provider."}));
+                }
+            }
+            else{
+                this.selectedProvider = '';
             }
         }
     }
 
     updateFilter() {
         // Pending Code
+    }
+
+    clearData() {
+        this.providerController.setValue("");
+        this.coderController.setValue("-1");
+        this.doctorController.setValue("-1");
+        this.selectedCoder = "-1";
+        this.selectedDoctor = "-1";
+        this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: "", selectedCoderId: "", selectedProvider:"" }));
+        this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
     }
 }
