@@ -77,8 +77,11 @@ export class UploadsAssigningComponent implements OnInit {
         if (providerId !== null)
             this.selectedProvider = providerId;
         else {
-            const providerId = this.providerController.value.split('|')[0].trim();
-            this.selectedProvider = providerId;
+            if(this.providerController.value != null && this.providerController.value != '')
+            {
+                const providerId = this.providerController.value.split('|')[0].trim();
+                this.selectedProvider = providerId;
+            }
         }
     }
 

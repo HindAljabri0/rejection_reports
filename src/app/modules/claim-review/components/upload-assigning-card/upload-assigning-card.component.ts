@@ -58,6 +58,16 @@ export class UploadAssigningCardComponent implements OnInit {
   }
 
   updateAssignment(doctor: boolean, coder: boolean) {
+    if(doctor && (this.selectedDoctor == '' || this.selectedDoctor == null))
+    {
+      this.store.dispatch(showSnackBarMessage({ message : "Please Select a Doctor."}));
+      return;
+    }
+    else if(coder && this.selectedCoder == '' || this.selectedCoder == null)
+    {
+      this.store.dispatch(showSnackBarMessage({ message : "Please Select a Coder."}));
+      return;
+    }
     var selectedId = '';
     if (doctor)
       selectedId = this.selectedDoctor;
