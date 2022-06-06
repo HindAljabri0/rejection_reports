@@ -15,6 +15,7 @@ import { AddProviderContractDialogComponent } from './add-provider-contract-dial
 import { SwitchProviderComponentComponent } from './switch-provider/switch-provider-component/switch-provider-component.component';
 import { TransactionsLogComponent } from './transactions-log/transactions-log.component';
 import { CertificateConfigurationComponent } from 'src/app/pages/certificate-configuration/certificate-configuration.component';
+import { CreateProviderComponent } from './create-provider/create-provider.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CertificateConfigurationComponent } from 'src/app/pages/certificate-con
     ProviderContractComponent,
     AddProviderContractDialogComponent,
     SwitchProviderComponentComponent,
-    TransactionsLogComponent
+    TransactionsLogComponent,
+    CreateProviderComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -36,7 +38,8 @@ import { CertificateConfigurationComponent } from 'src/app/pages/certificate-con
       { path: 'config/providers/:providerId', component: ProvidersConfigComponent },
       { path: 'config/payer-payment-contract', component: ProviderContractComponent },
       { path: 'switch-provider', component: SwitchProviderComponentComponent },
-      { path: 'config/providerCertificate', component: CertificateConfigurationComponent }
+      { path: 'config/providerCertificate', component: CertificateConfigurationComponent },
+      { path: 'config/createProvider', component:CreateProviderComponent  }
     ]),
     CommonModule,
     MaterialModule,
