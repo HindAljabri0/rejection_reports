@@ -174,7 +174,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    if(this.FormPreAuthTransaction.controls.beneficiaryName.value.length>2){
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value.length > 2) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthTransaction.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -644,8 +644,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          this.transactions.filter(x => x.requestId === requestId)[0].status = body.outcome;
-          this.transactions.filter(x => x.requestId === requestId)[0].IsInquirySend = true;
+          this.transactions.filter(x => x.requestId === requestId)[0].inquiryStatus = body.inquiryOutcome;
         }
         this.sharedServices.loadingChanged.next(false);
       }
