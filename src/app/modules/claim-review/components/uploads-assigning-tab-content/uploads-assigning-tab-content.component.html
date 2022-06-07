@@ -8,7 +8,7 @@
     <app-empty-state *ngIf="page.uploads != null && page.uploads.length == 0" class="claim-list-empty-state" message='No uploads found!'>
     </app-empty-state>
     <div class="row small-gutter">
-        <app-upload-assigning-card class="col-lg-6" *ngFor="let upload of page.uploads" [data]="upload"></app-upload-assigning-card>
+        <app-upload-assigning-card class="col-lg-6"  *ngFor="let upload of page.uploads" [tabName]="tabName" [data]="upload"></app-upload-assigning-card>
     </div>
     <div class="pt-14" *ngIf="!(page.uploads != null && page.uploads.length == 0)">
         <mat-paginator #paginator class="primary-paginator" aria-label="Select page" (page)="dispatchPageEvent($event)" [length]="page.pageControls.totalUploads"
