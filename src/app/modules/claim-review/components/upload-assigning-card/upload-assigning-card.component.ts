@@ -17,6 +17,9 @@ export class UploadAssigningCardComponent implements OnInit {
 
   @Input()
   data: Upload = new Upload();
+  @Input()
+    tabName:  "new" | "in-progress" | "completed";
+    
   doctorList$: Observable<SwitchUser[]>;
   coderList$: Observable<SwitchUser[]>;
   selectedDoctor: string;

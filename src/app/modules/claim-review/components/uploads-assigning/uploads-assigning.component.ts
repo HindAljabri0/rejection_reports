@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatMenuTrigger, MatTabChangeEvent } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { filter } from 'jszip';
-import { from, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SharedServices } from 'src/app/services/shared.services';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
-import { isNumber } from 'util';
 import { UploadsPage } from '../../models/claimReviewState.model';
 import { SwitchUser } from '../../models/SwitchUser.model';
 import { loadCoderList, loadDoctorList, loadProviderList, loadUploadsUnderReviewOfSelectedTab, setDoctorAndCoderData, uploadsReviewTabAction } from '../../store/claimReview.actions';
-import { completedClaimsUnderReviewPage, getCoderId, getCoderList, getDoctorId, getDoctorList, getProviderList, inProgressClaimsUnderReviewPage, newClaimsUnderReviewPage } from '../../store/claimReview.reducer';
+import { completedClaimsUnderReviewPage, getCoderList, getDoctorList, getProviderList, inProgressClaimsUnderReviewPage, newClaimsUnderReviewPage } from '../../store/claimReview.reducer';
 
 @Component({
     selector: 'app-uploads-assigning',
@@ -35,8 +33,10 @@ export class UploadsAssigningComponent implements OnInit {
     errors: string;
     providers: any[] = [];
     filteredProviders: any[] = [];
+    
+    @ViewChild(MatMenuTrigger,{static:false}) filterMenu: MatMenuTrigger;
 
-    constructor(private store: Store, private sharedServices: SharedServices) { }
+    constructor(private store: Store) { }
 
     ngOnInit() {
         this.newUploads$ = this.store.select(newClaimsUnderReviewPage);
@@ -50,12 +50,10 @@ export class UploadsAssigningComponent implements OnInit {
         this.coderList$ = this.store.select(getCoderList);
         this.providerList$ = this.store.select(getProviderList);
         // Pending Code
-        this.providerList$ = this.providerList$.pipe(map(provider => {
-            console.log("Filtered Providers : ",provider);
-            this.providers = provider
+        this.providerList$.subscribe(providers => {
+            this.providers = providers
             this.filteredProviders = this.providers;
-            return provider
-        }));
+        });
 
         this.clearData();
     }
@@ -88,6 +86,8 @@ export class UploadsAssigningComponent implements OnInit {
         }
         this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: this.selectedDoctor, selectedCoderId: this.selectedCoder, selectedProvider: this.selectedProvider }));
         this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+        this.filterMenu.closeMenu()
+
     }
 
     selectProvider(providerId: string = null) {
@@ -113,7 +113,6 @@ export class UploadsAssigningComponent implements OnInit {
         this.filteredProviders = this.providers.filter(provider =>
             `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
         );
-        console.log(this.filteredProviders);
     }
 
     clearData() {
@@ -124,5 +123,6 @@ export class UploadsAssigningComponent implements OnInit {
         this.selectedDoctor = "-1";
         this.store.dispatch(setDoctorAndCoderData({ selectedDoctorId: "", selectedCoderId: "", selectedProvider: "" }));
         this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+        this.filterMenu.closeMenu()
     }
 }

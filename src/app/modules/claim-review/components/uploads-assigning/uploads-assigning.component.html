@@ -6,18 +6,18 @@
         <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
             <mat-tab [label]="'New'">
                 <ng-container *ngIf="(newUploads$|async) != null">
-                    <app-uploads-assigning-tab-content [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
+                    <app-uploads-assigning-tab-content [tabName]="'new'" [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
                 </ng-container>
             </mat-tab>
             <mat-tab [label]="'In Progress'">
                 <ng-container *ngIf="(inProgressUploads$|async) != null">
-                    <app-uploads-assigning-tab-content [page]="(inProgressUploads$|async)">
+                    <app-uploads-assigning-tab-content [tabName]="'in-progress'" [page]="(inProgressUploads$|async)">
                     </app-uploads-assigning-tab-content>
                 </ng-container>
             </mat-tab>
             <mat-tab [label]="'Completed'">
                 <ng-container *ngIf="(completedUploads$|async) != null">
-                    <app-uploads-assigning-tab-content [page]="(completedUploads$|async)">
+                    <app-uploads-assigning-tab-content [tabName]="'completed'" [page]="(completedUploads$|async)">
                     </app-uploads-assigning-tab-content>
                 </ng-container>
             </mat-tab>
@@ -34,7 +34,7 @@
                         [formControl]="providerController" (keyup.enter)="selectProvider()" (input)="updateFilter()"
                         placeholder="Select Provider">
                     <mat-autocomplete autoActiveFirstOption #auto>
-                        <mat-option *ngFor="let provider of (providerList$ | async)"
+                        <mat-option *ngFor="let provider of filteredProviders"
                             [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                             (click)="selectProvider(provider.switchAccountId)">
                             {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
@@ -62,7 +62,7 @@
                     </mat-form-field>
                 </div>
                 <div class="btn-list text-right">
-                    <button mat-flat-button (click)="clearData()">Clear</button>
+                    <button mat-flat-button (click)="clearData();">Clear</button>
                     <button mat-flat-button color="primary" (click)="filterData()">Filter</button>
                 </div>
             </div>
