@@ -264,8 +264,8 @@
         </div>
       </ng-container>
       <mat-accordion displayMode="flat">
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header *ngIf="(userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary)">
+        <mat-expansion-panel hideToggle *ngIf="(userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary)">
+          <mat-expansion-panel-header>
             <mat-panel-title>Beneficiary</mat-panel-title>
           </mat-expansion-panel-header>
           <ul class="nav-list">
