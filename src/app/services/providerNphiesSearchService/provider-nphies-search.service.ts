@@ -4,6 +4,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 import { NumericLiteral } from 'typescript';
+import { Provider } from 'src/app/models/nphies/provider';
 
 @Injectable({
   providedIn: 'root'
@@ -366,6 +367,11 @@ export class ProviderNphiesSearchService {
   searchLOINK(providerId: string, searchQuery: string) {
     const requestURL: string = '/providers/' + providerId + '/approval/loinc?code=' + searchQuery;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+  addNewProvider(providerId: string, providerInfo: Provider) {
+    const requestUrl = `/providers/${providerId}/addNewProvider`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, providerInfo);
     return this.http.request(request);
   }
 
