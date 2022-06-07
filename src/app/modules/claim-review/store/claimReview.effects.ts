@@ -201,6 +201,8 @@ export class ClaimReviewEffects {
         switchMap(data => this.claimReviewService.deleteUpload(data.upload).pipe(
             map(data => {
                 console.log(data);
+                this.store.dispatch(showSnackBarMessage({ message: 'Upload Deleted Successfully!' }));
+                this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
                 this.sharedServices.loadingChanged.next(false);
             })
         )),
@@ -249,6 +251,13 @@ export class ClaimReviewEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(response => {
                 this.sharedServices.loadingChanged.next(false);
+                this.store.dispatch(showSnackBarMessage({ message : "User Assigned Successfully!"}));
+                this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
+            }),
+            catchError(errorResponse => {
+                this.sharedServices.loadingChanged.next(false);
+                this.store.dispatch(showSnackBarMessage({ message : errorResponse.error}))
+                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
             })
         )),
     ), {dispatch : false});
