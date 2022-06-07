@@ -41,8 +41,6 @@ export class UploadAssigningCardComponent implements OnInit {
     }).afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(deleteUpload({ upload: upload }));
-        this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
-        return this.store.dispatch(showSnackBarMessage({ message: 'Upload Deleted Successfully!' }));
       }
     }, error => {
       console.log("Error on Delete", error);
@@ -74,7 +72,5 @@ export class UploadAssigningCardComponent implements OnInit {
     else
       selectedId = this.selectedCoder
     this.store.dispatch(updateAssignment({ data: { uploadId: this.data.id, userNme: selectedId, doctor: doctor, coder: coder } }));
-    this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
-    this.store.dispatch(showSnackBarMessage({ message : "User Assigned Successfully!"}));
   }
 }
