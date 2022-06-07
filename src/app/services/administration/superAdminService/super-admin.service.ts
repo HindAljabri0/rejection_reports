@@ -17,6 +17,12 @@ export class SuperAdminService {
     return this.http.request(request);
   }
 
+  getProvidersWithCHHI_ID() {
+    const requestURL = '/providers/getProvidersInfo';
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
+
   getAssociatedPayers(providerId: string) {
     const requestURL = `/providers/${providerId}/payers`;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);

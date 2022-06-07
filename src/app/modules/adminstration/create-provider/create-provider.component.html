@@ -2,41 +2,83 @@
     <div class="block-header">
         <p>Create Provider</p>
     </div>
-    
+
     <div class="block-filter-panel">
-        <form [formGroup]="providerInfoForm" >
-        <div class="row small-gutter">
-           
-            <div class="col-4 col-xxl-3">
-                <div class="form-group" [class.has-error]="submitted && providerInfoForm.get('CCHI_IdControl').hasError('required')">  
-                    <label class="control-label">CCHI ID *</label>
-                    <input placeholder="Enter CCHI ID" class="form-control" type ="number" formControlName="CCHI_IdControl" required  >
+        <form [formGroup]="providerInfoForm">
+            <div>
+                <div class="block-body">
+                    <div class="form-group"
+                        [class.has-error]="submitted && providerInfoForm.get('providerController').hasError('required')">
+                        <label class="control-label">Select Provider<span class="asterisk">*</span></label>
+                        <input [matAutocomplete]="auto" class="form-control search-box"
+                            placeholder="Search provider here..." formControlName="providerController"
+                            (input)="updateFilter()" (keyup.enter)="selectProvider()" [readonly]="isLoading">
+                        <mat-autocomplete autoActiveFirstOption #auto>
+                            <mat-option *ngFor="let provider of filteredProviders"
+                                [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName"
+                                (click)="selectProvider(provider.providerId)">
+                                {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}}
+
+                            </mat-option>
+                            <mat-option *ngIf="error!= null && error != '' && !isLoading">
+                                {{error}}>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                </div>
+                <div class="block-body">
+                    <div class="row ">
+                        <div class="col-4 col-xxl-3">
+                            <div class="form-group"
+                                [class.has-error]="submitted && providerInfoForm.get('providerNameEnglishControl').hasError('required')">
+                                <label class="control-label">Provider Name (English)<span
+                                        class="asterisk">*</span></label>
+                                <input placeholder="Provider Name in English" class="form-control"
+                                    formControlName="providerNameEnglishControl" required>
+                            </div>
+                        </div>
+
+                        <div class="col-4 col-xxl-3">
+                            <div class="form-group"
+                                [class.has-error]="submitted && providerInfoForm.get('providerNameArabicControl').hasError('required')">
+                                <label class="control-label">Provider Name (Arabic)<span
+                                        class="asterisk">*</span></label>
+                                <input placeholder="Enter Provider Name in Arabic" class="form-control"
+                                    formControlName="providerNameArabicControl" required>
+                            </div>
+                        </div>
+                        <div class="col-2 col-xxl-2">
+                            <div class="form-group"
+                                [class.has-error]="submitted && providerInfoForm.get('CCHI_IdControl').hasError('required')">
+                                <label class="control-label">CCHI ID<span class="asterisk">*</span></label>
+                                <input placeholder="Enter CCHI ID" class="form-control" type="number"
+                                    formControlName="CCHI_IdControl" required disabled>
+                            </div>
+                        </div>
+                        <div class="col-2 col-xxl-2">
+                            <div class="form-group"
+                                [class.has-error]="submitted && providerInfoForm.get('providerNphiesIdControl').hasError('required')">
+                                <label class="control-label">Provider Nphies ID<span class="asterisk">*</span></label>
+                                <input placeholder="Provider Nphies ID" class="form-control" type="number"
+                                    formControlName="providerNphiesIdControl" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-auto" >
+                            <div class="form-group">
+                                <label class="control-label d-lg-block d-none" >&nbsp;</label>
+                                <button type="button"   mat-flat-button color="primary" (click)='addProvider()'>Save</button>
+                            </div>
+                        </div>
+                   
+                     
+                          
+
+                    
+
+
+                    </div>
+
+
                 </div>
             </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group" [class.has-error]="submitted && providerInfoForm.get('providerNphiesIdControl').hasError('required')">
-                    <label class="control-label">Provider Nphies ID *</label>
-                    <input placeholder="Provider Nphies ID" class="form-control" type ="number" formControlName="providerNphiesIdControl" required>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group" [class.has-error]="submitted && providerInfoForm.get('providerNameEnglishControl').hasError('required')">
-                    <label class="control-label">Provider Name (English) * </label>
-                    <input placeholder="Provider Name in English" class="form-control" formControlName="providerNameEnglishControl" required>
-                </div>
-            </div>
-            
-            <div class="col-4 col-xxl-3">
-                <div class="form-group" [class.has-error]="submitted && providerInfoForm.get('providerNameArabicControl').hasError('required')">
-                    <label class="control-label">Provider Name (Arabic) *</label>
-                    <input placeholder="Enter Provider Name in Arabic" class="form-control" formControlName="providerNameArabicControl" required>
-                </div>
-            </div>
-            
-            
-        <div class="form-group">
-            <button type="button" mat-flat-button color="primary" (click)='addProvider()'>Save</button>
-        </div>
- 
-    </div>
-</form>
+        </form>
