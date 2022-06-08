@@ -2077,6 +2077,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
     this.otherDataModel.cancelErrors = response.cancelErrors;
 
+    this.otherDataModel.inquiryErrors = response.inquiryErrors;
+    this.otherDataModel.inquiryStatus = response.inquiryStatus;
+
     this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
