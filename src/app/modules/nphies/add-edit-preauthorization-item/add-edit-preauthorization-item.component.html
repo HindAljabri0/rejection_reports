@@ -89,17 +89,21 @@
         </div>
       </div>
 
-      <div class="col-4 col-lg-3">
+      <div class="col-4 col-lg-3" *ngIf="this.data.type !== 'oral'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
-            
-            <mat-select formControlName="bodySite" *ngIf="this.data.type != 'oral'">
+            <mat-select formControlName="bodySite">
               <mat-option value="">Select Body Site</mat-option>
               <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite">{{bodySite.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div class="input-group" *ngIf="this.data.type === 'oral'">
+        </div>
+      </div>
+      <div class="col-4 col-lg-3" *ngIf="this.data.type === 'oral'">
+        <div class="form-group">
+          <label class="control-label">Body Site</label>
+          <div class="input-group">
             <input class="form-control" placeholder="Select tooth number" formControlName="bodySite">
             <span class="input-group-append">
               <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
@@ -133,7 +137,7 @@
             <ng-container *ngIf="data.source === 'APPROVAL'">
               <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
                 formControlName="startDate">
-                <!--[max]="today" [min]="data.dateOrdered"-->
+              <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
 
             <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
