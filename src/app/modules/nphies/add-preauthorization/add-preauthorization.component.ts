@@ -188,7 +188,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   claimType: string;
   defualtPageMode = "";
-
+  selectedDefaultPlan = null;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -518,6 +518,10 @@ export class AddPreauthorizationComponent implements OnInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     this.selectedBeneficiary = beneficiary;
+    
+    if(beneficiary.plans.length > 0){
+      this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x=> x.primary)[0].payerNphiesId);
+    }
     this.FormPreAuthorization.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
