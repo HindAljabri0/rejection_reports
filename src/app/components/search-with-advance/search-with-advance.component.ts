@@ -132,7 +132,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     if (event.organization.code != '-1') {
       this.selectedTpa = { id: event.organization.code, name: event.organization.display };
     } else {
-      this.selectedTpa = null;
+      this.selectedTpa = this.selectedPayer;
+      // this.selectedTpa = null;
     }
   }
 
