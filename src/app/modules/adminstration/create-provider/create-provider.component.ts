@@ -63,10 +63,10 @@ export class CreateProviderComponent implements OnInit {
       this.commen.loadingChanged.next(true);
       this.providerInfo = {
 
-        "cchiid": this.providerInfoForm.controls.CCHI_IdControl.value,
-        "arabicName": this.providerInfoForm.controls.providerNameArabicControl.value,
-        "englistName": this.providerInfoForm.controls.providerNameEnglishControl.value,
-        "nphiesId": this.providerInfoForm.controls.providerNphiesIdControl.value,
+        "cchiid": this.providerInfoForm.controls.CCHI_IdControl.value.trim(),
+        "arabicName": this.providerInfoForm.controls.providerNameArabicControl.value.trim(),
+        "englistName": this.providerInfoForm.controls.providerNameEnglishControl.value.trim(),
+        "nphiesId": this.providerInfoForm.controls.providerNphiesIdControl.value.trim(),
       }
       this.providerNphiesSearchService.addNewProvider(this.commen.providerId, this.providerInfo).subscribe(event => {
 
