@@ -1149,14 +1149,18 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
       return false;
-    } else {
+      // tslint:disable-next-line:max-line-length
+    } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
       const seqNo = this.SupportingInfo.filter(x => x.category === 'days-supply')[0].sequence;
       // tslint:disable-next-line:max-line-length
       if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0 || x.supportingInfoSequence.indexOf(seqNo) === -1)).length > 0) {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
         return false;
+      } else {
+        return true;
       }
+    } else {
       return true;
     }
   }
