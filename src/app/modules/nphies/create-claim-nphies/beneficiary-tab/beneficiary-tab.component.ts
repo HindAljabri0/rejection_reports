@@ -402,6 +402,15 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
       bcountryName: beneficiary.country ? (this.nationalities.filter(x => x.Name.toLowerCase() === beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == beneficiary.country.toLowerCase())[0].Name : '') : '',
       postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
     });
+
+    if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
+      this.FormNphiesClaim.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
+      const plan: any = {};
+      plan.value = this.selectedBeneficiary.plans.filter(x => x.primary)[0].payerNphiesId;
+      plan.memberCardId = this.selectedBeneficiary.plans.filter(x => x.primary)[0].memberCardId;
+      this.selectPlan(plan);
+    }
+
     this.updateValidations();
     this.emitSelectedBenificiary.emit(this.selectedBeneficiary);
   }
@@ -416,32 +425,39 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
     return '';
   }
 
+  selectedPlan(planObj) {
+    const plan: any = {};
+    plan.value = planObj.payerNphiesId;
+    plan.memberCardId = planObj.memberCardId;
+    this.selectPlan(plan);
+  }
+
   selectPlan(plan) {
     this.insurancePlans = [];
-    if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]) {
-      this.insurancePlans.push(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]);
+    if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0]) {
+      this.insurancePlans.push(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0]);
 
       this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId, 10);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId, 10);
       this.FormNphiesClaim.controls.insurancePlanExpiryDate.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].expiryDate);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].expiryDate);
       this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].memberCardId);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].memberCardId);
       // tslint:disable-next-line:max-line-length
-      this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber.toLowerCase() : '');
+      this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].relationWithSubscriber ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].relationWithSubscriber.toLowerCase() : '');
       this.FormNphiesClaim.controls.insurancePlanCoverageType.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].coverageType);
 
       this.FormNphiesClaim.controls.insurancePlanPayerName.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerName);
       this.FormNphiesClaim.controls.insurancePayerNphiesId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanId.setValue(
       //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
       this.FormNphiesClaim.controls.insurancePlanPrimary.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].primary);
       // tslint:disable-next-line:max-line-length
-      this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
+      this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId);
       // this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
     }
   }
