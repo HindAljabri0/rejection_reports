@@ -26,7 +26,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   IsItemLoading = false;
-
+  
   onDestroy = new Subject<void>();
 
   FormItem: FormGroup = this.formBuilder.group({
@@ -839,6 +839,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     return !pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString());
   }
 
+  selectTooth(number) {
+    let val=this.bodySiteList.filter(x => x.value === number)[0];
+    this.FormItem.controls.bodySite.setValue(val);
+    //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
+}
   closeDialog() {
     this.dialogRef.close();
   }

@@ -51,7 +51,7 @@
                     <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
                   </td>
                 </tr>
-               
+
                 <tr>
                   <th>Total Net</th>
                   <th>Total Payer Share</th>
@@ -141,7 +141,7 @@
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Processing Status</th>
 
-                  <th
+                  <th *ngIf="showInquireAll === true"
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Inquiry
                   </th>
@@ -196,8 +196,8 @@
                       </div>
                     </td>
 
-                    <td class="actions text-center">
-                      <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
+                    <td *ngIf="showInquireAll === true" class="actions text-center">
+                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')" [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : '')">I</span>
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
                     </td>
