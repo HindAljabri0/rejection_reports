@@ -103,4 +103,9 @@ export class ClaimReviewService {
         const requestUrl = '/scrubbing/update/assignment'
         return this.http.post(environment.claimReviewService + requestUrl, {"uploadId": uploadId,"userName": userName,"doctor": doctor, "coder": coder})
     }
+
+    downloadExcel( uploadId : number){
+        const requestUrl = '/scrubbing/download/' + uploadId;
+        return this.http.get(environment.claimReviewService + requestUrl);
+    }
 }

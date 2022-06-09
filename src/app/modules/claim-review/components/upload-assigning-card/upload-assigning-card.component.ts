@@ -6,7 +6,7 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { SwitchUser } from '../../models/SwitchUser.model';
 import { Upload } from '../../models/upload.model';
-import { deleteUpload, loadCoderList, loadDoctorList, loadUploadsUnderReviewOfSelectedTab, updateAssignment } from '../../store/claimReview.actions';
+import { deleteUpload, downloadExcel, loadCoderList, loadDoctorList, loadUploadsUnderReviewOfSelectedTab, updateAssignment } from '../../store/claimReview.actions';
 import { getCoderList, getDoctorList } from '../../store/claimReview.reducer';
 
 @Component({
@@ -48,6 +48,10 @@ export class UploadAssigningCardComponent implements OnInit {
     }, error => {
       console.log("Error on Delete", error);
     });
+  }
+
+  downloadData(upload: Upload) {
+    this.store.dispatch(downloadExcel({ uploadId : upload.id }));
   }
 
   onDoctorSelectionChanged(data: string) {

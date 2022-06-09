@@ -10,7 +10,7 @@ import { showSnackBarMessage } from "src/app/store/mainStore.actions";
 import { PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { deleteUpload, loadCoderList, loadDoctorList, loadProviderList, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setCoderListReturn, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setDoctorListReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setProviderList, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, updateAssignment } from "./claimReview.actions";
+import { deleteUpload, downloadExcel, loadCoderList, loadDoctorList, loadProviderList, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setCoderListReturn, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setDoctorListReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setProviderList, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, updateAssignment } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, getCoderId, getDoctorId, getProviderId, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -261,4 +261,19 @@ export class ClaimReviewEffects {
             })
         )),
     ), {dispatch : false});
+
+    onDownloadExcel$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadExcel),
+        map(data => {
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.downloadExcel(data.uploadId).pipe(
+            map(data => {
+                console.log(data);
+                this.store.dispatch(showSnackBarMessage({ message: 'Excel Downloaded Successfully!' }));
+                this.sharedServices.loadingChanged.next(false);
+            })
+        )),
+    ), { dispatch: false });
 }
