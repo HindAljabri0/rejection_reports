@@ -105,12 +105,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
 
     if (this.data.item && this.data.item.itemCode) {
+      //console.log(" body site val = "+this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0]),
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
+        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
         subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
         quantity: this.data.item.quantity,
         quantityCode: this.data.item.quantityCode,
@@ -781,10 +782,16 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-
-      model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
-      model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
-
+      if(this.data.type === 'oral'){
+        let bodySite=this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
+        model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
+        model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
+      }
+      else{
+        model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
+        model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
+      }
+      
       model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
       model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
@@ -820,7 +827,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-
+      console.log("item model = "+JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
@@ -840,8 +847,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   selectTooth(number) {
-    let val=this.bodySiteList.filter(x => x.value === number)[0];
-    this.FormItem.controls.bodySite.setValue(val);
+    //let val=this.bodySiteList.filter(x => x.value === number)[0];
+    this.FormItem.controls.bodySite.setValue(number);
     //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
 }
   closeDialog() {
