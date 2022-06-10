@@ -45,7 +45,7 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Select a Beneficiary</label>
+                <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
                 <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
                   [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
                 <mat-autocomplete #auto="matAutocomplete">
@@ -86,10 +86,12 @@
                 <th>Beneficiary Name</th>
                 <th>Pre Auth Ref No</th>
                 <th>Pre Authorization ID</th>
-                <th>Transaction Date</th>
+                <th>Requested Date</th>
+                <th>Response Date</th>
                 <th>Payer</th>
                 <th>Status</th>
                 <th>Processing Status</th>
+                <th class="text-center">Inquiry</th>
                 <th></th>
               </tr>
             </thead>
@@ -105,24 +107,38 @@
                   {{transaction.transactionDate | date:
                   'dd-MM-yyyy hh:mm aa'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.responseTimeStamp | date:
+                  'dd-MM-yyyy hh:mm aa'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.payerName}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
-                  <span [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status | titlecase}}</span>
+                  <span
+                    [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
+                    | titlecase}}</span>
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
-                    <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.responseId)">
+                    <button mat-icon-button matTooltip="Check Status" class="text-primary ml-n2" (click)="checkStatus(transaction.responseId)">
                       <mat-icon>refresh</mat-icon>
                     </button>
-                    <span *ngIf="!transaction.processingStatus" class="pl-1">Check Processing Status</span>
+                    <span *ngIf="!transaction.processingStatus" class="pl-1">Check Status</span>
                     <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
 
                   </div>
                 </td>
+                <td class="actions text-center">
+                  <button *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
+                  (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn" [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')" [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : '')">I</button>
+                  <!-- <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
+                  <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
+                  <mat-spinner diameter="20"></mat-spinner> -->
+                </td>
                 <td class="actions">
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' ||transaction.status === 'pended'" (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                      <button mat-menu-item
+                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' ||transaction.status === 'pended'"
+                        (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
                         <span>Follow Up/Add Related</span>
                       </button>

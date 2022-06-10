@@ -29,6 +29,7 @@ export class SearchedClaim extends Paginateable {
   descApproval: string;
   visitDate: string;
   physicianname: string;
+  inquiryStatus: string;
 
   constructor(body: {}) {
     super(body);
@@ -61,6 +62,7 @@ export class SearchedClaim extends Paginateable {
       this.processingStatus = body['processingStatus'];
       this.visitDate = body['visitDate'];
       this.physicianname = body['physicianname'];
+      this.inquiryStatus = body['inquiryStatus'];
     }
   }
 }

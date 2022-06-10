@@ -321,8 +321,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.commen.loadingChanged.next(true);
     let event;
 
-
-
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
 
     this.claimSearchCriteriaModel.statuses = statuses;
@@ -349,6 +347,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
+    this.claimSearchCriteriaModel.claimDate = this.params.from;
+    this.claimSearchCriteriaModel.toDate = this.params.to;
+
+    this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
 
     event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
 
@@ -470,6 +472,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
+
+    this.claimSearchCriteriaModel.claimDate = this.params.from;
+    this.claimSearchCriteriaModel.toDate = this.params.to;
+
+    this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
 
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
     ).subscribe((event) => {
@@ -779,6 +786,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       summaries[oldSummaryIndex] = {
         totalClaims: this.summaries[oldSummaryIndex].totalClaims - 1,
         totalNetAmount: this.summaries[oldSummaryIndex].totalNetAmount - claim.net,
+        totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare - claim.totalPatientShare,
+        totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount - claim.totalPayerShare,
         totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
         statuses: this.summaries[oldSummaryIndex].statuses,
         uploadName: this.summaries[oldSummaryIndex].uploadName,
@@ -793,6 +802,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         summaries[newSummaryIndex] = {
           totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
           totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
+          totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare + claim.totalPatientShare,
+         totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
+
           totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName,
@@ -1371,6 +1383,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showInquireAll() {
+    // tslint:disable-next-line:max-line-length
+    return ['queued', 'pended', 'failed', 'approved', 'partial', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
@@ -1561,5 +1578,58 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             });
         }
       });
+  }
+
+  inquireClaimByCriteria() {
+
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+
+    const model: any = {};
+    model.providerId = this.providerId;
+    model.selectedClaims = this.selectedClaims;
+    model.uploadId = this.params.uploadId;
+    model.claimRefNo = this.params.claimRefNo;
+    model.to = this.params.to;
+    model.payerIds = payerIds;
+    model.batchId = this.params.batchId;
+    model.memberId = this.params.memberId;
+    model.invoiceNo = this.params.invoiceNo;
+    model.patientFileNo = this.params.patientFileNo;
+    model.from = this.params.from;
+    model.nationalId = this.params.nationalId;
+    model.statuses = [];
+    model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+
+    this.commen.loadingChanged.next(true);
+
+    let action: any;
+    if (this.selectedClaims.length === 0) {
+      action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
+        model.uploadId, model.claimRefNo, model.to,
+        model.payerIds, model.batchId, model.memberId, model.invoiceNo,
+        model.patientFileNo, model.from, model.nationalId, model.statuses);
+    } else {
+      action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
+    }
+
+    action.subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 202) {
+          const body: any = event.body;
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', body.message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, error => {
+      this.commen.loadingChanged.next(false);
+    });
   }
 }

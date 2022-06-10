@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange, MatDialog, PageEvent } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
@@ -10,11 +11,10 @@ import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { PageControls } from '../../models/claimReviewState.model';
 import { ClaimSummary } from '../../models/claimSummary.mocel';
 import { loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, markAsDoneAll, markAsDoneSelected } from '../../store/claimReview.actions';
-import { getUploadClaimsSummary, getUploadClaimsSummaryPageControls } from '../../store/claimReview.reducer';
+import { getUploadClaimsSummary, getUploadClaimsSummaryPageControls, getNextAvailableClaimRow } from '../../store/claimReview.reducer';
 import {
   DoctorUploadsClaimDetailsDialogComponent
 } from '../doctor-uploads-claim-details-dialog/doctor-uploads-claim-details-dialog.component';
-
 
 @Component({
   selector: 'app-doctor-uploads-claim-list',
@@ -28,12 +28,11 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   claimSummaryIds: { provClaimNo: string, claimReviewStatus: boolean }[] = [];
   selectedClaimNumberIds: string[] = new Array();
   userPrivileges: UserPrivileges = initState.userPrivileges;
-  // singleClaimReviewStatus: boolean = true;
   isDialogOpen: boolean = false
   dialogClaimIndex = 0
-
+  nextAvailableClaimRow: number
   allCheckBoxIsChecked: boolean;
-  allCheckBoxIsIndeterminate: boolean;
+  subscription: Subscription[];
 
   pageControl: PageControls;
   constructor(private activatedRoute: ActivatedRoute, private sharedServices: SharedServices,
@@ -41,20 +40,50 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     this.pageControl = new PageControls(0, 10);
   }
 
+  ngOnDestroy(): void {
+    this.store.dispatch
+    this.subscription.forEach(sub => sub.unsubscribe());
+  }
+
   ngOnInit() {
     this.uploadId = this.activatedRoute.snapshot.params.uploadId;
     this.refreshData();
     this.$claimSummary.subscribe(claimSummary => {
-      // this.claimSummaryIds = [{provClaimNo: '', claimReviewStatus: false}]
-      this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => {return {provClaimNo: data.provClaimNo, claimReviewStatus : data.claimReviewStatus === '1'}})] : []
+      this.claimSummaryIds = claimSummary ? [...claimSummary.map(data => { return { provClaimNo: data.provClaimNo, claimReviewStatus: data.claimReviewStatus === '1' } })] : []
       if (this.isDialogOpen) {
         this.isDialogOpen = false;
+        console.log('claimSummaryIds', this.claimSummaryIds);
+        console.log('this.dialogClaimIndex', this.dialogClaimIndex);
         this.openDoctorClaimViewDialog(this.claimSummaryIds[this.dialogClaimIndex].provClaimNo, this.dialogClaimIndex, this.claimSummaryIds[this.dialogClaimIndex].claimReviewStatus);
       }
-    })
-    this.store.select(getUploadClaimsSummaryPageControls).subscribe(pageControl => {
+    });
+
+    this.subscription = [
+      this.subscribeNextAvailableClaim(), this.subscribeUploadClaimsSummaryPageControls()
+    ]
+  }
+
+  subscribeUploadClaimsSummaryPageControls(): Subscription {
+    return this.store.select(getUploadClaimsSummaryPageControls).subscribe(pageControl => {
       this.pageControl = { ...pageControl }
-    })
+    });
+  }
+
+  subscribeNextAvailableClaim(): Subscription {
+    return this.store.select(getNextAvailableClaimRow).subscribe(nextAvailableClaimRow => {
+      if (nextAvailableClaimRow) {
+        this.dialogClaimIndex = (nextAvailableClaimRow - 1) % this.pageControl.pageSize;
+        this.isDialogOpen = true;
+        this.handlePageEvent({
+          length: this.pageControl.totalUploads,
+          pageIndex: Math.floor((nextAvailableClaimRow - 1) / this.pageControl.pageSize),
+          pageSize: this.pageControl.pageSize
+        });
+      }
+      else {
+        // return this.store.dispatch(showSnackBarMessage({ message: 'All the Claim(s) are Marked As Successfully!' }));
+      }
+    });
   }
 
   refreshData() {
@@ -70,14 +99,11 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         }
       }
     }))
-    this.$claimSummary = this.store.select(getUploadClaimsSummary)
-
+    this.$claimSummary = this.store.select(getUploadClaimsSummary);
     this.$claimSummary.subscribe(result => {
       this._toggleAllClaims(false)
-    })
-
+    });
   }
-
 
   toggleAllClaims(event: MatCheckboxChange) {
     this._toggleAllClaims(event.checked)
@@ -86,10 +112,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   private _toggleAllClaims(checked: boolean) {
     if (checked) {
       this.allCheckBoxIsChecked = true;
-      this.selectedClaimNumberIds = this.claimSummaryIds.map(claimSummary => {return claimSummary.provClaimNo})
+      this.selectedClaimNumberIds = this.claimSummaryIds.map(claimSummary => { return claimSummary.provClaimNo })
     } else {
       this.allCheckBoxIsChecked = false;
-      this.allCheckBoxIsIndeterminate = false;
       this.selectedClaimNumberIds = [];
     }
   }
@@ -104,10 +129,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     // refersh boolean indicators for checkall checkbox in every single checkbox change event 
     if (this.selectedClaimNumberIds.length == this.pageControl.totalUploads) {
       this.allCheckBoxIsChecked = true
-      this.allCheckBoxIsIndeterminate = false
     } else if (this.selectedClaimNumberIds.length > 0) {
       this.allCheckBoxIsChecked = false
-      this.allCheckBoxIsIndeterminate = true
     }
   }
 
@@ -119,7 +142,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   openDoctorClaimViewDialog(provClaimNo: string, index: number, claimReviewStatus: boolean) {
-    console.log('claimReviewStatus: ', claimReviewStatus);
+    this.dialogClaimIndex = index
     this.dispatchActions(this.uploadId, provClaimNo)
     const dialogRef = this.dialog.open(DoctorUploadsClaimDetailsDialogComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
@@ -127,13 +150,13 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         uploadId: this.uploadId,
         provClaimNo: provClaimNo,
         pageControl: this.pageControl,
-        index: index,
+        index: this.dialogClaimIndex,
         markAsDone: claimReviewStatus
       }
     }).afterClosed()
       .subscribe(action => {
-        this.onCloseDialog(action, index);
-      });;
+        this.onCloseDialog(action, this.dialogClaimIndex);
+      });
   }
 
   onCloseDialog(action: any, index: number) {
@@ -147,7 +170,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
           })
           this.dialogClaimIndex = 0
           this.isDialogOpen = true;
-
           break;
         }
         this.openDoctorClaimViewDialog(this.claimSummaryIds[index + 1].provClaimNo, index + 1, this.claimSummaryIds[index + 1].claimReviewStatus)
@@ -162,9 +184,7 @@ export class DoctorUploadsClaimListComponent implements OnInit {
           })
           this.dialogClaimIndex = this.pageControl.pageSize - 1
           this.isDialogOpen = true;
-
           break;
-
         }
         this.openDoctorClaimViewDialog(this.claimSummaryIds[index - 1].provClaimNo, index - 1, this.claimSummaryIds[index - 1].claimReviewStatus)
         break;
@@ -177,7 +197,6 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         })
         this.dialogClaimIndex = 0
         this.isDialogOpen = true;
-
         break;
       }
       case 'last': {
@@ -188,6 +207,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         })
         this.dialogClaimIndex = (this.pageControl.totalUploads % this.pageControl.pageSize) - 1
         this.isDialogOpen = true;
+        break;
+      }
+      case 'mark-as-done': {
         break;
       }
       default: {
@@ -202,20 +224,32 @@ export class DoctorUploadsClaimListComponent implements OnInit {
   }
 
   markAllAsDone() {
-    this.store.dispatch(markAsDoneAll({
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, {
+      panelClass: ['primary-dialog'],
+      disableClose: true,
+      autoFocus: false,
       data: {
-        coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
-        doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
-        provClaimNo: null, uploadId: this.uploadId,
-        userName: this.authService.getUserName()
+        mainMessage: 'Are you sure you want to Mark All Claim(s) as Done?',
+        mode: 'warning'
       }
-    }));
-    return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.store.dispatch(markAsDoneAll({
+          data: {
+            coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
+            doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+            provClaimNo: null, uploadId: this.uploadId,
+            userName: this.authService.getUserName()
+          }
+        }));
+        return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
+      }
+    }, error => { });
   }
 
   markSelectedAsDone() {
-    if(this.selectedClaimNumberIds.length == 0)
-    {
+    if (this.selectedClaimNumberIds.length == 0) {
       return this.store.dispatch(showSnackBarMessage({ message: 'Please select at least one Claim!' }));
     }
     this.store.dispatch(markAsDoneSelected({
@@ -229,7 +263,4 @@ export class DoctorUploadsClaimListComponent implements OnInit {
     }));
     return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
   }
-  
-
-
 }

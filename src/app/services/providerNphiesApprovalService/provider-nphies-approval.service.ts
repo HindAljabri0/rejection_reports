@@ -136,6 +136,7 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+
   submitClaims(
     providerId: string,
     claimIds?: string[],
@@ -311,5 +312,85 @@ export class ProviderNphiesApprovalService {
     } else {
       return date;
     }
+  }
+
+  inquireClaims(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    documentId?: string,
+    statuses?: string[]
+  ) {
+
+    let requestURL = `/providers/${providerId}/claims/inquiry?`;
+
+    if (uploadId) {
+      requestURL += `uploadId=${uploadId}`;
+    }
+
+    if (provderClaimReferenceNumber) {
+      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+    }
+
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+
+    if (claimDate) {
+      requestURL += `&claimDate=${claimDate}`;
+    }
+
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+
+    if (statuses && statuses.length > 0) {
+      requestURL += `&statuses=${statuses.join(',')}`;
+    }
+
+
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    return this.http.request(request);
+  }
+
+  inquireApprovalRequest(providerId: string, requestId: number) {
+    let requestUrl = `/providers/${providerId}/approval/inquiry?`;
+    if (requestId) {
+      requestUrl += `approvalRequestId=${requestId}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
+    return this.http.request(request);
   }
 }

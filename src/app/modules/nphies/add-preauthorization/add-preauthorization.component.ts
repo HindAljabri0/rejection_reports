@@ -53,6 +53,9 @@ export class AddPreauthorizationComponent implements OnInit {
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
+  beneficiaryPatientShare = 0;
+  beneficiaryMaxLimit = 0;
+
   FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
@@ -185,7 +188,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   claimType: string;
   defualtPageMode = "";
-
+  selectedDefaultPlan = null;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -460,6 +463,8 @@ export class AddPreauthorizationComponent implements OnInit {
   onTypeChange($event) {
     if ($event.value) {
       this.claimType = $event.value.value;
+      this.FormPreAuthorization.controls.subType.setValue('');
+
       switch ($event.value.value) {
         case 'institutional':
           this.subTypeList = [
@@ -491,26 +496,31 @@ export class AddPreauthorizationComponent implements OnInit {
       searchStr = this.FormPreAuthorization.controls.subscriberName.value;
     }
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-          if (!IsSubscriber) {
-            this.beneficiariesSearchResult = body;
-          } else {
-            this.subscriberSearchResult = body;
+    if (searchStr.length > 2) {
+      this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body instanceof Array) {
+            if (!IsSubscriber) {
+              this.beneficiariesSearchResult = body;
+            } else {
+              this.subscriberSearchResult = body;
+            }
           }
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+        }
+      });
+    }
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     this.selectedBeneficiary = beneficiary;
+
+
+
     this.FormPreAuthorization.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
@@ -544,6 +554,15 @@ export class AddPreauthorizationComponent implements OnInit {
       bcountryName: beneficiary.country ? (this.nationalities.filter(x => x.Name.toLowerCase() === beneficiary.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == beneficiary.country.toLowerCase())[0].Name : '') : '',
       postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
     });
+
+    if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
+      this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
+      const plan: any = {};
+      plan.value = this.selectedBeneficiary.plans.filter(x => x.primary)[0].payerNphiesId;
+      plan.memberCardId = this.selectedBeneficiary.plans.filter(x => x.primary)[0].memberCardId;
+      this.selectPlan(plan);
+    }
+
   }
 
   selectSubscriber(beneficiary: BeneficiariesSearchResult) {
@@ -594,29 +613,40 @@ export class AddPreauthorizationComponent implements OnInit {
     return '';
   }
 
+  selectedPlan(planObj) {
+    const plan: any = {};
+    plan.value = planObj.payerNphiesId;
+    plan.memberCardId = planObj.memberCardId;
+    this.selectPlan(plan);
+  }
+
   selectPlan(plan) {
-    if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0]) {
+    if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0]) {
+
+      this.beneficiaryPatientShare = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare;
+      this.beneficiaryMaxLimit = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit;
+
       this.FormPreAuthorization.controls.insurancePlanPayerId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId, 10);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId, 10);
       this.FormPreAuthorization.controls.insurancePlanExpiryDate.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].expiryDate);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].expiryDate);
       this.FormPreAuthorization.controls.insurancePlanMemberCardId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].memberCardId);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].memberCardId);
       this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].relationWithSubscriber);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].relationWithSubscriber);
       this.FormPreAuthorization.controls.insurancePlanCoverageType.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].coverageType);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].coverageType);
 
       this.FormPreAuthorization.controls.insurancePlanPayerName.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerName);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerName);
       this.FormPreAuthorization.controls.insurancePayerNphiesId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanId.setValue(
       //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
       this.FormPreAuthorization.controls.insurancePlanPrimary.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].primary);
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].primary);
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].tpaNphiesId);
+      this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
     }
   }
@@ -811,6 +841,7 @@ export class AddPreauthorizationComponent implements OnInit {
   openAddEditItemDialog(itemModel: any = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+
     dialogConfig.data = {
       source: 'APPROVAL',
       // tslint:disable-next-line:max-line-length
@@ -820,8 +851,12 @@ export class AddPreauthorizationComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormPreAuthorization.controls.type.value.value,
+      subType: this.FormPreAuthorization.controls.subType.value.value,
       dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
-      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+      beneficiaryPatientShare: this.beneficiaryPatientShare,
+      beneficiaryMaxLimit: this.beneficiaryMaxLimit,
+      documentId: this.FormPreAuthorization.controls.documentId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1114,6 +1149,17 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
       return false;
+      // tslint:disable-next-line:max-line-length
+    } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
+      const seqNo = this.SupportingInfo.filter(x => x.category === 'days-supply')[0].sequence;
+      // tslint:disable-next-line:max-line-length
+      if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0 || x.supportingInfoSequence.indexOf(seqNo) === -1)).length > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
     } else {
       return true;
     }
@@ -1868,26 +1914,25 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   ItemsAddButtonToolTip() {
+    let str = '';
     let result = false;
     if (!this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
       || !this.FormPreAuthorization.controls.insurancePlanId.value) {
       result = true;
     }
 
-    if (result) {
-      if (this.FormPreAuthorization.controls.type.value
-        && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
-        && this.CareTeams.length === 0) {
-        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
-      } else if (this.FormPreAuthorization.controls.type.value
-        && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
-        return 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
-      } else if (!this.FormPreAuthorization.controls.type.value) {
-        return 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
-      }
-    } else {
-      return '';
+    if (this.FormPreAuthorization.controls.type.value
+      && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
+      && this.CareTeams.length === 0) {
+      str = 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
+    } else if (this.FormPreAuthorization.controls.type.value
+      && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
+      str = 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
+    } else if (!this.FormPreAuthorization.controls.type.value) {
+      str = 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
     }
+
+    return str;
   }
 
 }

@@ -45,5 +45,7 @@ export class BeneficiariesSearchResult {
     tpaNphiesId: string;
     coverageType: string;
     relationWithSubscriber: string;
+    maxLimit:number;
+    patientShare:number;
   }[];
 }

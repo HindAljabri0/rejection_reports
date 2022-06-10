@@ -6,6 +6,7 @@ export class PreAuthorizationTransaction extends Paginateable{
   memberCardID: string;
   preAuthorizationID: string;
   transactionDate: string;
+  responseTimeStamp: string;
   payerId: number;
   status: string;
   processingStatus: string;
@@ -14,6 +15,8 @@ export class PreAuthorizationTransaction extends Paginateable{
   documentId: number;
   preAuthRefNo: string;
 
+  inquiryStatus: string;
+
   constructor(body: {}) {
     super(body);
     this.requestId = body['requestId'];
@@ -21,6 +24,7 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.memberCardID = body['memberCardID'];
     this.preAuthorizationID = body['preAuthorizationID'];
     this.transactionDate = body['transactionDate'];
+    this.responseTimeStamp = body['responseTimeStamp'];
     this.payerId = body['payerId'];
     this.status = body['status'];
     this.processingStatus = body['processingStatus'];
@@ -29,5 +33,6 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.beneficiaryName = body['beneficiaryName'];
     this.documentId = body['documentId'];
     this.preAuthRefNo = body['preAuthRefNo'];
+    this.inquiryStatus = body['inquiryStatus'];
   }
 }

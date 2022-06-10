@@ -23,7 +23,7 @@ export class ManageSupportingInfoComponent implements OnInit {
   categoryList = this.sharedDataService.categoryList;
   reasonList = this.sharedDataService.reasonList;
   loinkList = [];
-
+  currentIndex=0;
   // supportingInfoList = [];
   missingToothCodeList = this.sharedDataService.missingToothCodeList;
   reasonForVisitCodeList = this.sharedDataService.reasonForVisitCodeList;
@@ -34,6 +34,7 @@ export class ManageSupportingInfoComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService) { }
 
   ngOnInit() {
+    this.currentIndex=0;
   }
 
   searchICDCodes(code, i) {
@@ -287,6 +288,14 @@ export class ManageSupportingInfoComponent implements OnInit {
   removeSupportingInfo(i) {
     this.supportingInfoList.splice(i, 1);
   }
-
+  SetCurrent(i){
+    
+    this.currentIndex=i;
+  }
+  selectTooth(number) {
+    
+    this.supportingInfoList[this.currentIndex].code = number;
+    //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
+}
 
 }

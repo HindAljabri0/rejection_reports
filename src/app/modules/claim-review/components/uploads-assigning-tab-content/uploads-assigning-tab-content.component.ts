@@ -13,6 +13,9 @@ export class UploadsAssigningTabContentComponent implements OnInit {
     @Input()
     page: UploadsPage;
 
+    @Input()
+    tabName:  "new" | "in-progress" | "completed";
+
     constructor(private store: Store) { }
 
     ngOnInit() {

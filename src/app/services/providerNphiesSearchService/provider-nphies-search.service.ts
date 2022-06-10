@@ -4,6 +4,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 import { NumericLiteral } from 'typescript';
+import { Provider } from 'src/app/models/nphies/provider';
 
 @Injectable({
   providedIn: 'root'
@@ -217,44 +218,53 @@ export class ProviderNphiesSearchService {
   getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
     let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims?`;
     if (claimSearchCriteriaModel.payerIds != null) {
-      requestURL += `payerIds=${claimSearchCriteriaModel.payerIds}`;
+      requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
     }
     if (claimSearchCriteriaModel.batchId != null) {
-      requestURL += `batchId=${claimSearchCriteriaModel.batchId}`
+      requestURL += `&batchId=${claimSearchCriteriaModel.batchId}`;
     }
     if (claimSearchCriteriaModel.memberId != null) {
-      requestURL += `memberId=${claimSearchCriteriaModel.memberId}`
+      requestURL += `&memberId=${claimSearchCriteriaModel.memberId}`;
     }
     if (claimSearchCriteriaModel.documentId != null) {
-      requestURL += `documentId=${claimSearchCriteriaModel.documentId}`
+      requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
     }
-    if (claimSearchCriteriaModel.claimDate != null) {
-      requestURL += `claimDate=${claimSearchCriteriaModel.claimDate}`
+
+    if (claimSearchCriteriaModel.organizationId) {
+      requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
     }
+
     if (claimSearchCriteriaModel.uploadId != null) {
-      requestURL += `uploadId=${claimSearchCriteriaModel.uploadId}`
+      requestURL += `&uploadId=${claimSearchCriteriaModel.uploadId}`;
     }
     if (claimSearchCriteriaModel.claimSubTypes != null) {
-      requestURL += `claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`
+      requestURL += `&claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`;
     }
     if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
-      requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
-
+      requestURL += `&provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`;
     }
-
     if (claimSearchCriteriaModel.patientFileNo != null) {
-      requestURL += `patientFileNo=${claimSearchCriteriaModel.patientFileNo}`
+      requestURL += `&patientFileNo=${claimSearchCriteriaModel.patientFileNo}`;
     }
     if (claimSearchCriteriaModel.invoiceNo != null) {
-      requestURL += `invoiceNo=${claimSearchCriteriaModel.invoiceNo}`
+      requestURL += `&invoiceNo=${claimSearchCriteriaModel.invoiceNo}`;
     }
+
+    if (claimSearchCriteriaModel.claimDate != null) {
+      requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
+    }
+
+    if (claimSearchCriteriaModel.toDate != null) {
+      requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
+    }
+    // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+
   getClaimResults(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
     let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims/details?`;
-
 
     if (claimSearchCriteriaModel.page == null) {
       claimSearchCriteriaModel.page = 0;
@@ -263,35 +273,43 @@ export class ProviderNphiesSearchService {
       claimSearchCriteriaModel.pageSize = 10;
     }
     if (claimSearchCriteriaModel.payerIds != null) {
-      requestURL += `payerIds=${claimSearchCriteriaModel.payerIds}`;
+      requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
     }
     if (claimSearchCriteriaModel.batchId != null) {
-      requestURL += `batchId=${claimSearchCriteriaModel.batchId}`
+      requestURL += `&batchId=${claimSearchCriteriaModel.batchId}`;
     }
     if (claimSearchCriteriaModel.memberId != null) {
-      requestURL += `memberId=${claimSearchCriteriaModel.memberId}`
+      requestURL += `&memberId=${claimSearchCriteriaModel.memberId}`;
     }
     if (claimSearchCriteriaModel.documentId != null) {
-      requestURL += `documentId=${claimSearchCriteriaModel.documentId}`
+      requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
     }
-    if (claimSearchCriteriaModel.claimDate != null) {
-      requestURL += `claimDate=${claimSearchCriteriaModel.claimDate}`
+    if (claimSearchCriteriaModel.organizationId) {
+      requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
     }
     if (claimSearchCriteriaModel.uploadId != null) {
-      requestURL += `uploadId=${claimSearchCriteriaModel.uploadId}`
+      requestURL += `&uploadId=${claimSearchCriteriaModel.uploadId}`;
     }
     if (claimSearchCriteriaModel.claimSubTypes != null) {
-      requestURL += `claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`
+      requestURL += `&claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`;
     }
     if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
-      requestURL += `provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`
+      requestURL += `&provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`;
 
     }
     if (claimSearchCriteriaModel.patientFileNo != null) {
-      requestURL += `patientFileNo=${claimSearchCriteriaModel.patientFileNo}`
+      requestURL += `&patientFileNo=${claimSearchCriteriaModel.patientFileNo}`;
     }
     if (claimSearchCriteriaModel.invoiceNo != null) {
-      requestURL += `invoiceNo=${claimSearchCriteriaModel.invoiceNo}`
+      requestURL += `&invoiceNo=${claimSearchCriteriaModel.invoiceNo}`;
+    }
+
+    if (claimSearchCriteriaModel.claimDate != null) {
+      requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
+    }
+
+    if (claimSearchCriteriaModel.toDate != null) {
+      requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
     }
 
     requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
@@ -357,6 +375,19 @@ export class ProviderNphiesSearchService {
     const requestURL: string = '/providers/' + providerId + '/approval/loinc?code=' + searchQuery;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
+  }
+  addNewProvider(providerId: string, providerInfo: Provider) {
+    const requestUrl = `/providers/${providerId}/addNewProvider`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, providerInfo);
+    return this.http.request(request);
+  }
+
+  formatDate(date: string) {
+    const splittedDate = date.split('-');
+    if (splittedDate[2].length == 4) {
+      const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
+      return formattedDate;
+    } else { return date; }
   }
 
 }

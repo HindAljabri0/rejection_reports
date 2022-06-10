@@ -1,136 +1,133 @@
-<div class="row">
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Transaction Date</label>
-      <p class="text-primary">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm aa'}}</p>
+<div class="mb-2">
+  <div class="inline-value-badge">
+    Request Bundle ID: <span>{{data.requestBundleId}}</span>
+  </div>
+  <div class="inline-value-badge">
+    Response Bundle ID: <span>{{data.responseBundleId}}</span>
+  </div>
+</div>
+<div class="row small-gutter">
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Transaction Date</div>
+      <p class="form-control-static text-primary">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm aa'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Date Ordered</label>
-      <p class="text-primary">{{data.preAuthorizationInfo.dateOrdered}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Date Ordered</div>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Outcome</label>
-      <p class="text-primary">{{data.outcome}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Outcome</div>
+      <p class="form-control-static text-primary">{{data.outcome}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Status</label>
-      <p class="text-primary">{{data.status}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Status</div>
+      <p class="form-control-static text-primary">{{data.status}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Type</label>
-      <p class="text-primary">{{data.preAuthorizationInfo.typeName}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Type</div>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Insurer</label>
-      <p class="text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Insurer</div>
+      <p class="form-control-static text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>PreAuth Ref. No.</label>
-      <p class="text-primary">{{data.preAuthRefNo}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">PreAuth Ref. No.</div>
+      <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>PreAuth Period</label>
-      <p class="text-primary">{{data.preAuthStartDate | date:'dd/MM/yyyy'}} {{data.preAuthStartDate &&
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">PreAuth Period</div>
+      <p class="form-control-static text-primary">{{data.preAuthStartDate | date:'dd/MM/yyyy'}} {{data.preAuthStartDate &&
         data.preAuthEndDate ? "-":""}} {{data.preAuthEndDate |
         date:'dd/MM/yyyy'}} <span *ngIf="period">[{{period}}]</span> </p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Sub Type</label>
-      <p class="text-primary">
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Sub Type</div>
+      <p class="form-control-static text-primary">
         <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Related PreAuth Request ID</label>
-      <p class="text-primary">
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Related PreAuth Request ID</div>
+      <p class="form-control-static text-primary">
         <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}} ({{data.claimReuseRelation}})</span>
         <span *ngIf="!data.claimReuseId || !data.claimReuseRelation">-</span>
       </p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Offline Eligibility ID</label>
-      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityOfflineId}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Offline Eligibility ID</div>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Offline Eligibility Date</label>
-      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityOfflineDate | date: 'dd-MM-yyyy'}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Offline Eligibility Date</div>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date: 'dd-MM-yyyy'):'-'}}
+      </p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Eligibility Response ID</label>
-      <p class="text-primary">{{data.preAuthorizationInfo.eligibilityResponseId}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Eligibility Response ID</div>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
     </div>
   </div>
-  <div class="col-9">
-    <div class="inline-label-table">
-      <label>Disposition</label>
-      <p class="text-primary">{{data.disposition}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Disposition</div>
+      <p class="form-control-static text-primary">{{data.disposition?data.disposition:'-'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Is Referral</label>
-      <p class="text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Is Referral</div>
+      <p class="form-control-static text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Is New Born</label>
-      <p class="text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Is New Born</div>
+      <p class="form-control-static text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Request Bundle ID</label>
-      <p class="text-primary">{{data.requestBundleId}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Pre Auth Details</div>
+      <p class="form-control-static text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Response Bundle ID</label>
-      <p class="text-primary">{{data.responseBundleId}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Cancellation Status</div>
+      <p class="form-control-static text-primary">{{data.cancelStatus ? data.cancelStatus : '-'}}</p>
     </div>
   </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Pre Auth Details</label>
-      <p class="text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
-    </div>
-  </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Cancellation Status</label>
-      <p class="text-primary">{{data.cancelStatus ? data.cancelStatus : '-'}}</p>
-    </div>
-  </div>
-  <div class="col-3">
-    <div class="inline-label-table">
-      <label>Cancellation Status Reason</label>
-      <p class="text-primary">{{data.cancelResponseReason ? data.cancelResponseReason : '-'}}</p>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Cancellation Status Reason</div>
+      <p class="form-control-static text-primary">{{data.cancelResponseReason ? data.cancelResponseReason : '-'}}</p>
     </div>
   </div>
 </div>
@@ -139,7 +136,7 @@
 <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, -->
 <div class="p-14 bg-off-white ml-n14 mr-n14 mt-14" *ngIf="data.responseDecision && data.responseDecision.claimResDecisionCategories">
   <h5 class="align-self-center medium pb-2 text-primary">Total</h5>
-  <div class="row">
+  <div class="row small-gutter">
 
     <div class="col-auto" *ngFor="let res of data.responseDecision.claimResDecisionCategories">
       <div class="inline-label-table auto-width">
@@ -149,87 +146,6 @@
         </p>
       </div>
     </div>
-
-    <!-- <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Benefit Amount:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.benefitTotalValue">{{data.responseDecision.benefitTotalValue}} <span
-              class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.benefitTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Submitted Amount:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.submittedTotalValue">{{data.responseDecision.submittedTotalValue}} <span
-              class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.submittedTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Eligible Amount:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.eligibleTotalValue">{{data.responseDecision.eligibleTotalValue}} <span
-              class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.eligibleTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Eligible %:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.eligpercentTotalValue">{{data.responseDecision.eligpercentTotalValue}}
-            <span class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.eligpercentTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Patient Co-Payment:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.copayTotalValue">{{data.responseDecision.copayTotalValue}} <span
-              class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.copayTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Deductible:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.deductibleTotalValue">{{data.responseDecision.deductibleTotalValue}} <span
-              class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.deductibleTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Unallocated Deductible:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.unallocdeductTotalValue">{{data.responseDecision.unallocdeductTotalValue}}
-            <span class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.unallocdeductTotalValue">-</span>
-        </p>
-      </div>
-    </div>
-    <div class="col-auto">
-      <div class="inline-label-table auto-width">
-        <label>Tax:</label>
-        <p class="text-primary">
-          <span *ngIf="data.responseDecision.taxTotalValue">{{data.responseDecision.taxTotalValue}} <span
-              class="currency">SR</span></span>
-          <span *ngIf="!data.responseDecision.taxTotalValue">-</span>
-        </p>
-      </div>
-    </div> -->
 
   </div>
 </div>
@@ -261,47 +177,41 @@
 <h5 class="form-title" *ngIf="data.beneficiary">
   Beneficiary Details
 </h5>
-<div class="row" *ngIf="data.beneficiary">
-  <div class="col-4">
+<div class="row small-gutter" *ngIf="data.beneficiary">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Name</div>
       <p class="form-control-static">{{data.beneficiary.beneficiaryName}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Document</div>
       <p class="form-control-static">{{data.beneficiary.documentTypeName}} ({{data.beneficiary.documentId}})</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Gender</div>
       <p class="form-control-static">{{data.beneficiary.gender}}</p>
     </div>
   </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">New born?</div>
-      <p class="form-control-static">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
-    </div>
-  </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date of Birth</div>
       <p class="form-control-static">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Contact No.</div>
-      <p class="form-control-static">{{data.beneficiary.contactNumber}}</p>
+      <p class="form-control-static">{{data.beneficiary.contactNumber?data.beneficiary.contactNumber:'-'}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
-      <p class="form-control-static">{{data.beneficiary.email}}</p>
+      <p class="form-control-static">{{data.beneficiary.email?data.beneficiary.email:'-'}}</p>
     </div>
   </div>
 </div>
@@ -313,38 +223,38 @@
 <h5 class="form-title" *ngIf="data.subscriber">
   Subscriber Details
 </h5>
-<div class="row" *ngIf="data.subscriber">
-  <div class="col-4">
+<div class="row small-gutter" *ngIf="data.subscriber">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Name</div>
       <p class="form-control-static">{{data.subscriber.beneficiaryName}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Document</div>
       <p class="form-control-static">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Gender</div>
       <p class="form-control-static">{{data.subscriber.gender}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date of Birth</div>
       <p class="form-control-static">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Contact No.</div>
       <p class="form-control-static">{{data.subscriber.contactNumber}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
       <p class="form-control-static">{{data.subscriber.email}}</p>
@@ -352,6 +262,28 @@
   </div>
 </div>
 <!-- beneficiary details end -->
+
+<!-- Cancellation Errors start -->
+<h5 class="form-title" *ngIf="data.inquiryError">
+  Inquiry Errors
+</h5>
+<div class="table-responsive" *ngIf="data.inquiryError">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let error of data.inquiryError">
+        <td>{{error.code}}</td>
+        <td>{{error.error}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Cancellation Errors end -->
 
 <!-- Cancellation Errors start -->
 <h5 class="form-title" *ngIf="data.cancelErrors">
@@ -428,7 +360,6 @@
           <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
 
           <td class="text-nowrap row-click" (click)="toggleItem(i)">
-            <!-- <span *ngIf="item.itemDecision">{{item.itemDecision.benefitValue}} </span> <span class="currency">SR</span> -->
             <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
               <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
                 <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
@@ -466,139 +397,11 @@
                   </tr>
                 </tbody>
               </table>
-              <!-- <div class="col-2" *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
-                <div class="inline-label-table auto-width">
-                  <label>{{res.category}}:</label>
-                  <p class="text-primary">
-                    <span>{{res.categoryValue}} <span class="currency">SR</span></span>
-                  </p>
-                </div>
-              </div> -->
-
-              <!-- <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Benefit Amount:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.benefitValue">{{item.itemDecision.benefitValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.benefitValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Submitted Amount:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.submittedValue">{{item.itemDecision.submittedValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.submittedValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Eligible Amount:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.eligibleValue">{{item.itemDecision.eligibleValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.eligibleValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Eligible %:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.eligpercentValue">{{item.itemDecision.eligpercentValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.eligpercentValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Patient Co-Payment:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.copayValue">{{item.itemDecision.copayValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.copayValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Deductible:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.deductibleValue">{{item.itemDecision.deductibleValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.deductibleValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Unallocated Deductible:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.unallocdeductValue">{{item.itemDecision.unallocdeductValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.unallocdeductValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Tax:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.taxValue">{{item.itemDecision.taxValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.taxValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Rejected:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.rejectedValue">{{item.itemDecision.rejectedValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.rejectedValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Patient Share:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.patientShareValue">{{item.itemDecision.patientShareValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.patientShareValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Discount:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.discountValue">{{item.itemDecision.discountValue}} <span
-                        class="currency">SR</span></span>
-                    <span *ngIf="!item.itemDecision.discountValue">-</span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="inline-label-table auto-width">
-                  <label>Approved Quantity:</label>
-                  <p class="text-primary">
-                    <span *ngIf="item.itemDecision.approvedQuantityValue">{{item.itemDecision.approvedQuantityValue}}
-                    </span>
-                    <span *ngIf="!item.itemDecision.approvedQuantityValue">-</span>
-                  </p>
-                </div>
-              </div> -->
             </div>
+
             <div class="box mb-2">
               <h5 class="align-self-center medium pb-2">Item Info</h5>
-              <div class="row">
+              <div class="row small-gutter">
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
@@ -804,14 +607,14 @@
 <h5 class="form-title" *ngIf="data.visionPrescription">
   Vision Prescription
 </h5>
-<div class="row" *ngIf="data.visionPrescription">
-  <div class="col-4">
+<div class="row small-gutter" *ngIf="data.visionPrescription">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date Written</div>
       <p class="form-control-static">{{data.visionPrescription.dateWritten}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Prescriber</div>
       <p class="form-control-static">{{data.visionPrescription.prescriberName}}</p>
@@ -913,7 +716,6 @@
             {{s.categoryName}}
           </td>
           <td>
-            <!-- {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span> -->
             {{s.codeName}}
           </td>
           <td>
@@ -922,7 +724,6 @@
           </td>
           <td>
             <span *ngIf="s.category=='attachment'">
-              <!-- {{s.attachment}} -->
               <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
             </span>
             <span *ngIf="s.category!='attachment'">
@@ -943,38 +744,38 @@
 <h5 class="form-title" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
   Accident
 </h5>
-<div class="row" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
-  <div class="col-4">
+<div class="row small-gutter" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Accident Type</div>
       <p class="form-control-static">{{data.accident.accidentTypeName}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Street Name</div>
       <p class="form-control-static">{{data.accident.streetName}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">City</div>
       <p class="form-control-static">{{data.accident.city}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">State/Province</div>
       <p class="form-control-static">{{data.accident.state}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Country</div>
       <p class="form-control-static">{{data.accident.country}}</p>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date</div>
       <p class="form-control-static">{{data.accident.date}}</p>
