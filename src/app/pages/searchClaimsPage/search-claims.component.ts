@@ -824,6 +824,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             summaries[oldSummaryIndex] = {
                 totalClaims: this.summaries[oldSummaryIndex].totalClaims - 1,
                 totalNetAmount: this.summaries[oldSummaryIndex].totalNetAmount - claim.net,
+                totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare - claim.totalPatientShare,
+                totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount - claim.totalPayerShare,
                 totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
                 statuses: this.summaries[oldSummaryIndex].statuses,
                 uploadName: this.summaries[oldSummaryIndex].uploadName,
@@ -838,6 +840,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 summaries[newSummaryIndex] = {
                     totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
                     totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
+                    totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare - claim.totalPatientShare,
+                    totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount - claim.totalPayerShare,
                     totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
                     statuses: this.summaries[newSummaryIndex].statuses,
                     uploadName: this.summaries[newSummaryIndex].uploadName,

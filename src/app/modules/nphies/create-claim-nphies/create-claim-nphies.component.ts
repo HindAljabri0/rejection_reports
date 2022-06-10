@@ -354,7 +354,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         expiryDate: null,
         primary: null,
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
-        relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber
+        relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
+        maxLimit:null,
+        patientShare:null,
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -840,6 +842,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
       type: this.FormNphiesClaim.controls.type.value.value,
+      subType: this.FormNphiesClaim.controls.subType.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
@@ -1142,12 +1145,34 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
+  // checkItemsCodeForSupportingInfo() {
+  //   // tslint:disable-next-line:max-line-length
+  //   if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+  //     // tslint:disable-next-line:max-line-length
+  //     this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
   checkItemsCodeForSupportingInfo() {
     // tslint:disable-next-line:max-line-length
     if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
       // tslint:disable-next-line:max-line-length
       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
       return false;
+      // tslint:disable-next-line:max-line-length
+    } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
+      const seqNo = this.SupportingInfo.filter(x => x.category === 'days-supply')[0].sequence;
+      // tslint:disable-next-line:max-line-length
+      if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0 || x.supportingInfoSequence.indexOf(seqNo) === -1)).length > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
     } else {
       return true;
     }
@@ -2061,6 +2086,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
     this.otherDataModel.cancelErrors = response.cancelErrors;
 
+    this.otherDataModel.inquiryErrors = response.inquiryErrors;
+    this.otherDataModel.inquiryStatus = response.inquiryStatus;
+
     this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
     this.otherDataModel.batchClaimNumber = response.batchClaimNumber;
@@ -2077,6 +2105,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.requestBundleId = response.requestBundleId;
     this.otherDataModel.responseBundleId = response.responseBundleId;
     this.otherDataModel.totalNetAmount = response.totalNet;
+    this.otherDataModel.totalPatientShare = response.totalPatientShare;
+    this.otherDataModel.totalPayerShare = response.totalPayerShare;
 
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;

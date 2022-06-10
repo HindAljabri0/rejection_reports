@@ -26,7 +26,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   IsItemLoading = false;
-
+  
   onDestroy = new Subject<void>();
 
   FormItem: FormGroup = this.formBuilder.group({
@@ -60,7 +60,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisSequence: [''],
     diagnosisFilter: [''],
     invoiceNo: [''],
-    IsTaxApplied: [true],
+    IsTaxApplied: [false],
     searchQuery: ['']
   });
 
@@ -71,6 +71,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   bodySiteList = [];
   subSiteList = [];
   IscareTeamSequenceRequired = false;
+
+  IsSupportingInfoSequenceRequired = false;
+  supportingInfoError = '';
+
+  showQuantityCode = true;
 
   today: Date;
   constructor(
@@ -100,12 +105,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
 
     if (this.data.item && this.data.item.itemCode) {
+      //console.log(" body site val = "+this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0]),
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
+        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
         subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
         quantity: this.data.item.quantity,
         quantityCode: this.data.item.quantityCode,
@@ -148,6 +154,19 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       this.getItemList();
     } else {
+      if (this.data.beneficiaryPatientShare) {
+        this.FormItem.controls.patientSharePercent.setValue(this.data.beneficiaryPatientShare);
+      }
+      if (this.data.documentId && this.data.documentId === 'NI') {
+        this.FormItem.controls.IsTaxApplied.setValue(false);
+      } else {
+        this.FormItem.controls.IsTaxApplied.setValue(true);
+      }
+
+      if (this.data.subType === 'op') {
+        this.FormItem.controls.quantityCode.setValue('{package}');
+        this.FormItem.controls.quantityCode.disable();
+      }
       this.FormItem.controls.factor.setValue(1);
     }
 
@@ -251,6 +270,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   selectItem(type) {
     if (type) {
+
+      if (type.itemType && type.itemType === 'medication-codes') {
+        this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+      } else {
+        this.FormItem.controls.quantityCode.clearValidators();
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+        this.FormItem.controls.quantityCode.setValue('');
+        this.FormItem.controls.quantityCode.disable();
+        this.showQuantityCode = false;
+      }
+
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === type.itemType)[0],
         nonStandardCode: type.nonStandardCode,
@@ -259,7 +290,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         factor: type.factor,
       });
       this.SetSingleRecord(type);
-      // this.Calculate('Factor');
       this.updateFactor();
       this.updateDiscountPercent();
       this.updateDiscount();
@@ -294,6 +324,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     } else {
       this.FormItem.controls.quantityCode.clearValidators();
       this.FormItem.controls.quantityCode.updateValueAndValidity();
+      this.FormItem.controls.quantityCode.setValue('');
+      this.FormItem.controls.quantityCode.disable();
+      this.showQuantityCode = false;
     }
     this.FormItem.controls.item.setValue('');
     if (type) {
@@ -440,11 +473,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   updateNet() {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-    // tslint:disable-next-line:max-line-length
+      // tslint:disable-next-line:max-line-length
       const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
 
-    // tslint:disable-next-line:max-line-length
-     // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
+      // tslint:disable-next-line:max-line-length
+      // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
       this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
@@ -649,7 +682,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   searchItems() {
-    if(this.SearchRequest){
+    if (this.SearchRequest) {
       this.SearchRequest.unsubscribe();
     }
     const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
@@ -671,8 +704,66 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     });
   }
 
+  checkItemsCodeForSupportingInfo() {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormItem.controls.type.value.value === 'medication-codes') {
+
+      if (this.data.supportingInfos.filter(x => x.category === 'days-supply').length === 0) {
+        // tslint:disable-next-line:max-line-length
+        // this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+
+        this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
+        this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+
+        this.IsSupportingInfoSequenceRequired = true;
+        this.supportingInfoError = 'Days-Supply is required in Supporting Info if any medication-code is used';
+
+        return false;
+      } else {
+        const seqNo = this.data.supportingInfos.filter(x => x.category === 'days-supply')[0].sequence;
+
+        if (this.FormItem.controls.type.value.value === 'medication-codes') {
+          // tslint:disable-next-line:max-line-length
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.filter((x) => x.sequence === seqNo).length === 0)) {
+            // tslint:disable-next-line:max-line-length
+            // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
+
+            this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
+            this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+
+            this.IsSupportingInfoSequenceRequired = true;
+            this.supportingInfoError = 'Supporting Info with Days-Supply must be linked with Item of type medication-code';
+            return false;
+          } else {
+            this.IsSupportingInfoSequenceRequired = false;
+            this.supportingInfoError = '';
+            this.FormItem.controls.supportingInfoSequence.clearValidators();
+            this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+            return true;
+          }
+        } else {
+          this.IsSupportingInfoSequenceRequired = false;
+          this.supportingInfoError = '';
+          this.FormItem.controls.supportingInfoSequence.clearValidators();
+          this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+          return true;
+        }
+      }
+
+    } else {
+      this.IsSupportingInfoSequenceRequired = false;
+      this.supportingInfoError = '';
+      this.FormItem.controls.supportingInfoSequence.clearValidators();
+      this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
+      return true;
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
+    if (!this.checkItemsCodeForSupportingInfo()) {
+      return;
+    }
 
     if (this.FormItem.valid) {
 
@@ -691,10 +782,16 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-
-      model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
-      model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
-
+      if(this.data.type === 'oral'){
+        let bodySite=this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
+        model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
+        model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
+      }
+      else{
+        model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
+        model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
+      }
+      
       model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
       model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
@@ -730,7 +827,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-
+      console.log("item model = "+JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
@@ -749,6 +846,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     return !pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString());
   }
 
+  selectTooth(number) {
+    //let val=this.bodySiteList.filter(x => x.value === number)[0];
+    this.FormItem.controls.bodySite.setValue(number);
+    //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
+}
   closeDialog() {
     this.dialogRef.close();
   }

@@ -2,6 +2,8 @@ export class SearchStatusSummary {
   statuses: string[];
   totalClaims = 0;
   totalNetAmount = 0;
+  totalPatientShare = 0;
+  totalPayerShare = 0;
   totalVatNetAmount = 0;
   gross?= 0;
   uploadName: string;
@@ -16,6 +18,8 @@ export class SearchStatusSummary {
       this.statuses = body['statuses'];
       this.totalClaims = body['totalNumber'];
       this.totalNetAmount = body['amount'];
+      this.totalPatientShare = body['totalPatientShare'];
+      this.totalPayerShare = body['totalPayerShare'];
       this.totalVatNetAmount = body['netVatAmount'];
       this.gross = body['gross'];
       this.uploadName = body['uploadName'];
@@ -34,6 +38,8 @@ export class SearchStatusSummary {
       statuses,
       totalClaims: 0,
       totalNetAmount: 0,
+      totalPatientShare:0,
+      totalPayerShare:0,
       totalVatNetAmount: 0,
       uploadName: null,
       gross: 0,

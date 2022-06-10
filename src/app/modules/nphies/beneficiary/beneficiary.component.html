@@ -294,6 +294,8 @@
                 <th>Payer<span class="asterisk">*</span></th>
                 <th>Expiry Date</th>
                 <th>Member Card ID<span class="asterisk">*</span></th>
+                <th>Patient Share</th>
+                <th>MaxLimit</th>
                 <th>Relation with Subscriber<span class="asterisk">*</span></th>
                 <th>Coverage Type<span class="asterisk">*</span></th>
                 <th width="10"></th>
@@ -340,6 +342,21 @@
                     <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
                   </div>
                 </td>
+
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.patientShareErorr"
+                    [class.has-error]="insurancePlan.patientShareErorr!=null && insurancePlan.patientShareErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="Enter Patient Share" [formControl]="insurancePlan.patientShare"/>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.maxLimitErorr"
+                    [class.has-error]="insurancePlan.maxLimitErorr!=null && insurancePlan.maxLimitErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="Enter MaxLimit" [formControl]="insurancePlan.maxLimit"  />
+                  </div>
+                </td>
+
                 <td>
                   <div class="form-group m-0 w-160"
                     [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
@@ -699,6 +716,8 @@
                 <th>Payer<span class="asterisk">*</span></th>
                 <th>Expiry Date</th>
                 <th>Member Card ID<span class="asterisk">*</span></th>
+                <th>Patient Share</th>
+                <th>MaxLimit</th>
                 <th>Relation with Subscriber<span class="asterisk">*</span></th>
                 <th>Coverage Type<span class="asterisk">*</span></th>
                 <th width="10"></th>
@@ -739,12 +758,28 @@
                     </div>
                   </div>
                 </td>
+
                 <td>
                   <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
                     [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
                     <input type="text" class="form-control" placeholder="Enter member card ID" [formControl]="insurancePlan.memberCardId" />
                   </div>
                 </td>
+
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.patientShareErorr"
+                    [class.has-error]="insurancePlan.patientShareErorr!=null && insurancePlan.patientShareErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="Enter Patient Share" [formControl]="insurancePlan.patientShare"/>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.maxLimitErorr"
+                    [class.has-error]="insurancePlan.maxLimitErorr!=null && insurancePlan.maxLimitErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="Enter MaxLimit" [formControl]="insurancePlan.maxLimit"  />
+                  </div>
+                </td>
+
                 <td>
                   <div class="form-group m-0 w-160"
                     [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
@@ -959,6 +994,8 @@
               <th>Payer</th>
               <th>Expiry Date</th>
               <th>Member Card ID</th>
+              <th>Patient Share</th>
+              <th>MaxLimit</th>
               <th>Relation with Subscriber</th>
               <th>Coverage Type</th>
             </tr>
@@ -972,6 +1009,8 @@
               <td>{{getPayerName(insurancePlans.payerId)}}</td>
               <td>{{isNull(insurancePlans.expiryDate)}}</td>
               <td>{{insurancePlans.memberCardId}}</td>
+              <td>{{insurancePlans.patientShare}}</td>
+              <td>{{insurancePlans.maxLimit}}</td>
               <td>{{isNull(getSubscriberRelationshipName(insurancePlans.relationWithSubscriber))}}</td>
               <td>{{isNull(getCoverageTypeName(insurancePlans.coverageType))}}</td>
             </tr>
