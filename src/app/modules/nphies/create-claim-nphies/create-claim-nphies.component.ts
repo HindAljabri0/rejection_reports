@@ -949,8 +949,10 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
           });
           this.checkItemValidation();
+          
         }
       }
+      this.RefershTotal();
     });
   }
 
@@ -1111,7 +1113,14 @@ export class CreateClaimNphiesComponent implements OnInit {
       return true;
     }
   }
-
+  RefershTotal(){
+    this.otherDataModel.totalNetAmount =  0;
+    this.Items.forEach((x) => {
+      console.log("values = "+x.net);
+      this.otherDataModel.totalNetAmount +=  x.net;
+    });
+    
+  }
   checkItemValidation() {
     if (this.Items.length === 0) {
       this.IsItemRequired = true;

@@ -130,8 +130,8 @@ export class AuthService {
                 console.log("authorities = "+authorities);
                 const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
                     || element['authority'].split('|')[1] == '22.0'
-                    || element['authority'].split('|')[1] == '24.0'
-                    || element['authority'].split('|')[1] == '25.0'
+                    || element['authority'].split('|')[1] == '24.0' 
+                    || element['authority'].split('|')[1] == '25.0' 
                     || element['authority'].split('|')[1] == '25.1'
                     || element['authority'].split('|')[1] == '25.2'
                     || element['authority'].split('|')[1] == '25.3'
