@@ -1,7 +1,7 @@
 export class Provider {
 
-    cchiid: string;
-    nphiesId: string;
+    cchiid: number;
+    nphiesId: number;
     englistName: string;
     arabicName: string;
 }
