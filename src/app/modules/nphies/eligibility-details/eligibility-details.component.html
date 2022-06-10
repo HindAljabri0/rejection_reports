@@ -17,6 +17,15 @@
         <p></p>
       </div>
     </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">Document</div>
+        <p class="form-control-static">
+          {{eligibilityResponse.documentTypeName}} ({{eligibilityResponse.documentId}})
+        </p>
+        <p></p>
+      </div>
+    </div>
     <div *ngIf="eligibilityResponse.subscriberName" class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Subscriber Name</div>

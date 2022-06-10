@@ -15,7 +15,7 @@
       </div>
       <div class="d-flex">
         <div class="form-group flex-grow-1">
-          <label class="control-label">Select a Beneficiary</label>
+          <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
           <input type="text" class="form-control search-box"
             placeholder="Search for beneficiary by name or document ID..." [formControl]="beneficiarySearchController"
             [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">

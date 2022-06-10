@@ -130,6 +130,10 @@ export class ProvidersConfigComponent implements OnInit {
   netAmountValue: number;
   pollTypeController: FormControl = new FormControl('');
   pollTypeValue: string;
+  pollTypePeriodController: FormControl = new FormControl('');
+  pollTypePeriod: number;
+  pollTypePeriodUnitController: FormControl = new FormControl('');
+  pollTypePeriodUnit: string;
 
   isBothSame = true;
   dbConfigs = [];
@@ -1342,6 +1346,8 @@ export class ProvidersConfigComponent implements OnInit {
     this.providerMappingController.setValue('');
     this.restrictExtractionDateController.setValue(new Date(2021, 0, 1));
     this.pollTypeController.setValue('');
+    this.pollTypePeriodController.setValue(6);
+    this.pollTypePeriodUnitController.setValue('MONTH');
   }
   getNetAmountAccuracy() {
     this.componentLoading.netAmount = true;
@@ -1414,9 +1420,13 @@ export class ProvidersConfigComponent implements OnInit {
   savePollConfiguration() {
     this.errors.pollTypeConfigurationSaveError = null;
     this.success.pollTypeConfigurationSaveSuccess = null;
-    if (this.pollTypeController.value != null && this.pollTypeController.value != this.pollTypeValue) {
+    if ((this.pollTypeController.value != null && this.pollTypeController.value != this.pollTypeValue)
+      || this.pollTypePeriodController.value != this.pollTypePeriod
+      || this.pollTypePeriodUnitController.value != this.pollTypePeriodUnit) {
       const body = {
-        pollType: this.pollTypeController.value
+        pollType: this.pollTypeController.value,
+        period: this.pollTypePeriodController.value == null ? 6 : this.pollTypePeriodController.value,
+        periodUnit: this.pollTypePeriodUnitController.value == null ? 'MONTH' : this.pollTypePeriodUnitController.value
       };
       this.componentLoading.pollType = true;
       this.dbMapping.savePollConfiguration(body, this.selectedProvider).subscribe(event => {
@@ -1424,7 +1434,7 @@ export class ProvidersConfigComponent implements OnInit {
           this.pollTypeValue = body.pollType;
           const data = event.body;
           if (data != null) {
-            this.getProviderMapping();
+            this.getPollConfiguration();
             this.success.pollTypeConfigurationSaveSuccess = 'Settings were saved successfully.';
           } else {
             this.errors.pollTypeConfigurationSaveError = 'Could not save poll configuration details !';
@@ -1455,8 +1465,24 @@ export class ProvidersConfigComponent implements OnInit {
         if (data != null) {
           this.pollTypeController.setValue(data['pollType']);
           this.pollTypeValue = data['pollType'];
+          this.pollTypePeriod = data['period'];
+          this.pollTypePeriodUnit = data['periodUnit'];
+          if ((this.pollTypeValue == 'CLAIM' || this.pollTypeValue == 'PRE_AUTH') && this.pollTypePeriod == null) {
+            this.pollTypePeriodController.setValue(6);
+          } else {
+            this.pollTypePeriodController.setValue(data['period']);
+          }
+          if ((this.pollTypeValue == 'CLAIM' || this.pollTypeValue == 'PRE_AUTH') && this.pollTypePeriodUnit == null) {
+            this.pollTypePeriodUnitController.setValue('MONTH');
+          } else {
+            this.pollTypePeriodUnitController.setValue(data['periodUnit']);
+          }
+          // this.pollTypePeriodController.setValue(data['period'] == null ? 6 : data['period']);
+          // this.pollTypePeriodUnitController.setValue(data['periodUnit'] == null ? 'MONTH' : data['periodUnit']);
         } else {
           this.pollTypeController.setValue(null);
+          this.pollTypePeriodController.setValue(6);
+          this.pollTypePeriodUnitController.setValue('MONTH');
         }
       }
       this.componentLoading.pollType = false;
