@@ -112,8 +112,9 @@ export class CreateProviderComponent implements OnInit {
       this.selectedProvider = providerId;
       this.providerInf = this.providers.filter(provider => provider.providerId == providerId)[0];
       this.providerInfoForm.controls.CCHI_IdControl.setValue(this.providerInf.cchi_ID);
-      this.providerInfoForm.controls.providerNameArabicControl.setValue(this.providerInf.providerArabicName);
-      this.providerInfoForm.controls.providerNameEnglishControl.setValue(this.providerInf.providerEnglishName);
+      this.providerInfoForm.controls.providerNameArabicControl.setValue(this.providerInf.providerArabicNameNphies!=null?this.providerInf.providerArabicNameNphies:this.providerInf.providerArabicName);
+      this.providerInfoForm.controls.providerNameEnglishControl.setValue(this.providerInf.providerEnglishNameNphies!=null?this.providerInf.providerEnglishNameNphies:this.providerInf.providerEnglishName);
+      this.providerInfoForm.controls.providerNphiesIdControl.setValue(this.providerInf.nphies_ID!=null?this.providerInf.nphies_ID:'');
 
 
     } else {
