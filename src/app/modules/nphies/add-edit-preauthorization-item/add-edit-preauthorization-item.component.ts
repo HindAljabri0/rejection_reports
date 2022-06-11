@@ -26,7 +26,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   IsItemLoading = false;
-  
+
   onDestroy = new Subject<void>();
 
   FormItem: FormGroup = this.formBuilder.group({
@@ -720,11 +720,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         return false;
       } else {
-        const seqNo = this.data.supportingInfos.filter(x => x.category === 'days-supply')[0].sequence;
+        const seqNos = this.data.supportingInfos.map(x => {
+          if (x.category === 'days-supply') {
+            return x.sequence;
+          }
+        });
 
         if (this.FormItem.controls.type.value.value === 'medication-codes') {
           // tslint:disable-next-line:max-line-length
-          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.filter((x) => x.sequence === seqNo).length === 0)) {
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.filter((x) => seqNos.includes(x.sequence)).length === 0)) {
             // tslint:disable-next-line:max-line-length
             // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
 
@@ -782,16 +786,16 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-      if(this.data.type === 'oral'){
-        let bodySite=this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
+      if (this.data.type === 'oral') {
+        let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
       }
-      else{
+      else {
         model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
         model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
       }
-      
+
       model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
       model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
@@ -827,7 +831,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-      console.log("item model = "+JSON.stringify(model));
+      console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
@@ -850,7 +854,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     //let val=this.bodySiteList.filter(x => x.value === number)[0];
     this.FormItem.controls.bodySite.setValue(number);
     //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
-}
+  }
   closeDialog() {
     this.dialogRef.close();
   }
