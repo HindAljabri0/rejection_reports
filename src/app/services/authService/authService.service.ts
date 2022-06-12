@@ -127,7 +127,7 @@ export class AuthService {
         this.getCurrentUserToken().subscribe(event => {
             if (event instanceof HttpResponse) {
                 const authorities: Array<any> = event.body['authorities'];
-                console.log("authorities = "+authorities);
+                
                 const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
                     || element['authority'].split('|')[1] == '22.0'
                     || element['authority'].split('|')[1] == '24.0'
