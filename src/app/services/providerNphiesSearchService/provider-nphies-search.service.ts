@@ -230,6 +230,10 @@ export class ProviderNphiesSearchService {
       requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
     }
 
+    if (claimSearchCriteriaModel.organizationId) {
+      requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
+    }
+
     if (claimSearchCriteriaModel.uploadId != null) {
       requestURL += `&uploadId=${claimSearchCriteriaModel.uploadId}`;
     }
@@ -279,6 +283,9 @@ export class ProviderNphiesSearchService {
     }
     if (claimSearchCriteriaModel.documentId != null) {
       requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
+    }
+    if (claimSearchCriteriaModel.organizationId) {
+      requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
     }
     if (claimSearchCriteriaModel.uploadId != null) {
       requestURL += `&uploadId=${claimSearchCriteriaModel.uploadId}`;

@@ -720,7 +720,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         return false;
       } else {
-        const seqNo = this.data.supportingInfos.filter(x => x.category === 'days-supply')[0].sequence;
+        const seqNos = this.data.supportingInfos.map(x => {
+          if (x.category === 'days-supply') {
+            return x.sequence;
+          }
+        });
 
         if (this.FormItem.controls.type.value.value === 'medication-codes') {
 

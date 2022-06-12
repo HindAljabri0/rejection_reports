@@ -19,7 +19,7 @@ export class CreateProviderComponent implements OnInit {
   error: string;
   selectedProvider: string;
   providers: any[] = [];
-  providerInf:any;
+  providerInf: any;
   filteredProviders: any[] = [];
   providerInfo: Provider;
   CCHI_IdControl = new FormControl();
@@ -62,11 +62,10 @@ export class CreateProviderComponent implements OnInit {
     if (this.providerInfoForm.valid) {
       this.commen.loadingChanged.next(true);
       this.providerInfo = {
-
-        "cchiid": this.providerInfoForm.controls.CCHI_IdControl.value.trim(),
+        "cchiid": this.providerInfoForm.controls.CCHI_IdControl.value,
         "arabicName": this.providerInfoForm.controls.providerNameArabicControl.value.trim(),
         "englistName": this.providerInfoForm.controls.providerNameEnglishControl.value.trim(),
-        "nphiesId": this.providerInfoForm.controls.providerNphiesIdControl.value.trim(),
+        "nphiesId": this.providerInfoForm.controls.providerNphiesIdControl.value,
       }
       this.providerNphiesSearchService.addNewProvider(this.commen.providerId, this.providerInfo).subscribe(event => {
 
@@ -108,14 +107,15 @@ export class CreateProviderComponent implements OnInit {
   }
 
   selectProvider(providerId: string = null) {
-   ;
+    ;
     if (providerId !== null) {
       this.selectedProvider = providerId;
-      this.providerInf=this.providers.filter(provider => provider.providerId == providerId)[0];
+      this.providerInf = this.providers.filter(provider => provider.providerId == providerId)[0];
       this.providerInfoForm.controls.CCHI_IdControl.setValue(this.providerInf.cchi_ID);
-      this.providerInfoForm.controls.providerNameArabicControl.setValue(this.providerInf.providerArabicName);
-      this.providerInfoForm.controls.providerNameEnglishControl.setValue(this.providerInf.providerEnglishName);
-     
+      this.providerInfoForm.controls.providerNameArabicControl.setValue(this.providerInf.providerArabicNameNphies!=null?this.providerInf.providerArabicNameNphies:this.providerInf.providerArabicName);
+      this.providerInfoForm.controls.providerNameEnglishControl.setValue(this.providerInf.providerEnglishNameNphies!=null?this.providerInf.providerEnglishNameNphies:this.providerInf.providerEnglishName);
+      this.providerInfoForm.controls.providerNphiesIdControl.setValue(this.providerInf.nphies_ID!=null?this.providerInf.nphies_ID:'');
+
 
     } else {
       const providerId = this.providerInfoForm.controls.providerController.value.split('|')[0].trim();
