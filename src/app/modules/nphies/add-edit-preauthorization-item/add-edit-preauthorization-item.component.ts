@@ -727,17 +727,27 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
 
         if (this.FormItem.controls.type.value.value === 'medication-codes') {
+
+          //let intersecting=this.getArraysIntersection(seqList, this.Items.filter(x => x.type === 'medication-codes').map(t=>t.supportingInfoSequence));
           // tslint:disable-next-line:max-line-length
-          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.filter((x) => seqNos.includes(x.sequence)).length === 0)) {
+          var SeqIsThere = null;
+          if (this.FormItem.controls.supportingInfoSequence.value) {
+            let SupportingList = this.data.supportingInfos.filter(x => x.category === 'days-supply').map(t => t.sequence);
+            let ItemSeqList = this.FormItem.controls.supportingInfoSequence.value.map(t => t.sequence);
+            SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
+          }
+          console.log("SeqIsThere = " + SeqIsThere);
+
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && !SeqIsThere)) {
             // tslint:disable-next-line:max-line-length
             // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
-
             this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
             this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
 
             this.IsSupportingInfoSequenceRequired = true;
             this.supportingInfoError = 'Supporting Info with Days-Supply must be linked with Item of type medication-code';
             return false;
+
           } else {
             this.IsSupportingInfoSequenceRequired = false;
             this.supportingInfoError = '';
