@@ -355,8 +355,8 @@ export class CreateClaimNphiesComponent implements OnInit {
         primary: null,
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
-        maxLimit:null,
-        patientShare:null,
+        maxLimit: null,
+        patientShare: null,
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -1164,9 +1164,12 @@ export class CreateClaimNphiesComponent implements OnInit {
       return false;
       // tslint:disable-next-line:max-line-length
     } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
-      const seqNo = this.SupportingInfo.filter(x => x.category === 'days-supply')[0].sequence;
+      
+      let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
+      let ItemSeqList = this.Items.filter(x => x.type === 'medication-codes').map(t => t.sequence);
+      var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
       // tslint:disable-next-line:max-line-length
-      if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0 || x.supportingInfoSequence.indexOf(seqNo) === -1)).length > 0) {
+      if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
         return false;
@@ -1177,7 +1180,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       return true;
     }
   }
-
+  getArraysIntersection(a1, a2) {
+    return a1.filter(function (n) { return a2.indexOf(n) !== -1; });
+  }
   updateSequenceNames() {
     this.Items.forEach(x => {
       if (x.supportingInfoSequence) {
