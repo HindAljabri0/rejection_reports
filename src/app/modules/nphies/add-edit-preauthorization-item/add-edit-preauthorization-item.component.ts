@@ -26,7 +26,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   IsItemLoading = false;
-  
+
   onDestroy = new Subject<void>();
 
   FormItem: FormGroup = this.formBuilder.group({
@@ -723,17 +723,27 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         const seqNo = this.data.supportingInfos.filter(x => x.category === 'days-supply')[0].sequence;
 
         if (this.FormItem.controls.type.value.value === 'medication-codes') {
+
+          //let intersecting=this.getArraysIntersection(seqList, this.Items.filter(x => x.type === 'medication-codes').map(t=>t.supportingInfoSequence));
           // tslint:disable-next-line:max-line-length
-          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.filter((x) => x.sequence === seqNo).length === 0)) {
+          var SeqIsThere = null;
+          if (this.FormItem.controls.supportingInfoSequence.value) {
+            let SupportingList = this.data.supportingInfos.filter(x => x.category === 'days-supply').map(t => t.sequence);
+            let ItemSeqList = this.FormItem.controls.supportingInfoSequence.value.map(t => t.sequence);
+            SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
+          }
+          console.log("SeqIsThere = " + SeqIsThere);
+
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && !SeqIsThere)) {
             // tslint:disable-next-line:max-line-length
             // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
-
             this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
             this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
 
             this.IsSupportingInfoSequenceRequired = true;
             this.supportingInfoError = 'Supporting Info with Days-Supply must be linked with Item of type medication-code';
             return false;
+
           } else {
             this.IsSupportingInfoSequenceRequired = false;
             this.supportingInfoError = '';
@@ -782,16 +792,16 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-      if(this.data.type === 'oral'){
-        let bodySite=this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
+      if (this.data.type === 'oral') {
+        let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
       }
-      else{
+      else {
         model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
         model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
       }
-      
+
       model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
       model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
@@ -827,7 +837,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-      console.log("item model = "+JSON.stringify(model));
+      console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
@@ -850,7 +860,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     //let val=this.bodySiteList.filter(x => x.value === number)[0];
     this.FormItem.controls.bodySite.setValue(number);
     //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
-}
+  }
   closeDialog() {
     this.dialogRef.close();
   }

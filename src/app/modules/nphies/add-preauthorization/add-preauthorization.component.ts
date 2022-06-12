@@ -1151,9 +1151,11 @@ export class AddPreauthorizationComponent implements OnInit {
       return false;
       // tslint:disable-next-line:max-line-length
     } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
-      const seqNo = this.SupportingInfo.filter(x => x.category === 'days-supply')[0].sequence;
-      // tslint:disable-next-line:max-line-length
-      if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0 || x.supportingInfoSequence.indexOf(seqNo) === -1)).length > 0) {
+      let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
+      let ItemSeqList = this.Items.filter(x => x.type === 'medication-codes').map(t => t.sequence);
+      var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
+
+      if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
         return false;
