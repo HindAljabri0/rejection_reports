@@ -705,6 +705,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   checkItemsCodeForSupportingInfo() {
+    let SeqIsThere = null;
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.type.value.value === 'medication-codes') {
 
@@ -720,17 +721,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         return false;
       } else {
-        const seqNos = this.data.supportingInfos.map(x => {
-          if (x.category === 'days-supply') {
-            return x.sequence;
-          }
-        });
+
 
         if (this.FormItem.controls.type.value.value === 'medication-codes') {
 
           //let intersecting=this.getArraysIntersection(seqList, this.Items.filter(x => x.type === 'medication-codes').map(t=>t.supportingInfoSequence));
           // tslint:disable-next-line:max-line-length
-          var SeqIsThere = null;
           if (this.FormItem.controls.supportingInfoSequence.value) {
             let SupportingList = this.data.supportingInfos.filter(x => x.category === 'days-supply').map(t => t.sequence);
             let ItemSeqList = this.FormItem.controls.supportingInfoSequence.value.map(t => t.sequence);
@@ -738,7 +734,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           }
           console.log("SeqIsThere = " + SeqIsThere);
 
-          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && !SeqIsThere)) {
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && (SeqIsThere == null || SeqIsThere ==''))) {
             // tslint:disable-next-line:max-line-length
             // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
             this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
