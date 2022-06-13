@@ -8,7 +8,7 @@
                 <p>{{data.name || 'Unknown Extraction Name'}}</p>
                 <span>{{data.date | date: 'EEEE, dd MMMM, yyyy | hh:mm a'}}</span>
             </div>
-            <button type="button" class="btn-action text-primary" (click)="deleteRecord(data)" matRipple>
+            <button *ngIf="tabName === 'new' || tabName === 'in-progress'" type="button" class="btn-action text-primary" (click)="deleteRecord(data)" matRipple>
                 <mat-icon class="material-icons-outlined">delete</mat-icon>
             </button>
         </div>
@@ -19,7 +19,7 @@
                         <span>Doctor</span>
                         <p>{{data.assignedDoctor.id != null? data.assignedDoctor.id:'Not Assigned Yet'}}</p>
                     </div>
-                    <button type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditDoctoMenu">
+                    <button *ngIf="tabName === 'new'" type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditDoctoMenu">
                         <mat-icon class="material-icons-outlined">add_circle_outline</mat-icon>
                     </button>
                 </div>
@@ -44,7 +44,7 @@
                         <span>Coder</span>
                         <p>{{data.assignedCoder.id != null? data.assignedCoder.id:'Not Assigned Yet'}}</p>
                     </div>
-                    <button type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditCoderMenu">
+                    <button *ngIf="tabName === 'new'"  type="button" class="btn-action text-primary" matRipple [matMenuTriggerFor]="addEditCoderMenu">
                         <mat-icon class="material-icons-outlined">add_circle_outline</mat-icon>
                     </button>
                 </div>

@@ -2,71 +2,70 @@
     <div class="block-header">
         <p>Uploads</p>
     </div>
-    <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col-md-3">
+    <div class="primary-tab-wrapper">
+        <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
+            <mat-tab [label]="'New'">
+                <ng-container *ngIf="(newUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [tabName]="'new'" [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+            <mat-tab [label]="'In Progress'">
+                <ng-container *ngIf="(inProgressUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [tabName]="'in-progress'" [page]="(inProgressUploads$|async)">
+                    </app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+            <mat-tab [label]="'Completed'">
+                <ng-container *ngIf="(completedUploads$|async) != null">
+                    <app-uploads-assigning-tab-content [tabName]="'completed'" [page]="(completedUploads$|async)">
+                    </app-uploads-assigning-tab-content>
+                </ng-container>
+            </mat-tab>
+        </mat-tab-group>
+        <button class="btn-action tab-filter-btn text-primary" type="button" matRipple [matMenuTriggerFor]="filterMenu">
+            <mat-icon>filter_list</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu" xPosition="before" class="filter-menu">
+            <div class="menu-body" (click)="$event.stopPropagation()">
                 <div class="form-group">
+                    <!--  -->
                     <label class="control-label">Provider</label>
-                    <input type="text" class="form-control search-box" [matAutocomplete]="auto" [formControl]="providerController" (keyup.enter)="selectProvider()"
+                    <input type="text" class="form-control search-box" [matAutocomplete]="auto"
+                        [formControl]="providerController" (keyup.enter)="selectProvider()" (input)="updateFilter()"
                         placeholder="Select Provider">
                     <mat-autocomplete autoActiveFirstOption #auto>
-                        <mat-option *ngFor="let provider of (providerList$ | async)" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                        <mat-option *ngFor="let provider of filteredProviders"
+                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                             (click)="selectProvider(provider.switchAccountId)">
                             {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                         </mat-option>
                     </mat-autocomplete>
                 </div>
-            </div>
-            <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Doctor</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1" (selectionChange)="onDoctorSelectionChanged($event.value)">
+                        <mat-select value="-1" (selectionChange)="onDoctorSelectionChanged($event.value)" [formControl]="doctorController">
                             <mat-option value="-1">Select Doctor</mat-option>
-                            <mat-option *ngFor="let data of (doctorList$ | async)" value="{{data.switchUserId | lowercase}}">{{data.switchUserId}}</mat-option>
+                            <mat-option *ngFor="let data of (doctorList$ | async)"
+                                value="{{data.switchUserId | lowercase}}">{{data.switchUserId}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </div>
-            <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Coder</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1" (selectionChange)="onCoderSelectionChanged($event.value)">
+                        <mat-select value="-1" (selectionChange)="onCoderSelectionChanged($event.value)" [formControl]="coderController">
                             <mat-option value="-1">Select Coder</mat-option>
-                            <mat-option *ngFor="let data of (coderList$ | async)" value="{{data.switchUserId | lowercase}}">{{data.switchUserId}}</mat-option>
+                            <mat-option *ngFor="let data of (coderList$ | async)"
+                                value="{{data.switchUserId | lowercase}}">{{data.switchUserId}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">&nbsp;</label>
-                    <div class="btn-list">
-                        <button mat-flat-button color="primary" (click)="filterData()">Filter</button>
-                        <button mat-flat-button>Clear</button>
-                    </div>
+                <div class="btn-list text-right">
+                    <button mat-flat-button (click)="clearData();">Clear</button>
+                    <button mat-flat-button color="primary" (click)="filterData()">Filter</button>
                 </div>
             </div>
-        </div>
+        </mat-menu>
     </div>
-    <mat-tab-group (selectedTabChange)="dispatchTabChangeEvent($event)" [dynamicHeight]="true" class="primary-tab">
-        <mat-tab [label]="'New'">
-            <ng-container *ngIf="(newUploads$|async) != null">
-                <app-uploads-assigning-tab-content [page]="(newUploads$|async)"></app-uploads-assigning-tab-content>
-            </ng-container>
-        </mat-tab>
-        <mat-tab [label]="'In Progress'">
-            <ng-container *ngIf="(inProgressUploads$|async) != null">
-                <app-uploads-assigning-tab-content [page]="(inProgressUploads$|async)">
-                </app-uploads-assigning-tab-content>
-            </ng-container>
-        </mat-tab>
-        <mat-tab [label]="'Completed'">
-            <ng-container *ngIf="(completedUploads$|async) != null">
-                <app-uploads-assigning-tab-content [page]="(completedUploads$|async)">
-                </app-uploads-assigning-tab-content>
-            </ng-container>
-        </mat-tab>
-    </mat-tab-group>
 </div>

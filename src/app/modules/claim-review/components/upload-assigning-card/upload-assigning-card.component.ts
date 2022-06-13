@@ -17,6 +17,9 @@ export class UploadAssigningCardComponent implements OnInit {
 
   @Input()
   data: Upload = new Upload();
+  @Input()
+    tabName:  "new" | "in-progress" | "completed";
+    
   doctorList$: Observable<SwitchUser[]>;
   coderList$: Observable<SwitchUser[]>;
   selectedDoctor: string;
@@ -41,8 +44,6 @@ export class UploadAssigningCardComponent implements OnInit {
     }).afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(deleteUpload({ upload: upload }));
-        this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
-        return this.store.dispatch(showSnackBarMessage({ message: 'Upload Deleted Successfully!' }));
       }
     }, error => {
       console.log("Error on Delete", error);
@@ -58,13 +59,21 @@ export class UploadAssigningCardComponent implements OnInit {
   }
 
   updateAssignment(doctor: boolean, coder: boolean) {
+    if(doctor && (this.selectedDoctor == '' || this.selectedDoctor == null))
+    {
+      this.store.dispatch(showSnackBarMessage({ message : "Please Select a Doctor."}));
+      return;
+    }
+    else if(coder && (this.selectedCoder == '' || this.selectedCoder == null))
+    {
+      this.store.dispatch(showSnackBarMessage({ message : "Please Select a Coder."}));
+      return;
+    }
     var selectedId = '';
     if (doctor)
       selectedId = this.selectedDoctor;
     else
       selectedId = this.selectedCoder
     this.store.dispatch(updateAssignment({ data: { uploadId: this.data.id, userNme: selectedId, doctor: doctor, coder: coder } }));
-    this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
-    this.store.dispatch(showSnackBarMessage({ message : "User Assigned Successfully!"}));
   }
 }

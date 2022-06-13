@@ -123,7 +123,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
   }
 
   claimDetailsRemarksfocusOut(remarks: string) {
-    if (this.globalDoctorRemarks.trim() !== remarks.trim()) {
+  
+    if (remarks && this.globalDoctorRemarks !== remarks) {
       this.store.dispatch(setClaimDetailsRemarks({
         data: {
           remarks: remarks, coder: false, doctor: false,
