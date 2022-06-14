@@ -949,7 +949,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
           });
           this.checkItemValidation();
-          
+
         }
       }
       this.RefershTotal();
@@ -1113,13 +1113,13 @@ export class CreateClaimNphiesComponent implements OnInit {
       return true;
     }
   }
-  RefershTotal(){
-    this.otherDataModel.totalNetAmount =  0;
+  RefershTotal() {
+    this.otherDataModel.totalNetAmount = 0;
     this.Items.forEach((x) => {
-      console.log("values = "+x.net);
-      this.otherDataModel.totalNetAmount +=  x.net;
+      console.log("values = " + x.net);
+      this.otherDataModel.totalNetAmount += x.net;
     });
-    
+
   }
   checkItemValidation() {
     if (this.Items.length === 0) {
@@ -1164,7 +1164,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       return false;
       // tslint:disable-next-line:max-line-length
     } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
-      
+
       let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
       let ItemSeqList = this.Items.filter(x => x.type === 'medication-codes').map(t => t.sequence);
       var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
@@ -1370,6 +1370,15 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
 
+    if (this.FormNphiesClaim.controls.isNewBorn.value && (
+      !this.FormSubscriber.controls.fullName.value ||
+      !this.FormSubscriber.controls.dob.value ||
+      !this.FormSubscriber.controls.gender.value ||
+      !this.FormSubscriber.controls.documentType.value ||
+      !this.FormSubscriber.controls.documentId.value)) {
+      hasError = true;
+    }
+
     //this.checkCareTeamValidation();
     if (!this.checkDiagnosisValidation()) {
       hasError = true;
@@ -1435,6 +1444,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
 
       if (this.FormNphiesClaim.controls.isNewBorn.value) {
+
         this.model.subscriber = {};
         this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
         this.model.subscriber.secondName = this.FormSubscriber.controls.middleName.value;
