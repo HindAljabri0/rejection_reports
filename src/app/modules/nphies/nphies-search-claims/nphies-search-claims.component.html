@@ -30,17 +30,14 @@
                   <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
                 </tr>
                 <tr>
-                  <td *ngIf="summary.value.statuses[0] != 'partially_paid'"
-                    class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}" >
+                  <td *ngIf="summary.value.statuses[0] != 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                   </td>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span
-                      class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
+                    <span class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
                       *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
                   </td>
-                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'"
-                    class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
@@ -62,8 +59,7 @@
                       class="currency"> SR</span>
                   </td>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span
-                      class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
+                    <span class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
                       *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
@@ -190,14 +186,14 @@
                         <button mat-icon-button matTooltip="Check Status" class="text-primary ml-n2" (click)="checkStatus(claim.claimResponseId)">
                           <mat-icon>refresh</mat-icon>
                         </button>
-                        <span *ngIf="!claim.processingStatus" class="pl-1">Check
-                          Processing Status</span>
+                        <span *ngIf="!claim.processingStatus" class="pl-1">Check Status</span>
                         <span *ngIf="claim.processingStatus" class="pl-1">{{claim.processingStatus}}</span>
                       </div>
                     </td>
 
                     <td *ngIf="showInquireAll === true" class="actions text-center">
-                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')" [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : '')">I</span>
+                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')"
+                        [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : 'Select claim to inquire')">I</span>
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
                     </td>

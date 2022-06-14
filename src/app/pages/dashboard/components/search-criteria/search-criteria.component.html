@@ -1,5 +1,5 @@
 <mat-button-toggle-group class="primary-button-toggle block" (change)="searchByLastMonth = true; resetDates();">
-    <mat-button-toggle [checked]="searchByLastMonth">Last Month - {{lastMonthName}}
+    <mat-button-toggle [checked]="searchByLastMonth"> {{lastMonthName}} - {{currentMonthName}}
     </mat-button-toggle>
 </mat-button-toggle-group>
 <div class="or">Or</div>
