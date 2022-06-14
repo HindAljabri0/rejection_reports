@@ -3,9 +3,12 @@ import { MatDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { SwitchUser } from '../../models/SwitchUser.model';
 import { Upload } from '../../models/upload.model';
+import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
 import { deleteUpload, downloadExcel, loadCoderList, loadDoctorList, loadUploadsUnderReviewOfSelectedTab, updateAssignment } from '../../store/claimReview.actions';
 import { getCoderList, getDoctorList } from '../../store/claimReview.reducer';
 
@@ -18,14 +21,15 @@ export class UploadAssigningCardComponent implements OnInit {
   @Input()
   data: Upload = new Upload();
   @Input()
-    tabName:  "new" | "in-progress" | "completed";
-    
+  tabName: "new" | "in-progress" | "completed";
+
   doctorList$: Observable<SwitchUser[]>;
   coderList$: Observable<SwitchUser[]>;
   selectedDoctor: string;
   selectedCoder: string;
+  detailTopActionIcon = 'ic-download.svg';
 
-  constructor(private store: Store, private dialog: MatDialog) { }
+  constructor(private store: Store, private dialog: MatDialog, private downloadService: DownloadService, private claimReviewService: ClaimReviewService) { }
 
   ngOnInit() {
     this.doctorList$ = this.store.select(getDoctorList);
@@ -51,7 +55,19 @@ export class UploadAssigningCardComponent implements OnInit {
   }
 
   downloadData(upload: Upload) {
-    this.store.dispatch(downloadExcel({ uploadId : upload.id }));
+    //this.store.dispatch(downloadExcel({ uploadId : upload.id }));
+    let event;
+    event = this.claimReviewService.downloadExcel(upload.id);
+    if (event != null) {
+      this.downloadService.startGeneratingDownloadFile(event)
+        .subscribe(status => {
+          if (status != DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }
   }
 
   onDoctorSelectionChanged(data: string) {
@@ -63,14 +79,12 @@ export class UploadAssigningCardComponent implements OnInit {
   }
 
   updateAssignment(doctor: boolean, coder: boolean) {
-    if(doctor && (this.selectedDoctor == '' || this.selectedDoctor == null))
-    {
-      this.store.dispatch(showSnackBarMessage({ message : "Please Select a Doctor."}));
+    if (doctor && (this.selectedDoctor == '' || this.selectedDoctor == null)) {
+      this.store.dispatch(showSnackBarMessage({ message: "Please Select a Doctor." }));
       return;
     }
-    else if(coder && (this.selectedCoder == '' || this.selectedCoder == null))
-    {
-      this.store.dispatch(showSnackBarMessage({ message : "Please Select a Coder."}));
+    else if (coder && (this.selectedCoder == '' || this.selectedCoder == null)) {
+      this.store.dispatch(showSnackBarMessage({ message: "Please Select a Coder." }));
       return;
     }
     var selectedId = '';

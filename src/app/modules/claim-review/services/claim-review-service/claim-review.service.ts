@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
@@ -106,6 +106,8 @@ export class ClaimReviewService {
 
     downloadExcel( uploadId : number){
         const requestUrl = '/scrubbing/download/' + uploadId;
-        return this.http.get(environment.claimReviewService + requestUrl);
+        const request = new HttpRequest('GET', environment.claimReviewService + requestUrl, '', { responseType: 'text', reportProgress: true });
+        return this.http.request(request);
+        // return this.http.get(environment.claimReviewService + requestUrl);
     }
 }
