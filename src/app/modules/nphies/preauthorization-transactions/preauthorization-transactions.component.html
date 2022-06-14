@@ -127,8 +127,11 @@
                   </div>
                 </td>
                 <td class="actions text-center">
-                  <button *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
-                  (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn" [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')" [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : '')">I</button>
+                  <button
+                    *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
+                    (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn"
+                    [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')"
+                    [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : 'Send Inquiry')">I</button>
                   <!-- <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
                   <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                   <mat-spinner diameter="20"></mat-spinner> -->
