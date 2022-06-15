@@ -163,7 +163,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       searchStr = this.subscriberSearchController.value;
     }
 
-    if(searchStr.length>2){
+    if (searchStr.length > 2) {
       this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -231,7 +231,35 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
+  checkNewBornValidation() {
 
+    if (this.isNewBorn) {
+      const serviceDate = new Date(this.serviceDateControl.value);
+      const dob = new Date(this.selectedBeneficiary.dob);
+      if (serviceDate < dob) {
+        this.dialogService.showMessage('Error', 'Service Date cannot be less than New Born Date of Birth', 'alert', true, 'OK');
+        return false;
+      } else {
+        const diff = this.daysDiff(dob, serviceDate);
+        if (diff > 90) {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage('Error', 'Difference between Service Date and New Born Date of Birth cannot be greater than 90 days', 'alert', true, 'OK');
+          return false;
+        } else {
+          return true;
+        }
+      }
+
+    } else {
+      return false;
+    }
+  }
+
+  daysDiff(d1, d2) {
+    const diffTime = Math.abs(d2 - d1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
@@ -239,6 +267,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     }
     if (this.isNewBorn && !this.selectedSubscriber) {
       this.subscriberSearchController.markAsTouched();
+      return;
+    }
+
+    if (!this.checkNewBornValidation()) {
       return;
     }
     this.sharedServices.loadingChanged.next(true);
