@@ -87,12 +87,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.data.source === 'APPROVAL') {
       this.FormItem.controls.invoiceNo.clearValidators();
       this.FormItem.controls.invoiceNo.updateValueAndValidity();
       this.FormItem.controls.invoiceNo.setValue('');
     } else if (this.data.source === 'CLAIM') {
+      if (this.data.dateOrdered) {
+        this.today = this.data.dateOrdered;
+      }
       this.FormItem.controls.invoiceNo.setValidators(Validators.required);
       this.FormItem.controls.invoiceNo.updateValueAndValidity();
       this.FormItem.controls.invoiceNo.setValue('');
@@ -734,7 +736,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           }
           console.log("SeqIsThere = " + SeqIsThere);
 
-          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && (SeqIsThere == null || SeqIsThere ==''))) {
+          if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && (SeqIsThere == null || SeqIsThere == ''))) {
             // tslint:disable-next-line:max-line-length
             // this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
             this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
