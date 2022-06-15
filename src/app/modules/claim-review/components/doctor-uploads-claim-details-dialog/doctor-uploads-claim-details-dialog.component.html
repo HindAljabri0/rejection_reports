@@ -48,7 +48,7 @@
                                     <td>{{diag.diagnosisDescription}}</td>
                                     <td>
                                         <div class="form-group mb-n1 mt-n1">
-                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control"
+                                            <input value="{{diag.doctorRemarks}}" type="text" class="form-control" 
                                                 (focusout)="diagRemarksfocusOut(diag, $event.target.value, false, true)"
                                                 maxlength="100" [matTooltip]="getTooltipForDoctor(diag)" />
                                         </div>

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Claim } from "src/app/claim-module-components/models/claim.model";
 import { Diagnosis } from 'src/app/claim-module-components/models/diagnosis.model';
@@ -102,5 +102,12 @@ export class ClaimReviewService {
     updateAssignment( uploadId : number, userName : string, doctor: boolean, coder: boolean ){
         const requestUrl = '/scrubbing/update/assignment'
         return this.http.post(environment.claimReviewService + requestUrl, {"uploadId": uploadId,"userName": userName,"doctor": doctor, "coder": coder})
+    }
+
+    downloadExcel( uploadId : number){
+        const requestUrl = '/scrubbing/download/' + uploadId;
+        const request = new HttpRequest('GET', environment.claimReviewService + requestUrl, '', { responseType: 'text', reportProgress: true });
+        return this.http.request(request);
+        // return this.http.get(environment.claimReviewService + requestUrl);
     }
 }
