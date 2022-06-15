@@ -856,7 +856,9 @@ export class AddPreauthorizationComponent implements OnInit {
       payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
       beneficiaryPatientShare: this.beneficiaryPatientShare,
       beneficiaryMaxLimit: this.beneficiaryMaxLimit,
-      documentId: this.FormPreAuthorization.controls.documentId.value
+      documentId: this.FormPreAuthorization.controls.documentId.value,
+      IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
+      beneficiaryDob: this.selectedBeneficiary.dob
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1315,6 +1317,22 @@ export class AddPreauthorizationComponent implements OnInit {
       return hasError;
     }
   }
+
+  checkNewBornValidation() {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormPreAuthorization.controls.isNewBorn.value && this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional') {
+      if (this.SupportingInfo.filter(x => x.value === 'birth-weight').length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'Supporting Info must have birth-weight if it is New Born', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1402,6 +1420,10 @@ export class AddPreauthorizationComponent implements OnInit {
     }
 
     if (!this.checkItemsCodeForSupportingInfo()) {
+      hasError = true;
+    }
+
+    if (!this.checkNewBornValidation()) {
       hasError = true;
     }
 
