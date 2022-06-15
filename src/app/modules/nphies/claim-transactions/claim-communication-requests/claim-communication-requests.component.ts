@@ -60,11 +60,13 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
           });
-          const pages = Math.ceil((this.communicationRequestModel.totalElements / this.pageSize));
-          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.communicationRequestModel.number;
-          this.page = this.communicationRequestModel.number;
-          this.pageSize = this.communicationRequestModel.numberOfElements;
+          if (this.paginator) {
+            const pages = Math.ceil((this.communicationRequestModel.totalElements / this.paginator.pageSize));
+            this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+            this.manualPage = this.communicationRequestModel.number;
+            this.paginator.pageIndex = this.communicationRequestModel.number;
+            this.paginator.pageSize = this.communicationRequestModel.size;
+          }
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -107,7 +109,6 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
   }
 
   showClaim(claimId: string, uploadId: string, claimResponseId: string, notificationId: string, notificationStatus: string) {
-
     if (this.communicationRequests.filter(x => x.notificationId === notificationId)[0]) {
       this.communicationRequests.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
     }
@@ -117,10 +118,10 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
     this.params.claimId = claimId;
     this.params.uploadId = uploadId;
     this.params.claimResponseId = claimResponseId;
-    this.resetURL();
+    this.resetURL(true);
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
-      autoFocus: false, data: {  openCommunicationTab: true }
+      autoFocus: false, data: { openCommunicationTab: true }
     });
 
     this.claimDialogRef.afterClosed().subscribe(result => {
@@ -133,18 +134,26 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
 
   readNotification(notificationStatus: string, notificationId: string) {
     if (notificationStatus === 'unread') {
-      this.sharedServices.unReadRecentCount = this.sharedServices.unReadRecentCount - 1;
+      this.sharedServices.unReadClaimComunicationRequestCount = this.sharedServices.unReadClaimComunicationRequestCount - 1;
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
       }
     }
   }
 
-  resetURL() {
-    this.router.navigate([], {
-      relativeTo: this.routeActive,
-      queryParams: { ...this.params, editMode: null, size: null }
-    });
+  resetURL(openCommunicationTab = false) {
+    if (openCommunicationTab) {
+      this.router.navigate([], {
+        relativeTo: this.routeActive,
+        queryParams: { ...this.params, editMode: null, size: null },
+        fragment: 'CommunicationRequest'
+      });
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.routeActive,
+        queryParams: { ...this.params, editMode: null, size: null }
+      });
+    }
   }
 
   get paginatorLength() {
