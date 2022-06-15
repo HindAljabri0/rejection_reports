@@ -118,10 +118,10 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
     this.params.claimId = claimId;
     this.params.uploadId = uploadId;
     this.params.claimResponseId = claimResponseId;
-    this.resetURL();
+    this.resetURL(true);
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
-      autoFocus: false, data: {  openCommunicationTab: true }
+      autoFocus: false, data: { openCommunicationTab: true }
     });
 
     this.claimDialogRef.afterClosed().subscribe(result => {
@@ -141,11 +141,19 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
     }
   }
 
-  resetURL() {
-    this.router.navigate([], {
-      relativeTo: this.routeActive,
-      queryParams: { ...this.params, editMode: null, size: null }
-    });
+  resetURL(openCommunicationTab = false) {
+    if (openCommunicationTab) {
+      this.router.navigate([], {
+        relativeTo: this.routeActive,
+        queryParams: { ...this.params, editMode: null, size: null },
+        fragment: 'CommunicationRequest'
+      });
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.routeActive,
+        queryParams: { ...this.params, editMode: null, size: null }
+      });
+    }
   }
 
   get paginatorLength() {
