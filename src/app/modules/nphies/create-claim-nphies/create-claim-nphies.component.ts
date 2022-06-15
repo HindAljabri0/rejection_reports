@@ -2885,6 +2885,15 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
   }
 
+  viewCommunicationAttachment(e, attachmentName, byteArray) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: attachmentName, attachment: byteArray
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
+  }
+
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null

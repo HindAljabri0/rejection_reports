@@ -51,11 +51,13 @@ export class ProcessedTransactionsComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
           });
-          const pages = Math.ceil((this.processedTransactionModel.totalElements / this.paginator.pageSize));
-          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.processedTransactionModel.number;
-          this.paginator.pageIndex = this.processedTransactionModel.number;
-          this.paginator.pageSize = this.processedTransactionModel.numberOfElements;
+          if (this.paginator) {
+            const pages = Math.ceil((this.processedTransactionModel.totalElements / this.paginator.pageSize));
+            this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+            this.manualPage = this.processedTransactionModel.number;
+            this.paginator.pageIndex = this.processedTransactionModel.number;
+            this.paginator.pageSize = this.processedTransactionModel.size;
+          }
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -102,7 +104,7 @@ export class ProcessedTransactionsComponent implements OnInit {
     if (this.processedTransactions.filter(x => x.notificationId === notificationId)[0]) {
       this.processedTransactions.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
     }
-    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId , 'notificationStatus': notificationStatus});
+    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId, 'notificationStatus': notificationStatus });
   }
 
   get paginatorLength() {
