@@ -265,7 +265,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.claimId = this.claimId == null ? parseInt(this.activatedRoute.snapshot.queryParams.claimId) : this.claimId;
 
     } else {
-      this.IsDiagnosisRequired = true;
+      // this.IsDiagnosisRequired = true;
       this.pageMode = 'CREATE';
       this.isLoading = false;
 
