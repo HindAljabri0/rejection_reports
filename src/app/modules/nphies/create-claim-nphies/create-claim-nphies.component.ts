@@ -847,9 +847,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       type: this.FormNphiesClaim.controls.type.value.value,
       subType: this.FormNphiesClaim.controls.subType.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
-      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
-      IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
-      beneficiaryDob: this.selectedBeneficiary.dob
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1329,23 +1327,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  checkNewBornValidation() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormNphiesClaim.controls.isNewBorn.value && this.FormNphiesClaim.controls.type.value.value === 'institutional' || this.FormNphiesClaim.controls.type.value.value === 'professional') {
-      if (this.SupportingInfo.filter(x => x.value === 'birth-weight').length === 0) {
-        // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Supporting Info must have birth-weight if it is New Born', 'alert', true, 'OK');
-        return false;
-      } else {
-        return true;
-      }
-    } else {
-      return true;
-    }
-  }
-
   onSubmit() {
     this.isSubmitted = true;
+
     let hasError = false;
 
     if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
@@ -1398,6 +1382,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
 
+    //this.checkCareTeamValidation();
     if (!this.checkDiagnosisValidation()) {
       hasError = true;
     }
@@ -1420,10 +1405,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
     if (!this.checkItemsCodeForSupportingInfo()) {
-      hasError = true;
-    }
-
-    if (!this.checkNewBornValidation()) {
       hasError = true;
     }
 
