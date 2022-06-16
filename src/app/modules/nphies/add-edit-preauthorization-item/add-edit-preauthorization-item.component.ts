@@ -78,8 +78,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   showQuantityCode = true;
 
   today: Date;
-
-  serviceDataError = '';
   constructor(
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
@@ -773,35 +771,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  validateNewBornValues() {
-    if (this.data.IsNewBorn && this.data.beneficiaryDob && (this.data.type === 'institutional' || this.data.type === 'professional')) {
-      const serviceDate = new Date(this.FormItem.controls.startDate.value);
-      const dob = new Date(this.data.beneficiaryDob);
-      if (serviceDate < dob) {
-        this.serviceDataError = 'Start Date cannot be less than New Born Date of Birth';
-        return false;
-      } else {
-        const diff = this.daysDiff(dob, serviceDate);
-        if (diff > 90) {
-          this.serviceDataError = 'Difference between Start Date and New Born Date of Birth cannot be greater than 90 days';
-          return false;
-        } else {
-          this.serviceDataError = '';
-          return true;
-        }
-      }
-
-    } else {
-      return false;
-    }
-  }
-
-  daysDiff(d1, d2) {
-    const diffTime = Math.abs(d2 - d1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
   onSubmit() {
     this.isSubmitted = true;
     if (!this.checkItemsCodeForSupportingInfo()) {
@@ -813,10 +782,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
 
       if (!pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString())) {
-        return;
-      }
-
-      if (!this.validateNewBornValues()) {
         return;
       }
 
@@ -833,7 +798,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
-      } else {
+      }
+      else {
         model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
         model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
       }
@@ -873,6 +839,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
+      console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
