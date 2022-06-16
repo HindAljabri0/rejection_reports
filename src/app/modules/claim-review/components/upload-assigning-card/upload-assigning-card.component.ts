@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
@@ -9,7 +9,7 @@ import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { SwitchUser } from '../../models/SwitchUser.model';
 import { Upload } from '../../models/upload.model';
 import { ClaimReviewService } from '../../services/claim-review-service/claim-review.service';
-import { deleteUpload, downloadExcel, loadCoderList, loadDoctorList, loadUploadsUnderReviewOfSelectedTab, updateAssignment } from '../../store/claimReview.actions';
+import { deleteUpload, updateAssignment } from '../../store/claimReview.actions';
 import { getCoderList, getDoctorList } from '../../store/claimReview.reducer';
 
 @Component({
@@ -27,7 +27,9 @@ export class UploadAssigningCardComponent implements OnInit {
   coderList$: Observable<SwitchUser[]>;
   selectedDoctor: string;
   selectedCoder: string;
-  detailTopActionIcon = 'ic-download.svg';
+  // detailTopActionIcon = 'ic-download.svg';
+  downloadedFiles: number[] = []
+  downloadFileSubscription: Subscription = new Subscription;
 
   constructor(private store: Store, private dialog: MatDialog, private downloadService: DownloadService, private claimReviewService: ClaimReviewService) { }
 
@@ -55,19 +57,21 @@ export class UploadAssigningCardComponent implements OnInit {
   }
 
   downloadData(upload: Upload) {
-    //this.store.dispatch(downloadExcel({ uploadId : upload.id }));
-    let event;
-    event = this.claimReviewService.downloadExcel(upload.id);
-    if (event != null) {
-      this.downloadService.startGeneratingDownloadFile(event)
+    // let event;
+    // event = ;
+    // if (event != null) {
+      if (this.downloadedFiles.includes(upload.id)) { return; }
+      this.downloadFileSubscription = this.downloadService.startGeneratingDownloadFile(this.claimReviewService.downloadExcel(upload.id))
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
-            this.detailTopActionIcon = 'ic-check-circle.svg';
-          } else {
-            this.detailTopActionIcon = 'ic-download.svg';
-          }
+            this.downloadedFiles.push(upload.id)
+            // this.detailTopActionIcon = 'ic-check-circle.svg';
+          } 
+          // else {
+            // this.detailTopActionIcon = 'ic-download.svg';
+          // }
         });
-    }
+    // }
   }
 
   onDoctorSelectionChanged(data: string) {
@@ -93,5 +97,9 @@ export class UploadAssigningCardComponent implements OnInit {
     else
       selectedId = this.selectedCoder
     this.store.dispatch(updateAssignment({ data: { uploadId: this.data.id, userNme: selectedId, doctor: doctor, coder: coder } }));
+  }
+
+  ngOnDestroy(){
+    this.downloadFileSubscription.unsubscribe()
   }
 }
