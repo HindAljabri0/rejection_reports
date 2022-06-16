@@ -40,7 +40,7 @@
                 <p class="error-text pt-1" *ngIf="error">{{error}}</p>
               </div>
               <ng-container *ngIf="!fileUploadFlag">
-                <input type="file" accept="application/pdf,image/png,image/jpeg" name="attachmentFile" class="file-upload-control" (change)="selectFile($event)" required />
+                <input type="file" accept="application/pdf,image/jpeg,image/jpg" name="attachmentFile" class="file-upload-control" (change)="selectFile($event)" required />
                 <div *ngIf="isSubmitted && FormSupportingInfo.get('attachment').hasError('required')">
                   <span class="error-text">Please select a file</span>
                 </div>

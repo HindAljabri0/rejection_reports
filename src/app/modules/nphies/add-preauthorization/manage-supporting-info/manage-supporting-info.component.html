@@ -268,7 +268,7 @@
                   <p class="error-text pt-1" *ngIf="supportingInfo.fileError">{{supportingInfo.fileError}}</p>
                 </div>
                 <ng-container *ngIf="!supportingInfo.attachment">
-                  <input type="file" accept="application/pdf,image/png,image/jpeg" name="attachmentFile"
+                  <input type="file" accept="application/pdf,image/jpeg,image/jpg" name="attachmentFile"
                     class="file-upload-control" (change)="selectFile($event, i)" required />
                   <div *ngIf="isSubmitted && supportingInfo.IsAttachmentRequired && !supportingInfo.attachment">
                     <span class="error-text">Please select a file</span>
