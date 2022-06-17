@@ -110,7 +110,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
 
   checkfile() {
-    const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
+    const validExts = ['.pdf','.jpg','.jpeg'];
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
