@@ -225,7 +225,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
     ListDuplicateService: Number[] = [];
     invoiceHasError(invoice: Invoice) {
-
+console.log("DepartmentCode "+this.dentalDepartmentCode);
         let check = 0;
         let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
         if (invoicesError.length > 0) {
@@ -235,7 +235,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                 for (var i = 0; i < invoice.service.length; i++) {
                     for (var j = i + 1; j < invoice.service.length; j++) {
 
-                        if (this.claimType == 'WASEEL_4') {
+                        if (this.dentalDepartmentCode == 'WASEEL_4' || this.claimType=='WASEEL_4' ) {
                             if (invoice.service[i].serviceCode + invoice.service[i].toothNumber == invoice.service[j].serviceCode + invoice.service[j].toothNumber) {
 
                                 this.ListDuplicateService.push(invoice.service[i].serviceId);
