@@ -134,7 +134,7 @@ export class ManageSupportingInfoComponent implements OnInit {
 
 
   checkfile(i) {
-    const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
+    const validExts = ['.pdf','.jpg','.jpeg'];
     let fileExt = this.supportingInfoList[i].attachmentName;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
