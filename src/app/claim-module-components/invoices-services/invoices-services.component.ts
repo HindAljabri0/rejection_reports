@@ -234,13 +234,22 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
                 for (var i = 0; i < invoice.service.length; i++) {
                     for (var j = i + 1; j < invoice.service.length; j++) {
-                        if (invoice.service[i].serviceCode == invoice.service[j].serviceCode) {
 
-                            this.ListDuplicateService.push(invoice.service[i].serviceId);
-                            this.ListDuplicateService.push(invoice.service[j].serviceId);
+                        if (this.claimType == 'WASEEL_4') {
+                            if (invoice.service[i].serviceCode + invoice.service[i].toothNumber == invoice.service[j].serviceCode + invoice.service[j].toothNumber) {
+
+                                this.ListDuplicateService.push(invoice.service[i].serviceId);
+                                this.ListDuplicateService.push(invoice.service[j].serviceId);
+                            }
+                        }
+                        else {
+                            if (invoice.service[i].serviceCode == invoice.service[j].serviceCode) {
+
+                                this.ListDuplicateService.push(invoice.service[i].serviceId);
+                                this.ListDuplicateService.push(invoice.service[j].serviceId);
+                            }
                         }
                     }
-
                 }
 
             }
