@@ -1345,6 +1345,20 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
+  checkNewBornSupportingInfoCodes() {
+    if (this.FormNphiesClaim.controls.isNewBorn.value) {
+      if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the claim request', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
 
@@ -1427,6 +1441,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     if (!this.checkNewBornValidation()) {
+      hasError = true;
+    }
+
+    if (!this.checkNewBornSupportingInfoCodes()) {
       hasError = true;
     }
 
