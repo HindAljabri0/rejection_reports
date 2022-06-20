@@ -850,7 +850,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
-      beneficiaryDob: this.selectedBeneficiary.dob
+      beneficiaryDob: this.FormNphiesClaim.controls.dob.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1335,7 +1335,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.FormNphiesClaim.controls.isNewBorn.value && this.FormNphiesClaim.controls.type.value.value === 'institutional' || this.FormNphiesClaim.controls.type.value.value === 'professional') {
       if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Supporting Info must have birth-weight if it is New Born', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional claim request', 'alert', true, 'OK');
         return false;
       } else {
         return true;
@@ -1448,7 +1448,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
       this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
       this.model.beneficiary.fileId = this.FormNphiesClaim.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
+      this.model.beneficiary.dob = this.datePipe.transform(this.FormNphiesClaim.controls.dob.value, 'yyyy-MM-dd');
       this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
       this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
       this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
@@ -1477,7 +1477,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
         this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
         this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
-        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.dob = this.datePipe.transform(this.FormSubscriber.controls.dob.value, 'yyyy-MM-dd');
         this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
         this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
         this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
