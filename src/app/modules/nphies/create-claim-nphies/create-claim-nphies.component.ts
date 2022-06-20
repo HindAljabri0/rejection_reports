@@ -1448,7 +1448,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
       this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
       this.model.beneficiary.fileId = this.FormNphiesClaim.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
+      this.model.beneficiary.dob = this.datePipe.transform(this.FormNphiesClaim.controls.dob.value, 'yyyy-MM-dd');
       this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
       this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
       this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
@@ -1477,7 +1477,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
         this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
         this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
-        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.dob = this.datePipe.transform(this.FormSubscriber.controls.dob.value, 'yyyy-MM-dd');
         this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
         this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
         this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
