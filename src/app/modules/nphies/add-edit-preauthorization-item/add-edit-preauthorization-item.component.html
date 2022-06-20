@@ -126,7 +126,7 @@
 
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && (FormItem.get('startDate').hasError('required') || FormItem.get('startDate').hasError('matDatepickerMax'))}">
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && (FormItem.get('startDate').hasError('required') || FormItem.get('startDate').hasError('matDatepickerMax') || serviceDataError)}">
           <label class="control-label">Start Date<span class="asterisk">*</span></label>
           <div class="date-picker">
 
@@ -152,6 +152,9 @@
             <span class="error-text" *ngIf="data.source === 'CLAIM'">Item date must be on or before Claim date</span>
             <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval
               date</span>
+          </div>
+          <div *ngIf="(isSubmitted || FormItem.get('startDate').touched) && serviceDataError">
+            <span class="error-text">{{serviceDataError}}</span>
           </div>
         </div>
       </div>
