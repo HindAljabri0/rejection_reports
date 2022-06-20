@@ -1322,7 +1322,7 @@ export class AddPreauthorizationComponent implements OnInit {
   checkNewBornValidation() {
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.isNewBorn.value && this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional') {
-      if (this.SupportingInfo.filter(x => x.value === 'birth-weight').length === 0) {
+      if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage('Error', 'Supporting Info must have birth-weight if it is New Born', 'alert', true, 'OK');
         return false;
