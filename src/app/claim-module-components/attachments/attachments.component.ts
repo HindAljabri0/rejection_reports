@@ -59,6 +59,9 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
     if (fileExt.toLowerCase() == 'pdf') {
       const objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else if(fileExt.toLowerCase() === 'mov' || fileExt.toLowerCase() === 'mp4' || fileExt.toLowerCase() === 'webm'){
+      const objectURL = `data:video/${fileExt};base64,` + attachment.attachmentFile;
+      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     } else {
       const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -73,7 +76,7 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
         return;
       }
       const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && mimeType.match(/video\/*/) == null && !mimeType.includes('dicom')) {
+      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && !mimeType.includes('mp4') && !mimeType.includes('webm') && !mimeType.includes('mov') && !mimeType.includes('dicom')) {
         this.fileType = null;
         return;
       }
@@ -84,14 +87,14 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
       }
       if (file.size / 1024 / 1024 > 2 && (mimeType.match(/image\/*/) != null || mimeType.includes('pdf'))) {
         this.fileType = null;
-        this.selectFilesError = 'Selected files should not be more than 2M.';
+        this.selectFilesError = 'Selected files should not be more than 2MB.';
         return;
       }else if(file.size / 1024 / 1024 > 30){
         this.fileType = null;
-        this.selectFilesError = 'Selected files should not be more than 30M.';
+        this.selectFilesError = 'Selected files should not be more than 30MB.';
         return;
       }
-      if (this.attachments.find(attachment => this.isVideo(attachment)) != undefined || this.attachments.find(attachment => this.isDicom(attachment)) != undefined) {
+      if ((mimeType.match(/video\/*/) != null || mimeType.includes('dicom')) && (this.attachments.find(attachment => this.isVideo(attachment)) != undefined || this.attachments.find(attachment => this.isDicom(attachment)) != undefined)) {
         this.fileType = null;
         this.selectFilesError = 'You Can Select Only One Dicom Or Video File.';
         return;
