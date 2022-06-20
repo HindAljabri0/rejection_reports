@@ -794,7 +794,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
 
     } else {
-      return false;
+      return true;
     }
   }
 

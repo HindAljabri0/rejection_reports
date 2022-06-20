@@ -123,7 +123,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
     insurancePlanTpaNphiesId: [],
-    isNewBorn: [false],
+    isNewBorn: [false]
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -166,6 +166,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanPayerName: [''],
     insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
+    insurancePlanTpaNphiesId: []
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -1332,7 +1333,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   checkNewBornValidation() {
     // tslint:disable-next-line:max-line-length
     if (this.FormNphiesClaim.controls.isNewBorn.value && this.FormNphiesClaim.controls.type.value.value === 'institutional' || this.FormNphiesClaim.controls.type.value.value === 'professional') {
-      if (this.SupportingInfo.filter(x => x.value === 'birth-weight').length === 0) {
+      if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage('Error', 'Supporting Info must have birth-weight if it is New Born', 'alert', true, 'OK');
         return false;
