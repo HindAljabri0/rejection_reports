@@ -1450,7 +1450,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.beneficiary.familyName = this.FormPreAuthorization.controls.familyName.value;
       this.model.beneficiary.fullName = this.FormPreAuthorization.controls.fullName.value;
       this.model.beneficiary.fileId = this.FormPreAuthorization.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.FormPreAuthorization.controls.dob.value;
+      this.model.beneficiary.dob = this.datePipe.transform(this.FormPreAuthorization.controls.dob.value, 'yyyy-MM-dd');
       this.model.beneficiary.gender = this.FormPreAuthorization.controls.gender.value;
       this.model.beneficiary.documentType = this.FormPreAuthorization.controls.documentType.value;
       this.model.beneficiary.documentId = this.FormPreAuthorization.controls.documentId.value;
@@ -1479,7 +1479,7 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
         this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
         this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
-        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.dob = this.datePipe.transform(this.FormSubscriber.controls.dob.value, 'yyyy-MM-dd');
         this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
         this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
         this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
