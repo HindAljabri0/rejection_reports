@@ -1,28 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#E3E4D8;}
-	.st1{fill:#D0CEBD;}
-	.st2{fill:#324946;}
-	.st3{fill:#E1A02F;}
-	.st4{fill:#FFFFFF;}
-	.st5{fill:#1B2D2A;}
-</style>
-<path class="st0" d="M432.1,485.5H79V0h273.7l79.4,79.4V485.5z"/>
-<path class="st1" d="M352.7,0v79.4h79.4L352.7,0z"/>
-<path class="st2" d="M79,353.1h353.1V512H79V353.1z"/>
-<path class="st3" d="M167.3,123.6h176.6v176.6H167.3V123.6z"/>
-<path class="st4" d="M282,211.9l-53,35.3v-70.6L282,211.9z"/>
-
-<path class="st2" d="M149.6,123.6h35.3v35.3h-35.3V123.6z"/>
-<path class="st5" d="M149.6,158.9h35.3v35.3h-35.3V158.9z"/>
-<path class="st2" d="M149.6,194.2h35.3v35.3h-35.3V194.2z"/>
-<path class="st5" d="M149.6,229.5h35.3v35.3h-35.3V229.5z"/>
-<path class="st2" d="M149.6,264.8h35.3v35.3h-35.3V264.8z"/>
-
-
-<path class="st2" d="M326.2,123.6h35.3v35.3h-35.3V123.6z"/>
-<path class="st5" d="M326.2,158.9h35.3v35.3h-35.3V158.9z"/>
-<path class="st2" d="M326.2,194.2h35.3v35.3h-35.3V194.2z"/>
-<path class="st5" d="M326.2,229.5h35.3v35.3h-35.3V229.5z"/>
-<path class="st2" d="M326.2,264.8h35.3v35.3h-35.3V264.8z"/>
+<svg width="100%" height="100%" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M432.1 512H79V0H352.7L432.1 79.4V512Z" fill="#E3E4D8"/>
+<path d="M352.7 0V79.4H432.1L352.7 0Z" fill="#D0CEBD"/>
+<path d="M167.3 168H343.9V344.6H167.3V168Z" fill="#E1A02F"/>
+<path d="M282 256.3L229 291.6V221L282 256.3Z" fill="white"/>
+<path d="M149.6 168H184.9V203.3H149.6V168V168Z" fill="#324946"/>
+<path d="M149.6 203.3H184.9V238.6H149.6V203.3V203.3Z" fill="#1B2D2A"/>
+<path d="M149.6 238.6H184.9V273.9H149.6V238.6V238.6Z" fill="#324946"/>
+<path d="M149.6 273.9H184.9V309.2H149.6V273.9V273.9Z" fill="#1B2D2A"/>
+<path d="M149.6 309.2H184.9V344.5H149.6V309.2V309.2Z" fill="#324946"/>
+<path d="M326.2 168H361.5V203.3H326.2V168Z" fill="#324946"/>
+<path d="M326.2 203.3H361.5V238.6H326.2V203.3Z" fill="#1B2D2A"/>
+<path d="M326.2 238.6H361.5V273.9H326.2V238.6Z" fill="#324946"/>
+<path d="M326.2 273.9H361.5V309.2H326.2V273.9Z" fill="#1B2D2A"/>
+<path d="M326.2 309.2H361.5V344.5H326.2V309.2Z" fill="#324946"/>
 </svg>
