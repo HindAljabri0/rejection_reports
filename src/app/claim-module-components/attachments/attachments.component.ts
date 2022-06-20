@@ -73,7 +73,7 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
         return;
       }
       const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
+      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && mimeType.match(/video\/*/) == null && !mimeType.includes('dicom')) {
         this.fileType = null;
         return;
       }
@@ -82,9 +82,18 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
         this.selectFilesError = 'A file with the same name already exists.';
         return;
       }
-      if (file.size / 1024 / 1024 > 2) {
+      if (file.size / 1024 / 1024 > 2 && (mimeType.match(/image\/*/) != null || mimeType.includes('pdf'))) {
         this.fileType = null;
         this.selectFilesError = 'Selected files should not be more than 2M.';
+        return;
+      }else if(file.size / 1024 / 1024 > 30){
+        this.fileType = null;
+        this.selectFilesError = 'Selected files should not be more than 30M.';
+        return;
+      }
+      if (this.attachments.find(attachment => this.isVideo(attachment)) != undefined || this.attachments.find(attachment => this.isDicom(attachment)) != undefined) {
+        this.fileType = null;
+        this.selectFilesError = 'You Can Select Only One Dicom Or Video File.';
         return;
       }
       this.preview(file);
@@ -116,6 +125,16 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
   isPdf(attachment: AttachmentRequest) {
     const fileExt = attachment.fileName.split('.').pop();
     return fileExt.toLowerCase() == 'pdf';
+  }
+
+  isVideo(attachment: AttachmentRequest) {
+    const fileExt = attachment.fileName.split('.').pop();
+    return fileExt.toLowerCase() == 'mp4' || fileExt.toLowerCase() == 'mov' || fileExt.toLowerCase() == 'webm';
+  }
+
+  isDicom(attachment: AttachmentRequest) {
+    const fileExt = attachment.fileName.split('.').pop();
+    return fileExt.toLowerCase() == 'dcm';
   }
 
   editAttachment(type: FileType, index: number) {

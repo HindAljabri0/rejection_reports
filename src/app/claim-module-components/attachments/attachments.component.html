@@ -10,8 +10,9 @@
         <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of attachments; let i = index">
             <div class="attachment">
                 <button class="thumbnail" type="button" (click)="viewAttachment(attachment)">
-                    <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
+                    <img *ngIf="!isPdf(attachment) && !isVideo(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
                     <img *ngIf="isPdf(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
+                    <img *ngIf="isVideo(attachment)" src="assets/file-types/ic-video.svg" [alt]="attachment.fileName" />
                 </button>
                 <div class="content">
                     <p class="title">{{attachment.fileName}}</p>
@@ -68,7 +69,7 @@
                         Lab Result
                     </mat-radio-button>
                     <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
-                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf,video/mp4,video/quicktime,video/webm,application/dicom" />
                 </mat-radio-group>
             </mat-menu>
         </div>
