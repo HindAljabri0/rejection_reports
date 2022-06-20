@@ -253,7 +253,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       }
 
     } else {
-      return false;
+      return true;
     }
   }
 
