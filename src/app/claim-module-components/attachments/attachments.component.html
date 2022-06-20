@@ -12,7 +12,7 @@
                 <button class="thumbnail" type="button" (click)="viewAttachment(attachment)">
                     <img *ngIf="!isPdf(attachment) && !isVideo(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
                     <img *ngIf="isPdf(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
-                    <img *ngIf="isVideo(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
+                    <img *ngIf="isVideo(attachment)" src="assets/file-types/ic-video.svg" [alt]="attachment.fileName" />
                 </button>
                 <div class="content">
                     <p class="title">{{attachment.fileName}}</p>

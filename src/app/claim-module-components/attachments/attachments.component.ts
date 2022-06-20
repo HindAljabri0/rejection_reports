@@ -73,7 +73,7 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
         return;
       }
       const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && mimeType.match(/video\/*/) == null) {
+      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && mimeType.match(/video\/*/) == null && !mimeType.includes('dicom')) {
         this.fileType = null;
         return;
       }
@@ -89,6 +89,11 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
       }else if(file.size / 1024 / 1024 > 30){
         this.fileType = null;
         this.selectFilesError = 'Selected files should not be more than 30M.';
+        return;
+      }
+      if (this.attachments.find(attachment => this.isVideo(attachment)) != undefined || this.attachments.find(attachment => this.isDicom(attachment)) != undefined) {
+        this.fileType = null;
+        this.selectFilesError = 'You Can Select Only One Dicom Or Video File.';
         return;
       }
       this.preview(file);
