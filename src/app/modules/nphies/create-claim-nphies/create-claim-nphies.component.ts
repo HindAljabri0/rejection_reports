@@ -850,7 +850,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
-      beneficiaryDob: this.selectedBeneficiary.dob
+      beneficiaryDob: this.FormNphiesClaim.controls.dob.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1335,7 +1335,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.FormNphiesClaim.controls.isNewBorn.value && this.FormNphiesClaim.controls.type.value.value === 'institutional' || this.FormNphiesClaim.controls.type.value.value === 'professional') {
       if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Supporting Info must have birth-weight if it is New Born', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional claim request', 'alert', true, 'OK');
         return false;
       } else {
         return true;
