@@ -314,6 +314,7 @@ export class SharedDataService {
   ];
 
   newBornCodes = [
+    'Z38',
     'Z38.0',
     'Z38.1',
     'Z38.2',
