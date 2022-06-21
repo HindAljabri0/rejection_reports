@@ -1402,7 +1402,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   checkNewBornValidation() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormPreAuthorization.controls.isNewBorn.value && this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional') {
+    if (this.FormPreAuthorization.controls.isNewBorn.value && (this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional')) {
       if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional preauthorization request', 'alert', true, 'OK');
