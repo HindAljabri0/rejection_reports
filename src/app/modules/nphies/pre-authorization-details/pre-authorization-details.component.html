@@ -130,6 +130,25 @@
       <p class="form-control-static text-primary">{{data.cancelResponseReason ? data.cancelResponseReason : '-'}}</p>
     </div>
   </div>
+
+  <div *ngIf="data.transferAuthProvider" class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Referral PreAuth Provider</div>
+      <p class="form-control-static text-primary">{{data.transferAuthProvider}}</p>
+    </div>
+  </div>
+  <div *ngIf="data.transferAuthNumber" class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Referral PreAuth Ref. No.</div>
+      <p class="form-control-static text-primary">{{data.transferAuthNumber}}</p>
+    </div>
+  </div>
+  <div *ngIf="data.transferAuthStartDate && data.transferAuthEndDate" class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Referral PreAuth Period</div>
+      <p class="form-control-static text-primary">{{data.transferAuthStartDate | date: 'dd/MM/yyyy'}} - {{data.transferAuthEndDate | date: 'dd/MM/yyyy'}}</p>
+    </div>
+  </div>
 </div>
 
 <!-- payment info start -->

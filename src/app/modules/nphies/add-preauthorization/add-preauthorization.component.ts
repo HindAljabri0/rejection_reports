@@ -16,7 +16,7 @@ import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens
 import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -24,6 +24,8 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -35,8 +37,13 @@ export class AddPreauthorizationComponent implements OnInit {
   @Input() claimReuseId: number;
   @Input() data: any;
   @Output() closeEvent = new EventEmitter();
-  paymentAmount = 0;
 
+  filteredProviderList: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  onDestroy = new Subject<void>();
+  IsRefferalProviderLoading = false;
+  IsOtherReferral = false;
+
+  paymentAmount = 0;
   beneficiarySearchController = new FormControl();
   subscriberSearchController = new FormControl();
 
@@ -117,7 +124,10 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanTpaNphiesId: [],
     isNewBorn: [false],
     transfer: [false],
-    subscriberName: ['']
+    subscriberName: [''],
+    referral: [''],
+    referralFilter: [''],
+    otherReferral: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -155,6 +165,7 @@ export class AddPreauthorizationComponent implements OnInit {
   typeList = this.sharedDataService.claimTypeList;
   payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
+  providerList = [];
   subTypeList = [];
 
   accidentTypeList = this.sharedDataService.accidentTypeList;
@@ -198,6 +209,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private sharedServices: SharedServices,
     private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
+    private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) {
     this.today = new Date();
@@ -430,6 +442,75 @@ export class AddPreauthorizationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       }
     });
+  }
+
+  toggleReferral($event) {
+    if ($event.checked) {
+      this.FormPreAuthorization.controls.referral.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.referral.updateValueAndValidity();
+      if (this.providerList.length === 0) {
+        this.getRefferalProviders();
+      }
+    } else {
+      this.FormPreAuthorization.controls.referral.clearValidators();
+      this.FormPreAuthorization.controls.referral.updateValueAndValidity();
+    }
+  }
+
+  getRefferalProviders() {
+    this.IsRefferalProviderLoading = true;
+    this.FormPreAuthorization.controls.referral.disable();
+    this.superAdminService.getProviders().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.providerList = event.body;
+        }
+        this.filteredProviderList.next(this.providerList.slice());
+        this.IsRefferalProviderLoading = false;
+        this.FormPreAuthorization.controls.referral.enable();
+        this.FormPreAuthorization.controls.referralFilter.valueChanges
+          .pipe(takeUntil(this.onDestroy))
+          .subscribe(() => {
+            this.filterRefferalProviders();
+          });
+      }
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        console.log('Error getting referrals');
+      }
+    });
+  }
+
+  filterRefferalProviders() {
+    if (!this.providerList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormPreAuthorization.controls.referralFilter.value;
+    if (!search) {
+      this.filteredProviderList.next(this.providerList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredProviderList.next(
+      // tslint:disable-next-line:max-line-length
+      this.providerList.filter(item => item.name.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1 || item.switchAccountId.toString().toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  referralChange($event) {
+    if ($event.value === '-1') {
+      this.FormPreAuthorization.controls.otherReferral.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.otherReferral.updateValueAndValidity();
+      this.IsOtherReferral = true;
+    } else {
+      this.FormPreAuthorization.controls.otherReferral.clearValidators();
+      this.FormPreAuthorization.controls.otherReferral.updateValueAndValidity();
+      this.IsOtherReferral = false;
+      this.FormPreAuthorization.controls.otherReferral.setValue('');
+    }
   }
 
   filterNationality() {
@@ -1457,6 +1538,15 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.claimReuseId = this.claimReuseId;
       } else {
         this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
+
+        if (this.FormPreAuthorization.controls.transfer.value) {
+          if (this.FormPreAuthorization.controls.otherReferral.value) {
+            this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
+          } else {
+            this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
+          }
+
+        }
       }
 
       this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
