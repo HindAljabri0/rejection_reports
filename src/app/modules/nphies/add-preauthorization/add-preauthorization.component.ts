@@ -127,7 +127,7 @@ export class AddPreauthorizationComponent implements OnInit {
     subscriberName: [''],
     referral: [''],
     referralFilter: [''],
-    otherReferral: ['']
+    otherReferral: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -220,14 +220,27 @@ export class AddPreauthorizationComponent implements OnInit {
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
-      this.setReuseValues();
+      this.getRefferalProviders();
       this.defualtPageMode = "";
     } else {
+      this.getRefferalProviders();
       this.defualtPageMode = "CREATE"
     }
   }
 
   setReuseValues() {
+
+    if (this.data.transferAuthProvider) {
+      if (this.providerList.filter(x => x.name === this.data.transferAuthProvider).length > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.FormPreAuthorization.controls.referral.setValue(this.providerList.filter(x => x.name === this.data.transferAuthProvider)[0]);
+        this.IsOtherReferral = false;
+      } else {
+        this.FormPreAuthorization.controls.referral.setValue('-1');
+        this.FormPreAuthorization.controls.otherReferral.setValue(this.data.transferAuthProvider);
+        this.IsOtherReferral = true;
+      }
+    }
 
     if (this.data.preAuthDetails) {
       if (this.data.preAuthDetails.filter(x => x === null).length === 0) {
@@ -444,19 +457,6 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-  toggleReferral($event) {
-    if ($event.checked) {
-      this.FormPreAuthorization.controls.referral.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.referral.updateValueAndValidity();
-      if (this.providerList.length === 0) {
-        this.getRefferalProviders();
-      }
-    } else {
-      this.FormPreAuthorization.controls.referral.clearValidators();
-      this.FormPreAuthorization.controls.referral.updateValueAndValidity();
-    }
-  }
-
   getRefferalProviders() {
     this.IsRefferalProviderLoading = true;
     this.FormPreAuthorization.controls.referral.disable();
@@ -464,6 +464,9 @@ export class AddPreauthorizationComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
           this.providerList = event.body;
+        }
+        if (this.claimReuseId) {
+          this.setReuseValues();
         }
         this.filteredProviderList.next(this.providerList.slice());
         this.IsRefferalProviderLoading = false;
@@ -502,12 +505,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
   referralChange($event) {
     if ($event.value === '-1') {
-      this.FormPreAuthorization.controls.otherReferral.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.otherReferral.updateValueAndValidity();
       this.IsOtherReferral = true;
     } else {
-      this.FormPreAuthorization.controls.otherReferral.clearValidators();
-      this.FormPreAuthorization.controls.otherReferral.updateValueAndValidity();
       this.IsOtherReferral = false;
       this.FormPreAuthorization.controls.otherReferral.setValue('');
     }
@@ -1419,7 +1418,7 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.FormPreAuthorization.controls.isNewBorn.value) {
       if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the claim request', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the preauth request for a newborn', 'alert', true, 'OK');
         return false;
       } else {
         return true;
@@ -1538,15 +1537,12 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.claimReuseId = this.claimReuseId;
       } else {
         this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
+      }
 
-        if (this.FormPreAuthorization.controls.transfer.value) {
-          if (this.FormPreAuthorization.controls.otherReferral.value) {
-            this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
-          } else {
-            this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
-          }
-
-        }
+      if (this.FormPreAuthorization.controls.otherReferral.value) {
+        this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
+      } else {
+        this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
       }
 
       this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
