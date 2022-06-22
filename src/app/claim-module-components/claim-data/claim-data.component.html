@@ -42,7 +42,7 @@
         <claim-admission></claim-admission>
     </mat-tab>
     <mat-tab [label]="'Attachments'">
-        <claim-attachments></claim-attachments>
+        <claim-attachments [payerId]="claim.claimIdentities.payerID"></claim-attachments>
     </mat-tab>
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT' || claimHaveLabData()">
         <ng-template mat-tab-label>

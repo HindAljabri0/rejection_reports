@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
@@ -25,6 +25,8 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
   selectFilesError = null;
   fileType: FileType;
 
+  @Input() payerId = '';
+
   pageMode: ClaimPageMode;
 
   _onDestroy = new Subject<void>();
@@ -38,6 +40,7 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
       this.pageMode = mode;
       this.setData(retrievedAttachments);
     });
+    console.log(this.payerId);    
   }
 
   ngOnDestroy() {
