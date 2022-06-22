@@ -62,9 +62,12 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
     if (fileExt.toLowerCase() == 'pdf') {
       const objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-    } else if(fileExt.toLowerCase() === 'mov' || fileExt.toLowerCase() === 'mp4' || fileExt.toLowerCase() === 'webm'){
+    } else if(fileExt.toLowerCase() === 'mp4' || fileExt.toLowerCase() === 'webm'){
       const objectURL = `data:video/${fileExt};base64,` + attachment.attachmentFile;
-      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else if(fileExt.toLowerCase() === 'mov') {
+      const objectURL = `data:video/quicktime;base64,` + attachment.attachmentFile;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
     } else {
       const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -79,10 +82,17 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
         return;
       }
       const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && !mimeType.includes('mp4') && !mimeType.includes('webm') && !mimeType.includes('mov') && !mimeType.includes('dicom')) {
+      console.log(mimeType);
+      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && !mimeType.includes('mp4') && !mimeType.includes('webm') && !mimeType.includes('quicktime') && !mimeType.includes('dicom')) {
         this.fileType = null;
         return;
       }
+      if((mimeType.includes('mp4') || mimeType.includes('webm') || mimeType.includes('quicktime')) && this.payerId != '102') {
+        this.fileType = null;
+        this.selectFilesError = 'Video Attachment is not allowed for this payer.';
+        return;
+      }
+
       if (this.attachments.find(attachment => attachment.fileName == file.name) != undefined) {
         this.fileType = null;
         this.selectFilesError = 'A file with the same name already exists.';
