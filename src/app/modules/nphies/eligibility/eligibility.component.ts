@@ -236,16 +236,32 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   checkNewBornValidation() {
 
     if (this.isNewBorn) {
-      const serviceDate = new Date(this.serviceDateControl.value);
+      let serviceDate = new Date(this.serviceDateControl.value);
+      if (this.endDateControl.value) {
+        serviceDate = new Date(this.endDateControl.value);
+      }
       const dob = new Date(this.selectedBeneficiary.dob);
       if (serviceDate < dob) {
-        this.dialogService.showMessage('Error', 'Service Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+        if (this.endDateControl.value) {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage('Error', 'Service Period End Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+        } else {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage('Error', 'Service Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+        }
+
         return false;
       } else {
         const diff = this.daysDiff(dob, serviceDate);
         if (diff > 90) {
-          // tslint:disable-next-line:max-line-length
-          this.dialogService.showMessage('Error', 'Difference between Service Date and New Born Date of Birth cannot be greater than 90 days (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+          if (this.endDateControl.value) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage('Error', 'Difference between Service Period End Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage('Error', 'Difference between Service Period Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+          }
+
           return false;
         } else {
           return true;

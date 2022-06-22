@@ -127,7 +127,7 @@ export class AddPreauthorizationComponent implements OnInit {
     subscriberName: [''],
     referral: [''],
     referralFilter: [''],
-    otherReferral: ['']
+    otherReferral: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -217,6 +217,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   ngOnInit() {
     this.getPayees();
+    this.getRefferalProviders();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -442,19 +443,6 @@ export class AddPreauthorizationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       }
     });
-  }
-
-  toggleReferral($event) {
-    if ($event.checked) {
-      this.FormPreAuthorization.controls.referral.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.referral.updateValueAndValidity();
-      if (this.providerList.length === 0) {
-        this.getRefferalProviders();
-      }
-    } else {
-      this.FormPreAuthorization.controls.referral.clearValidators();
-      this.FormPreAuthorization.controls.referral.updateValueAndValidity();
-    }
   }
 
   getRefferalProviders() {
@@ -1419,7 +1407,7 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.FormPreAuthorization.controls.isNewBorn.value) {
       if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the claim request', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the preauth request for a newborn', 'alert', true, 'OK');
         return false;
       } else {
         return true;
@@ -1538,15 +1526,12 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.claimReuseId = this.claimReuseId;
       } else {
         this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
+      }
 
-        if (this.FormPreAuthorization.controls.transfer.value) {
-          if (this.FormPreAuthorization.controls.otherReferral.value) {
-            this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
-          } else {
-            this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
-          }
-
-        }
+      if (this.FormPreAuthorization.controls.otherReferral.value) {
+        this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
+      } else {
+        this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
       }
 
       this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;

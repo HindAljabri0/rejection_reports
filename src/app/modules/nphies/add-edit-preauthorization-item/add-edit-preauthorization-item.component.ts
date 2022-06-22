@@ -785,7 +785,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         const diff = this.daysDiff(dob, serviceDate);
         if (diff > 90) {
           // tslint:disable-next-line:max-line-length
-          this.serviceDataError = 'Difference between Start Date and New Born Date of Birth cannot be greater than 90 days (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
+          this.serviceDataError = 'Difference between Start Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
           return false;
         } else {
           this.serviceDataError = '';
