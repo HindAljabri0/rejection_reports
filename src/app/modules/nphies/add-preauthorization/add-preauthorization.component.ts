@@ -217,18 +217,30 @@ export class AddPreauthorizationComponent implements OnInit {
 
   ngOnInit() {
     this.getPayees();
-    this.getRefferalProviders();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
-      this.setReuseValues();
+      this.getRefferalProviders();
       this.defualtPageMode = "";
     } else {
+      this.getRefferalProviders();
       this.defualtPageMode = "CREATE"
     }
   }
 
   setReuseValues() {
+
+    if (this.data.transferAuthProvider) {
+      if (this.providerList.filter(x => x.name === this.data.transferAuthProvider).length > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.FormPreAuthorization.controls.referral.setValue(this.providerList.filter(x => x.name === this.data.transferAuthProvider)[0]);
+        this.IsOtherReferral = false;
+      } else {
+        this.FormPreAuthorization.controls.referral.setValue('-1');
+        this.FormPreAuthorization.controls.otherReferral.setValue(this.data.transferAuthProvider);
+        this.IsOtherReferral = true;
+      }
+    }
 
     if (this.data.preAuthDetails) {
       if (this.data.preAuthDetails.filter(x => x === null).length === 0) {
@@ -453,6 +465,9 @@ export class AddPreauthorizationComponent implements OnInit {
         if (event.body != null && event.body instanceof Array) {
           this.providerList = event.body;
         }
+        if (this.claimReuseId) {
+          this.setReuseValues();
+        }
         this.filteredProviderList.next(this.providerList.slice());
         this.IsRefferalProviderLoading = false;
         this.FormPreAuthorization.controls.referral.enable();
@@ -490,12 +505,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
   referralChange($event) {
     if ($event.value === '-1') {
-      this.FormPreAuthorization.controls.otherReferral.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.otherReferral.updateValueAndValidity();
       this.IsOtherReferral = true;
     } else {
-      this.FormPreAuthorization.controls.otherReferral.clearValidators();
-      this.FormPreAuthorization.controls.otherReferral.updateValueAndValidity();
       this.IsOtherReferral = false;
       this.FormPreAuthorization.controls.otherReferral.setValue('');
     }
