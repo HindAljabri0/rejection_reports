@@ -81,7 +81,11 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
       if (file.size == 0) {
         return;
       }
-      const mimeType = file.type;
+      var mimeType = file.type;
+      if((mimeType === '' || mimeType === null) && file.name.split('.').pop().toLowerCase() === 'dcm')
+      {
+        mimeType = 'application/dicom';
+      }
       console.log(mimeType);
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && !mimeType.includes('mp4') && !mimeType.includes('webm') && !mimeType.includes('quicktime') && !mimeType.includes('dicom')) {
         this.fileType = null;
