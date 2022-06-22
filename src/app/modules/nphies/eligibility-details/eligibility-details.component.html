@@ -26,6 +26,8 @@
         <p></p>
       </div>
     </div>
+
+    
     <div *ngIf="eligibilityResponse.subscriberName" class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Subscriber Name</div>
@@ -33,6 +35,12 @@
           {{eligibilityResponse.subscriberName}}
         </p>
         <p></p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">Insurer</div>
+        <p class="form-control-static">{{getNamePayer(eligibilityResponse.payerId)}}</p>
       </div>
     </div>
     <div class="col-4">
