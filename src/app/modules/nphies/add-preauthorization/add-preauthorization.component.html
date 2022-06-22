@@ -4,7 +4,7 @@
     <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
       <div class="block-header">
         <p>Request Pre Authorization</p>
-        <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" (change)="toggleReferral($event)"
+        <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary"
           [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
         </mat-slide-toggle>
 
@@ -229,47 +229,38 @@
               </div> -->
             </div>
           </div>
-          <ng-container *ngIf="FormPreAuthorization.controls.transfer.value">
-            <div class="col-4 col-xxl-3">
-              <div class="form-group"
-                [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('referral').touched) && FormPreAuthorization.get('referral').hasError('required')}">
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Referring Provider</label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect (selectionChange)="referralChange($event)">
+                  <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Search Item" formControlName="referralFilter"
+                      noEntriesFoundLabel="No Referring Provider found" name='searchedItem'>
+                    </ngx-mat-select-search>
+                  </mat-option>
 
-                <label class="control-label">Referral<span class="asterisk">*</span></label>
-                <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect (selectionChange)="referralChange($event)">
-                    <mat-option>
-                      <ngx-mat-select-search placeholderLabel="Search Item" formControlName="referralFilter"
-                        noEntriesFoundLabel="No items found" name='searchedItem'>
-                      </ngx-mat-select-search>
+                  <ng-container *ngIf="IsRefferalProviderLoading">
+                    <mat-option value="">Loading Referring Provider ...</mat-option>
+                  </ng-container>
+                  <ng-container *ngIf="!IsRefferalProviderLoading">
+                    <mat-option value="">Select Referring Provider</mat-option>
+                    <mat-option value="-1">Other</mat-option>
+                    <mat-option *ngFor="let provider of filteredProviderList  | async" [value]="provider">
+                      {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                     </mat-option>
+                  </ng-container>
 
-                    <ng-container *ngIf="IsRefferalProviderLoading">
-                      <mat-option value="">Loading Referrals ...</mat-option>
-                    </ng-container>
-                    <ng-container *ngIf="!IsRefferalProviderLoading">
-                      <mat-option value="">Select Referral Provider</mat-option>
-                      <mat-option value="-1">Other</mat-option>
-                      <mat-option *ngFor="let provider of filteredProviderList  | async" [value]="provider">
-                        {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
-                      </mat-option>
-                    </ng-container>
-
-                  </mat-select>
-                </mat-form-field>
-                <div
-                  *ngIf="(isSubmitted || FormPreAuthorization.get('referral').touched) && FormPreAuthorization.get('referral').hasError('required')">
-                  <span class="error-text">Please select Referral</span>
-                </div>
-
-              </div>
+                </mat-select>
+              </mat-form-field>
             </div>
-            <div *ngIf="IsOtherReferral" class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Other Referral</label>
-                <input class="form-control" placeholder="Enter Referral Name" formControlName="otherReferral">
-              </div>
+          </div>
+          <div *ngIf="IsOtherReferral" class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Other Referral</label>
+              <input class="form-control" placeholder="Enter Referral Name" formControlName="otherReferral">
             </div>
-          </ng-container>
+          </div>
 
         </div>
 
