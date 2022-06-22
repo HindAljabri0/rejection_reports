@@ -168,7 +168,7 @@ export class SharedServices {
     this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
 
   }
-  
+
   getNotifications() {
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
@@ -393,7 +393,7 @@ export class SharedServices {
       case ClaimStatus.Accepted.toLowerCase():
         return 'Ready for Submission';
       case ClaimStatus.NotAccepted.toLowerCase():
-        return 'Rejected by Waseel';
+        return 'Validation Errors';
       case ClaimStatus.ALL.toLowerCase():
         return 'All Claims';
       case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
