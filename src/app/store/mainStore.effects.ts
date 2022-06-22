@@ -13,54 +13,58 @@ import { changePageTitle, checkAlerts, showSnackBarMessage } from './mainStore.a
 @Injectable({ providedIn: 'root' })
 export class MainStoreEffects {
 
-    messages: string[] = [];
-    constructor(
-        private actions$: Actions,
-        private titleService: Title,
-        private snackBar: MatSnackBar,
-        private dialogService: DialogService,
-        private searchService: SearchService,
-        private datePipe: DatePipe
-    ) {
-        interval(3000)
-            .subscribe(() => {
-                if (this.messages.length > 0) {
-                    this.snackBar.open(this.messages.pop(), null, { duration: 3000 });
-                }
-            });
-    }
+  messages: string[] = [];
+  constructor(
+    private actions$: Actions,
+    private titleService: Title,
+    private snackBar: MatSnackBar,
+    private dialogService: DialogService,
+    private searchService: SearchService,
+    private datePipe: DatePipe
+  ) {
+    interval(3000)
+      .subscribe(() => {
+        if (this.messages.length > 0) {
+          this.snackBar.open(this.messages.pop(), null, { duration: 3000 });
+        }
+      });
+  }
 
-    changePageTitle$ = createEffect(() => this.actions$.pipe(
-        ofType(changePageTitle),
-        tap(value => this.titleService.setTitle(`${value.title.length >= 13 ? '' : 'Waseel E-Claims - '}${value.title}`))
-    ), { dispatch: false });
+  changePageTitle$ = createEffect(() => this.actions$.pipe(
+    ofType(changePageTitle),
+    tap(value => this.titleService.setTitle(`${value.title.length >= 13 ? '' : 'Waseel E-Claims - '}${value.title}`))
+  ), { dispatch: false });
 
-    onShowSnackBarMessage$ = createEffect(() => this.actions$.pipe(
-        ofType(showSnackBarMessage),
-        tap(data => this.messages.push(data.message))
-    ), { dispatch: false });
+  onShowSnackBarMessage$ = createEffect(() => this.actions$.pipe(
+    ofType(showSnackBarMessage),
+    tap(data => this.messages.push(data.message))
+  ), { dispatch: false });
 
-    onCheckingAlerts$ = createEffect(() => this.actions$.pipe(
-        ofType(checkAlerts),
-        tap(() => {
-            const providerId = localStorage.getItem('provider_id');
-            if (providerId != null && providerId != '101') {
-                const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
-                let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-                if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay) {
-                    return null;
-                }
-                this.searchService.getClaimAlerts(providerId).subscribe(event => {
-                    if (event instanceof HttpResponse) {
-                        const body = event.body;
-                        if (body instanceof Array) {
-                            this.dialogService.showAlerts(body);
-                            localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
-                        }
-                    }
-                });
+  onCheckingAlerts$ = createEffect(() => this.actions$.pipe(
+    ofType(checkAlerts),
+    tap(() => {
+      const providerId = localStorage.getItem('provider_id');
+      if (providerId != null && providerId != '101') {
+        const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
+        let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay) {
+          return null;
+        }
+        this.searchService.getClaimAlerts(providerId).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            const body = event.body;
+            if (body[0].indexOf('been a while since your') > -1) {
+              body[0] += '\n\nRejected By Waseel is now Validation Errors';
             }
-        })
-    ), { dispatch: false });
+
+            if (body instanceof Array) {
+              this.dialogService.showAlerts(body);
+              localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
+            }
+          }
+        });
+      }
+    })
+  ), { dispatch: false });
 
 }
