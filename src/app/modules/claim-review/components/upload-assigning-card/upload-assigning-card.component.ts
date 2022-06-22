@@ -57,21 +57,12 @@ export class UploadAssigningCardComponent implements OnInit {
   }
 
   downloadData(upload: Upload) {
-    // let event;
-    // event = ;
-    // if (event != null) {
-      if (this.downloadedFiles.includes(upload.id)) { return; }
-      this.downloadFileSubscription = this.downloadService.startGeneratingDownloadFile(this.claimReviewService.downloadExcel(upload.id))
-        .subscribe(status => {
-          if (status != DownloadStatus.ERROR) {
-            this.downloadedFiles.push(upload.id)
-            // this.detailTopActionIcon = 'ic-check-circle.svg';
-          } 
-          // else {
-            // this.detailTopActionIcon = 'ic-download.svg';
-          // }
-        });
-    // }
+    this.downloadFileSubscription = this.downloadService.startGeneratingDownloadFile(this.claimReviewService.downloadExcel(upload.id))
+      .subscribe(status => {
+        if (status != DownloadStatus.ERROR) {
+          this.downloadedFiles.push(upload.id)
+        }
+      });
   }
 
   onDoctorSelectionChanged(data: string) {
@@ -99,7 +90,7 @@ export class UploadAssigningCardComponent implements OnInit {
     this.store.dispatch(updateAssignment({ data: { uploadId: this.data.id, userNme: selectedId, doctor: doctor, coder: coder } }));
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.downloadFileSubscription.unsubscribe()
   }
 }
