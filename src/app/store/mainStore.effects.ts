@@ -53,7 +53,7 @@ export class MainStoreEffects {
         this.searchService.getClaimAlerts(providerId).subscribe(event => {
           if (event instanceof HttpResponse) {
             const body = event.body;
-            if (body[0].indexOf('been a while since your') > -1) {
+            if (body && body[0] && body[0].indexOf('been a while since your') > -1) {
               body[0] += '\n\nRejected By Waseel is now Validation Errors';
             }
 
