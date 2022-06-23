@@ -673,7 +673,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
                     this.dialogService.openMessageDialog({
                         title: 'Validation Results',
-                        message: `No. of Cliam: ${numberOfClaims} \nNo of Rejected by Waseel: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
+                        message: `No. of Cliam: ${numberOfClaims} \nNo of Validation Errors: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
                         isError: false
                     }).subscribe(result => {
                         location.reload();

@@ -13,6 +13,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-eligibility',
@@ -63,6 +64,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     private beneficiaryService: ProvidersBeneficiariesService,
     private nphiesSearchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices,
+    private datePipe: DatePipe,
     private eligibilityService: ProvidersNphiesEligibilityService,
     private router: Router,
     private activatedRoute: ActivatedRoute
@@ -163,7 +165,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       searchStr = this.subscriberSearchController.value;
     }
 
-    if(searchStr.length>2){
+    if (searchStr.length > 2) {
       this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -231,16 +233,66 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
+  checkNewBornValidation() {
 
+    if (this.isNewBorn) {
+      let serviceDate = new Date(this.serviceDateControl.value);
+      if (this.endDateControl.value) {
+        serviceDate = new Date(this.endDateControl.value);
+      }
+      const dob = new Date(this.selectedBeneficiary.dob);
+      if (serviceDate < dob) {
+        if (this.endDateControl.value) {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage('Error', 'Service Period End Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+        } else {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage('Error', 'Service Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+        }
+
+        return false;
+      } else {
+        const diff = this.daysDiff(dob, serviceDate);
+        if (diff > 90) {
+          if (this.endDateControl.value) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage('Error', 'Difference between Service Period End Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage('Error', 'Difference between Service Period Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ')', 'alert', true, 'OK');
+          }
+
+          return false;
+        } else {
+          return true;
+        }
+      }
+
+    } else {
+      return true;
+    }
+  }
+
+  daysDiff(d1, d2) {
+    const diffTime = Math.abs(d2 - d1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
       return;
     }
+
     if (this.isNewBorn && !this.selectedSubscriber) {
       this.subscriberSearchController.markAsTouched();
       return;
     }
+
+    if (!this.checkNewBornValidation()) {
+      return;
+    }
+
     this.sharedServices.loadingChanged.next(true);
     let requestHasErrors = false;
     this.selectedPlanIdError = null;

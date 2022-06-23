@@ -41,6 +41,10 @@ export class AttachmentViewDialogComponent implements OnInit {
         //var blob = this.b64toBlob(this.data.attachment,'application/pdf')
         //const objectURL = `data:application/pdf;base64,` + blob;
         this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(this.data.attachment, 'application/pdf')));
+      } else if(fileExt.toLowerCase() === 'mp4' || fileExt.toLowerCase() === 'webm'){
+        this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(this.data.attachment, 'application/' + fileExt)));
+      } else if(fileExt.toLowerCase() === 'mov') {
+        this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(this.data.attachment, 'application/quicktime')));
       } else {
         const objectURL = `data:image/${fileExt};base64,` + this.data.attachment;
         this.attachmentSource = this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -68,5 +72,10 @@ export class AttachmentViewDialogComponent implements OnInit {
   isPdf() {
     const fileExt = this.data.filename.split('.').pop();
     return fileExt.toLowerCase() === 'pdf';
+  }
+
+  isVideo() {
+    const fileExt = this.data.filename.split('.').pop();
+    return fileExt.toLowerCase() == 'mp4' || fileExt.toLowerCase() == 'mov' || fileExt.toLowerCase() == 'webm';
   }
 }

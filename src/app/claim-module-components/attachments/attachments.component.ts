@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
@@ -25,6 +25,8 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
   selectFilesError = null;
   fileType: FileType;
 
+  @Input() payerId = '';
+
   pageMode: ClaimPageMode;
 
   _onDestroy = new Subject<void>();
@@ -38,6 +40,7 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
       this.pageMode = mode;
       this.setData(retrievedAttachments);
     });
+    console.log(this.payerId);    
   }
 
   ngOnDestroy() {
@@ -59,6 +62,12 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
     if (fileExt.toLowerCase() == 'pdf') {
       const objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else if(fileExt.toLowerCase() === 'mp4' || fileExt.toLowerCase() === 'webm'){
+      const objectURL = `data:video/${fileExt};base64,` + attachment.attachmentFile;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else if(fileExt.toLowerCase() === 'mov') {
+      const objectURL = `data:video/quicktime;base64,` + attachment.attachmentFile;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
     } else {
       const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -72,19 +81,39 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
       if (file.size == 0) {
         return;
       }
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
+      var mimeType = file.type;
+      if((mimeType === '' || mimeType === null) && file.name.split('.').pop().toLowerCase() === 'dcm')
+      {
+        mimeType = 'application/dicom';
+      }
+      console.log(mimeType);
+      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf') && !mimeType.includes('mp4') && !mimeType.includes('webm') && !mimeType.includes('quicktime') && !mimeType.includes('dicom')) {
         this.fileType = null;
         return;
       }
+      if((mimeType.includes('mp4') || mimeType.includes('webm') || mimeType.includes('quicktime')) && this.payerId != '102') {
+        this.fileType = null;
+        this.selectFilesError = 'Video Attachment is not allowed for this payer.';
+        return;
+      }
+
       if (this.attachments.find(attachment => attachment.fileName == file.name) != undefined) {
         this.fileType = null;
         this.selectFilesError = 'A file with the same name already exists.';
         return;
       }
-      if (file.size / 1024 / 1024 > 2) {
+      if (file.size / 1024 / 1024 > 2 && (mimeType.match(/image\/*/) != null || mimeType.includes('pdf'))) {
         this.fileType = null;
-        this.selectFilesError = 'Selected files should not be more than 2M.';
+        this.selectFilesError = 'Selected files should not be more than 2MB.';
+        return;
+      }else if(file.size / 1024 / 1024 > 30){
+        this.fileType = null;
+        this.selectFilesError = 'Selected files should not be more than 30MB.';
+        return;
+      }
+      if ((mimeType.match(/video\/*/) != null || mimeType.includes('dicom')) && (this.attachments.find(attachment => this.isVideo(attachment)) != undefined || this.attachments.find(attachment => this.isDicom(attachment)) != undefined)) {
+        this.fileType = null;
+        this.selectFilesError = 'You Can Select Only One Dicom Or Video File.';
         return;
       }
       this.preview(file);
@@ -116,6 +145,16 @@ export class AttachmentsComponent implements OnInit, OnDestroy {
   isPdf(attachment: AttachmentRequest) {
     const fileExt = attachment.fileName.split('.').pop();
     return fileExt.toLowerCase() == 'pdf';
+  }
+
+  isVideo(attachment: AttachmentRequest) {
+    const fileExt = attachment.fileName.split('.').pop();
+    return fileExt.toLowerCase() == 'mp4' || fileExt.toLowerCase() == 'mov' || fileExt.toLowerCase() == 'webm';
+  }
+
+  isDicom(attachment: AttachmentRequest) {
+    const fileExt = attachment.fileName.split('.').pop();
+    return fileExt.toLowerCase() == 'dcm';
   }
 
   editAttachment(type: FileType, index: number) {
