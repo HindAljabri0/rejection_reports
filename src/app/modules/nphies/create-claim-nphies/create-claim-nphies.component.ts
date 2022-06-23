@@ -1335,7 +1335,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.FormNphiesClaim.controls.isNewBorn.value && (this.FormNphiesClaim.controls.type.value.value === 'institutional' || this.FormNphiesClaim.controls.type.value.value === 'professional')) {
       if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional claim request', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional claim request', 'alert', true, 'OK', null, true);
         return false;
       } else {
         return true;
@@ -1349,7 +1349,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.FormNphiesClaim.controls.isNewBorn.value) {
       if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the claim request for a newborn', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the claim request for a newborn', 'alert', true, 'OK', null, true);
         return false;
       } else {
         return true;
