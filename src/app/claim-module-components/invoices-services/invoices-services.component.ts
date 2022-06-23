@@ -125,7 +125,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     serviceTypeChildIndex: any;
 
     invoicesPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
-
+    departmentCode = '';
     constructor(
         private store: Store,
         private actions: Actions,
@@ -142,6 +142,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             withLatestFrom(this.store.select(getRetrievedClaimProps)),
             map(values => ({ mode: values[0][0], claim: values[0][1], claimProps: values[1] }))
         ).subscribe(({ mode, claim, claimProps }) => {
+            this.departmentCode = claim.visitInformation.departmentCode;
             this.pageMode = mode;
             if (mode == 'VIEW') {
                 this.setData(claim, claimProps);
@@ -225,7 +226,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
     ListDuplicateService: Number[] = [];
     invoiceHasError(invoice: Invoice) {
-
+        //  console.log("DepartmentCode For cliam " +  this.departmentCode);
         let check = 0;
         let invoicesError = this.errors.filter(x => Number(x.code) == invoice.invoiceId);
         if (invoicesError.length > 0) {
@@ -234,13 +235,22 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
                 for (var i = 0; i < invoice.service.length; i++) {
                     for (var j = i + 1; j < invoice.service.length; j++) {
-                        if (invoice.service[i].serviceCode == invoice.service[j].serviceCode) {
 
-                            this.ListDuplicateService.push(invoice.service[i].serviceId);
-                            this.ListDuplicateService.push(invoice.service[j].serviceId);
+                        if (this.departmentCode.includes('4')) {
+                            if (invoice.service[i].serviceCode + invoice.service[i].toothNumber == invoice.service[j].serviceCode + invoice.service[j].toothNumber) {
+
+                                this.ListDuplicateService.push(invoice.service[i].serviceId);
+                                this.ListDuplicateService.push(invoice.service[j].serviceId);
+                            }
+                        }
+                        else {
+                            if (invoice.service[i].serviceCode == invoice.service[j].serviceCode) {
+
+                                this.ListDuplicateService.push(invoice.service[i].serviceId);
+                                this.ListDuplicateService.push(invoice.service[j].serviceId);
+                            }
                         }
                     }
-
                 }
 
             }
