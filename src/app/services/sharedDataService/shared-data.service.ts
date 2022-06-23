@@ -313,6 +313,19 @@ export class SharedDataService {
     { name: 'Referral', value: 'referral' }
   ];
 
+  newBornCodes = [
+    'Z38',
+    'Z38.0',
+    'Z38.1',
+    'Z38.2',
+    'Z38.3',
+    'Z38.4',
+    'Z38.5',
+    'Z38.6',
+    'Z38.7',
+    'Z38.8'
+  ];
+
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService) { }
 
   getCodeName(category, code = null) {

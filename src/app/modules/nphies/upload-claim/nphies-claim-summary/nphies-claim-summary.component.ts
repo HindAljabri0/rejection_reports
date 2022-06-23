@@ -122,18 +122,18 @@ export class NphiesClaimSummaryComponent implements OnInit {
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.routeActive.queryParams.subscribe(value => {
-        if (value.id != null && this.location.path().includes('summary')) {
+        if (value.id && this.location.path().includes('summary')) {
           this.commen.loadingChanged.next(true);
           this.uploadService.getUploadedSummary(this.commen.providerId, value.id).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
+              this.cardCount = (summary.noOfUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (summary.noOfAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (summary.noOfNotAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (summary.noOfNotUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (summary.noOfDownloadableClaims != 0) ? this.cardCount + 1 : this.cardCount;
               this.uploadService.summaryChange.next(summary);
-              this.cardCount = (uploadService.summary.noOfUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
-              this.cardCount = (uploadService.summary.noOfAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
-              this.cardCount = (uploadService.summary.noOfNotAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
-              this.cardCount = (uploadService.summary.noOfNotUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
-              this.cardCount = (uploadService.summary.noOfDownloadableClaims != 0) ? this.cardCount + 1 : this.cardCount;
             }
             // if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
             // this.location.go('/summary?id=' + this.summary.uploadSummaryID);
@@ -146,6 +146,8 @@ export class NphiesClaimSummaryComponent implements OnInit {
           }, eventError => {
             this.commen.loadingChanged.next(false);
           });
+        } else {
+          this.uploadService.summaryChange.next(null);
         }
         // else if (this.location.path().includes('summary')) {
         //   this.router.navigate(['/upload']);
@@ -217,6 +219,7 @@ export class NphiesClaimSummaryComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
       if (!this.router.url.includes('id')) {
         // this.summary = value;

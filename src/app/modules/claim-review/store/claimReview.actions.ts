@@ -39,3 +39,4 @@ export const markAsDone = createAction("[ Claims Review ] mark claim as done", p
 export const markAsDoneAll = createAction("[ Claims Review ] mark claim as done For all", props<{data: MarkAsDone}>());
 export const markAsDoneSelected = createAction("[ Claims Review ] mark claim as done For Selected", props<{data: MarkAsDone}>());
 export const deleteUpload = createAction("[ Claims Review ] Delete the Selected Upload", props<{upload : Upload}>());
+export const downloadExcel = createAction("[ Claims Review ] Download the Excel Data", props<{uploadId : number}>());

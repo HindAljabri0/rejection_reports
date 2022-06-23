@@ -10,7 +10,7 @@ import { showSnackBarMessage } from "src/app/store/mainStore.actions";
 import { PageControls, UploadsPage } from "../models/claimReviewState.model";
 import { UploadClaimSummaryList } from "../models/UploadClaimSummaryList.model";
 import { ClaimReviewService } from "../services/claim-review-service/claim-review.service";
-import { deleteUpload, loadCoderList, loadDoctorList, loadProviderList, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setCoderListReturn, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setDoctorListReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setProviderList, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, updateAssignment } from "./claimReview.actions";
+import { deleteUpload, downloadExcel, loadCoderList, loadDoctorList, loadProviderList, loadSingleClaim, loadSingleClaimErrors, loadUploadClaimsList, loadUploadsUnderReviewOfSelectedTab, markAsDone, markAsDoneAll, markAsDoneSelected, setClaimDetailsRemarks, setCoderListReturn, setDiagnnosisRemarks, setDiagnosisRemarksReturn, setDoctorListReturn, setLoadUploadClaimsList, setMarkAllAsDone, setMarkAsDoneReturn, setMarkSelectedAsDoneReturn, setProviderList, setSingleClaim, setSingleClaimErrors, setUploadsPageErrorOfSelectedTab, setUploadsPageOfSelectedTab, updateAssignment } from "./claimReview.actions";
 import { currentSelectedTabHasContent, currentSelectedTabPageControls, getCoderId, getDoctorId, getProviderId, selectedUploadsTab } from "./claimReview.reducer";
 
 @Injectable({ providedIn: 'root' })
@@ -91,15 +91,21 @@ export class ClaimReviewEffects {
 
     onSetDiagnnosisRemarks$ = createEffect(() => this.actions$.pipe(
         ofType(setDiagnnosisRemarks),
-        switchMap(data => this.claimReviewService.updateDiagnosisRemarks(data.data).pipe(
-            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
-            map(response => {
-                return setDiagnosisRemarksReturn({ data: data.data });
-            }),
-            catchError(errorResponse => {
-                return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
-            })
-        )),
+
+        switchMap(data => {
+            this.sharedServices.loadingChanged.next(true);
+            return this.claimReviewService.updateDiagnosisRemarks(data.data).pipe(
+                filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
+                map(response => {
+                    this.sharedServices.loadingChanged.next(false);
+                    return setDiagnosisRemarksReturn({ data: data.data });
+                }),
+                catchError(errorResponse => {
+                    this.sharedServices.loadingChanged.next(false);
+                    return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
+                })
+            )
+        }),
     ));
 
     OnSetClaimDetailsRemarks$ = createEffect(() => this.actions$.pipe(
@@ -247,18 +253,33 @@ export class ClaimReviewEffects {
 
     onUpdateAssignment$ = createEffect(() => this.actions$.pipe(
         ofType(updateAssignment),
-        switchMap(data => this.claimReviewService.updateAssignment(data.data.uploadId,data.data.userNme,data.data.doctor,data.data.coder).pipe(
+        switchMap(data => this.claimReviewService.updateAssignment(data.data.uploadId, data.data.userNme, data.data.doctor, data.data.coder).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse || response instanceof Object),
             map(response => {
                 this.sharedServices.loadingChanged.next(false);
-                this.store.dispatch(showSnackBarMessage({ message : "User Assigned Successfully!"}));
+                this.store.dispatch(showSnackBarMessage({ message: "User Assigned Successfully!" }));
                 this.store.dispatch(loadUploadsUnderReviewOfSelectedTab());
             }),
             catchError(errorResponse => {
                 this.sharedServices.loadingChanged.next(false);
-                this.store.dispatch(showSnackBarMessage({ message : errorResponse.error}))
+                this.store.dispatch(showSnackBarMessage({ message: errorResponse.error }))
                 return of({ type: setUploadsPageErrorOfSelectedTab.type, message: errorResponse.message })
             })
         )),
-    ), {dispatch : false});
+    ), { dispatch: false });
+
+    onDownloadExcel$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadExcel),
+        map(data => {
+            this.sharedServices.loadingChanged.next(true);
+            return data
+        }),
+        switchMap(data => this.claimReviewService.downloadExcel(data.uploadId).pipe(
+            map(data => {
+                console.log(data);
+                this.store.dispatch(showSnackBarMessage({ message: 'Excel Downloaded Successfully!' }));
+                this.sharedServices.loadingChanged.next(false);
+            })
+        )),
+    ), { dispatch: false });
 }

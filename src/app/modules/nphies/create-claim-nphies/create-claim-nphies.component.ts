@@ -123,7 +123,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
     insurancePlanTpaNphiesId: [],
-    isNewBorn: [false],
+    isNewBorn: [false]
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -166,6 +166,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanPayerName: [''],
     insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
+    insurancePlanTpaNphiesId: []
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -265,7 +266,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.claimId = this.claimId == null ? parseInt(this.activatedRoute.snapshot.queryParams.claimId) : this.claimId;
 
     } else {
-      this.IsDiagnosisRequired = true;
+      // this.IsDiagnosisRequired = true;
       this.pageMode = 'CREATE';
       this.isLoading = false;
 
@@ -306,9 +307,12 @@ export class CreateClaimNphiesComponent implements OnInit {
     // }
     this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
-    // if(this.data && this.data.openCommunicationTab ) {
-    //   this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision')? 9:8;
-    // }
+
+    if (this.activatedRoute.snapshot.fragment === 'CommunicationRequest') {
+      // tslint:disable-next-line:max-line-length
+      this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') ? 9 : 8;
+    }
+
   }
 
   toEditMode() {
@@ -844,7 +848,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       type: this.FormNphiesClaim.controls.type.value.value,
       subType: this.FormNphiesClaim.controls.subType.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
-      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
+      IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
+      beneficiaryDob: this.FormNphiesClaim.controls.dob.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -949,7 +955,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
           });
           this.checkItemValidation();
-          
+
         }
       }
       this.RefershTotal();
@@ -1113,13 +1119,13 @@ export class CreateClaimNphiesComponent implements OnInit {
       return true;
     }
   }
-  RefershTotal(){
-    this.otherDataModel.totalNetAmount =  0;
+  RefershTotal() {
+    this.otherDataModel.totalNetAmount = 0;
     this.Items.forEach((x) => {
-      console.log("values = "+x.net);
-      this.otherDataModel.totalNetAmount +=  x.net;
+      console.log("values = " + x.net);
+      this.otherDataModel.totalNetAmount += x.net;
     });
-    
+
   }
   checkItemValidation() {
     if (this.Items.length === 0) {
@@ -1164,7 +1170,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       return false;
       // tslint:disable-next-line:max-line-length
     } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
-      
+
       let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
       let ItemSeqList = this.Items.filter(x => x.type === 'medication-codes').map(t => t.sequence);
       var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
@@ -1324,6 +1330,35 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
+  checkNewBornValidation() {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormNphiesClaim.controls.isNewBorn.value && (this.FormNphiesClaim.controls.type.value.value === 'institutional' || this.FormNphiesClaim.controls.type.value.value === 'professional')) {
+      if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional claim request', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  checkNewBornSupportingInfoCodes() {
+    if (this.FormNphiesClaim.controls.isNewBorn.value) {
+      if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the claim request for a newborn', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
 
@@ -1370,7 +1405,16 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
 
-    //this.checkCareTeamValidation();
+    if (this.FormNphiesClaim.controls.isNewBorn.value && (
+      !this.FormSubscriber.controls.fullName.value ||
+      !this.FormSubscriber.controls.dob.value ||
+      !this.FormSubscriber.controls.gender.value ||
+      !this.FormSubscriber.controls.documentType.value ||
+      !this.FormSubscriber.controls.documentId.value)) {
+      hasError = true;
+    }
+
+    // this.checkCareTeamValidation();
     if (!this.checkDiagnosisValidation()) {
       hasError = true;
     }
@@ -1396,6 +1440,14 @@ export class CreateClaimNphiesComponent implements OnInit {
       hasError = true;
     }
 
+    if (!this.checkNewBornValidation()) {
+      hasError = true;
+    }
+
+    if (!this.checkNewBornSupportingInfoCodes()) {
+      hasError = true;
+    }
+
     if (hasError) {
       return;
     }
@@ -1414,7 +1466,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary.familyName = this.FormNphiesClaim.controls.familyName.value;
       this.model.beneficiary.fullName = this.FormNphiesClaim.controls.fullName.value;
       this.model.beneficiary.fileId = this.FormNphiesClaim.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.FormNphiesClaim.controls.dob.value;
+      this.model.beneficiary.dob = this.datePipe.transform(this.FormNphiesClaim.controls.dob.value, 'yyyy-MM-dd');
       this.model.beneficiary.gender = this.FormNphiesClaim.controls.gender.value;
       this.model.beneficiary.documentType = this.FormNphiesClaim.controls.documentType.value;
       this.model.beneficiary.documentId = this.FormNphiesClaim.controls.documentId.value;
@@ -1435,6 +1487,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.beneficiary.postalCode = this.FormNphiesClaim.controls.postalCode.value;
 
       if (this.FormNphiesClaim.controls.isNewBorn.value) {
+
         this.model.subscriber = {};
         this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
         this.model.subscriber.secondName = this.FormSubscriber.controls.middleName.value;
@@ -1442,7 +1495,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
         this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
         this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
-        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.dob = this.datePipe.transform(this.FormSubscriber.controls.dob.value, 'yyyy-MM-dd');
         this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
         this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
         this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
@@ -2871,6 +2924,15 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
         filename: item.attachmentName, attachment: item.byteArray
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
+  }
+
+  viewCommunicationAttachment(e, attachmentName, byteArray) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: attachmentName, attachment: byteArray
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }
