@@ -230,6 +230,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   setReuseValues() {
 
+    this.FormPreAuthorization.controls.isNewBorn.setValue(this.data.isNewBorn);
     if (this.data.transferAuthProvider) {
       if (this.providerList.filter(x => x.name === this.data.transferAuthProvider).length > 0) {
         // tslint:disable-next-line:max-line-length
