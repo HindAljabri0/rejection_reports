@@ -359,6 +359,7 @@
     <thead>
       <tr>
         <th width="10"></th>
+        <th>Sequence No.</th>
         <th>Type</th>
         <th>Code - Description</th>
         <th>Net</th>
@@ -374,6 +375,8 @@
             <mat-icon *ngIf="currentSelectedItem!=i" class="size-21">add_circle_outline</mat-icon>
             <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
           </td>
+          <td class="row-click" (click)="toggleItem(i)">
+                  {{item.sequence}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
           <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
