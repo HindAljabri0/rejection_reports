@@ -41,10 +41,6 @@
                 <mat-icon class="material-icons-outlined">close</mat-icon>
                 <span>Cancel</span>
               </button>
-              <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'nullify')">
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Nullify</span>
-              </button>
               <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
             </mat-menu>
             <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">

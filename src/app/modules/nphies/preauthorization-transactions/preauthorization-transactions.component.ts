@@ -525,6 +525,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
               });
             });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+          } else if (body.statusCheckStatus && body.statusCheckStatus.toString().toLowerCase().trim() === 'failed') {
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
           }
           this.onSubmit();
 
