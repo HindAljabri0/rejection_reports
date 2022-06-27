@@ -803,7 +803,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
           totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
           totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare + claim.totalPatientShare,
-         totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
+          totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
 
           totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
           statuses: this.summaries[newSummaryIndex].statuses,
@@ -1272,8 +1272,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
               });
             });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-          } else {
-            this.dialogService.showMessage(body.message, '', 'success', true, 'OK');
+          } else if (body.statusCheckStatus && body.statusCheckStatus.toString().toLowerCase().trim() === 'failed') {
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
           }
           this.getClaimTransactions(this.params.status, this.params.page);
         }
