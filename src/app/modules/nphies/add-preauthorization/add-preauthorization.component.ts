@@ -382,6 +382,46 @@ export class AddPreauthorizationComponent implements OnInit {
             insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
           });
 
+          if (res.subscriber) {
+
+            this.FormPreAuthorization.patchValue({
+              subscriberName: res.subscriber.beneficiaryName + ' (' + res.subscriber.documentId + ')'
+            });
+            // tslint:disable-next-line:max-line-length
+
+            this.FormSubscriber.controls.firstName.setValue(res.subscriber.firstName);
+            this.FormSubscriber.controls.middleName.setValue(res.subscriber.secondName);
+            this.FormSubscriber.controls.lastName.setValue(res.subscriber.thirdName);
+            this.FormSubscriber.controls.familyName.setValue(res.subscriber.familyName);
+            this.FormSubscriber.controls.fullName.setValue(res.subscriber.fullName);
+            this.FormSubscriber.controls.beneficiaryFileld.setValue(res.subscriber.fileId);
+            this.FormSubscriber.controls.dob.setValue(res.subscriber.dob);
+            this.FormSubscriber.controls.gender.setValue(res.subscriber.gender);
+            this.FormSubscriber.controls.documentType.setValue(res.subscriber.documentType);
+            this.FormSubscriber.controls.documentId.setValue(res.subscriber.documentId);
+            this.FormSubscriber.controls.eHealthId.setValue(res.subscriber.eHealthId);
+            this.FormSubscriber.controls.nationality.setValue(res.subscriber.nationality);
+            // tslint:disable-next-line:max-line-length
+            this.FormSubscriber.controls.nationalityName.setValue(nationalities.filter(x => x.Code === res.subscriber.nationality)[0] ? nationalities.filter(x => x.Code === res.subscriber.nationality)[0].Name : '');
+            this.FormSubscriber.controls.residencyType.setValue(res.subscriber.residencyType);
+            this.FormSubscriber.controls.contactNumber.setValue(res.subscriber.contactNumber);
+            this.FormSubscriber.controls.martialStatus.setValue(res.subscriber.maritalStatus);
+            this.FormSubscriber.controls.bloodGroup.setValue(res.subscriber.bloodGroup);
+            this.FormSubscriber.controls.preferredLanguage.setValue(res.subscriber.preferredLanguage);
+            this.FormSubscriber.controls.emergencyNumber.setValue(res.subscriber.emergencyPhoneNumber);
+            this.FormSubscriber.controls.email.setValue(res.subscriber.email);
+            this.FormSubscriber.controls.addressLine.setValue(res.subscriber.addressLine);
+            this.FormSubscriber.controls.streetLine.setValue(res.subscriber.streetLine);
+            this.FormSubscriber.controls.bcity.setValue(res.subscriber.city);
+            this.FormSubscriber.controls.bstate.setValue(res.subscriber.state);
+            this.FormSubscriber.controls.bcountry.setValue(res.subscriber.country);
+            if (res.subscriber.country) {
+              // tslint:disable-next-line:max-line-length
+              this.FormSubscriber.controls.bcountryName.setValue(this.nationalities.filter(x => x.Name.toLowerCase() === res.subscriber.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == res.subscriber.country.toLowerCase())[0].Name : '');
+            }
+            this.FormSubscriber.controls.postalCode.setValue(res.subscriber.postalCode);
+          }
+
           if (res.beneficiary && res.beneficiary.insurancePlan && res.beneficiary.insurancePlan.payerId) {
             this.FormPreAuthorization.controls.insurancePlanId.setValue(res.beneficiary.insurancePlan.payerId.toString());
           }
