@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit {
     }
 
     fetchDownloads() {
-        if (this.isProvider) {
+        if (this.isProvider && this.providerId) {
             this.reportsService.getAllDownloadsForProvider(this.providerId, null, null).subscribe(downloads => {
                 this.providerDownloads = [];
                 if (downloads instanceof HttpResponse) {
@@ -116,6 +116,7 @@ export class HeaderComponent implements OnInit {
                 }
             });
         }
+        // tslint:disable-next-line:max-line-length
         if (this.userPrivileges.WaseelPrivileges.isPAM || (this.userPrivileges.WaseelPrivileges.RCM.isAdmin || this.userPrivileges.WaseelPrivileges.RCM.isDoctor || this.userPrivileges.WaseelPrivileges.RCM.isCoder)) {
             this.reportsService.getAllDownloadsForProvider(this.authUsername, null, null).subscribe(downloads => {
                 this.adminDownloads = [];

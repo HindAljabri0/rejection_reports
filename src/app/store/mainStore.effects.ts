@@ -52,15 +52,19 @@ export class MainStoreEffects {
         }
         this.searchService.getClaimAlerts(providerId).subscribe(event => {
           if (event instanceof HttpResponse) {
-            const body = event.body;
-            if (body && body[0] && body[0].indexOf('been a while since your') > -1) {
-              body[0] += '\n\nRejected By Waseel is now Validation Errors';
+            const body: string[] = [];
+            if (event.body && event.body[0] && event.body[0].indexOf('been a while since your') > -1) {
+              body.push('Rejected By Waseel is now Validation Errors');
+            }
+            if (event.body && event.body[0]) {
+              body.push(event.body[0]);
             }
 
-            if (body instanceof Array) {
-              this.dialogService.showAlerts(body);
-              localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
-            }
+            this.dialogService.showAlerts(body);
+            localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
+            // if (body instanceof Array) {
+
+            // }
           }
         });
       }
