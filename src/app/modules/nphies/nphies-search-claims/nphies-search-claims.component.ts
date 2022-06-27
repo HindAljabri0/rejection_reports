@@ -1370,10 +1370,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error', 'invalid'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsDeletable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());
@@ -1390,7 +1390,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
-    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['accepted', 'notaccepted',  'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   openReasonModalMultiClaims() {
