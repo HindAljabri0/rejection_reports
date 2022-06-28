@@ -215,7 +215,9 @@ export class MultiSheetFileUploadComponent implements OnInit {
       this.cancel();
     });
     const errorobservable = this.uploadService.errorChange.subscribe(error => {
-      this.dialogService.openMessageDialog(new MessageDialogData('', error, true));
+      const msg = error.split('. ');
+      this.dialogService.showMessage('', '', 'alert', true, 'OK', msg);
+      // this.dialogService.openMessageDialog(new MessageDialogData('', error, true));
       errorobservable.unsubscribe();
       this.uploading = false;
       this.cancel();
