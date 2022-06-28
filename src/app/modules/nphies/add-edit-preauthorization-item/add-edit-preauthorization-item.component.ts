@@ -481,7 +481,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
-      this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
+      this.FormItem.controls.net.setValue(parseFloat((+(Math.round(parseFloat(netValue.toString() + 'e+2'))  + 'e-2')).toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
     }
