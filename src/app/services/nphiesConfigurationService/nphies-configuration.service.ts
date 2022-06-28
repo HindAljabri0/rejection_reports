@@ -117,4 +117,23 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }
+
+  addPriceDetail(providerId: string, priceListId: number, body: any) {
+    const requestUrl = `/providers/${providerId}/pricelist/service/add?priceListId=${priceListId}`;
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  updatePriceDetail(providerId: string, priceListId: number, body: any) {
+    const requestUrl = `/providers/${providerId}/pricelist/service/update?priceListId=${priceListId}`;
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  deletePriceDetail(providerId: string, priceListId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/pricelist/service/delete?priceListId=${priceListId}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
+    return this.http.request(request);
+  }
 }

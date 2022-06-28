@@ -35,6 +35,7 @@
                         <th>Non-Standard Description</th>
                         <th>Unit Price</th>
                         <th>Factor</th>
+                        <th width="10"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,24 @@
                         <td>{{pd.nonStandardDescription}}</td>
                         <td>{{pd.unitPrice}} <span class="currency">SR</span></td>
                         <td>{{pd.factor}}</td>
+                        <td class="actions">
+                          <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+
+                          <mat-menu #actionsMenu xPosition="before">
+                            <ng-template matMenuContent>
+                              <button type="button" mat-menu-item (click)="openAddPricelistDialog(pd)">
+                                <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                <span>Edit</span>
+                              </button>
+                              <button type="button" mat-menu-item (click)="DeletePriceDetail(pd)">
+                                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                <span>Delete</span>
+                              </button>
+                            </ng-template>
+                          </mat-menu>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -69,4 +88,9 @@
         </div>
       </div>
     </div>
+
+    <button mat-fab color="primary" class="page-fab" (click)="openAddPricelistDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+
 </div>
