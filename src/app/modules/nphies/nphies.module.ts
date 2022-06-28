@@ -66,6 +66,7 @@ import {
 import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.component';
+import { AddPricelistDialogComponent } from './pricelist-details/add-pricelist-dialog/add-pricelist-dialog.component';
 
 @NgModule({
   declarations: [
@@ -110,8 +111,9 @@ import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.co
     NphiesUploadSummaryDialogComponent,
     PricelistComponent,
     PricelistDetailsComponent,
-    PricelistUploadComponent
-    
+    PricelistUploadComponent,
+    AddPricelistDialogComponent
+
   ],
   imports: [
     CommonModule,
@@ -145,7 +147,8 @@ import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.co
     UploadPhysiciansDialogComponent,
     AddPhysicianDialogComponent,
     NphiesUploadSummaryDialogComponent,
-    PricelistUploadComponent
+    PricelistUploadComponent,
+    AddPricelistDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent
