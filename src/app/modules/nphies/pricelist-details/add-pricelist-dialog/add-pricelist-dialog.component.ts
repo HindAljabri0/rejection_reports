@@ -94,7 +94,9 @@ export class AddPricelistDialogComponent implements OnInit {
           }
           this.filteredItem.next(this.itemList.slice());
           this.IsItemLoading = false;
-          this.FormPriceDetail.controls.serviceCode.enable();
+          if (!this.data || (this.data && !this.data.priceDetail)) {
+            this.FormPriceDetail.controls.serviceCode.enable();
+          }
           this.FormPriceDetail.controls.serviceCodeFilter.valueChanges
             .pipe(takeUntil(this.onDestroy))
             .subscribe(() => {
