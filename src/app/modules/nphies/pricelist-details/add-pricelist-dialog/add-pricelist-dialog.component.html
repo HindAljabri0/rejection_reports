@@ -26,7 +26,7 @@
       [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('serviceCode').touched) && FormPriceDetail.get('serviceCode').hasError('required')}">
       <label class="control-label">Service Code<span class="asterisk">*</span></label>
       <mat-form-field class="form-control custom-select-control">
-        <mat-select formControlName="serviceCode" [disabled]="IsItemLoading" #itemSelect>
+        <mat-select formControlName="serviceCode" [disabled]="IsItemLoading || (data && data.priceDetail)" #itemSelect>
           <mat-option>
             <ngx-mat-select-search placeholderLabel="Search Item" formControlName="serviceCodeFilter"
               noEntriesFoundLabel="No items found" name='searchedItem'>
