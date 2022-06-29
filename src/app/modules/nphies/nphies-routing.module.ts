@@ -17,6 +17,7 @@ import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-benefici
 import { PhysiciansComponent } from './physicians/physicians.component';
 import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
+import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -38,7 +39,8 @@ const routes: Routes = [
   { path: 'configurations', component: NphiesConfigurationsComponent },
   { path: 'physicians', component: PhysiciansComponent },
   { path: 'pricelist', component: PricelistComponent },
-  { path: 'pricelist-details', component: PricelistDetailsComponent }
+  { path: 'pricelist-details', component: PricelistDetailsComponent },
+  { path: 'convert-pre-auth-to-claim', component: ConvertPreAuthToClaimComponent }
 ];
 
 @NgModule({

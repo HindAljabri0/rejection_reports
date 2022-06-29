@@ -324,6 +324,11 @@
                 <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">{{NewAuthTransactions}}</span>
               </a>
             </li>
+            <li>
+              <a routerLink="/nphies/convert-pre-auth-to-claim" routerLinkActive="is-active">
+                <span class="text">Convert Pre-Auth to Claim</span>
+              </a>
+            </li>
           </ul>
         </mat-expansion-panel>
         <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
@@ -553,7 +558,8 @@
           RCM
         </div>
       </ng-container>
-      <div class="list-container pt-0" *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && !envStaging && !envProd">
+      <div class="list-container pt-0"
+        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && !envStaging && !envProd">
         <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder">
           <li>
             <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
