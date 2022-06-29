@@ -172,7 +172,6 @@ export class PricelistDetailsComponent implements OnInit {
         true))
       .subscribe(result => {
         if (result === true) {
-          this.sharedServices.loadingChanged.next(false);
           const model: any = {};
           model.serviceType = priceDetail.itemType;
           model.serviceCode = priceDetail.code;
