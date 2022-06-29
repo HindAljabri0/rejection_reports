@@ -136,4 +136,11 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
     return this.http.request(request);
   }
+
+  deletePriceList(providerId: string, priceListId: string) {
+    const requestUrl = `/providers/${providerId}/pricelist/${priceListId}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('DELETE', environment.nphiesConfigurationService + requestUrl);
+    return this.http.request(request);
+  }
 }

@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-pricelist',
@@ -302,6 +303,53 @@ export class PricelistComponent implements OnInit {
         this.onSubmit();
       }
     });
+  }
+
+  DeletePriceList(priceListId) {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Price List?',
+        `This will delete price list. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.sharedService.loadingChanged.next(true);
+
+          // tslint:disable-next-line:max-line-length
+          this.nphiesConfigurationService.deletePriceList(this.sharedService.providerId, priceListId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              if (event.status === 200) {
+                const body: any = event.body;
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+                this.onSubmit();
+              }
+              this.sharedService.loadingChanged.next(false);
+            }
+
+          }, error => {
+            this.sharedService.loadingChanged.next(false);
+            if (error instanceof HttpErrorResponse) {
+              if (error.status === 400) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+              } else if (error.status === 404) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 500) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 503) {
+                const errors: any[] = [];
+                if (error.error.errors) {
+                  error.error.errors.forEach(x => {
+                    errors.push(x);
+                  });
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+                } else {
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+                }
+              }
+            }
+          });
+        }
+      });
   }
 
 }
