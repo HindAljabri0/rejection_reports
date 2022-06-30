@@ -245,6 +245,14 @@
         </mat-accordion>
       </ng-container>
 
+      <ul class="nav-list">
+        <li>
+          <a routerLink="/tawuniya-gss" routerLinkActive="is-active">
+            <span class="text">Tawuniya GSS Reports</span>
+          </a>
+        </li>
+      </ul>
+
       <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
         <li i18n="@@configurations">
           <a routerLink="/configurations" routerLinkActive="is-active">
@@ -322,6 +330,11 @@
               <a routerLink="/nphies/preauthorization-transactions" routerLinkActive="is-active">
                 <span class="text">Pre Authorization Transactions</span>
                 <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">{{NewAuthTransactions}}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/nphies/convert-pre-auth-to-claim" routerLinkActive="is-active">
+                <span class="text">Convert Pre-Auth to Claim</span>
               </a>
             </li>
           </ul>
@@ -553,7 +566,8 @@
           RCM
         </div>
       </ng-container>
-      <div class="list-container pt-0" *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && !envStaging && !envProd">
+      <div class="list-container pt-0"
+        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && !envStaging && !envProd">
         <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder">
           <li>
             <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">

@@ -1,0 +1,17 @@
+<div class="primary-dialog-header">
+    <h5 class="primary-dialog-title">Generate Report</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pt-0">
+    <div class="form-group">
+        <label class="control-label">Loss Month</label>
+        <div class="date-picker">
+            <input [matDatepicker]="lossMonthPicker" class="form-control" placeholder="Select loss month">
+            <mat-datepicker-toggle [for]="lossMonthPicker"></mat-datepicker-toggle>
+            <mat-datepicker #lossMonthPicker></mat-datepicker>
+        </div>
+    </div>
+    <div class="text-right">
+        <button type="button" mat-flat-button color="primary">Generate Report</button>
+    </div>
+</div>
