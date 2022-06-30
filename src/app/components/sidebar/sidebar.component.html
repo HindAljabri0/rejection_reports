@@ -245,6 +245,14 @@
         </mat-accordion>
       </ng-container>
 
+      <ul class="nav-list">
+        <li>
+          <a routerLink="/tawuniya-gss" routerLinkActive="is-active">
+            <span class="text">Tawuniya GSS Reports</span>
+          </a>
+        </li>
+      </ul>
+
       <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
         <li i18n="@@configurations">
           <a routerLink="/configurations" routerLinkActive="is-active">

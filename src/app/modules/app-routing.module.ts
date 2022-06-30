@@ -34,6 +34,10 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
                     { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
                     { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
                     {
+                        path: 'tawuniya-gss',
+                        loadChildren: () => import('./tawuniya-gss/tawuniya-gss.module').then(m => m.TawuniyaGssModule)
+                    },
+                    {
                         path: 'configurations',
                         loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
                         canLoad: [RouteCanActiveService]
