@@ -61,7 +61,7 @@ export class ProviderNphiesApprovalService {
         requestURL += `fromDate=${fromDate}&`;
       }
       if (toDate) {
-        requestURL += `toDate=${toDate}&`;
+        requestURL += `toDate=${this.formatDate(toDate)}&`;
       }
       if (claimRefNo) {
         requestURL += `claimRefNo=${claimRefNo}&`;
@@ -79,7 +79,7 @@ export class ProviderNphiesApprovalService {
         requestURL += `nationalId=${nationalId}&`;
       }
       if (claimDate) {
-        requestURL += `claimDate=${claimDate}`;
+        requestURL += `claimDate=${this.formatDate(claimDate)}`;
       }
       if (netAmount) {
         requestURL += `netAmount=${netAmount}`;
@@ -206,7 +206,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (claimDate) {
-      requestURL += `&claimDate=${claimDate}`;
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
     }
 
     // if (claimTypes && claimTypes.length > 0) {
@@ -289,7 +289,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (claimDate) {
-      requestURL += `&claimDate=${claimDate}`;
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
     }
 
     if (documentId) {
@@ -369,7 +369,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (claimDate) {
-      requestURL += `&claimDate=${claimDate}`;
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
     }
 
     if (documentId) {
