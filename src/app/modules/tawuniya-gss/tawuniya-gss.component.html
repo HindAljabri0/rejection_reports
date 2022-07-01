@@ -51,26 +51,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">512</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">November 2021</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">125</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">24,584 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">514 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">1,457 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">1,45,788 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">1,455 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">89,875 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">
-                            <span class="status-badge size-sm primary">New</span>
-                        </td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
+                    <ng-container *ngFor="let data of initiateModel">
+                    	<tr *ngIf="data != null">
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.gssReferenceNumber }}</td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.lossMonth }}</td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">{{ data?.totalNumberOfClaim }}</td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalGross.value }} <span class="currency">{{ data?.totalGross.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalDiscount.value }} <span class="currency">{{ data?.totalDiscount.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalPatientShare.value }} <span class="currency">{{ data?.totalPatientShare.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNet.value }} <span class="currency">{{ data?.totalNet.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetVat.value }} <span class="currency">{{ data?.totalNetVat.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetPayable.value }} <span class="currency">{{ data?.totalNetPayable.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">
+								<span class="status-badge size-sm primary">{{ data?.status }}</span>
+							</td>
+							<td class="actions">
+								<button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+									<mat-icon>more_vert</mat-icon>
+								</button>
+							</td>
+						</tr>
+					</ng-container>
+                    <!-- <tr>
                         <td class="row-click" routerLink="/tawuniya-gss/report-details">8598</td>
                         <td class="row-click" routerLink="/tawuniya-gss/report-details">December 2021</td>
                         <td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">52</td>
@@ -107,7 +109,7 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
