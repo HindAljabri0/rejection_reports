@@ -38,6 +38,7 @@ export enum ClaimStatus {
     Under_Processing = 'UNDER PROCESSING',
     Under_Submision = 'UNDER SUBMISSION',
     Failed = 'FAILED',
+    FAILEDNPHIES = 'FAILEDNPHIES',
     Submitted = 'SUBMITTED',
     SUBMITTED_OUTSIDE_WASEEL = 'SUBMITTED_OUTSIDE_WASEEL',
     TOTALNOTSUBMITTED = 'Totalnotsubmitted',

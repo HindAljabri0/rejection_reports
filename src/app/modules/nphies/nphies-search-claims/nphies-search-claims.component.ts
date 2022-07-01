@@ -1361,8 +1361,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     status = status.trim().toLowerCase();
     // tslint:disable-next-line:max-line-length
-    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'NotSaved'];
-    if (validStatus.indexOf(status) >= 0) {
+    const inValidStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'notsaved' , 'failednphies'];
+    if (inValidStatus.indexOf(status) >= 0) {
       return false;
     } else {
       return true;
@@ -1370,10 +1370,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error', 'invalid'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsDeletable(status: string) {
-    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());
@@ -1385,12 +1385,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showInquireAll() {
     // tslint:disable-next-line:max-line-length
-    return ['queued', 'pended', 'failed', 'approved', 'partial', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
-    return ['accepted', 'notaccepted', 'failed', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   openReasonModalMultiClaims() {
