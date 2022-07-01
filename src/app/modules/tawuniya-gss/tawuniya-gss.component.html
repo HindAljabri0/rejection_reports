@@ -63,7 +63,9 @@
 							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetVat.value }} <span class="currency">{{ data?.totalNetVat.currencyCode }}</span></td>
 							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetPayable.value }} <span class="currency">{{ data?.totalNetPayable.currencyCode }}</span></td>
 							<td class="row-click" routerLink="/tawuniya-gss/report-details">
-								<span class="status-badge size-sm primary">{{ data?.status }}</span>
+								<span class="status-badge size-sm primary" *ngIf="data?.status === 'new'">New</span>
+                                <span class="status-badge size-sm success" *ngIf="data?.status === 'signed'">Signed</span>
+                                <span class="status-badge size-sm danger" *ngIf="data?.status === 'cancelled'">Cancelled</span>
 							</td>
 							<td class="actions">
 								<button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
@@ -72,44 +74,6 @@
 							</td>
 						</tr>
 					</ng-container>
-                    <!-- <tr>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">8598</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">December 2021</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">52</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">1,44,547 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">852 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">9,875 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">2,657 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">745 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">14,557 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">
-                            <span class="status-badge size-sm success">Signed</span>
-                        </td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">645</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">January 2022</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">68</td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">2,658 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">124 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">526 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">2,56,587 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">1,547 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">26,579 <span class="currency">SR</span></td>
-                        <td class="row-click" routerLink="/tawuniya-gss/report-details">
-                            <span class="status-badge size-sm danger">Cancelled</span>
-                        </td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr> -->
                 </tbody>
             </table>
         </div>
