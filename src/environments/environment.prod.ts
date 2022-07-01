@@ -31,6 +31,7 @@ export const environment = {
 
     claimsDownloadsService: `${host}/downloads`,
     claimReviewService: `${host}/review`,
-    nphiesConfigurationService: `${host}/nphies-configurations`
+    nphiesConfigurationService: `${host}/nphies-configurations`,
+    tawuniyaGssReport: `${host}/gss-report`
 
 };
