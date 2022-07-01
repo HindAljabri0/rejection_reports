@@ -86,6 +86,7 @@ export class DownloadService {
   }
 
   startGeneratingDownloadFile(request: Observable<HttpEvent<unknown>>, isAdminFile = false) {
+    console.log('start generating ');
     const downloadRequest = new DownloadRequest();
     if (!isAdminFile) {
       this._providerDownloads.unshift(downloadRequest);

@@ -3,7 +3,7 @@
         <span class="medium text-primary align-self-center">{{data.uploadName}}</span>
         <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
             (click)="$event.stopPropagation(); deleteUpload()"
-            matTooltip="Delete All Not Submitted Claims (Ready For Submission, Rejected By Waseel, Falid, and Error)">
+            matTooltip="Delete All Not Submitted Claims (Ready For Submission, Validation Errors, Falid, and Error)">
             <mat-icon class="d-block">delete_outline</mat-icon>
         </span>
     </div>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
-            <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Rejected By Waseel</p>
+            <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Validation Errors</p>
             <p class="dashboard-numbers">&ensp;{{data.rejectedByWaseel}}</p>
         </div>
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
