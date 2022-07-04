@@ -29,5 +29,6 @@ export const environment = {
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
     claimReviewService: `${host}/review`,
-    nphiesConfigurationService: `${host}/nphies-configurations`
+    nphiesConfigurationService: `${host}/nphies-configurations`,
+    tawuniyaGssReport: `${host}/gss-report`
 };
