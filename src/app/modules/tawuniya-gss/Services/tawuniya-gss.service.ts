@@ -9,12 +9,16 @@ import { InitiateResponse } from '../models/InitiateResponse.model';
 
 export class TawuniyaGssService {
 
-  constructor(private http: HttpClient) { 
-}
+  constructor(private http: HttpClient) {
+  }
 
-generateReportInitiate(lossMonth : string) {
-  const requestUrl = "/gss/initiate/" + localStorage.getItem('provider_id');
-  return this.http.post<InitiateResponse>(environment.tawuniyaGssReport + requestUrl, { "providerId" : localStorage.getItem('provider_id'), "lossMonth" : lossMonth , "userName" : localStorage.getItem('auth_username')});
-}
+  generateReportInitiate(lossMonth: string) {
+    const requestUrl = "/gss/initiate/" + localStorage.getItem('provider_id');
+    return this.http.post<InitiateResponse>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "lossMonth": lossMonth, "userName": localStorage.getItem('auth_username') });
+  }
 
+  gssConfirmReport(gssReferenceNumber: string) {
+    const requestUrl = "/gss/initiate/" + localStorage.getItem('provider_id');
+    return this.http.post<InitiateResponse>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "gssReferenceNumber": gssReferenceNumber, "userName": localStorage.getItem('auth_username') });
+  }
 }

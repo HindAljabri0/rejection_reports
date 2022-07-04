@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDatepicker, MatDialogRef } from '@angular/material';
 import { Store } from '@ngrx/store';
+import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
 import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
 
@@ -14,7 +15,7 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
 
   data : InitiateResponse[];
   lossMonth : FormControl = new FormControl();
-  constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store) { }
 
   ngOnInit() {
   }
@@ -25,8 +26,12 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
 
   generateReport() {
     let date = new Date(this.lossMonth.value);
-    console.log(date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate());
-    this.dialogRef.close(date.getFullYear() + "/" + date.getMonth());
+    let newDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+    if(Date.parse(newDate)) {
+      this.dialogRef.close(date.getFullYear() + "/" + (date.getMonth() + 1));
+    } else {
+      return this.store.dispatch(showSnackBarMessage({ message: "Please select Loss Month." }));
+    }
   }
 
 }
