@@ -170,7 +170,7 @@ export class ProviderNphiesApprovalService {
 
 
     if (provderClaimReferenceNumber) {
-      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
     }
 
     if (toDate) {
@@ -253,7 +253,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (provderClaimReferenceNumber) {
-      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
     }
 
     if (toDate) {
@@ -337,7 +337,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (provderClaimReferenceNumber) {
-      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
     }
 
     if (toDate) {
