@@ -43,9 +43,10 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
           return this.router.navigate(['/reports/payer-claims-report']);
         }
         if (this._isOnlyAdmin()) {
-          return this.router.createUrlTree(['administration']);
+          return this.router.createUrlTree(['administration/switch-provider']);
+          
         } else if (this._isOnlyRcm()) {
-          if (this._isDoctorOrCoder()) { 
+          if (this._isDoctorOrCoder()) {
             return this.router.createUrlTree(['review', 'scrubbing', 'upload']);
           }
           return this.router.createUrlTree(['administration', 'switch-provider']);
