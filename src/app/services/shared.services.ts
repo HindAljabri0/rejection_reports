@@ -365,7 +365,9 @@ export class SharedServices {
         return 'rejected';
       case ClaimStatus.PAID.toLowerCase(): case ClaimStatus.APPROVED.toLowerCase():
         return 'paid';
-      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase(): case ClaimStatus.PARTIALLY_APPROVED.toLowerCase():
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
+      case ClaimStatus.PARTIALLY_APPROVED.toLowerCase():
+      case ClaimStatus.PARTIAL.toLowerCase():
         return 'partially-paid';
       case ClaimStatus.OUTSTANDING.toLowerCase(): case ClaimStatus.Pended.toLowerCase():
         return 'under-processing';
@@ -383,6 +385,8 @@ export class SharedServices {
         return 'duplicate';
       case ClaimStatus.CANCELLED.toLowerCase():
         return 'cancelled';
+      case ClaimStatus.Queued.toLowerCase():
+        return 'under-submission';
       default:
         return 'not-saved';
     }
@@ -418,6 +422,10 @@ export class SharedServices {
       case ClaimStatus.CANCELLED.toLowerCase():
         // return 'Invalid';
         return 'Cancelled';
+      case ClaimStatus.FAILEDNPHIES.toLowerCase():
+        return 'Failed By NPHIES';
+        case ClaimStatus.PARTIAL.toLowerCase():
+          return 'Partially Approved';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
@@ -631,7 +639,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -649,7 +657,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

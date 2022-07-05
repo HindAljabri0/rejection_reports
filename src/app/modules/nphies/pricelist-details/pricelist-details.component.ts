@@ -4,11 +4,15 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatDialog } from '@angular/material';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PriceDetailModel } from 'src/app/models/price-detail-model';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { Location, DatePipe } from '@angular/common';
+import { AddPricelistDialogComponent } from './add-pricelist-dialog/add-pricelist-dialog.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 
 @Component({
   selector: 'app-pricelist-details',
@@ -38,12 +42,15 @@ export class PricelistDetailsComponent implements OnInit {
   priceList = [];
 
   constructor(
+    private dialog: MatDialog,
     private activateRoute: ActivatedRoute,
     private sharedDataService: SharedDataService,
     private location: Location,
     private sharedServices: SharedServices,
     private beneficiaryService: ProvidersBeneficiariesService,
-    private providerNphiesSearchService: ProviderNphiesSearchService) {
+    private providerNphiesSearchService: ProviderNphiesSearchService,
+    private nphiesConfigurationService: NphiesConfigurationService,
+    private dialogService: DialogService) {
 
     this.priceListId = this.activateRoute.snapshot.queryParams.priceListId;
     this.payerNphiesId = this.activateRoute.snapshot.queryParams.payerNphiesId;
@@ -134,11 +141,85 @@ export class PricelistDetailsComponent implements OnInit {
     });
   }
 
-  typeName(type){
+  typeName(type) {
     return this.typeList.filter(x => x.value === type)[0] ? this.typeList.filter(x => x.value === type)[0].name : '-';
   }
 
-  goBack(){
+  openAddPricelistDialog(priceDetailData: any = null) {
+    const dialogRef = this.dialog.open(AddPricelistDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-sm'],
+      autoFocus: false,
+      data: {
+        priceListId: this.priceListId,
+        priceDetail: priceDetailData
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.page = 0;
+        this.pageSize = 10;
+        this.searchItems();
+      }
+    });
+  }
+
+  DeletePriceDetail(priceDetail: any) {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Price List Service?',
+        `This will delete price list service. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          const model: any = {};
+          model.serviceType = priceDetail.itemType;
+          model.serviceCode = priceDetail.code;
+          model.nonStandardCode = priceDetail.nonStandardCode;
+          model.nonStandardDesc = priceDetail.nonStandardDescription;
+          model.unitPrice = priceDetail.unitPrice;
+          model.factor = priceDetail.factor;
+
+          this.sharedServices.loadingChanged.next(true);
+
+          // tslint:disable-next-line:max-line-length
+          this.nphiesConfigurationService.deletePriceDetail(this.sharedServices.providerId, this.priceListId, model).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              if (event.status === 200) {
+                const body: any = event.body;
+                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+                this.searchItems();
+              }
+              this.sharedServices.loadingChanged.next(false);
+            }
+
+          }, error => {
+            this.sharedServices.loadingChanged.next(false);
+            if (error instanceof HttpErrorResponse) {
+              if (error.status === 400) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+              } else if (error.status === 404) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 500) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 503) {
+                const errors: any[] = [];
+                if (error.error.errors) {
+                  error.error.errors.forEach(x => {
+                    errors.push(x);
+                  });
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+                } else {
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+                }
+              }
+            }
+          });
+        }
+      });
+  }
+
+  goBack() {
     this.location.back();
   }
 
