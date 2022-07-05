@@ -2156,6 +2156,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.statusDesc = response.statusDesc;
     this.otherDataModel.disposition = response.disposition;
     this.otherDataModel.insurer = response.insurer;
+    this.otherDataModel.tpaName = response.tpaName;
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;

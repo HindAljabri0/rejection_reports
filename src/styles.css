@@ -130,6 +130,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .minw130{min-width: 130px;}
 .minw145{min-width: 145px;}
 .minw180{min-width: 180px;}
+.w100{width: 100% !important;}
 
 /* row
 --------------------------------------------------------------------------------------------------------*/
@@ -1580,12 +1581,16 @@ tag tag-ripple{display:none;}
 /* status badge
 --------------------------------------------------------------------------------------------------------*/
 .primary-dialog-header .status-badge{margin-top: -4px;margin-bottom: -4px;}
-.status-badge{padding: 8px 14px 8px 10px;border-radius: 8px;font-weight: 600;color: #fff;background: #505050;display: inline-flex;vertical-align: top;text-transform: uppercase;letter-spacing: 1.25px;align-items: center;}
-.status-badge>img{display: block;height: 24px;width: 24px;margin-right: 8px;}
+.status-badge{padding: 8px 14px;border-radius: 8px;font-weight: 600;color: #fff;background: #505050;display: inline-flex;vertical-align: top;text-transform: uppercase;letter-spacing: 1.25px;align-items: center;}
+.status-badge>img{display: block;height: 24px;width: 24px;}
+.status-badge>img:first-child{margin-left: -4px;margin-right: 8px;}
+.status-badge>img:last-child{margin-right: -4px;margin-left: 8px;}
 .status-badge.warning{background-color: #E79143;}
 .status-badge.primary{background-color: #3060aa;}
 .status-badge.danger{background-color: #CD4949;}
 .status-badge.success{background-color: #59C14F;}
+.status-badge.size-sm{letter-spacing: 0;text-transform: none;font-size: 12px;line-height: 18px;padding: 3px 8px;}
+.primary-grid .status-badge.size-sm{margin: -2px 0;}
 
 /* doctor review tab
 --------------------------------------------------------------------------------------------------------*/
@@ -1609,6 +1614,7 @@ tag tag-ripple{display:none;}
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
 @media (min-width: 1440px) {
+    .d-xxl-block{display: block !important;}
     .col-xxl {-ms-flex-preferred-size: 0;flex-basis: 0;-ms-flex-positive: 1;flex-grow: 1;min-width: 0;max-width: 100%;}
     .col-xxl-auto {-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;}
     .col-xxl-1 {-ms-flex: 0 0 8.333333%;flex: 0 0 8.333333%;max-width: 8.333333%;}

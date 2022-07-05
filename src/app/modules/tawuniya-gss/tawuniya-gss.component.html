@@ -1,0 +1,97 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Tawuniya GSS Reports</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label">From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                        <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filterFromDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filterToDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height fixed-height-sm">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Ref. No.</th>
+                        <th>Loss Month</th>
+                        <th class="text-center">No. of Claims</th>
+                        <th>Gross</th>
+                        <th>Discount</th>
+                        <th>Patient Share</th>
+                        <th>Net</th>
+                        <th>Net Vat</th>
+                        <th>Payable</th>
+                        <th>Status</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let data of initiateModel">
+                    	<tr *ngIf="data != null">
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.gssReferenceNumber }}</td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.lossMonth }}</td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">{{ data?.totalNumberOfClaim }}</td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalGross.value }} <span class="currency">{{ data?.totalGross.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalDiscount.value }} <span class="currency">{{ data?.totalDiscount.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalPatientShare.value }} <span class="currency">{{ data?.totalPatientShare.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNet.value }} <span class="currency">{{ data?.totalNet.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetVat.value }} <span class="currency">{{ data?.totalNetVat.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetPayable.value }} <span class="currency">{{ data?.totalNetPayable.currencyCode }}</span></td>
+							<td class="row-click" routerLink="/tawuniya-gss/report-details">
+								<span class="status-badge size-sm primary" *ngIf="data?.status === 'new'">New</span>
+                                <span class="status-badge size-sm success" *ngIf="data?.status === 'signed'">Signed</span>
+                                <span class="status-badge size-sm danger" *ngIf="data?.status === 'cancelled'">Cancelled</span>
+							</td>
+							<td class="actions">
+								<button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+									<mat-icon>more_vert</mat-icon>
+								</button>
+							</td>
+						</tr>
+					</ng-container>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <mat-menu #actionsMenu xPosition="before">
+        <ng-template matMenuContent>
+            <button mat-menu-item type="button">
+                <mat-icon class="material-icons-outlined">edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button mat-menu-item type="button">
+                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                <span>Delete</span>
+            </button>
+        </ng-template>
+    </mat-menu>
+
+    <button mat-fab color="primary" class="page-fab" (click)="openGenerateReportDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

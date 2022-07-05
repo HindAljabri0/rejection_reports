@@ -27,10 +27,10 @@
             <p class="smaller-label short-text-height"><span class="bg-under-submission"></span>Under Submission</p>
             <p class="dashboard-numbers">&ensp;{{data.underSubmission}}</p>
         </div>
-        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+        <!-- <div class="col-6 col-lg-4 col-xl-3 pb-2">
             <p class="smaller-label short-text-height"><span class="bg-paid"></span>Paid</p>
             <p class="dashboard-numbers">&ensp;{{data.paid}}</p>
-        </div>
+        </div> -->
 
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
             <p class="smaller-label short-text-height"><span class="bg-rejected"></span>Rejected By Payer</p>
@@ -87,6 +87,10 @@
             <p class="smaller-label short-text-height"><span class="bg-failed"></span>Failed</p>
             <p class="dashboard-numbers">&ensp;{{data.failed}}</p>
         </div>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-failed"></span>Failed By NPHIES</p>
+          <p class="dashboard-numbers">&ensp;{{data.failedNphies}}</p>
+      </div>
 
     </div>
 

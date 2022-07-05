@@ -36,7 +36,8 @@ export const environment = {
     nphiesPollManagement: `${host}:9991`,
     contractManagementService: `${host}:8099`,
     claimReviewService: `${host}:8100`,
-    nphiesConfigurationService: `${host}:8092`
+    nphiesConfigurationService: `${host}:8092`,
+    tawuniyaGssReport: `${host}:8011`
 };
 
 /*
