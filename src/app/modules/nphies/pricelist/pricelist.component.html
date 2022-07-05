@@ -32,7 +32,7 @@
             <label class="control-label">From Upload Date</label>
             <div class="date-picker">
               <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select From Upload Date"
-                class="form-control" formControlName="uploadFromDate">
+                class="form-control" formControlName="uploadFromDate" (dateChange)="updateFromDate()">
               <mat-datepicker-toggle [for]="fromUploadDateDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #fromUploadDateDatePicker></mat-datepicker>
             </div>
@@ -43,7 +43,7 @@
           <div class="form-group">
             <label class="control-label">To Upload Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control"
+              <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control" [min]="FormPriceList.controls.uploadFromDate.value"
                 formControlName="uploadToDate">
               <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #toUploadDatePicker></mat-datepicker>
@@ -76,7 +76,7 @@
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
               {{p.payerName}}</td>
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
-              {{p.effectiveDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
+              {{p.effectiveDate | date:'dd-MM-yyyy'}}</td>
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
               {{p.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
             <td class="actions">

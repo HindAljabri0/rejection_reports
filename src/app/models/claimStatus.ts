@@ -24,6 +24,7 @@ export enum ClaimStatus {
     // SETTLED = "SETTLED",
     PAID = 'PAID',
     PARTIALLY_PAID = 'PARTIALLY PAID',
+    PARTIAL = 'PARTIAL',
     OUTSTANDING = 'OUTSTANDING',
     // RETURNED = "RETURNED",
     DUPLICATE = 'DUPLICATE',

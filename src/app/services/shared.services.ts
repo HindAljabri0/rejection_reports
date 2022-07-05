@@ -365,7 +365,9 @@ export class SharedServices {
         return 'rejected';
       case ClaimStatus.PAID.toLowerCase(): case ClaimStatus.APPROVED.toLowerCase():
         return 'paid';
-      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase(): case ClaimStatus.PARTIALLY_APPROVED.toLowerCase():
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
+      case ClaimStatus.PARTIALLY_APPROVED.toLowerCase():
+      case ClaimStatus.PARTIAL.toLowerCase():
         return 'partially-paid';
       case ClaimStatus.OUTSTANDING.toLowerCase(): case ClaimStatus.Pended.toLowerCase():
         return 'under-processing';
@@ -422,6 +424,8 @@ export class SharedServices {
         return 'Cancelled';
       case ClaimStatus.FAILEDNPHIES.toLowerCase():
         return 'Failed By NPHIES';
+        case ClaimStatus.PARTIAL.toLowerCase():
+          return 'Partially Approved';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
