@@ -58,7 +58,7 @@ export class ProviderNphiesApprovalService {
         requestURL += `statuses=${statuses}&`;
       }
       if (fromDate) {
-        requestURL += `fromDate=${fromDate}&`;
+        requestURL += `claimDate=${this.formatDate(fromDate)}&`;
       }
       if (toDate) {
         requestURL += `toDate=${this.formatDate(toDate)}&`;
@@ -79,13 +79,13 @@ export class ProviderNphiesApprovalService {
         requestURL += `nationalId=${nationalId}&`;
       }
       if (claimDate) {
-        requestURL += `claimDate=${this.formatDate(claimDate)}`;
+        requestURL += `claimDate=${this.formatDate(claimDate)}&`;
       }
       if (netAmount) {
-        requestURL += `netAmount=${netAmount}`;
+        requestURL += `netAmount=${netAmount}&`;
       }
       if (batchNo) {
-        requestURL += `batchNo=${batchNo}`;
+        requestURL += `batchNo=${batchNo}&`;
       }
     }
 
