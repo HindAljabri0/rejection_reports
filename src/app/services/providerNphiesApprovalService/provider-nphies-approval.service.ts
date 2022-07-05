@@ -152,7 +152,8 @@ export class ProviderNphiesApprovalService {
     // claimTypes?: string[],
     // claimSubTypes?: string[],
     // statuses?: string[],
-    documentId?: string
+    documentId?: string,
+    organizationId?: string
   ) {
 
     // fromDate?: string,
@@ -164,6 +165,21 @@ export class ProviderNphiesApprovalService {
     // nationalId?: string,
     // netAmount?: string,
     // batchNo?: string
+
+    //     providerId
+    // claimDate
+    // toDate
+    // payerIds
+    // batchId
+    // uploadId
+    // statuses
+    // claimIds
+    // provderClaimReferenceNumber
+    // patientFileNo
+    // memberId
+    // documentId
+    // invoiceNo
+    // organizationId
 
     let requestURL = `/providers/${providerId}/claims/submit?`;
 
@@ -186,7 +202,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (uploadId) {
-      requestURL += `uploadId=${uploadId}`;
+      requestURL += `&uploadId=${uploadId}`;
     }
 
     if (claimIds && claimIds.length > 0) {
@@ -207,6 +223,10 @@ export class ProviderNphiesApprovalService {
 
     if (claimDate) {
       requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
     }
 
     // if (claimTypes && claimTypes.length > 0) {
@@ -243,13 +263,14 @@ export class ProviderNphiesApprovalService {
     patientFileNo?: string,
     claimDate?: string,
     documentId?: string,
-    statuses?: string[]
+    statuses?: string[],
+    organizationId?: string
   ) {
 
     let requestURL = `/providers/${providerId}/approval/cancelAll/request?`;
 
     if (cancelReason) {
-      requestURL += `cancelReason=${cancelReason}`;
+      requestURL += `&cancelReason=${cancelReason}`;
     }
 
     if (provderClaimReferenceNumber) {
@@ -300,6 +321,10 @@ export class ProviderNphiesApprovalService {
       requestURL += `&statuses=${statuses.join(',')}`;
     }
 
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
+    }
+
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
@@ -327,7 +352,8 @@ export class ProviderNphiesApprovalService {
     patientFileNo?: string,
     claimDate?: string,
     documentId?: string,
-    statuses?: string[]
+    statuses?: string[],
+    organizationId?: string
   ) {
 
     let requestURL = `/providers/${providerId}/claims/inquiry?`;
@@ -374,6 +400,10 @@ export class ProviderNphiesApprovalService {
 
     if (documentId) {
       requestURL += `&documentId=${documentId}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
     }
 
     if (statuses && statuses.length > 0) {
