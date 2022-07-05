@@ -181,13 +181,12 @@ export class DialogService {
 
   showAlerts(messages: string[]) {
     if (messages != null && messages.length > 0) {
-      const message = messages.pop();
       const dialogRef = this.dialog.open(AlertDialogComponent, {
-        data: message,
+        data: messages,
         panelClass: ['primary-dialog'],
         autoFocus: false
       });
-      dialogRef.afterClosed().subscribe(() => this.showAlerts(messages));
+      // dialogRef.afterClosed().subscribe(() => this.showAlerts(messages));
     }
   }
 
