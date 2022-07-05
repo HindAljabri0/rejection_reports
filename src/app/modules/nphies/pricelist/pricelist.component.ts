@@ -352,4 +352,7 @@ export class PricelistComponent implements OnInit {
       });
   }
 
+  updateFromDate(){
+    this.FormPriceList.controls.uploadToDate.setValue('');
+  }
 }
