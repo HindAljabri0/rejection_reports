@@ -14,6 +14,7 @@ export class PreAuthorizationTransaction extends Paginateable{
   beneficiaryName: string;
   documentId: number;
   preAuthRefNo: string;
+  claimType: string;
 
   inquiryStatus: string;
 
@@ -33,6 +34,7 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.beneficiaryName = body['beneficiaryName'];
     this.documentId = body['documentId'];
     this.preAuthRefNo = body['preAuthRefNo'];
+    this.claimType = body['claimType'];
     this.inquiryStatus = body['inquiryStatus'];
   }
 }
