@@ -18,69 +18,69 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Reference No.</label>
-                    <span class="form-control-static">512</span>
+                    <span class="form-control-static">{{ initiateModel?.gssReferenceNumber }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Loss Month</label>
-                    <span class="form-control-static">February 2022</span>
+                    <span class="form-control-static">{{ initiateModel?.lossMonth }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">No. of Claims</label>
-                    <span class="form-control-static">125</span>
+                    <span class="form-control-static">{{ initiateModel?.totalNumberOfClaim }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Provider Name</label>
-                    <span class="form-control-static">Dallah Hospital</span>
+                    <span class="form-control-static">{{ initiateModel?.providerName }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">CCHI ID</label>
-                    <span class="form-control-static">456798HJGD</span>
+                    <span class="form-control-static">{{ initiateModel?.cchiId }}</span>
                 </div>
             </div>
             <div class="w100 d-none d-xxl-block"></div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Gross</label>
-                    <span class="form-control-static">24,584 <span class="currency">SR</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalGross?.value }} <span class="currency">{{ initiateModel?.totalGross?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Patient Share</label>
-                    <span class="form-control-static">1,457 <span class="currency">SR</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalPatientShare?.value }} <span class="currency">{{ initiateModel?.totalPatientShare?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Net</label>
-                    <span class="form-control-static">1,45,788 <span class="currency">SR</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalNet?.value }} <span class="currency">{{ initiateModel?.totalNet?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Net Vat</label>
-                    <span class="form-control-static">1,455 <span class="currency">SR</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalNetVat?.value }} <span class="currency">{{ initiateModel?.totalNetVat?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Discount</label>
-                    <span class="form-control-static">514 <span class="currency">SR</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalDiscount?.value }} <span class="currency">{{ initiateModel?.totalDiscount?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="w100 d-none d-xxl-block"></div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Payable</label>
-                    <span class="form-control-static">89,875 <span class="currency">SR</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalNetPayable?.value }} <span class="currency">{{ initiateModel?.totalNetPayable?.currencyCode }}</span></span>
                 </div>
             </div>
         </div>
@@ -102,50 +102,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>589741</td>
-                        <td>Hisham Elsayed Marey</td>
-                        <td class="text-center">125</td>
-                        <td>24,584 <span class="currency">SR</span></td>
-                        <td>514 <span class="currency">SR</span></td>
-                        <td>1,457 <span class="currency">SR</span></td>
-                        <td>1,45,788 <span class="currency">SR</span></td>
-                        <td>1,455 <span class="currency">SR</span></td>
-                        <td>89,875 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>698413</td>
-                        <td>Huaida Mardi Ahmed</td>
-                        <td class="text-center">52</td>
-                        <td>1,44,547 <span class="currency">SR</span></td>
-                        <td>852 <span class="currency">SR</span></td>
-                        <td>9,875 <span class="currency">SR</span></td>
-                        <td>2,657 <span class="currency">SR</span></td>
-                        <td>745 <span class="currency">SR</span></td>
-                        <td>14,557 <span class="currency">SR</span></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>741565</td>
-                        <td>Muhammad Aslam Khushk</td>
-                        <td class="text-center">68</td>
-                        <td>2,658 <span class="currency">SR</span></td>
-                        <td>124 <span class="currency">SR</span></td>
-                        <td>526 <span class="currency">SR</span></td>
-                        <td>2,56,587 <span class="currency">SR</span></td>
-                        <td>1,547 <span class="currency">SR</span></td>
-                        <td>26,579 <span class="currency">SR</span></td>
-                    </tr>
+                    <ng-container *ngFor="let data of initiateModel?.policyDetails; let i = index">
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ data.policyNumber }}</td>
+                            <td>{{ data.policyHolderName }}</td>
+                            <td class="text-center">{{ data.noOfClaims }}</td>
+                            <td>{{ data.gross?.value }} <span class="currency">{{ data.gross?.currencyCode }}</span></td>
+                            <td>{{ data.discount?.value }} <span class="currency">{{ data.discount?.currencyCode }}</span></td>
+                            <td>{{ data.patientShare?.value }}<span class="currency">{{ data.patientShare?.currencyCode }}</span></td>
+                            <td>{{ data.net?.value }}<span class="currency">{{ data.net?.currencyCode }}</span></td>
+                            <td>{{ data.netVat?.value }}<span class="currency">{{ data.netVat?.currencyCode }}</span></td>
+                            <td>{{ data.netPayable?.value }}<span class="currency">{{ data.netPayable?.currencyCode }}</span></td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </ng-scrollbar>
     </div>
     <div class="block-footer sticky">
         <div class="right-block btn-list">
-            <button mat-button>Regenerate</button>
-            <button mat-flat-button color="primary">Confirm</button>
+            <button mat-button (click)="generateReport(true)">Regenerate</button>
+            <button mat-flat-button color="primary" (click)="confirmReport()">Confirm</button>
         </div>
     </div>
 </div>

@@ -8,9 +8,10 @@
                 <div class="form-group">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                        <input [matDatepicker]="filterFromDate" [formControl]="fromDate" class="form-control" placeholder="Select from date">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterFromDate></mat-datepicker>
+                        <mat-datepicker #filterFromDate startView="multi-year"
+                            (monthSelected)="setMonthAndYear($event, filterFromDate,'from')"></mat-datepicker>
                     </div>
                 </div>
             </div>
@@ -18,16 +19,17 @@
                 <div class="form-group">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                        <input [matDatepicker]="filterToDate" [formControl]="toDate" class="form-control" placeholder="Select to date">
                         <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterToDate></mat-datepicker>
+                        <mat-datepicker #filterToDate startView="multi-year"
+                            (monthSelected)="setMonthAndYear($event, filterToDate,'to')"></mat-datepicker>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label">&nbsp;</label>
-                    <button type="button" mat-flat-button color="primary">Search</button>
+                    <button type="button" mat-flat-button color="primary" (click)="searchQuerySummary()">Search</button>
                 </div>
             </div>
         </div>
@@ -52,45 +54,35 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let data of initiateModel">
-                    	<tr *ngIf="data != null">
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.gssReferenceNumber }}</td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.lossMonth }}</td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">{{ data?.totalNumberOfClaim }}</td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalGross.value }} <span class="currency">{{ data?.totalGross.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalDiscount.value }} <span class="currency">{{ data?.totalDiscount.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalPatientShare.value }} <span class="currency">{{ data?.totalPatientShare.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNet.value }} <span class="currency">{{ data?.totalNet.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetVat.value }} <span class="currency">{{ data?.totalNetVat.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetPayable.value }} <span class="currency">{{ data?.totalNetPayable.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">
-								<span class="status-badge size-sm primary" *ngIf="data?.status === 'new'">New</span>
-                                <span class="status-badge size-sm success" *ngIf="data?.status === 'signed'">Signed</span>
-                                <span class="status-badge size-sm danger" *ngIf="data?.status === 'cancelled'">Cancelled</span>
-							</td>
-							<td class="actions">
-								<button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-									<mat-icon>more_vert</mat-icon>
-								</button>
-							</td>
-						</tr>
-					</ng-container>
+                        <tr *ngIf="data != null" (click)="openDetailView(data)">
+                            <td class="row-click">{{ data?.gssReferenceNumber }}</td>
+                            <td class="row-click">{{ data?.lossMonth }}</td>
+                            <td class="row-click" class="text-center">{{ data?.totalNumberOfClaim }}</td>
+                            <td class="row-click">{{ data?.totalGross?.value }} <span class="currency">{{
+                                    data?.totalGross?.currencyCode }}</span></td>
+                            <td class="row-click">{{ data?.totalDiscount?.value }} <span class="currency">{{
+                                    data?.totalDiscount?.currencyCode }}</span></td>
+                            <td class="row-click">{{ data?.totalPatientShare?.value }} <span class="currency">{{
+                                    data?.totalPatientShare?.currencyCode }}</span></td>
+                            <td class="row-click">{{ data?.totalNet?.value }} <span class="currency">{{
+                                    data?.totalNet?.currencyCode }}</span></td>
+                            <td class="row-click">{{ data?.totalNetVat?.value }} <span class="currency">{{
+                                    data?.totalNetVat?.currencyCode }}</span></td>
+                            <td class="row-click">{{ data?.totalNetPayable?.value }} <span class="currency">{{
+                                    data?.totalNetPayable?.currencyCode }}</span></td>
+                            <td class="row-click">
+                                <span class="status-badge size-sm primary" *ngIf="data?.status === 'new'">New</span>
+                                <span class="status-badge size-sm success"
+                                    *ngIf="data?.status === 'signed'">Signed</span>
+                                <span class="status-badge size-sm danger"
+                                    *ngIf="data?.status === 'cancelled'">Cancelled</span>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-    <mat-menu #actionsMenu xPosition="before">
-        <ng-template matMenuContent>
-            <button mat-menu-item type="button">
-                <mat-icon class="material-icons-outlined">edit</mat-icon>
-                <span>Edit</span>
-            </button>
-            <button mat-menu-item type="button">
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Delete</span>
-            </button>
-        </ng-template>
-    </mat-menu>
-
     <button mat-fab color="primary" class="page-fab" (click)="openGenerateReportDialog()">
         <mat-icon>add</mat-icon>
     </button>
