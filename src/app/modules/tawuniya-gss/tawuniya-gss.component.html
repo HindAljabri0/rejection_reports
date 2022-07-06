@@ -2,27 +2,28 @@
     <div class="block-header">
         <p>Tawuniya GSS Reports</p>
     </div>
+
     <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col-4">
-                <div class="form-group">
-                    <label class="control-label">From Date</label>
+                <div class="form-group" [ngClass]="{'has-error' : fromDate.invalid}">
                     <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" [formControl]="fromDate" class="form-control" placeholder="Select from date">
+                        <mat-label>From Date</mat-label>
+                        <input [matDatepicker]="filterFromDate" [formControl]="fromDate" class="form-control"
+                            placeholder="Select From date">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterFromDate startView="multi-year"
-                            (monthSelected)="setMonthAndYear($event, filterFromDate,'from')"></mat-datepicker>
+                        <mat-datepicker #filterFromDate startView="multi-year"></mat-datepicker>
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-group">
-                    <label class="control-label">To Date</label>
+                <div class="form-group" [ngClass]="{'has-error' : toDate.invalid}">
                     <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" [formControl]="toDate" class="form-control" placeholder="Select to date">
-                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterToDate startView="multi-year"
-                            (monthSelected)="setMonthAndYear($event, filterToDate,'to')"></mat-datepicker>
+                        <mat-label>To Date</mat-label>
+                        <input [matDatepicker]="filtertoDate" [formControl]="toDate" class="form-control"
+                            placeholder="Select To date">
+                        <mat-datepicker-toggle [for]="filtertoDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filtertoDate startView="multi-year"></mat-datepicker>
                     </div>
                 </div>
             </div>
@@ -71,11 +72,9 @@
                             <td class="row-click">{{ data?.totalNetPayable?.value }} <span class="currency">{{
                                     data?.totalNetPayable?.currencyCode }}</span></td>
                             <td class="row-click">
-                                <span class="status-badge size-sm primary" *ngIf="data?.status === 'new'">New</span>
-                                <span class="status-badge size-sm success"
-                                    *ngIf="data?.status === 'signed'">Signed</span>
-                                <span class="status-badge size-sm danger"
-                                    *ngIf="data?.status === 'cancelled'">Cancelled</span>
+                                <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new', 
+                                'success' : data?.status?.toLowerCase() === 'signed',
+                                'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status | titlecase}}</span>
                             </td>
                         </tr>
                     </ng-container>

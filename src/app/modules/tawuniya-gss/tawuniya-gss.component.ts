@@ -9,7 +9,7 @@ import { TawuniyaGssService } from './Services/tawuniya-gss.service';
 import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generate-report-dialog/tawuniya-gss-generate-report-dialog.component';
 import { Moment } from 'moment';
 import * as _moment from 'moment';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 const moment = _moment;
@@ -46,8 +46,8 @@ export const MY_FORMATS = {
 export class TawuniyaGssComponent implements OnInit {
 
   initiateModel: Array<InitiateResponse> = [];
-  fromDate = new FormControl(moment());
-  toDate = new FormControl(moment());
+  fromDate = new FormControl(moment(), Validators.required);
+  toDate = new FormControl(moment(), Validators.required);
 
   constructor(
     private dialog: MatDialog, private tawuniyaGssService: TawuniyaGssService, private store: Store, private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices
@@ -83,31 +83,39 @@ export class TawuniyaGssComponent implements OnInit {
     this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute });
   }
 
-  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>, dateFor: string) {
-    let ctrlValue = null
-    if (dateFor === 'from') {
-      ctrlValue = this.fromDate.value!;
-    } else {
-      ctrlValue = this.toDate.value!;
-    }
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    console.log(ctrlValue);
-    if (dateFor === 'from') {
-      this.fromDate.setValue(ctrlValue);
-    } else {
-      this.toDate.setValue(ctrlValue);
-    }
-    datepicker.close();
-  }
 
   searchQuerySummary() {
+    if (this.fromDate.invalid || this.toDate.invalid) {
+      return;
+    }
     const newFromDate = new Date(this.fromDate.value);
     const newToDate = new Date(this.toDate.value);
+
+    if (!this.valid(newFromDate, newToDate)) {
+      return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
+    }
+    this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
       console.log(data);
       this.initiateModel = [];
       this.initiateModel = data;
+      this.sharedServices.loadingChanged.next(false);
+    }, err => {
+      this.sharedServices.loadingChanged.next(false);
+      if (err && err.error && err.error.text) {
+        return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
+      } else {
+        return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
+      }
+
     });
+  }
+
+  valid(newFromDate: Date, newToDate: Date): boolean {
+    var months;
+    months = (newToDate.getFullYear() - newFromDate.getFullYear()) * 12;
+    months -= newFromDate.getMonth();
+    months += newToDate.getMonth();
+    return months >= 0;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { DateAdapter, MatDatepicker, MatDialogRef, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,8 @@ export const MY_FORMATS = {
   },
 };
 
+
+
 @Component({
   selector: 'app-tawuniya-gss-generate-report-dialog',
   templateUrl: './tawuniya-gss-generate-report-dialog.component.html',
@@ -42,9 +44,10 @@ export const MY_FORMATS = {
 })
 
 export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
+  today = new Date(); 
 
   data : InitiateResponse[];
-  lossMonth = new FormControl(moment());
+  lossMonth = new FormControl(moment(), Validators.required);
   constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store) { }
 
   ngOnInit() {
@@ -55,6 +58,10 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
   }
 
   generateReport() {
+    if(this.lossMonth.invalid){
+      return;
+    }
+
     let date = new Date(this.lossMonth.value);
     let newDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
     if(Date.parse(newDate)) {

@@ -9,7 +9,11 @@
             <p>Tawuniya GSS Report Details</p>
         </div>
         <div class="right-block">
-            <span class="status-badge size-sm primary">New</span>
+            <span class="status-badge size-sm primary" [ngClass]="{'primary': initiateModel?.status?.toLowerCase() === 'new', 
+                'success' : initiateModel?.status?.toLowerCase() === 'signed',
+                'danger' : initiateModel?.status?.toLowerCase() === 'cancelled' }">
+                {{initiateModel?.status | titlecase}}
+            </span>
         </div>
     </div>
     <div class="block-body">
@@ -49,38 +53,44 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Gross</label>
-                    <span class="form-control-static">{{ initiateModel?.totalGross?.value }} <span class="currency">{{ initiateModel?.totalGross?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalGross?.value }} <span class="currency">{{
+                            initiateModel?.totalGross?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Patient Share</label>
-                    <span class="form-control-static">{{ initiateModel?.totalPatientShare?.value }} <span class="currency">{{ initiateModel?.totalPatientShare?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalPatientShare?.value }} <span
+                            class="currency">{{ initiateModel?.totalPatientShare?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Net</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNet?.value }} <span class="currency">{{ initiateModel?.totalNet?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalNet?.value }} <span class="currency">{{
+                            initiateModel?.totalNet?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Net Vat</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNetVat?.value }} <span class="currency">{{ initiateModel?.totalNetVat?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalNetVat?.value }} <span class="currency">{{
+                            initiateModel?.totalNetVat?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Discount</label>
-                    <span class="form-control-static">{{ initiateModel?.totalDiscount?.value }} <span class="currency">{{ initiateModel?.totalDiscount?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalDiscount?.value }} <span
+                            class="currency">{{ initiateModel?.totalDiscount?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="w100 d-none d-xxl-block"></div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Payable</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNetPayable?.value }} <span class="currency">{{ initiateModel?.totalNetPayable?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ initiateModel?.totalNetPayable?.value }} <span
+                            class="currency">{{ initiateModel?.totalNetPayable?.currencyCode }}</span></span>
                 </div>
             </div>
         </div>
@@ -108,12 +118,17 @@
                             <td>{{ data.policyNumber }}</td>
                             <td>{{ data.policyHolderName }}</td>
                             <td class="text-center">{{ data.noOfClaims }}</td>
-                            <td>{{ data.gross?.value }} <span class="currency">{{ data.gross?.currencyCode }}</span></td>
-                            <td>{{ data.discount?.value }} <span class="currency">{{ data.discount?.currencyCode }}</span></td>
-                            <td>{{ data.patientShare?.value }}<span class="currency">{{ data.patientShare?.currencyCode }}</span></td>
+                            <td>{{ data.gross?.value }} <span class="currency">{{ data.gross?.currencyCode }}</span>
+                            </td>
+                            <td>{{ data.discount?.value }} <span class="currency">{{ data.discount?.currencyCode
+                                    }}</span></td>
+                            <td>{{ data.patientShare?.value }}<span class="currency">{{ data.patientShare?.currencyCode
+                                    }}</span></td>
                             <td>{{ data.net?.value }}<span class="currency">{{ data.net?.currencyCode }}</span></td>
-                            <td>{{ data.netVat?.value }}<span class="currency">{{ data.netVat?.currencyCode }}</span></td>
-                            <td>{{ data.netPayable?.value }}<span class="currency">{{ data.netPayable?.currencyCode }}</span></td>
+                            <td>{{ data.netVat?.value }}<span class="currency">{{ data.netVat?.currencyCode }}</span>
+                            </td>
+                            <td>{{ data.netPayable?.value }}<span class="currency">{{ data.netPayable?.currencyCode
+                                    }}</span></td>
                         </tr>
                     </ng-container>
                 </tbody>
