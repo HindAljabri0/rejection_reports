@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-convert-pre-auth-to-claim',
-  templateUrl: './convert-pre-auth-to-claim.component.html',
+  selector: 'app-prepare-pre-auth-for-claim',
+  templateUrl: './prepare-pre-auth-for-claim.component.html',
   styles: []
 })
-export class ConvertPreAuthToClaimComponent implements OnInit {
+export class PreparePreAuthForClaim implements OnInit {
 
   currentOpenRow = -1;
   advanceSearchEnable = false;
