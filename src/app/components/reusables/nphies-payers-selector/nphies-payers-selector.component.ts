@@ -76,21 +76,37 @@ export class NphiesPayersSelectorComponent implements OnInit {
     }
   }
 
-  selectPayer(event) {
-    if (event.value) {
-      const payerNphiesIdValue = event.value;
-      let organizationNphiesIdValue = '';
+  payerNphiesIdValue = '';
+  organizationNphiesIdValue = '';
 
-      this.organizations.forEach(x => {
-        if (x.subList.find(y => y.code === payerNphiesIdValue)) {
-          organizationNphiesIdValue = x.code;
-        }
-      });
-
-      this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
+  selectionChangePayer(organizationId, payerNphiesId) {
+    if (payerNphiesId != '') {
+      this.payerNphiesIdValue =payerNphiesId;
+      this.organizationNphiesIdValue = organizationId;
+      console.log(organizationId + ' organizationId');
+      console.log(payerNphiesId + '  payerNphiesId')
+      this.selectionChange.emit({ value: { payerNphiesId: this.payerNphiesIdValue, organizationNphiesId: this.organizationNphiesIdValue } });
     } else {
       this.selectionChange.emit({ value: '' });
     }
-
   }
+  
+
+  // selectPayer(event) {
+  //   if (event.value) {
+  //     const payerNphiesIdValue = event.value;
+  //     let organizationNphiesIdValue = '';
+
+  //     this.organizations.forEach(x => {
+  //       if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+  //         organizationNphiesIdValue = x.code;
+  //       }
+  //     });
+
+  //     this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
+  //   } else {
+  //     this.selectionChange.emit({ value: '' });
+  //   }
+
+  // }
 }
