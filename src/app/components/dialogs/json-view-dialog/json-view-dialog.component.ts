@@ -17,7 +17,9 @@ export class JsonViewDialogComponent implements OnInit {
       {
         title: string,
         tabs: {
+          IsDownload: boolean,
           title: string,
+          fileName: string,
           json: string
         }[]
       },
@@ -46,6 +48,17 @@ export class JsonViewDialogComponent implements OnInit {
     setTimeout(() => {
       this.copyText = 'Copy JSON';
     }, 2000);
+  }
+
+  download(fileName, json){
+    const sJson = JSON.stringify(json);
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+    element.setAttribute('download', fileName);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
   }
 
 }

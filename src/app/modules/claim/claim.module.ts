@@ -47,6 +47,7 @@ import { AddCommunicationDialogComponent } from '../nphies/add-communication-dia
 import { CancelReasonModalComponent } from '../nphies/preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-transactions.component';
 import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
+import { JsonResponseComponent } from '../nphies/create-claim-nphies/json-response/json-response.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficia
     PbmCommentsComponent,
     CreateClaimNphiesComponent,
     BeneficiaryTabComponent,
+    JsonResponseComponent
   ],
   imports: [
     RouterModule.forChild([

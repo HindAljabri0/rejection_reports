@@ -28,7 +28,8 @@
       <p *ngIf="otherDataModel.statusDesc"><span>Status Description:</span>&nbsp;<strong
           class="text-capitalize">{{otherDataModel.statusDesc}}</strong></p>
       <p *ngIf="otherDataModel.disposition">
-        <span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong></p>
+        <span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong>
+      </p>
 
       <p *ngIf="otherDataModel.cancelStatus"><span>Cancellation
           Status:</span>&nbsp;<strong>{{otherDataModel.cancelStatus}}</strong></p>
@@ -441,7 +442,7 @@
               <td>
                 <span *ngIf="s.category=='attachment'">
                   <!-- {{s.attachment}} -->
-                  <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
+                  <a href="javascript:void(0);" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
                 </span>
                 <span *ngIf="s.category!='attachment'">
                   {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
@@ -910,7 +911,8 @@
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                  <button type="button"
+                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -923,7 +925,8 @@
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                  <button type="button"
+                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -1158,6 +1161,12 @@
           </tbody>
         </table>
       </div>
+    </mat-tab>
+
+    <mat-tab
+    *ngIf="otherDataModel.status === 'pended' || otherDataModel.status === 'queued' || otherDataModel.status === 'failed' || otherDataModel.status === 'partial' || otherDataModel.status === 'approved' || otherDataModel.status === 'failednphies'" [label]="'JSON'">
+    <!-- <mat-tab [label]="'JSON'"> -->
+      <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
     </mat-tab>
   </mat-tab-group>
 

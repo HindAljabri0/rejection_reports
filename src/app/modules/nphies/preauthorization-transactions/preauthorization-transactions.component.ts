@@ -64,7 +64,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   });
 
   payersList = [];
-
   isSubmitted = false;
   errorMessage: string;
   transactionModel: PaginatedResult<PreAuthorizationTransaction>;
@@ -546,30 +545,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
           }
           this.onSubmit();
-
-
-          // if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
-          //   const errors: any[] = [];
-
-          //   if (body.disposition) {
-          //     errors.push(body.disposition);
-          //   }
-
-          //   if (body.errors && body.errors.length > 0) {
-          //     body.errors.forEach(err => {
-          //       err.coding.forEach(codex => {
-          //         errors.push(codex.code + ' : ' + codex.display);
-          //       });
-          //     });
-          //   }
-          //   this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-
-          // } else {
-          //   // this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-          //   this.onSubmit();
-          // }
         }
-        // this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
       this.sharedServices.loadingChanged.next(false);
