@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Convert Pre-Auth Transactions to Claim</p>
+        <p>Prepare Pre-Auth Transactions for Claim</p>
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
@@ -94,10 +94,9 @@
 
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height fixed-height-sm">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table class="primary-grid sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th width="10"></th>
                         <th width="10"></th>
                         <th>Beneficiary</th>
                         <th>Pre Auth Ref No</th>
@@ -113,9 +112,6 @@
                 </thead>
                 <tbody>
                     <tr class="row-click">
-                        <td>
-                            <mat-checkbox class="grid-checkbox"></mat-checkbox>
-                        </td>
                         <td (click)="toggleRow(0)" class="text-primary text-center">
                             <mat-icon *ngIf="currentOpenRow!=0">add_circle_outline</mat-icon>
                             <mat-icon *ngIf="currentOpenRow==0">remove_circle_outline</mat-icon>
@@ -133,13 +129,16 @@
                     </tr>
                     <tr *ngIf="currentOpenRow==0">
                         <td></td>
-                        <td></td>
                         <td colspan="10">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Episode No.</label>
-                                <span class="form-control-static">5649879</span>
+                            <div class="row small-gutter">
+                                <div class="col-4 col-xxl-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Episode No.</label>
+                                        <input class="form-control" placeholder="Enter episode no.">
+                                    </div>
+                                </div>
                             </div>
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                            <table class="primary-grid mb-3 sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                     <tr>
                                         <th>Item Type</th>
@@ -155,7 +154,11 @@
                                 <tbody>
                                     <tr class="align-middle">
                                         <td>Medical Devices</td>
-                                        <td>1</td>
+                                        <td>
+                                            <div class="form-group mb-n1 mt-n1">
+                                                <input type="text" class="form-control" placeholder="Enter invoice no." />
+                                            </div>
+                                        </td>
                                         <td>18021 - Dermatoscope, optical</td>
                                         <td>4 <span class="currency">SAR</span></td>
                                         <td>4 <span class="currency">SAR</span></td>
@@ -165,7 +168,11 @@
                                     </tr>
                                     <tr class="align-middle">
                                         <td>Medical Devices</td>
-                                        <td>2</td>
+                                        <td>
+                                            <div class="form-group mb-n1 mt-n1">
+                                                <input type="text" class="form-control" placeholder="Enter invoice no." />
+                                            </div>
+                                        </td>
                                         <td>18021 - Dermatoscope, optical</td>
                                         <td>4 <span class="currency">SAR</span></td>
                                         <td>4 <span class="currency">SAR</span></td>
@@ -175,12 +182,10 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="text-right"><button type="button" mat-flat-button color="primary">Save</button></div>
                         </td>
                     </tr>
                     <tr class="row-click">
-                        <td>
-                            <mat-checkbox class="grid-checkbox"></mat-checkbox>
-                        </td>
                         <td (click)="toggleRow(1)" class="text-primary text-center">
                             <mat-icon *ngIf="currentOpenRow!=1">add_circle_outline</mat-icon>
                             <mat-icon *ngIf="currentOpenRow==1">remove_circle_outline</mat-icon>
@@ -198,13 +203,16 @@
                     </tr>
                     <tr *ngIf="currentOpenRow==1">
                         <td></td>
-                        <td></td>
                         <td colspan="10">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Episode No.</label>
-                                <span class="form-control-static">5649879</span>
+                            <div class="row small-gutter">
+                                <div class="col-4 col-xxl-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Episode No.</label>
+                                        <input class="form-control" placeholder="Enter episode no.">
+                                    </div>
+                                </div>
                             </div>
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                            <table class="primary-grid mb-3 sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                     <tr>
                                         <th>Item Type</th>
@@ -220,7 +228,11 @@
                                 <tbody>
                                     <tr class="align-middle">
                                         <td>Medical Devices</td>
-                                        <td>1</td>
+                                        <td>
+                                            <div class="form-group mb-n1 mt-n1">
+                                                <input type="text" class="form-control" placeholder="Enter invoice no." />
+                                            </div>
+                                        </td>
                                         <td>18021 - Dermatoscope, optical</td>
                                         <td>4 <span class="currency">SAR</span></td>
                                         <td>4 <span class="currency">SAR</span></td>
@@ -230,7 +242,11 @@
                                     </tr>
                                     <tr class="align-middle">
                                         <td>Medical Devices</td>
-                                        <td>2</td>
+                                        <td>
+                                            <div class="form-group mb-n1 mt-n1">
+                                                <input type="text" class="form-control" placeholder="Enter invoice no." />
+                                            </div>
+                                        </td>
                                         <td>18021 - Dermatoscope, optical</td>
                                         <td>4 <span class="currency">SAR</span></td>
                                         <td>4 <span class="currency">SAR</span></td>
@@ -240,16 +256,11 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="text-right"><button type="button" mat-flat-button color="primary">Save</button></div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-
-    <div class="block-footer sticky">
-        <div class="right-block">
-            <button type="button" color="primary" mat-flat-button>Convert All</button>
-        </div>
-    </div>
 </div>
