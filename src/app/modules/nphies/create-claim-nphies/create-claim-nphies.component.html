@@ -50,6 +50,10 @@
       Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
+    <li>
+      Total Tax:<span class="value">{{otherDataModel.totalTax ? (otherDataModel.totalTax | number
+        : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+    </li>
     <ng-container
       *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
       <li class="separator"></li>
@@ -1264,6 +1268,10 @@
       <li>
         Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare |
           number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+      </li>
+      <li>
+        Total Tax:<span class="value">{{otherDataModel.totalTax ? (otherDataModel.totalTax | number
+          : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <ng-container
         *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
