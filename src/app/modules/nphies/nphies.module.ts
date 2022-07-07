@@ -67,6 +67,7 @@ import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.component';
 import { AddPricelistDialogComponent } from './pricelist-details/add-pricelist-dialog/add-pricelist-dialog.component';
+import { PreparePreAuthForClaim } from './prepare-pre-auth-for-claim/prepare-pre-auth-for-claim.component';
 import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
 
 @NgModule({
@@ -114,6 +115,7 @@ import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/conv
     PricelistDetailsComponent,
     PricelistUploadComponent,
     AddPricelistDialogComponent,
+    PreparePreAuthForClaim,
     ConvertPreAuthToClaimComponent
   ],
   imports: [

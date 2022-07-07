@@ -423,4 +423,22 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
     return this.http.request(request);
   }
+
+  getApprovalToClaimTransactions(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/convert/approval/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  getJSONTransactions(providerId: string, claimId: number) {
+    const requestUrl = `/providers/${providerId}/claims/view/jsons/${claimId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
+
+  getJSON(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/claims/transactionlog/json`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
 }
