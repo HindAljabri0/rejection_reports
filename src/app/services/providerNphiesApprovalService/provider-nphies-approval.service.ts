@@ -58,10 +58,10 @@ export class ProviderNphiesApprovalService {
         requestURL += `statuses=${statuses}&`;
       }
       if (fromDate) {
-        requestURL += `fromDate=${fromDate}&`;
+        requestURL += `claimDate=${this.formatDate(fromDate)}&`;
       }
       if (toDate) {
-        requestURL += `toDate=${toDate}&`;
+        requestURL += `toDate=${this.formatDate(toDate)}&`;
       }
       if (claimRefNo) {
         requestURL += `claimRefNo=${claimRefNo}&`;
@@ -79,13 +79,13 @@ export class ProviderNphiesApprovalService {
         requestURL += `nationalId=${nationalId}&`;
       }
       if (claimDate) {
-        requestURL += `claimDate=${claimDate}`;
+        requestURL += `claimDate=${this.formatDate(claimDate)}&`;
       }
       if (netAmount) {
-        requestURL += `netAmount=${netAmount}`;
+        requestURL += `netAmount=${netAmount}&`;
       }
       if (batchNo) {
-        requestURL += `batchNo=${batchNo}`;
+        requestURL += `batchNo=${batchNo}&`;
       }
     }
 
@@ -152,7 +152,8 @@ export class ProviderNphiesApprovalService {
     // claimTypes?: string[],
     // claimSubTypes?: string[],
     // statuses?: string[],
-    documentId?: string
+    documentId?: string,
+    organizationId?: string
   ) {
 
     // fromDate?: string,
@@ -165,12 +166,27 @@ export class ProviderNphiesApprovalService {
     // netAmount?: string,
     // batchNo?: string
 
+    //     providerId
+    // claimDate
+    // toDate
+    // payerIds
+    // batchId
+    // uploadId
+    // statuses
+    // claimIds
+    // provderClaimReferenceNumber
+    // patientFileNo
+    // memberId
+    // documentId
+    // invoiceNo
+    // organizationId
+
     let requestURL = `/providers/${providerId}/claims/submit?`;
 
 
 
     if (provderClaimReferenceNumber) {
-      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
     }
 
     if (toDate) {
@@ -186,7 +202,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (uploadId) {
-      requestURL += `uploadId=${uploadId}`;
+      requestURL += `&uploadId=${uploadId}`;
     }
 
     if (claimIds && claimIds.length > 0) {
@@ -206,7 +222,11 @@ export class ProviderNphiesApprovalService {
     }
 
     if (claimDate) {
-      requestURL += `&claimDate=${claimDate}`;
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
     }
 
     // if (claimTypes && claimTypes.length > 0) {
@@ -243,17 +263,18 @@ export class ProviderNphiesApprovalService {
     patientFileNo?: string,
     claimDate?: string,
     documentId?: string,
-    statuses?: string[]
+    statuses?: string[],
+    organizationId?: string
   ) {
 
     let requestURL = `/providers/${providerId}/approval/cancelAll/request?`;
 
     if (cancelReason) {
-      requestURL += `cancelReason=${cancelReason}`;
+      requestURL += `&cancelReason=${cancelReason}`;
     }
 
     if (provderClaimReferenceNumber) {
-      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
     }
 
     if (toDate) {
@@ -289,7 +310,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (claimDate) {
-      requestURL += `&claimDate=${claimDate}`;
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
     }
 
     if (documentId) {
@@ -298,6 +319,10 @@ export class ProviderNphiesApprovalService {
 
     if (statuses && statuses.length > 0) {
       requestURL += `&statuses=${statuses.join(',')}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
@@ -327,7 +352,8 @@ export class ProviderNphiesApprovalService {
     patientFileNo?: string,
     claimDate?: string,
     documentId?: string,
-    statuses?: string[]
+    statuses?: string[],
+    organizationId?: string
   ) {
 
     let requestURL = `/providers/${providerId}/claims/inquiry?`;
@@ -337,7 +363,7 @@ export class ProviderNphiesApprovalService {
     }
 
     if (provderClaimReferenceNumber) {
-      requestURL += `&claimRefNo=${provderClaimReferenceNumber}`;
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
     }
 
     if (toDate) {
@@ -369,11 +395,15 @@ export class ProviderNphiesApprovalService {
     }
 
     if (claimDate) {
-      requestURL += `&claimDate=${claimDate}`;
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
     }
 
     if (documentId) {
       requestURL += `&documentId=${documentId}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
     }
 
     if (statuses && statuses.length > 0) {

@@ -630,7 +630,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -803,7 +803,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
           totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
           totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare + claim.totalPatientShare,
-         totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
+          totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount + claim.totalPayerShare,
 
           totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
           statuses: this.summaries[newSummaryIndex].statuses,
@@ -1272,8 +1272,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
               });
             });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-          } else {
-            this.dialogService.showMessage(body.message, '', 'success', true, 'OK');
+          } else if (body.statusCheckStatus && body.statusCheckStatus.toString().toLowerCase().trim() === 'failed') {
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
           }
           this.getClaimTransactions(this.params.status, this.params.page);
         }
@@ -1361,8 +1361,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     status = status.trim().toLowerCase();
     // tslint:disable-next-line:max-line-length
-    const validStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'NotSaved'];
-    if (validStatus.indexOf(status) >= 0) {
+    const inValidStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'notsaved' , 'failednphies'];
+    if (inValidStatus.indexOf(status) >= 0) {
       return false;
     } else {
       return true;
@@ -1385,12 +1385,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showInquireAll() {
     // tslint:disable-next-line:max-line-length
-    return ['queued', 'pended', 'failed', 'approved', 'partial', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
-    return ['accepted', 'notaccepted',  'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   openReasonModalMultiClaims() {
@@ -1418,6 +1418,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       model.nationalId = this.params.nationalId;
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+      model.organizationId = this.params.organizationId;
 
       dialogConfig.data = {
         cancelData: model,
@@ -1610,7 +1611,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from, model.nationalId, model.statuses);
+        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId);
     } else {
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
     }

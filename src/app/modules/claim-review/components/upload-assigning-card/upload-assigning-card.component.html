@@ -11,6 +11,9 @@
             <button *ngIf="tabName === 'new' || tabName === 'in-progress'" type="button" class="btn-action text-primary" (click)="deleteRecord(data)" matRipple>
                 <mat-icon class="material-icons-outlined">delete</mat-icon>
             </button>
+            <button *ngIf="tabName === 'completed'" type="button" class="btn-action text-primary" (click)="downloadData(data)" matRipple>
+                <mat-icon class="material-icons-outlined">download</mat-icon>
+            </button>
         </div>
         <div class="row">
             <div class="col-6 doctor-info">

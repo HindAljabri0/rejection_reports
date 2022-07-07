@@ -16,7 +16,7 @@ import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens
 import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -24,6 +24,8 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -35,8 +37,13 @@ export class AddPreauthorizationComponent implements OnInit {
   @Input() claimReuseId: number;
   @Input() data: any;
   @Output() closeEvent = new EventEmitter();
-  paymentAmount = 0;
 
+  filteredProviderList: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  onDestroy = new Subject<void>();
+  IsRefferalProviderLoading = false;
+  IsOtherReferral = false;
+
+  paymentAmount = 0;
   beneficiarySearchController = new FormControl();
   subscriberSearchController = new FormControl();
 
@@ -117,7 +124,10 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanTpaNphiesId: [],
     isNewBorn: [false],
     transfer: [false],
-    subscriberName: ['']
+    subscriberName: [''],
+    referral: [''],
+    referralFilter: [''],
+    otherReferral: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -155,6 +165,7 @@ export class AddPreauthorizationComponent implements OnInit {
   typeList = this.sharedDataService.claimTypeList;
   payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
+  providerList = [];
   subTypeList = [];
 
   accidentTypeList = this.sharedDataService.accidentTypeList;
@@ -198,6 +209,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private sharedServices: SharedServices,
     private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
+    private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) {
     this.today = new Date();
@@ -208,14 +220,28 @@ export class AddPreauthorizationComponent implements OnInit {
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
-      this.setReuseValues();
+      this.getRefferalProviders();
       this.defualtPageMode = "";
     } else {
+      this.getRefferalProviders();
       this.defualtPageMode = "CREATE"
     }
   }
 
   setReuseValues() {
+
+    this.FormPreAuthorization.controls.isNewBorn.setValue(this.data.isNewBorn);
+    if (this.data.transferAuthProvider) {
+      if (this.providerList.filter(x => x.name === this.data.transferAuthProvider).length > 0) {
+        // tslint:disable-next-line:max-line-length
+        this.FormPreAuthorization.controls.referral.setValue(this.providerList.filter(x => x.name === this.data.transferAuthProvider)[0]);
+        this.IsOtherReferral = false;
+      } else {
+        this.FormPreAuthorization.controls.referral.setValue('-1');
+        this.FormPreAuthorization.controls.otherReferral.setValue(this.data.transferAuthProvider);
+        this.IsOtherReferral = true;
+      }
+    }
 
     if (this.data.preAuthDetails) {
       if (this.data.preAuthDetails.filter(x => x === null).length === 0) {
@@ -356,6 +382,46 @@ export class AddPreauthorizationComponent implements OnInit {
             insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
           });
 
+          if (res.subscriber) {
+
+            this.FormPreAuthorization.patchValue({
+              subscriberName: res.subscriber.beneficiaryName + ' (' + res.subscriber.documentId + ')'
+            });
+            // tslint:disable-next-line:max-line-length
+
+            this.FormSubscriber.controls.firstName.setValue(res.subscriber.firstName);
+            this.FormSubscriber.controls.middleName.setValue(res.subscriber.secondName);
+            this.FormSubscriber.controls.lastName.setValue(res.subscriber.thirdName);
+            this.FormSubscriber.controls.familyName.setValue(res.subscriber.familyName);
+            this.FormSubscriber.controls.fullName.setValue(res.subscriber.fullName);
+            this.FormSubscriber.controls.beneficiaryFileld.setValue(res.subscriber.fileId);
+            this.FormSubscriber.controls.dob.setValue(res.subscriber.dob);
+            this.FormSubscriber.controls.gender.setValue(res.subscriber.gender);
+            this.FormSubscriber.controls.documentType.setValue(res.subscriber.documentType);
+            this.FormSubscriber.controls.documentId.setValue(res.subscriber.documentId);
+            this.FormSubscriber.controls.eHealthId.setValue(res.subscriber.eHealthId);
+            this.FormSubscriber.controls.nationality.setValue(res.subscriber.nationality);
+            // tslint:disable-next-line:max-line-length
+            this.FormSubscriber.controls.nationalityName.setValue(nationalities.filter(x => x.Code === res.subscriber.nationality)[0] ? nationalities.filter(x => x.Code === res.subscriber.nationality)[0].Name : '');
+            this.FormSubscriber.controls.residencyType.setValue(res.subscriber.residencyType);
+            this.FormSubscriber.controls.contactNumber.setValue(res.subscriber.contactNumber);
+            this.FormSubscriber.controls.martialStatus.setValue(res.subscriber.maritalStatus);
+            this.FormSubscriber.controls.bloodGroup.setValue(res.subscriber.bloodGroup);
+            this.FormSubscriber.controls.preferredLanguage.setValue(res.subscriber.preferredLanguage);
+            this.FormSubscriber.controls.emergencyNumber.setValue(res.subscriber.emergencyPhoneNumber);
+            this.FormSubscriber.controls.email.setValue(res.subscriber.email);
+            this.FormSubscriber.controls.addressLine.setValue(res.subscriber.addressLine);
+            this.FormSubscriber.controls.streetLine.setValue(res.subscriber.streetLine);
+            this.FormSubscriber.controls.bcity.setValue(res.subscriber.city);
+            this.FormSubscriber.controls.bstate.setValue(res.subscriber.state);
+            this.FormSubscriber.controls.bcountry.setValue(res.subscriber.country);
+            if (res.subscriber.country) {
+              // tslint:disable-next-line:max-line-length
+              this.FormSubscriber.controls.bcountryName.setValue(this.nationalities.filter(x => x.Name.toLowerCase() === res.subscriber.country.toLowerCase())[0] ? this.nationalities.filter(x => x.Name.toLowerCase() == res.subscriber.country.toLowerCase())[0].Name : '');
+            }
+            this.FormSubscriber.controls.postalCode.setValue(res.subscriber.postalCode);
+          }
+
           if (res.beneficiary && res.beneficiary.insurancePlan && res.beneficiary.insurancePlan.payerId) {
             this.FormPreAuthorization.controls.insurancePlanId.setValue(res.beneficiary.insurancePlan.payerId.toString());
           }
@@ -430,6 +496,61 @@ export class AddPreauthorizationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       }
     });
+  }
+
+  getRefferalProviders() {
+    this.IsRefferalProviderLoading = true;
+    this.FormPreAuthorization.controls.referral.disable();
+    this.superAdminService.getProviders().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.providerList = event.body;
+        }
+        if (this.claimReuseId) {
+          this.setReuseValues();
+        }
+        this.filteredProviderList.next(this.providerList.slice());
+        this.IsRefferalProviderLoading = false;
+        this.FormPreAuthorization.controls.referral.enable();
+        this.FormPreAuthorization.controls.referralFilter.valueChanges
+          .pipe(takeUntil(this.onDestroy))
+          .subscribe(() => {
+            this.filterRefferalProviders();
+          });
+      }
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        console.log('Error getting referrals');
+      }
+    });
+  }
+
+  filterRefferalProviders() {
+    if (!this.providerList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormPreAuthorization.controls.referralFilter.value;
+    if (!search) {
+      this.filteredProviderList.next(this.providerList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredProviderList.next(
+      // tslint:disable-next-line:max-line-length
+      this.providerList.filter(item => item.name.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1 || item.switchAccountId.toString().toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  referralChange($event) {
+    if ($event.value === '-1') {
+      this.IsOtherReferral = true;
+    } else {
+      this.IsOtherReferral = false;
+      this.FormPreAuthorization.controls.otherReferral.setValue('');
+    }
   }
 
   filterNationality() {
@@ -856,7 +977,9 @@ export class AddPreauthorizationComponent implements OnInit {
       payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
       beneficiaryPatientShare: this.beneficiaryPatientShare,
       beneficiaryMaxLimit: this.beneficiaryMaxLimit,
-      documentId: this.FormPreAuthorization.controls.documentId.value
+      documentId: this.FormPreAuthorization.controls.documentId.value,
+      IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
+      beneficiaryDob: this.selectedBeneficiary.dob
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1299,6 +1422,7 @@ export class AddPreauthorizationComponent implements OnInit {
       return false;
     }
   }
+
   checkCareTeamValidation() {
     let hasError = false;
     if (this.CareTeams.length !== 0) {
@@ -1315,6 +1439,36 @@ export class AddPreauthorizationComponent implements OnInit {
       return hasError;
     }
   }
+
+  checkNewBornValidation() {
+    // tslint:disable-next-line:max-line-length
+    if (this.FormPreAuthorization.controls.isNewBorn.value && (this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional')) {
+      if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional preauthorization request', 'alert', true, 'OK', null, true);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  checkNewBornSupportingInfoCodes() {
+    if (this.FormPreAuthorization.controls.isNewBorn.value) {
+      if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the preauth request for a newborn', 'alert', true, 'OK', null, true);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
   onSubmit() {
 
     this.isSubmitted = true;
@@ -1405,6 +1559,14 @@ export class AddPreauthorizationComponent implements OnInit {
       hasError = true;
     }
 
+    if (!this.checkNewBornValidation()) {
+      hasError = true;
+    }
+
+    if (!this.checkNewBornSupportingInfoCodes()) {
+      hasError = true;
+    }
+
     if (hasError) {
       return;
     }
@@ -1418,6 +1580,12 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
       }
 
+      if (this.FormPreAuthorization.controls.otherReferral.value) {
+        this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
+      } else {
+        this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
+      }
+
       this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
 
       this.model.beneficiary = {};
@@ -1427,7 +1595,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.beneficiary.familyName = this.FormPreAuthorization.controls.familyName.value;
       this.model.beneficiary.fullName = this.FormPreAuthorization.controls.fullName.value;
       this.model.beneficiary.fileId = this.FormPreAuthorization.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.FormPreAuthorization.controls.dob.value;
+      this.model.beneficiary.dob = this.datePipe.transform(this.FormPreAuthorization.controls.dob.value, 'yyyy-MM-dd');
       this.model.beneficiary.gender = this.FormPreAuthorization.controls.gender.value;
       this.model.beneficiary.documentType = this.FormPreAuthorization.controls.documentType.value;
       this.model.beneficiary.documentId = this.FormPreAuthorization.controls.documentId.value;
@@ -1456,7 +1624,7 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
         this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
         this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
-        this.model.subscriber.dob = this.FormSubscriber.controls.dob.value;
+        this.model.subscriber.dob = this.datePipe.transform(this.FormSubscriber.controls.dob.value, 'yyyy-MM-dd');
         this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
         this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
         this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;

@@ -1,0 +1,110 @@
+<div class="primary-dialog-header has-border">
+  <h5 class="primary-dialog-title">
+    <span *ngIf="!data || (data && !data.priceDetail)">Add</span>
+    <span *ngIf="data && data.priceDetail">Edit</span> Price List Service
+  </h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<form [formGroup]="FormPriceDetail" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0">
+
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('serviceType').touched) && FormPriceDetail.get('serviceType').hasError('required')}">
+      <label class="control-label">Type<span class="asterisk">*</span></label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select formControlName="serviceType" (selectionChange)="typeChange()">
+          <mat-option value="">Select Type</mat-option>
+          <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('serviceType').touched) && FormPriceDetail.get('serviceType').hasError('required')">
+        <span class="error-text">Please select a Service Type</span>
+      </div>
+    </div>
+
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('serviceCode').touched) && FormPriceDetail.get('serviceCode').hasError('required')}">
+      <label class="control-label">Service Code<span class="asterisk">*</span></label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select formControlName="serviceCode" [disabled]="IsItemLoading || (data && data.priceDetail)" #itemSelect>
+          <mat-option>
+            <ngx-mat-select-search placeholderLabel="Search Item" formControlName="serviceCodeFilter"
+              noEntriesFoundLabel="No items found" name='searchedItem'>
+            </ngx-mat-select-search>
+          </mat-option>
+          <ng-container *ngIf="IsItemLoading">
+            <mat-option value="">Loading Service Codes ...</mat-option>
+          </ng-container>
+          <ng-container *ngIf="!IsItemLoading">
+            <mat-option value="">Select Code - Description</mat-option>
+            <mat-option *ngFor="let item of filteredItem  | async" [value]="item">
+              {{item.code}} - {{item.description}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('serviceCode').touched) && FormPriceDetail.get('serviceCode').hasError('required')">
+        <span class="error-text">Please select a Service Code</span>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('nonStandardCode').touched) && FormPriceDetail.get('nonStandardCode').hasError('required')}">
+      <label class="control-label">Non Standard Code<span class="asterisk">*</span></label>
+      <input class="form-control" placeholder="Enter non standard code" formControlName="nonStandardCode">
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('nonStandardCode').touched) && FormPriceDetail.get('nonStandardCode').hasError('required')">
+        <span class="error-text">Please enter Non Standard Code</span>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('nonStandardDesc').touched) && FormPriceDetail.get('nonStandardDesc').hasError('required')}">
+      <label class="control-label">Non Standard Description<span class="asterisk">*</span></label>
+      <input class="form-control" placeholder="Enter non standard description" formControlName="nonStandardDesc" maxlength="250">
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('nonStandardDesc').touched) && FormPriceDetail.get('nonStandardDesc').hasError('required')">
+        <span class="error-text">Please enter Non Standard Description</span>
+      </div>
+    </div>
+
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('unitPrice').touched) && FormPriceDetail.get('unitPrice').hasError('required')}">
+      <label class="control-label">Unit Price<span class="asterisk">*</span></label>
+      <div class="input-group">
+        <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice">
+        <span class="input-group-append">
+          <span class="input-group-text">SR</span>
+        </span>
+      </div>
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('unitPrice').touched) && FormPriceDetail.get('unitPrice').hasError('required')">
+        <span class="error-text">Please enter Unit Price</span>
+      </div>
+    </div>
+
+    <div class="form-group"
+      [ngClass]="{'has-error' : (isSubmitted || FormPriceDetail.get('factor').touched) && (FormPriceDetail.get('factor').hasError('required') || FormPriceDetail.get('factor').hasError('min') ||  FormPriceDetail.get('factor').hasError('max'))}">
+      <label class="control-label">
+        <span class="d-flex align-items-center">
+          <span class="pr-1">Factor<span class="asterisk">*</span></span>
+        </span>
+      </label>
+      <input class="form-control" placeholder="Enter factor" formControlName="factor">
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('factor').touched) && FormPriceDetail.get('factor').hasError('required')">
+        <span class="error-text">Please enter Factor</span>
+      </div>
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('factor').touched) && FormPriceDetail.get('factor').hasError('min')">
+        <span class="error-text">Factor must be greater than or equal to 0</span>
+      </div>
+      <div *ngIf="(isSubmitted || FormPriceDetail.get('factor').touched) && FormPriceDetail.get('factor').hasError('max')">
+        <span class="error-text">Factor must be less than or equal to 1</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+      <button mat-button (click)="closeDialog()" type="button">Close</button>
+      <button mat-flat-button color="primary" type="submit">
+        <span *ngIf="!data || (data && !data.priceDetail)">Add</span>
+        <span *ngIf="data && data.priceDetail">Save</span>
+      </button>
+    </div>
+  </div>
+</form>

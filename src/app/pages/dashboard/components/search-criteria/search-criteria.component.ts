@@ -19,6 +19,7 @@ export class SearchCriteriaComponent implements OnInit {
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
+  currentMonthName: string;
   lastMonthName: string;
   searchByLastMonth = true;
   fromDateControl: FormControl = new FormControl();
@@ -61,9 +62,12 @@ export class SearchCriteriaComponent implements OnInit {
 
   setLastMonthName() {
     const thisMonth = moment();
-    const lastMonth = thisMonth.subtract('month', 1);
-    this.lastMonthName = this.monthNames[lastMonth.month()];
+    const lastMonth = moment().subtract('month', 5);
+    this.lastMonthName = this.monthNames[lastMonth.month()]+"'"+lastMonth.year(); 
+    this.currentMonthName = this.monthNames[thisMonth.month()]+"'"+thisMonth.year();
+    
   }
+
 
   resetDates() {
     this.fromDateControl = new FormControl();
@@ -73,7 +77,7 @@ export class SearchCriteriaComponent implements OnInit {
   search() {
     if (this.searchByLastMonth) {
       const now = moment();
-      const lastMonth = moment().subtract('month', 1);
+      const lastMonth = moment().subtract( 5,'month');
       this.store.dispatch(updateSearchCriteria({
         fromDate: `${lastMonth.weekYear()}-${lastMonth.month() + 1}-01`,
         toDate: `${now.weekYear()}-${now.month() + 1}-01`,
