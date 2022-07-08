@@ -2140,6 +2140,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
 
+    this.otherDataModel.reIssueReason = response.reIssueReason;
     this.otherDataModel.cancelStatus = response.cancelStatus;
     this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
     this.otherDataModel.cancelErrors = response.cancelErrors;

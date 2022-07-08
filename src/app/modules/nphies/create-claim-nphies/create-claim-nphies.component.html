@@ -35,6 +35,9 @@
           Status:</span>&nbsp;<strong>{{otherDataModel.cancelStatus}}</strong></p>
       <p *ngIf="otherDataModel.cancelResponseReason"><span>Cancellation Status
           Reason:</span>&nbsp;<strong>{{otherDataModel.cancelResponseReason}}</strong></p>
+      <p *ngIf="otherDataModel.reIssueReason"><span>ReIssue
+          Reason:</span>&nbsp;<strong>{{otherDataModel.reIssueReason}}</strong></p>
+
     </div>
   </div>
   <ul class="claim-totals"
@@ -446,7 +449,8 @@
               <td>
                 <span *ngIf="s.category=='attachment'">
                   <!-- {{s.attachment}} -->
-                  <a href="javascript:void(0);" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
+                  <a href="javascript:void(0);" title="View" class="primary-link"
+                    (click)="viewAttachment($event,s)">View</a>
                 </span>
                 <span *ngIf="s.category!='attachment'">
                   {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
@@ -1168,8 +1172,9 @@
     </mat-tab>
 
     <mat-tab
-    *ngIf="otherDataModel.status === 'pended' || otherDataModel.status === 'queued' || otherDataModel.status === 'failed' || otherDataModel.status === 'partial' || otherDataModel.status === 'approved' || otherDataModel.status === 'failednphies'" [label]="'JSON'">
-    <!-- <mat-tab [label]="'JSON'"> -->
+      *ngIf="otherDataModel.status === 'rejected' || otherDataModel.status === 'failedNphies' || otherDataModel.status === 'pended' || otherDataModel.status === 'queued' || otherDataModel.status === 'partial' || otherDataModel.status === 'approved' || otherDataModel.status === 'failednphies'"
+      [label]="'JSON'">
+      <!-- <mat-tab [label]="'JSON'"> -->
       <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
     </mat-tab>
   </mat-tab-group>
