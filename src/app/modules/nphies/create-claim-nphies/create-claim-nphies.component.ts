@@ -2140,6 +2140,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.otherDataModel = {};
 
+    this.otherDataModel.reIssueReason = response.reIssueReason;
     this.otherDataModel.cancelStatus = response.cancelStatus;
     this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
     this.otherDataModel.cancelErrors = response.cancelErrors;
@@ -2166,6 +2167,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.totalNetAmount = response.totalNet;
     this.otherDataModel.totalPatientShare = response.totalPatientShare;
     this.otherDataModel.totalPayerShare = response.totalPayerShare;
+    this.otherDataModel.totalTax = response.totalTax;
 
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;

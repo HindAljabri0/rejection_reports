@@ -17,7 +17,7 @@ import { UploadBeneficiaryComponent } from './upload-beneficiary/upload-benefici
 import { PhysiciansComponent } from './physicians/physicians.component';
 import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
-import { PreparePreAuthForClaim } from './prepare-pre-auth-for-claim/prepare-pre-auth-for-claim.component';
+import { PreparePreAuthForClaimComponent } from './prepare-pre-auth-for-claim/prepare-pre-auth-for-claim.component';
 import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
 
 const routes: Routes = [
@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'physicians', component: PhysiciansComponent },
   { path: 'pricelist', component: PricelistComponent },
   { path: 'pricelist-details', component: PricelistDetailsComponent },
-  { path: 'prepare-pre-auth-for-claim', component: PreparePreAuthForClaim },
+  { path: 'prepare-pre-auth-for-claim', component: PreparePreAuthForClaimComponent },
   { path: 'convert-pre-auth-to-claim', component: ConvertPreAuthToClaimComponent }
 ];
 
