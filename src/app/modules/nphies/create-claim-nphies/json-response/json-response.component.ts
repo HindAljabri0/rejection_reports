@@ -5,7 +5,6 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MatDialog } from '@angular/material';
 import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-json-response',
@@ -21,7 +20,6 @@ export class JsonResponseComponent implements OnInit {
   constructor(
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private sharedServices: SharedServices,
-    private sanitizer: DomSanitizer,
     private dialog: MatDialog,
     private dialogService: DialogService) { }
 
@@ -73,12 +71,8 @@ export class JsonResponseComponent implements OnInit {
         if (event.status === 200) {
           const json = event.body;
 
-          const fName = transactionType + '-' + this.otherDataModel.claimId + '.json';
-          // if (actionType === 'VIEW') {
-          this.ViewJson(transactionId, transactionType, json, fName);
-          // } else if (actionType === 'DOWNLOAD') {
-          //   this.DownloadJson(transactionType, json);
-          // }
+          const fileName = transactionType + '-' + this.otherDataModel.claimResourceId + '.json';
+          this.ViewJson(transactionId, transactionType, json, fileName);
 
         }
         this.sharedServices.loadingChanged.next(false);
@@ -104,16 +98,16 @@ export class JsonResponseComponent implements OnInit {
     });
   }
 
-  DownloadJson(transactionId, myJson) {
-    const sJson = JSON.stringify(myJson);
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
-    element.setAttribute('download', this.otherDataModel.claimId + '-' + transactionId + '.json');
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click(); // simulate click
-    document.body.removeChild(element);
-  }
+  // DownloadJson(transactionId, myJson) {
+  //   const sJson = JSON.stringify(myJson);
+  //   const element = document.createElement('a');
+  //   element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+  //   element.setAttribute('download', this.otherDataModel.claimId + '-' + transactionId + '.json');
+  //   element.style.display = 'none';
+  //   document.body.appendChild(element);
+  //   element.click(); // simulate click
+  //   document.body.removeChild(element);
+  // }
 
   ViewJson(transactionId, transactionType, json, fName) {
     this.dialog.open(JsonViewDialogComponent, {

@@ -1,255 +1,208 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
-    <div class="block-header">
-        <p>Convert Pre-Auth Transactions to Claim</p>
-    </div>
-    <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">From Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
-                        <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterFromDate></mat-datepicker>
-                    </div>
-                </div>
+  <div class="block-header">
+    <p>Convert Pre-Auth to Claim</p>
+  </div>
+  <div class="block-filter-panel">
+    <form [formGroup]="FormPreAuthTransaction" (ngSubmit)="onSubmit()">
+      <div class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">From Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
+                formControlName="fromDate">
+              <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+              <mat-datepicker #filterFromDate></mat-datepicker>
             </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">To Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
-                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterToDate></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="!advanceSearchEnable" class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">&nbsp;</label>
-                    <div class="btn-list">
-                        <button type="button" mat-flat-button color="primary">Search</button>
-                        <button type="button" class="text-primary" (click)="toggleAdvanceSearch()" mat-button>Advance Search</button>
-                    </div>
-                </div>
-            </div>
-            <ng-container *ngIf="advanceSearchEnable">
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Pre Authorization ID</label>
-                        <input class="form-control" placeholder="Enter pre authorization ID">
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Payer</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="">
-                                <mat-option value="">Select Payer</mat-option>
-                                <mat-option value="Payer 1">Payer 1</mat-option>
-                                <mat-option value="Payer 2">Payer 2</mat-option>
-                                <mat-option value="Payer 3">Payer 3</mat-option>
-                                <mat-option value="Payer 4">Payer 4</mat-option>
-                                <mat-option value="Payer 5">Payer 5</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Select a Beneficiary</label>
-                        <input class="form-control search-box" placeholder="Search for beneficiary by name or document ID...">
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Pre Auth Reference No</label>
-                        <input class="form-control" placeholder="Enter Preauth Ref No">
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Status</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="">
-                                <mat-option value="">Select Status</mat-option>
-                                <mat-option value="Status 1">Status 1</mat-option>
-                                <mat-option value="Status 2">Status 2</mat-option>
-                                <mat-option value="Status 3">Status 3</mat-option>
-                                <mat-option value="Status 4">Status 4</mat-option>
-                                <mat-option value="Status 5">Status 5</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </ng-container>
+          </div>
         </div>
-        <div *ngIf="advanceSearchEnable" class="form-group">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">To Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
+                [min]="FormPreAuthTransaction.controls.fromDate.value" formControlName="toDate">
+              <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+              <mat-datepicker #filterToDate></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!advanceSearchEnable" class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">&nbsp;</label>
             <div class="btn-list">
-                <button type="button" mat-flat-button color="primary">Search</button>
-                <button type="button" class="text-primary" mat-button (click)="toggleAdvanceSearch()">Basic Search</button>
+              <button type="submit" mat-flat-button color="primary">Search</button>
+              <button type="button" class="text-primary" (click)="toggleAdvanceSearch()" mat-button>Advance
+                Search</button>
             </div>
+          </div>
         </div>
-    </div>
+        <ng-container *ngIf="advanceSearchEnable">
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Pre Authorization ID</label>
+              <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Payer</label>
+              <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
+              <input type="text" class="form-control search-box"
+                placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+                [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                  (click)="selectBeneficiary(beneficiary)">
+                  {{beneficiary.name}} ({{beneficiary.documentId}})
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Status</label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="status">
+                  <mat-option value="">Select Status</mat-option>
+                  <mat-option *ngFor="let status of statusList" [value]="status.value">{{status.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Pre Auth Reference No</label>
+              <input placeholder="Enter Preauth Ref No" class="form-control" formControlName="preAuthRefNo">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div *ngIf="advanceSearchEnable" class="form-group">
+        <div class="btn-list">
+          <button type="submit" mat-flat-button color="primary">Search</button>
+          <button type="button" class="text-primary" mat-button (click)="toggleAdvanceSearch()">Basic Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
 
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-        <div class="fixed-height fixed-height-sm">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+    *ngIf="transactionModel && transactions.length > 0">
+    <div class="fixed-height fixed-height-sm">
+      <table class="primary-grid sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th width="10"></th>
+            <th width="10"></th>
+            <th>Beneficiary Name</th>
+            <th>Pre Auth Ref No</th>
+            <th>Pre Authorization ID</th>
+            <th>Requested Date</th>
+            <th>Response Date</th>
+            <th>Payer/TPA</th>
+            <th>Total Net</th>
+            <th>Patient Share</th>
+            <th>Payer Share</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let transaction of transactions; let i = index">
+            <tr class="row-click">
+              <td>
+                <mat-checkbox class="grid-checkbox"></mat-checkbox>
+              </td>
+              <td (click)="toggleRow(i)" class="text-primary text-center">
+                <mat-icon *ngIf="currentOpenRow!=i">add_circle_outline</mat-icon>
+                <mat-icon *ngIf="currentOpenRow==i">remove_circle_outline</mat-icon>
+              </td>
+              <td (click)="toggleRow(i)">{{transaction.beneficiaryName}} ({{transaction.documentId}}) </td>
+              <td (click)="toggleRow(i)">{{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
+              <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td>
+              <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
+              <td (click)="toggleRow(i)"> {{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td>
+              <td (click)="toggleRow(i)"> {{transaction.payerName}}</td>
+              <td (click)="toggleRow(i)"> {{transaction.totalNet}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)"> {{transaction.status}}</td>
+            </tr>
+            <tr *ngIf="currentOpenRow==i">
+              <td></td>
+              <td></td>
+              <td colspan="10">
+                <div class="form-group form-group-static">
+                  <label class="control-label">Episode No.</label>
+                  <span class="form-control-static">{{transaction.episodeId}}</span>
+                </div>
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0"
+                  *ngIf="transaction && transaction.items && transaction.items.length > 0">
+                  <thead>
                     <tr>
-                        <th width="10"></th>
-                        <th width="10"></th>
-                        <th>Beneficiary</th>
-                        <th>Pre Auth Ref No</th>
-                        <th>Pre Authorization ID</th>
-                        <th>Requested Date</th>
-                        <th>Response Date</th>
-                        <th>Payer/TPA</th>
-                        <th>Total Net</th>
-                        <th>Patient Share</th>
-                        <th>Payer Share</th>
-                        <th>Status</th>
+                      <th>Item Type</th>
+                      <th>Invoice No. <span class="asterisk">*</span></th>
+                      <th>Standard Code - Description</th>
+                      <th>Patient Share</th>
+                      <th>Payer Share</th>
+                      <th>Net</th>
+                      <th>Approved Net</th>
+                      <th>Status</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr class="row-click">
-                        <td>
-                            <mat-checkbox class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td (click)="toggleRow(0)" class="text-primary text-center">
-                            <mat-icon *ngIf="currentOpenRow!=0">add_circle_outline</mat-icon>
-                            <mat-icon *ngIf="currentOpenRow==0">remove_circle_outline</mat-icon>
-                        </td>
-                        <td (click)="toggleRow(0)">PARVEZKHAN KHADER KHAN (2267782387)</td>
-                        <td (click)="toggleRow(0)">-</td>
-                        <td (click)="toggleRow(0)">220623-78765</td>
-                        <td (click)="toggleRow(0)">23-06-2022 09:52 AM</td>
-                        <td (click)="toggleRow(0)">23-06-2022 09:52 AM</td>
-                        <td (click)="toggleRow(0)">Insurance Company Testing Payer</td>
-                        <td (click)="toggleRow(0)">4 <span class="currency">SAR</span></td>
-                        <td (click)="toggleRow(0)">4 <span class="currency">SAR</span></td>
-                        <td (click)="toggleRow(0)">4 <span class="currency">SAR</span></td>
-                        <td (click)="toggleRow(0)">Approved</td>
+                  </thead>
+                  <tbody>
+                    <tr  *ngFor="let item of transaction.items" class="align-middle">
+                      <td>{{item.itemType}}</td>
+                      <td>{{item.invoiceNo}}</td>
+                      <td>{{item.itemCode}} - {{item.itemDescription}}</td>
+                      <td>{{item.patientShare}} <span class="currency">SAR</span></td>
+                      <td>{{item.payerSahare}} <span class="currency">SAR</span></td>
+                      <td>{{item.net}} <span class="currency">SAR</span></td>
+                      <td>{{item.approvedNet}} <span class="currency">SAR</span></td>
+                      <td>{{item.status}}</td>
                     </tr>
-                    <tr *ngIf="currentOpenRow==0">
-                        <td></td>
-                        <td></td>
-                        <td colspan="10">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Episode No.</label>
-                                <span class="form-control-static">5649879</span>
-                            </div>
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                                <thead>
-                                    <tr>
-                                        <th>Item Type</th>
-                                        <th>Invoice No. <span class="asterisk">*</span></th>
-                                        <th>Standard Code - Description</th>
-                                        <th>Patient Share</th>
-                                        <th>Payer Share</th>
-                                        <th>Net</th>
-                                        <th>Approved Net</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="align-middle">
-                                        <td>Medical Devices</td>
-                                        <td>1</td>
-                                        <td>18021 - Dermatoscope, optical</td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>Approved</td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>Medical Devices</td>
-                                        <td>2</td>
-                                        <td>18021 - Dermatoscope, optical</td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>Approved</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr class="row-click">
-                        <td>
-                            <mat-checkbox class="grid-checkbox"></mat-checkbox>
-                        </td>
-                        <td (click)="toggleRow(1)" class="text-primary text-center">
-                            <mat-icon *ngIf="currentOpenRow!=1">add_circle_outline</mat-icon>
-                            <mat-icon *ngIf="currentOpenRow==1">remove_circle_outline</mat-icon>
-                        </td>
-                        <td (click)="toggleRow(1)">PARVEZKHAN KHADER KHAN (2267782387)</td>
-                        <td (click)="toggleRow(1)">-</td>
-                        <td (click)="toggleRow(1)">220623-78765</td>
-                        <td (click)="toggleRow(1)">23-06-2022 09:52 AM</td>
-                        <td (click)="toggleRow(1)">23-06-2022 09:52 AM</td>
-                        <td (click)="toggleRow(1)">Insurance Company Testing Payer</td>
-                        <td (click)="toggleRow(1)">4 <span class="currency">SAR</span></td>
-                        <td (click)="toggleRow(1)">4 <span class="currency">SAR</span></td>
-                        <td (click)="toggleRow(1)">4 <span class="currency">SAR</span></td>
-                        <td (click)="toggleRow(1)">Approved</td>
-                    </tr>
-                    <tr *ngIf="currentOpenRow==1">
-                        <td></td>
-                        <td></td>
-                        <td colspan="10">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Episode No.</label>
-                                <span class="form-control-static">5649879</span>
-                            </div>
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                                <thead>
-                                    <tr>
-                                        <th>Item Type</th>
-                                        <th>Invoice No. <span class="asterisk">*</span></th>
-                                        <th>Standard Code - Description</th>
-                                        <th>Patient Share</th>
-                                        <th>Payer Share</th>
-                                        <th>Net</th>
-                                        <th>Approved Net</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="align-middle">
-                                        <td>Medical Devices</td>
-                                        <td>1</td>
-                                        <td>18021 - Dermatoscope, optical</td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>Approved</td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>Medical Devices</td>
-                                        <td>2</td>
-                                        <td>18021 - Dermatoscope, optical</td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>4 <span class="currency">SAR</span></td>
-                                        <td>Approved</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </ng-scrollbar>
-
-    <div class="block-footer sticky">
-        <div class="right-block">
-            <button type="button" color="primary" mat-flat-button>Convert All</button>
-        </div>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
     </div>
+  </ng-scrollbar>
+
+  <app-empty-state *ngIf="isSubmitted && transactionModel && transactions.length === 0" message='No approvals found!'>
+  </app-empty-state>
+  <app-empty-state *ngIf="!isSubmitted && transactions && transactions.length === 0"
+    message='Please search to filter approvals'>
+  </app-empty-state>
+
+
+
+  <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
+    <div class="form-group page-select">
+      <label class="control-label">Go to page: </label>
+      <mat-form-field class="form-control custom-select-control">
+        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+          <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="material-paginator">
+      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+        (page)="paginatorAction($event)">
+      </mat-paginator>
+    </div>
+  </div>
+
+  <div class="block-footer sticky">
+    <div class="right-block">
+      <button type="button" color="primary" mat-flat-button>Convert All</button>
+    </div>
+  </div>
 </div>

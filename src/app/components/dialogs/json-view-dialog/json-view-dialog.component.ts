@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClipboardService } from 'ngx-clipboard';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-json-view-dialog',
@@ -12,6 +13,7 @@ export class JsonViewDialogComponent implements OnInit {
 
   constructor(
     private clipboardService: ClipboardService,
+    private sanitizer: DomSanitizer,
     private dialogRef: MatDialogRef<JsonViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data:
       {
