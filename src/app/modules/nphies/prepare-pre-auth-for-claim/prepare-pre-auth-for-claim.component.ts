@@ -54,7 +54,8 @@ export class PreparePreAuthForClaimComponent implements OnInit {
   advanceSearchEnable = false;
   statusList = [
     { value: 'approved', name: 'Approved' },
-    { value: 'pended', name: 'Pended' }
+    { value: 'pended', name: 'Pended' },
+    { value: 'not-required', name: 'Not Required'}
   ];
 
   constructor(

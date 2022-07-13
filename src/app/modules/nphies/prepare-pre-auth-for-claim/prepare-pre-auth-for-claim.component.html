@@ -103,7 +103,7 @@
             <th>Pre Auth Ref No</th>
             <th>Pre Authorization ID</th>
             <th>Requested Date</th>
-            <th>Response Date</th>
+            <!-- <th>Response Date</th> -->
             <th>Payer/TPA</th>
             <th>Total Net</th>
             <th>Patient Share</th>
@@ -122,7 +122,7 @@
               <td (click)="toggleRow(i)">{{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
               <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td>
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
-              <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td>
+              <!-- <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
               <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
