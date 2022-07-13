@@ -15,6 +15,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
   @Input() isRequired = true;
 
   @Input() insurancePayer: any;
+  @Input() toolTip: string;
 
   // tslint:disable-next-line:no-output-rename
   @Output('payerSelected') payerSelectionEmitter: EventEmitter<any> = new EventEmitter();
