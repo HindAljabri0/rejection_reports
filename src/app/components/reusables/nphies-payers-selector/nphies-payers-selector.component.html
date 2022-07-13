@@ -8,7 +8,7 @@
   </ng-container>
 </ng-container>
 <ng-template #matSelect>
-  <mat-form-field *ngIf="!Form && !insurancePayer" class="form-control custom-select-control">
+  <mat-form-field *ngIf="!Form && !insurancePayer && !duplicatePayer" class="form-control custom-select-control">
     <mat-select (selectionChange)="selectionChange.emit($event)" [value]="-1" >
       <mat-option [value]="-1">Select Payer</mat-option>
       <ng-container *ngFor="let organization of organizations">
@@ -59,7 +59,7 @@
       </div>
     </form>
   </ng-container>
-  <ng-container *ngIf="insurancePayer">
+  <ng-container *ngIf="insurancePayer && !duplicatePayer">
     <mat-form-field class="form-control custom-select-control">
       <mat-select (selectionChange)="selectPayer($event)" [value]="insurancePayer">
         <mat-option [value]="">Select Payer</mat-option>
@@ -69,6 +69,21 @@
           <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">{{payer.display}}<br>{{payer.displayAlt}}</mat-option>
         </ng-container>
       </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngIf="duplicatePayer">
+    <mat-form-field class="form-control custom-select-control">
+      <mat-select (selectionChange)="selectPayer($event)" [value]="insurancePayer">
+        <mat-option value="">Select Payer</mat-option>
+        <ng-container *ngFor="let organization of organizations">
+          <h5 *ngIf="organization.code != '-1'" class="menu-opt-group text-right">
+            {{organization.display}}<br>{{organization.displayAlt}}</h5>
+          <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">{{payer.display}}<br>{{payer.displayAlt}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <div *ngIf="duplicatePayer">
+        <span class="error-text">{{payerName}} is part of Multiple TPAs. Please select the appropriate Payer under the TPA.</span>
+      </div>
     </mat-form-field>
   </ng-container>
 </ng-template>
