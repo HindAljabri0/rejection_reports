@@ -13,11 +13,13 @@ export class ApprovalToClaimTransaction extends Paginateable {
   status: string;
   totalNet: number;
   transactionDate: string;
+  episodeId: number;
 
   constructor(body: {}) {
     super(body);
 
     this.beneficiaryName = body["beneficiaryName"];
+    this.episodeId = body["episodeId"];
     this.documentId = body["documentId"];
     this.items = body["items"];
     this.nphiesRequestId = body["nphiesRequestId"];
@@ -34,6 +36,7 @@ export class ApprovalToClaimTransaction extends Paginateable {
 }
 
 class Item {
+  sequence: number;
   approvedNet: number;
   itemCode: string;
   itemDescription: string;
