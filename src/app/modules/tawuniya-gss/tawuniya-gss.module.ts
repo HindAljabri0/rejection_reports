@@ -18,7 +18,7 @@ import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generat
     CommonModule,
     RouterModule.forChild([
       { path: '', component: TawuniyaGssComponent },
-      { path: 'report-details', component: TawuniyaGssReportDetailsComponent }
+      { path: ':gssReferenceNumber/report-details', component: TawuniyaGssReportDetailsComponent }
     ]),
     MaterialModule,
     ReactiveFormsModule,
