@@ -869,6 +869,8 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.isPackage = result.isPackage;
               x.bodySite = result.bodySite;
               x.bodySiteName = result.bodySiteName;
+              x.subSite = result.subSite;
+              x.subSiteName = result.subSiteName;
               x.quantity = result.quantity;
               x.quantityCode = result.quantityCode != "" ? result.quantityCode : null;
               x.unitPrice = result.unitPrice;
