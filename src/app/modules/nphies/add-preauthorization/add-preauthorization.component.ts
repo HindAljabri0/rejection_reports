@@ -1014,6 +1014,10 @@ export class AddPreauthorizationComponent implements OnInit {
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
               x.startDateStr = result.startDateStr;
+              x.endDate = result.endDate;
+              x.endDateStr = result.endDateStr;
+              x.endDate = result.endDate;
+              x.endDateStr = result.endDateStr;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
@@ -1822,6 +1826,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
           model.startDate = x.startDate;
+          model.endDate = x.endDate;
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1862,6 +1867,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
           model.startDate = x.startDate;
+          model.endDate = x.endDate;
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;

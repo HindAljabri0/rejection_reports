@@ -43,19 +43,19 @@
   <ul class="claim-totals"
     *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
     <li>
-      Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2'
+      Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount != null) ? (otherDataModel.totalNetAmount | number : '1.2-2'
         ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Patient Share:<span class="value">{{otherDataModel.totalPatientShare ? (otherDataModel.totalPatientShare |
+      Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined && otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
         number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare | number
+      Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined && otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Tax:<span class="value">{{otherDataModel.totalTax ? (otherDataModel.totalTax | number
+      Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ? (otherDataModel.totalTax | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <ng-container
@@ -659,8 +659,8 @@
                         <table class="inline-label-table">
                           <tbody>
                             <tr>
-                              <td class="label">Start Date</td>
-                              <td>{{item.startDateStr}}</td>
+                              <td class="label">Service Date</td>
+                              <td><span *ngIf="item.endDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}</td>
                             </tr>
                             <tr>
                               <td class="label">Non Standard Code</td>
@@ -1256,35 +1256,19 @@
     <ul class="claim-totals"
       *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
       <li>
-        Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number :
+        Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount != null) ? (otherDataModel.totalNetAmount | number :
           '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
-      <ng-container
-        *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
-        <li class="separator"></li>
-        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span
-              class="currency">SR</span></span>
-        </li>
-      </ng-container>
       <li>
-        Total Patient Share:<span class="value">{{otherDataModel.totalPatientShare ? (otherDataModel.totalPatientShare |
-          number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
-      </li>
-      <ng-container
-        *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
-        <li class="separator"></li>
-        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span
-              class="currency">SR</span></span>
-        </li>
-      </ng-container>
-      <li>
-        Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare |
+        Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined && otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
           number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <li>
-        Total Tax:<span class="value">{{otherDataModel.totalTax ? (otherDataModel.totalTax | number
+        Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined && otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare |
+          number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+      </li>
+      <li>
+        Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ? (otherDataModel.totalTax | number
           : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <ng-container

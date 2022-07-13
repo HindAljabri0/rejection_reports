@@ -885,6 +885,10 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
               x.startDateStr = result.startDateStr;
+
+              x.endDate = result.endDate;
+              x.endDateStr = result.endDateStr;
+
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
@@ -1676,8 +1680,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
-          model.bodySite = x.bodySite;
-          model.subSite = x.subSite;
+          model.bodySite = x.bodySite ? x.bodySite : null;
+          model.subSite = x.subSite ? x.subSite : null;
           model.quantity = x.quantity;
           model.quantityCode = x.quantityCode;
           model.unitPrice = x.unitPrice;
@@ -1690,6 +1694,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
           model.startDate = x.startDate;
+          model.endDate = x.endDate;
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1718,8 +1723,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
-          model.bodySite = x.bodySite;
-          model.subSite = x.subSite;
+          model.bodySite = x.bodySite ? x.bodySite : null;
+          model.subSite = x.subSite ? x.subSite : null;
           model.quantity = x.quantity;
           model.unitPrice = x.unitPrice;
           model.discount = x.discount;
@@ -1731,6 +1736,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
           model.startDate = x.startDate;
+          model.endDate = x.endDate;
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -2768,7 +2774,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.patientShare = x.patientShare;
       model.payerShare = x.payerShare;
       model.startDate = x.startDate;
-      model.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
+      if (model.startDate) {
+        model.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+      }
+      model.endDate = x.endDate;
+      model.endDateStr = moment(moment(x.endDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
       model.supportingInfoSequence = x.supportingInfoSequence;
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
