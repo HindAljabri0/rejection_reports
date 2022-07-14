@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { InitiateResponse } from '../models/InitiateResponse.model';
@@ -27,8 +27,14 @@ export class TawuniyaGssService {
     return this.http.post<InitiateResponse>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "gssReferenceNumber": gssReferenceNumber, "userName": localStorage.getItem('auth_username') });
   }
 
-  gssQuerySummary(fromDate : string, toDate : string) {
+  gssQuerySummary(fromDate: string, toDate: string) {
     const requestUrl = "/gss/summary/" + localStorage.getItem('provider_id');
-    return this.http.post<InitiateResponse[]>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "fromDate": fromDate, "toDate" : toDate, "userName": localStorage.getItem('auth_username') });
+    return this.http.post<InitiateResponse[]>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "fromDate": fromDate, "toDate": toDate, "userName": localStorage.getItem('auth_username') });
+  }
+
+  downloadPDF(gssReferenceNumber: string) {
+    const requestUrl = '/gss/download/' + localStorage.getItem('provider_id');
+    const request = new HttpRequest('POST', environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "gssReferenceNumber" : gssReferenceNumber, "userName": localStorage.getItem('auth_username') }, { responseType: 'text', reportProgress: true });
+    return this.http.request(request);
   }
 }
