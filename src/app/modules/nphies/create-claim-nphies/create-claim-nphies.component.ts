@@ -1334,6 +1334,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
       return true;
     } else {
+      this.dialogService.showMessage('Error', 'There must be atleast one Principal Diagnosis', 'alert', true, 'OK', null, true);
       return false;
     }
   }
@@ -1409,58 +1410,61 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     }
 
-    if (this.Diagnosises.length === 0 || this.Items.length === 0) {
-      hasError = true;
-    }
-
-    if (this.FormNphiesClaim.controls.isNewBorn.value && (
-      !this.FormSubscriber.controls.fullName.value ||
-      !this.FormSubscriber.controls.dob.value ||
-      !this.FormSubscriber.controls.gender.value ||
-      !this.FormSubscriber.controls.documentType.value ||
-      !this.FormSubscriber.controls.documentId.value)) {
-      hasError = true;
-    }
 
     // this.checkCareTeamValidation();
-    if (!this.checkDiagnosisValidation()) {
-      hasError = true;
-    }
-
-    this.checkItemValidation();
-
-    if (!this.checkDiagnosisErrors()) {
-      hasError = true;
-    }
-
-    if (this.checkSupposrtingInfoValidation()) {
-      hasError = true;
-    }
-
-    if (!this.checkItemCareTeams()) {
-      hasError = true;
-    }
-
-    if (this.checkCareTeamValidation()) {
-      hasError = true;
-    }
-    if (!this.checkItemsCodeForSupportingInfo()) {
-      hasError = true;
-    }
-
-    if (!this.checkNewBornValidation()) {
-      hasError = true;
-    }
-
-    if (!this.checkNewBornSupportingInfoCodes()) {
-      hasError = true;
-    }
-
-    if (hasError) {
-      return;
-    }
 
     if (this.FormNphiesClaim.valid) {
+
+      if (this.Diagnosises.length === 0 || this.Items.length === 0) {
+        hasError = true;
+      }
+
+      if (this.FormNphiesClaim.controls.isNewBorn.value && (
+        !this.FormSubscriber.controls.fullName.value ||
+        !this.FormSubscriber.controls.dob.value ||
+        !this.FormSubscriber.controls.gender.value ||
+        !this.FormSubscriber.controls.documentType.value ||
+        !this.FormSubscriber.controls.documentId.value)) {
+        hasError = true;
+      }
+
+
+      if (!this.checkDiagnosisValidation()) {
+        hasError = true;
+      }
+
+      this.checkItemValidation();
+
+      if (!this.checkDiagnosisErrors()) {
+        hasError = true;
+      }
+
+      if (this.checkSupposrtingInfoValidation()) {
+        hasError = true;
+      }
+
+      if (!this.checkItemCareTeams()) {
+        hasError = true;
+      }
+
+      if (this.checkCareTeamValidation()) {
+        hasError = true;
+      }
+      if (!this.checkItemsCodeForSupportingInfo()) {
+        hasError = true;
+      }
+
+      if (!this.checkNewBornValidation()) {
+        hasError = true;
+      }
+
+      if (!this.checkNewBornSupportingInfoCodes()) {
+        hasError = true;
+      }
+
+      if (hasError) {
+        return;
+      }
 
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
