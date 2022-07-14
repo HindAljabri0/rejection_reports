@@ -123,7 +123,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanPrimary: [''],
     insurancePayerNphiesId: [''],
     insurancePlanTpaNphiesId: [],
-    isNewBorn: [false]
+    isNewBorn: [false],
+    preAuthResponseId: [''],
+    preAuthResponseUrl: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -1564,6 +1566,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       const preAuthorizationModel: any = {};
+      preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
+      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value;
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
       if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
         // tslint:disable-next-line:max-line-length
@@ -1925,7 +1929,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   get checkErrorClaimInfo() {
     if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || !this.FormNphiesClaim.controls.episodeId.value ||
       !this.FormNphiesClaim.controls.type.value) || (
-        this.FormNphiesClaim.controls.preAuthOfflineDate.value && (!this.FormNphiesClaim.controls.preAuthRefNo.value
+        (this.FormNphiesClaim.controls.preAuthOfflineDate.value ||
+          this.FormNphiesClaim.controls.preAuthResponseId.value ||
+          this.FormNphiesClaim.controls.preAuthResponseUrl.value) && (!this.FormNphiesClaim.controls.preAuthRefNo.value
           || (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length === 0))
       ))) {
       return true;
@@ -2327,6 +2333,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.errors = response.errors;
     this.otherDataModel.processNotes = response.processNotes;
 
+    this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
+    this.FormNphiesClaim.controls.preAuthResponseUrl.setValue(response.preAuthorizationInfo.preAuthResponseUrl);
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
 
@@ -2960,7 +2968,9 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   get IsPreAuthRefRequired() {
     if (this.isSubmitted) {
-      if (this.FormNphiesClaim.controls.preAuthOfflineDate.value) {
+      if (this.FormNphiesClaim.controls.preAuthOfflineDate.value ||
+        this.FormNphiesClaim.controls.preAuthResponseId.value ||
+        this.FormNphiesClaim.controls.preAuthResponseUrl.value) {
         this.FormNphiesClaim.controls.preAuthRefNo.setValidators(Validators.required);
         this.FormNphiesClaim.controls.preAuthRefNo.updateValueAndValidity();
         return true;
@@ -2972,21 +2982,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     }
   }
-
-  // get IsApprovalDateRequired() {
-  //   if (this.isSubmitted) {
-  //     if (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length > 0) {
-  //       this.FormNphiesClaim.controls.preAuthOfflineDate.setValidators(Validators.required);
-  //       this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
-  //       return true;
-  //     } else {
-  //       this.FormNphiesClaim.controls.preAuthOfflineDate.clearValidators();
-  //       this.FormNphiesClaim.controls.preAuthOfflineDate.updateValueAndValidity();
-  //       // this.FormNphiesClaim.controls.preAuthOfflineDate.setValue('');
-  //       return false;
-  //     }
-  //   }
-  // }
 
   disabledAddItemsButton() {
     return !this.FormNphiesClaim.controls.type.value || !this.FormNphiesClaim.controls.dateOrdered.value

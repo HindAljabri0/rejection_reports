@@ -43,19 +43,23 @@
   <ul class="claim-totals"
     *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
     <li>
-      Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount != null) ? (otherDataModel.totalNetAmount | number : '1.2-2'
+      Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount !=
+        null) ? (otherDataModel.totalNetAmount | number : '1.2-2'
         ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined && otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
+      Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined &&
+        otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
         number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined && otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare | number
+      Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined &&
+        otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ? (otherDataModel.totalTax | number
+      Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ?
+        (otherDataModel.totalTax | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <ng-container
@@ -194,6 +198,22 @@
             <div class="control-label">Batch Number</div>
             <p class="form-control-static">{{otherDataModel.batchClaimNumber ? otherDataModel.batchClaimNumber : '-'}}
             </p>
+          </div>
+        </div>
+
+
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Pre Authorization Response ID</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
+              FormNphiesClaim.controls.preAuthResponseId.value : '-'}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Pre Authorization Response Url</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseUrl.value ?
+              FormNphiesClaim.controls.preAuthResponseUrl.value : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -1256,19 +1276,23 @@
     <ul class="claim-totals"
       *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
       <li>
-        Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount != null) ? (otherDataModel.totalNetAmount | number :
+        Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount !=
+          null) ? (otherDataModel.totalNetAmount | number :
           '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <li>
-        Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined && otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
+        Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined &&
+          otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
           number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <li>
-        Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined && otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare |
+        Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined &&
+          otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare |
           number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <li>
-        Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ? (otherDataModel.totalTax | number
+        Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ?
+          (otherDataModel.totalTax | number
           : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <ng-container
@@ -1448,6 +1472,20 @@
                   *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
                   <span class="error-text">Please enter Preauthorization Reference No</span>
                 </div>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Preauthorization Response ID</label>
+                <input class="form-control" placeholder="Preauthorization Response ID"
+                  formControlName="preAuthResponseId">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Preauthorization Response Url</label>
+                <input class="form-control" placeholder="Preauthorization Response Url"
+                  formControlName="preAuthResponseUrl">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
