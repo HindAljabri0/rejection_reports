@@ -77,7 +77,7 @@
                                 'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status | titlecase}}</span>
                             </td>
                             <td class="actions">
-                                <button type="button" mat-icon-button class="text-primary">
+                                <button type="button" mat-icon-button class="text-primary" (click)="downloadData(data)">
                                     <mat-icon>file_download</mat-icon>
                                 </button>
                             </td>
