@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { ApprovalToClaimTransaction } from 'src/app/models/approval-to-claim-transaction';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { SharedServices } from 'src/app/services/shared.services';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -13,6 +12,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import * as moment from 'moment';
+import { ApprovalToClaimPrepare } from 'src/app/models/approval-to-claim-prepare';
 
 @Component({
   selector: 'app-prepare-pre-auth-for-claim',
@@ -44,7 +44,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
   payersList = [];
 
   isSubmitted = false;
-  transactionModel: PaginatedResult<ApprovalToClaimTransaction>;
+  transactionModel: PaginatedResult<ApprovalToClaimPrepare>;
   transactions = [];
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
@@ -55,7 +55,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
   statusList = [
     { value: 'approved', name: 'Approved' },
     { value: 'pended', name: 'Pended' },
-    { value: 'not-required', name: 'Not Required'}
+    { value: 'not-required', name: 'Not Required' }
   ];
 
   constructor(
@@ -270,11 +270,11 @@ export class PreparePreAuthForClaimComponent implements OnInit {
       model.pageSize = this.pageSize;
 
       this.editURL(model.fromDate, model.toDate);
-      this.providerNphiesApprovalService.getApprovalToClaimTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
+      this.providerNphiesApprovalService.getApprovalToPrepareTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
-          this.transactionModel = new PaginatedResult(body, ApprovalToClaimTransaction);
+          this.transactionModel = new PaginatedResult(body, ApprovalToClaimPrepare);
           this.transactions = this.transactionModel.content;
           this.transactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
@@ -282,10 +282,9 @@ export class PreparePreAuthForClaimComponent implements OnInit {
           });
 
           this.transactions.forEach(x => {
-            x.episodeId = '';
             if (x.items && x.items.length > 0) {
               x.items.forEach(y => {
-                y.invoceNo = '';
+                y.invoiceNo = '';
               });
             }
           });
@@ -369,11 +368,11 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     this.advanceSearchEnable = !this.advanceSearchEnable;
   }
 
-  convertToClaim(transaction) {
+  prepareToClaim(transaction) {
     // tslint:disable-next-line:max-line-length
     this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0].submitted = true;
     let hasError = false;
-    if (!transaction.episodeId) {
+    if (!transaction.episodeNo) {
       hasError = true;
     }
 
@@ -386,8 +385,84 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     }
 
     if (!hasError) {
-      console.log('call api to convert');
+      // tslint:disable-next-line:max-line-length
+      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];
+      const model: any = {
+        authItems: [
+          {
+            approvalRequestId: data.requestId,
+            items: data.items.map(x => {
+              const itemModel: any = {};
+              itemModel.itemId = x.itemId;
+              itemModel.invoiceNo = x.invoiceNo;
+              return itemModel;
+            })
+          }
+        ],
+        episodeNo: data.episodeNo,
+        payerNphiesId: data.payerId,
+        destinationId: data.destinationId,
+        beneficiaryName: data.beneficiaryName,
+        documentId: data.documentId
+      };
+      this.sharedServices.loadingChanged.next(true);
+      this.providerNphiesApprovalService.approvalToPrepareSave(this.sharedServices.providerId, model).subscribe((event: any) => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body.errors) {
+            if (body.transactionId) {
+              // tslint:disable-next-line:max-line-length
+              this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true, body.transactionId).subscribe(res => {
+                this.onSubmit();
+              });
+            } else {
+              this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true).subscribe(res => {
+                this.onSubmit();
+              });
+            }
+          } else {
+            this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', null, true).subscribe(res => {
+              this.onSubmit();
+            });
+          }
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, error => {
+        this.sharedServices.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
+          } else if (error.status === 500) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
+          }
+        }
+      });
+
+
     }
   }
+
+
 
 }
