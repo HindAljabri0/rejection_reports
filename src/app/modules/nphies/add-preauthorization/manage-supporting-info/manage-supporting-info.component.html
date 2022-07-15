@@ -43,7 +43,8 @@
               <div class="input-group" *ngIf=" supportingInfo.category === 'missingtooth'">
                 <input class="form-control" placeholder="Select tooth number" [(ngModel)]="supportingInfo.code">
                 <span class="input-group-append">
-                  <span class="input-group-text medium" (click)="SetCurrent(i);" [matMenuTriggerFor]="SelectToothMenu">Select</span>
+                  <span class="input-group-text medium" (click)="SetCurrent(i);"
+                    [matMenuTriggerFor]="SelectToothMenu">Select</span>
                 </span>
               </div>
 
@@ -111,21 +112,50 @@
         </td>
         <td>
           <ng-container *ngIf="
+          supportingInfo.category === 'lab-test' ||
+          supportingInfo.category === 'vital-sign-weight' ||
+          supportingInfo.category === 'vital-sign-systolic' ||
+          supportingInfo.category === 'vital-sign-diastolic' ||
+          supportingInfo.category === 'icu-hours' ||
+          supportingInfo.category === 'ventilation-hours' ||
+          supportingInfo.category === 'vital-sign-height' ||
+          supportingInfo.category === 'temperature' ||
+          supportingInfo.category === 'pulse' ||
+          supportingInfo.category === 'oxygen-saturation' ||
+          supportingInfo.category === 'respiratory-rate'">
+            <div class="row small-gutter">
+              <div class="col-6">
+                <div class="form-group mb-n1 mt-n1"
+                  [ngClass]="{'has-error' : isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate}">
+                  <div class="date-picker">
+                    <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select Start Date"
+                      [(ngModel)]="supportingInfo.fromDate" [max]="supportingInfo.toDate">
+                    <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
+                    <mat-datepicker #timingPeriodFromCtrl></mat-datepicker>
+                  </div>
+                  <div *ngIf="isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate">
+                    <span class="error-text">Please enter Start Date</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="form-group mb-n1 mt-n1">
+                  <div class="date-picker">
+                    <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select End Date"
+                      [(ngModel)]="supportingInfo.toDate" [min]="supportingInfo.fromDate">
+                    <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>
+                    <mat-datepicker #timingPeriodToCtrl></mat-datepicker>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="
            supportingInfo.category === 'onset' ||
            supportingInfo.category === 'last-menstrual-period' ||
-           supportingInfo.category === 'missingtooth' ||
-           supportingInfo.category === 'lab-test' ||
-           supportingInfo.category === 'vital-sign-weight' ||
-           supportingInfo.category === 'vital-sign-systolic' ||
-           supportingInfo.category === 'vital-sign-diastolic' ||
-           supportingInfo.category === 'icu-hours' ||
-           supportingInfo.category === 'ventilation-hours' ||
-           supportingInfo.category === 'vital-sign-height' ||
-           supportingInfo.category === 'temperature' ||
-           supportingInfo.category === 'pulse' ||
-           supportingInfo.category === 'oxygen-saturation' ||
-           supportingInfo.category === 'respiratory-rate'
-           ">
+           supportingInfo.category === 'missingtooth'">
 
             <div class="form-group mb-n1 mt-n1"
               [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">

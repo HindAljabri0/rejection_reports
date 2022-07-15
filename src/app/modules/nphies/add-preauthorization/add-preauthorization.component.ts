@@ -1332,92 +1332,177 @@ export class AddPreauthorizationComponent implements OnInit {
     let hasError = false;
 
     this.SupportingInfo.forEach(x => {
-      switch (x.category) {
 
-        case 'info':
-
-          if (!x.value) {
-            hasError = true;
-          }
-
-          break;
-        case 'onset':
-
-          if (!x.code || !x.fromDate) {
-            hasError = true;
-          }
-
-          break;
-        case 'attachment':
-
-          if (!x.attachment) {
-            hasError = true;
-          }
-
-          break;
-        case 'missingtooth':
-
-          if (!x.code || !x.fromDate || !x.reason) {
-            hasError = true;
-          }
-
-          break;
-        case 'hospitalized':
-        case 'employmentImpacted':
-
-          if (!x.fromDate || !x.toDate) {
-            hasError = true;
-          }
-
-          break;
-
-        case 'lab-test':
-
-          if (!x.code || !x.value) {
-            hasError = true;
-          }
-
-          break;
-        case 'reason-for-visit':
-
-          if (!x.code) {
-            hasError = true;
-          }
-
-          break;
-        case 'days-supply':
-        case 'vital-sign-weight':
-        case 'vital-sign-systolic':
-        case 'vital-sign-diastolic':
-        case 'icu-hours':
-        case 'ventilation-hours':
-        case 'vital-sign-height':
-        case 'temperature':
-        case 'pulse':
-        case 'respiratory-rate':
-        case 'oxygen-saturation':
-        case 'birth-weight':
-
-          if (!x.value) {
-            hasError = true;
-          }
-
-          break;
-        case 'chief-complaint':
-
-          if (!x.code && !x.value) {
-            hasError = true;
-          }
-
-          break;
-
-        default:
-          break;
+      if (x.category === 'info') {
+        if (!x.value) {
+          hasError = true;
+        }
       }
+      if (x.category === 'onset') {
+        if (!x.code || !x.fromDate) {
+          hasError = true;
+        }
+      }
+      if (x.category === 'attachment') {
+        if (!x.attachment) {
+          hasError = true;
+        }
+      }
+      if (x.category === 'missingtooth') {
+        if (!x.code || !x.fromDate || !x.reason) {
+          hasError = true;
+        }
+      }
+      if (x.category === 'hospitalized' || x.category === 'employmentImpacted') {
+        if (!x.fromDate || !x.toDate) {
+          hasError = true;
+        }
+      }
+      if (x.category === 'lab-test') {
+        if (!x.code || !x.value) {
+          hasError = true;
+        }
+      }
+      if (x.category === 'reason-for-visit') {
+        if (!x.code) {
+          hasError = true;
+        }
+      }
+      if (
+        x.category === 'days-supply' ||
+        x.category === 'vital-sign-weight' ||
+        x.category === 'vital-sign-systolic' ||
+        x.category === 'vital-sign-diastolic' ||
+        x.category === 'icu-hours' ||
+        x.category === 'ventilation-hours' ||
+        x.category === 'vital-sign-height' ||
+        x.category === 'temperature' ||
+        x.category === 'pulse' ||
+        x.category === 'respiratory-rate' ||
+        x.category === 'oxygen-saturation' ||
+        x.category === 'birth-weight'
+      ) {
+        if (!x.value) {
+          hasError = true;
+        }
+      }
+      if (x.category === 'chief-complaint') {
+        if (!x.code && !x.value) {
+          hasError = true;
+        }
+      }
+
+      if (x.category === 'lab-test' ||
+        x.category === 'vital-sign-weight' ||
+        x.category === 'vital-sign-systolic' ||
+        x.category === 'vital-sign-diastolic' ||
+        x.category === 'icu-hours' ||
+        x.category === 'ventilation-hours' ||
+        x.category === 'vital-sign-height' ||
+        x.category === 'temperature' ||
+        x.category === 'pulse' ||
+        x.category === 'oxygen-saturation' ||
+        x.category === 'respiratory-rate') {
+        if (x.toDate && !x.fromDate) {
+          hasError = true;
+        }
+      }
+
     });
 
     return hasError;
   }
+
+  // checkSupposrtingInfoValidation() {
+  //   let hasError = false;
+
+  //   this.SupportingInfo.forEach(x => {
+  //     switch (x.category) {
+
+  //       case 'info':
+
+  //         if (!x.value) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'onset':
+
+  //         if (!x.code || !x.fromDate) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'attachment':
+
+  //         if (!x.attachment) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'missingtooth':
+
+  //         if (!x.code || !x.fromDate || !x.reason) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'hospitalized':
+  //       case 'employmentImpacted':
+
+  //         if (!x.fromDate || !x.toDate) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+
+  //       case 'lab-test':
+
+  //         if (!x.code || !x.value) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'reason-for-visit':
+
+  //         if (!x.code) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'days-supply':
+  //       case 'vital-sign-weight':
+  //       case 'vital-sign-systolic':
+  //       case 'vital-sign-diastolic':
+  //       case 'icu-hours':
+  //       case 'ventilation-hours':
+  //       case 'vital-sign-height':
+  //       case 'temperature':
+  //       case 'pulse':
+  //       case 'respiratory-rate':
+  //       case 'oxygen-saturation':
+  //       case 'birth-weight':
+
+  //         if (!x.value) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+  //       case 'chief-complaint':
+
+  //         if (!x.code && !x.value) {
+  //           hasError = true;
+  //         }
+
+  //         break;
+
+  //       default:
+  //         break;
+  //     }
+  //   });
+
+  //   return hasError;
+  // }
 
   checkDiagnosisErrorValidation() {
     if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
