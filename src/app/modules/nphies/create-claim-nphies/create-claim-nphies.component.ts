@@ -1558,6 +1558,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
       } else if (this.pageMode === 'RESUBMIT') {
+        // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
         this.model.relatedClaimId = this.otherDataModel.claimId;
         this.model.uploadId = this.uploadId;
@@ -1570,8 +1571,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       const preAuthorizationModel: any = {};
-      preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
-      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value;
+      // tslint:disable-next-line:max-line-length
+      preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value ? this.FormNphiesClaim.controls.preAuthResponseId.value : null;
+      // tslint:disable-next-line:max-line-length
+      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
       if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
         // tslint:disable-next-line:max-line-length
@@ -1936,7 +1939,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         (this.FormNphiesClaim.controls.preAuthOfflineDate.value ||
           this.FormNphiesClaim.controls.preAuthResponseId.value ||
           this.FormNphiesClaim.controls.preAuthResponseUrl.value) && (!this.FormNphiesClaim.controls.preAuthRefNo.value
-          || (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length === 0))
+            || (this.FormNphiesClaim.controls.preAuthRefNo.value && this.FormNphiesClaim.controls.preAuthRefNo.value.length === 0))
       ))) {
       return true;
     } else {
