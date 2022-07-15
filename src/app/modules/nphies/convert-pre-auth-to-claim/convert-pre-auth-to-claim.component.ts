@@ -269,7 +269,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       model.pageSize = this.pageSize;
 
       this.editURL(model.fromDate, model.toDate);
-      this.providerNphiesApprovalService.getApprovalToClaimTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
+      this.providerNphiesApprovalService.getApprovalToPrepareTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
