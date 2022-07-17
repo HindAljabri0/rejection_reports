@@ -48,8 +48,8 @@ export const MY_FORMATS = {
 export class TawuniyaGssComponent implements OnInit {
 
   initiateModel: Array<InitiateResponse> = [];
-  fromDate = new FormControl(moment(), Validators.required);
-  toDate = new FormControl(moment(), Validators.required);
+  fromDate = new FormControl(null, Validators.required);
+  toDate = new FormControl(null, Validators.required);
   detailTopActionIcon = 'ic-download.svg';
 
   constructor(
@@ -92,6 +92,8 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   searchQuerySummary() {
+    this.fromDate.markAllAsTouched()
+    this.toDate.markAllAsTouched()
     if (this.fromDate.invalid || this.toDate.invalid) {
       return;
     }

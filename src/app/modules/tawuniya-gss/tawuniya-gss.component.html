@@ -1,30 +1,32 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Tawuniya GSS Reports</p>
+        <p>GSS Reports</p>
     </div>
 
     <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col-4">
-                <div class="form-group" [ngClass]="{'has-error' : fromDate.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : fromDate.invalid && fromDate.touched}">
                     <div class="date-picker">
-                        <mat-label>From Date</mat-label>
+                        <mat-label>From Loss Month</mat-label>
                         <input [matDatepicker]="filterFromDate" [formControl]="fromDate" class="form-control"
-                            placeholder="Select From date">
+                            placeholder="From Loss Month">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterFromDate startView="multi-year"></mat-datepicker>
                     </div>
+                    <mat-error *ngIf="fromDate.invalid && fromDate.touched">From Loss Month is required</mat-error>
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-group" [ngClass]="{'has-error' : toDate.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : toDate.invalid && toDate.touched}">
                     <div class="date-picker">
-                        <mat-label>To Date</mat-label>
+                        <mat-label>To Loss Month</mat-label>
                         <input [matDatepicker]="filtertoDate" [formControl]="toDate" class="form-control"
-                            placeholder="Select To date">
+                            placeholder="To Loss Month">
                         <mat-datepicker-toggle [for]="filtertoDate"></mat-datepicker-toggle>
                         <mat-datepicker #filtertoDate startView="multi-year"></mat-datepicker>
                     </div>
+                    <mat-error *ngIf="toDate.invalid && toDate.touched">To Loss Month is required</mat-error>
                 </div>
             </div>
             <div class="col-4">
@@ -37,7 +39,7 @@
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height fixed-height-sm">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th>Ref. No.</th>
@@ -72,7 +74,7 @@
                             <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalNetPayable?.value }} <span class="currency">{{
                                     data?.totalNetPayable?.currencyCode }}</span></td>
                             <td class="row-click"  (click)="openDetailView(data)">
-                                <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new', 
+                                <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new',
                                 'success' : data?.status?.toLowerCase() === 'signed',
                                 'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status | titlecase}}</span>
                             </td>

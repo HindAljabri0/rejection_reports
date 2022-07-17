@@ -44,10 +44,10 @@ export const MY_FORMATS = {
 })
 
 export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
-  today = new Date(); 
+  today = new Date();
 
   data : InitiateResponse[];
-  lossMonth = new FormControl(moment(), Validators.required);
+  lossMonth = new FormControl(null, Validators.required);
   constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store) { }
 
   ngOnInit() {
@@ -58,6 +58,7 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
   }
 
   generateReport() {
+    this.lossMonth.markAllAsTouched()
     if(this.lossMonth.invalid){
       return;
     }
