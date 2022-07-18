@@ -1,30 +1,34 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
+
         <p>Tawuniya GSS Reports </p>
+
     </div>
 
     <div class="block-filter-panel">
         <div class="row small-gutter">
             <div class="col-4">
-                <div class="form-group" [ngClass]="{'has-error' : fromDate.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : fromDate.invalid && fromDate.touched}">
                     <div class="date-picker">
-                        <mat-label>From Date</mat-label>
+                        <mat-label>From Loss Month</mat-label>
                         <input [matDatepicker]="filterFromDate" [formControl]="fromDate" class="form-control"
-                            placeholder="Select From date">
+                            placeholder="From Loss Month">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterFromDate startView="multi-year"></mat-datepicker>
                     </div>
+                    <mat-error *ngIf="fromDate.invalid && fromDate.touched">From Loss Month is required</mat-error>
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-group" [ngClass]="{'has-error' : toDate.invalid}">
+                <div class="form-group" [ngClass]="{'has-error' : toDate.invalid && toDate.touched}">
                     <div class="date-picker">
-                        <mat-label>To Date</mat-label>
+                        <mat-label>To Loss Month</mat-label>
                         <input [matDatepicker]="filtertoDate" [formControl]="toDate" class="form-control"
-                            placeholder="Select To date">
+                            placeholder="To Loss Month">
                         <mat-datepicker-toggle [for]="filtertoDate"></mat-datepicker-toggle>
                         <mat-datepicker #filtertoDate startView="multi-year"></mat-datepicker>
                     </div>
+                    <mat-error *ngIf="toDate.invalid && toDate.touched">To Loss Month is required</mat-error>
                 </div>
             </div>
             <div class="col-4">
@@ -37,7 +41,7 @@
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height fixed-height-sm">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th>Ref. No.</th>
@@ -55,26 +59,33 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let data of initiateModel">
-                        <tr *ngIf="data != null" (click)="openDetailView(data)">
-                            <td class="row-click">{{ data?.gssReferenceNumber }}</td>
-                            <td class="row-click">{{ data?.lossMonth }}</td>
-                            <td class="row-click" class="text-center">{{ data?.totalNumberOfClaim }}</td>
-                            <td class="row-click">{{ data?.totalGross?.value }} <span class="currency">{{
+                        <tr *ngIf="data != null">
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.gssReferenceNumber }}</td>
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.lossMonth }}</td>
+                            <td class="row-click"  (click)="openDetailView(data)" class="text-center">{{ data?.totalNumberOfClaim }}</td>
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalGross?.value }} <span class="currency">{{
                                     data?.totalGross?.currencyCode }}</span></td>
-                            <td class="row-click">{{ data?.totalDiscount?.value }} <span class="currency">{{
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalDiscount?.value }} <span class="currency">{{
                                     data?.totalDiscount?.currencyCode }}</span></td>
-                            <td class="row-click">{{ data?.totalPatientShare?.value }} <span class="currency">{{
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalPatientShare?.value }} <span class="currency">{{
                                     data?.totalPatientShare?.currencyCode }}</span></td>
-                            <td class="row-click">{{ data?.totalNet?.value }} <span class="currency">{{
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span class="currency">{{
                                     data?.totalNet?.currencyCode }}</span></td>
-                            <td class="row-click">{{ data?.totalNetVat?.value }} <span class="currency">{{
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span class="currency">{{
                                     data?.totalNetVat?.currencyCode }}</span></td>
-                            <td class="row-click">{{ data?.totalNetPayable?.value }} <span class="currency">{{
+                            <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalNetPayable?.value }} <span class="currency">{{
                                     data?.totalNetPayable?.currencyCode }}</span></td>
+
                             <td class="row-click">
+
                                 <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new',
                                 'success' : data?.status?.toLowerCase() === 'signed',
                                 'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status | titlecase}}</span>
+                            </td>
+                            <td class="actions">
+                                <button type="button" mat-icon-button class="text-primary" (click)="downloadData(data)">
+                                    <mat-icon>file_download</mat-icon>
+                                </button>
                             </td>
                         </tr>
                     </ng-container>

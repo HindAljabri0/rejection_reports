@@ -11,6 +11,8 @@ import { Moment } from 'moment';
 import * as _moment from 'moment';
 import { FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 const moment = _moment;
 
@@ -46,11 +48,18 @@ export const MY_FORMATS = {
 export class TawuniyaGssComponent implements OnInit {
 
   initiateModel: Array<InitiateResponse> = [];
-  fromDate = new FormControl(moment(), Validators.required);
-  toDate = new FormControl(moment(), Validators.required);
+  fromDate = new FormControl(null, Validators.required);
+  toDate = new FormControl(null, Validators.required);
+  detailTopActionIcon = 'ic-download.svg';
 
   constructor(
-    private dialog: MatDialog, private tawuniyaGssService: TawuniyaGssService, private store: Store, private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices
+    private dialog: MatDialog,
+    private tawuniyaGssService: TawuniyaGssService,
+    private store: Store,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private sharedServices: SharedServices,
+    private downloadService: DownloadService
   ) { }
 
   ngOnInit() {
@@ -75,16 +84,16 @@ export class TawuniyaGssComponent implements OnInit {
           return this.store.dispatch(showSnackBarMessage({ message: err.error.error_description }));
         })
       }
-    })
-
+    });
   }
 
   openDetailView(model: InitiateResponse) {
     this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute });
   }
 
-
   searchQuerySummary() {
+    this.fromDate.markAllAsTouched()
+    this.toDate.markAllAsTouched()
     if (this.fromDate.invalid || this.toDate.invalid) {
       return;
     }
@@ -117,5 +126,16 @@ export class TawuniyaGssComponent implements OnInit {
     months -= newFromDate.getMonth();
     months += newToDate.getMonth();
     return months >= 0;
+  }
+
+  downloadData(data: InitiateResponse) {
+    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data.gssReferenceNumber))
+      .subscribe(status => {
+        if (status != DownloadStatus.ERROR) {
+          this.detailTopActionIcon = 'ic-check-circle.svg';
+        } else {
+          this.detailTopActionIcon = 'ic-download.svg';
+        }
+      });
   }
 }

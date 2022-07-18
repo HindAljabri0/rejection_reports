@@ -807,9 +807,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
 .error-dialog .mat-dialog-container{background-color: #fae9e9;}
 .json-dialog .primary-dialog-body.fixed-body{max-height: calc(100vh - 241px);}
-.alert-dialog{padding: 48px 16px 32px;}
-.alert-dialog .illustration{display: block;height: 88px;width: 88px;margin: 0 auto 16px;}
-.alert-dialog .dialog-text{font-size: 18px;line-height: 26px;text-align: center;}
+.alert-dialog{padding: 48px 32px;}
+.alert-dialog .illustration{display: block;height: 48px;width: 48px;margin-right: 20px;}
+.alert-dialog .unordered-list{font-size: 18px;line-height: 26px;}
+.alert-dialog .head-block{font-size: 28px;line-height: 34px;display: flex;align-items: center;padding-bottom: 24px;font-weight: 600;}
+.alert-dialog .unordered-list>li{padding-bottom: 12px;}
 
 /* primary button toggle
 --------------------------------------------------------------------------------------------------------*/

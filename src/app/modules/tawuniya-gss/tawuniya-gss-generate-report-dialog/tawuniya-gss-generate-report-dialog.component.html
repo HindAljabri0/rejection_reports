@@ -4,7 +4,7 @@
 </div>
 <div class="primary-dialog-body pt-0">
     <div class="form-group">
-        <div class="form-group" [ngClass]="{'has-error' : lossMonth.invalid}">
+        <div class="form-group" [ngClass]="{'has-error' : lossMonth.invalid && lossMonth.touched}">
             <div class="date-picker">
                 <mat-label>Loss Month</mat-label>
                 <input [max]="today" [matDatepicker]="filterlossMonth" [formControl]="lossMonth" class="form-control" placeholder="Select Loss Month">
@@ -12,6 +12,8 @@
                 <mat-datepicker #filterlossMonth startView="multi-year"
                 (monthSelected)="setMonthAndYear($event, filterlossMonth)"></mat-datepicker>
             </div>
+            <mat-error *ngIf="lossMonth.invalid && lossMonth.touched">From Date is required</mat-error>
+
         </div>
     </div>
     <div class="text-right">
