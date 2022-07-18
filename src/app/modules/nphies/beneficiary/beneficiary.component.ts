@@ -310,7 +310,7 @@ export class BeneficiaryComponent implements OnInit {
       this.insurancePlans.push(
         {
           iSPrimary: insurancePlans.isPrimary,
-          selectePayer: '7001526578', // insurancePlans.payerNphiesId,
+          selectePayer: insurancePlans.payerNphiesId,
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
 
