@@ -53,6 +53,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
   setDescriptions() {
 
+    if (this.data.reIssueReason) {
+      // tslint:disable-next-line:max-line-length
+      this.data.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.data.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.data.reIssueReason)[0].name : '';
+    }
+
     if (this.data.preAuthDetails) {
       this.data.preAuthDetails = this.data.preAuthDetails.join(',');
     }

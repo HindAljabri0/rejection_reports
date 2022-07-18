@@ -640,7 +640,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-card{border-radius: 8px;background: #fff;position: relative;margin-bottom: 14px;display: block;height: calc(100% - 14px);box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
 .primary-card .click-trigger{position: absolute; width: 100%; height: 100%; z-index: 1; cursor: pointer;top: 0;left: 0;border:0;background:none;padding: 0;margin: 0;}
 .primary-card .ribbon{height: 4px; width: 84px;border-radius: 0 0 4px 4px;display: block;right: 30px;top: 0;position: absolute;}
-.primary-card .primary-card-title{padding: 12px 12px 0;font-weight: 500;font-size: 16px;line-height: 24px;text-transform: capitalize;}
+.primary-card .primary-card-title{padding: 12px 12px 0;font-weight: 500;font-size: 16px;line-height: 24px;text-transform: capitalize;display: flex;}
+.primary-card .primary-card-title .total-count{font-size: 20px;line-height: 24px;letter-spacing: 1px;}
+.primary-card .primary-card-title .title{margin-left: auto;text-align: right;}
 .primary-card .primary-card-content{padding: 8px 12px;font-size: 13px;position: relative;}
 .primary-card .card-progress{position: absolute;right: 12px;top: 5px;}
 .primary-card .card-progress .value{font-weight: 500;line-height: 48px;text-align: center;position: absolute;top: 0;left: 0;display: block;width: 100%;font-size: 10px;}

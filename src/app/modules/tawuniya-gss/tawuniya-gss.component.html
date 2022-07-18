@@ -1,6 +1,8 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>GSS Reports</p>
+
+        <p>Tawuniya GSS Reports </p>
+
     </div>
 
     <div class="block-filter-panel">
@@ -73,7 +75,9 @@
                                     data?.totalNetVat?.currencyCode }}</span></td>
                             <td class="row-click"  (click)="openDetailView(data)">{{ data?.totalNetPayable?.value }} <span class="currency">{{
                                     data?.totalNetPayable?.currencyCode }}</span></td>
-                            <td class="row-click"  (click)="openDetailView(data)">
+
+                            <td class="row-click">
+
                                 <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new',
                                 'success' : data?.status?.toLowerCase() === 'signed',
                                 'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status | titlecase}}</span>
