@@ -69,9 +69,10 @@ export class TawuniyaGssReportDetailsComponent implements OnInit {
   private confirm() {
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssConfirmReport(this.gssReferenceNumber).subscribe(data => {
+      console.log("data: ", data);
       this.sharedServices.loadingChanged.next(false);
       this.generateReport(false);
-      return this.store.dispatch(showSnackBarMessage({ message: data.error.text }));
+      return this.store.dispatch(showSnackBarMessage({ message: data.message }));
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.text) {
