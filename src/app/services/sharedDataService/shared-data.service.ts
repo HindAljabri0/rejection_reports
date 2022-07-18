@@ -326,6 +326,15 @@ export class SharedDataService {
     'Z38.8'
   ];
 
+  reissueReaseons = [
+    { value: 'correction', name: 'Error correction' },
+    { value: 'adjudication', name: 'Additional adjudication' },
+    { value: 'miscalculation', name: 'Miscalculation correction' },
+    { value: 'benefit', name: 'Benefit processing correction' },
+    { value: 'audit', name: 'Audit' },
+    { value: 'other', name: 'Other' }
+  ];
+
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService) { }
 
   getCodeName(category, code = null) {

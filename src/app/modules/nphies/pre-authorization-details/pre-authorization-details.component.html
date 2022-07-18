@@ -149,10 +149,10 @@
       <p class="form-control-static text-primary">{{data.transferAuthStartDate | date: 'dd/MM/yyyy'}} - {{data.transferAuthEndDate | date: 'dd/MM/yyyy'}}</p>
     </div>
   </div>
-  <div *ngIf="data.reIssueReason" class="col-4 col-xxl-3">
+  <div *ngIf="data.reIssueReasonName" class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Reissue Reason</div>
-      <p class="form-control-static text-primary">{{data.reIssueReason}}</p>
+      <p class="form-control-static text-primary">{{data.reIssueReasonName}}</p>
     </div>
   </div>
 
