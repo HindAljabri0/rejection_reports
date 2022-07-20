@@ -133,12 +133,18 @@
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Status</th>
                   <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
-                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    Processing Status</th>
+                    class="text-nowrap text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    <span class="inline-text pr-1">Processing Status</span>
+                    <mat-icon matTooltip="This will request for the current processing status of the claim" class="material-icons-outlined size-20 inline-text">info
+                    </mat-icon>
+                  </th>
 
                   <th *ngIf="showInquireAll === true"
-                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    Inquiry
+                    class="text-nowrap text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    <span class="inline-text pr-1">Inquiry</span>
+                    <mat-icon matTooltip="This will send the same claim request again to NPHIES to fetch latest response from NPHIES queue"
+                      class="material-icons-outlined size-20 inline-text">info
+                    </mat-icon>
                   </th>
 
                   <th
@@ -182,7 +188,7 @@
                     </td>
                     <td *ngIf="showColumns(selectedCardKey,claim.status)" class="actions text-left text-wrap">
                       <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
-                        <button mat-icon-button matTooltip="Check Status" class="text-primary ml-n2" (click)="checkStatus(claim.claimResponseId)">
+                        <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2" (click)="checkStatus(claim.claimResponseId)">
                           <mat-icon>refresh</mat-icon>
                         </button>
                         <span *ngIf="!claim.processingStatus" class="pl-1">Check Status</span>
@@ -192,7 +198,7 @@
 
                     <td *ngIf="showInquireAll === true" class="actions text-center">
                       <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')"
-                        [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : 'Select claim to inquire')">I</span>
+                        [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : 'Get latest claim response from NPHIES queue')">I</span>
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
                     </td>

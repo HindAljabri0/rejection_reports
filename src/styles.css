@@ -59,6 +59,7 @@ input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allo
 .w-260{width: 260px;}
 .maxw260{max-width: 260px;}
 .col{min-width: 0;}
+.inline-text{display: inline-block;vertical-align: middle;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
