@@ -19,17 +19,17 @@
         <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
           <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
             <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="summary.value.totalClaims"
-              [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
-              class="primary-card border-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+              [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
+              <span class="label total">Totals</span>
               <table>
                 <tr>
-                  <th>Total Net</th>
-                  <th>Total Patient Share</th>
-                  <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
-                  <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
+                  <th class="label">Net</th>
+                  <th class="label">Patient Share</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
                 </tr>
                 <tr>
-                  <td class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                  <td class="pb-6 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span *ngIf="summary.value.totalNetAmount!=null"
                       class="currency"> SR</span>
                   </td>
@@ -48,8 +48,8 @@
                 </tr>
 
                 <tr>
-                  <th>Total Tax</th>
-                  <th>Total Payer Share</th>
+                  <th class="label">Tax</th>
+                  <th class="label">Payer Share</th>
                 </tr>
                 <tr>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
