@@ -57,6 +57,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         autoWidth: true,
         responsive: {
             0: {
+                items: 2,
+                slideBy: 2
+            },
+            768: {
                 items: 3,
                 slideBy: 3
             },

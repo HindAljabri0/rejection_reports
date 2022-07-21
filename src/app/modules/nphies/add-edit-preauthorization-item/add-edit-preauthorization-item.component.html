@@ -128,15 +128,15 @@
         <!-- <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('matDatepickerMax') || serviceDataError)}"> -->
           <div class="form-group">
-          <label class="control-label">Start Date</label>
+          <label class="control-label">Service Start Date</label>
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
+              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date"
                 formControlName="startDate" [max]="today">
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date"
+              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date"
                 formControlName="startDate" [max]="FormItem.controls.endDate.value">
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
@@ -164,15 +164,15 @@
       <div class="col-4 col-lg-3">
         <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('matDatepickerMax') || serviceDataError)}">
-          <label class="control-label">End Date<span class="asterisk">*</span></label>
+          <label class="control-label">Service End Date<span class="asterisk">*</span></label>
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select end date"
+              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date"
                 formControlName="endDate" [max]="today">
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select end date"
+              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date"
                 formControlName="endDate">
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
@@ -182,7 +182,7 @@
           </div>
           <div
             *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
-            <span class="error-text">Please enter end date</span>
+            <span class="error-text">Please enter service end date</span>
           </div>
           <div
             *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('matDatepickerMax')">

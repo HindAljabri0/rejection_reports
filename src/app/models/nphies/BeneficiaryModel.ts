@@ -1,10 +1,6 @@
-
-import { InsurancePlan } from "./insurancePlan";
+import { InsurancePlan } from './insurancePlan';
 
 export class BeneficiaryModel {
-
-
-
   firstName: string;
   middleName: string;
   lastName: string;
@@ -30,9 +26,7 @@ export class BeneficiaryModel {
   state: string;
   country: string;
   postalCode: string;
-  isNewBorn:boolean;
+  isNewBorn: boolean;
   insurancePlans: Array<InsurancePlan>;
-
   documentTypeName: string;
-
 }
