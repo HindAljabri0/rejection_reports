@@ -86,37 +86,16 @@ export class BeneficiaryComponent implements OnInit {
     patientShareErorr: string,
     maxLimitErorr: string,
     selecteSubscriberRelationshipErorr: string,
-    selecteCoverageTypeErorr: string
+    selecteCoverageTypeErorr: string,
+    tpaNphiesId: string
   }[] = [];
 
-  // maritalStatuses: { Code: string, Name: string }[] = [
-  //   { Code: 'A', Name: 'Annulled' },
-  //   { Code: 'D', Name: 'Divorced' },
-  //   { Code: 'I', Name: 'Interlocutory' },
-  //   { Code: 'L', Name: 'Legally Separated' },
-  //   { Code: 'M', Name: 'Married' },
-  //   { Code: 'P', Name: 'Polygamous' },
-  //   { Code: 'S', Name: 'Never Married' },
-  //   { Code: 'T', Name: 'Domestic partner' },
-  //   { Code: 'U', Name: 'unmarried' },
-  //   { Code: 'W', Name: 'Widowed' }];
   maritalStatuses: { Code: string, Name: string }[] = [
     { Code: 'D', Name: 'Divorced' },
     { Code: 'L', Name: 'Legally Separated' },
     { Code: 'M', Name: 'Married' },
     { Code: 'U', Name: 'Unmarried' },
     { Code: 'W', Name: 'Widowed' }];
-
-  // bloodGroup: { Code: string, Name: string }[] = [
-  //   { Code: 'O_PLUS', Name: 'O+' },
-  //   { Code: 'O_MINUS', Name: 'O-' },
-  //   { Code: 'A_PLUS', Name: 'A+' },
-  //   { Code: 'A_MINUS', Name: 'A-' },
-  //   { Code: 'B_PLUS', Name: 'B+' },
-  //   { Code: 'B_MINUS', Name: 'B-' },
-  //   { Code: 'AB_PLUS', Name: 'AB+' },
-  //   { Code: 'AB_MINUS', Name: 'AB-' },
-  // ];
 
   bloodGroup: { Code: string, Name: string }[] = [
     { Code: 'O+', Name: 'O+' },
@@ -128,17 +107,6 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'AB+', Name: 'AB+' },
     { Code: 'AB-', Name: 'AB-' },
   ];
-
-
-  // SubscriberRelationship: { Code: string, Name: string }[] = [
-  //   { Code: 'CHILD', Name: 'Child' },
-  //   { Code: 'PARENT', Name: 'Parent' },
-  //   { Code: 'SPOUSE', Name: 'Spouse' },
-  //   { Code: 'COMMON', Name: 'Common Law Spouse' },
-  //   { Code: 'SELF', Name: 'Self' },
-  //   { Code: 'INJURED', Name: 'Injured Party' },
-  //   { Code: 'OTHER', Name: 'Other' },
-  // ];
 
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },
@@ -152,185 +120,24 @@ export class BeneficiaryComponent implements OnInit {
 
   beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
 
-  changeMode() {
-    this.viewMode = !this.viewMode;
-    this.editMode = !this.editMode;
-    this.getBeneficiary(this.beneficiaryId);
-  }
+  _onDestroy = new Subject<void>();
+  filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allSubscriberRelationship: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
 
-  getCoverageTypeName(CoverageTypeCode: string) {
+  dialogData: MessageDialogData;
+  errors = {
+    dob: '',
+    documentType: '',
+    documentId: '',
+    gender: '',
+    fullName: '',
+    documentIdCCHI: ''
+  };
 
-    switch (CoverageTypeCode) {
-      case 'EHCPOL':
-        return 'Extended healthcare';
-
-      case 'PUBLICPOL':
-        return 'Public healthcare';
-
-      default:
-        return null;
-    }
-  }
-
-  getSubscriberRelationshipName(SubscriberRelationshipCode: string) {
-    for (const SubscriberRelationship of this.SubscriberRelationship) {
-      if (SubscriberRelationship.Code == SubscriberRelationshipCode) {
-        return SubscriberRelationship.Name;
-      }
-    }
-  }
-
-
-  getBloodTypeName(BloodCode: string) {
-    for (const blodType of this.bloodGroup) {
-      if (blodType.Code == BloodCode) {
-        return blodType.Name;
-      }
-    }
-
-  }
-
-  getPayerName(PayerId: string) {
-    for (const payer of this.payersList) {
-      if (payer.payerId == PayerId) {
-        return payer.englistName;
-      }
-    }
-
-  }
-
-  getMaritalStatusName(maritalStatusCode: string) {
-    for (const maritalStatus of this.maritalStatuses) {
-      if (maritalStatus.Code == maritalStatusCode) {
-        return maritalStatus.Name;
-      }
-    }
-
-  }
-  getNationalitiesName(NationalitiesName: string) {
-
-
-    for (const nationality of this.nationalities) {
-      if (nationality.Code == NationalitiesName) {
-        return nationality.Name;
-      }
-    }
-
-
-
-  }
-
-
-
-  getBeneficiary(beneficiaryId: string) {
-
-    this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.beneficiaryinfo = event.body as BeneficiaryModel;
-        // tslint:disable-next-line:max-line-length
-        this.beneficiaryinfo.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0].name : '-';
-        this.setDateforView(this.beneficiaryinfo);
-
-      }
-
-    }, err => {
-
-      if (err instanceof HttpErrorResponse) {
-        console.log(err.message);
-
-
-      }
-    });
-
-
-    return true;
-  }
-
-  get showbeneficiaryForm() {
-
-    return this.viewMode || this.editMode;
-
-  }
-
-
-  isPrimary(index: string) {
-
-    if (index == 'true') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  selectedPayer(payerId: string) {
-    for (const payer of this.payersList) {
-      if (payer.payerId == payerId) {
-        return payer.englistName + '(' + payer.arabicName + ')';
-      }
-    }
-
-
-
-  }
-  isNull(value: string) {
-    return value == null ? '_' : value;
-  }
-
-  setDateforView(beneficiaryinfo: BeneficiaryModel) {
-
-
-    this.insurancePlans = [];
-    this.firstNameController.setValue(beneficiaryinfo.firstName);
-    this.secondNameController.setValue(beneficiaryinfo.middleName);
-    this.thirdNameController.setValue(beneficiaryinfo.lastName);
-    this.familyNameController.setValue(beneficiaryinfo.familyName);
-    this.fullNameController.setValue(beneficiaryinfo.fullName);
-    this.dobFormControl.setValue(beneficiaryinfo.dob);
-    this.selectedGender = beneficiaryinfo.gender == null ? 'null' : beneficiaryinfo.gender.toLocaleUpperCase();
-    this.selectedNationality = beneficiaryinfo.nationality;
-    this.contactNumberController.setValue(beneficiaryinfo.contactNumber);
-    this.emailController.setValue(beneficiaryinfo.email);
-    this.emergencyPhoneNumberController.setValue(beneficiaryinfo.emergencyNumber);
-    this.selectedDocumentType = beneficiaryinfo.documentType;
-    this.documentIdFormControl.setValue(beneficiaryinfo.documentId);
-    this.beneficiaryFileIdController.setValue(beneficiaryinfo.beneficiaryFileld);
-    this.EHealthIdNameController.setValue(beneficiaryinfo.eHealthId);
-    this.selectedResidencyType = beneficiaryinfo.residencyType;
-    this.selectedBloodGroup = beneficiaryinfo.bloodGroup;
-    this.selectedMaritalStatus = beneficiaryinfo.martialStatus;
-    this.selectedLanguages = beneficiaryinfo.preferredLanguage;
-    this.houseNumberController.setValue(beneficiaryinfo.addressLine);
-    this.streetNameController.setValue(beneficiaryinfo.streetLine);
-    this.cityNameController.setValue(beneficiaryinfo.city);
-    this.stateController.setValue(beneficiaryinfo.state);
-    this.selectedCountry = beneficiaryinfo.country;
-
-    this.postalCodeController.setValue(beneficiaryinfo.postalCode);
-    for (const insurancePlans of beneficiaryinfo.insurancePlans) {
-      this.insurancePlans.push(
-        {
-          iSPrimary: insurancePlans.isPrimary,
-          selectePayer: insurancePlans.payerNphiesId,
-          expiryDateController: new FormControl(insurancePlans.expiryDate),
-          memberCardId: new FormControl(insurancePlans.memberCardId),
-
-          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber
-            ? insurancePlans.relationWithSubscriber.toUpperCase()
-            : insurancePlans.relationWithSubscriber,
-          selecteCoverageType: insurancePlans.coverageType,
-
-          maxLimit: insurancePlans.maxLimit ? new FormControl(insurancePlans.maxLimit) :  new FormControl(),
-          patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) :  new FormControl(),
-          // tslint:disable-next-line:max-line-length
-          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
-        }
-      );
-    }
-
-    // console.log(beneficiaryinfo.insurancePlans[0].isPrimary);
-
-
-  }
+  beneficiaryModel = new BeneficiaryModel();
 
   constructor(
     private router: Router,
@@ -394,6 +201,178 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
+  changeMode() {
+    this.viewMode = !this.viewMode;
+    this.editMode = !this.editMode;
+    this.getBeneficiary(this.beneficiaryId);
+  }
+
+
+  getCoverageTypeName(CoverageTypeCode: string) {
+
+    switch (CoverageTypeCode) {
+      case 'EHCPOL':
+        return 'Extended healthcare';
+
+      case 'PUBLICPOL':
+        return 'Public healthcare';
+
+      default:
+        return null;
+    }
+  }
+
+  getSubscriberRelationshipName(SubscriberRelationshipCode: string) {
+    for (const SubscriberRelationship of this.SubscriberRelationship) {
+      if (SubscriberRelationship.Code == SubscriberRelationshipCode) {
+        return SubscriberRelationship.Name;
+      }
+    }
+  }
+
+
+  getBloodTypeName(BloodCode: string) {
+    for (const blodType of this.bloodGroup) {
+      if (blodType.Code == BloodCode) {
+        return blodType.Name;
+      }
+    }
+
+  }
+
+  getPayerName(PayerId: string) {
+    for (const payer of this.payersList) {
+      if (payer.payerId == PayerId) {
+        return payer.englistName;
+      }
+    }
+
+  }
+
+  getMaritalStatusName(maritalStatusCode: string) {
+    for (const maritalStatus of this.maritalStatuses) {
+      if (maritalStatus.Code == maritalStatusCode) {
+        return maritalStatus.Name;
+      }
+    }
+
+  }
+
+  getNationalitiesName(NationalitiesName: string) {
+    for (const nationality of this.nationalities) {
+      if (nationality.Code == NationalitiesName) {
+        return nationality.Name;
+      }
+    }
+  }
+
+  getBeneficiary(beneficiaryId: string) {
+
+    this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.beneficiaryinfo = event.body as BeneficiaryModel;
+        // tslint:disable-next-line:max-line-length
+        this.beneficiaryinfo.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.beneficiaryinfo.documentType)[0].name : '-';
+        this.setDateforView(this.beneficiaryinfo);
+
+      }
+
+    }, err => {
+
+      if (err instanceof HttpErrorResponse) {
+        console.log(err.message);
+
+
+      }
+    });
+
+
+    return true;
+  }
+
+  get showbeneficiaryForm() {
+
+    return this.viewMode || this.editMode;
+
+  }
+
+
+  isPrimary(index: string) {
+
+    if (index == 'true') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  selectedPayer(payerId: string) {
+    for (const payer of this.payersList) {
+      if (payer.payerId == payerId) {
+        return payer.englistName + '(' + payer.arabicName + ')';
+      }
+    }
+  }
+
+  isNull(value: string) {
+    return value == null ? '_' : value;
+  }
+
+  setDateforView(beneficiaryinfo: BeneficiaryModel) {
+
+    this.insurancePlans = [];
+    this.firstNameController.setValue(beneficiaryinfo.firstName);
+    this.secondNameController.setValue(beneficiaryinfo.middleName);
+    this.thirdNameController.setValue(beneficiaryinfo.lastName);
+    this.familyNameController.setValue(beneficiaryinfo.familyName);
+    this.fullNameController.setValue(beneficiaryinfo.fullName);
+    this.dobFormControl.setValue(beneficiaryinfo.dob);
+    this.selectedGender = beneficiaryinfo.gender == null ? 'null' : beneficiaryinfo.gender.toLocaleUpperCase();
+    this.selectedNationality = beneficiaryinfo.nationality;
+    this.contactNumberController.setValue(beneficiaryinfo.contactNumber);
+    this.emailController.setValue(beneficiaryinfo.email);
+    this.emergencyPhoneNumberController.setValue(beneficiaryinfo.emergencyNumber);
+    this.selectedDocumentType = beneficiaryinfo.documentType;
+    this.documentIdFormControl.setValue(beneficiaryinfo.documentId);
+    this.beneficiaryFileIdController.setValue(beneficiaryinfo.beneficiaryFileld);
+    this.EHealthIdNameController.setValue(beneficiaryinfo.eHealthId);
+    this.selectedResidencyType = beneficiaryinfo.residencyType;
+    this.selectedBloodGroup = beneficiaryinfo.bloodGroup;
+    this.selectedMaritalStatus = beneficiaryinfo.martialStatus;
+    this.selectedLanguages = beneficiaryinfo.preferredLanguage;
+    this.houseNumberController.setValue(beneficiaryinfo.addressLine);
+    this.streetNameController.setValue(beneficiaryinfo.streetLine);
+    this.cityNameController.setValue(beneficiaryinfo.city);
+    this.stateController.setValue(beneficiaryinfo.state);
+    this.selectedCountry = beneficiaryinfo.country;
+    this.postalCodeController.setValue(beneficiaryinfo.postalCode);
+
+    for (const insurancePlans of beneficiaryinfo.insurancePlans) {
+      this.insurancePlans.push(
+        {
+          iSPrimary: insurancePlans.isPrimary,
+          selectePayer: insurancePlans.payerNphiesId,
+          expiryDateController: new FormControl(insurancePlans.expiryDate),
+          memberCardId: new FormControl(insurancePlans.memberCardId),
+
+          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber
+            ? insurancePlans.relationWithSubscriber.toUpperCase()
+            : insurancePlans.relationWithSubscriber,
+          selecteCoverageType: insurancePlans.coverageType,
+
+          maxLimit: insurancePlans.maxLimit ? new FormControl(insurancePlans.maxLimit) :  new FormControl(),
+          patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) :  new FormControl(),
+          // tslint:disable-next-line:max-line-length
+          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
+          tpaNphiesId: insurancePlans.tpaNphiesId
+        }
+      );
+    }
+
+    // console.log(beneficiaryinfo.insurancePlans[0].isPrimary);
+
+  }
+
   onNameChanged() {
     if ((this.fullNameController.value != null && this.fullNameController.value.trim().length > 0)) {
       this.firstNameController.disable();
@@ -429,22 +408,6 @@ export class BeneficiaryComponent implements OnInit {
   }
 
 
-  _onDestroy = new Subject<void>();
-  filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  allSubscriberRelationship: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-
-
-  dialogData: MessageDialogData;
-  errors = {
-    dob: '',
-    documentType: '',
-    documentId: '',
-    gender: '',
-    fullName: '',
-    documentIdCCHI: ''
-  };
 
 
   addInsurancePlan() {
@@ -463,7 +426,8 @@ export class BeneficiaryComponent implements OnInit {
         memberCardIdErorr: null,
         patientShareErorr: null,
         maxLimitErorr: null,
-        selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
+        selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null,
+        tpaNphiesId: ''
       });
 
 
@@ -471,6 +435,7 @@ export class BeneficiaryComponent implements OnInit {
 
       this.dialogService.openMessageDialog({
         title: '',
+        // tslint:disable-next-line:max-line-length
         message: `We could not load required information to create insurance plan. Please add your beneficiary and try adding insurance plans later.`,
         isError: true
       });
@@ -480,10 +445,6 @@ export class BeneficiaryComponent implements OnInit {
   deleteInsurancePlan(i: number) {
     this.insurancePlans.splice(i, 1);
   }
-
-  beneficiaryModel = new BeneficiaryModel();
-
-
 
   filterNationality() {
 
@@ -599,7 +560,9 @@ export class BeneficiaryComponent implements OnInit {
       coverageType: insurancePlan.selecteCoverageType == '' ? null : insurancePlan.selecteCoverageType,
       isPrimary: insurancePlan.iSPrimary,
       maxLimit: insurancePlan.maxLimit.value,
-      patientShare: insurancePlan.patientShare.value
+      patientShare: insurancePlan.patientShare.value,
+      // tslint:disable-next-line:max-line-length
+      tpaNphiesId: insurancePlan.tpaNphiesId ? insurancePlan.tpaNphiesId : null
     }));
 
   }

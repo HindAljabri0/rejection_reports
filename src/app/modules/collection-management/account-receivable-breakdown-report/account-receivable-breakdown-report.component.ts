@@ -244,8 +244,8 @@ export class AccountReceivableBreakdownReportComponent implements OnInit {
                                     data: body.map(x => {
                                         return x.value;
                                     }),
-                                    backgroundColor: ['#59C14F', '#CD4949'],
-                                    hoverBackgroundColor: ['#59C14F', '#CD4949'],
+                                    backgroundColor: ['#4CA444', '#D03131'],
+                                    hoverBackgroundColor: ['#4CA444', '#D03131'],
                                     borderColor: ['#fff', '#fff'],
                                     borderWidth: 0,
                                     hoverBorderColor: ['#fff', '#fff']

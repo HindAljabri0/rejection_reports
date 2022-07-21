@@ -15,17 +15,21 @@ export class NphiesPayersSelectorComponent implements OnInit {
   @Input() isRequired = true;
 
   @Input() insurancePayer: any;
+  @Input() toolTip: string;
 
-  @Output('payerSelected')
-  payerSelectionEmitter: EventEmitter<any> = new EventEmitter();
+  // tslint:disable-next-line:no-output-rename
+  @Output('payerSelected') payerSelectionEmitter: EventEmitter<any> = new EventEmitter();
 
-  @Output('selectionChange')
-  selectionChange: EventEmitter<any> = new EventEmitter();
+  // tslint:disable-next-line:no-output-rename
+  @Output('selectionChange') selectionChange: EventEmitter<any> = new EventEmitter();
 
-  @Input('isMatSelect')
-  isMatSelect = true;
+  // tslint:disable-next-line:no-input-rename
+  @Input('isMatSelect') isMatSelect = true;
 
   selectedPayer: any;
+
+  payerName = '';
+  duplicatePayer = false;
 
   organizations: {
     id: string
@@ -73,11 +77,24 @@ export class NphiesPayersSelectorComponent implements OnInit {
           this.Form.controls.destinationId.setValue(x.code);
         }
       });
+    } else if (this.insurancePayer) {
+      if (this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).length > 1) {
+        this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).forEach(x => {
+          this.payerName = x.subList.find(y => y.code === this.insurancePayer).display;
+        });
+        // this.insurancePayer = '';
+        this.duplicatePayer = true;
+        this.selectionChange.emit({ value: { payerNphiesId: '' } });
+      } else {
+        this.payerName = '';
+        this.duplicatePayer = false;
+      }
     }
   }
 
   selectPayer(event) {
     if (event.value) {
+      this.duplicatePayer = false;
       const payerNphiesIdValue = event.value;
       let organizationNphiesIdValue = '';
 
@@ -91,6 +108,5 @@ export class NphiesPayersSelectorComponent implements OnInit {
     } else {
       this.selectionChange.emit({ value: '' });
     }
-
   }
 }

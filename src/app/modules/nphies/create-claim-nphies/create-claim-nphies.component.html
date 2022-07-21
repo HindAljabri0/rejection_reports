@@ -35,27 +35,31 @@
           Status:</span>&nbsp;<strong>{{otherDataModel.cancelStatus}}</strong></p>
       <p *ngIf="otherDataModel.cancelResponseReason"><span>Cancellation Status
           Reason:</span>&nbsp;<strong>{{otherDataModel.cancelResponseReason}}</strong></p>
-      <p *ngIf="otherDataModel.reIssueReason"><span>ReIssue
-          Reason:</span>&nbsp;<strong>{{otherDataModel.reIssueReason}}</strong></p>
+      <p *ngIf="otherDataModel.reIssueReasonName"><span>Reissue
+          Reason:</span>&nbsp;<strong>{{otherDataModel.reIssueReasonName}}</strong></p>
 
     </div>
   </div>
   <ul class="claim-totals"
     *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
     <li>
-      Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number : '1.2-2'
+      Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount !=
+        null) ? (otherDataModel.totalNetAmount | number : '1.2-2'
         ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Patient Share:<span class="value">{{otherDataModel.totalPatientShare ? (otherDataModel.totalPatientShare |
+      Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined &&
+        otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
         number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare | number
+      Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined &&
+        otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <li>
-      Total Tax:<span class="value">{{otherDataModel.totalTax ? (otherDataModel.totalTax | number
+      Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ?
+        (otherDataModel.totalTax | number
         : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
     </li>
     <ng-container
@@ -194,6 +198,22 @@
             <div class="control-label">Batch Number</div>
             <p class="form-control-static">{{otherDataModel.batchClaimNumber ? otherDataModel.batchClaimNumber : '-'}}
             </p>
+          </div>
+        </div>
+
+
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Pre Authorization Response ID</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
+              FormNphiesClaim.controls.preAuthResponseId.value : '-'}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Pre Authorization Response Url</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseUrl.value ?
+              FormNphiesClaim.controls.preAuthResponseUrl.value : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -659,8 +679,8 @@
                         <table class="inline-label-table">
                           <tbody>
                             <tr>
-                              <td class="label">Start Date</td>
-                              <td>{{item.startDateStr}}</td>
+                              <td class="label">Serviced Date/Period</td>
+                              <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}</td>
                             </tr>
                             <tr>
                               <td class="label">Non Standard Code</td>
@@ -1256,35 +1276,23 @@
     <ul class="claim-totals"
       *ngIf="otherDataModel.totalNetAmount || otherDataModel.totalPatientShare || otherDataModel.totalPayerShare">
       <li>
-        Total Net:<span class="value">{{otherDataModel.totalNetAmount ? (otherDataModel.totalNetAmount | number :
+        Total Net:<span class="value">{{(otherDataModel.totalNetAmount != undefined && otherDataModel.totalNetAmount !=
+          null) ? (otherDataModel.totalNetAmount | number :
           '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
-      <ng-container
-        *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
-        <li class="separator"></li>
-        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span
-              class="currency">SR</span></span>
-        </li>
-      </ng-container>
       <li>
-        Total Patient Share:<span class="value">{{otherDataModel.totalPatientShare ? (otherDataModel.totalPatientShare |
-          number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
-      </li>
-      <ng-container
-        *ngIf="otherDataModel && otherDataModel.responseDecision && otherDataModel.responseDecision.claimResDecisionCategories">
-        <li class="separator"></li>
-        <li *ngFor="let res of otherDataModel.responseDecision.claimResDecisionCategories">
-          <span class="text-capitalize">{{res.category}}</span>:<span class="value">{{res.categoryValue}} <span
-              class="currency">SR</span></span>
-        </li>
-      </ng-container>
-      <li>
-        Total Payer Share:<span class="value">{{otherDataModel.totalPayerShare ? (otherDataModel.totalPayerShare |
+        Total Patient Share:<span class="value">{{(otherDataModel.totalPatientShare != undefined &&
+          otherDataModel.totalPatientShare != null) ? (otherDataModel.totalPatientShare |
           number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <li>
-        Total Tax:<span class="value">{{otherDataModel.totalTax ? (otherDataModel.totalTax | number
+        Total Payer Share:<span class="value">{{(otherDataModel.totalPayerShare != undefined &&
+          otherDataModel.totalPayerShare != null) ? (otherDataModel.totalPayerShare |
+          number : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
+      </li>
+      <li>
+        Total Tax:<span class="value">{{(otherDataModel.totalTax != undefined && otherDataModel.totalTax != null) ?
+          (otherDataModel.totalTax | number
           : '1.2-2' ): '-'}} <span class="currency">SR</span></span>
       </li>
       <ng-container
@@ -1467,6 +1475,20 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Preauthorization Response ID</label>
+                <input class="form-control" placeholder="Preauthorization Response ID"
+                  formControlName="preAuthResponseId">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Preauthorization Response Url</label>
+                <input class="form-control" placeholder="Preauthorization Response Url"
+                  formControlName="preAuthResponseUrl">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
                 <label class="control-label">Episode No. <span class="asterisk">*</span></label>
@@ -1593,64 +1615,7 @@
           <app-manage-diagnosis [(isSubmitted)]="isSubmitted" [(IsDiagnosisRequired)]="IsDiagnosisRequired"
             [(diagnosisList)]="Diagnosises" [(claimType)]="claimType" [pageMode]="pageMode">
           </app-manage-diagnosis>
-          <!-- <h5 class="form-title pt-0">
-            <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
-            <div class="ml-auto" matTooltip="Select Claim Type to enable adding diagnosis" [matTooltipDisabled]="(FormNphiesClaim.controls.type.value)?true:false">
-              <button type="button" class="btn-icon btn-primary" (click)="openAddEditDiagnosis()" [disabled]="!FormNphiesClaim.controls.type.value">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-          </h5>
-          <div *ngIf="Diagnosises.length > 0" class="table-responsive">
-            <table class="primary-grid">
-              <thead>
-                <tr>
-                  <th>Sequence No.</th>
-                  <th>Code - Description</th>
-                  <th>Type</th>
-                  <th>On Admission</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let diagnosis of Diagnosises; let i = index">
-                  <td>
-                    {{diagnosis.sequence}}
-                  </td>
-                  <td>
-                    {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
-                  </td>
-                  <td>
-                    {{diagnosis.typeName}}
-                  </td>
-                  <td>
-                    {{diagnosis.onAdmissionName ? diagnosis.onAdmissionName :"-"}}
-                  </td>
-                  <td class="actions">
-                    <mat-menu #diagnosisActionsMenu xPosition="before">
-                      <ng-template matMenuContent>
-                        <button mat-menu-item type="button" (click)="openAddEditDiagnosis(diagnosis)">
-                          <mat-icon class="material-icons-outlined">edit</mat-icon>
-                          <span>Edit</span>
-                        </button>
-                        <button mat-menu-item type="button" (click)="deleteDiagnosis(diagnosis.sequence, i)">
-                          <mat-icon class="material-icons-outlined">delete</mat-icon>
-                          <span>Delete</span>
-                        </button>
-                      </ng-template>
-                    </mat-menu>
-                    <button type="button" mat-icon-button [matMenuTriggerFor]="diagnosisActionsMenu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
-          </app-empty-state>
-          <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
-          </app-empty-state> -->
+
         </mat-tab>
         <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
           <ng-template mat-tab-label>

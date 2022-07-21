@@ -38,12 +38,12 @@
           </div>
         </div>
         <ng-container *ngIf="advanceSearchEnable">
-          <div class="col-4 col-xxl-3">
+          <!-- <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Pre Authorization ID</label>
               <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
             </div>
-          </div>
+          </div> -->
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Payer</label>
@@ -64,7 +64,7 @@
               </mat-autocomplete>
             </div>
           </div>
-          <div class="col-4 col-xxl-3">
+          <!-- <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Status</label>
               <mat-form-field class="form-control custom-select-control">
@@ -74,7 +74,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-          </div>
+          </div> -->
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Pre Auth Reference No</label>
@@ -101,15 +101,16 @@
             <th width="10"></th>
             <th width="10"></th>
             <th>Beneficiary Name</th>
+            <th>Episode ID</th>
             <th>Pre Auth Ref No</th>
-            <th>Pre Authorization ID</th>
+            <!-- <th>Pre Authorization ID</th> -->
             <th>Requested Date</th>
-            <th>Response Date</th>
+            <!-- <th>Response Date</th> -->
             <th>Payer/TPA</th>
             <th>Total Net</th>
             <th>Patient Share</th>
             <th>Payer Share</th>
-            <th>Status</th>
+            <!-- <th>Status</th> -->
           </tr>
         </thead>
         <tbody>
@@ -123,28 +124,26 @@
                 <mat-icon *ngIf="currentOpenRow==i">remove_circle_outline</mat-icon>
               </td>
               <td (click)="toggleRow(i)">{{transaction.beneficiaryName}} ({{transaction.documentId}}) </td>
+              <td (click)="toggleRow(i)">{{transaction.episodeId}} </td>
               <td (click)="toggleRow(i)">{{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
-              <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td>
+              <!-- <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
-              <td (click)="toggleRow(i)"> {{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td>
+              <!-- <td (click)="toggleRow(i)"> {{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
               <td (click)="toggleRow(i)"> {{transaction.payerName}}</td>
               <td (click)="toggleRow(i)"> {{transaction.totalNet}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> {{transaction.status}}</td>
+              <!-- <td (click)="toggleRow(i)"> {{transaction.status}}</td> -->
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
               <td></td>
               <td colspan="10">
-                <div class="form-group form-group-static">
-                  <label class="control-label">Episode No.</label>
-                  <span class="form-control-static">{{transaction.episodeId}}</span>
-                </div>
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0"
                   *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
+                      <th>SequenceNo</th>
                       <th>Item Type</th>
                       <th>Invoice No. <span class="asterisk">*</span></th>
                       <th>Standard Code - Description</th>
@@ -157,6 +156,7 @@
                   </thead>
                   <tbody>
                     <tr  *ngFor="let item of transaction.items" class="align-middle">
+                      <td>{{item.sequence}}</td>
                       <td>{{item.itemType}}</td>
                       <td>{{item.invoiceNo}}</td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>

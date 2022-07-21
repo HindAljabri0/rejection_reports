@@ -103,7 +103,7 @@
             <th>Pre Auth Ref No</th>
             <th>Pre Authorization ID</th>
             <th>Requested Date</th>
-            <th>Response Date</th>
+            <!-- <th>Response Date</th> -->
             <th>Payer/TPA</th>
             <th>Total Net</th>
             <th>Patient Share</th>
@@ -122,11 +122,11 @@
               <td (click)="toggleRow(i)">{{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
               <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td>
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
-              <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td>
+              <!-- <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
               <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.status}}</td>
             </tr>
             <tr *ngIf="currentOpenRow==i">
@@ -134,11 +134,11 @@
               <td colspan="10">
                 <div class="row small-gutter">
                   <div class="col-4 col-xxl-3">
-                    <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeId}">
+                    <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}">
                       <label class="control-label">Episode No.</label>
-                      <input class="form-control" placeholder="Enter episode no." [(ngModel)]="transaction.episodeId">
-                      <div *ngIf="transaction.submitted && !transaction.episodeId">
-                        <span class="error-text">EpisodeId required</span>
+                      <input class="form-control" placeholder="Enter episode no." [(ngModel)]="transaction.episodeNo">
+                      <div *ngIf="transaction.submitted && !transaction.episodeNo">
+                        <span class="error-text">Episode No required</span>
                       </div>
                     </div>
                   </div>
@@ -180,7 +180,7 @@
                   </tbody>
                 </table>
                 <div class="text-right"><button type="button" mat-flat-button color="primary"
-                    (click)="convertToClaim(transaction)">Save</button></div>
+                    (click)="prepareToClaim(transaction)">Save</button></div>
               </td>
             </tr>
           </ng-container>

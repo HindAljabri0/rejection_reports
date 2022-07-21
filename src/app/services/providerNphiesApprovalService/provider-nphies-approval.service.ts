@@ -424,8 +424,8 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getApprovalToClaimTransactions(providerId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/convert/approval/criteria`;
+  getApprovalToPrepareTransactions(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/prepare/criteria`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
@@ -438,6 +438,12 @@ export class ProviderNphiesApprovalService {
 
   getJSON(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/claims/transactionlog/json`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  approvalToPrepareSave(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/prepare/save`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }

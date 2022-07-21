@@ -23,7 +23,7 @@ export class ManageSupportingInfoComponent implements OnInit {
   categoryList = this.sharedDataService.categoryList;
   reasonList = this.sharedDataService.reasonList;
   loinkList = [];
-  currentIndex=0;
+  currentIndex = 0;
   // supportingInfoList = [];
   missingToothCodeList = this.sharedDataService.missingToothCodeList;
   reasonForVisitCodeList = this.sharedDataService.reasonForVisitCodeList;
@@ -34,7 +34,7 @@ export class ManageSupportingInfoComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService) { }
 
   ngOnInit() {
-    this.currentIndex=0;
+    this.currentIndex = 0;
   }
 
   searchICDCodes(code, i) {
@@ -134,7 +134,7 @@ export class ManageSupportingInfoComponent implements OnInit {
 
 
   checkfile(i) {
-    const validExts = ['.pdf','.jpg','.jpeg'];
+    const validExts = ['.pdf', '.jpg', '.jpeg'];
     let fileExt = this.supportingInfoList[i].attachmentName;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -189,98 +189,186 @@ export class ManageSupportingInfoComponent implements OnInit {
     model.fileError = '';
     model.uploadContainerClass = '';
 
-
-    switch (category.value) {
-
-      case 'info':
-
-        model.IsValueRequired = true;
-        model.value = '';
-
-        break;
-      case 'onset':
-
-        model.IsCodeRequired = true;
-        model.IsFromDateRequired = true;
-        model.code = '';
-        model.fromDate = '';
-
-        break;
-      case 'attachment':
-
-        model.IsAttachmentRequired = true;
-        model.attachment = null;
-
-        break;
-      case 'missingtooth':
-
-        model.IsCodeRequired = true;
-        model.IsFromDateRequired = true;
-        model.IsReasonRequired = true;
-
-        model.code = '';
-        model.fromDate = '';
-        model.reason = '';
-
-        break;
-      case 'hospitalized':
-      case 'employmentImpacted':
-
-        model.IsFromDateRequired = true;
-        model.IsToDateRequired = true;
-        model.fromDate = '';
-        model.toDate = '';
-
-        break;
-
-      case 'lab-test':
-
-        model.IsCodeRequired = true;
-        model.IsValueRequired = true;
-        model.code = '';
-        model.value = '';
-
-        break;
-      case 'reason-for-visit':
-
-        model.IsCodeRequired = true;
-        model.code = '';
-
-        break;
-      case 'days-supply':
-      case 'vital-sign-weight':
-      case 'vital-sign-systolic':
-      case 'vital-sign-diastolic':
-      case 'icu-hours':
-      case 'ventilation-hours':
-      case 'vital-sign-height':
-      case 'temperature':
-      case 'pulse':
-      case 'respiratory-rate':
-      case 'oxygen-saturation':
-      case 'birth-weight':
-
-        model.IsValueRequired = true;
-        model.value = '';
-
-        break;
-      case 'chief-complaint':
-
-        model.IsCodeRequired = true;
-        model.IsValueRequired = true;
-        model.code = '';
-        model.value = '';
-        break;
-
-      case 'last-menstrual-period':
-        model.IsFromDateRequired = true;
-        model.fromDate = '';
-
-        break;
-
-      default:
-        break;
+    if (category.value === 'info') {
+      model.IsValueRequired = true;
+      model.value = '';
     }
+
+    if (category.value === 'onset') {
+      model.IsCodeRequired = true;
+      model.IsFromDateRequired = true;
+      model.code = '';
+      model.fromDate = '';
+    }
+
+    if (category.value === 'attachment') {
+      model.IsAttachmentRequired = true;
+      model.attachment = null;
+    }
+
+    if (category.value === 'missingtooth') {
+      model.IsCodeRequired = true;
+      model.IsFromDateRequired = true;
+      model.IsReasonRequired = true;
+
+      model.code = '';
+      model.fromDate = '';
+      model.reason = '';
+    }
+
+    if (category.value === 'hospitalized' || category.value === 'employmentImpacted') {
+      model.IsFromDateRequired = true;
+      model.IsToDateRequired = true;
+      model.fromDate = '';
+      model.toDate = '';
+    }
+
+    if (category.value === 'lab-test') {
+      model.IsCodeRequired = true;
+      model.IsValueRequired = true;
+      model.code = '';
+      model.value = '';
+    }
+
+    if (category.value === 'reason-for-visit') {
+      model.IsCodeRequired = true;
+      model.code = '';
+    }
+
+    if (category.value === 'days-supply' ||
+      category.value === 'vital-sign-weight' ||
+      category.value === 'vital-sign-systolic' ||
+      category.value === 'vital-sign-diastolic' ||
+      category.value === 'icu-hours' ||
+      category.value === 'ventilation-hours' ||
+      category.value === 'vital-sign-height' ||
+      category.value === 'temperature' ||
+      category.value === 'pulse' ||
+      category.value === 'respiratory-rate' ||
+      category.value === 'oxygen-saturation' ||
+      category.value === 'birth-weight') {
+      model.IsValueRequired = true;
+      model.value = '';
+    }
+
+    if (category.value === 'chief-complaint') {
+      model.IsCodeRequired = true;
+      model.IsValueRequired = true;
+      model.code = '';
+      model.value = '';
+    }
+
+    if (category.value === 'last-menstrual-period') {
+      model.IsFromDateRequired = true;
+      model.fromDate = '';
+    }
+
+    if (category.value === 'lab-test' ||
+      category.value === 'vital-sign-weight' ||
+      category.value === 'vital-sign-systolic' ||
+      category.value === 'vital-sign-diastolic' ||
+      category.value === 'icu-hours' ||
+      category.value === 'ventilation-hours' ||
+      category.value === 'vital-sign-height' ||
+      category.value === 'temperature' ||
+      category.value === 'pulse' ||
+      category.value === 'oxygen-saturation' ||
+      category.value === 'respiratory-rate') {
+      model.fromDate = '';
+      model.toDate = '';
+    }
+
+    // switch (category.value) {
+
+    //   case 'info':
+
+    //     model.IsValueRequired = true;
+    //     model.value = '';
+
+    //     break;
+    //   case 'onset':
+
+    //     model.IsCodeRequired = true;
+    //     model.IsFromDateRequired = true;
+    //     model.code = '';
+    //     model.fromDate = '';
+
+    //     break;
+    //   case 'attachment':
+
+    //     model.IsAttachmentRequired = true;
+    //     model.attachment = null;
+
+    //     break;
+    //   case 'missingtooth':
+
+    //     model.IsCodeRequired = true;
+    //     model.IsFromDateRequired = true;
+    //     model.IsReasonRequired = true;
+
+    //     model.code = '';
+    //     model.fromDate = '';
+    //     model.reason = '';
+
+    //     break;
+    //   case 'hospitalized':
+    //   case 'employmentImpacted':
+
+    //     model.IsFromDateRequired = true;
+    //     model.IsToDateRequired = true;
+    //     model.fromDate = '';
+    //     model.toDate = '';
+
+    //     break;
+
+    //   case 'lab-test':
+
+    //     model.IsCodeRequired = true;
+    //     model.IsValueRequired = true;
+    //     model.code = '';
+    //     model.value = '';
+
+    //     break;
+    //   case 'reason-for-visit':
+
+    //     model.IsCodeRequired = true;
+    //     model.code = '';
+
+    //     break;
+    //   case 'days-supply':
+    //   case 'vital-sign-weight':
+    //   case 'vital-sign-systolic':
+    //   case 'vital-sign-diastolic':
+    //   case 'icu-hours':
+    //   case 'ventilation-hours':
+    //   case 'vital-sign-height':
+    //   case 'temperature':
+    //   case 'pulse':
+    //   case 'respiratory-rate':
+    //   case 'oxygen-saturation':
+    //   case 'birth-weight':
+
+    //     model.IsValueRequired = true;
+    //     model.value = '';
+
+    //     break;
+    //   case 'chief-complaint':
+
+    //     model.IsCodeRequired = true;
+    //     model.IsValueRequired = true;
+    //     model.code = '';
+    //     model.value = '';
+    //     break;
+
+    //   case 'last-menstrual-period':
+    //     model.IsFromDateRequired = true;
+    //     model.fromDate = '';
+
+    //     break;
+
+    //   default:
+    //     break;
+    // }
 
     this.supportingInfoList.push(model);
   }
@@ -288,14 +376,15 @@ export class ManageSupportingInfoComponent implements OnInit {
   removeSupportingInfo(i) {
     this.supportingInfoList.splice(i, 1);
   }
-  SetCurrent(i){
-    
-    this.currentIndex=i;
+
+  SetCurrent(i) {
+
+    this.currentIndex = i;
   }
+
   selectTooth(number) {
-    
     this.supportingInfoList[this.currentIndex].code = number;
     //this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
-}
+  }
 
 }

@@ -1,7 +1,13 @@
 <div class="primary-dialog-body alert-dialog">
+  <div class="head-block">
     <img src="./assets/ic-warning-illustration.svg" alt="Warning" class="illustration" />
-    <pre class="dialog-text">{{data}}</pre>
-    <div class="text-center pt-4">
-        <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
-    </div>
+    <span>Alert !!!</span>
+  </div>
+  <ul class="unordered-list" *ngIf="data && data.length > 0">
+    <li *ngFor="let d of data">
+      {{d}}
+    </li>
+  </ul>
+  <!-- <pre class="dialog-text">{{data}}</pre> -->
+  <button mat-flat-button color="primary" (click)="closeDialog()" class="mt-4">Close</button>
 </div>

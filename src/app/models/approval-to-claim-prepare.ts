@@ -1,6 +1,6 @@
 import { Paginateable } from './paginateable';
 
-export class ApprovalToClaimTransaction extends Paginateable {
+export class ApprovalToClaimPrepare extends Paginateable {
   beneficiaryName: string;
   documentId: string;
   items: Item[];
@@ -13,13 +13,18 @@ export class ApprovalToClaimTransaction extends Paginateable {
   status: string;
   totalNet: number;
   transactionDate: string;
-  episodeId: number;
+
+  destinationId: string;
+  episodeNo: number;
+  preparedDate: string;
+  totalPatientShare: number;
+  totalPayerShare: number;
 
   constructor(body: {}) {
     super(body);
 
     this.beneficiaryName = body["beneficiaryName"];
-    this.episodeId = body["episodeId"];
+    this.destinationId = body["destinationId"];
     this.documentId = body["documentId"];
     this.items = body["items"];
     this.nphiesRequestId = body["nphiesRequestId"];
@@ -31,7 +36,10 @@ export class ApprovalToClaimTransaction extends Paginateable {
     this.status = body["status"];
     this.totalNet = body["totalNet"];
     this.transactionDate = body["transactionDate"];
-
+    this.episodeNo = body["episodeNo"];
+    this.preparedDate = body["preparedDate"];
+    this.totalPatientShare = body["totalPatientShare"];
+    this.totalPayerShare = body["totalPayerShare"];
   }
 }
 

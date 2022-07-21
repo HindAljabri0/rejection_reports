@@ -71,7 +71,7 @@ export class JsonResponseComponent implements OnInit {
         if (event.status === 200) {
           const json = event.body;
 
-          const fileName = transactionType + '-' + this.otherDataModel.claimResourceId + '.json';
+          const fileName = transactionType + '_' + this.otherDataModel.claimResourceId + '.json';
           this.ViewJson(transactionId, transactionType, json, fileName);
 
         }

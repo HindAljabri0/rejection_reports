@@ -54,6 +54,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     autoWidth: true,
     responsive: {
       0: {
+        items: 2,
+        slideBy: 2
+      },
+      768: {
         items: 3,
         slideBy: 3
       },
@@ -370,7 +374,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
-        console.log("Summary ="+JSON.stringify(summary));
+        console.log("Summary =" + JSON.stringify(summary));
         if (summary.totalClaims > 0) {
           if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
@@ -790,7 +794,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare - claim.totalPatientShare,
         totalPayerShare: this.summaries[oldSummaryIndex].totalPayerShare - claim.totalPayerShare,
         totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
-        totalTax:this.summaries[oldSummaryIndex].totalTax - claim.totalTax,
+        totalTax: this.summaries[oldSummaryIndex].totalTax - claim.totalTax,
         statuses: this.summaries[oldSummaryIndex].statuses,
         uploadName: this.summaries[oldSummaryIndex].uploadName,
         patientShare: this.summaries[oldSummaryIndex].patientShare - claim.patientShare,
@@ -1363,7 +1367,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     status = status.trim().toLowerCase();
     // tslint:disable-next-line:max-line-length
-    const inValidStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'notsaved' , 'failednphies'];
+    const inValidStatus = ['accepted', 'cancelled', 'failed', 'notaccepted', 'batched', 'error', 'rejected', 'invalid', 'approved', 'partial', 'notsaved', 'failednphies'];
     if (inValidStatus.indexOf(status) >= 0) {
       return false;
     } else {
