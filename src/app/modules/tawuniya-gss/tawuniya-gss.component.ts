@@ -13,44 +13,21 @@ import { FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
-
-const moment = _moment;
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-tawuniya-gss',
   templateUrl: './tawuniya-gss.component.html',
-  styles: [],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ]
+  styles: []
 })
 export class TawuniyaGssComponent implements OnInit {
 
   initiateModel: Array<InitiateResponse> = [];
-  fromDate = new FormControl(null, Validators.required);
-  toDate = new FormControl(null, Validators.required);
+  fromDateMonth = new FormControl(null, Validators.required);
+  toDateMonth = new FormControl(null, Validators.required);
   detailTopActionIcon = 'ic-download.svg';
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
+  minDate: any;
 
   constructor(
     private dialog: MatDialog,
@@ -92,19 +69,21 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   searchQuerySummary() {
-    this.fromDate.markAllAsTouched()
-    this.toDate.markAllAsTouched()
-    if (this.fromDate.invalid || this.toDate.invalid) {
+    if (this.fromDateMonth.invalid || this.toDateMonth.invalid) {
       return;
     }
-    const newFromDate = new Date(this.fromDate.value);
-    const newToDate = new Date(this.toDate.value);
+    const newFromDate = new Date(this.fromDateMonth.value);
+    const newToDate = new Date(this.toDateMonth.value);
 
     if (!this.valid(newFromDate, newToDate)) {
       return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
     }
+    // console.log('this.fromMonth :',this.fromMonth);
+    // console.log('this.toMonth :',this.toMonth);    
+
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
+    //this.tawuniyaGssService.gssQuerySummary(this.fromMonth, this.toMonth).subscribe(data => {
       console.log(data);
       this.initiateModel = [];
       this.initiateModel = data;
@@ -137,5 +116,21 @@ export class TawuniyaGssComponent implements OnInit {
           this.detailTopActionIcon = 'ic-download.svg';
         }
       });
+  }
+
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
+  dateValidation(event: any) {
+    this.minDate = new Date(event);
+    this.minDate = new Date(this.minDate.setMonth(this.minDate.getMonth()));
+  }
+
+  getEmptyStateMessage() {
+      return 'Please apply the filter and generate the report.';
   }
 }
