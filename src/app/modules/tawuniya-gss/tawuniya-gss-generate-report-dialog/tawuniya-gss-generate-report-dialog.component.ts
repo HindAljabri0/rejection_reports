@@ -4,48 +4,19 @@ import { DateAdapter, MatDatepicker, MatDialogRef, MAT_DATE_FORMATS, MAT_DATE_LO
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Store } from '@ngrx/store';
 import { Moment } from 'moment';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
-
-import * as _moment from 'moment';
-
-const moment = _moment;
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
-
-
 
 @Component({
   selector: 'app-tawuniya-gss-generate-report-dialog',
   templateUrl: './tawuniya-gss-generate-report-dialog.component.html',
-  styles: [],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ]
+  styles: []
 })
 
 export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
   today = new Date();
-
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   data : InitiateResponse[];
   lossMonth = new FormControl(null, Validators.required);
   constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store) { }
@@ -72,12 +43,10 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
     }
   }
 
-  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.lossMonth.value!;
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    this.lossMonth.setValue(ctrlValue);
-    datepicker.close();
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
   }
-
 }
