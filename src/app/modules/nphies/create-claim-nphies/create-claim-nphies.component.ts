@@ -384,7 +384,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
       // tslint:disable-next-line:max-line-length
-      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
+      // insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
+      insurancePlanTpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId
     });
 
     if (this.otherDataModel.subscriber) {
@@ -1524,10 +1525,15 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.subscriber = null;
       }
 
-      this.model.destinationId = this.FormNphiesClaim.controls.destinationId.value;
+      if (this.FormNphiesClaim.controls.destinationId.value === '-1') {
+        this.model.destinationId = null;
+      } else {
+        this.model.destinationId = this.FormNphiesClaim.controls.destinationId.value;
+      }
 
       this.model.insurancePlan = {};
-      this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+
+      this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
@@ -1537,12 +1543,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
       // this.model.insurancePlan.planId = this.FormNphiesClaim.controls.insurancePlanId.value;
       this.model.insurancePlan.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
-
-      if (this.model.destinationId != null) {
-        this.model.insurancePlan.tpaNphiesId = this.model.destinationId;
-      } else {
-        this.model.insurancePlan.tpaNphiesId = this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value;
-      }
+      this.model.insurancePlan.tpaNphiesId = null;
 
       const now = new Date(Date.now());
       if (this.pageMode === 'EDIT') {
@@ -1799,81 +1800,81 @@ export class CreateClaimNphiesComponent implements OnInit {
         requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, this.model);
       }
 
+      this.sharedServices.loadingChanged.next(false);
+      // requestObservable.subscribe(event => {
+      //   if (event instanceof HttpResponse) {
+      //     if (event.status === 200) {
+      //       const body: any = event.body;
+      //       if (body.isError) {
 
-      requestObservable.subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status === 200) {
-            const body: any = event.body;
-            if (body.isError) {
+      //         this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
+      //         if (this.pageMode == 'CREATE') {
 
-              this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
-              if (this.pageMode == 'CREATE') {
+      //           this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+      //         }
+      //       } else {
 
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-              }
-            } else {
+      //         if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
 
-              if (this.pageMode == 'CREATE' || this.pageMode == 'RESUBMIT') {
-
-                if (this.pageMode == 'CREATE') {
-                  this.reset();
-                  this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-                }
+      //           if (this.pageMode == 'CREATE') {
+      //             this.reset();
+      //             this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+      //           }
 
 
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-                if (this.pageMode == 'RESUBMIT') {
-                  this.IsResubmitMode = true;
-                  this.claimId = body.claimId;
-                  this.uploadId = body.uploadId;
-                  this.getPayees();
-                  // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-                  // this.ngOnInit();
-                }
+      //           this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
+      //           if (this.pageMode == 'RESUBMIT') {
+      //             this.IsResubmitMode = true;
+      //             this.claimId = body.claimId;
+      //             this.uploadId = body.uploadId;
+      //             this.getPayees();
+      //             // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+      //             // this.ngOnInit();
+      //           }
 
-              } else {
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-                this.ngOnInit();
-                // location.reload();
-              }
-            }
-          }
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
-            if (this.pageMode == 'EDIT') {
-              this.ngOnInit();
-            }
-          } else if (error.status === 404) {
-            const errors: any[] = [];
-            if (error.error.errors) {
-              error.error.errors.forEach(x => {
-                errors.push(x);
-              });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
-            } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
-            }
-          } else if (error.status === 500) {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.errors, '', 'alert', true, 'OK', null, true);
-          } else if (error.status === 503) {
-            const errors: any[] = [];
-            if (error.error.errors) {
-              error.error.errors.forEach(x => {
-                errors.push(x);
-              });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
-            } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
-            }
-          }
-          this.sharedServices.loadingChanged.next(false);
-        }
-      });
+      //         } else {
+      //           this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
+      //           this.ngOnInit();
+      //           // location.reload();
+      //         }
+      //       }
+      //     }
+      //     this.sharedServices.loadingChanged.next(false);
+      //   }
+      // }, error => {
+      //   if (error instanceof HttpErrorResponse) {
+      //     if (error.status === 400) {
+      //       this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
+      //       if (this.pageMode == 'EDIT') {
+      //         this.ngOnInit();
+      //       }
+      //     } else if (error.status === 404) {
+      //       const errors: any[] = [];
+      //       if (error.error.errors) {
+      //         error.error.errors.forEach(x => {
+      //           errors.push(x);
+      //         });
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
+      //       } else {
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
+      //       }
+      //     } else if (error.status === 500) {
+      //       // tslint:disable-next-line:max-line-length
+      //       this.dialogService.showMessage(error.error.message ? error.error.message : error.error.errors, '', 'alert', true, 'OK', null, true);
+      //     } else if (error.status === 503) {
+      //       const errors: any[] = [];
+      //       if (error.error.errors) {
+      //         error.error.errors.forEach(x => {
+      //           errors.push(x);
+      //         });
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
+      //       } else {
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
+      //       }
+      //     }
+      //     this.sharedServices.loadingChanged.next(false);
+      //   }
+      // });
     }
   }
 
@@ -2240,7 +2241,16 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.payerId) {
-        this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.payerId);
+        if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId) {
+          // tslint:disable-next-line:max-line-length
+          this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId + ':' + this.otherDataModel.beneficiary.insurancePlan.payerId);
+        } else {
+          this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.payerId);
+        }
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId) {
+        this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId);
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.memberCardId) {
