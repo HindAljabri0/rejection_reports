@@ -1533,14 +1533,22 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       this.model.insurancePlan = {};
 
-      this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
+      if (this.FormNphiesClaim.controls.insurancePlanPayerId.value.indexOf(':') > -1) {
+        if (this.FormNphiesClaim.controls.insurancePlanPayerId.value.split(':').length > 1) {
+          this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value.split(':')[1];
+        }
+      } else {
+        this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+      }
+
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
       this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
 
       this.model.insurancePlan.payerName = this.FormNphiesClaim.controls.insurancePlanPayerName.value;
-      this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
+      this.model.insurancePlan.payerNphiesId = this.model.insurancePlan.payerId;
+      // this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
       // this.model.insurancePlan.planId = this.FormNphiesClaim.controls.insurancePlanId.value;
       this.model.insurancePlan.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
       this.model.insurancePlan.tpaNphiesId = null;
@@ -2240,6 +2248,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.payerId) {
+        if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId === null) {
+          this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId = '-1';
+        }
         if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId) {
           // tslint:disable-next-line:max-line-length
           this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId + ':' + this.otherDataModel.beneficiary.insurancePlan.payerId);
