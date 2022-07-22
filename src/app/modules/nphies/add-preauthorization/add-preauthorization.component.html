@@ -704,8 +704,8 @@
                           <table class="inline-label-table">
                             <tbody>
                               <tr>
-                                <td class="label">Start Date</td>
-                                <td>{{item.startDateStr}}</td>
+                                <td class="label">Serviced Date/Period</td>
+                                <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}</td>
                               </tr>
                               <tr>
                                 <td class="label">Non Standard Code</td>
