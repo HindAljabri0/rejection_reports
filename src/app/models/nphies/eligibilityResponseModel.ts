@@ -18,8 +18,8 @@ export class EligibilityResponseModel {
   isNewBorn: boolean;
   noCoverageFoundReason: string;
   serviceDate: Date;
-  payerId:string;
-  tpa_Id:string;
+  payerId: string;
+  tpa_Id: string;
   transactionDate: Date;
   nphiesResponseId: string;
   eligibilityIdentifierUrl: string;
