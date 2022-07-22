@@ -314,7 +314,9 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
         this.paymentAmount += x.net;
-        x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+        if (x.startDate) {
+          x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+        }
         x.endDate = moment(moment(x.endDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
 
         x.discount = parseFloat(x.discount);
