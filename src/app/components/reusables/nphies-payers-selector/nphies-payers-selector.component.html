@@ -68,17 +68,34 @@
     </form>
   </ng-container>
   <ng-container *ngIf="insurancePayer && !duplicatePayer">
-    <mat-form-field class="form-control custom-select-control" [matTooltip]="toolTip">
-      <mat-select (selectionChange)="selectPayer($event)" [value]="insurancePayer">
-        <mat-option [value]="">Select Payer</mat-option>
-        <ng-container *ngFor="let organization of organizations">
-          <h5 *ngIf="organization.code != '-1'" class="menu-opt-group text-right">
-            {{organization.display}}<br>{{organization.displayAlt}}</h5>
-          <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">
-            {{payer.display}}<br>{{payer.displayAlt}}</mat-option>
-        </ng-container>
-      </mat-select>
-    </mat-form-field>
+    <ng-container *ngIf="!tpaNphiesId">
+      <mat-form-field class="form-control custom-select-control" [matTooltip]="toolTip">
+        <mat-select (selectionChange)="selectPayer($event)" [value]="insurancePayer">
+          <mat-option [value]="">Select Payer</mat-option>
+          <ng-container *ngFor="let organization of organizations">
+            <h5 *ngIf="organization.code != '-1'" class="menu-opt-group text-right">
+              {{organization.display}}<br>{{organization.displayAlt}}</h5>
+            <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">
+              {{payer.display}}<br>{{payer.displayAlt}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container *ngIf="tpaNphiesId">
+      <mat-form-field class="form-control custom-select-control" [matTooltip]="toolTip">
+        <mat-select (selectionChange)="selectPayer($event)" [value]="insurancePayer">
+          <mat-option [value]="">Select Payer</mat-option>
+          <ng-container *ngFor="let organization of organizations">
+            <h5 *ngIf="organization.code != '-1'" class="menu-opt-group text-right">
+              {{organization.display}}<br>{{organization.displayAlt}}</h5>
+            <mat-option *ngFor="let payer of organization.subList" [value]="organization.code +':'+ payer.code">
+              {{payer.display}}<br>{{payer.displayAlt}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
   </ng-container>
   <ng-container *ngIf="duplicatePayer">
     <div class="d-flex align-items-center">
