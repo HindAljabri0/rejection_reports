@@ -87,6 +87,10 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     margin: 14,
     responsive: {
       0: {
+        items: 2,
+        slideBy: 2
+      },
+      768: {
         items: 3,
         slideBy: 3
       },

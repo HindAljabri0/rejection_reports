@@ -10,6 +10,7 @@ export class AbstractcardComponent {
   constructor() { }
 
   @Input() title: string;
+  @Input() totalCount: string;
   @Input() actionText: string;
   @Input() accentColor: string;
   @Input() clickable = true;

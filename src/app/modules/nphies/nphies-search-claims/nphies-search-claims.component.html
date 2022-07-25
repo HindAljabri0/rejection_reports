@@ -18,27 +18,24 @@
       <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
         <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
           <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
-            <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
-              [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
-              class="primary-card border-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+            <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="summary.value.totalClaims"
+              [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
+              <span class="label total">Totals</span>
               <table>
                 <tr>
-                  <th *ngIf="summary.value.statuses[0] != 'partially_paid'">No. of Claims</th>
-                  <th>Total Patient Share</th>
-                  <th *ngIf="summary.value.statuses[0] == 'partially_paid'">No. of Claims</th>
-                  <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
-                  <th *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
+                  <th class="label">Net</th>
+                  <th class="label">Patient Share</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
                 </tr>
                 <tr>
-                  <td *ngIf="summary.value.statuses[0] != 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
+                  <td class="pb-6 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                    <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span *ngIf="summary.value.totalNetAmount!=null"
+                      class="currency"> SR</span>
                   </td>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
                       *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
-                  </td>
-                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency">
@@ -47,21 +44,23 @@
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
                   </td>
+
                 </tr>
 
                 <tr>
-                  <th>Total Net</th>
-                  <th>Total Payer Share</th>
+                  <th class="label">Tax</th>
+                  <th class="label">Payer Share</th>
                 </tr>
                 <tr>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span *ngIf="summary.value.totalNetAmount!=null"
-                      class="currency"> SR</span>
+                    <span class="dashboard-numbers">{{summary.value.totalTax!=null?summary.value.totalTax:'-'}}</span><span *ngIf="summary.value.totalTax!=null" class="currency">
+                      SR</span>
                   </td>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
                       *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
                   </td>
+
                   <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
                 </tr>
               </table>
@@ -134,12 +133,18 @@
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Status</th>
                   <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
-                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    Processing Status</th>
+                    class="text-nowrap text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    <span class="inline-text pr-1">Processing Status</span>
+                    <mat-icon matTooltip="This will request for the current processing status of the claim" class="material-icons-outlined size-20 inline-text">info
+                    </mat-icon>
+                  </th>
 
                   <th *ngIf="showInquireAll === true"
-                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    Inquiry
+                    class="text-nowrap text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    <span class="inline-text pr-1">Inquiry</span>
+                    <mat-icon matTooltip="This will send the same claim request again to NPHIES to fetch latest response from NPHIES queue"
+                      class="material-icons-outlined size-20 inline-text">info
+                    </mat-icon>
                   </th>
 
                   <th
@@ -183,7 +188,7 @@
                     </td>
                     <td *ngIf="showColumns(selectedCardKey,claim.status)" class="actions text-left text-wrap">
                       <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
-                        <button mat-icon-button matTooltip="Check Status" class="text-primary ml-n2" (click)="checkStatus(claim.claimResponseId)">
+                        <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2" (click)="checkStatus(claim.claimResponseId)">
                           <mat-icon>refresh</mat-icon>
                         </button>
                         <span *ngIf="!claim.processingStatus" class="pl-1">Check Status</span>
@@ -193,7 +198,7 @@
 
                     <td *ngIf="showInquireAll === true" class="actions text-center">
                       <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')"
-                        [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : 'Select claim to inquire')">I</span>
+                        [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : 'Get latest claim response from NPHIES queue')">I</span>
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
                     </td>

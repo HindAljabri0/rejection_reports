@@ -55,14 +55,18 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
     if (this.pageMode !== 'EDIT') {
       if (this.claimType && this.claimType === 'institutional') {
         this.IsOnAdmissionRequired = true;
-        this.diagnosisList.map(x => x.IsOnAdmissionRequired = true);
+        this.diagnosisList.map(x => {
+          x.IsOnAdmissionRequired = true;
+          x.onAdmission = '';
+        });
       } else {
-        this.diagnosisList.map(x => x.IsOnAdmissionRequired = false);
+        this.diagnosisList.map(x => {
+          x.IsOnAdmissionRequired = false;
+          x.onAdmission = '';
+        });
         this.IsOnAdmissionRequired = false;
       }
-      
     } else {
-      
       this.diagnosisList.map(x => x.IsOnAdmissionRequired = false);
       this.IsOnAdmissionRequired = true;
     }
@@ -109,14 +113,14 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
   }
 
   changeDiagnosisType($event, i) {
-    
+
     if ($event.value === 'principal' && this.diagnosisList.filter(x => x.type === $event.value).length > 1) {
-      
+
       this.diagnosisList[i].typeError = 'There should be only one principal Type';
     }
 
     if ($event.value !== 'principal' && this.diagnosisList.filter(x => x.type === 'principal').length === 1) {
-      
+
       this.diagnosisList.map(x => x.typeError = '');
     }
   }

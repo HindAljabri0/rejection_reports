@@ -9,6 +9,7 @@ import { TawuniyaGssComponent } from './tawuniya-gss.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { TawuniyaGssReportDetailsComponent } from './tawuniya-gss-report-details/tawuniya-gss-report-details.component';
 import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generate-report-dialog/tawuniya-gss-generate-report-dialog.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 
@@ -18,7 +19,7 @@ import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generat
     CommonModule,
     RouterModule.forChild([
       { path: '', component: TawuniyaGssComponent },
-      { path: 'report-details', component: TawuniyaGssReportDetailsComponent }
+      { path: ':gssReferenceNumber/report-details', component: TawuniyaGssReportDetailsComponent }
     ]),
     MaterialModule,
     ReactiveFormsModule,
@@ -27,6 +28,7 @@ import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generat
     FormsModule,
     NgScrollbarModule,
     SmoothScrollModule,
+    BsDatepickerModule
   ],
   entryComponents: [
     TawuniyaGssGenerateReportDialogComponent

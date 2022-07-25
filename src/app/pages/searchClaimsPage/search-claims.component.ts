@@ -57,6 +57,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         autoWidth: true,
         responsive: {
             0: {
+                items: 2,
+                slideBy: 2
+            },
+            768: {
                 items: 3,
                 slideBy: 3
             },
@@ -827,6 +831,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare - claim.totalPatientShare,
                 totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount - claim.totalPayerShare,
                 totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
+                totalTax: this.summaries[oldSummaryIndex].totalTax - claim.netvatamount,
                 statuses: this.summaries[oldSummaryIndex].statuses,
                 uploadName: this.summaries[oldSummaryIndex].uploadName,
                 patientShare: this.summaries[oldSummaryIndex].patientShare - claim.patientShare,
@@ -843,6 +848,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     totalPatientShare: this.summaries[oldSummaryIndex].totalPatientShare - claim.totalPatientShare,
                     totalPayerShare: this.summaries[oldSummaryIndex].totalNetAmount - claim.totalPayerShare,
                     totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
+                    totalTax: this.summaries[oldSummaryIndex].totalTax - claim.netvatamount,
                     statuses: this.summaries[newSummaryIndex].statuses,
                     uploadName: this.summaries[newSummaryIndex].uploadName,
                     patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare,
