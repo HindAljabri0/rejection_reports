@@ -39,20 +39,22 @@ export class JsonResponseComponent implements OnInit {
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          if (error.error && error.error.errors) {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
-          } else {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
-          }
-        } else if (error.status === 404) {
-          this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        }
         this.sharedServices.loadingChanged.next(false);
+        console.log(error.status);
+        // if (error.status === 400) {
+        //   if (error.error && error.error.errors) {
+        //     // tslint:disable-next-line:max-line-length
+        //     this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
+        //   } else {
+        //     // tslint:disable-next-line:max-line-length
+        //     this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
+        //   }
+        // } else if (error.status === 404) {
+        //   this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+        // } else if (error.status === 500) {
+        //   this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        // }
+
       }
     });
   }
@@ -79,21 +81,22 @@ export class JsonResponseComponent implements OnInit {
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          if (error.error && error.error.errors) {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors, true);
-          } else {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', null, true);
-          }
-        } else if (error.status === 404) {
-          // tslint:disable-next-line:max-line-length
-          this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK', null, true);
-        } else if (error.status === 500) {
-          this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK', null, true);
-        }
         this.sharedServices.loadingChanged.next(false);
+        console.log(error.status);
+        // if (error.status === 400) {
+        //   if (error.error && error.error.errors) {
+        //     // tslint:disable-next-line:max-line-length
+        //     this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors, true);
+        //   } else {
+        //     // tslint:disable-next-line:max-line-length
+        //     this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', null, true);
+        //   }
+        // } else if (error.status === 404) {
+        //   // tslint:disable-next-line:max-line-length
+        //   this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK', null, true);
+        // } else if (error.status === 500) {
+        //   this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK', null, true);
+        // }
       }
     });
   }
