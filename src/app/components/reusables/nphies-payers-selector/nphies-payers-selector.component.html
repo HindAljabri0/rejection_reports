@@ -59,6 +59,7 @@
                 {{organization.display}}<br>{{organization.displayAlt}}</h5>
               <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">
                 {{payer.display}}<br>{{payer.displayAlt}}</mat-option>
+
             </ng-container>
           </mat-select>
         </mat-form-field>

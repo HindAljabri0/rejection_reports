@@ -248,7 +248,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
         return 0;
       });
-      await this.loadStatues(statuses.filter(status => status.toUpperCase() != 'ALL'));
+      await this.loadStatues(statuses.filter(status => status != null && status.toUpperCase() != 'ALL'));
     }
 
     // this.getResultsOfStatus(this.params.status, this.params.page);
@@ -955,39 +955,39 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   isUnderProcessingStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == ClaimStatus.OUTSTANDING.toUpperCase() ||
       status == 'PENDING' || status == 'UNDER_PROCESS';
   }
 
   isRejectedByPayerStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == ClaimStatus.REJECTED.toUpperCase() ||
       status == 'DUPLICATE';
   }
 
   isReadyForSubmissionStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == ClaimStatus.Accepted.toUpperCase();
   }
 
   isFailedStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == 'FAILED';
   }
 
   isPaidStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == ClaimStatus.PAID.toUpperCase() ||
       status == 'SETTLED';
   }
   isInvalidStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == ClaimStatus.INVALID.toUpperCase() || status == 'RETURNED';
   }
 
   isAllStatus(status: string) {
-    status = status.toUpperCase();
+    status = status ? status.toUpperCase() : status;
     return status == 'ALL';
   }
 

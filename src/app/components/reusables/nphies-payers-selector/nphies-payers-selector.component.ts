@@ -140,4 +140,23 @@ export class NphiesPayersSelectorComponent implements OnInit {
       this.selectionChange.emit({ value: '' });
     }
   }
+  
+
+  // selectPayer(event) {
+  //   if (event.value) {
+  //     const payerNphiesIdValue = event.value;
+  //     let organizationNphiesIdValue = '';
+
+  //     this.organizations.forEach(x => {
+  //       if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+  //         organizationNphiesIdValue = x.code;
+  //       }
+  //     });
+
+  //     this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
+  //   } else {
+  //     this.selectionChange.emit({ value: '' });
+  //   }
+
+  // }
 }
