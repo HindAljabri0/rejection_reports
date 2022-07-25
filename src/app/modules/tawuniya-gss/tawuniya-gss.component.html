@@ -1,40 +1,62 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Tawuniya GSS Reports</p>
+
+        <p>Tawuniya GSS Reports </p>
+
     </div>
-    <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col-4">
-                <div class="form-group">
-                    <label class="control-label">From Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
-                        <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterFromDate></mat-datepicker>
+
+    <form #tawuniyaGssForm='ngForm' (ngSubmit)='tawuniyaGssForm.valid'>
+        <div class="block-filter-panel">
+            <div class="row small-gutter">
+                <div class="col-4">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : tawuniyaGssForm.submitted && fromDateMonth.invalid}">
+                        <label class="control-label">Date From</label>
+                        <div class="date-picker">
+                            <!-- [matDatepicker]="fromDate"  -->
+                            <input autocomplete="off" class="form-control date-picker" bsDatepicker
+                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                placeholder="Select from month" [formControl]='fromDateMonth'
+                                (bsValueChange)="dateValidation($event)" />
+                        </div>
+                        <mat-error *ngIf="tawuniyaGssForm.submitted && fromDateMonth.invalid">From Loss Month is
+                            required
+                        </mat-error>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label class="control-label">To Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
-                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterToDate></mat-datepicker>
+                <div class="col-4">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && toDateMonth.invalid}">
+                        <label class="control-label">Date To</label>
+                        <div class="date-picker">
+                            <!--  -->
+                            <input autocomplete="off" class="form-control date-picker" placeholder="Select to month"
+                                bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                [formControl]='toDateMonth' [minDate]="minDate" />
+                        </div>
+                        <mat-error *ngIf="toDateMonth.invalid && tawuniyaGssForm.submitted">To Loss Month is required
+                        </mat-error>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label class="control-label">&nbsp;</label>
-                    <button type="button" mat-flat-button color="primary">Search</button>
+
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <button type="submit" mat-flat-button color="primary"
+                            (click)="searchQuerySummary()">Search</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height fixed-height-sm">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <div class="right-block" *ngIf="initiateModel === null || initiateModel?.length===0">
+                <app-empty-state [message]="getEmptyStateMessage()">
+                </app-empty-state>
+            </div>
+            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0"
+                cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th>Ref. No.</th>
@@ -52,45 +74,48 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let data of initiateModel">
-                    	<tr *ngIf="data != null">
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.gssReferenceNumber }}</td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.lossMonth }}</td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details" class="text-center">{{ data?.totalNumberOfClaim }}</td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalGross.value }} <span class="currency">{{ data?.totalGross.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalDiscount.value }} <span class="currency">{{ data?.totalDiscount.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalPatientShare.value }} <span class="currency">{{ data?.totalPatientShare.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNet.value }} <span class="currency">{{ data?.totalNet.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetVat.value }} <span class="currency">{{ data?.totalNetVat.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">{{ data?.totalNetPayable.value }} <span class="currency">{{ data?.totalNetPayable.currencyCode }}</span></td>
-							<td class="row-click" routerLink="/tawuniya-gss/report-details">
-								<span class="status-badge size-sm primary" *ngIf="data?.status === 'new'">New</span>
-                                <span class="status-badge size-sm success" *ngIf="data?.status === 'signed'">Signed</span>
-                                <span class="status-badge size-sm danger" *ngIf="data?.status === 'cancelled'">Cancelled</span>
-							</td>
-							<td class="actions">
-								<button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-									<mat-icon>more_vert</mat-icon>
-								</button>
-							</td>
-						</tr>
-					</ng-container>
+                        <tr *ngIf="data != null">
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.gssReferenceNumber }}</td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.lossMonth }}</td>
+                            <td class="row-click" (click)="openDetailView(data)" class="text-center">{{
+                                data?.totalNumberOfClaim }}</td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalGross?.value }} <span
+                                    class="currency">{{
+                                    data?.totalGross?.currencyCode }}</span></td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalDiscount?.value }} <span
+                                    class="currency">{{
+                                    data?.totalDiscount?.currencyCode }}</span></td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalPatientShare?.value }}
+                                <span class="currency">{{
+                                    data?.totalPatientShare?.currencyCode }}</span>
+                            </td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span
+                                    class="currency">{{
+                                    data?.totalNet?.currencyCode }}</span></td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span
+                                    class="currency">{{
+                                    data?.totalNetVat?.currencyCode }}</span></td>
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetPayable?.value }}
+                                <span class="currency">{{
+                                    data?.totalNetPayable?.currencyCode }}</span>
+                            </td>
+                            <td class="row-click" (click)="openDetailView(data)">
+                                <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new',
+                                'success' : data?.status?.toLowerCase() === 'signed',
+                                'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status |
+                                    titlecase}}</span>
+                            </td>
+                            <td class="actions">
+                                <button type="button" mat-icon-button class="text-primary" (click)="downloadData(data)">
+                                    <mat-icon>file_download</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-    <mat-menu #actionsMenu xPosition="before">
-        <ng-template matMenuContent>
-            <button mat-menu-item type="button">
-                <mat-icon class="material-icons-outlined">edit</mat-icon>
-                <span>Edit</span>
-            </button>
-            <button mat-menu-item type="button">
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Delete</span>
-            </button>
-        </ng-template>
-    </mat-menu>
-
     <button mat-fab color="primary" class="page-fab" (click)="openGenerateReportDialog()">
         <mat-icon>add</mat-icon>
     </button>

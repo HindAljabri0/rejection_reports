@@ -70,7 +70,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group" [matTooltip]="errors.gender" [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
             <label class="control-label">Gender<span class="asterisk">*</span></label>
@@ -305,16 +305,16 @@
 
               <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                 <td class="text-center">
-                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode)||insurancePlan.iSPrimary">
+                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode)|| insurancePlan.isPrimary">
                   </mat-radio-button>
                 </td>
 
 
                 <td>
-                  <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
+                  <div class="form-group m-0 w-260"
                     [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
 
-                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId" [insurancePayer]="insurancePlan.selectePayer"></app-nphies-payers-selector>
+                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId" [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"  [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
 
                     <!-- <mat-form-field class="form-control custom-select-control">
                       <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="selectedPayer2($event.value); insurancePlan.selectePayer = $event.value;" #Payer>
@@ -727,14 +727,14 @@
 
               <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                 <td class="text-center">
-                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode) ||insurancePlan.iSPrimary">
+                  <mat-radio-button color="primary" class="grid-radio" [value]="i" [checked]="(i+''==setPrimary && addMode) || (insurancePlan.isPrimary)">
                   </mat-radio-button>
                 </td>
 
                 <td>
-                  <div class="form-group m-0 w-260" [matTooltip]="insurancePlan.payerErorr || getSelectedPayerName(i)"
+                  <div class="form-group m-0 w-260"
                     [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId" [insurancePayer]="insurancePlan.selectePayer"></app-nphies-payers-selector>
+                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId" [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer" [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
 
                     <!-- <mat-form-field class="form-control custom-select-control">
                       <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
@@ -1003,7 +1003,7 @@
           <tbody>
             <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
               <td class="text-center align-middle">
-                <mat-icon class="text-primary">{{isPrimary(insurancePlans.isPrimary)?'done':''}}
+                <mat-icon class="text-primary">{{insurancePlans.isPrimary ? 'done':''}}
                 </mat-icon>
               </td>
               <td>{{getPayerName(insurancePlans.payerId)}}</td>

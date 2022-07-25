@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { PaginatedResult } from 'src/app/models/paginatedResult';
+import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { SharedServices } from 'src/app/services/shared.services';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatPaginator } from '@angular/material';
@@ -8,18 +11,15 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
-import { PaginatedResult } from 'src/app/models/paginatedResult';
 import * as moment from 'moment';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
-import { ApprovalToClaimTransaction } from 'src/app/models/approval-to-claim-transaction';
+import { ApprovalToClaimPrepare } from 'src/app/models/approval-to-claim-prepare';
 
 @Component({
-  selector: 'app-convert-pre-auth-to-claim',
-  templateUrl: './convert-pre-auth-to-claim.component.html',
+  selector: 'app-prepare-pre-auth-for-claim',
+  templateUrl: './prepare-pre-auth-for-claim.component.html',
   styles: []
 })
-export class ConvertPreAuthToClaimComponent implements OnInit {
+export class PreparePreAuthForClaimComponent implements OnInit {
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[];
@@ -44,7 +44,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   payersList = [];
 
   isSubmitted = false;
-  transactionModel: PaginatedResult<ApprovalToClaimTransaction>;
+  transactionModel: PaginatedResult<ApprovalToClaimPrepare>;
   transactions = [];
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
@@ -54,7 +54,8 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   advanceSearchEnable = false;
   statusList = [
     { value: 'approved', name: 'Approved' },
-    { value: 'pended', name: 'Pended' }
+    { value: 'pended', name: 'Pended' },
+    { value: 'not-required', name: 'Not Required' }
   ];
 
   constructor(
@@ -273,7 +274,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
-          this.transactionModel = new PaginatedResult(body, ApprovalToClaimTransaction);
+          this.transactionModel = new PaginatedResult(body, ApprovalToClaimPrepare);
           this.transactions = this.transactionModel.content;
           this.transactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
@@ -281,10 +282,9 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
           });
 
           this.transactions.forEach(x => {
-            x.episodeId = '';
             if (x.items && x.items.length > 0) {
               x.items.forEach(y => {
-                y.invoceNo = '';
+                y.invoiceNo = '';
               });
             }
           });
@@ -308,7 +308,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
 
   editURL(fromDate?: string, toDate?: string) {
-    let path = '/nphies/convert-pre-auth-to-claim?';
+    let path = '/nphies/prepare-pre-auth-for-claim?';
 
     if (this.FormPreAuthTransaction.controls.fromDate.value) {
       path += `fromDate=${this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
@@ -368,11 +368,11 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     this.advanceSearchEnable = !this.advanceSearchEnable;
   }
 
-  convertToClaim(transaction) {
+  prepareToClaim(transaction) {
     // tslint:disable-next-line:max-line-length
     this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0].submitted = true;
     let hasError = false;
-    if (!transaction.episodeId) {
+    if (!transaction.episodeNo) {
       hasError = true;
     }
 
@@ -385,8 +385,84 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     }
 
     if (!hasError) {
-      console.log('call api to convert');
+      // tslint:disable-next-line:max-line-length
+      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];
+      const model: any = {
+        authItems: [
+          {
+            approvalRequestId: data.requestId,
+            items: data.items.map(x => {
+              const itemModel: any = {};
+              itemModel.itemId = x.itemId;
+              itemModel.invoiceNo = x.invoiceNo;
+              return itemModel;
+            })
+          }
+        ],
+        episodeNo: data.episodeNo,
+        payerNphiesId: data.payerId,
+        destinationId: data.destinationId,
+        beneficiaryName: data.beneficiaryName,
+        documentId: data.documentId
+      };
+      this.sharedServices.loadingChanged.next(true);
+      this.providerNphiesApprovalService.approvalToPrepareSave(this.sharedServices.providerId, model).subscribe((event: any) => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body.errors) {
+            if (body.transactionId) {
+              // tslint:disable-next-line:max-line-length
+              this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true, body.transactionId).subscribe(res => {
+                this.onSubmit();
+              });
+            } else {
+              this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true).subscribe(res => {
+                this.onSubmit();
+              });
+            }
+          } else {
+            this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', null, true).subscribe(res => {
+              this.onSubmit();
+            });
+          }
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, error => {
+        this.sharedServices.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
+          } else if (error.status === 500) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
+          }
+        }
+      });
+
+
     }
   }
+
+
 
 }

@@ -149,6 +149,13 @@
       <p class="form-control-static text-primary">{{data.transferAuthStartDate | date: 'dd/MM/yyyy'}} - {{data.transferAuthEndDate | date: 'dd/MM/yyyy'}}</p>
     </div>
   </div>
+  <div *ngIf="data.reIssueReasonName" class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Reissue Reason</div>
+      <p class="form-control-static text-primary">{{data.reIssueReasonName}}</p>
+    </div>
+  </div>
+
 </div>
 
 <!-- payment info start -->
@@ -502,8 +509,8 @@
                   <table class="inline-label-table">
                     <tbody>
                       <tr>
-                        <td class="label">Start Date</td>
-                        <td>{{item.startDate}}</td>
+                        <td class="label">Serviced Date/Period</td>
+                        <td><span *ngIf="item.startDate">{{item.startDate}} - </span>{{item.endDate}}</td>
                       </tr>
                       <tr>
                         <td class="label">Non Standard Code</td>

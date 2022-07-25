@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClipboardService } from 'ngx-clipboard';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-json-view-dialog',
@@ -12,12 +13,15 @@ export class JsonViewDialogComponent implements OnInit {
 
   constructor(
     private clipboardService: ClipboardService,
+    private sanitizer: DomSanitizer,
     private dialogRef: MatDialogRef<JsonViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data:
       {
         title: string,
         tabs: {
+          IsDownload: boolean,
           title: string,
+          fileName: string,
           json: string
         }[]
       },
@@ -46,6 +50,17 @@ export class JsonViewDialogComponent implements OnInit {
     setTimeout(() => {
       this.copyText = 'Copy JSON';
     }, 2000);
+  }
+
+  download(fileName, json){
+    const sJson = JSON.stringify(json);
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+    element.setAttribute('download', fileName);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
   }
 
 }
