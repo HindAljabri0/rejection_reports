@@ -298,7 +298,7 @@ export class BeneficiaryComponent implements OnInit {
 
 
   isPrimary(index: string) {
-    if (index == 'true') {
+    if (index === 'true') {
       return true;
     } else {
       return false;

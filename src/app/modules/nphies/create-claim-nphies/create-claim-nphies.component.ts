@@ -1544,7 +1544,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
-      this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+
+      if (this.FormNphiesClaim.controls.insurancePlanExpiryDate.value) {
+        // tslint:disable-next-line:max-line-length
+        this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormNphiesClaim.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
+      }
 
       this.model.insurancePlan.payerName = this.FormNphiesClaim.controls.insurancePlanPayerName.value;
       this.model.insurancePlan.payerNphiesId = this.model.insurancePlan.payerId;
