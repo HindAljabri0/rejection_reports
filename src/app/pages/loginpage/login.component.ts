@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
 
   isEidFitr = false;
-  isEidAdha = true;
+  isEidAdha = false;
 
   constructor(
     public authService: AuthService,
