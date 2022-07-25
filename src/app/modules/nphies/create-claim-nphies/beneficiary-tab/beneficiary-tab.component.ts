@@ -312,7 +312,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    if(this.FormNphiesClaim.controls.beneficiaryName.value.length>2){
+    if (this.FormNphiesClaim.controls.beneficiaryName.value.length > 2) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormNphiesClaim.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -435,10 +435,16 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
   selectPlan(plan) {
     this.insurancePlans = [];
     if (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0]) {
+      // tslint:disable-next-line:max-line-length
       this.insurancePlans.push(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0]);
 
-      this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(
-        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId, 10);
+      // tslint:disable-next-line:max-line-length
+      const tpaNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? '-1' : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId;
+      // tslint:disable-next-line:max-line-length
+      const payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId;
+
+      this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(tpaNphiesId + ':' + payerNphiesId, 10);
+
       this.FormNphiesClaim.controls.insurancePlanExpiryDate.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].expiryDate);
       this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(
@@ -451,13 +457,13 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
       this.FormNphiesClaim.controls.insurancePlanPayerName.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerName);
       this.FormNphiesClaim.controls.insurancePayerNphiesId.setValue(
+        // tslint:disable-next-line:max-line-length
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId);
-      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
-      //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
+
       this.FormNphiesClaim.controls.insurancePlanPrimary.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].primary);
       // tslint:disable-next-line:max-line-length
-      this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId);
+      this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(tpaNphiesId);
       // this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
     }
   }

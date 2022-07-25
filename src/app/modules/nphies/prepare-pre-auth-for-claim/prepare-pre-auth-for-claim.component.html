@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
   <div class="block-header">
-    <p>Convert Pre-Auth to Claim</p>
+    <p>Prepare Pre-Auth Transactions for Claim</p>
   </div>
   <div class="block-filter-panel">
     <form [formGroup]="FormPreAuthTransaction" (ngSubmit)="onSubmit()">
@@ -38,12 +38,12 @@
           </div>
         </div>
         <ng-container *ngIf="advanceSearchEnable">
-          <!-- <div class="col-4 col-xxl-3">
+          <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Pre Authorization ID</label>
               <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
             </div>
-          </div> -->
+          </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Payer</label>
@@ -64,7 +64,7 @@
               </mat-autocomplete>
             </div>
           </div>
-          <!-- <div class="col-4 col-xxl-3">
+          <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Status</label>
               <mat-form-field class="form-control custom-select-control">
@@ -74,7 +74,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-          </div> -->
+          </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Pre Auth Reference No</label>
@@ -99,54 +99,57 @@
         <thead>
           <tr>
             <th width="10"></th>
-            <th width="10"></th>
             <th>Beneficiary Name</th>
-            <th>Episode ID</th>
             <th>Pre Auth Ref No</th>
-            <!-- <th>Pre Authorization ID</th> -->
+            <th>Pre Authorization ID</th>
             <th>Requested Date</th>
             <!-- <th>Response Date</th> -->
             <th>Payer/TPA</th>
             <th>Total Net</th>
             <th>Patient Share</th>
             <th>Payer Share</th>
-            <!-- <th>Status</th> -->
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <ng-container *ngFor="let transaction of transactions; let i = index">
             <tr class="row-click">
-              <td>
-                <mat-checkbox class="grid-checkbox"></mat-checkbox>
-              </td>
               <td (click)="toggleRow(i)" class="text-primary text-center">
                 <mat-icon *ngIf="currentOpenRow!=i">add_circle_outline</mat-icon>
                 <mat-icon *ngIf="currentOpenRow==i">remove_circle_outline</mat-icon>
               </td>
               <td (click)="toggleRow(i)">{{transaction.beneficiaryName}} ({{transaction.documentId}}) </td>
-              <td (click)="toggleRow(i)">{{transaction.episodeId}} </td>
               <td (click)="toggleRow(i)">{{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
-              <!-- <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td> -->
+              <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td>
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
-              <!-- <td (click)="toggleRow(i)"> {{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
-              <td (click)="toggleRow(i)"> {{transaction.payerName}}</td>
-              <td (click)="toggleRow(i)"> {{transaction.totalNet}} <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
-              <!-- <td (click)="toggleRow(i)"> {{transaction.status}}</td> -->
+              <!-- <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
+              <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
+              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.status}}</td>
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
-              <td></td>
               <td colspan="10">
-                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0"
-                  *ngIf="transaction && transaction.items && transaction.items.length > 0">
+                <div class="row small-gutter">
+                  <div class="col-4 col-xxl-3">
+                    <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}">
+                      <label class="control-label">Episode No.</label>
+                      <input class="form-control" placeholder="Enter episode no." [(ngModel)]="transaction.episodeNo">
+                      <div *ngIf="transaction.submitted && !transaction.episodeNo">
+                        <span class="error-text">Episode No required</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <table class="primary-grid mb-3 sticky-header claim-view-table" cellpadding="0" cellspacing="0"
+                  border="0" *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
-                      <th>SequenceNo</th>
-                      <th>Item Type</th>
-                      <th>Invoice No. <span class="asterisk">*</span></th>
-                      <th>Standard Code - Description</th>
+                      <th>Type</th>
+                      <th>Invoice No.</th>
+                      <th>Code - Description</th>
                       <th>Patient Share</th>
                       <th>Payer Share</th>
                       <th>Net</th>
@@ -155,10 +158,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr  *ngFor="let item of transaction.items" class="align-middle">
-                      <td>{{item.sequence}}</td>
+                    <tr *ngFor="let item of transaction.items" class="align-middle">
                       <td>{{item.itemType}}</td>
-                      <td>{{item.invoiceNo}}</td>
+                      <td>
+                        <div class="form-group mb-n1 mt-n1"
+                          [ngClass]="{'has-error' : transaction.submitted && item.status === 'approved' && !item.invoiceNo}">
+                          <input type="text" class="form-control" placeholder="Enter invoice no."
+                            [(ngModel)]="item.invoiceNo" [disabled]="item.status !== 'approved'" />
+                          <div *ngIf="transaction.submitted && item.status === 'approved' && !item.invoiceNo">
+                            <span class="error-text">InvoiceNo required</span>
+                          </div>
+                        </div>
+                      </td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                       <td>{{item.patientShare}} <span class="currency">SAR</span></td>
                       <td>{{item.payerSahare}} <span class="currency">SAR</span></td>
@@ -168,6 +179,8 @@
                     </tr>
                   </tbody>
                 </table>
+                <div class="text-right"><button type="button" mat-flat-button color="primary"
+                    (click)="prepareToClaim(transaction)">Save</button></div>
               </td>
             </tr>
           </ng-container>
@@ -197,12 +210,6 @@
       <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
         (page)="paginatorAction($event)">
       </mat-paginator>
-    </div>
-  </div>
-
-  <div class="block-footer sticky">
-    <div class="right-block">
-      <button type="button" color="primary" mat-flat-button>Convert All</button>
     </div>
   </div>
 </div>

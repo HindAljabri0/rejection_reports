@@ -9,6 +9,7 @@ export class ViewedClaim {
   net: number;
   totalPatientShare:number;
   totalPayerShare:number;
+  totalTax:number;
   unitofnet: string;
   netvatamount: number;
   unitofnetvatamount: string;

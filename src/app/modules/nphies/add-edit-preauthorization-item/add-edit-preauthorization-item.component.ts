@@ -52,7 +52,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     net: [''],
     patientShare: [''],
     payerShare: [''],
-    startDate: ['', Validators.required],
+    startDate: [''],
+    endDate: ['', Validators.required],
     supportingInfoSequence: [''],
     supportingInfoFilter: [''],
     careTeamSequence: [''],
@@ -131,6 +132,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         patientShare: this.data.item.patientShare,
         payerShare: this.data.item.payerShare,
         startDate: this.data.item.startDate,
+        endDate: this.data.item.endDate,
         invoiceNo: this.data.item.invoiceNo
       });
 
@@ -488,7 +490,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     // tslint:disable-next-line:max-line-length
     // if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-    //   // tslint:disable-next-line:max-line-length
+    // tslint:disable-next-line:max-line-length
     //   // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
 
     //   let discount = 0;
@@ -496,7 +498,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     //   if (this.FormItem.controls.discount.value) {
     //     discount = parseFloat(this.FormItem.controls.discount.value);
     //   }
-    //   // tslint:disable-next-line:max-line-length
+    // tslint:disable-next-line:max-line-length
     //   const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount + parseFloat(this.FormItem.controls.tax.value);
     //   this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
     // } else {
@@ -775,17 +777,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   validateNewBornValues() {
     // if (this.data.IsNewBorn && this.data.beneficiaryDob && (this.data.type === 'institutional' || this.data.type === 'professional')) {
     if (this.data.IsNewBorn && this.data.beneficiaryDob) {
-      const serviceDate = new Date(this.FormItem.controls.startDate.value);
+      const serviceDate = new Date(this.FormItem.controls.endDate.value);
       const dob = new Date(this.data.beneficiaryDob);
       if (serviceDate < dob) {
         // tslint:disable-next-line:max-line-length
-        this.serviceDataError = 'Start Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
+        this.serviceDataError = 'End Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
         return false;
       } else {
         const diff = this.daysDiff(dob, serviceDate);
         if (diff > 90) {
           // tslint:disable-next-line:max-line-length
-          this.serviceDataError = 'Difference between Start Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
+          this.serviceDataError = 'Difference between End Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
           return false;
         } else {
           this.serviceDataError = '';
@@ -858,6 +860,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
       model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd');
       model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy');
+
+      model.endDate = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd');
+      model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy');
 
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
         model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });

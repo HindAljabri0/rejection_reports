@@ -24,6 +24,8 @@ import { CommunicationRequestsComponent } from './communication-requests/communi
 import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ReuseApprovalModalComponent } from './reuse-approval-modal/reuse-approval-modal.component';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -45,6 +47,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
 
+  typeList = this.sharedDataService.claimTypeList;
+
   FormPreAuthTransaction: FormGroup = this.formBuilder.group({
     fromDate: [''],
     toDate: [''],
@@ -55,11 +59,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     documentId: [''],
     status: [''],
     preAuthRefNo: [''],
-    destinationId: ['']
+    destinationId: [''],
+    type: ['']
   });
 
   payersList = [];
-
   isSubmitted = false;
   errorMessage: string;
   transactionModel: PaginatedResult<PreAuthorizationTransaction>;
@@ -78,6 +82,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     { value: 'cancelled', name: 'Cancelled' }
   ];
 
+  
+
   constructor(
     public sharedServices: SharedServices,
     private formBuilder: FormBuilder,
@@ -88,7 +94,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private dialogService: DialogService,
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
-    private providerNphiesApprovalService: ProviderNphiesApprovalService
+    private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    private sharedDataService: SharedDataService
   ) {
 
   }
@@ -143,6 +150,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (params.status != null) {
         this.FormPreAuthTransaction.controls.status.patchValue(params.status);
+      }
+
+      if(params.type != null){
+        this.FormPreAuthTransaction.controls.type.patchValue(params.type);
       }
 
       if (params.preAuthRefNo != null) {
@@ -299,6 +310,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         // });
       }
 
+      if (this.FormPreAuthTransaction.controls.type.value) {
+        model.type = this.FormPreAuthTransaction.controls.type.value;
+      }
+
 
       model.page = this.page;
       model.pageSize = this.pageSize;
@@ -313,6 +328,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.transactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
+            x.claimType = this.typeList.find(y => y.value === x.claimType) ? this.typeList.filter(y => y.value === x.claimType)[0].name : '';
           });
           if (this.paginator) {
             const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
@@ -529,30 +545,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK');
           }
           this.onSubmit();
-
-
-          // if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
-          //   const errors: any[] = [];
-
-          //   if (body.disposition) {
-          //     errors.push(body.disposition);
-          //   }
-
-          //   if (body.errors && body.errors.length > 0) {
-          //     body.errors.forEach(err => {
-          //       err.coding.forEach(codex => {
-          //         errors.push(codex.code + ' : ' + codex.display);
-          //       });
-          //     });
-          //   }
-          //   this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-
-          // } else {
-          //   // this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-          //   this.onSubmit();
-          // }
         }
-        // this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
       this.sharedServices.loadingChanged.next(false);

@@ -333,8 +333,13 @@
               </a>
             </li>
             <li *ngIf="!envStaging && !envProd">
+              <a routerLink="/nphies/prepare-pre-auth-for-claim" routerLinkActive="is-active">
+                <span class="text">Prepare for Claims</span>
+              </a>
+            </li>
+            <li *ngIf="!envStaging && !envProd">
               <a routerLink="/nphies/convert-pre-auth-to-claim" routerLinkActive="is-active">
-                <span class="text">Convert Pre-Auth to Claim</span>
+                <span class="text">Convert to Claims</span>
               </a>
             </li>
           </ul>
