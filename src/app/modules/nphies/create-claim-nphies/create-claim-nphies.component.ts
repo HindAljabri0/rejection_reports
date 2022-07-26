@@ -2338,6 +2338,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.provClaimNo = response.provClaimNo;
     this.otherDataModel.claimRefNo = response.claimRefNo;
     this.otherDataModel.status = response.status;
+    if (response.status) {
+      this.otherDataModel.statusCode = response.status.toLowerCase();
+    }
     this.otherDataModel.totalNet = response.totalNet;
 
 

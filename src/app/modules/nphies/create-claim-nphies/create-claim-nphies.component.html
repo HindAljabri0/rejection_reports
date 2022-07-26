@@ -1193,7 +1193,7 @@
     </mat-tab>
 
     <mat-tab
-      *ngIf="otherDataModel.status === 'rejected' || otherDataModel.status === 'failedNphies' || otherDataModel.status === 'pended' || otherDataModel.status === 'queued' || otherDataModel.status === 'partial' || otherDataModel.status === 'approved' || otherDataModel.status === 'failednphies'"
+      *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved'"
       [label]="'JSON'">
       <ng-template matTabContent>
         <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
