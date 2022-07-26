@@ -946,14 +946,26 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-language-switch{position: absolute;top: 16px;right: calc(50% + 16px);}
 .login-wrapper .right-block.ramadan-poster{padding-top: 0;}
 .ramadan-poster .artwork{width: 494px;height: 601px;display: block;margin: 0 auto 54px;max-width: 100%;}
-.ramadan-poster .logo,.login-wrapper.eid .logo{display: block;height: 80px;width: 113px;margin: 0 auto 24px;}
-.ramadan-poster .contact,.login-wrapper.eid .contact{font-size: 20px;line-height: 30px;opacity: 0.72;font-weight: 500;color: #3060AA;text-align: center;}
-.login-wrapper.eid{border-color:#1D3A66;}
-.login-wrapper.eid .right-block{background: rgb(14,29,51);background: -moz-linear-gradient(top,  rgba(14,29,51,1) 0%, rgba(29,58,102,1) 62%);background: -webkit-linear-gradient(top,  rgba(14,29,51,1) 0%,rgba(29,58,102,1) 62%);background: linear-gradient(to bottom,  rgba(14,29,51,1) 0%,rgba(29,58,102,1) 62%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e1d33', endColorstr='#1d3a66',GradientType=0 );padding: 0;padding-top: 64px;position: relative;}
-.login-wrapper.eid .top-artwork,.login-wrapper.eid .text-artwork,.login-wrapper.eid .bottom-artwork{display: block;margin: 0 auto;max-width: 960px;width: 100%;}
-.login-wrapper.eid .top-artwork{position: absolute;top: 0;left: 50%;width:calc(100% - 40px);transform: translateX(-50%);}
-.login-wrapper.eid .text-artwork{max-width: 279px;margin: auto auto 20px;}
-.login-wrapper.eid .contact{color: #C6DEFF;}
+.ramadan-poster .logo,.login-wrapper.eid-fitr .logo{display: block;height: 80px;width: 113px;margin: 0 auto 24px;}
+.ramadan-poster .contact,.login-wrapper.eid-fitr .contact{font-size: 20px;line-height: 30px;opacity: 0.72;font-weight: 500;color: #3060AA;text-align: center;}
+.login-wrapper.eid-fitr{border-color:#1D3A66;}
+.login-wrapper.eid-fitr .right-block{background: rgb(14,29,51);background: -moz-linear-gradient(top,  rgba(14,29,51,1) 0%, rgba(29,58,102,1) 62%);background: -webkit-linear-gradient(top,  rgba(14,29,51,1) 0%,rgba(29,58,102,1) 62%);background: linear-gradient(to bottom,  rgba(14,29,51,1) 0%,rgba(29,58,102,1) 62%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e1d33', endColorstr='#1d3a66',GradientType=0 );padding: 0;padding-top: 64px;position: relative;}
+.login-wrapper.eid-fitr .top-artwork,.login-wrapper.eid-fitr .text-artwork,.login-wrapper.eid-fitr .bottom-artwork{display: block;margin: 0 auto;max-width: 960px;width: 100%;}
+.login-wrapper.eid-fitr .top-artwork{position: absolute;top: 0;left: 50%;width:calc(100% - 40px);transform: translateX(-50%);}
+.login-wrapper.eid-fitr .text-artwork{max-width: 279px;margin: auto auto 20px;}
+.login-wrapper.eid-fitr .contact{color: #C6DEFF;}
+.login-wrapper.eid-adha .right-block{position: relative;padding-top: 0;}
+.login-wrapper.eid-adha .left-top-art,.login-wrapper.eid-adha .right-top-art{position: absolute;top: 0;height: 220px;width: 220px;display: block;z-index: 0;}
+.login-wrapper.eid-adha .left-top-art{left: 0;}
+.login-wrapper.eid-adha .right-top-art{right: 0;}
+.login-wrapper.eid-adha .center-art{display: block;margin: 0 auto 38px;width: 589px;height: 559px;max-width: 100%;position: relative;z-index: 1;}
+.login-wrapper.eid-adha .text{display: block;width: 254px;height: 96px;margin: 0 auto 38px;}
+.login-wrapper.eid-adha .logo{display: block;margin: 0 auto 24px;width: 90px;height: 64px;}
+.login-wrapper.eid-adha .bottom-section{display: flex;justify-content: space-around;text-align: center;}
+.login-wrapper.eid-adha .bottom-section span,.login-wrapper.eid-adha .bottom-section p{font-size: 16px;line-height: 24px;color: #3060aa;display: block;}
+.login-wrapper.eid-adha .bottom-section span{font-weight: 600;}
+.login-wrapper.eid-adha .bottom-section p{opacity: 0.8;}
+.login-wrapper.eid-adha .bottom-section .social-links{padding: 4px 0;}
 
 /* tour
 --------------------------------------------------------------------------------------------------------*/
@@ -1680,6 +1692,9 @@ tag tag-ripple{display:none;}
     .brand-header .logo-wrapper{width: auto;text-align: left;padding-right: 16px;}
     .ramadan-poster .artwork{width: 440px;height: 535px;margin-bottom: 40px;}
     .ramadan-poster .contact{font-size: 18px;line-height: 26px;}
+    .login-wrapper.eid-adha .center-art{width: 514px;height: 489px;margin-bottom: 24px;}
+    .login-wrapper.eid-adha .text{height: 76px;margin-bottom: 24px;width: 201px;}
+    .login-wrapper.eid-adha .logo{width: 79px;height: 56px;}
 }
 @media (max-width:1364px) {
     .brand-header .tablet-search,.advance-search .close-btn{display: block;}
@@ -1756,6 +1771,10 @@ tag tag-ripple{display:none;}
     .advance-search .mat-chip-list{width: calc(100% - 190px);}
     .advance-search .search-btn{font-size: 12px;}
     .advance-search .input-wrapper>input{padding-right: 170px;}
+    .login-wrapper.eid-adha .left-top-art, .login-wrapper.eid-adha .right-top-art{display: none;}
+    .login-wrapper.eid-adha .center-art{height: 389px;width: 429px;}
+    .login-wrapper.eid-adha .bottom-section{flex-direction: column;justify-content: flex-start;align-items: center;}
+    .login-wrapper.eid-adha .bottom-section .contact{margin-bottom: 24px;}
 }
 
 .mat-grid-tile .mat-figure {
