@@ -102,7 +102,7 @@ export class AddCommunicationDialogComponent implements OnInit {
 
     for (let i = 0; i < event.target.files.length; i++) {
       if (!this.checkfile(event.target.files[i])) {
-        this.invalidFileMessage = 'Attachments are only allowed in the formats of .pdf, .png, .jpg or .jpeg';
+        this.invalidFileMessage = 'Attachments are only allowed in the formats of .pdf or .jpeg';
         break;
       }
     }
@@ -145,7 +145,7 @@ export class AddCommunicationDialogComponent implements OnInit {
   }
 
   checkfile(file: any) {
-    const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
+    const validExts = ['.pdf', '.jpeg'];
     let fileExt = file.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
