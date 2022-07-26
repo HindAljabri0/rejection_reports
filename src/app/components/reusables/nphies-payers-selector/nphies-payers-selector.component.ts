@@ -140,7 +140,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
       this.selectionChange.emit({ value: '' });
     }
   }
-  
+
 
   // selectPayer(event) {
   //   if (event.value) {
