@@ -680,7 +680,8 @@
                           <tbody>
                             <tr>
                               <td class="label">Serviced Date/Period</td>
-                              <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}</td>
+                              <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}
+                              </td>
                             </tr>
                             <tr>
                               <td class="label">Non Standard Code</td>
@@ -1194,8 +1195,9 @@
     <mat-tab
       *ngIf="otherDataModel.status === 'rejected' || otherDataModel.status === 'failedNphies' || otherDataModel.status === 'pended' || otherDataModel.status === 'queued' || otherDataModel.status === 'partial' || otherDataModel.status === 'approved' || otherDataModel.status === 'failednphies'"
       [label]="'JSON'">
-      <!-- <mat-tab [label]="'JSON'"> -->
-      <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
+      <ng-template matTabContent>
+        <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 
@@ -2029,7 +2031,8 @@
                               <tbody>
                                 <tr>
                                   <td class="label">Serviced Date/Period</td>
-                                  <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}</td>
+                                  <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <td class="label">Non Standard Code</td>
