@@ -2774,7 +2774,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.Items = response.items.map(x => {
       const model: any = {};
-
+      model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
@@ -2923,7 +2923,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       claimResponseId: this.responseId,
       // tslint:disable-next-line:radix
-      communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
+      communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
+      items: this.Items
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
