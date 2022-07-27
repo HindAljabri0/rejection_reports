@@ -37,7 +37,8 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       claimResponseId: this.data.detailsModel.approvalResponseId,
       // tslint:disable-next-line:radix
-      communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
+      communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
+      items: this.data.detailsModel.items
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);

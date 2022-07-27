@@ -164,13 +164,16 @@ export class AddCommunicationDialogComponent implements OnInit {
       model.claimItemId = this.FormCommunication.controls.claimItemId.value;
       this.selectedFile = null;
       this.payLoads.push(model);
+      this.isSubmitted = false;
+      this.emptyPayloadError = '';
+      this.FormCommunication.reset();
     } else if (this.FormCommunication.valid) {
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
+      this.isSubmitted = false;
+      this.emptyPayloadError = '';
+      this.FormCommunication.reset();
     }
-    this.isSubmitted = false;
-    this.emptyPayloadError = '';
-    this.FormCommunication.reset();
   }
 
   removePayload(i) {

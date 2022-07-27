@@ -393,7 +393,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
         messages.push(body.noOfAcceptedClaims);
         messages.push(body.noOfNotAcceptedClaims);
          // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', messages, null, true, null, true).subscribe(res => {
+        this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', messages, true).subscribe(res => {
           this.onSubmit();
         });
 
