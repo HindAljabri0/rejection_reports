@@ -373,6 +373,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
+        // debugger;
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
         console.log("Summary =" + JSON.stringify(summary));
         if (summary.totalClaims > 0) {
