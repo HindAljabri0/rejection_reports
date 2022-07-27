@@ -548,7 +548,7 @@ export class BeneficiaryComponent implements OnInit {
       maxLimit: insurancePlan.maxLimit.value,
       patientShare: insurancePlan.patientShare.value,
       // tslint:disable-next-line:max-line-length
-      tpaNphiesId: insurancePlan.tpaNphiesId === '-1' ? null : insurancePlan.tpaNphiesId
+      tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
 
     console.log(this.beneficiaryModel);
@@ -564,8 +564,11 @@ export class BeneficiaryComponent implements OnInit {
     }
 
     if (this.checkError()) { return; }
+
     this.sharedServices.loadingChanged.next(true);
+
     this.setDateforSaveBeneficiary();
+
     this.providersBeneficiariesService.saveBeneficiaries(
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
