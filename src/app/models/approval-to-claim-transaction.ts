@@ -13,13 +13,17 @@ export class ApprovalToClaimTransaction extends Paginateable {
   status: string;
   totalNet: number;
   transactionDate: string;
-  episodeId: number;
+  destinationId: string;
+  episodeNo: string;
+  preparedDate: string;
+  totalPatientShare: number;
+  totalPayerShare: number;
+  convertToClaimEpisodeId: number;
 
   constructor(body: {}) {
     super(body);
 
     this.beneficiaryName = body["beneficiaryName"];
-    this.episodeId = body["episodeId"];
     this.documentId = body["documentId"];
     this.items = body["items"];
     this.nphiesRequestId = body["nphiesRequestId"];
@@ -31,7 +35,11 @@ export class ApprovalToClaimTransaction extends Paginateable {
     this.status = body["status"];
     this.totalNet = body["totalNet"];
     this.transactionDate = body["transactionDate"];
-
+    this.destinationId = body["destinationId"];
+    this.episodeNo = body["episodeNo"];
+    this.preparedDate = body["preparedDate"];
+    this.totalPatientShare = body["totalPatientShare"];
+    this.totalPayerShare = body["totalPayerShare"];
   }
 }
 
@@ -46,4 +54,5 @@ class Item {
   patientShare: number;
   payerSahare: number;
   status: string;
+  patientInvoiceNo: string;
 }

@@ -269,8 +269,9 @@ export class PreparePreAuthForClaimComponent implements OnInit {
       model.page = this.page;
       model.pageSize = this.pageSize;
 
+
       this.editURL(model.fromDate, model.toDate);
-      this.providerNphiesApprovalService.getApprovalToPrepareTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
+      this.providerNphiesSearchService.getApprovalToClaimPrepareCriteria(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
