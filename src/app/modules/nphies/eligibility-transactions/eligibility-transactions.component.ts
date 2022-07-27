@@ -142,7 +142,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    if(this.FormEligibilityTransaction.controls.beneficiaryName.value.length>2){
+    if (this.FormEligibilityTransaction.controls.beneficiaryName.value.length > 2) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormEligibilityTransaction.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -329,6 +329,7 @@ export class EligibilityTransactionsComponent implements OnInit {
       responseId: transactionResponseId,
       providerId: this.sharedServices.providerId
     };
+    dialogConfig.autoFocus = false;
 
     const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
 

@@ -363,7 +363,7 @@ export class BeneficiaryComponent implements OnInit {
           patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) : new FormControl(),
           // tslint:disable-next-line:max-line-length
           payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
-          tpaNphiesId: insurancePlans.tpaNphiesId
+          tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : '-1'
         }
       );
     }
@@ -548,7 +548,7 @@ export class BeneficiaryComponent implements OnInit {
       maxLimit: insurancePlan.maxLimit.value,
       patientShare: insurancePlan.patientShare.value,
       // tslint:disable-next-line:max-line-length
-      tpaNphiesId: insurancePlan.tpaNphiesId ? insurancePlan.tpaNphiesId : null
+      tpaNphiesId: insurancePlan.tpaNphiesId === '-1' ? null : insurancePlan.tpaNphiesId
     }));
 
     console.log(this.beneficiaryModel);

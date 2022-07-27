@@ -14,12 +14,15 @@
         <tbody>
           <tr>
             <td>
-              <div class="row small-gutter align-items-center">
+
+
+              <div class="row small-gutter align-items-center mb-2">
                 <div class="col-auto">
                   <div class="file-upload-wrapper inline">
                     <div class="content">
                       <button mat-stroked-button color="primary" type="button">
-                        Choose File
+                        <span *ngIf="selectedFile">{{selectedFile.attachmentName}}</span>
+                        <span *ngIf="!selectedFile">Choose File</span>
                       </button>
                     </div>
                     <input type="file" accept="application/pdf,image/png,image/jpeg" class="file-upload-control" multiple (change)="selectFile($event)" />
@@ -34,17 +37,51 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div *ngIf="invalidFileMessage" class="error-text pt-2">{{invalidFileMessage}}</div>
+
+
+              <div class="row small-gutter align-items-center">
+                <div class="col">
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="claimItemId" placeholder="Select Item" panelClass="nphies-items">
+                      <mat-option>
+                        <ngx-mat-select-search placeholderLabel="Search Item" formControlName="claimItemIdFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No item found"
+                          name='searchedItem'>
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <ng-container>
+                        <!-- <mat-option value="">Select Care Team</mat-option> -->
+                        <mat-option *ngFor="let item of filteredItem  | async" [value]="item">
+                          <span>{{item.sequence}} - {{item.typeName}} - {{item.itemCode}} - {{item.itemDescription}}</span>
+                          <span class="text-primary non-standard-code" *ngIf="item.nonStandardCode || item.nonStandardDesc">{{item.nonStandardCode}} <ng-container
+                              *ngIf="item.nonStandardDesc">({{item.nonStandardDesc}})</ng-container></span>
+                        </mat-option>
+                      </ng-container>
+
+                    </mat-select>
+                  </mat-form-field>
+                </div>
                 <div class="col-auto">
                   <button mat-flat-button color="primary" type="submit">Add</button>
                 </div>
               </div>
-              <div *ngIf="invalidFileMessage" class="error-text pt-2">{{invalidFileMessage}}</div>
+
             </td>
           </tr>
-
           <ng-container *ngFor="let pay of payLoads; let i = index">
             <tr *ngIf="pay.payloadValue">
-              <td>{{pay.payloadValue}}</td>
+              <td>
+                {{pay.payloadValue}}
+                <div class="pt-2 nphies-items" *ngIf="pay.claimItemId">
+                  <span><span class="medium">Item</span> - {{pay.claimItemId.value}} - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
+                    {{pay.claimItemId.itemDescription}}</span>
+                  <span class="text-primary non-standard-code" *ngIf="pay.claimItemId.nonStandardCode || pay.claimItemId.nonStandardDesc">{{pay.claimItemId.nonStandardCode}}
+                    <ng-container *ngIf="pay.claimItemId.nonStandardDesc">
+                      ({{pay.claimItemId.nonStandardDesc}})</ng-container>
+                  </span>
+                </div>
+              </td>
             </tr>
 
             <tr *ngIf="pay.payloadAttachment && pay.attachmentType && getFilename(pay.attachmentType) === 'image'">
@@ -60,6 +97,14 @@
                     </button>
                   </li>
                 </ul>
+                <div class="pt-2 nphies-items" *ngIf="pay.claimItemId">
+                  <span><span class="medium">Item</span> - {{pay.claimItemId.value}} - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
+                    {{pay.claimItemId.itemDescription}}</span>
+                  <span class="text-primary non-standard-code" *ngIf="pay.claimItemId.nonStandardCode || pay.claimItemId.nonStandardDesc">{{pay.claimItemId.nonStandardCode}}
+                    <ng-container *ngIf="pay.claimItemId.nonStandardDesc">
+                      ({{pay.claimItemId.nonStandardDesc}})</ng-container>
+                  </span>
+                </div>
               </td>
             </tr>
 
@@ -76,10 +121,17 @@
                     </button>
                   </li>
                 </ul>
+                <div class="pt-2 nphies-items" *ngIf="pay.claimItemId">
+                  <span><span class="medium">Item</span> - {{pay.claimItemId.value}} - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
+                    {{pay.claimItemId.itemDescription}}</span>
+                  <span class="text-primary non-standard-code" *ngIf="pay.claimItemId.nonStandardCode || pay.claimItemId.nonStandardDesc">{{pay.claimItemId.nonStandardCode}}
+                    <ng-container *ngIf="pay.claimItemId.nonStandardDesc">
+                      ({{pay.claimItemId.nonStandardDesc}})</ng-container>
+                  </span>
+                </div>
               </td>
             </tr>
           </ng-container>
-
 
 
         </tbody>

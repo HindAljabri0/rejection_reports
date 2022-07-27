@@ -117,22 +117,22 @@
           <ng-container *ngFor="let transaction of transactions; let i = index">
             <tr class="row-click">
               <td>
-                <mat-checkbox class="grid-checkbox"></mat-checkbox>
+                <mat-checkbox class="grid-checkbox" [checked]="selectedApprovals.includes(transaction.convertToClaimEpisodeId)" (change)="selectApproval(transaction.convertToClaimEpisodeId)"></mat-checkbox>
               </td>
               <td (click)="toggleRow(i)" class="text-primary text-center">
                 <mat-icon *ngIf="currentOpenRow!=i">add_circle_outline</mat-icon>
                 <mat-icon *ngIf="currentOpenRow==i">remove_circle_outline</mat-icon>
               </td>
               <td (click)="toggleRow(i)">{{transaction.beneficiaryName}} ({{transaction.documentId}}) </td>
-              <td (click)="toggleRow(i)">{{transaction.episodeId}} </td>
+              <td (click)="toggleRow(i)">{{transaction.episodeNo}} </td>
               <td (click)="toggleRow(i)">{{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
               <!-- <td (click)="toggleRow(i)">{{transaction.nphiesRequestId}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
               <!-- <td (click)="toggleRow(i)"> {{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
-              <td (click)="toggleRow(i)"> {{transaction.payerName}}</td>
-              <td (click)="toggleRow(i)"> {{transaction.totalNet}} <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)"> - <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
+              <td (click)="toggleRow(i)">{{transaction.totalNet}}<span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPatientShare}}<span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPayerShare}}<span class="currency">SAR</span></td>
               <!-- <td (click)="toggleRow(i)"> {{transaction.status}}</td> -->
             </tr>
             <tr *ngIf="currentOpenRow==i">
@@ -143,7 +143,6 @@
                   *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
-                      <th>SequenceNo</th>
                       <th>Item Type</th>
                       <th>Invoice No. <span class="asterisk">*</span></th>
                       <th>Standard Code - Description</th>
@@ -156,9 +155,8 @@
                   </thead>
                   <tbody>
                     <tr  *ngFor="let item of transaction.items" class="align-middle">
-                      <td>{{item.sequence}}</td>
                       <td>{{item.itemType}}</td>
-                      <td>{{item.invoiceNo}}</td>
+                      <td>{{item.patientInvoiceNo}}</td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                       <td>{{item.patientShare}} <span class="currency">SAR</span></td>
                       <td>{{item.payerSahare}} <span class="currency">SAR</span></td>
@@ -202,7 +200,7 @@
 
   <div class="block-footer sticky">
     <div class="right-block">
-      <button type="button" color="primary" mat-flat-button>Convert All</button>
+      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()">Convert {{selectedApprovals.length==0?" All":"Selection ("+this.selectedApprovals.length+")"}}</button>
     </div>
   </div>
 </div>
