@@ -5,7 +5,35 @@
   <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0 no-footer">
-  <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
+  <mat-tab-group class="primary-tab nphies-eligibility-tab">
+    <mat-tab [label]="'Details'">
+      <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
+    </mat-tab>
+    <mat-tab [label]="'JSON'">
+      <div class="fixed-height">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>Transaction Type</th>
+              <th>Date</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>lorem type</td>
+              <td>lorem date</td>
+              <td>
+                <a href="javascript:void(0);" title="View" class="primary-link">View</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- </ng-scrollbar> -->
+
+    </mat-tab>
+  </mat-tab-group>
 </div>
 <!-- <div class="primary-dialog-footer has-border">
   <div class="d-flex">

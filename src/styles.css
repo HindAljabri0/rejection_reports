@@ -250,10 +250,10 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 
 /* pre auth items
 --------------------------------------------------------------------------------------------------------*/
-.mat-autocomplete-panel.pre-auth-items{padding: 6px 0;}
-.pre-auth-items .mat-option{height: auto;padding: 10px 16px;line-height: 20px;}
-.pre-auth-items .non-standard-code{font-size: 14px;display: block;}
-.pre-auth-items .strength{padding-bottom: 2px;font-size: 14px;display: block;}
+.mat-autocomplete-panel.nphies-items{padding: 6px 0;}
+.nphies-items .mat-option{height: auto;padding: 10px 16px;line-height: 20px;}
+.nphies-items .non-standard-code{font-size: 14px;display: block;}
+.nphies-items .strength{padding-bottom: 2px;font-size: 14px;display: block;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #909090!important;}
 .text-grey,.text-duplicate{color: #707070!important;}
-.text-success{color: #4CA444!important;}
+.text-success{color: #6ABD63!important;}
 .text-cancelled,.text-danger{color: #D03131!important;}
 .text-warning{color: #C97D38!important;}
 .text-invalid,.text-purple{color: #5D2B7D!important;}
@@ -636,6 +636,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 261px);}
 .mat-dialog-container .create-claim-body{background: #fff;}
 .mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 231px);overflow: auto;}
+.nphies-eligibility-tab .block-body{padding: 0;}
+.mat-dialog-container .nphies-eligibility-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 104px);overflow: auto;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/
@@ -987,11 +989,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* uploaded card
 --------------------------------------------------------------------------------------------------------*/
-.uploaded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;background: #fff;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);border-radius: 8px;position: relative;}
-.uploaded-card:hover,.uploaded-card:focus,.uploaded-card:active{box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);z-index: 1;}
+.uploaded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;background: #fff;border-radius: 8px;position: relative;}
 .upload-history-list .uploaded-card{border-bottom: 1px solid #e1e1e1;}
 .upload-history-list ng-scrollbar{height: calc(100% - 49px)!important;}
-.uploaded-card-all .uploaded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:8px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
+.uploaded-card-all .uploaded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:8px;margin-bottom: 14px;height:calc(100% - 14px);background-color: #f7f9fd;}
+.uploaded-card-all .uploaded-card:hover,.uploaded-card-all .uploaded-card:focus,.uploaded-card-all .uploaded-card:active{border-color:rgba(48,96,170,0.6);}
 .uploaded-card-all .scroll-block{max-height: calc(100vh - 174px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploads-body.scroll-block{max-height: calc(100vh - 70px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
@@ -1499,12 +1501,13 @@ table.inline-label-table{width: 100%;}
 .communication>li{margin-bottom: 40px;position: relative;}
 .communication>li:before{position: absolute;content:'';top: 0;left: 24px;background: #d2d2d2;width: 1px;z-index: 0;bottom: 15px;}
 .communication>li:last-child{margin-bottom: 0;}
-.communication .message{font-size: 16px;line-height: 24px;font-weight: 500;}
+.communication .message{font-size: 16px;line-height: 24px;font-weight: 500;flex-grow: 1;}
 .communication .message.size-sm{font-size: 14px;line-height: 20px;}
 .communication .message>span{display: block;font-size: 14px;line-height: 20px;color:#909090}
 .communication .message p{padding-bottom: 8px;}
 .communication .message tr:first-child>td{padding-top: 0;}
 .communication .message .primary-grid{background: transparent;}
+.communication .message .nphies-items{font-size: 14px;font-weight: 400;line-height: 20px;}
 .communication .header-block{padding: 14px;display: flex;border-radius: 8px;border:1px solid #e1e1e1;position: relative;z-index: 1;background: #fff;}
 .communication .action-btn{display: flex;align-items: center;font-weight: 500;padding: 6px 10px;margin-top: -6px;margin-right: -10px;border:0;background:none;color:inherit;}
 .communication .action-btn .mat-icon{display: block;margin-right: 6px;}
@@ -1608,7 +1611,7 @@ tag tag-ripple{display:none;}
 .status-badge.warning{background-color: #C97D38;}
 .status-badge.primary{background-color: #3060aa;}
 .status-badge.danger{background-color: #D03131;}
-.status-badge.success{background-color: #4CA444;}
+.status-badge.success{background-color: #6ABD63;}
 .status-badge.size-sm{letter-spacing: 0;text-transform: none;font-size: 12px;line-height: 18px;padding: 3px 8px;}
 .primary-grid .status-badge.size-sm{margin: -2px 0;}
 

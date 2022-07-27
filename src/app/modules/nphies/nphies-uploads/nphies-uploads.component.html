@@ -3,25 +3,26 @@
   <div *ngIf="errorMessage != null  && !isLoading" class="block-body mb-14">
     <p class="error-card mb-0">{{errorMessage}}</p>
   </div>
-  <reusable-search-bar *ngIf="errorMessage == null" class="reusable-search" inHeader searchBy="Upload Name" [queries]="queries"
-    (onSearch)="searchEvent($event)" (onQueryRemoved)="onQueryRemoved($event)">
-  </reusable-search-bar>
-  <div class="uploads-body scroll-block" *ngIf="errorMessage == null" scrollable
-    (scrollPosition)="scrollHandler($event)">
-    <div class="row small-gutter">
-      <div class="col-6 pb-3" *ngFor="let upload of uploads">
-        <!-- <app-nphies-upload-card [data]="upload" (click)="upload.uploadName.endsWith('[DELETED]')? null:openUpload(upload.uploadId)">
+
+  <app-detailscard title="Uploads" class="uploaded-card-all">
+    <reusable-search-bar *ngIf="errorMessage == null" class="reusable-search" inHeader searchBy="Upload Name" [queries]="queries" (onSearch)="searchEvent($event)"
+      (onQueryRemoved)="onQueryRemoved($event)">
+    </reusable-search-bar>
+    <div class="scroll-block" *ngIf="errorMessage == null" scrollable (scrollPosition)="scrollHandler($event)">
+      <div class="row small-gutter">
+        <div class="col-6" *ngFor="let upload of uploads">
+          <!-- <app-nphies-upload-card [data]="upload" (click)="upload.uploadName.endsWith('[DELETED]')? null:openUpload(upload.uploadId)">
               </app-nphies-upload-card> -->
-        <app-nphies-upload-card [data]="upload" (click)="openUpload(upload.uploadId)">
-        </app-nphies-upload-card>
+          <app-nphies-upload-card [data]="upload" (click)="openUpload(upload.uploadId)">
+          </app-nphies-upload-card>
+        </div>
       </div>
+      <div class="block-card">
+        <p class="info-block" *ngIf="isLoading && length != MAX">Loading more data...</p>
+        <p class="info-block" *ngIf="!isLoading && errorMessage == null && uploads.length != 0 && uploads.length >= length">
+          There is no more data</p>
+      </div>
+      <app-empty-state *ngIf="!isLoading && errorMessage == null && uploads.length == 0"></app-empty-state>
     </div>
-    <div class="block-card">
-      <p class="info-block" *ngIf="isLoading && length != MAX">Loading more data...</p>
-      <p class="info-block"
-        *ngIf="!isLoading && errorMessage == null && uploads.length != 0 && uploads.length >= length">
-        There is no more data</p>
-    </div>
-    <app-empty-state *ngIf="!isLoading && errorMessage == null && uploads.length == 0"></app-empty-state>
-  </div>
+  </app-detailscard>
 </div>
