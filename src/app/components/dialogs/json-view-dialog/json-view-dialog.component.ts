@@ -27,7 +27,6 @@ export class JsonViewDialogComponent implements OnInit {
 
   ngOnInit() {
     this.data.tabs = this.data.tabs.filter(tabData => {
-      tabData.json = '';
       if (typeof (tabData.json) === 'object') {
         if (tabData.json != null && JSON.stringify(tabData.json).trim().length > 0) {
           return true;

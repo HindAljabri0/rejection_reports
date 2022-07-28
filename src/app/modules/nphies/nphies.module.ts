@@ -69,6 +69,8 @@ import { PricelistUploadComponent } from './pricelist-upload/pricelist-upload.co
 import { AddPricelistDialogComponent } from './pricelist-details/add-pricelist-dialog/add-pricelist-dialog.component';
 import { PreparePreAuthForClaimComponent } from './prepare-pre-auth-for-claim/prepare-pre-auth-for-claim.component';
 import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
+import { EligiblityJsonResponseComponent } from './view-eligibility-details/eligiblity-json-response/eligiblity-json-response.component';
+import { MatTabsModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -116,12 +118,14 @@ import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/conv
     PricelistUploadComponent,
     AddPricelistDialogComponent,
     PreparePreAuthForClaimComponent,
-    ConvertPreAuthToClaimComponent
+    ConvertPreAuthToClaimComponent,
+    EligiblityJsonResponseComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     MaterialModule,
+    MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
     BsDatepickerModule,
