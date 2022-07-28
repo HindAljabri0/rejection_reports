@@ -3138,4 +3138,10 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   }
 
+  getReasonCodes(claimItemDecisionCategories) {
+    return claimItemDecisionCategories.filter(x => x.reasonCode).map(x => {
+      return x.reasonCode;
+    }).join(', ');
+  }
+
 }
