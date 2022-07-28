@@ -10,28 +10,9 @@
       <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
     </mat-tab>
     <mat-tab [label]="'JSON'">
-      <div class="fixed-height">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-          <thead>
-            <tr>
-              <th>Transaction Type</th>
-              <th>Date</th>
-              <th width="10"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>lorem type</td>
-              <td>lorem date</td>
-              <td>
-                <a href="javascript:void(0);" title="View" class="primary-link">View</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- </ng-scrollbar> -->
-
+      <ng-template matTabContent>
+        <app-eligiblity-json-response [otherDataModel]="detailsModel"></app-eligiblity-json-response>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>

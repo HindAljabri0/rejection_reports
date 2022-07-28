@@ -200,7 +200,7 @@ export class AddCommunicationDialogComponent implements OnInit {
       const pModel: any = {};
       pModel.attachmentName = x.attachmentName;
       pModel.attachmentType = x.attachmentType;
-      pModel.claimItemId = x.claimItemId.value;
+      pModel.claimItemId = x.claimItemId ? x.claimItemId.value : null;
       pModel.createdDate = x.createdDate;
       pModel.payloadAttachment = x.payloadAttachment;
       pModel.payloadValue = x.payloadValue;
