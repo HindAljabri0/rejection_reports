@@ -117,7 +117,7 @@
           <ng-container *ngFor="let transaction of transactions; let i = index">
             <tr class="row-click">
               <td>
-                <mat-checkbox class="grid-checkbox" [checked]="selectedApprovals.includes(transaction.convertToClaimEpisodeId)" (change)="selectApproval(transaction.convertToClaimEpisodeId)"></mat-checkbox>
+                <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectedApprovals.includes(transaction.convertToClaimEpisodeId)" (change)="selectApproval(transaction.convertToClaimEpisodeId)"></mat-checkbox>
               </td>
               <td (click)="toggleRow(i)" class="text-primary text-center">
                 <mat-icon *ngIf="currentOpenRow!=i">add_circle_outline</mat-icon>

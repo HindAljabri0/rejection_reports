@@ -40,6 +40,7 @@ export class ApprovalToClaimTransaction extends Paginateable {
     this.preparedDate = body["preparedDate"];
     this.totalPatientShare = body["totalPatientShare"];
     this.totalPayerShare = body["totalPayerShare"];
+    this.convertToClaimEpisodeId = body["convertToClaimEpisodeId"];
   }
 }
 
