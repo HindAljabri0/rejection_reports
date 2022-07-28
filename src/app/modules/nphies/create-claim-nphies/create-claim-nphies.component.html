@@ -551,14 +551,8 @@
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  <span *ngIf="item.itemDecision">
-                    <span *ngIf="item.itemDecision.claimItemDecisionCategories.length > 0">
-                      {{getReasonCodes(item.itemDecision.claimItemDecisionCategories)}}
-                    </span>
-                    <span
-                      *ngIf="!item.itemDecision.claimItemDecisionCategories || item.itemDecision.claimItemDecisionCategories.length === 0">-</span>
-                  </span>
-                  <span *ngIf="!item.itemDecision">-</span>
+                  <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
+                  <span *ngIf="!item.reasonCodes">-</span>
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -585,7 +579,7 @@
                           <td>{{res.category}}</td>
                           <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'"
                               class="currency">SR</span></td>
-                          <td>{{res.reasonDescription}}</td>
+                          <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
                         </tr>
                       </tbody>
                     </table>

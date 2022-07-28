@@ -2795,6 +2795,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         });
       }
       model.itemDecision = x.itemDecision;
+      model.reasonCodes = x.reasonCodes;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
       model.type = x.type.toLowerCase();
