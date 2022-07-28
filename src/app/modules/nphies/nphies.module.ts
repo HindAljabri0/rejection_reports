@@ -71,6 +71,7 @@ import { PreparePreAuthForClaimComponent } from './prepare-pre-auth-for-claim/pr
 import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
 import { EligiblityJsonResponseComponent } from './view-eligibility-details/eligiblity-json-response/eligiblity-json-response.component';
 import { MatTabsModule } from '@angular/material';
+import { ApprovalJsonResponseComponent } from './view-preauthorization-details/approval-json-response/approval-json-response.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { MatTabsModule } from '@angular/material';
     AddPricelistDialogComponent,
     PreparePreAuthForClaimComponent,
     ConvertPreAuthToClaimComponent,
-    EligiblityJsonResponseComponent
+    EligiblityJsonResponseComponent,
+    ApprovalJsonResponseComponent
   ],
   imports: [
     CommonModule,
