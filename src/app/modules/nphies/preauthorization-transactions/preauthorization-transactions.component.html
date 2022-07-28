@@ -101,6 +101,7 @@
                 <th>Response Date</th>
                 <th>Pre Authorization ID</th>
                 <th>Pre Auth Ref No</th>
+                <th>Provider Claim No</th>
                 <th>Status</th>
                 <th class="text-nowrap"><span class="inline-text pr-1">Processing Status</span>
                   <mat-icon matTooltip="This will request for the current processing status of the preauth" class="material-icons-outlined size-20 inline-text">info</mat-icon>
@@ -130,6 +131,8 @@
                   {{transaction.nphiesRequestId}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.provClaimNo ? transaction.provClaimNo : '-'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   <span
                     [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
