@@ -106,7 +106,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
 
       if (params.documentId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+        this.FormPreAuthTransaction.controls.documentId.patchValue(params.documentId);
       }
 
       if (params.beneficiaryName != null) {
@@ -250,8 +250,11 @@ export class PreparePreAuthForClaimComponent implements OnInit {
       }
 
       // tslint:disable-next-line:max-line-length
-      if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
+      // if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+      //   model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
+      // }
+      if (this.FormPreAuthTransaction.controls.documentId.value) {
+        model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {

@@ -110,7 +110,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
       if (params.documentId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+        this.FormPreAuthTransaction.controls.documentId.patchValue(params.documentId);
       }
 
       if (params.beneficiaryName != null) {
@@ -255,7 +255,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
+        model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {
@@ -342,6 +342,10 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       path += `documentId=${this.FormPreAuthTransaction.controls.documentId.value}&`;
     }
 
+    if (this.FormPreAuthTransaction.controls.documentId.value) {
+      path += `documentId=${this.FormPreAuthTransaction.controls.documentId.value}&`;
+    }
+
     if (this.FormPreAuthTransaction.controls.status.value) {
       path += `status=${this.FormPreAuthTransaction.controls.status.value}&`;
     }
@@ -383,46 +387,20 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       episodeIds = this.selectedApprovals;
     }
     this.sharedServices.loadingChanged.next(true);
+
     this.providerNphiesApprovalService.convertToClaim(this.sharedServices.providerId, episodeIds).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event.body;
 
         const messages = [];
-        messages.push(body.uploadName);
-        messages.push(body.uploadDate);
-        messages.push(body.noOfAcceptedClaims);
-        messages.push(body.noOfNotAcceptedClaims);
-         // tslint:disable-next-line:max-line-length
+        messages.push('Upload Name:' + body.uploadName);
+        messages.push('upload Date:' + body.uploadDate);
+        messages.push('Accepted Claims:' + body.noOfAcceptedClaims);
+        messages.push('Not Accepted Claims:' + body.noOfNotAcceptedClaims);
+        // tslint:disable-next-line:max-line-length
         this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', messages, true).subscribe(res => {
           this.onSubmit();
         });
-
-        // if (body.uploadId && body.uploadDate) {
-        //   this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', null, true).subscribe(res => {
-        //     this.onSubmit();
-        //   });
-        // } else {
-        //   // tslint:disable-next-line:max-line-length
-        //   this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true, body.transactionId).subscribe(res => {
-        //     this.onSubmit();
-        //   });
-        // }
-        // if (body.errors) {
-        //   if (body.transactionId) {
-        //     // tslint:disable-next-line:max-line-length
-        //     this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true, body.transactionId).subscribe(res => {
-        //       this.onSubmit();
-        //     });
-        //   } else {
-        //     this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true).subscribe(res => {
-        //       this.onSubmit();
-        //     });
-        //   }
-        // } else {
-        //   this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', null, true).subscribe(res => {
-        //     this.onSubmit();
-        //   });
-        // }
         this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
@@ -458,29 +436,14 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     });
   }
 
-  selectApproval(claimId: string) {
-    if (!this.selectedApprovals.includes(claimId)) {
-      this.selectedApprovals.push(claimId);
+  selectApproval(convertToClaimEpisodeId: string) {
+    if (!this.selectedApprovals.includes(convertToClaimEpisodeId)) {
+      this.selectedApprovals.push(convertToClaimEpisodeId);
       this.selectedApprovalsCountOfPage++;
     } else {
-      this.selectedApprovals.splice(this.selectedApprovals.indexOf(claimId), 1);
+      this.selectedApprovals.splice(this.selectedApprovals.indexOf(convertToClaimEpisodeId), 1);
       this.selectedApprovalsCountOfPage--;
     }
-    this.setAllCheckBoxIsIndeterminate();
-  }
-
-  setAllCheckBoxIsIndeterminate() {
-    if (this.transactions != null) {
-      // tslint:disable-next-line:max-line-length
-      this.allCheckBoxIsIndeterminate = this.selectedApprovalsCountOfPage !== this.transactions.length && this.selectedApprovalsCountOfPage !== 0;
-    } else { this.allCheckBoxIsIndeterminate = false; }
-    this.setAllCheckBoxIsChecked();
-  }
-
-  setAllCheckBoxIsChecked() {
-    if (this.transactions != null) {
-      this.allCheckBoxIsChecked = this.selectedApprovalsCountOfPage === this.transactions.length;
-    } else { this.allCheckBoxIsChecked = false; }
   }
 
 }
