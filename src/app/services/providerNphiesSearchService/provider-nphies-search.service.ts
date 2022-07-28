@@ -73,23 +73,23 @@ export class ProviderNphiesSearchService {
 
     let requestURL = '/providers/' + providerId + '/items?';
 
-    if (itemType != null && itemType.trim().length > 0) {
+    if (itemType && itemType.trim().length > 0) {
       requestURL += `itemType=${itemType}&`;
     }
-    if (query != null && query.trim().length > 0) {
+    if (query && query.trim().length > 0) {
       requestURL += `query=${query}&`;
     }
-    if (payerNphiesId != null && payerNphiesId.trim().length > 0) {
+    if (payerNphiesId && payerNphiesId.trim().length > 0) {
       requestURL += `payerNphiesId=${payerNphiesId}&`;
     }
-    if (claimType != null && claimType.trim().length > 0) {
+    if (claimType && claimType.trim().length > 0) {
       requestURL += `claimType=${claimType}&`;
     }
-    if (requestDate != null && requestDate.trim().length > 0) {
+    if (requestDate && requestDate.trim().length > 0) {
       requestURL += `requestDate=${requestDate}&`;
     }
 
-    if (pageNumber !== null && pageNumber !== undefined) {
+    if (pageNumber) {
       requestURL += `pageNumber=${pageNumber}&`;
     }
     if (pageSize) {
