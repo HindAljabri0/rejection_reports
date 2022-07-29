@@ -144,9 +144,11 @@ export class NphiesUploadsComponent implements OnInit {
   }
 
   onQueryRemoved(query: Query) {
+    this.uploads = [];
     this.pageIndex = 0;
-    this.length = 0;
+    this.length = Number.MAX_VALUE;
     this.queries = [];
+    this.fetchData();
   }
 
   toServerDate(date: string) {
