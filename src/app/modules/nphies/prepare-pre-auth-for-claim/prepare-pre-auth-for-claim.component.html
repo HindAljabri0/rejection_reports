@@ -162,10 +162,10 @@
                       <td>{{item.itemType}}</td>
                       <td>
                         <div class="form-group mb-n1 mt-n1"
-                          [ngClass]="{'has-error' : transaction.submitted && item.status === 'approved' && !item.invoiceNo}">
+                          [ngClass]="{'has-error' : transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo}">
                           <input type="text" class="form-control" placeholder="Enter invoice no."
-                            [(ngModel)]="item.invoiceNo" [disabled]="item.status !== 'approved'" />
-                          <div *ngIf="transaction.submitted && item.status === 'approved' && !item.invoiceNo">
+                            [(ngModel)]="item.invoiceNo" [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
+                          <div *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
                             <span class="error-text">InvoiceNo required</span>
                           </div>
                         </div>
