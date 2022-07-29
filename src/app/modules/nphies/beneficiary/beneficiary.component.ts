@@ -138,6 +138,7 @@ export class BeneficiaryComponent implements OnInit {
   };
 
   beneficiaryModel = new BeneficiaryModel();
+  isCCHID = false;
 
   constructor(
     private router: Router,
@@ -363,7 +364,7 @@ export class BeneficiaryComponent implements OnInit {
           patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) : new FormControl(),
           // tslint:disable-next-line:max-line-length
           payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
-          tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : '-1'
+          tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : (this.isCCHID ? null : '-1')
         }
       );
     }
@@ -483,7 +484,7 @@ export class BeneficiaryComponent implements OnInit {
       this.providerId, this.beneficiaryId, this.beneficiaryModel
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
-
+        this.isCCHID = false;
         this.dialogService.openMessageDialog({
           title: '',
           message: `Beneficiary updated successfully`,
@@ -492,20 +493,20 @@ export class BeneficiaryComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
-        if (err instanceof HttpErrorResponse) {
-          if (err.status == 500) {
-            this.messageError = 'could not reach server Please try again later ';
-          } else {
-            this.messageError = err.message;
-          }
-          this.dialogService.openMessageDialog({
-            title: '',
-            message: this.messageError,
-            isError: true
-          });
-          this.sharedServices.loadingChanged.next(false);
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 500) {
+          this.messageError = 'could not reach server Please try again later ';
+        } else {
+          this.messageError = err.message;
         }
-      });
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: this.messageError,
+          isError: true
+        });
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
   }
 
   setDateforSaveBeneficiary() {
@@ -748,6 +749,7 @@ export class BeneficiaryComponent implements OnInit {
   }
 
   getInfoFromCCHI() {
+    this.isCCHID = true;
     let thereIsError = false;
 
     if (this.documentIdCCHIFormControl.value == null || this.documentIdCCHIFormControl.value.trim().length <= 0) {

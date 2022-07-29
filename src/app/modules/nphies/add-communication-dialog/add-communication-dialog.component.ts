@@ -145,7 +145,7 @@ export class AddCommunicationDialogComponent implements OnInit {
   }
 
   checkfile(file: any) {
-    const validExts = ['.pdf', '.jpeg'];
+    const validExts = ['.pdf', '.jpeg', '.jpg'];
     let fileExt = file.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
