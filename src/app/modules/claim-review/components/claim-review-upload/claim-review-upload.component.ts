@@ -65,7 +65,7 @@ export class ClaimReviewUploadComponent implements OnInit {
       this.cancel();
     });
     const errorobservable = this.claimReviewService.errorChange.subscribe(error => {
-      this.dialogService.openMessageDialog(new MessageDialogData('', error, true));
+      this.dialogService.openMessageDialog(new MessageDialogData(error, error, true));
       errorobservable.unsubscribe();
       this.uploading = false;
       this.cancel();
@@ -96,6 +96,7 @@ export class ClaimReviewUploadComponent implements OnInit {
     if (validExts.indexOf(fileExt) < 0) {
       this.showError('Invalid file selected, valid files are of ' +
         validExts.toString() + ' types.');
+
       return false;
     } else {
       this.uploadContainerClass = '';
@@ -132,6 +133,7 @@ export class ClaimReviewUploadComponent implements OnInit {
         /* save data */
         const data = <AOA>(XLSX.utils.sheet_to_json(ws));
       } else {
+        this.common.loadingChanged.next(false);
         this.showError(`Invalid file selected!\n${validationResult}\n\n`);
       }
       this.common.loadingChanged.next(false);

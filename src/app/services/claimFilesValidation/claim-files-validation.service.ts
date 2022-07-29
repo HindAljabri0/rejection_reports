@@ -198,6 +198,7 @@ const AllowedHeaders: string[] = [
 
 const AllowedHeadersForScrubbing: string[] = [
   'INSURANCE ID(MEMBERID)',
+  'PROVIDER CLAIM NUMBER',
   'PATIENT_FILE',
   'NATIONAL ID/IQAMA ',
   'POLICY NUMBER',
@@ -211,7 +212,6 @@ const AllowedHeadersForScrubbing: string[] = [
   'SPECIALITY',
   'CHIEF COMPLAIN',
   'SIGNIFICANT SIGNS',
-  'ICD10',
   'ICD10-1',
   'ICD10-2',
   'ICD10-3',

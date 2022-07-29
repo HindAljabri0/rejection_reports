@@ -151,6 +151,7 @@ export class ClaimReviewService {
                 const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
                 this.summaryChange.next(summary);
                 this.progressChange.next({ percentage: 101 });
+                
             }
         }, errorEvent => {
             this.uploading = false;
