@@ -53,7 +53,7 @@
                       <ng-container>
                         <!-- <mat-option value="">Select Care Team</mat-option> -->
                         <mat-option *ngFor="let item of filteredItem  | async" [value]="item">
-                          <span>{{item.sequence}} - {{item.typeName}} - {{item.itemCode}} - {{item.itemDescription}}</span>
+                          <span>[Item - {{item.sequence}}] {{item.typeName}}&nbsp;&nbsp;|&nbsp;&nbsp;{{item.itemCode}} ({{item.itemDescription}})<span class="d-none">&nbsp;&nbsp;|&nbsp;&nbsp;</span></span>
                           <span class="text-primary non-standard-code" *ngIf="item.nonStandardCode || item.nonStandardDesc">{{item.nonStandardCode}} <ng-container
                               *ngIf="item.nonStandardDesc">({{item.nonStandardDesc}})</ng-container></span>
                         </mat-option>
@@ -74,7 +74,7 @@
               <td>
                 {{pay.payloadValue}}
                 <div class="pt-2 nphies-items" *ngIf="pay.claimItemId">
-                  <span><span class="medium">Item</span> - {{pay.claimItemId.value}} - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
+                  <span><span class="medium">Item</span> - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
                     {{pay.claimItemId.itemDescription}}</span>
                   <span class="text-primary non-standard-code" *ngIf="pay.claimItemId.nonStandardCode || pay.claimItemId.nonStandardDesc">{{pay.claimItemId.nonStandardCode}}
                     <ng-container *ngIf="pay.claimItemId.nonStandardDesc">
@@ -98,7 +98,7 @@
                   </li>
                 </ul>
                 <div class="pt-2 nphies-items" *ngIf="pay.claimItemId">
-                  <span><span class="medium">Item</span> - {{pay.claimItemId.value}} - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
+                  <span><span class="medium">Item</span> - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
                     {{pay.claimItemId.itemDescription}}</span>
                   <span class="text-primary non-standard-code" *ngIf="pay.claimItemId.nonStandardCode || pay.claimItemId.nonStandardDesc">{{pay.claimItemId.nonStandardCode}}
                     <ng-container *ngIf="pay.claimItemId.nonStandardDesc">
@@ -122,7 +122,7 @@
                   </li>
                 </ul>
                 <div class="pt-2 nphies-items" *ngIf="pay.claimItemId">
-                  <span><span class="medium">Item</span> - {{pay.claimItemId.value}} - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
+                  <span><span class="medium">Item</span> - {{pay.claimItemId.sequence}} - {{pay.claimItemId.typeName}} - {{pay.claimItemId.itemCode}} -
                     {{pay.claimItemId.itemDescription}}</span>
                   <span class="text-primary non-standard-code" *ngIf="pay.claimItemId.nonStandardCode || pay.claimItemId.nonStandardDesc">{{pay.claimItemId.nonStandardCode}}
                     <ng-container *ngIf="pay.claimItemId.nonStandardDesc">
