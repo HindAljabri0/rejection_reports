@@ -314,7 +314,7 @@
                   <div class="form-group m-0 w-260"
                     [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
 
-                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = ($event.value.payerNphiesId.indexOf(':') > -1) ? $event.value.payerNphiesId : $event.value.organizationNphiesId +':'+ $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId" [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"  [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
+                    <app-nphies-payers-selector (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId ? (($event.value.payerNphiesId.indexOf(':') > -1) ? $event.value.payerNphiesId : $event.value.organizationNphiesId +':'+ $event.value.payerNphiesId) : $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId" [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"  [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
 
                     <!-- <mat-form-field class="form-control custom-select-control">
                       <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="selectedPayer2($event.value); insurancePlan.selectePayer = $event.value;" #Payer>
