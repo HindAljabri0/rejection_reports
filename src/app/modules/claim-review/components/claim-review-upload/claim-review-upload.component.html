@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Upload Name: {{ currentFileUpload.name }}</p><span class="spacer"></span>
+        <p>Upload Name: {{ currentFileUpload?.name }}</p><span class="spacer"></span>
         <p>{{ today | date: 'dd/MM/yyyy' }}</p>
     </div>
     <div class="block-body">
@@ -10,7 +10,7 @@
                 <div class="icon-wrapper">
                     <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
                         alt="{{currentFileUpload.name}}">
-                    <p class="file-name">{{currentFileUpload.name}}</p>
+                    <p class="file-name">{{currentFileUpload?.name}}</p>
                 </div>
                 <div *ngIf="!uploading && !loading" class="btn-list pt-5">
                     <button mat-button (click)="cancel()">Cancel</button>

@@ -1,9 +1,7 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidation/claim-files-validation.service';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import * as XLSX from 'xlsx';
@@ -55,17 +53,23 @@ export class ClaimReviewUploadComponent implements OnInit {
     this.uploading = true;
     this.claimReviewService.pushFileToStorage(providerId, this.currentFileUpload);
     const progressObservable = this.claimReviewService.progressChange.subscribe(progress => {
+      console.log("progressChange: ", progress);
       if (progress.percentage == 100) {
+        this.dialogService.openMessageDialog(new MessageDialogData("Success", "Claim Excel file has been uploaded successfully!", false));
         progressObservable.unsubscribe();
       }
     });
     const summaryObservable = this.claimReviewService.summaryChange.subscribe(async value => {
+      console.log("summaryChange: " + value);
       summaryObservable.unsubscribe();
       this.uploading = false;
       this.cancel();
     });
     const errorobservable = this.claimReviewService.errorChange.subscribe(error => {
-      this.dialogService.openMessageDialog(new MessageDialogData(error, error, true));
+      console.log("errorChange: " + error);
+      if(error){
+        this.dialogService.openMessageDialog(new MessageDialogData("Error", error, true));
+      }
       errorobservable.unsubscribe();
       this.uploading = false;
       this.cancel();
@@ -91,7 +95,7 @@ export class ClaimReviewUploadComponent implements OnInit {
 
   checkfile() {
     const validExts = new Array('.xlsx', '.csv');
-    let fileExt = this.currentFileUpload.name;
+    let fileExt = this.currentFileUpload && this.currentFileUpload.name ? this.currentFileUpload.name : "";
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
       this.showError('Invalid file selected, valid files are of ' +
