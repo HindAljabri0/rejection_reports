@@ -10,11 +10,20 @@
 
       <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
       <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
-        <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
-          <span>{{type.code}} ({{type.display}})</span>
-          <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
-          <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
-              *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
+        <ng-container *ngIf="!loadSearchItem">
+          <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
+            <span>{{type.code}} ({{type.display}})</span>
+            <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
+            <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
+                *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
+          </mat-option>
+        </ng-container>
+
+        <mat-option *ngIf="loadSearchItem">
+          <div class="mat-option-loader">
+            <mat-spinner diameter="24"></mat-spinner>
+            <span>Searching</span>
+          </div>
         </mat-option>
       </mat-autocomplete>
 
@@ -74,15 +83,7 @@
           <input class="form-control" placeholder="Enter non standard description" formControlName="display">
         </div>
       </div>
-      <div class="col-4 col-lg-3">
-        <div class="form-group">
-          <label class="control-label">Is Package?</label>
-          <mat-radio-group class="radio-group inline" formControlName="isPackage">
-            <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
-            <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
+
 
       <div class="col-4 col-lg-3" *ngIf="this.data.type !== 'oral'">
         <div class="form-group">
@@ -255,6 +256,15 @@
           <div *ngIf="IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))">
             <span class="error-text">Please select Care Team</span>
           </div>
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Is Package?</label>
+          <mat-radio-group class="radio-group inline" formControlName="isPackage">
+            <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
+            <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
+          </mat-radio-group>
         </div>
       </div>
       <div *ngIf="data.source === 'CLAIM'" class="col-4 col-lg-3">

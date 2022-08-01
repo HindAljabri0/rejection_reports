@@ -143,6 +143,7 @@
                   *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
+                      <th>Sequence No.</th>
                       <th>Item Type</th>
                       <th>Invoice No. <span class="asterisk">*</span></th>
                       <th>Standard Code - Description</th>
@@ -155,6 +156,7 @@
                   </thead>
                   <tbody>
                     <tr  *ngFor="let item of transaction.items" class="align-middle">
+                      <td>{{item.itemSequenceNo}}</td>
                       <td>{{item.itemType}}</td>
                       <td>{{item.patientInvoiceNo}}</td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>

@@ -147,6 +147,7 @@
                   border="0" *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
+                      <th>Sequence No.</th>
                       <th>Type</th>
                       <th>Invoice No.</th>
                       <th>Code - Description</th>
@@ -159,6 +160,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of transaction.items" class="align-middle">
+                      <td>{{item.itemSequenceNo}}</td>
                       <td>{{item.itemType}}</td>
                       <td>
                         <div class="form-group mb-n1 mt-n1"

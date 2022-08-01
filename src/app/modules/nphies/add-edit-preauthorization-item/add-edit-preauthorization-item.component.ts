@@ -80,6 +80,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   serviceDataError = '';
 
   today: Date;
+  loadSearchItem = false;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
@@ -687,6 +688,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   searchItems() {
+    this.loadSearchItem = true;
     if (this.SearchRequest) {
       this.SearchRequest.unsubscribe();
     }
@@ -704,10 +706,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (body) {
           this.typeListSearchResult = body['content'];
         }
+        this.loadSearchItem = false;
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-
+        this.loadSearchItem = false;
       }
     });
   }
