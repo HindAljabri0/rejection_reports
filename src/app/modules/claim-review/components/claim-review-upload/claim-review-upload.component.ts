@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidation/claim-files-validation.service';
@@ -31,7 +32,8 @@ export class ClaimReviewUploadComponent implements OnInit {
     private dialogService: DialogService,
     public claimReviewService: ClaimReviewService,
     private fileValidationService: ClaimFilesValidationService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -55,7 +57,9 @@ export class ClaimReviewUploadComponent implements OnInit {
     const progressObservable = this.claimReviewService.progressChange.subscribe(progress => {
       console.log("progressChange: ", progress);
       if (progress.percentage == 100) {
-        this.dialogService.openMessageDialog(new MessageDialogData("Success", "Claim Excel file has been uploaded successfully!", false));
+        this.dialogService.openMessageDialog(new MessageDialogData("Success", "Claim Excel file has been uploaded successfully!", false)).subscribe(value => {
+          this.router.navigateByUrl('/review/scrubbing/admin');
+        });
         progressObservable.unsubscribe();
       }
     });
@@ -94,7 +98,7 @@ export class ClaimReviewUploadComponent implements OnInit {
   }
 
   checkfile() {
-    const validExts = new Array('.xlsx', '.csv');
+    const validExts = new Array('.xlsx');
     let fileExt = this.currentFileUpload && this.currentFileUpload.name ? this.currentFileUpload.name : "";
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
