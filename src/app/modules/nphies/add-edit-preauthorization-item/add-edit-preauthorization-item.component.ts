@@ -483,7 +483,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
-      this.FormItem.controls.net.setValue(parseFloat((+(Math.round(parseFloat(netValue.toString() + 'e+2'))  + 'e-2')).toFixed(2)));
+      this.FormItem.controls.net.setValue(parseFloat((+(Math.round(parseFloat(netValue.toString() + 'e+2')) + 'e-2')).toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
     }
@@ -693,14 +693,16 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
     const searchStr = this.FormItem.controls.searchQuery.value;
     const claimType = this.data.type;
-    const RequestDate = this.data.dateOrdered;
+    const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
     const payerNphiesId = this.data.payerNphiesId;
 
     // tslint:disable-next-line:max-line-length
     this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
-        this.typeListSearchResult = body['content'];
+        if (body) {
+          this.typeListSearchResult = body['content'];
+        }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
