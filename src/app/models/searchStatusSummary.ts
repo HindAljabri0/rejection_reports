@@ -5,9 +5,10 @@ export class SearchStatusSummary {
   totalPatientShare = 0;
   totalPayerShare = 0;
   totalVatNetAmount = 0;
-  totalTax =0;
+  totalTax = 0;
   gross?= 0;
   uploadName: string;
+  uploadDate: string;
   patientShare = 0;
   discount = 0;
   actualPaid = 0;
@@ -25,6 +26,7 @@ export class SearchStatusSummary {
       this.totalTax = body['totalTax'];
       this.gross = body['gross'];
       this.uploadName = body['uploadName'];
+      this.uploadDate = body['uploadDate'];
       this.patientShare = body['patientShare'];
       this.discount - body['discount'];
       this.actualPaid = body['actualPaid'];
@@ -40,11 +42,12 @@ export class SearchStatusSummary {
       statuses,
       totalClaims: 0,
       totalNetAmount: 0,
-      totalPatientShare:0,
-      totalPayerShare:0,
+      totalPatientShare: 0,
+      totalPayerShare: 0,
       totalVatNetAmount: 0,
-      totalTax:0,
+      totalTax: 0,
       uploadName: null,
+      uploadDate: null,
       gross: 0,
       patientShare: 0,
       discount: 0,
