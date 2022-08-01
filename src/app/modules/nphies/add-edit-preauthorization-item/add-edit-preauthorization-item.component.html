@@ -74,15 +74,7 @@
           <input class="form-control" placeholder="Enter non standard description" formControlName="display">
         </div>
       </div>
-      <div class="col-4 col-lg-3">
-        <div class="form-group">
-          <label class="control-label">Is Package?</label>
-          <mat-radio-group class="radio-group inline" formControlName="isPackage">
-            <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
-            <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
+
 
       <div class="col-4 col-lg-3" *ngIf="this.data.type !== 'oral'">
         <div class="form-group">
@@ -255,6 +247,15 @@
           <div *ngIf="IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))">
             <span class="error-text">Please select Care Team</span>
           </div>
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Is Package?</label>
+          <mat-radio-group class="radio-group inline" formControlName="isPackage">
+            <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
+            <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
+          </mat-radio-group>
         </div>
       </div>
       <div *ngIf="data.source === 'CLAIM'" class="col-4 col-lg-3">
