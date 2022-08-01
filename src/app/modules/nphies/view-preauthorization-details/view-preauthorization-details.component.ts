@@ -4,6 +4,8 @@ import { AddCommunicationDialogComponent } from '../add-communication-dialog/add
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpResponse } from '@angular/common/http';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 
 @Component({
   selector: 'app-view-preauthorization-details',
@@ -76,6 +78,15 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     } else {
       return 'image';
     }
+  }
+
+  viewCommunicationAttachment(e, attachmentName, byteArray) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: attachmentName, attachment: byteArray
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
   OpenReuseModal() {
