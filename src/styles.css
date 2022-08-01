@@ -310,6 +310,8 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .inline-value-badge{display: inline-block;vertical-align: top;font-size: 14px;line-height: 22px;border-radius: 8px;border: 1px solid #bebebe;padding: 4px 10px;margin-right: 8px;margin-bottom: 8px;}
 .inline-value-badge>span{color: #3060aa;font-weight: 500;}
 .error-icon{color: #D03131;display: inline-block;vertical-align: top;}
+.mat-option-loader{display: flex; align-items: center; justify-content: center; min-height: 40px;}
+.mat-option-loader span{padding-left: 12px;}
 
 /* chat buttons
 --------------------------------------------------------------------------------------------------------*/

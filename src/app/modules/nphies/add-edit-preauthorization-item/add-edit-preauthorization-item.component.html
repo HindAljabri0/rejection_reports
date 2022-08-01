@@ -10,11 +10,20 @@
 
       <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
       <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
-        <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
-          <span>{{type.code}} ({{type.display}})</span>
-          <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
-          <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
-              *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
+        <ng-container *ngIf="!loadSearchItem">
+          <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
+            <span>{{type.code}} ({{type.display}})</span>
+            <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
+            <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
+                *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
+          </mat-option>
+        </ng-container>
+
+        <mat-option *ngIf="loadSearchItem">
+          <div class="mat-option-loader">
+            <mat-spinner diameter="24"></mat-spinner>
+            <span>Searching</span>
+          </div>
         </mat-option>
       </mat-autocomplete>
 
