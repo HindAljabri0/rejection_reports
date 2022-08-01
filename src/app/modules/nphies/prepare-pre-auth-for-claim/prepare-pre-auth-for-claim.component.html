@@ -134,12 +134,13 @@
               <td colspan="10">
                 <div class="row small-gutter">
                   <div class="col-4 col-xxl-3">
-                    <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}">
+                    <!-- <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}"> -->
+                    <div class="form-group">
                       <label class="control-label">Episode No.</label>
                       <input class="form-control" placeholder="Enter episode no." [(ngModel)]="transaction.episodeNo">
-                      <div *ngIf="transaction.submitted && !transaction.episodeNo">
+                      <!-- <div *ngIf="transaction.submitted && !transaction.episodeNo">
                         <span class="error-text">Episode No required</span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -166,8 +167,10 @@
                         <div class="form-group mb-n1 mt-n1"
                           [ngClass]="{'has-error' : transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo}">
                           <input type="text" class="form-control" placeholder="Enter invoice no."
-                            [(ngModel)]="item.invoiceNo" [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
-                          <div *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
+                            [(ngModel)]="item.invoiceNo"
+                            [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
+                          <div
+                            *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
                             <span class="error-text">InvoiceNo required</span>
                           </div>
                         </div>

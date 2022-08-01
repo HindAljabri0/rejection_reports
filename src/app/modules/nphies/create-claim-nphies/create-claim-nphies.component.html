@@ -1003,7 +1003,7 @@
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
-                                    <button type="button">
+                                    <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                       <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                       <span>{{payload.attachmentName}}</span>
                                     </button>
@@ -1026,7 +1026,7 @@
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
-                                    <button type="button">
+                                    <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                       <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                       <span>{{payload.attachmentName}}</span>
                                     </button>
@@ -1082,7 +1082,7 @@
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button">
+                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -1103,7 +1103,7 @@
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button">
+                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
