@@ -13,6 +13,7 @@
   <div class="block-card mb-3">
     <div class="block-header" *ngIf="uploadNameExist">
       <p class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
+      <p class="ml-auto">{{summaries[0].uploadDate | date: 'dd/MM/yyyy'}}</p>
     </div>
     <div class="block-body pb-0">
       <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
