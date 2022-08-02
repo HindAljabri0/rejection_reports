@@ -115,8 +115,13 @@
                 </tbody>
             </table>
         </div>
+        <div style="width: 100%; display: flex; justify-content: flex-end; padding-right:18px;">
+            <button mat-flat-button class="animate__bounceIn" color="primary" (click)="openGenerateReportDialog()">
+                Initiate GSS Report
+            </button>
+            <!-- <button mat-flat-button color="primary" (click)="openGenerateReportDialog()" 
+            [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report
+        </button> -->
+        </div>
     </ng-scrollbar>
-    <button mat-fab color="primary" class="page-fab" (click)="openGenerateReportDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>
