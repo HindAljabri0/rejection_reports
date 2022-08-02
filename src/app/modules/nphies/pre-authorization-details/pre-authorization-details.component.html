@@ -372,6 +372,7 @@
         <th>Net</th>
         <th>Approved Net</th>
         <th>Status</th>
+        <th>Adjudication Reason Code</th>
         <th>Note No.</th>
       </tr>
     </thead>
@@ -400,6 +401,10 @@
             <span *ngIf="!item.itemDecision">-</span>
           </td>
           <td class="row-click" (click)="toggleItem(i)">
+            <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
+            <span *ngIf="!item.reasonCodes">-</span>
+          </td>
+          <td class="row-click" (click)="toggleItem(i)">
             <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
             <span *ngIf="!item.itemDecision">-</span>
           </td>
@@ -422,7 +427,7 @@
                   <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
                     <td>{{res.category}}</td>
                     <td>{{res.categoryValue}} <span class="currency">SR</span></td>
-                    <td>{{res.categoryReason}}</td>
+                    <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
                   </tr>
                 </tbody>
               </table>

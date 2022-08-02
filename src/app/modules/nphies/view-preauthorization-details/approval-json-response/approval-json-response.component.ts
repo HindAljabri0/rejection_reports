@@ -1,16 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
-import { SharedServices } from 'src/app/services/shared.services';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
 import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { SharedServices } from 'src/app/services/shared.services';
+import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
+import { MatDialog } from '@angular/material';
 
 @Component({
-  selector: 'app-json-response',
-  templateUrl: './json-response.component.html',
-  styleUrls: ['./json-response.component.css']
+  selector: 'app-approval-json-response',
+  templateUrl: './approval-json-response.component.html',
+  styleUrls: ['./approval-json-response.component.css']
 })
-export class JsonResponseComponent implements OnInit {
+export class ApprovalJsonResponseComponent implements OnInit {
 
   @Input() otherDataModel;
 
@@ -28,7 +28,7 @@ export class JsonResponseComponent implements OnInit {
   GetJsonResponses() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.claimId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.approvalRequestId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.transactions = event.body;
@@ -98,5 +98,6 @@ export class JsonResponseComponent implements OnInit {
       }
     });
   }
+
 
 }

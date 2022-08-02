@@ -15,7 +15,6 @@
                     (click)="clickCopy(tabData.title)" matRipple>
                     {{copyText}}
                 </button>
-                <button *ngIf="tabData.IsDownload" type="button" mat-flat-button color="primary" (click)="download(tabData.fileName, tabData.json)" matRipple>Download JSON</button>
             </div>
         </div>
     </mat-tab>
