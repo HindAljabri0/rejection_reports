@@ -44,27 +44,19 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   openGenerateReportDialog() {
-    const dialogRef = this.dialog.open(TawuniyaGssGenerateReportDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-sm']
-    })
-    dialogRef.afterClosed().subscribe(lossMonth => {
-      console.log(lossMonth);
-      if (lossMonth != undefined) {
+      let lossMonthAsDate: Date  = new Date();
+      let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
+      let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear()-1 : lossMonthAsDate.getFullYear()
+      let lossMonth = year + '/' + month;
         this.sharedServices.loadingChanged.next(true);
         this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
-          // console.log(data);
-          // console.log("encodeURIComponent data.gssReferenceNumber: " + encodeURIComponent(data.gssReferenceNumber))
           this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
           this.sharedServices.loadingChanged.next(false);
         }, err => {
           console.log(err);
           this.sharedServices.loadingChanged.next(false);
           this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
-
-          // return this.store.dispatch(showSnackBarMessage({ message: err.error.message }));
         })
-      }
-    });
   }
 
   openDetailView(model: InitiateResponse) {
@@ -107,7 +99,7 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   downloadData(data: InitiateResponse) {
-    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data.gssReferenceNumber))
+    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';

@@ -245,7 +245,7 @@
         </mat-accordion>
       </ng-container>
 
-      <ul class="nav-list" *ngIf="!envStaging && !envProd">
+      <ul class="nav-list" *ngIf="!envStaging && !envProd && userPrivileges.GSSReportForTawuniya.canAccessGSSReport">
         <li>
           <a routerLink="/tawuniya-gss" routerLinkActive="is-active">
             <span class="text">Tawuniya GSS Reports</span>

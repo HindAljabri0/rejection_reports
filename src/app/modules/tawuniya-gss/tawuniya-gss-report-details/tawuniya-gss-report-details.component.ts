@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
@@ -18,6 +20,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
 
   timeleft: number;
   timer
+  downloaded: boolean = false
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
   // signed: boolean = false
@@ -26,41 +29,22 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     private tawuniyaGssService: TawuniyaGssService,
     private sharedServices: SharedServices,
     private store: Store,
+    private downloadService: DownloadService,
     private dialog: MatDialog,
     private router: Router) { }
     
     ngOnInit() {
     this.gssReferenceNumber = this.activatedRoute.snapshot.params.gssReferenceNumber;
-    // console.log("init getInitiatedResponse: ", this.tawuniyaGssService.getInitiatedResponse())
-    // console.log("init gssReferenceNumber inside ngChanges: " + this.gssReferenceNumber)
     this.initiateModel = this.tawuniyaGssService.getInitiatedResponse();
       if(!this.initiateModel){
         this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
         this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
       }
     this.startConfirmationTimer()
-    // this.generateReport(false);
   }
   startConfirmationTimer() {
-  
-      // document.getElementById('confirm-btn').innerText = 'Confirm within ' +  this.timeleft+' second';
-      // setInterval(this.populateConfirmationTimer, 1000);
       this.timeleft = 60
-
-// this.timer = setInterval(function(){
-//   if(this.timeleft.bind <= 0){
-//     clearInterval(this.timer.bind);
-//     console.log('this.timeleft <= 0', this.timeleft.bind)
-//   } else {
-//     console.log('this.timeleft else ', this.timeleft.bind)
-//   }
-//   this.timeleft.bind = this.timeleft.bind - 1;
-// }, 1000);
 this.timer = setInterval(() => {
-  // this.timeleft.bind(this)
-  // this.callmethod.bind(this)
-  // this.callmethod instead of this.callmethod()
-  // console.log('this.timeleft ', this.timeleft)
   if(this.timeleft > 0) {
     this.timeleft--;
   } else {
@@ -74,27 +58,28 @@ this.timer = setInterval(() => {
   ngOnDestroy() {
     clearInterval(this.timer);
  }
+
+ downloadData() {
+  if(this.downloaded){
+    return;
+  }
+  this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(this.initiateModel))
+    .subscribe(status => {
+
+      if (status != DownloadStatus.ERROR) {
+        this.downloaded = true
+      //   this.detailTopActionIcon = 'ic-check-circle.svg';
+      // } else {
+      //   this.detailTopActionIcon = 'ic-download.svg';
+      }
+    });
+}
   
   generateReport(showMessage: Boolean) {
     this.sharedServices.loadingChanged.next(true);
-    // this.tawuniyaGssService.gssQueryDetails(this.gssReferenceNumber).subscribe(data => {
-    //   this.initiateModel = data;
-    //   console.log(this.initiateModel);
-    //   this.sharedServices.loadingChanged.next(false);
-    //   if (showMessage) {
-    //     return this.store.dispatch(showSnackBarMessage({ message: "GSS Report Re-Generated Successfully!" }));
-    //   }
-    // }, err => {
-    //   this.sharedServices.loadingChanged.next(false);
-    //   if (err && err.error && err.error.text) {
-    //     return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
-    //   } else {
-    //     return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
-    //   }
-    // });
     this.tawuniyaGssService.generateReportInitiate(this.initiateModel.lossMonth).subscribe(data => {
       this.initiateModel = data;
-      console.log(this.initiateModel);
+      // console.log(this.initiateModel);
       this.sharedServices.loadingChanged.next(false);
       if (showMessage) {
         this.startConfirmationTimer()
