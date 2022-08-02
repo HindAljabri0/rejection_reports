@@ -22,7 +22,7 @@ export interface UserPrivileges {
         WASEEL_CLAIMS: {
             isAdmin: boolean,
             isClaimUser: boolean,
-            isPayerUser:boolean
+            isPayerUser: boolean
 
         }
         RCM: {
@@ -40,6 +40,9 @@ export interface UserPrivileges {
             canAccessPriceList: boolean,
             canAccessPhysician: boolean
         }
+    };
+    GSSReportForTawuniya: {
+        canAccessGSSReport: false
     }
 }
 
@@ -70,7 +73,7 @@ export const initState: MainState = {
             WASEEL_CLAIMS: {
                 isAdmin: false,
                 isClaimUser: false,
-                isPayerUser:false
+                isPayerUser: false
 
             },
             RCM: {
@@ -88,6 +91,9 @@ export const initState: MainState = {
                 canAccessPriceList: false,
                 canAccessPhysician: false
             }
+        },
+        GSSReportForTawuniya: {
+            canAccessGSSReport: false
         }
     }
 };
@@ -133,9 +139,12 @@ const _mainReducer = createReducer(
                     canAccessClaim: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.3'),
                     canAccessBeneficiary: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.4'),
                     canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.5'),
-                    canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61') ),
+                    canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61')),
                     canAccessPhysician: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.62')),
                 }
+            },
+            GSSReportForTawuniya: {
+                canAccessGSSReport: AuthService.hasPrivilege(providerId, '102', '31.0')
             }
         };
         return { ...state, userPrivileges: userPrivileges };
