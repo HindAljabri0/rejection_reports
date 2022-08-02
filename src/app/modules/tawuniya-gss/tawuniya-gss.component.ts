@@ -12,6 +12,8 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MatDialog } from '@angular/material';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-tawuniya-gss',
@@ -34,7 +36,8 @@ export class TawuniyaGssComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit() {
@@ -56,7 +59,9 @@ export class TawuniyaGssComponent implements OnInit {
         }, err => {
           console.log(err);
           this.sharedServices.loadingChanged.next(false);
-          return this.store.dispatch(showSnackBarMessage({ message: err.error.message }));
+          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
+
+          // return this.store.dispatch(showSnackBarMessage({ message: err.error.message }));
         })
       }
     });
