@@ -60,7 +60,7 @@ this.timer = setInterval(() => {
   // this.timeleft.bind(this)
   // this.callmethod.bind(this)
   // this.callmethod instead of this.callmethod()
-  console.log('this.timeleft ', this.timeleft)
+  // console.log('this.timeleft ', this.timeleft)
   if(this.timeleft > 0) {
     this.timeleft--;
   } else {
