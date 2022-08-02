@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
@@ -16,7 +16,7 @@ import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
 })
 export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
 
-  timeleft: number = 10;
+  timeleft: number;
   timer
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
@@ -26,20 +26,47 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     private tawuniyaGssService: TawuniyaGssService,
     private sharedServices: SharedServices,
     private store: Store,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private router: Router) { }
     
     ngOnInit() {
     this.gssReferenceNumber = this.activatedRoute.snapshot.params.gssReferenceNumber;
-    console.log("init getInitiatedResponse: ", this.tawuniyaGssService.getInitiatedResponse())
-    console.log("init gssReferenceNumber inside ngChanges: " + this.gssReferenceNumber)
+    // console.log("init getInitiatedResponse: ", this.tawuniyaGssService.getInitiatedResponse())
+    // console.log("init gssReferenceNumber inside ngChanges: " + this.gssReferenceNumber)
     this.initiateModel = this.tawuniyaGssService.getInitiatedResponse();
-    this.populateConfirmationTimer()
+      if(!this.initiateModel){
+        this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
+        this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+      }
+    this.startConfirmationTimer()
     // this.generateReport(false);
   }
-  populateConfirmationTimer() {
+  startConfirmationTimer() {
   
-      document.getElementById('confirm-btn').innerText = 'Confirm within ' +  this.timeleft+' second';
-      setInterval(this.populateConfirmationTimer, 1000);
+      // document.getElementById('confirm-btn').innerText = 'Confirm within ' +  this.timeleft+' second';
+      // setInterval(this.populateConfirmationTimer, 1000);
+      this.timeleft = 60
+
+// this.timer = setInterval(function(){
+//   if(this.timeleft.bind <= 0){
+//     clearInterval(this.timer.bind);
+//     console.log('this.timeleft <= 0', this.timeleft.bind)
+//   } else {
+//     console.log('this.timeleft else ', this.timeleft.bind)
+//   }
+//   this.timeleft.bind = this.timeleft.bind - 1;
+// }, 1000);
+this.timer = setInterval(() => {
+  // this.timeleft.bind(this)
+  // this.callmethod.bind(this)
+  // this.callmethod instead of this.callmethod()
+  // console.log('this.timeleft ', this.timeleft)
+  if(this.timeleft > 0) {
+    this.timeleft--;
+  } else {
+    clearInterval(this.timer);
+  }
+},1000)
     }
     
   
@@ -70,6 +97,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       console.log(this.initiateModel);
       this.sharedServices.loadingChanged.next(false);
       if (showMessage) {
+        this.startConfirmationTimer()
         return this.store.dispatch(showSnackBarMessage({ message: "GSS Report Generated Successfully!" }));
       }
     }, err => {
