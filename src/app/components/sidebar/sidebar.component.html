@@ -334,7 +334,7 @@
             </li>
           </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim ||  userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim">
+        <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim ||  userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <span class="d-flex align-items-center">
@@ -343,12 +343,12 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <ul class="nav-list">
-            <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim)">
+            <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim)">
               <a routerLink="/nphies/prepare-pre-auth-for-claim" routerLinkActive="is-active">
                 <span class="text">Prepare for Claims</span>
               </a>
             </li>
-            <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim)">
+            <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim)">
               <a routerLink="/nphies/convert-pre-auth-to-claim" routerLinkActive="is-active">
                 <span class="text">Convert to Claims</span>
               </a>
