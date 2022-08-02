@@ -50,9 +50,9 @@ export class TawuniyaGssService {
     return this.http.post<InitiateResponse[]>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "fromDate": fromDate, "toDate": toDate, "userName": localStorage.getItem('auth_username') });
   }
 
-  downloadPDF(gssReferenceNumber: string) {
+  downloadPDF(data: InitiateResponse) {
     const requestUrl = '/gss/download/' + localStorage.getItem('provider_id');
-    const request = new HttpRequest('POST', environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "gssReferenceNumber" : gssReferenceNumber, "userName": localStorage.getItem('auth_username') }, { responseType: 'text', reportProgress: true });
+    const request = new HttpRequest('POST', environment.tawuniyaGssReport + requestUrl, data, { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 }

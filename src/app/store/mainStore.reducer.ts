@@ -24,6 +24,9 @@ export interface UserPrivileges {
       isClaimUser: boolean,
       isPayerUser: boolean
 
+    },
+    GSSReportForTawuniya: {
+      canAccessGSSReport: false
     }
     RCM: {
       isAdmin: boolean,
@@ -76,6 +79,9 @@ export const initState: MainState = {
         isPayerUser: false
 
       },
+      GSSReportForTawuniya: {
+        canAccessGSSReport: false
+      },
       RCM: {
         isAdmin: false,
         canAccessRevenueReport: false,
@@ -126,6 +132,9 @@ const _mainReducer = createReducer(
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '3.0'),
           isClaimUser: providerId != '101' && payerIds.some(payerId => AuthService.hasPrivilege(providerId, payerId, '3')),
           isPayerUser: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '99.0'),
+        },
+        GSSReportForTawuniya: {
+          canAccessGSSReport: AuthService.hasPrivilege(providerId, '102', '31.0')
         },
         RCM: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.0'),
