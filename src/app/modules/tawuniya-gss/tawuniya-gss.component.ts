@@ -107,7 +107,7 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   downloadData(data: InitiateResponse) {
-    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data.gssReferenceNumber))
+    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
