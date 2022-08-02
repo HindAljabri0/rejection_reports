@@ -14,6 +14,11 @@
                 'danger' : initiateModel?.status?.toLowerCase() === 'cancelled' }">
                 {{initiateModel?.status | titlecase}}
             </span>
+            <button type="button" [disabled]="downloaded" mat-icon-button class="text-primary" [ngStyle]="{'cursor': downloaded ? 'default' : 'pointer'}" (click)="downloadData()">
+                <mat-icon *ngIf="!downloaded">file_download</mat-icon>
+                <mat-icon *ngIf="downloaded">check_circle</mat-icon>
+                
+            </button>
         </div>
     </div>
     <div class="block-body">
