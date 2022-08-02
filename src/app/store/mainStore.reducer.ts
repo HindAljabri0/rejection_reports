@@ -141,9 +141,9 @@ const _mainReducer = createReducer(
           canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.5'),
           canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61')),
           canAccessPhysician: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.62')),
-          canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.7')),
-          canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.71')),
-          canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.72')),
+          canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.7')),
+          canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
+          canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),
         }
       }
     };
