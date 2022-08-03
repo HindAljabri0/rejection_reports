@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DateAdapter, MatDatepicker, MatDialog, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -7,13 +6,14 @@ import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from './models/InitiateResponse.model';
 import { TawuniyaGssService } from './Services/tawuniya-gss.service';
 import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generate-report-dialog/tawuniya-gss-generate-report-dialog.component';
-import { Moment } from 'moment';
 import * as _moment from 'moment';
 import { FormControl, Validators } from '@angular/forms';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { MatDialog } from '@angular/material';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-tawuniya-gss',
@@ -36,32 +36,27 @@ export class TawuniyaGssComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit() {
   }
 
   openGenerateReportDialog() {
-    const dialogRef = this.dialog.open(TawuniyaGssGenerateReportDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-sm']
-    })
-    dialogRef.afterClosed().subscribe(data => {
-      console.log(data);
-      if (data != undefined) {
+      let lossMonthAsDate: Date  = new Date();
+      let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
+      let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear()-1 : lossMonthAsDate.getFullYear()
+      let lossMonth = year + '/' + month;
         this.sharedServices.loadingChanged.next(true);
-        this.tawuniyaGssService.generateReportInitiate(data).subscribe((data: InitiateResponse) => {
-          console.log(data);
-          this.initiateModel.push(data);
+        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
+          this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
           this.sharedServices.loadingChanged.next(false);
-          return this.store.dispatch(showSnackBarMessage({ message: 'Tawuniya Report Initiated Successfully!' }));
         }, err => {
           console.log(err);
           this.sharedServices.loadingChanged.next(false);
-          return this.store.dispatch(showSnackBarMessage({ message: err.error.error_description }));
+          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
         })
-      }
-    });
   }
 
   openDetailView(model: InitiateResponse) {
@@ -78,13 +73,9 @@ export class TawuniyaGssComponent implements OnInit {
     if (!this.valid(newFromDate, newToDate)) {
       return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
     }
-    // console.log('this.fromMonth :',this.fromMonth);
-    // console.log('this.toMonth :',this.toMonth);    
 
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
-    //this.tawuniyaGssService.gssQuerySummary(this.fromMonth, this.toMonth).subscribe(data => {
-      console.log(data);
       this.initiateModel = [];
       this.initiateModel = data;
       this.sharedServices.loadingChanged.next(false);
@@ -108,7 +99,7 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   downloadData(data: InitiateResponse) {
-    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data.gssReferenceNumber))
+    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';

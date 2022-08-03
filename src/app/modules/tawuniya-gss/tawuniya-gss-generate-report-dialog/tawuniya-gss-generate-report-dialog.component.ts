@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { DateAdapter, MatDatepicker, MatDialogRef, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Moment } from 'moment';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
@@ -19,7 +18,7 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   data : InitiateResponse[];
   lossMonth = new FormControl(null, Validators.required);
-  constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store) { }
+  constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store, private router: Router) { }
 
   ngOnInit() {
   }
@@ -49,4 +48,6 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
     };
     container.setViewMode('month');
   }
+
+  
 }

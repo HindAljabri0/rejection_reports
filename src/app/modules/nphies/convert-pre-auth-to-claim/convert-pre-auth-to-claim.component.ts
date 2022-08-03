@@ -57,6 +57,11 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     { value: 'pended', name: 'Pended' }
   ];
 
+  selectedApprovals: string[] = new Array();
+  selectedApprovalsCountOfPage = 0;
+  allCheckBoxIsIndeterminate: boolean;
+  allCheckBoxIsChecked: boolean;
+
   constructor(
     public sharedServices: SharedServices,
     private formBuilder: FormBuilder,
@@ -71,6 +76,12 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    const today = new Date();
+    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(oneMonthAgo, 'yyyy-MM-dd'));
+    this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(today, 'yyyy-MM-dd'));
+
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.fromDate != null) {
@@ -105,7 +116,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
       if (params.documentId != null) {
         // tslint:disable-next-line:radix
-        this.FormPreAuthTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+        this.FormPreAuthTransaction.controls.documentId.patchValue(params.documentId);
       }
 
       if (params.beneficiaryName != null) {
@@ -132,7 +143,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
         this.pageSize = 10;
       }
 
-      // this.getPayerList(true);
+      this.getPayerList(true);
 
     });
   }
@@ -250,7 +261,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
+        model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {
@@ -269,7 +280,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       model.pageSize = this.pageSize;
 
       this.editURL(model.fromDate, model.toDate);
-      this.providerNphiesApprovalService.getApprovalToPrepareTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
+      this.providerNphiesSearchService.getApprovalToClaimConvertCriteria(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
@@ -337,6 +348,10 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       path += `documentId=${this.FormPreAuthTransaction.controls.documentId.value}&`;
     }
 
+    if (this.FormPreAuthTransaction.controls.documentId.value) {
+      path += `documentId=${this.FormPreAuthTransaction.controls.documentId.value}&`;
+    }
+
     if (this.FormPreAuthTransaction.controls.status.value) {
       path += `status=${this.FormPreAuthTransaction.controls.status.value}&`;
     }
@@ -368,24 +383,75 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     this.advanceSearchEnable = !this.advanceSearchEnable;
   }
 
-  convertToClaim(transaction) {
-    // tslint:disable-next-line:max-line-length
-    this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0].submitted = true;
-    let hasError = false;
-    if (!transaction.episodeId) {
-      hasError = true;
-    }
-
-    if (transaction.items && transaction.items.length > 0) {
-      transaction.items.filter(x => x.status === 'approved').forEach(x => {
-        if (!x.invoiceNo) {
-          hasError = true;
-        }
+  convertToClaim() {
+    let episodeIds = [];
+    if (this.selectedApprovals.length === 0) {
+      episodeIds = this.transactions.map(x => {
+        return x.convertToClaimEpisodeId;
       });
+    } else {
+      episodeIds = this.selectedApprovals;
     }
+    this.sharedServices.loadingChanged.next(true);
 
-    if (!hasError) {
-      console.log('call api to convert');
+    this.providerNphiesApprovalService.convertToClaim(this.sharedServices.providerId, episodeIds).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+
+        const messages = [];
+        messages.push('Upload Name:' + body.uploadName);
+        if (body.uploadDate) {
+          body.uploadDate = this.datePipe.transform(body.uploadDate, 'dd-MM-yyyy');
+        }
+        messages.push('upload Date:' + body.uploadDate);
+        messages.push('Accepted Claims:' + body.noOfAcceptedClaims);
+        messages.push('Not Accepted Claims:' + body.noOfNotAcceptedClaims);
+        // tslint:disable-next-line:max-line-length
+        this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', messages, true).subscribe(res => {
+          this.onSubmit();
+        });
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        } else if (error.status === 500) {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        }
+      }
+    });
+  }
+
+  selectApproval(convertToClaimEpisodeId: string) {
+    if (!this.selectedApprovals.includes(convertToClaimEpisodeId)) {
+      this.selectedApprovals.push(convertToClaimEpisodeId);
+      this.selectedApprovalsCountOfPage++;
+    } else {
+      this.selectedApprovals.splice(this.selectedApprovals.indexOf(convertToClaimEpisodeId), 1);
+      this.selectedApprovalsCountOfPage--;
     }
   }
 

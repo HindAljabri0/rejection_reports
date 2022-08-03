@@ -16,10 +16,10 @@
           <td>{{transaction.transactionType}}</td>
           <td>{{transaction.transactionDate  | date : 'yyyy/MM/dd hh:mm:ss aa'}}</td>
           <td>
-            <a href="javascript:void(0);" title="View" class="primary-link" (click)="GetJson(transaction.transactionId, transaction.pollTransactionId, transaction.transactionType, 'VIEW')">View</a>
+            <a href="javascript:void(0);" title="View" class="primary-link" (click)="GetJson(transaction.transactionId, transaction.transactionType, 'VIEW')">View</a>
           </td>
           <td>
-            <a href="javascript:void(0);" title="View" class="primary-link" (click)="GetJson(transaction.transactionId, transaction.pollTransactionId, transaction.transactionType, 'DOWNLOAD')">Download</a>
+            <a href="javascript:void(0);" title="View" class="primary-link" (click)="GetJson(transaction.transactionId, transaction.transactionType, 'DOWNLOAD')">Download</a>
           </td>
         </tr>
       </tbody>

@@ -59,6 +59,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     documentId: [''],
     status: [''],
     preAuthRefNo: [''],
+    provClaimNo: [''],
     destinationId: [''],
     type: ['']
   });
@@ -164,6 +165,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         //   return model;
         // });
         this.FormPreAuthTransaction.controls.preAuthRefNo.patchValue(params.preAuthRefNo);
+      }
+      if (params.provClaimNo != null) {
+        this.FormPreAuthTransaction.controls.provClaimNo.patchValue(params.provClaimNo);
       }
 
       if (params.page != null) {
@@ -308,6 +312,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         // model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
         //   return x.value;
         // });
+      }
+
+      if (this.FormPreAuthTransaction.controls.provClaimNo.value) {
+        model.provClaimNo = this.FormPreAuthTransaction.controls.provClaimNo.value;
       }
 
       if (this.FormPreAuthTransaction.controls.type.value) {
