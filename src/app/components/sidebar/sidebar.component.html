@@ -334,7 +334,7 @@
             </li>
           </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim ||  userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim">
+        <mat-expansion-panel hideToggle *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim ||  userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <span class="d-flex align-items-center">
