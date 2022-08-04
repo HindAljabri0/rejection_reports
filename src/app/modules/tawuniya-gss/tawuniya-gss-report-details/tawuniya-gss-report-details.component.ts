@@ -101,8 +101,8 @@ this.timer = setInterval(() => {
       disableClose: true,
       autoFocus: false,
       data: {
-        mainMessage: 'Are you sure you want to sign the GSS?',
-        subMessage: 'Disclaimer : Once the GSS is confirmed, no more claims can be submitted.',
+        mainMessage: 'Are you sure you want to sign and confirm the GSS?',
+        subMessage: 'Disclaimer: GSS is the process to confirm the billing submission that is sent to Tawuniya and by confirming the GSS, no claims will be allowed to submit.',
         mode: 'warning'
       }
     });
