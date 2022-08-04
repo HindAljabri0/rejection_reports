@@ -8,15 +8,22 @@
   <div class="primary-dialog-body pb-0">
     <div class="form-group flex-grow-1">
 
-      <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery"
-        [matAutocomplete]="auto" (keyup)="searchItems()">
-      <mat-autocomplete #auto="matAutocomplete" class="pre-auth-items">
-        <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
-          <span>{{type.code}} ({{type.display}})</span>
-          <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
-          <span class="text-primary non-standard-code"
-            *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
-              *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
+      <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
+      <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
+        <ng-container *ngIf="!loadSearchItem">
+          <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
+            <span>{{type.code}} ({{type.display}})</span>
+            <span class="strength text-medium-grey" *ngIf="type.strength">{{type.strength}}</span>
+            <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
+                *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
+          </mat-option>
+        </ng-container>
+
+        <mat-option *ngIf="loadSearchItem">
+          <div class="mat-option-loader">
+            <mat-spinner diameter="24"></mat-spinner>
+            <span>Searching</span>
+          </div>
         </mat-option>
       </mat-autocomplete>
 
@@ -24,8 +31,7 @@
     <hr class="hr mb-3">
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
-        <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
           <label class="control-label">Type<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="type" (selectionChange)="typeChange()">
@@ -39,14 +45,12 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter"
-                  noEntriesFoundLabel="No items found" name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
 
@@ -79,15 +83,7 @@
           <input class="form-control" placeholder="Enter non standard description" formControlName="display">
         </div>
       </div>
-      <div class="col-4 col-lg-3">
-        <div class="form-group">
-          <label class="control-label">Is Package?</label>
-          <mat-radio-group class="radio-group inline" formControlName="isPackage">
-            <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
-            <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
+
 
       <div class="col-4 col-lg-3" *ngIf="this.data.type !== 'oral'">
         <div class="form-group">
@@ -127,17 +123,15 @@
       <div class="col-4 col-lg-3">
         <!-- <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('matDatepickerMax') || serviceDataError)}"> -->
-          <div class="form-group">
+        <div class="form-group">
           <label class="control-label">Service Start Date</label>
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date"
-                formControlName="startDate" [max]="today">
+              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="today">
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date"
-                formControlName="startDate" [max]="FormItem.controls.endDate.value">
+              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="FormItem.controls.endDate.value">
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
 
@@ -168,24 +162,20 @@
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date"
-                formControlName="endDate" [max]="today">
+              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [max]="today">
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date"
-                formControlName="endDate">
+              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate">
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
 
             <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
             <mat-datepicker #endDate></mat-datepicker>
           </div>
-          <div
-            *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
+          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
             <span class="error-text">Please enter service end date</span>
           </div>
-          <div
-            *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('matDatepickerMax')">
+          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('matDatepickerMax')">
             <span class="error-text" *ngIf="data.source === 'CLAIM'">End date must be on or before Claim date</span>
             <span class="error-text" *ngIf="data.source === 'APPROVAL'">End date must be on or after Approval
               date</span>
@@ -202,8 +192,8 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="supportingInfoSequence" multiple placeholder="Select Supporting Info">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="supportingInfoFilter"
-                  showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found" name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="supportingInfoFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found"
+                  name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
               <ng-container>
@@ -227,8 +217,8 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="diagnosisSequence" multiple placeholder="Select Care Team">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="diagnosisFilter"
-                  showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found" name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="diagnosisFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found"
+                  name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
               <ng-container>
@@ -245,14 +235,13 @@
       <div class="col-4 col-lg-3">
         <div class="form-group"
           [ngClass]="{'has-error' :IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))}">
-          <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired"
-              class="asterisk">*</span></label>
+          <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired" class="asterisk">*</span></label>
 
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="careTeamSequence" multiple placeholder="Select Care Team">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="careTeamFilter"
-                  showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found" name='searchedItem'>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="careTeamFilter" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found"
+                  name='searchedItem'>
                 </ngx-mat-select-search>
               </mat-option>
               <ng-container>
@@ -264,19 +253,25 @@
 
             </mat-select>
           </mat-form-field>
-          <div
-            *ngIf="IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))">
+          <div *ngIf="IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))">
             <span class="error-text">Please select Care Team</span>
           </div>
         </div>
       </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Is Package?</label>
+          <mat-radio-group class="radio-group inline" formControlName="isPackage">
+            <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
+            <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
       <div *ngIf="data.source === 'CLAIM'" class="col-4 col-lg-3">
-        <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')}">
           <label class="control-label">Invoice No.<span class="asterisk">*</span></label>
           <input class="form-control" placeholder="Enter invoice number" formControlName="invoiceNo" maxlength="64">
-          <div
-            *ngIf="(isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')">
+          <div *ngIf="(isSubmitted || FormItem.get('invoiceNo').touched) && FormItem.get('invoiceNo').hasError('required')">
             <span class="error-text">Please enter Invoice No</span>
           </div>
         </div>
@@ -299,8 +294,7 @@
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <div class="row extra-small-gutter">
                 <div class="col">
-                  <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity"
-                    (blur)="Calculate('Other')">
+                  <input type="number" class="form-control" placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Other')">
                 </div>
                 <div *ngIf="showQuantityCode" class="col-auto">
                   <mat-form-field class="form-control custom-select-control">
@@ -312,32 +306,27 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div
-                *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
+              <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
                 <span class="error-text">Please enter Quantity</span>
               </div>
               <div *ngIf="IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched)">
                 <span class="error-text">Quantity must be greater than 0</span>
               </div>
-              <div
-                *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
+              <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
                 <span class="error-text">Please enter Quantity Code</span>
               </div>
             </div>
           </div>
           <div class="col-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
               <label class="control-label">Unit Price<span class="asterisk">*</span></label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice"
-                  (blur)="Calculate('Other')">
+                <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice" (blur)="Calculate('Other')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
               </div>
-              <div
-                *ngIf="(isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')">
+              <div *ngIf="(isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')">
                 <span class="error-text">Please enter Unit Price</span>
               </div>
             </div>
@@ -346,8 +335,7 @@
             <div class="form-group">
               <label class="control-label">Tax (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter tax" formControlName="taxPercent"
-                  (blur)="Calculate('Tax')">
+                <input type="number" class="form-control" placeholder="Enter tax" formControlName="taxPercent" (blur)="Calculate('Tax')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
@@ -358,8 +346,7 @@
             <div class="form-group">
               <label class="control-label">Discount (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discountPercent"
-                  (blur)="Calculate('Factor')">
+                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discountPercent" (blur)="Calculate('Factor')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
@@ -370,8 +357,7 @@
             <div class="form-group">
               <label class="control-label">Discount Amount</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discount"
-                  (blur)="Calculate('DiscountPercent')">
+                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discount" (blur)="Calculate('DiscountPercent')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -382,14 +368,12 @@
             <div class="form-group">
               <label class="control-label">Patient Share (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter patient share"
-                  formControlName="patientSharePercent" (blur)="Calculate('PatientShare')">
+                <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientSharePercent" (blur)="Calculate('PatientShare')">
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
               </div>
-              <mat-checkbox formControlName="IsTaxApplied" color="primary" (change)="changeTaxApplied()"
-                class="d-inline-block pt-1">Tax Applied?</mat-checkbox>
+              <mat-checkbox formControlName="IsTaxApplied" color="primary" (change)="changeTaxApplied()" class="d-inline-block pt-1">Tax Applied?</mat-checkbox>
             </div>
           </div>
         </div>
@@ -400,8 +384,7 @@
             <div class="form-group">
               <label class="control-label">Tax Amount</label>
               <div class="input-group">
-                <input class="form-control" placeholder="Enter tax" formControlName="tax"
-                  (blur)="Calculate('TaxPercent')">
+                <input class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('TaxPercent')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -417,8 +400,7 @@
                   <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                 </span>
               </label>
-              <input class="form-control" placeholder="Enter factor" formControlName="factor"
-                (blur)="Calculate('Discount')">
+              <input class="form-control" placeholder="Enter factor" formControlName="factor" (blur)="Calculate('Discount')">
               <div *ngIf="(isSubmitted || FormItem.get('factor').touched) && FormItem.get('factor').hasError('min')">
                 <span class="error-text">Factor must be greater than or equal to 0</span>
               </div>
@@ -442,8 +424,7 @@
             <div class="form-group">
               <label class="control-label">Patient Share Amount</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter patient share"
-                  formControlName="patientShare">
+                <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientShare">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -480,161 +461,109 @@
     <h4 class="title">Click on the tooth to select</h4>
     <div class="tooth-btn-wrapper">
       <img src="assets/toothsList.jpg" alt="Tooths" class="image" />
-      <button type="button" class="tooth-btn tooth-11" matTooltip="Select Tooth 11"
-        style="width: 24px;height: 18px;top: 19px;left: 101px;" (click)="selectTooth(11)">
+      <button type="button" class="tooth-btn tooth-11" matTooltip="Select Tooth 11" style="width: 24px;height: 18px;top: 19px;left: 101px;" (click)="selectTooth(11)">
       </button>
-      <button type="button" class="tooth-btn tooth-12" matTooltip="Select Tooth 12"
-        style="width: 22px;height: 19px;top: 25px;left: 81px;" (click)="selectTooth(12)">
+      <button type="button" class="tooth-btn tooth-12" matTooltip="Select Tooth 12" style="width: 22px;height: 19px;top: 25px;left: 81px;" (click)="selectTooth(12)">
       </button>
-      <button type="button" class="tooth-btn tooth-13" matTooltip="Select Tooth 13"
-        style="width: 21px;height: 18px;top: 36px;left: 66px;" (click)="selectTooth(13)">
+      <button type="button" class="tooth-btn tooth-13" matTooltip="Select Tooth 13" style="width: 21px;height: 18px;top: 36px;left: 66px;" (click)="selectTooth(13)">
       </button>
-      <button type="button" class="tooth-btn tooth-14" matTooltip="Select Tooth 14"
-        style="width: 27px;height: 19px;top: 51px;left: 50px;" (click)="selectTooth(14)">
+      <button type="button" class="tooth-btn tooth-14" matTooltip="Select Tooth 14" style="width: 27px;height: 19px;top: 51px;left: 50px;" (click)="selectTooth(14)">
       </button>
-      <button type="button" class="tooth-btn tooth-15" matTooltip="Select Tooth 15"
-        style="width: 29px;height: 22px;top: 67px;left: 38px;" (click)="selectTooth(15)">
+      <button type="button" class="tooth-btn tooth-15" matTooltip="Select Tooth 15" style="width: 29px;height: 22px;top: 67px;left: 38px;" (click)="selectTooth(15)">
       </button>
-      <button type="button" class="tooth-btn tooth-16" matTooltip="Select Tooth 16"
-        style="width: 34px;height: 32px;top: 86px;left: 28px;" (click)="selectTooth(16)">
+      <button type="button" class="tooth-btn tooth-16" matTooltip="Select Tooth 16" style="width: 34px;height: 32px;top: 86px;left: 28px;" (click)="selectTooth(16)">
       </button>
-      <button type="button" class="tooth-btn tooth-17" matTooltip="Select Tooth 17"
-        style="width: 33px;height: 29px;top: 116px;left: 23px;" (click)="selectTooth(17)">
+      <button type="button" class="tooth-btn tooth-17" matTooltip="Select Tooth 17" style="width: 33px;height: 29px;top: 116px;left: 23px;" (click)="selectTooth(17)">
       </button>
-      <button type="button" class="tooth-btn tooth-18" matTooltip="Select Tooth 18"
-        style="width: 35px;height: 28px;top: 143px;left: 17px;" (click)="selectTooth(18)">
+      <button type="button" class="tooth-btn tooth-18" matTooltip="Select Tooth 18" style="width: 35px;height: 28px;top: 143px;left: 17px;" (click)="selectTooth(18)">
       </button>
-      <button type="button" class="tooth-btn tooth-21" matTooltip="Select Tooth 21"
-        style="width: 28px;height: 18px;top: 20px;left: 124px;" (click)="selectTooth(21)">
+      <button type="button" class="tooth-btn tooth-21" matTooltip="Select Tooth 21" style="width: 28px;height: 18px;top: 20px;left: 124px;" (click)="selectTooth(21)">
       </button>
-      <button type="button" class="tooth-btn tooth-22" matTooltip="Select Tooth 22"
-        style="width: 21px;height: 19px;top: 24px;left: 151px;" (click)="selectTooth(22)">
+      <button type="button" class="tooth-btn tooth-22" matTooltip="Select Tooth 22" style="width: 21px;height: 19px;top: 24px;left: 151px;" (click)="selectTooth(22)">
       </button>
-      <button type="button" class="tooth-btn tooth-23" matTooltip="Select Tooth 23"
-        style="width: 22px;height: 19px;top: 34px;left: 168px;" (click)="selectTooth(23)">
+      <button type="button" class="tooth-btn tooth-23" matTooltip="Select Tooth 23" style="width: 22px;height: 19px;top: 34px;left: 168px;" (click)="selectTooth(23)">
       </button>
-      <button type="button" class="tooth-btn tooth-24" matTooltip="Select Tooth 24"
-        style="width: 24px;height: 23px;top: 47px;left: 180px;" (click)="selectTooth(24)">
+      <button type="button" class="tooth-btn tooth-24" matTooltip="Select Tooth 24" style="width: 24px;height: 23px;top: 47px;left: 180px;" (click)="selectTooth(24)">
       </button>
-      <button type="button" class="tooth-btn tooth-25" matTooltip="Select Tooth 25"
-        style="width: 26px;height: 24px;top: 67px;left: 189px;" (click)="selectTooth(25)">
+      <button type="button" class="tooth-btn tooth-25" matTooltip="Select Tooth 25" style="width: 26px;height: 24px;top: 67px;left: 189px;" (click)="selectTooth(25)">
       </button>
-      <button type="button" class="tooth-btn tooth-26" matTooltip="Select Tooth 26"
-        style="width: 36px;height: 35px;top: 88px;left: 192px;" (click)="selectTooth(26)">
+      <button type="button" class="tooth-btn tooth-26" matTooltip="Select Tooth 26" style="width: 36px;height: 35px;top: 88px;left: 192px;" (click)="selectTooth(26)">
       </button>
-      <button type="button" class="tooth-btn tooth-27" matTooltip="Select Tooth 27"
-        style="width: 35px;height: 26px;top: 121px;left: 195px;" (click)="selectTooth(27)">
+      <button type="button" class="tooth-btn tooth-27" matTooltip="Select Tooth 27" style="width: 35px;height: 26px;top: 121px;left: 195px;" (click)="selectTooth(27)">
       </button>
-      <button type="button" class="tooth-btn tooth-28" matTooltip="Select Tooth 28"
-        style="width: 33px;height: 29px;top: 146px;left: 200px;" (click)="selectTooth(28)">
+      <button type="button" class="tooth-btn tooth-28" matTooltip="Select Tooth 28" style="width: 33px;height: 29px;top: 146px;left: 200px;" (click)="selectTooth(28)">
       </button>
-      <button type="button" class="tooth-btn tooth-31" matTooltip="Select Tooth 31"
-        style="width: 19px;height: 20px;top: 368px;left: 126px;" (click)="selectTooth(31)">
+      <button type="button" class="tooth-btn tooth-31" matTooltip="Select Tooth 31" style="width: 19px;height: 20px;top: 368px;left: 126px;" (click)="selectTooth(31)">
       </button>
-      <button type="button" class="tooth-btn tooth-32" matTooltip="Select Tooth 32"
-        style="width: 20px;height: 21px;top: 364px;left: 145px;" (click)="selectTooth(32)">
+      <button type="button" class="tooth-btn tooth-32" matTooltip="Select Tooth 32" style="width: 20px;height: 21px;top: 364px;left: 145px;" (click)="selectTooth(32)">
       </button>
-      <button type="button" class="tooth-btn tooth-33" matTooltip="Select Tooth 33"
-        style="width: 23px;height: 24px;top: 355px;left: 164px;" (click)="selectTooth(33)">
+      <button type="button" class="tooth-btn tooth-33" matTooltip="Select Tooth 33" style="width: 23px;height: 24px;top: 355px;left: 164px;" (click)="selectTooth(33)">
       </button>
-      <button type="button" class="tooth-btn tooth-34" matTooltip="Select Tooth 34"
-        style="width: 26px;height: 24px;top: 340px;left: 180px;" (click)="selectTooth(34)">
+      <button type="button" class="tooth-btn tooth-34" matTooltip="Select Tooth 34" style="width: 26px;height: 24px;top: 340px;left: 180px;" (click)="selectTooth(34)">
       </button>
-      <button type="button" class="tooth-btn tooth-35" matTooltip="Select Tooth 35"
-        style="width: 27px;height: 25px;top: 317px;left: 190px;" (click)="selectTooth(35)">
+      <button type="button" class="tooth-btn tooth-35" matTooltip="Select Tooth 35" style="width: 27px;height: 25px;top: 317px;left: 190px;" (click)="selectTooth(35)">
       </button>
-      <button type="button" class="tooth-btn tooth-36" matTooltip="Select Tooth 36"
-        style="width: 32px;height: 29px;top: 289px;left: 194px;" (click)="selectTooth(36)">
+      <button type="button" class="tooth-btn tooth-36" matTooltip="Select Tooth 36" style="width: 32px;height: 29px;top: 289px;left: 194px;" (click)="selectTooth(36)">
       </button>
-      <button type="button" class="tooth-btn tooth-37" matTooltip="Select Tooth 37"
-        style="width: 30px;height: 26px;top: 263px;left: 198px;" (click)="selectTooth(37)">
+      <button type="button" class="tooth-btn tooth-37" matTooltip="Select Tooth 37" style="width: 30px;height: 26px;top: 263px;left: 198px;" (click)="selectTooth(37)">
       </button>
-      <button type="button" class="tooth-btn tooth-38" matTooltip="Select Tooth 38"
-        style="width: 30px;height: 26px;top: 240px;left: 198px;" (click)="selectTooth(38)">
+      <button type="button" class="tooth-btn tooth-38" matTooltip="Select Tooth 38" style="width: 30px;height: 26px;top: 240px;left: 198px;" (click)="selectTooth(38)">
       </button>
-      <button type="button" class="tooth-btn tooth-41" matTooltip="Select Tooth 41"
-        style="width: 18px;height: 20px;top: 368px;left: 109px;" (click)="selectTooth(41)">
+      <button type="button" class="tooth-btn tooth-41" matTooltip="Select Tooth 41" style="width: 18px;height: 20px;top: 368px;left: 109px;" (click)="selectTooth(41)">
       </button>
-      <button type="button" class="tooth-btn tooth-42" matTooltip="Select Tooth 42"
-        style="width: 20px;height: 21px;top: 364px;left: 90px;" (click)="selectTooth(42)">
+      <button type="button" class="tooth-btn tooth-42" matTooltip="Select Tooth 42" style="width: 20px;height: 21px;top: 364px;left: 90px;" (click)="selectTooth(42)">
       </button>
-      <button type="button" class="tooth-btn tooth-43" matTooltip="Select Tooth 43"
-        style="width: 24px;height: 21px;top: 355px;left: 72px;" (click)="selectTooth(43)">
+      <button type="button" class="tooth-btn tooth-43" matTooltip="Select Tooth 43" style="width: 24px;height: 21px;top: 355px;left: 72px;" (click)="selectTooth(43)">
       </button>
-      <button type="button" class="tooth-btn tooth-44" matTooltip="Select Tooth 44"
-        style="width: 29px;height: 22px;top: 338px;left: 53px;" (click)="selectTooth(44)">
+      <button type="button" class="tooth-btn tooth-44" matTooltip="Select Tooth 44" style="width: 29px;height: 22px;top: 338px;left: 53px;" (click)="selectTooth(44)">
       </button>
-      <button type="button" class="tooth-btn tooth-45" matTooltip="Select Tooth 45"
-        style="width: 29px;height: 24px;top: 319px;left: 45px;" (click)="selectTooth(45)">
+      <button type="button" class="tooth-btn tooth-45" matTooltip="Select Tooth 45" style="width: 29px;height: 24px;top: 319px;left: 45px;" (click)="selectTooth(45)">
       </button>
-      <button type="button" class="tooth-btn tooth-46" matTooltip="Select Tooth 46"
-        style="width: 33px;height: 32px;top: 289px;left: 33px;" (click)="selectTooth(46)">
+      <button type="button" class="tooth-btn tooth-46" matTooltip="Select Tooth 46" style="width: 33px;height: 32px;top: 289px;left: 33px;" (click)="selectTooth(46)">
       </button>
-      <button type="button" class="tooth-btn tooth-47" matTooltip="Select Tooth 47"
-        style="width: 30px;height: 28px;top: 264px;left: 28px;" (click)="selectTooth(47)">
+      <button type="button" class="tooth-btn tooth-47" matTooltip="Select Tooth 47" style="width: 30px;height: 28px;top: 264px;left: 28px;" (click)="selectTooth(47)">
       </button>
-      <button type="button" class="tooth-btn tooth-48" matTooltip="Select Tooth 48"
-        style="width: 30px;height: 28px;top: 238px;left: 25px;" (click)="selectTooth(48)">
+      <button type="button" class="tooth-btn tooth-48" matTooltip="Select Tooth 48" style="width: 30px;height: 28px;top: 238px;left: 25px;" (click)="selectTooth(48)">
       </button>
-      <button type="button" class="tooth-btn tooth-51" matTooltip="Select Tooth 51"
-        style="width: 19px;height: 17px;top: 44px;left: 110px;" (click)="selectTooth(51)">
+      <button type="button" class="tooth-btn tooth-51" matTooltip="Select Tooth 51" style="width: 19px;height: 17px;top: 44px;left: 110px;" (click)="selectTooth(51)">
       </button>
-      <button type="button" class="tooth-btn tooth-52" matTooltip="Select Tooth 52"
-        style="width: 19px;height: 16px;top: 51px;left: 97px;" (click)="selectTooth(52)">
+      <button type="button" class="tooth-btn tooth-52" matTooltip="Select Tooth 52" style="width: 19px;height: 16px;top: 51px;left: 97px;" (click)="selectTooth(52)">
       </button>
-      <button type="button" class="tooth-btn tooth-53" matTooltip="Select Tooth 53"
-        style="width: 20px;height: 16px;top: 62px;left: 86px;" (click)="selectTooth(53)">
+      <button type="button" class="tooth-btn tooth-53" matTooltip="Select Tooth 53" style="width: 20px;height: 16px;top: 62px;left: 86px;" (click)="selectTooth(53)">
       </button>
-      <button type="button" class="tooth-btn tooth-54" matTooltip="Select Tooth 54"
-        style="width: 22px;height: 19px;top: 74px;left: 75px;" (click)="selectTooth(54)">
+      <button type="button" class="tooth-btn tooth-54" matTooltip="Select Tooth 54" style="width: 22px;height: 19px;top: 74px;left: 75px;" (click)="selectTooth(54)">
       </button>
-      <button type="button" class="tooth-btn tooth-55" matTooltip="Select Tooth 55"
-        style="width: 22px;height: 19px;top: 92px;left: 70px;" (click)="selectTooth(55)">
+      <button type="button" class="tooth-btn tooth-55" matTooltip="Select Tooth 55" style="width: 22px;height: 19px;top: 92px;left: 70px;" (click)="selectTooth(55)">
       </button>
-      <button type="button" class="tooth-btn tooth-61" matTooltip="Select Tooth 61"
-        style="width: 19px;height: 16px;top: 45px;left: 129px;" (click)="selectTooth(61)">
+      <button type="button" class="tooth-btn tooth-61" matTooltip="Select Tooth 61" style="width: 19px;height: 16px;top: 45px;left: 129px;" (click)="selectTooth(61)">
       </button>
-      <button type="button" class="tooth-btn tooth-62" matTooltip="Select Tooth 62"
-        style="width: 18px;height: 17px;top: 50px;left: 145px;" (click)="selectTooth(62)">
+      <button type="button" class="tooth-btn tooth-62" matTooltip="Select Tooth 62" style="width: 18px;height: 17px;top: 50px;left: 145px;" (click)="selectTooth(62)">
       </button>
-      <button type="button" class="tooth-btn tooth-63" matTooltip="Select Tooth 63"
-        style="width: 22px;height: 15px;top: 62px;left: 154px;" (click)="selectTooth(63)">
+      <button type="button" class="tooth-btn tooth-63" matTooltip="Select Tooth 63" style="width: 22px;height: 15px;top: 62px;left: 154px;" (click)="selectTooth(63)">
       </button>
-      <button type="button" class="tooth-btn tooth-64" matTooltip="Select Tooth 64"
-        style="width: 20px;height: 18px;top: 73px;left: 163px;" (click)="selectTooth(64)">
+      <button type="button" class="tooth-btn tooth-64" matTooltip="Select Tooth 64" style="width: 20px;height: 18px;top: 73px;left: 163px;" (click)="selectTooth(64)">
       </button>
-      <button type="button" class="tooth-btn tooth-65" matTooltip="Select Tooth 65"
-        style="width: 22px;height: 21px;top: 89px;left: 167px;" (click)="selectTooth(65)">
+      <button type="button" class="tooth-btn tooth-65" matTooltip="Select Tooth 65" style="width: 22px;height: 21px;top: 89px;left: 167px;" (click)="selectTooth(65)">
       </button>
-      <button type="button" class="tooth-btn tooth-71" matTooltip="Select Tooth 71"
-        style="width: 15px;height: 20px;top: 340px;left: 128px;" (click)="selectTooth(71)">
+      <button type="button" class="tooth-btn tooth-71" matTooltip="Select Tooth 71" style="width: 15px;height: 20px;top: 340px;left: 128px;" (click)="selectTooth(71)">
       </button>
-      <button type="button" class="tooth-btn tooth-72" matTooltip="Select Tooth 72"
-        style="width: 18px;height: 17px;top: 339px;left: 142px;" (click)="selectTooth(72)">
+      <button type="button" class="tooth-btn tooth-72" matTooltip="Select Tooth 72" style="width: 18px;height: 17px;top: 339px;left: 142px;" (click)="selectTooth(72)">
       </button>
-      <button type="button" class="tooth-btn tooth-73" matTooltip="Select Tooth 73"
-        style="width: 21px;height: 18px;top: 328px;left: 151px;" (click)="selectTooth(73)">
+      <button type="button" class="tooth-btn tooth-73" matTooltip="Select Tooth 73" style="width: 21px;height: 18px;top: 328px;left: 151px;" (click)="selectTooth(73)">
       </button>
-      <button type="button" class="tooth-btn tooth-74" matTooltip="Select Tooth 74"
-        style="width: 22px;height: 19px;top: 312px;left: 159px;" (click)="selectTooth(74)">
+      <button type="button" class="tooth-btn tooth-74" matTooltip="Select Tooth 74" style="width: 22px;height: 19px;top: 312px;left: 159px;" (click)="selectTooth(74)">
       </button>
-      <button type="button" class="tooth-btn tooth-75" matTooltip="Select Tooth 75"
-        style="width: 20px;height: 21px;top: 292px;left: 166px;" (click)="selectTooth(75)">
+      <button type="button" class="tooth-btn tooth-75" matTooltip="Select Tooth 75" style="width: 20px;height: 21px;top: 292px;left: 166px;" (click)="selectTooth(75)">
       </button>
-      <button type="button" class="tooth-btn tooth-81" matTooltip="Select Tooth 81"
-        style="width: 14px;height: 19px;top: 341px;left: 114px;" (click)="selectTooth(81)">
+      <button type="button" class="tooth-btn tooth-81" matTooltip="Select Tooth 81" style="width: 14px;height: 19px;top: 341px;left: 114px;" (click)="selectTooth(81)">
       </button>
-      <button type="button" class="tooth-btn tooth-82" matTooltip="Select Tooth 82"
-        style="width: 15px;height: 17px;top: 340px;left: 99px;" (click)="selectTooth(82)">
+      <button type="button" class="tooth-btn tooth-82" matTooltip="Select Tooth 82" style="width: 15px;height: 17px;top: 340px;left: 99px;" (click)="selectTooth(82)">
       </button>
-      <button type="button" class="tooth-btn tooth-83" matTooltip="Select Tooth 83"
-        style="width: 20px;height: 17px;top: 328px;left: 88px;" (click)="selectTooth(83)">
+      <button type="button" class="tooth-btn tooth-83" matTooltip="Select Tooth 83" style="width: 20px;height: 17px;top: 328px;left: 88px;" (click)="selectTooth(83)">
       </button>
-      <button type="button" class="tooth-btn tooth-84" matTooltip="Select Tooth 84"
-        style="width: 24px;height: 18px;top: 313px;left: 79px;" (click)="selectTooth(84)">
+      <button type="button" class="tooth-btn tooth-84" matTooltip="Select Tooth 84" style="width: 24px;height: 18px;top: 313px;left: 79px;" (click)="selectTooth(84)">
       </button>
-      <button type="button" class="tooth-btn tooth-85" matTooltip="Select Tooth 85"
-        style="width: 23px;height: 23px;top: 293px;left: 73px;" (click)="selectTooth(85)">
+      <button type="button" class="tooth-btn tooth-85" matTooltip="Select Tooth 85" style="width: 23px;height: 23px;top: 293px;left: 73px;" (click)="selectTooth(85)">
       </button>
     </div>
   </div>

@@ -863,7 +863,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (this.Items.find(x => x.sequence === result.sequence)) {
           this.Items.map(x => {
             if (x.sequence === result.sequence) {
-              x.type = result.type;
+              x.type = result.type.toLowerCase();
               x.typeName = result.typeName,
                 x.itemCode = result.itemCode;
               x.itemDescription = result.itemDescription;
@@ -1692,7 +1692,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
           const model: any = {};
           model.sequence = x.sequence;
-          model.type = x.type;
+          model.type = x.type.toLowerCase();
           model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
@@ -2774,7 +2774,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.Items = response.items.map(x => {
       const model: any = {};
-
+      model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
@@ -2795,9 +2795,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         });
       }
       model.itemDecision = x.itemDecision;
+      model.reasonCodes = x.reasonCodes;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
-      model.type = x.type;
+      model.type = x.type.toLowerCase();
       model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
@@ -2833,7 +2834,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.discountPercent = parseFloat(model.discountPercent);
       // model.invoiceNo = x.invoiceNo;
       // tslint:disable-next-line:max-line-length
-      model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
+      model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0].name : '';
 
       if (x.supportingInfoSequence) {
         x.supportingInfoNames = '';
@@ -2923,7 +2924,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       claimResponseId: this.responseId,
       // tslint:disable-next-line:radix
-      communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
+      communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
+      items: this.Items
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
@@ -3135,6 +3137,12 @@ export class CreateClaimNphiesComponent implements OnInit {
       return '';
     }
 
+  }
+
+  getReasonCodes(claimItemDecisionCategories) {
+    return claimItemDecisionCategories.filter(x => x.reasonCode).map(x => {
+      return x.reasonCode;
+    }).join(', ');
   }
 
 }

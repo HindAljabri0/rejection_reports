@@ -390,4 +390,27 @@ export class ProviderNphiesSearchService {
     } else { return date; }
   }
 
+  getApprovalToClaimPrepareCriteria(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approvalToClaim/prepare/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  getApprovalToClaimConvertCriteria(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approvalToClaim/convert/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  getEligibilityJSONTransactions(providerId: string, eligibilityRequestId: number) {
+    const requestUrl = `/providers/${providerId}/nphis/eligibility/jsons/${eligibilityRequestId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+
+  getEligibilityJSON(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/nphis/eligibility/view/json`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
 }

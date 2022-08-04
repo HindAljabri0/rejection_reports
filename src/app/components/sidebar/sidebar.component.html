@@ -245,7 +245,7 @@
         </mat-accordion>
       </ng-container>
 
-      <ul class="nav-list" *ngIf="!envStaging && !envProd">
+      <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.GSSReportForTawuniya.canAccessGSSReport">
         <li>
           <a routerLink="/tawuniya-gss" routerLinkActive="is-active">
             <span class="text">Tawuniya GSS Reports</span>
@@ -332,12 +332,23 @@
                 <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">{{NewAuthTransactions}}</span>
               </a>
             </li>
-            <li *ngIf="!envStaging && !envProd">
+          </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim ||  userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="d-flex align-items-center">
+                <span>Convert PreAuth To Claim</span>
+              </span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul class="nav-list">
+            <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPrepareClaim)">
               <a routerLink="/nphies/prepare-pre-auth-for-claim" routerLinkActive="is-active">
                 <span class="text">Prepare for Claims</span>
               </a>
             </li>
-            <li *ngIf="!envStaging && !envProd">
+            <li *ngIf="!envStaging && !envProd && (userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertPreAuthToClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessConvertClaim)">
               <a routerLink="/nphies/convert-pre-auth-to-claim" routerLinkActive="is-active">
                 <span class="text">Convert to Claims</span>
               </a>

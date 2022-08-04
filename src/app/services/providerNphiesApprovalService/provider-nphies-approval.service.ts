@@ -424,12 +424,6 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getApprovalToPrepareTransactions(providerId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/approval/prepare/criteria`;
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
-    return this.http.request(request);
-  }
-
   getJSONTransactions(providerId: string, claimId: number) {
     const requestUrl = `/providers/${providerId}/claims/view/jsons/${claimId}`;
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
@@ -444,6 +438,12 @@ export class ProviderNphiesApprovalService {
 
   approvalToPrepareSave(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/prepare/save`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  convertToClaim(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/convert/claim`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }

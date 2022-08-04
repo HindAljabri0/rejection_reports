@@ -1,23 +1,24 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
-import { SharedServices } from 'src/app/services/shared.services';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
+import { SharedServices } from 'src/app/services/shared.services';
+import { MatDialog } from '@angular/material';
+// tslint:disable-next-line:max-line-length
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 @Component({
-  selector: 'app-json-response',
-  templateUrl: './json-response.component.html',
-  styleUrls: ['./json-response.component.css']
+  selector: 'app-eligiblity-json-response',
+  templateUrl: './eligiblity-json-response.component.html',
+  styleUrls: ['./eligiblity-json-response.component.css']
 })
-export class JsonResponseComponent implements OnInit {
+export class EligiblityJsonResponseComponent implements OnInit {
 
   @Input() otherDataModel;
 
   transactions = [];
 
   constructor(
-    private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    private providerNphiesSearchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices,
     private dialog: MatDialog) { }
 
@@ -28,7 +29,7 @@ export class JsonResponseComponent implements OnInit {
   GetJsonResponses() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.claimId).subscribe((event: any) => {
+    this.providerNphiesSearchService.getEligibilityJSONTransactions(this.sharedServices.providerId, this.otherDataModel.eligibilityRequestId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.transactions = event.body;
@@ -43,20 +44,19 @@ export class JsonResponseComponent implements OnInit {
     });
   }
 
-  GetJson(transactionId, pollTransactionId, transactionType, actionType) {
+  GetJson(transactionId, transactionType, actionType) {
     this.sharedServices.loadingChanged.next(true);
 
     const model: any = {};
     model.transactionId = transactionId;
-    model.pollTransactionId = pollTransactionId;
     model.transactionType = transactionType;
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSON(this.sharedServices.providerId, model).subscribe((event: any) => {
+    this.providerNphiesSearchService.getEligibilityJSON(this.sharedServices.providerId, model).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const json = event.body;
-          const fileName = transactionType + '_' + this.otherDataModel.claimResourceId + '.json';
+          const fileName = transactionType + '_' + this.otherDataModel.eligibilityRequestId + '.json';
           if (actionType === 'VIEW') {
             this.ViewJson(transactionId, transactionType, json);
           } else if (actionType === 'DOWNLOAD') {

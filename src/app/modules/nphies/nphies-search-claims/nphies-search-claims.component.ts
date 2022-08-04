@@ -373,6 +373,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
+        // debugger;
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
         console.log("Summary =" + JSON.stringify(summary));
         if (summary.totalClaims > 0) {
@@ -797,6 +798,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         totalTax: this.summaries[oldSummaryIndex].totalTax - claim.totalTax,
         statuses: this.summaries[oldSummaryIndex].statuses,
         uploadName: this.summaries[oldSummaryIndex].uploadName,
+        uploadDate: this.summaries[oldSummaryIndex].uploadDate,
         patientShare: this.summaries[oldSummaryIndex].patientShare - claim.patientShare,
         discount: this.summaries[oldSummaryIndex].discount - claim.discount,
         actualPaid: this.summaries[oldSummaryIndex].actualPaid,
@@ -814,6 +816,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           totalTax: this.summaries[oldSummaryIndex].totalTax + claim.totalTax,
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName,
+          uploadDate: this.summaries[newSummaryIndex].uploadDate,
           patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare,
           discount: this.summaries[oldSummaryIndex].discount + claim.discount,
           actualPaid: this.summaries[newSummaryIndex].actualPaid,

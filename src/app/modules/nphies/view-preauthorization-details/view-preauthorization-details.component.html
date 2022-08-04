@@ -40,30 +40,62 @@
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
                           <tr *ngIf="payload.payloadValue">
-                            <td class="px-0">{{payload.payloadValue}}</td>
+                            <td class="px-0">
+                              {{payload.payloadValue}}
+                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                  {{payload.payloadItemModel.description}}</span>
+                                <span class="text-primary non-standard-code"
+                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                </span>
+                              </div>
+                            </td>
                           </tr>
                           <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button">
+                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
                                 </li>
                               </ul>
+                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                  {{payload.payloadItemModel.description}}</span>
+                                <span class="text-primary non-standard-code"
+                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                </span>
+                              </div>
                             </td>
                           </tr>
                           <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button">
+                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
                                 </li>
                               </ul>
+                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                  {{payload.payloadItemModel.description}}</span>
+                                <span class="text-primary non-standard-code"
+                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                </span>
+                              </div>
                             </td>
                           </tr>
                         </ng-container>
@@ -88,30 +120,62 @@
                         <tbody>
                           <ng-container *ngFor="let payload of reply.payloadList">
                             <tr *ngIf="payload.payloadValue">
-                              <td class="px-0">{{payload.payloadValue}}</td>
+                              <td class="px-0">
+                                {{payload.payloadValue}}
+                                <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                  <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                    {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                    {{payload.payloadItemModel.description}}</span>
+                                  <span class="text-primary non-standard-code"
+                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                    <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                      ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                  </span>
+                                </div>
+                              </td>
                             </tr>
                             <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
-                                    <button type="button">
+                                    <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                       <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                       <span>{{payload.attachmentName}}</span>
                                     </button>
                                   </li>
                                 </ul>
+                                <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                  <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                    {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                    {{payload.payloadItemModel.description}}</span>
+                                  <span class="text-primary non-standard-code"
+                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                    <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                      ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                  </span>
+                                </div>
                               </td>
                             </tr>
                             <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
-                                    <button type="button">
+                                    <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                       <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                       <span>{{payload.attachmentName}}</span>
                                     </button>
                                   </li>
                                 </ul>
+                                <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                  <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                    {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                    {{payload.payloadItemModel.description}}</span>
+                                  <span class="text-primary non-standard-code"
+                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                    <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                      ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                  </span>
+                                </div>
                               </td>
                             </tr>
                           </ng-container>
@@ -133,30 +197,62 @@
                       <tbody>
                         <ng-container *ngFor="let payload of communication.payloadList">
                           <tr *ngIf="payload.payloadValue">
-                            <td class="px-0">{{payload.payloadValue}}</td>
+                            <td class="px-0">
+                              {{payload.payloadValue}}
+                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                  {{payload.payloadItemModel.description}}</span>
+                                <span class="text-primary non-standard-code"
+                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                </span>
+                              </div>
+                            </td>
                           </tr>
                           <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button">
+                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
                                 </li>
                               </ul>
+                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                  {{payload.payloadItemModel.description}}</span>
+                                <span class="text-primary non-standard-code"
+                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                </span>
+                              </div>
                             </td>
                           </tr>
                           <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button">
+                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
                                 </li>
                               </ul>
+                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
+                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                  {{payload.payloadItemModel.description}}</span>
+                                <span class="text-primary non-standard-code"
+                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                </span>
+                              </div>
                             </td>
                           </tr>
                         </ng-container>
@@ -171,6 +267,11 @@
           </li>
         </ul>
       </div>
+    </mat-tab>
+    <mat-tab *ngIf="data.detailsModel" [label]="'JSON'">
+      <ng-template matTabContent>
+        <app-approval-json-response [otherDataModel]="data.detailsModel"></app-approval-json-response>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>
