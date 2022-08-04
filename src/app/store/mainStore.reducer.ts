@@ -24,6 +24,9 @@ export interface UserPrivileges {
       isClaimUser: boolean,
       isPayerUser: boolean
 
+    },
+    GSSReportForTawuniya: {
+      canAccessGSSReport: false
     }
     RCM: {
       isAdmin: boolean,
@@ -76,6 +79,9 @@ export const initState: MainState = {
         isPayerUser: false
 
       },
+      GSSReportForTawuniya: {
+        canAccessGSSReport: false
+      },
       RCM: {
         isAdmin: false,
         canAccessRevenueReport: false,
@@ -127,6 +133,9 @@ const _mainReducer = createReducer(
           isClaimUser: providerId != '101' && payerIds.some(payerId => AuthService.hasPrivilege(providerId, payerId, '3')),
           isPayerUser: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '99.0'),
         },
+        GSSReportForTawuniya: {
+          canAccessGSSReport: AuthService.hasPrivilege(providerId, '102', '31.0')
+        },
         RCM: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.0'),
           canAccessRevenueReport: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.1'),
@@ -141,9 +150,9 @@ const _mainReducer = createReducer(
           canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.5'),
           canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61')),
           canAccessPhysician: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.62')),
-          canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.7')),
-          canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.71')),
-          canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.72')),
+          canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.7')),
+          canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
+          canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),
         }
       }
     };

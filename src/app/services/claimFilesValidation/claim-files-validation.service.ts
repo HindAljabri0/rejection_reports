@@ -58,6 +58,21 @@ export class ClaimFilesValidationService {
     return result;
   }
 
+  validateHeadersForScrubbing(file: XLSX.WorkBook): string {
+    let headers: string[] = [];
+    this.missingHeaders = [];
+    this.wrongFormattedHeaders = [];
+    const ws: XLSX.WorkSheet = file.Sheets[file.SheetNames[0]];
+    headers = this.getHeadersFromSheet(ws);
+    this.checkAllHeadersForScrubbing(headers);
+    const result = this.errorsToString();
+    return result;
+  }
+
+  private checkAllHeadersForScrubbing(headers: string[]) {
+    AllowedHeadersForScrubbing.forEach(header => this.checkIfSheetIsMissingHeader(headers, undefined, header));
+  }
+
   private checkAllHeaders(headers: string[]) {
     let flag = false;
     headers.forEach(header => {
@@ -180,4 +195,46 @@ const AllowedHeaders: string[] = [
   'LABRESULT',
   'LABRESULTUNIT',
   'LABRESULTCOMMENT'];
+
+const AllowedHeadersForScrubbing: string[] = [
+  'INSURANCE ID(MEMBERID)',
+  'PROVIDER CLAIM NUMBER',
+  'PATIENT_FILE',
+  'NATIONAL ID/IQAMA ',
+  'POLICY NUMBER',
+  'INSURANCE NAME',
+  'POLICY NAME',
+  'PATIENT NAME',
+  'INVOICE NO.',
+  'INVOICE DATE',
+  'APPROVAL ID',
+  'DOCTOR NAME',
+  'SPECIALITY',
+  'CHIEF COMPLAIN',
+  'SIGNIFICANT SIGNS',
+  'ICD10-1',
+  'ICD10-2',
+  'ICD10-3',
+  'ICD10-4',
+  'ICD10-5',
+  'ICD10-6',
+  'ICD10-7',
+  'ICD10-8',
+  'ICD10-9',
+  'ICD10-10',
+  'Gender',
+  'CLAIM TYPE',
+  'TOOTH NUMBER',
+  'SERVICE CODE',
+  'SERVICE DESCRIPTION',
+  'SERVICE TYPE',
+  'UNIT PRICE',
+  'QUANTITY',
+  'GROSS AMOUNT',
+  'DISCOUNT',
+  'DEDUCTIBLE',
+  'NET AMOUNT',
+  'VAT AMOUNT 15%',
+  'NET + VAT'
+];
 export type HeadersMap = { sheet?: string, header: string };

@@ -72,6 +72,12 @@ export class PreparePreAuthForClaimComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    const today = new Date();
+    const oneMonthAgo = new Date(today. getFullYear(), today. getMonth() - 1, today. getDate());
+    this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(oneMonthAgo, 'yyyy-MM-dd'));
+    this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(today, 'yyyy-MM-dd'));
+
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.fromDate != null) {
@@ -133,7 +139,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
         this.pageSize = 10;
       }
 
-      // this.getPayerList(true);
+      this.getPayerList(true);
 
     });
   }
@@ -376,12 +382,12 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0].submitted = true;
     let hasError = false;
-    if (!transaction.episodeNo) {
-      hasError = true;
-    }
+    // if (!transaction.episodeNo) {
+    //   hasError = true;
+    // }
 
     if (transaction.items && transaction.items.length > 0) {
-      transaction.items.filter(x => x.status === 'approved').forEach(x => {
+      transaction.items.filter(x => x.status === 'approved' || x.status === 'partial').forEach(x => {
         if (!x.invoiceNo) {
           hasError = true;
         }

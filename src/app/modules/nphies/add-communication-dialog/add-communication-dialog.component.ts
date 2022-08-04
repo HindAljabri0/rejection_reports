@@ -97,7 +97,7 @@ export class AddCommunicationDialogComponent implements OnInit {
   }
 
   selectFile(event) {
-    this.FormCommunication.reset();
+    this.FormCommunication.controls.payloadValue.reset();
     this.invalidFileMessage = '';
 
     for (let i = 0; i < event.target.files.length; i++) {

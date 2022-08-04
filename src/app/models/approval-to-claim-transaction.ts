@@ -47,7 +47,7 @@ export class ApprovalToClaimTransaction extends Paginateable {
 }
 
 class Item {
-  sequence: number;
+  itemSequenceNo: number;
   approvedNet: number;
   itemCode: string;
   itemDescription: string;

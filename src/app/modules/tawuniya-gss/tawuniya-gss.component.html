@@ -14,7 +14,7 @@
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
-                            <input autocomplete="off" class="form-control date-picker" bsDatepicker
+                            <input autocomplete="off" disabled="true" class="form-control date-picker" bsDatepicker
                                 [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 placeholder="Select from month" [formControl]='fromDateMonth'
                                 (bsValueChange)="dateValidation($event)" />
@@ -30,7 +30,7 @@
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <!--  -->
-                            <input autocomplete="off" class="form-control date-picker" placeholder="Select to month"
+                            <input autocomplete="off" disabled="true" class="form-control date-picker" placeholder="Select to month"
                                 bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 [formControl]='toDateMonth' [minDate]="minDate" />
                         </div>
@@ -42,7 +42,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="control-label">&nbsp;</label>
-                        <button type="submit" mat-flat-button color="primary"
+                        <button type="submit" [disabled]="true" mat-flat-button color="primary"
                             (click)="searchQuerySummary()">Search</button>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
     </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height fixed-height-sm">
-            <div class="right-block" *ngIf="initiateModel === null || initiateModel?.length===0">
+            <div class="right-block" *ngIf="(initiateModel === null || initiateModel?.length===0) && false">
                 <app-empty-state [message]="getEmptyStateMessage()">
                 </app-empty-state>
             </div>
@@ -115,8 +115,13 @@
                 </tbody>
             </table>
         </div>
+        <div style="width: 100%; display: flex; justify-content: flex-end; padding-right:18px;">
+            <button mat-flat-button class="animate__bounceIn" color="primary" (click)="openGenerateReportDialog()">
+                Initiate GSS Report
+            </button>
+            <!-- <button mat-flat-button color="primary" (click)="openGenerateReportDialog()" 
+            [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report
+        </button> -->
+        </div>
     </ng-scrollbar>
-    <button mat-fab color="primary" class="page-fab" (click)="openGenerateReportDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>

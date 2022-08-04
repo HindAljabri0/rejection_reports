@@ -56,7 +56,7 @@ export class EligiblityJsonResponseComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const json = event.body;
-          const fileName = transactionType + '_' + transactionId + '.json';
+          const fileName = transactionType + '_' + this.otherDataModel.eligibilityRequestId + '.json';
           if (actionType === 'VIEW') {
             this.ViewJson(transactionId, transactionType, json);
           } else if (actionType === 'DOWNLOAD') {

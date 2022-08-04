@@ -76,6 +76,12 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    const today = new Date();
+    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(oneMonthAgo, 'yyyy-MM-dd'));
+    this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(today, 'yyyy-MM-dd'));
+
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.fromDate != null) {
@@ -137,7 +143,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
         this.pageSize = 10;
       }
 
-      // this.getPayerList(true);
+      this.getPayerList(true);
 
     });
   }
@@ -394,6 +400,9 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
         const messages = [];
         messages.push('Upload Name:' + body.uploadName);
+        if (body.uploadDate) {
+          body.uploadDate = this.datePipe.transform(body.uploadDate, 'dd-MM-yyyy');
+        }
         messages.push('upload Date:' + body.uploadDate);
         messages.push('Accepted Claims:' + body.noOfAcceptedClaims);
         messages.push('Not Accepted Claims:' + body.noOfNotAcceptedClaims);
