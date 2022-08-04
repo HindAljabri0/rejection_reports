@@ -102,6 +102,7 @@ this.timer = setInterval(() => {
       autoFocus: false,
       data: {
         mainMessage: 'Are you sure you want to sign the GSS?',
+        subMessage: 'Disclaimer : Once the GSS is confirmed, no more claims can be submitted.',
         mode: 'warning'
       }
     });
