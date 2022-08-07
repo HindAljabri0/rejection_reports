@@ -6,7 +6,7 @@
         <img src="./assets/ic-info.svg" alt="Info" *ngIf="data.mode=='info'" />
         <div class="right-block">
           <p *ngIf="data.transactionId" class="title">Transaction Id: {{data.transactionId}}</p>
-            <p class="title">{{data.mainMessage}}</p>
+            <p class="title" [innerHtml]="data.mainMessage"></p>
             <span class="subtitle" *ngIf="data.subMessage" [innerHtml]="data.subMessage"></span>
             <ul *ngIf="data.errors && data.errors.length > 0">
                 <li *ngFor="let error of data.errors">{{error}}</li>
