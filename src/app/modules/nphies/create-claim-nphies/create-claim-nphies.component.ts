@@ -1692,7 +1692,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
           const model: any = {};
           model.sequence = x.sequence;
-          model.type = x.type.toLowerCase();
+          model.type = x.type!=null?x.type.toLowerCase():'';
           model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
@@ -2798,7 +2798,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.reasonCodes = x.reasonCodes;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
-      model.type = x.type.toLowerCase();
+      model.type = x.type!=null?x.type.toLowerCase():'';
       model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
@@ -2834,7 +2834,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.discountPercent = parseFloat(model.discountPercent);
       // model.invoiceNo = x.invoiceNo;
       // tslint:disable-next-line:max-line-length
-      model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0].name : '';
+      model.typeName = x.type!=null?this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0].name : '':'';
 
       if (x.supportingInfoSequence) {
         x.supportingInfoNames = '';
