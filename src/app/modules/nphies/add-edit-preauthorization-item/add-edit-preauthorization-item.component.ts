@@ -44,11 +44,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     quantityCode: [''],
     unitPrice: ['', Validators.required],
     discountPercent: [''],
-    discount: [''],
+    discount: [0],
     factor: ['', [Validators.required, Validators.min(0), Validators.max(1)]],
     taxPercent: [''],
     patientSharePercent: [''],
-    tax: [''],
+    tax: [0],
     net: [''],
     patientShare: [''],
     payerShare: [''],
@@ -61,7 +61,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisSequence: [''],
     diagnosisFilter: [''],
     invoiceNo: [''],
-    IsTaxApplied: [false],
+    // IsTaxApplied: [false],
     searchQuery: ['']
   });
 
@@ -163,11 +163,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       if (this.data.beneficiaryPatientShare) {
         this.FormItem.controls.patientSharePercent.setValue(this.data.beneficiaryPatientShare);
       }
-      if (this.data.documentId && this.data.documentId === 'NI') {
-        this.FormItem.controls.IsTaxApplied.setValue(false);
-      } else {
-        this.FormItem.controls.IsTaxApplied.setValue(true);
-      }
+      // if (this.data.documentId && this.data.documentId === 'NI') {
+      //   this.FormItem.controls.IsTaxApplied.setValue(false);
+      // } else {
+      //   this.FormItem.controls.IsTaxApplied.setValue(true);
+      // }
 
       if (this.data.subType === 'op') {
         this.FormItem.controls.quantityCode.setValue('{package}');
@@ -293,13 +293,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: type.nonStandardCode,
         display: type.nonStandardDescription,
         unitPrice: type.unitPrice,
-        factor: type.factor,
+        factor: type.factor ? type.factor : 1,
+        tax: 0
       });
       this.SetSingleRecord(type);
-      this.updateFactor();
-      this.updateDiscountPercent();
       this.updateDiscount();
-      this.updateTax();
       this.updateNet();
     }
   }
@@ -454,238 +452,78 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   updateFactor() {
+
     // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.discountPercent.value && parseFloat(this.FormItem.controls.discountPercent.value) > 0 && parseFloat(this.FormItem.controls.discountPercent.value) < 100) {
-      const factorValue: number = (1 - (parseFloat(this.FormItem.controls.discountPercent.value) / 100));
+    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.discount.value !== null && this.FormItem.controls.discount.value !== undefined) {
+      const gross = parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value);
+      let discount = parseFloat(this.FormItem.controls.discount.value);
+      if (discount > gross || discount < 0) {
+        this.FormItem.controls.discount.setValue(0);
+        discount = 0;
+      }
+      const factorValue = (100 - ((discount * gross) / 100)) / 100;
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
       if (!this.FormItem.controls.factor.value) {
         this.FormItem.controls.factor.setValue(1);
       }
     }
+
   }
 
+
   updateDiscount() {
+
     // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.discountPercent.value) {
-      // tslint:disable-next-line:max-line-length
-      const discountValue = ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.discountPercent.value)) / 100;
-      this.FormItem.controls.discount.setValue(parseFloat(discountValue.toFixed(2)));
+    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
+      const gross = parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value);
+      const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) * 100) / gross;
+      this.FormItem.controls.discount.setValue(parseFloat(discount.toFixed(2)));
     } else {
       this.FormItem.controls.discount.setValue(0);
     }
+
   }
 
   updateNet() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-      // tslint:disable-next-line:max-line-length
-      const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
 
+    // tslint:disable-next-line:max-line-length
+    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
+      let tax = parseFloat(this.FormItem.controls.tax.value);
+      if (tax < 0) {
+        this.FormItem.controls.tax.setValue(0);
+        tax = 0;
+      }
       // tslint:disable-next-line:max-line-length
-      // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value) + parseFloat(this.FormItem.controls.tax.value);
-      this.FormItem.controls.net.setValue(parseFloat((+(Math.round(parseFloat(netValue.toString() + 'e+2')) + 'e-2')).toFixed(2)));
+      const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + tax;
+      this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
     } else {
       this.FormItem.controls.net.setValue('');
-    }
-
-    // tslint:disable-next-line:max-line-length
-    // if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
-    // tslint:disable-next-line:max-line-length
-    //   // const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + parseFloat(this.FormItem.controls.tax.value);
-
-    //   let discount = 0;
-
-    //   if (this.FormItem.controls.discount.value) {
-    //     discount = parseFloat(this.FormItem.controls.discount.value);
-    //   }
-    // tslint:disable-next-line:max-line-length
-    //   const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount + parseFloat(this.FormItem.controls.tax.value);
-    //   this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
-    // } else {
-    //   this.FormItem.controls.net.setValue('');
-    // }
-  }
-
-  updatePatientShare() {
-    if (this.FormItem.controls.IsTaxApplied.value) {
-      if (this.FormItem.controls.net.value && this.FormItem.controls.patientSharePercent.value) {
-        // tslint:disable-next-line:max-line-length
-        const patientShareValue = (parseFloat(this.FormItem.controls.net.value) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
-        this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
-      } else {
-        this.FormItem.controls.patientShare.setValue('');
-      }
-    } else {
-      // tslint:disable-next-line:max-line-length
-      if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.patientSharePercent.value) {
-        // tslint:disable-next-line:max-line-length
-        const grossAmount = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value));
-
-        // tslint:disable-next-line:max-line-length
-        const patientShareValue = (parseFloat(grossAmount.toFixed(2)) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
-        this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
-      } else {
-        this.FormItem.controls.patientShare.setValue('');
-      }
-    }
-  }
-
-  updateTax() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.taxPercent.value) {
-
-      let taxValue = 0;
-      if (this.FormItem.controls.discount.value) {
-        // tslint:disable-next-line:max-line-length
-        taxValue = (((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - parseFloat(this.FormItem.controls.discount.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
-      } else {
-        // tslint:disable-next-line:max-line-length
-        taxValue = ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
-      }
-      this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
-    } else {
-      this.FormItem.controls.tax.setValue(0);
-    }
-  }
-
-  updatePayerShare() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
-      // tslint:disable-next-line:max-line-length
-      const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
-      this.FormItem.controls.payerShare.setValue(parseFloat(payerShareValue.toFixed(2)));
-    } else {
-      this.FormItem.controls.payerShare.setValue('');
-    }
-  }
-
-  updatePatientSharePercent() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
-      // tslint:disable-next-line:max-line-length
-      const patientSharePercentValue = (parseFloat(this.FormItem.controls.patientShare.value) * 100) / (parseFloat(this.FormItem.controls.net.value));
-      this.FormItem.controls.patientSharePercent.setValue(parseFloat(patientSharePercentValue.toFixed(2)));
-    } else {
-      this.FormItem.controls.patientSharePercent.setValue('');
-    }
-  }
-
-  updateTaxPercent() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.tax.value) {
-      let discount = 0;
-      if (this.FormItem.controls.discount.value) {
-        discount = parseFloat(this.FormItem.controls.discount.value);
-      }
-      // tslint:disable-next-line:max-line-length
-      const taxPerValue = (parseFloat(this.FormItem.controls.tax.value) * 100) / ((parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) - discount);
-      this.FormItem.controls.taxPercent.setValue(parseFloat(taxPerValue.toFixed(2)));
-    } else {
-      this.FormItem.controls.taxPercent.setValue(0);
-    }
-  }
-
-  updateDiscountPercent() {
-    // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
-      const discountPercentValue: number = (1 - parseFloat(this.FormItem.controls.factor.value)) * 100;
-
-      this.FormItem.controls.discountPercent.setValue(parseFloat(discountPercentValue.toFixed(2)));
-    } else {
-      this.FormItem.controls.discountPercent.setValue(1);
     }
   }
 
   Calculate(value) {
+
     switch (value) {
-
-      case 'Factor':
-
-        this.updateFactor();
-        this.updateDiscount();
-        this.updateTax();
+      case 'Quantity':
+      case 'UitPrice':
         this.updateNet();
-        this.updatePatientShare();
-
         break;
-
-      case 'Tax':
-
-        this.updateTax();
-        this.updateNet();
-        this.updatePatientShare();
-        this.updatePayerShare();
-
-        break;
-
-      case 'PatientShare':
-
-        this.updatePatientShare();
-        this.updatePayerShare();
-
-        break;
-
-      case 'PatientSharePercent':
-
-        this.updatePatientSharePercent();
-        this.updatePayerShare();
-
-        break;
-
-      case 'PatientShareFromPayerShare':
-
-        this.updatePatientShare();
-        this.updatePatientSharePercent();
-
-        break;
-
-
-      case 'TaxPercent':
-
-        this.updateTaxPercent();
-        this.updateNet();
-        this.updatePatientShare();
-        this.updatePayerShare();
-
-        break;
-
       case 'Discount':
-
-        this.updateDiscountPercent();
-        this.updateDiscount();
-        this.updateTax();
-        this.updateNet();
-        this.updatePatientShare();
-
-        break;
-
-      case 'DiscountPercent':
-
-        this.updateDiscount();
         this.updateFactor();
-        this.updateTax();
         this.updateNet();
-        this.updatePatientShare();
-
         break;
-
-      case 'Other':
-
-        this.updateDiscount();
-        this.updateTax();
+      case 'Tax':
         this.updateNet();
-        this.updatePatientShare();
-        this.updatePayerShare();
-
+        break;
+      case 'Factor':
+        this.updateDiscount();
+        this.updateNet();
         break;
     }
+
   }
 
-  changeTaxApplied() {
-    this.updatePatientShare();
-    this.updatePayerShare();
-  }
 
   searchItems() {
     this.loadSearchItem = true;
