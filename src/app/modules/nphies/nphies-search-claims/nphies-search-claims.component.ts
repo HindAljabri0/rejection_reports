@@ -1394,7 +1394,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showInquireAll() {
     // tslint:disable-next-line:max-line-length
-    return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   get showDeleteAll() {
