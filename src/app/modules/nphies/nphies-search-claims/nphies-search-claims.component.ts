@@ -1382,14 +1382,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'error', 'invalid','cancelled'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'invalid'].includes(status.trim().toLowerCase());
   }
   claimIsDeletable(status: string) {
     return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
   }
-  /*claimIsCancelled(status: string) {
+  claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());
-  }*/
+  }
 
   get showCancelAll() {
     return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
