@@ -288,7 +288,7 @@
           <mat-icon class="size-20 d-block">arrow_forward</mat-icon>
         </div>
         <div class="row small-gutter">
-          <div class="col-6">
+          <div class="col-7">
             <div class="form-group"
               [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
@@ -317,7 +317,7 @@
               </div>
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-5">
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
               <label class="control-label">Unit Price<span class="asterisk">*</span></label>
               <div class="input-group">
@@ -353,7 +353,7 @@
               </div>
             </div>
           </div> -->
-          <div class="col-4">
+          <div class="col-5">
             <div class="form-group">
               <label class="control-label">Discount Amount</label>
               <div class="input-group">
@@ -364,7 +364,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="data.source === 'APPROVAL'" class="col-5">
+          <div *ngIf="data.source === 'APPROVAL'" class="col-7">
             <div class="form-group">
               <label class="control-label">Patient Share (%)</label>
               <div class="input-group">

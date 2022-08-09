@@ -1290,9 +1290,9 @@
     <div class="block-header" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
       <p>Create Claim</p>
     </div>
-    <div *ngIf="pageMode == 'EDIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
+    <div *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
       <p *ngIf="pageMode == 'EDIT'" class="title">Edit Claim</p>
-      
+      <p *ngIf="pageMode == 'RESUBMIT'" class="title">Re-Submit Claim</p>
       <div class="summary">
         <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
             otherDataModel.provClaimNo : '-'}}</strong></p>
@@ -2452,7 +2452,7 @@
         <div class="right-block btn-list" *ngIf="pageMode == 'CREATE'">
           <button type="submit" mat-flat-button color="primary">Save</button>
         </div>
-        <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
+        <div class="right-block btn-list" *ngIf="pageMode == 'EDIT' || pageMode == 'RESUBMIT'">
           <button mat-flat-button (click)="cancelEdit()">Cancel</button>
           <button mat-flat-button color="primary"> Save </button>
         </div>
