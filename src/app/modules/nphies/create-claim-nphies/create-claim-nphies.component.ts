@@ -331,7 +331,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   toEditMode() {
-    this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
+    this.pageMode = 'EDIT';
     // this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
 
     this.selectedBeneficiary = {
@@ -602,11 +602,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.eligibilityResponseId.enable();
     this.FormNphiesClaim.controls.preAuthOfflineDate.enable();
     // this.FormNphiesClaim.controls.preAuthResponseId.disable();
-    if (this.pageMode == 'RESUBMIT') {
+    /*if (this.pageMode == 'RESUBMIT') {
       this.FormNphiesClaim.controls.documentType.disable();
       this.FormNphiesClaim.controls.documentId.disable();
 
-    }
+    }*/
   }
 
   filterNationality() {
@@ -1602,12 +1602,12 @@ export class CreateClaimNphiesComponent implements OnInit {
 
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-      } else if (this.pageMode === 'RESUBMIT') {
+      } /*else if (this.pageMode === 'RESUBMIT') {
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
         this.model.relatedClaimId = this.otherDataModel.claimId;
         this.model.uploadId = this.uploadId;
-      }
+      }*/
 
       if (this.FormNphiesClaim.controls.preAuthRefNo.value) {
         this.model.preAuthRefNo = this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
