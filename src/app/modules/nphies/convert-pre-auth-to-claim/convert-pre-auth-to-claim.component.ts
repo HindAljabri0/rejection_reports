@@ -293,7 +293,15 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
           this.transactions.forEach(x => {
             x.episodeId = '';
+            x.totalTax = 0;
+            x.totalBenefit = 0;
+            x.totalBenefitTax = 0;
+
             if (x.items && x.items.length > 0) {
+              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
+              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
+              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
+
               x.items.forEach(y => {
                 y.invoceNo = '';
               });

@@ -1861,12 +1861,12 @@ export class CreateClaimNphiesComponent implements OnInit {
               }
             } else {
 
-              if (this.pageMode == 'CREATE') {               
-                 this.reset();
-                  this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+              if (this.pageMode == 'CREATE') {
+                this.reset();
+                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
 
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-               
+
 
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
@@ -2919,6 +2919,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   //       }
   //     }
   //   }, errorEvent => {
+  //     if (errorEvent instanceof HttpErrorResponse) {
   //     if (errorEvent instanceof HttpErrorResponse) {
 
   //     }
