@@ -129,7 +129,9 @@
               <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SAR</span> / {{transaction.totalBenefitTax}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)">{{transaction.status}}</td>
+              <td (click)="toggleRow(i)">
+                <span [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{transaction.status | titlecase}}</span>
+              </td>
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
@@ -182,7 +184,7 @@
                       <td>{{item.payerSahare}} <span class="currency">SAR</span></td>
                       <td>{{item.net}} <span class="currency">SAR</span> / {{item.tax}} <span class="currency">SAR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SAR</span> / {{item.benefitTax}} <span class="currency">SAR</span></td>
-                      <td>{{item.status}}</td>
+                      <td><span [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{item.status | titlecase}}</span></td>
                     </tr>
                   </tbody>
                 </table>
