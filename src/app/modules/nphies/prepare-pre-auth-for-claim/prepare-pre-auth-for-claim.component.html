@@ -129,7 +129,9 @@
               <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SAR</span> / {{transaction.totalBenefitTax}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)">{{transaction.status}}</td>
+              <td (click)="toggleRow(i)">
+                <span [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))">{{transaction.status | titlecase}}</span>
+              </td>
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>

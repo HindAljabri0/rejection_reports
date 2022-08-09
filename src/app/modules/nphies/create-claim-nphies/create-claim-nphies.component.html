@@ -215,6 +215,15 @@
               FormNphiesClaim.controls.episodeId.value : '-'}}</p>
           </div>
         </div>
+
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Accounting Period</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.accountingPeriod.value ?
+              (FormNphiesClaim.controls.accountingPeriod.value | date: 'dd-MM-yyyy') : '-'}}
+            </p>
+          </div>
+        </div>
       </div>
     </mat-tab>
 
@@ -1530,6 +1539,16 @@
                 <label class="control-label">Episode No.</label>
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
               </div> -->
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Accounting Period</label>
+                <div class="date-picker">
+                  <input [matDatepicker]="accountingPeriodCtrl" class="form-control" placeholder="Select accounting period" [max]="pastDate" formControlName="accountingPeriod">
+                  <mat-datepicker-toggle [for]="accountingPeriodCtrl"></mat-datepicker-toggle>
+                  <mat-datepicker #accountingPeriodCtrl></mat-datepicker>
+                </div>
+              </div>
             </div>
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
