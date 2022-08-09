@@ -20,6 +20,7 @@ export class ApprovalToClaimTransaction extends Paginateable {
   totalPatientShare: number;
   totalPayerShare: number;
   convertToClaimEpisodeId: number;
+  totalBenefit: number;
 
   constructor(body: {}) {
     super(body);
@@ -58,4 +59,6 @@ class Item {
   payerSahare: number;
   status: string;
   patientInvoiceNo: string;
+  benefitTax: number;
+  tax: number;
 }

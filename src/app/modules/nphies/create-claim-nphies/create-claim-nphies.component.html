@@ -7,11 +7,11 @@
       <p *ngIf="otherDataModel.claimResourceId"><span>Claim
           ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
-      <p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
+      <!--p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
         <span>Related Claim ID:</span>&nbsp;<strong>
           <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
         </strong>
-      </p>
+      </p-->
       <p *ngIf="otherDataModel.claimRefNo"><span>NPHIES/Payer Response
           ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
       <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
@@ -1245,7 +1245,7 @@
     </mat-tab>
 
     <mat-tab
-      *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved'"
+      *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled'"
       [label]="'JSON'">
       <ng-template matTabContent>
         <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
@@ -1273,8 +1273,8 @@
     </div>
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">{{
-        this.otherDataModel.status != 'Cancelled' ? 'Edit' : 'Edit to Re-Submit' }}</button>
+      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
+         Edit</button>
     </div>
   </div>
 </div>
@@ -1296,16 +1296,15 @@
       <div class="summary">
         <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
             otherDataModel.provClaimNo : '-'}}</strong></p>
-        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId && otherDataModel.status != 'Cancelled'
-            ? otherDataModel.claimResourceId : '-'}}</strong>
+        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
         </p>
-        <p>
+        <!--p>
           <span>Related Claim ID:</span>&nbsp;<strong>
             <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-"
                 +otherDataModel.relatedClaimId) :
                 otherDataModel.status == 'Cancelled' ? otherDataModel.claimResourceId : "-" }} </strong></span>
           </strong>
-        </p>
+        </p-->
         <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
         <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
