@@ -2993,15 +2993,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    /*if (this.IsResubmitMode) {
+    if (this.pageMode == 'VIEW') {
       // tslint:disable-next-line:max-line-length
       this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
       setTimeout(() => {
         location.reload();
       }, 200);
-    } else {*/
+    } else {
       this.location.back();
-    //}
+    }
   }
 
   viewAttachment(e, item) {
