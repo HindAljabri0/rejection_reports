@@ -101,6 +101,7 @@
                 <th>Response Date</th>
                 <th>Pre Authorization ID</th>
                 <th>Pre Auth Ref No</th>
+                <th>Provider Claim No</th>
                 <th>Status</th>
                 <th class="text-nowrap"><span class="inline-text pr-1">Processing Status</span>
                   <mat-icon matTooltip="This will request for the current processing status of the preauth" class="material-icons-outlined size-20 inline-text">info</mat-icon>
@@ -131,6 +132,8 @@
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.provClaimNo ? transaction.provClaimNo : '-'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   <span
                     [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
                     | titlecase}}</span>
@@ -147,7 +150,7 @@
                 </td>
                 <td class="actions text-center">
                   <button
-                    *ngIf="transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
+                    *ngIf="transaction.status === 'not-required' || transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
                     (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn"
                     [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')"
                     [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : 'Get latest preauth response from NPHIES queue')">I</button>
@@ -159,7 +162,7 @@
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item
-                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' ||transaction.status === 'pended'"
+                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' || transaction.status === 'pended' || transaction.status === 'not-required'"
                         (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
                         <span>Follow Up/Add Related</span>

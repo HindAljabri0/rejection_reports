@@ -73,23 +73,23 @@ export class ProviderNphiesSearchService {
 
     let requestURL = '/providers/' + providerId + '/items?';
 
-    if (itemType != null && itemType.trim().length > 0) {
+    if (itemType && itemType.trim().length > 0) {
       requestURL += `itemType=${itemType}&`;
     }
-    if (query != null && query.trim().length > 0) {
+    if (query && query.trim().length > 0) {
       requestURL += `query=${query}&`;
     }
-    if (payerNphiesId != null && payerNphiesId.trim().length > 0) {
+    if (payerNphiesId && payerNphiesId.trim().length > 0) {
       requestURL += `payerNphiesId=${payerNphiesId}&`;
     }
-    if (claimType != null && claimType.trim().length > 0) {
+    if (claimType && claimType.trim().length > 0) {
       requestURL += `claimType=${claimType}&`;
     }
-    if (requestDate != null && requestDate.trim().length > 0) {
+    if (requestDate && requestDate.trim().length > 0) {
       requestURL += `requestDate=${requestDate}&`;
     }
 
-    if (pageNumber !== null && pageNumber !== undefined) {
+    if (pageNumber) {
       requestURL += `pageNumber=${pageNumber}&`;
     }
     if (pageSize) {
@@ -390,4 +390,27 @@ export class ProviderNphiesSearchService {
     } else { return date; }
   }
 
+  getApprovalToClaimPrepareCriteria(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approvalToClaim/prepare/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  getApprovalToClaimConvertCriteria(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approvalToClaim/convert/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  getEligibilityJSONTransactions(providerId: string, eligibilityRequestId: number) {
+    const requestUrl = `/providers/${providerId}/nphis/eligibility/jsons/${eligibilityRequestId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+
+  getEligibilityJSON(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/nphis/eligibility/view/json`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
 }

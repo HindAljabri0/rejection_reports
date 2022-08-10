@@ -19,17 +19,31 @@ export class JsonViewDialogComponent implements OnInit {
       {
         title: string,
         tabs: {
-          IsDownload: boolean,
           title: string,
-          fileName: string,
           json: string
         }[]
       },
   ) { }
 
   ngOnInit() {
-    this.data.tabs = this.data.tabs.filter(tabData => tabData.json != null && tabData.json.trim().length > 0).map(tabData => {
-      tabData.json = this.getAsObject(tabData.json);
+    this.data.tabs = this.data.tabs.filter(tabData => {
+      if (typeof (tabData.json) === 'object') {
+        if (tabData.json != null && JSON.stringify(tabData.json).trim().length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (typeof (tabData.json) === 'string') {
+        if (tabData.json != null && tabData.json.trim().length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }).map(tabData => {
+      if (typeof (tabData.json) === 'string') {
+        tabData.json = this.getAsObject(tabData.json);
+      }
       return tabData;
     });
   }
@@ -50,17 +64,6 @@ export class JsonViewDialogComponent implements OnInit {
     setTimeout(() => {
       this.copyText = 'Copy JSON';
     }, 2000);
-  }
-
-  download(fileName, json){
-    const sJson = JSON.stringify(json);
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
-    element.setAttribute('download', fileName);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click(); // simulate click
-    document.body.removeChild(element);
   }
 
 }

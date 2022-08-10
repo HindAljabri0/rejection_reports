@@ -5,7 +5,8 @@ import { NphiesPollManagementService } from 'src/app/services/nphiesPollManageme
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { DatePipe } from '@angular/common';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-communication-dialog',
@@ -15,6 +16,8 @@ import { DatePipe } from '@angular/common';
 export class AddCommunicationDialogComponent implements OnInit {
 
   fetchCommunications = new EventEmitter();
+  filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  onDestroy = new Subject<void>();
 
   payLoads = [];
   FormCommunication: FormGroup = this.formBuilder.group({
@@ -23,12 +26,16 @@ export class AddCommunicationDialogComponent implements OnInit {
     attachmentName: [''],
     attachmentType: [''],
     createdDate: [''],
+    claimItemId: [''],
+    claimItemIdFilter: [''],
   });
 
   currentFileUpload: any;
   isSubmitted = false;
   emptyPayloadError = '';
   invalidFileMessage = '';
+  items = [];
+  selectedFile: any;
 
   constructor(
     private dialogRef: MatDialogRef<AddCommunicationDialogComponent>, private nphiesPollManagementService: NphiesPollManagementService,
@@ -36,20 +43,66 @@ export class AddCommunicationDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-
+    this.setItems();
   }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
+  setItems() {
+    if (this.data.items && this.data.items.length > 0) {
+      this.items = this.data.items.map(x => {
+        const model: any = {};
+        model.value = x.itemId;
+        model.sequence = x.sequence;
+        model.typeName = x.typeName;
+        model.itemCode = x.itemCode;
+        model.itemDescription = x.itemDescription;
+        model.nonStandardCode = x.nonStandardCode;
+        model.nonStandardDesc = x.display;
+        return model;
+      });
+
+      this.filteredItem.next(this.items.slice());
+      this.FormCommunication.controls.claimItemIdFilter.valueChanges
+        .pipe(takeUntil(this.onDestroy))
+        .subscribe(() => {
+          this.filterItem();
+        });
+
+    }
+  }
+
+  filterItem() {
+    if (!this.items) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormCommunication.controls.claimItemIdFilter.value;
+    if (!search) {
+      this.filteredItem.next(this.items.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredItem.next(
+      this.items.filter(item => (item.sequence.toString().toLowerCase().indexOf(search) > -1) ||
+        (item.typeName.toLowerCase().indexOf(search) > -1) ||
+        (item.itemCode.toLowerCase().indexOf(search) > -1) ||
+        (item.itemDescription.toLowerCase().indexOf(search) > -1) ||
+        (item.nonStandardCode.toLowerCase().indexOf(search) > -1))
+    );
+  }
+
   selectFile(event) {
-    this.FormCommunication.reset();
+    this.FormCommunication.controls.payloadValue.reset();
     this.invalidFileMessage = '';
 
     for (let i = 0; i < event.target.files.length; i++) {
       if (!this.checkfile(event.target.files[i])) {
-        this.invalidFileMessage = 'Attachments are only allowed in the formats of .pdf, .png, .jpg or .jpeg';
+        this.invalidFileMessage = 'Attachments are only allowed in the formats of .pdf or .jpeg';
         break;
       }
     }
@@ -75,15 +128,16 @@ export class AddCommunicationDialogComponent implements OnInit {
         model.attachmentType = attachmentType;
         const createDate = new Date();
         model.createdDate = createDate.toISOString().replace('Z', '');
+        this.FormCommunication.controls.payloadValue.clearValidators();
+        this.FormCommunication.controls.payloadValue.updateValueAndValidity();
+        this.selectedFile = model;
+        // this.payLoads.push(model);
 
-
-        this.payLoads.push(model);
-
-        if (i === event.target.files.length - 1) {
-          this.emptyPayloadError = '';
-          this.FormCommunication.reset();
-          this.isSubmitted = false;
-        }
+        // if (i === event.target.files.length - 1) {
+        //   this.emptyPayloadError = '';
+        //   this.FormCommunication.reset();
+        //   this.isSubmitted = false;
+        // }
 
       };
     }
@@ -91,7 +145,7 @@ export class AddCommunicationDialogComponent implements OnInit {
   }
 
   checkfile(file: any) {
-    const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
+    const validExts = ['.pdf', '.jpeg', '.jpg'];
     let fileExt = file.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -103,7 +157,17 @@ export class AddCommunicationDialogComponent implements OnInit {
 
   add() {
     this.isSubmitted = true;
-    if (this.FormCommunication.valid) {
+    if (this.selectedFile) {
+      this.FormCommunication.controls.payloadValue.setValidators([Validators.required]);
+      this.FormCommunication.controls.payloadValue.updateValueAndValidity();
+      const model: any = this.selectedFile;
+      model.claimItemId = this.FormCommunication.controls.claimItemId.value;
+      this.selectedFile = null;
+      this.payLoads.push(model);
+      this.isSubmitted = false;
+      this.emptyPayloadError = '';
+      this.FormCommunication.reset();
+    } else if (this.FormCommunication.valid) {
       const model: any = this.FormCommunication.value;
       this.payLoads.push(model);
       this.isSubmitted = false;
@@ -131,7 +195,18 @@ export class AddCommunicationDialogComponent implements OnInit {
     if (this.data.communicationRequestId) {
       model.communicationRequestId = this.data.communicationRequestId;
     }
-    model.payloads = this.payLoads;
+
+    model.payloads = this.payLoads.map(x => {
+      const pModel: any = {};
+      pModel.attachmentName = x.attachmentName;
+      pModel.attachmentType = x.attachmentType;
+      pModel.claimItemId = x.claimItemId ? x.claimItemId.value : null;
+      pModel.createdDate = x.createdDate;
+      pModel.payloadAttachment = x.payloadAttachment;
+      pModel.payloadValue = x.payloadValue;
+      return pModel;
+    });
+
     console.log(model);
     this.nphiesPollManagementService.sendCommunication(this.sharedServices.providerId, model).subscribe((event: any) => {
       if (event instanceof HttpResponse) {

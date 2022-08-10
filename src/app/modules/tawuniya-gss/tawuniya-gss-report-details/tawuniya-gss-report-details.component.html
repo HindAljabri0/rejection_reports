@@ -14,6 +14,11 @@
                 'danger' : initiateModel?.status?.toLowerCase() === 'cancelled' }">
                 {{initiateModel?.status | titlecase}}
             </span>
+            <button type="button" [disabled]="downloaded" mat-icon-button class="text-primary" [ngStyle]="{'cursor': downloaded ? 'default' : 'pointer'}" (click)="downloadData()">
+                <mat-icon *ngIf="!downloaded">file_download</mat-icon>
+                <mat-icon *ngIf="downloaded">check_circle</mat-icon>
+                
+            </button>
         </div>
     </div>
     <div class="block-body">
@@ -137,8 +142,14 @@
     </div>
     <div class="block-footer sticky">
         <div class="right-block btn-list">
-            <button mat-button (click)="generateReport(true)" [disabled]="initiateModel.status.toLowerCase().trim() != 'new'">Regenerate</button>
-            <button mat-flat-button color="primary" (click)="confirmReport()" [disabled]="initiateModel.status.toLowerCase().trim() != 'new'">Confirm</button>
+            <button mat-flat-button color="primary" (click)="generateReport(true)" 
+            *ngIf="timeleft <= 0" 
+            [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report</button>
+            <button id="confirm-btn" 
+            *ngIf="timeleft > 0 || initiateModel?.status?.toLowerCase()?.trim() != 'new'"
+            mat-flat-button color="primary" 
+            (click)="confirmReport()" 
+            [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'"> {{ initiateModel?.status?.toLowerCase()?.trim() != 'new' ? 'Confirm' : 'Confirm within ' + timeleft + ' second' }}</button>
         </div>
     </div>
 </div>

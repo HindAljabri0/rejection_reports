@@ -384,7 +384,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
       // tslint:disable-next-line:max-line-length
-      insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
+      // insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
+      insurancePlanTpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId
     });
 
     if (this.otherDataModel.subscriber) {
@@ -862,7 +863,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (this.Items.find(x => x.sequence === result.sequence)) {
           this.Items.map(x => {
             if (x.sequence === result.sequence) {
-              x.type = result.type;
+              x.type = result.type.toLowerCase();
               x.typeName = result.typeName,
                 x.itemCode = result.itemCode;
               x.itemDescription = result.itemDescription;
@@ -1524,25 +1525,37 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.subscriber = null;
       }
 
-      this.model.destinationId = this.FormNphiesClaim.controls.destinationId.value;
+      if (this.FormNphiesClaim.controls.destinationId.value === '-1') {
+        this.model.destinationId = null;
+      } else {
+        this.model.destinationId = this.FormNphiesClaim.controls.destinationId.value;
+      }
 
       this.model.insurancePlan = {};
-      this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+
+      if (this.FormNphiesClaim.controls.insurancePlanPayerId.value.indexOf(':') > -1) {
+        if (this.FormNphiesClaim.controls.insurancePlanPayerId.value.split(':').length > 1) {
+          this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value.split(':')[1];
+        }
+      } else {
+        this.model.insurancePlan.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
+      }
+
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
-      this.model.insurancePlan.expiryDate = this.FormNphiesClaim.controls.insurancePlanExpiryDate.value;
+
+      if (this.FormNphiesClaim.controls.insurancePlanExpiryDate.value) {
+        // tslint:disable-next-line:max-line-length
+        this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormNphiesClaim.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
+      }
 
       this.model.insurancePlan.payerName = this.FormNphiesClaim.controls.insurancePlanPayerName.value;
-      this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
+      this.model.insurancePlan.payerNphiesId = this.model.insurancePlan.payerId;
+      // this.model.insurancePlan.payerNphiesId = this.FormNphiesClaim.controls.insurancePayerNphiesId.value;
       // this.model.insurancePlan.planId = this.FormNphiesClaim.controls.insurancePlanId.value;
       this.model.insurancePlan.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
-
-      if (this.model.destinationId != null) {
-        this.model.insurancePlan.tpaNphiesId = this.model.destinationId;
-      } else {
-        this.model.insurancePlan.tpaNphiesId = this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value;
-      }
+      this.model.insurancePlan.tpaNphiesId = null;
 
       const now = new Date(Date.now());
       if (this.pageMode === 'EDIT') {
@@ -1679,7 +1692,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
           const model: any = {};
           model.sequence = x.sequence;
-          model.type = x.type;
+          model.type = x.type!=null?x.type.toLowerCase():'';
           model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
@@ -1798,7 +1811,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       } else if (this.pageMode == 'RESUBMIT') {
         requestObservable = this.nphiesClaimUploaderService.ReSubmitNphiesClaim(this.sharedServices.providerId, this.model);
       }
-
 
       requestObservable.subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -2240,7 +2252,19 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.payerId) {
-        this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.payerId);
+        if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId === null) {
+          this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId = '-1';
+        }
+        if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId) {
+          // tslint:disable-next-line:max-line-length
+          this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId + ':' + this.otherDataModel.beneficiary.insurancePlan.payerId);
+        } else {
+          this.FormNphiesClaim.controls.insurancePlanPayerId.setValue(this.otherDataModel.beneficiary.insurancePlan.payerId);
+        }
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId) {
+        this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.setValue(this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId);
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.memberCardId) {
@@ -2314,6 +2338,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.provClaimNo = response.provClaimNo;
     this.otherDataModel.claimRefNo = response.claimRefNo;
     this.otherDataModel.status = response.status;
+    if (response.status) {
+      this.otherDataModel.statusCode = response.status.toLowerCase();
+    }
     this.otherDataModel.totalNet = response.totalNet;
 
 
@@ -2747,7 +2774,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.Items = response.items.map(x => {
       const model: any = {};
-
+      model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
@@ -2768,9 +2795,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         });
       }
       model.itemDecision = x.itemDecision;
+      model.reasonCodes = x.reasonCodes;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
-      model.type = x.type;
+      model.type = x.type!=null?x.type.toLowerCase():'';
       model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
       model.itemDescription = x.itemDescription;
       model.nonStandardCode = x.nonStandardCode;
@@ -2806,7 +2834,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.discountPercent = parseFloat(model.discountPercent);
       // model.invoiceNo = x.invoiceNo;
       // tslint:disable-next-line:max-line-length
-      model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
+      model.typeName = x.type!=null?this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type.toLowerCase())[0].name : '':'';
 
       if (x.supportingInfoSequence) {
         x.supportingInfoNames = '';
@@ -2896,7 +2924,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       claimResponseId: this.responseId,
       // tslint:disable-next-line:radix
-      communicationRequestId: commRequestId ? parseInt(commRequestId) : ''
+      communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
+      items: this.Items
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
@@ -3108,6 +3137,12 @@ export class CreateClaimNphiesComponent implements OnInit {
       return '';
     }
 
+  }
+
+  getReasonCodes(claimItemDecisionCategories) {
+    return claimItemDecisionCategories.filter(x => x.reasonCode).map(x => {
+      return x.reasonCode;
+    }).join(', ');
   }
 
 }

@@ -15,6 +15,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
   @Input() isRequired = true;
 
   @Input() insurancePayer: any;
+  @Input() tpaNphiesId: any;
   @Input() toolTip: string;
 
   // tslint:disable-next-line:no-output-rename
@@ -37,7 +38,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
     display: string,
     displayAlt: string,
     subList: {
-      id: string
+      value: string,
+      id: string,
       code: string,
       display: string,
       displayAlt: string
@@ -71,42 +73,90 @@ export class NphiesPayersSelectorComponent implements OnInit {
   // For extracted claims which has invalid destination Id
   setDestinationId() {
     if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
-      const payerNphiesIdValue = this.Form.controls.insurancePlanPayerId.value;
-      this.organizations.forEach(x => {
-        if (x.subList.find(y => y.code === payerNphiesIdValue)) {
-          this.Form.controls.destinationId.setValue(x.code);
-        }
-      });
-    } else if (this.insurancePayer) {
-      if (this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).length > 1) {
-        this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).forEach(x => {
-          this.payerName = x.subList.find(y => y.code === this.insurancePayer).display;
-        });
-        // this.insurancePayer = '';
-        this.duplicatePayer = true;
-        this.selectionChange.emit({ value: { payerNphiesId: '' } });
+      if (this.Form.controls.insurancePlanTpaNphiesId.value) {
+        this.Form.controls.destinationId.setValue(this.Form.controls.insurancePlanTpaNphiesId.value);
       } else {
-        this.payerName = '';
-        this.duplicatePayer = false;
+        const payerNphiesIdValue = this.Form.controls.insurancePlanPayerId.value;
+        this.organizations.forEach(x => {
+          if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+            this.Form.controls.destinationId.setValue(x.code);
+          }
+        });
+      }
+
+      // this.organizations.forEach(x => {
+      //   x.subList.forEach(y => {
+      //     y.value = x.code + ':' + y.code;
+      //   });
+      // });
+
+    } else if (this.insurancePayer) {
+      if (this.tpaNphiesId) {
+        this.insurancePayer = this.tpaNphiesId + ':' + this.insurancePayer;
+      } else {
+        if (this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).length > 1) {
+          this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).forEach(x => {
+            this.payerName = x.subList.find(y => y.code === this.insurancePayer).display;
+          });
+          // this.insurancePayer = '';
+          this.duplicatePayer = true;
+          this.selectionChange.emit({ value: { payerNphiesId: '' } });
+        } else {
+          this.payerName = '';
+          this.duplicatePayer = false;
+        }
       }
     }
   }
 
   selectPayer(event) {
     if (event.value) {
-      this.duplicatePayer = false;
-      const payerNphiesIdValue = event.value;
+      let payerNphiesIdValue = '';
       let organizationNphiesIdValue = '';
-
-      this.organizations.forEach(x => {
-        if (x.subList.find(y => y.code === payerNphiesIdValue)) {
-          organizationNphiesIdValue = x.code;
+      if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
+        if (event.value.split(':').length > 1) {
+          organizationNphiesIdValue = event.value.split(':')[0];
+          payerNphiesIdValue = event.value;
         }
-      });
+      } else {
+        if (this.tpaNphiesId) {
+          if (event.value.split(':').length > 1) {
+            organizationNphiesIdValue = event.value.split(':')[0];
+            payerNphiesIdValue = event.value;
+          }
+        } else {
+          this.duplicatePayer = false;
+          payerNphiesIdValue = event.value;
+          this.organizations.forEach(x => {
+            if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+              organizationNphiesIdValue = x.code;
+            }
+          });
+        }
+      }
 
       this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
     } else {
       this.selectionChange.emit({ value: '' });
     }
   }
+
+
+  // selectPayer(event) {
+  //   if (event.value) {
+  //     const payerNphiesIdValue = event.value;
+  //     let organizationNphiesIdValue = '';
+
+  //     this.organizations.forEach(x => {
+  //       if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+  //         organizationNphiesIdValue = x.code;
+  //       }
+  //     });
+
+  //     this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
+  //   } else {
+  //     this.selectionChange.emit({ value: '' });
+  //   }
+
+  // }
 }

@@ -1745,7 +1745,11 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
-      this.model.insurancePlan.expiryDate = this.FormPreAuthorization.controls.insurancePlanExpiryDate.value;
+      if (this.FormPreAuthorization.controls.insurancePlanExpiryDate.value) {
+        // tslint:disable-next-line:max-line-length
+        this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormPreAuthorization.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
+      }
+
       this.model.insurancePlan.payerName = this.FormPreAuthorization.controls.insurancePlanPayerName.value;
       this.model.insurancePlan.payerNphiesId = this.FormPreAuthorization.controls.insurancePayerNphiesId.value;
       // this.model.insurancePlan.planId = this.FormPreAuthorization.controls.insurancePlanId.value;

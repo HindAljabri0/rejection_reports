@@ -1,30 +1,38 @@
-<!-- <div class="animate__animated animate__faster animate__fadeIn block-card">
+<div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Upload Name: lorem name</p><span class="spacer"></span>
-        <p>lorem date</p>
+        <div class="actions mr-2 my-n2 ml-n1">
+            <button matRipple type="button" routerLink="/review/scrubbing/admin" class="action-btn">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+        <p>Upload Name: {{ currentFileUpload?.name }}</p><span class="spacer"></span>
+        <p>{{ today | date: 'dd/MM/yyyy' }}</p>
     </div>
     <div class="block-body">
         <div class="semibold pb-3">File Uploading</div>
         <div class="file-upload-drag-drop">
             <div class="inner-block" *ngIf="currentFileUpload != undefined">
                 <div class="icon-wrapper">
-                    <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'" alt="{{currentFileUpload.name}}">
-                    <p class="file-name">{{currentFileUpload.name}}</p>
+                    <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
+                        alt="{{currentFileUpload.name}}">
+                    <p class="file-name">{{currentFileUpload?.name}}</p>
                 </div>
                 <div *ngIf="!uploading && !loading" class="btn-list pt-5">
                     <button mat-button (click)="cancel()">Cancel</button>
                     <button mat-flat-button color="primary" (click)="upload()">Upload</button>
                 </div>
             </div>
-            <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
+            <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop
+                (onFileDropped)="selectFile($event)">
                 <div class="icon-wrapper">
-                    <img src="./assets/csv.svg" alt="CSV File" />
+                    <img src="./assets/xlsx.svg" alt="Excel File" />
                 </div>
-                <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel or CSV file here , or use</span> <button mat-flat-button color="primary"
-                        (click)="fileInput.click()">Upload</button>
+                <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel file here , or
+                        use</span> <button mat-flat-button color="primary" (click)="fileInput.click()">Upload</button>
                 </p>
                 <p class="error-text" *ngIf="error">{{error}}</p>
-                <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                    (change)="selectFile($event.target.files)"
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
             </div>
         </div>
@@ -32,4 +40,4 @@
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
     </div>
-    </div> -->
+</div>

@@ -73,7 +73,7 @@ export class BeneficiaryComponent implements OnInit {
   postalCodeController = new FormControl();
 
   insurancePlans: {
-    iSPrimary: boolean,
+    isPrimary: boolean,
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
@@ -138,6 +138,7 @@ export class BeneficiaryComponent implements OnInit {
   };
 
   beneficiaryModel = new BeneficiaryModel();
+  isCCHID = false;
 
   constructor(
     private router: Router,
@@ -298,8 +299,7 @@ export class BeneficiaryComponent implements OnInit {
 
 
   isPrimary(index: string) {
-
-    if (index == 'true') {
+    if (index === 'true') {
       return true;
     } else {
       return false;
@@ -350,7 +350,7 @@ export class BeneficiaryComponent implements OnInit {
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
       this.insurancePlans.push(
         {
-          iSPrimary: insurancePlans.isPrimary,
+          isPrimary: insurancePlans.isPrimary,
           selectePayer: insurancePlans.payerNphiesId,
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
@@ -360,11 +360,11 @@ export class BeneficiaryComponent implements OnInit {
             : insurancePlans.relationWithSubscriber,
           selecteCoverageType: insurancePlans.coverageType,
 
-          maxLimit: insurancePlans.maxLimit ? new FormControl(insurancePlans.maxLimit) :  new FormControl(),
-          patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) :  new FormControl(),
+          maxLimit: insurancePlans.maxLimit ? new FormControl(insurancePlans.maxLimit) : new FormControl(),
+          patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) : new FormControl(),
           // tslint:disable-next-line:max-line-length
           payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
-          tpaNphiesId: insurancePlans.tpaNphiesId
+          tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : (this.isCCHID ? null : '-1')
         }
       );
     }
@@ -414,7 +414,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: false,
+        isPrimary: false,
         selectePayer: '',
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
@@ -469,11 +469,11 @@ export class BeneficiaryComponent implements OnInit {
   updateDate() {
     if (this.insurancePlans != null && this.insurancePlans.length != 0) {
       for (const plan of this.insurancePlans) {
-        plan.iSPrimary = false;
+        plan.isPrimary = false;
 
       }
 
-      this.insurancePlans[Number.parseInt(this.setPrimary, 10)].iSPrimary = true;
+      this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
 
     }
 
@@ -484,44 +484,30 @@ export class BeneficiaryComponent implements OnInit {
       this.providerId, this.beneficiaryId, this.beneficiaryModel
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
-
+        this.isCCHID = false;
         this.dialogService.openMessageDialog({
           title: '',
           message: `Beneficiary updated successfully`,
           isError: false
         }).subscribe(event => { this.changeMode(); });
         this.sharedServices.loadingChanged.next(false);
-
-
       }
-    }
-      , err => {
-
-        if (err instanceof HttpErrorResponse) {
-
-          if (err.status == 500) {
-            this.messageError = 'could not reach server Please try again later ';
-
-          } else {
-            this.messageError = err.message;
-          }
-
-          this.dialogService.openMessageDialog({
-            title: '',
-
-            message: this.messageError,
-            isError: true
-          });
-
-          this.sharedServices.loadingChanged.next(false);
-
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 500) {
+          this.messageError = 'could not reach server Please try again later ';
+        } else {
+          this.messageError = err.message;
         }
-      });
-
-
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: this.messageError,
+          isError: true
+        });
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
   }
-
-
 
   setDateforSaveBeneficiary() {
     this.beneficiaryModel.firstName = this.firstNameController.value;
@@ -552,33 +538,38 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
 
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
-      payerNphiesId: insurancePlan.selectePayer,
+      payerNphiesId: (insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer,
       expiryDate: new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
-      payerId: (insurancePlan.selectePayer == '' || insurancePlan.selectePayer == '-1') ? null : insurancePlan.selectePayer,
+      // tslint:disable-next-line:max-line-length
+      payerId: (insurancePlan.selectePayer == '' || insurancePlan.selectePayer == '-1') ? null : ((insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer),
       memberCardId: insurancePlan.memberCardId.value,
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == '' ? null : insurancePlan.selecteSubscriberRelationship,
       coverageType: insurancePlan.selecteCoverageType == '' ? null : insurancePlan.selecteCoverageType,
-      isPrimary: insurancePlan.iSPrimary,
+      isPrimary: insurancePlan.isPrimary,
       maxLimit: insurancePlan.maxLimit.value,
       patientShare: insurancePlan.patientShare.value,
       // tslint:disable-next-line:max-line-length
-      tpaNphiesId: insurancePlan.tpaNphiesId ? insurancePlan.tpaNphiesId : null
+      tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
 
+    console.log(this.beneficiaryModel);
   }
 
   save() {
 
     if (this.insurancePlans != null && this.insurancePlans.length != 0) {
       for (const plan of this.insurancePlans) {
-        plan.iSPrimary = false;
+        plan.isPrimary = false;
       }
-      this.insurancePlans[Number.parseInt(this.setPrimary, 10)].iSPrimary = true;
+      this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
     }
 
     if (this.checkError()) { return; }
+
     this.sharedServices.loadingChanged.next(true);
+
     this.setDateforSaveBeneficiary();
+
     this.providersBeneficiariesService.saveBeneficiaries(
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
@@ -758,6 +749,7 @@ export class BeneficiaryComponent implements OnInit {
   }
 
   getInfoFromCCHI() {
+    this.isCCHID = true;
     let thereIsError = false;
 
     if (this.documentIdCCHIFormControl.value == null || this.documentIdCCHIFormControl.value.trim().length <= 0) {
