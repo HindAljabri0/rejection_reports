@@ -14,7 +14,7 @@
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
-                            <input autocomplete="off" disabled="true" class="form-control date-picker" bsDatepicker
+                            <input autocomplete="off" class="form-control date-picker" bsDatepicker
                                 [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 placeholder="Select from month" [formControl]='fromDateMonth'
                                 (bsValueChange)="dateValidation($event)" />
@@ -30,7 +30,7 @@
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <!--  -->
-                            <input autocomplete="off" disabled="true" class="form-control date-picker" placeholder="Select to month"
+                            <input autocomplete="off" class="form-control date-picker" placeholder="Select to month"
                                 bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 [formControl]='toDateMonth' [minDate]="minDate" />
                         </div>
@@ -42,7 +42,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="control-label">&nbsp;</label>
-                        <button type="submit" [disabled]="true" mat-flat-button color="primary"
+                        <button type="submit" mat-flat-button color="primary"
                             (click)="searchQuerySummary()">Search</button>
                     </div>
                 </div>
