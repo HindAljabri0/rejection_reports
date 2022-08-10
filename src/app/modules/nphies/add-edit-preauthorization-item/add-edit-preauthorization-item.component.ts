@@ -110,16 +110,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
 
     if (this.data.item && this.data.item.itemCode) {
-      //console.log(" body site val = "+this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0]),
+      console.log(" sub site val = "+this.data.item.subSite),
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
-        subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
+        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : (this.data.item.bodySite !=null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+
+        subSite: this.data.item.subSite !=null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
         quantity: this.data.item.quantity,
-        quantityCode: this.data.item.quantityCode,
+        quantityCode: this.data.item.quantityCode !=null ? this.data.item.quantityCode : "",
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
         discountPercent: this.data.item.discountPercent,

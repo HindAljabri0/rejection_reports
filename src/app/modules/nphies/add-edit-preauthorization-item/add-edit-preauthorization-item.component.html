@@ -8,7 +8,7 @@
   <div class="primary-dialog-body pb-0">
     <div class="form-group flex-grow-1">
 
-      <input type="text" class="form-control search-box" placeholder="Search for item ..." formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
+      <input type="text" class="form-control search-box" placeholder="Search for item by standard code, standard description, internal code or internal description" formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
       <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
         <ng-container *ngIf="!loadSearchItem">
           <mat-option *ngFor="let type of typeListSearchResult" (click)="selectItem(type)">
@@ -46,7 +46,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
-          <label class="control-label">Code - Description<span class="asterisk">*</span></label>
+          <label class="control-label">Standard Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect>
               <mat-option>
@@ -79,7 +79,7 @@
       </div>
       <div class="col-4 col-lg-3">
         <div class="form-group">
-          <label class="control-label">Display</label>
+          <label class="control-label">Non Standard Description</label>
           <input class="form-control" placeholder="Enter non standard description" formControlName="display">
         </div>
       </div>
