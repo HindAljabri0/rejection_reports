@@ -1950,6 +1950,7 @@
                   </div></th>
                   <th>Approved Net</th>
                   <th>Status</th>
+                  <th>Adjudication Reason Code</th>
                   <th>Note No.</th>
                   <!-- <th>Quantity</th>
                   <th>Unit Price</th>
@@ -1994,7 +1995,10 @@
                         '-'}}</span>
                       <span *ngIf="!item.itemDecision">-</span>
                     </td>
-
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
+                      <span *ngIf="!item.reasonCodes">-</span>
+                    </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
                         '-'}}</span>

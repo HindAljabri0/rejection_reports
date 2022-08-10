@@ -551,7 +551,7 @@
               <tr>
                 <th width="10"></th>
                 <th>Type</th>
-                <th>Code - Description</th>
+                <th>Standard Code - Description</th>
                 <th>
                   <div class="d-flex align-items-center">
                     <span class="pr-1">Net</span>
@@ -561,6 +561,7 @@
                 </th>
                 <th>Approved Net</th>
                 <th>Status</th>
+                <th>Adjudication Reason Code</th>
                 <th>Note No.</th>
                 <!-- <th>Quantity</th>
                 <th>Unit Price</th>
@@ -595,6 +596,10 @@
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
                     <span *ngIf="!item.itemDecision"></span>
+                  </td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
+                    <span *ngIf="!item.reasonCodes">-</span>
                   </td>
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -702,7 +707,7 @@
                                       matTooltip="Patient share without TAX">info</mat-icon>
                                   </div>
                                 </td>
-                                <td>{{item.patientShare}} <span class="currency">SR</span></td>
+                                <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span class="currency">%</span>)</td>
                               </tr>
                               <tr>
                                 <td class="label">Payer Share</td>
