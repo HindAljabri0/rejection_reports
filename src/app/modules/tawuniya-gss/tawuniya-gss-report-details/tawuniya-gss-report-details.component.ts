@@ -35,12 +35,17 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     
     ngOnInit() {
     this.gssReferenceNumber = this.activatedRoute.snapshot.params.gssReferenceNumber;
-    this.initiateModel = this.tawuniyaGssService.getInitiatedResponse();
+    let isInquiry = this.activatedRoute.snapshot ;
+    console.log('isInquiry: ', isInquiry)
+    if(isInquiry){
+    } else {
+      this.initiateModel = this.tawuniyaGssService.getInitiatedResponse();
       if(!this.initiateModel){
         this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
-        this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+        // this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
       }
-    this.startConfirmationTimer()
+      this.startConfirmationTimer()
+    }
   }
   startConfirmationTimer() {
       this.timeleft = 60

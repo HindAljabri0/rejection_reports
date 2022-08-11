@@ -50,8 +50,9 @@
         </div>
     </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-        <div class="fixed-height fixed-height-sm">
-            <div class="right-block" *ngIf="(initiateModel === null || initiateModel?.length===0) && false">
+        <!-- <div class="fixed-height fixed-height-sm"> -->
+            <div >
+            <div class="right-block" *ngIf="(initiateModel === null || initiateModel?.length===0)">
                 <app-empty-state [message]="getEmptyStateMessage()">
                 </app-empty-state>
             </div>

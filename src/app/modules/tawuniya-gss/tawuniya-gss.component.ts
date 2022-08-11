@@ -42,23 +42,23 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   openGenerateReportDialog() {
-      let lossMonthAsDate: Date  = new Date();
-      let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
-      let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear()-1 : lossMonthAsDate.getFullYear()
-      let lossMonth = year + '/' + month;
-        this.sharedServices.loadingChanged.next(true);
-        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
-          this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
-          this.sharedServices.loadingChanged.next(false);
-        }, err => {
-          console.log(err);
-          this.sharedServices.loadingChanged.next(false);
-          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
-        })
+    let lossMonthAsDate: Date = new Date();
+    let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
+    let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear() - 1 : lossMonthAsDate.getFullYear()
+    let lossMonth = year + '/' + month;
+    this.sharedServices.loadingChanged.next(true);
+    this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
+      this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
+      this.sharedServices.loadingChanged.next(false);
+    }, err => {
+      console.log(err);
+      this.sharedServices.loadingChanged.next(false);
+      this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
+    })
   }
 
   openDetailView(model: InitiateResponse) {
-    this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute });
+    this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute, queryParams: { inquiry: 'true' } });
   }
 
   searchQuerySummary() {
@@ -120,6 +120,6 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   getEmptyStateMessage() {
-      return 'Please apply the filter and generate the report.';
+    return 'Please apply the filter and generate the report.';
   }
 }
