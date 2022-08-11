@@ -255,11 +255,11 @@ export class CreateClaimNphiesComponent implements OnInit {
   ) {
     this.today = new Date();
 
-    this.routerSubscription = this.router.events.pipe(
+    /*this.routerSubscription = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/nphies-search-claim'))
     ).subscribe((event) => {
       this.ngOnInit();
-    });
+    });*/
   }
 
   InitClaimPagenation() {
@@ -2993,15 +2993,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    if (this.pageMode == 'VIEW') {
+    /*if (this.pageMode == 'VIEW') {
       // tslint:disable-next-line:max-line-length
       this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
       setTimeout(() => {
         location.reload();
       }, 200);
-    } else {
+    } else {*/
       this.location.back();
-    }
+    //}
   }
 
   viewAttachment(e, item) {
