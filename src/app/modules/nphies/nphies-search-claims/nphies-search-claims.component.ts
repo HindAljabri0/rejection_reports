@@ -26,7 +26,7 @@ import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY } from 'src/app/services/shared.services';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
@@ -167,6 +167,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   ngOnDestroy(): void {
 
     localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
+    localStorage.removeItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY);
     this.routerSubscription.unsubscribe();
   }
 
@@ -761,6 +762,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.editMode = null;
     }
     this.resetURL();
+
+    localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
     this.store.dispatch(cancelClaim());
 
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
@@ -1379,7 +1382,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'error', 'invalid','cancelled'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid','failed'].includes(status.trim().toLowerCase());
   }
   claimIsDeletable(status: string) {
     return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
