@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
@@ -32,54 +32,55 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     private downloadService: DownloadService,
     private dialog: MatDialog,
     private router: Router) { }
-    
-    ngOnInit() {
+
+  ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
     this.gssReferenceNumber = this.activatedRoute.snapshot.params.gssReferenceNumber;
-    let isInquiry = this.activatedRoute.snapshot ;
-    console.log('isInquiry: ', isInquiry)
-    if(isInquiry){
+    let isInquiry = this.activatedRoute.snapshot.queryParams.inquiry;
+    if (isInquiry) {
+      this.tawuniyaGssService.gssQueryDetails(this.gssReferenceNumber).subscribe( model => {
+        console.log(model);
+        this.initiateModel = model;
+        this.sharedServices.loadingChanged.next(false);
+      });
     } else {
       this.initiateModel = this.tawuniyaGssService.getInitiatedResponse();
-      if(!this.initiateModel){
+      if (!this.initiateModel) {
         this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
         // this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
       }
       this.startConfirmationTimer()
+      this.sharedServices.loadingChanged.next(false);
     }
   }
+
   startConfirmationTimer() {
-      this.timeleft = 60
-this.timer = setInterval(() => {
-  if(this.timeleft > 0) {
-    this.timeleft--;
-  } else {
-    clearInterval(this.timer);
+    this.timeleft = 60
+    this.timer = setInterval(() => {
+      if (this.timeleft > 0) {
+        this.timeleft--;
+      } else {
+        clearInterval(this.timer);
+      }
+    }, 1000)
   }
-},1000)
-    }
-    
-  
 
   ngOnDestroy() {
     clearInterval(this.timer);
- }
-
- downloadData() {
-  if(this.downloaded){
-    return;
   }
-  this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(this.initiateModel))
-    .subscribe(status => {
 
-      if (status != DownloadStatus.ERROR) {
-        this.downloaded = true
-      //   this.detailTopActionIcon = 'ic-check-circle.svg';
-      // } else {
-      //   this.detailTopActionIcon = 'ic-download.svg';
-      }
-    });
-}
-  
+  downloadData() {
+    if (this.downloaded) {
+      return;
+    }
+    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(this.initiateModel))
+      .subscribe(status => {
+        if (status != DownloadStatus.ERROR) {
+          this.downloaded = true;
+        }
+      });
+  }
+
   generateReport(showMessage: Boolean) {
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.generateReportInitiate(this.initiateModel.lossMonth).subscribe(data => {
@@ -116,7 +117,6 @@ this.timer = setInterval(() => {
         this.confirm()
       }
     }, error => { });
-
   }
 
   private confirm() {
