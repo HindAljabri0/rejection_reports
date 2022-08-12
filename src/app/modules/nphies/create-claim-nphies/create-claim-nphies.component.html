@@ -674,7 +674,7 @@
                                   *ngIf="item.payerShare!=null">SR</span></td>
                             </tr>
 
-                            
+
                           </tbody>
                         </table>
                       </div>
@@ -1367,6 +1367,8 @@
         </p>
         <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
         <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
+        <p *ngIf="otherDataModel.statusDesc"><span>Status Description:</span>&nbsp;<strong
+          class="text-capitalize">{{otherDataModel.statusDesc}}</strong></p>
       </div>
     </div>
     <ul class="claim-totals"
@@ -2035,7 +2037,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="currentOpenItem==i">
-                    <td colspan="10">
+                    <td colspan="11">
                       <div class="box mb-2">
                         <h5 class="align-self-center medium pb-2">Item Info</h5>
                         <div class="row">
@@ -2071,7 +2073,7 @@
                                   <td class="label">Sub Site</td>
                                   <td>{{item.subSiteName ? item.subSiteName :"-"}}</td>
                                 </tr>
-    
+
                               </tbody>
                             </table>
                           </div>
@@ -2119,8 +2121,8 @@
                                   <td>{{item.payerShare!=null?item.payerShare:"-"}} <span class="currency"
                                       *ngIf="item.payerShare!=null">SR</span></td>
                                 </tr>
-    
-                                
+
+
                               </tbody>
                             </table>
                           </div>
