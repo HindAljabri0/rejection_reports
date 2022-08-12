@@ -57,12 +57,17 @@ export class ManageDiagnosisComponent implements OnInit, OnChanges {
         this.IsOnAdmissionRequired = true;
         this.diagnosisList.map(x => {
           x.IsOnAdmissionRequired = true;
-          x.onAdmission = '';
+          if (!x.onAdmission) {
+            x.onAdmission = '';
+          }
         });
+
       } else {
         this.diagnosisList.map(x => {
           x.IsOnAdmissionRequired = false;
-          x.onAdmission = '';
+          if (!x.onAdmission) {
+            x.onAdmission = '';
+          }
         });
         this.IsOnAdmissionRequired = false;
       }
