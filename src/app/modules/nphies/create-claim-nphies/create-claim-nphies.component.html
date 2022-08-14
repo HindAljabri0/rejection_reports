@@ -502,8 +502,8 @@
               <th>Invoice No.</th>
               <th>Type</th>
               <th>Code - Description</th>
-              <th>Net</th>
-              <th>Approved Net</th>
+              <th>Net/Tax</th>
+              <th>Benefit/Tax</th>
               <th>Status</th>
               <th>Adjudication Reason Code</th>
               <th>Note No.</th>
@@ -532,12 +532,13 @@
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.itemCode}} - {{item.itemDescription}}</td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  {{item.net}} <span class="currency">SR</span></td>
+                  {{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                     <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                      <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="x.category === 'benefit'">{{x.categoryValue}}</span>
+                      <span *ngIf="x.category === 'tax'">/{{x.categoryValue}} <span class="currency">SR</span></span>
                     </ng-container>
                   </ng-container>
                 </td>
@@ -546,8 +547,14 @@
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
-                  <span *ngIf="!item.reasonCodes">-</span>
+                  <span class="align-items-center pl-7"  *ngFor="let res of item.reasonsMap">
+                    <span class="pr-1">{{ res.code }}</span>
+                    <mat-icon class="material-icons-outlined size-20" matTooltip="{{res.reason}}">info
+                    </mat-icon>
+                  </span>
+                  <span *ngIf="!item.reasonsMap">-</span>
+                  <!--span >{{item.reasonCodes}}</span-->
+                  
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -570,7 +577,9 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                        <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories"
+                        class="text-{{sharedService.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}">
+
                           <td>{{res.category}}</td>
                           <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'" class="currency">SR</span></td>
                           <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>

@@ -551,8 +551,8 @@
                 <th width="10"></th>
                 <th>Type</th>
                 <th>Code - Description</th>
-                <th>Net</th>
-                <th>Approved Net</th>
+                <th>Net/Tax</th>
+                <th>Benefit/Tax</th>
                 <th>Status</th>
                 <th>Note No.</th>
                 <!-- <th>Quantity</th>
@@ -575,7 +575,7 @@
                     - {{item.itemDescription}}</td>
 
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.net}} <span class="currency">SR</span></td>
+                    {{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
 
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">

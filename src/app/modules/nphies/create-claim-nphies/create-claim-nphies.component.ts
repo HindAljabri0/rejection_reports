@@ -245,7 +245,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     private location: Location,
     private dialogService: DialogService,
     private sharedDataService: SharedDataService,
-    private sharedService: SharedServices,
+    public sharedService: SharedServices,
     private router: Router,
     public routeActive: ActivatedRoute,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
@@ -2833,6 +2833,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
       model.itemDecision = x.itemDecision;
       model.reasonCodes = x.reasonCodes;
+      model.reasonsMap = x.reasonsMap;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
       model.type = x.type != null ? x.type.toLowerCase() : '';
@@ -2902,6 +2903,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // if (response.approvalResponseId) {
       //   x.isPackage = x.isPackage === true ? 1 : 2;
       // }
+      
       return model;
     }).sort((a, b) => a.sequence - b.sequence);
 
