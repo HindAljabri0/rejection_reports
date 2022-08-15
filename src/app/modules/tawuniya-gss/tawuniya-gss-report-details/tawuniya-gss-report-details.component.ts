@@ -1,15 +1,17 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
 import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
+
 
 @Component({
   selector: 'app-tawuniya-gss-report-details',
@@ -23,6 +25,9 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
   downloaded: boolean = false
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
+  
+ 
+
   // signed: boolean = false
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -31,7 +36,8 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     private store: Store,
     private downloadService: DownloadService,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
@@ -44,14 +50,35 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
         this.sharedServices.loadingChanged.next(false);
       });
     } else {
-      this.initiateModel = this.tawuniyaGssService.getInitiatedResponse();
-      if (!this.initiateModel) {
-        this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
-        // this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-      }
-      this.startConfirmationTimer()
-      this.sharedServices.loadingChanged.next(false);
+     this.initiateGssReport();
     }
+  }
+
+  initiateGssReport() {
+    let lossMonthAsDate: Date = new Date();
+    let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
+    let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear() - 1 : lossMonthAsDate.getFullYear()
+    let lossMonth = year + '/' + month;
+       this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe(initiateModel =>{
+        this.sharedServices.loadingChanged.next(false);
+        console.log()
+         if (!initiateModel) {
+          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose =>{
+            this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+          });
+          //  this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
+          } else {
+          this.initiateModel = initiateModel
+          this.startConfirmationTimer()
+        }
+          
+      }, error =>{
+        this.sharedServices.loadingChanged.next(false);
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", error.error.message, true));
+
+        // "Could not initiate GSS report, kindly try to regenerate GSS report again later"
+        // this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
+      });
   }
 
   startConfirmationTimer() {
