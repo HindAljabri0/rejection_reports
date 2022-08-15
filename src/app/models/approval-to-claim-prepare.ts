@@ -19,6 +19,7 @@ export class ApprovalToClaimPrepare extends Paginateable {
   preparedDate: string;
   totalPatientShare: number;
   totalPayerShare: number;
+  totalBenefit: number;
 
   constructor(body: {}) {
     super(body);
@@ -54,4 +55,7 @@ class Item {
   patientShare: number;
   payerSahare: number;
   status: string;
+  benefitTax: number;
+  patientInvoiceNo: string;
+  tax: number;
 }

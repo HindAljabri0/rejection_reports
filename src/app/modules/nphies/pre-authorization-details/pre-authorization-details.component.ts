@@ -21,7 +21,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
   constructor(
     private sharedDataService: SharedDataService,
-    private sharedServices: SharedServices,
+    public sharedServices: SharedServices,
     private sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   ngOnInit() {

@@ -7,11 +7,11 @@
       <p *ngIf="otherDataModel.claimResourceId"><span>Claim
           ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
-      <p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
+      <!--p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
         <span>Related Claim ID:</span>&nbsp;<strong>
           <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
         </strong>
-      </p>
+      </p-->
       <p *ngIf="otherDataModel.claimRefNo"><span>NPHIES/Payer Response
           ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
       <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
@@ -213,6 +213,15 @@
             <div class="control-label">Episode No</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.episodeId.value ?
               FormNphiesClaim.controls.episodeId.value : '-'}}</p>
+          </div>
+        </div>
+
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Accounting Period</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.accountingPeriod.value ?
+              (FormNphiesClaim.controls.accountingPeriod.value | date: 'dd-MM-yyyy') : '-'}}
+            </p>
           </div>
         </div>
       </div>
@@ -493,8 +502,8 @@
               <th>Invoice No.</th>
               <th>Type</th>
               <th>Code - Description</th>
-              <th>Net</th>
-              <th>Approved Net</th>
+              <th>Net/Tax</th>
+              <th>Benefit/Tax</th>
               <th>Status</th>
               <th>Adjudication Reason Code</th>
               <th>Note No.</th>
@@ -523,12 +532,13 @@
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.itemCode}} - {{item.itemDescription}}</td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  {{item.net}} <span class="currency">SR</span></td>
+                  {{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                     <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                      <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="x.category === 'benefit'">{{x.categoryValue}}</span>
+                      <span *ngIf="x.category === 'tax'">/{{x.categoryValue}} <span class="currency">SR</span></span>
                     </ng-container>
                   </ng-container>
                 </td>
@@ -537,8 +547,14 @@
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
-                  <span *ngIf="!item.reasonCodes">-</span>
+                  <span class="align-items-center pl-7"  *ngFor="let res of item.reasonsMap">
+                    <span class="pr-1">{{ res.code }}</span>
+                    <mat-icon class="material-icons-outlined size-20" matTooltip="{{res.reason}}">info
+                    </mat-icon>
+                  </span>
+                  <span *ngIf="!item.reasonsMap">-</span>
+                  <!--span >{{item.reasonCodes}}</span-->
+                  
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -561,7 +577,9 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                        <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories"
+                        class="text-{{sharedService.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}">
+
                           <td>{{res.category}}</td>
                           <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'" class="currency">SR</span></td>
                           <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
@@ -1273,8 +1291,8 @@
     </div>
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">{{
-        this.otherDataModel.status != 'Cancelled' ? 'Edit' : 'Edit to Re-Submit' }}</button>
+      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
+         Edit</button>
     </div>
   </div>
 </div>
@@ -1296,16 +1314,15 @@
       <div class="summary">
         <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
             otherDataModel.provClaimNo : '-'}}</strong></p>
-        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId && otherDataModel.status != 'Cancelled'
-            ? otherDataModel.claimResourceId : '-'}}</strong>
+        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
         </p>
-        <p>
+        <!--p>
           <span>Related Claim ID:</span>&nbsp;<strong>
             <span> <strong>{{otherDataModel.relatedClaimId ? (otherDataModel.relatedClaimDate + "-"
                 +otherDataModel.relatedClaimId) :
                 otherDataModel.status == 'Cancelled' ? otherDataModel.claimResourceId : "-" }} </strong></span>
           </strong>
-        </p>
+        </p-->
         <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
         <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
@@ -1531,6 +1548,16 @@
                 <label class="control-label">Episode No.</label>
                 <input class="form-control" placeholder="Episode No" formControlName="episodeId">
               </div> -->
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Accounting Period</label>
+                <div class="date-picker">
+                  <input [matDatepicker]="accountingPeriodCtrl" class="form-control" placeholder="Select accounting period" [max]="pastDate" formControlName="accountingPeriod">
+                  <mat-datepicker-toggle [for]="accountingPeriodCtrl"></mat-datepicker-toggle>
+                  <mat-datepicker #accountingPeriodCtrl></mat-datepicker>
+                </div>
+              </div>
             </div>
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
