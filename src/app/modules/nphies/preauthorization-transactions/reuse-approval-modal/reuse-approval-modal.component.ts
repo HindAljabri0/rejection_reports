@@ -137,6 +137,7 @@ export class ReuseApprovalModalComponent implements OnInit {
 
     if (this.data.detailsModel && this.data.detailsModel.items) {
       this.data.detailsModel.items.forEach(x => {
+        x.display = x.nonStandardDesc;
 
         // tslint:disable-next-line:max-line-length
         x.bodySiteName = this.sharedDataService.getBodySite(this.data.detailsModel.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.detailsModel.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
