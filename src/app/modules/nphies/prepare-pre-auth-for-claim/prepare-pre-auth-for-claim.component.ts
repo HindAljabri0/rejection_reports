@@ -278,7 +278,6 @@ export class PreparePreAuthForClaimComponent implements OnInit {
       model.page = this.page;
       model.pageSize = this.pageSize;
 
-
       this.editURL(model.fromDate, model.toDate);
       this.providerNphiesSearchService.getApprovalToClaimPrepareCriteria(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
@@ -292,7 +291,15 @@ export class PreparePreAuthForClaimComponent implements OnInit {
           });
 
           this.transactions.forEach(x => {
+            x.totalTax = 0;
+            x.totalBenefit = 0;
+            x.totalBenefitTax = 0;
+
             if (x.items && x.items.length > 0) {
+              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
+              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
+              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
+
               x.items.forEach(y => {
                 y.invoiceNo = '';
               });

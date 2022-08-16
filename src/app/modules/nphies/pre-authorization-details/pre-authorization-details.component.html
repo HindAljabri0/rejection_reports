@@ -370,11 +370,11 @@
         <th>Type</th>
         <th>Code - Description</th>
         <th><div class="d-flex align-items-center">
-          <span class="pr-1">Net</span>
+          <span class="pr-1">Net/Tax</span>
           <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
             info</mat-icon>
-        </div></th>
-        <th>Approved Net</th>
+        </div></th>       
+        <th>Benefit/Tax</th>
         <th>Status</th>
         <th>Adjudication Reason Code</th>
         <th>Note No.</th>
@@ -391,12 +391,13 @@
                   {{item.sequence}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
 
           <td class="text-nowrap row-click" (click)="toggleItem(i)">
             <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
               <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                <span *ngIf="x.category === 'benefit'">{{x.categoryValue}}</span>
+                <span *ngIf="x.category === 'tax'">/{{x.categoryValue}} <span class="currency">SR</span></span>
               </ng-container>
             </ng-container>
           </td>
@@ -405,8 +406,12 @@
             <span *ngIf="!item.itemDecision">-</span>
           </td>
           <td class="row-click" (click)="toggleItem(i)">
-            <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
-            <span *ngIf="!item.reasonCodes">-</span>
+            <span class="align-items-center pl-7"  *ngFor="let res of item.reasonsMap">
+              <span class="pr-1">{{ res.code }}</span>
+              <mat-icon class="material-icons-outlined size-20" matTooltip="{{res.reason}}">info
+              </mat-icon>
+            </span>
+            <span *ngIf="!item.reasonsMap">-</span>
           </td>
           <td class="row-click" (click)="toggleItem(i)">
             <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -428,7 +433,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                  <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories"
+                  class="text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}">
                     <td>{{res.category}}</td>
                     <td>{{res.categoryValue}} <span class="currency">SR</span></td>
                     <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>

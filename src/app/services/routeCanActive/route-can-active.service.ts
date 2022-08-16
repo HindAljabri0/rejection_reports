@@ -8,10 +8,7 @@ import { NotificationsPageComponent } from 'src/app/pages/notifications-page/not
 import { Route } from '@angular/compiler/src/core';
 import { DashboardComponent } from 'src/app/pages/dashboard/dashboard.component';
 import { NphiesSearchClaimsComponent } from 'src/app/modules/nphies/nphies-search-claims/nphies-search-claims.component';
-import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
-import { log } from 'util';
-import { Store } from '@ngrx/store';
-import { SharedServices } from '../shared.services';
+
 
 
 @Injectable({
