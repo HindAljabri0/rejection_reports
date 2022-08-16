@@ -161,6 +161,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       this.getItemList();
     } else {
+      if (this.data.source === 'APPROVAL') {
+        this.FormItem.controls.startDate.setValue(this.today);
+        this.FormItem.controls.endDate.setValue(this.today);
+
+        if (this.data.careTeams && this.data.careTeams.length === 1) {
+          this.FormItem.patchValue({
+            // tslint:disable-next-line:max-line-length
+            careTeamSequence: this.data.careTeams
+          });
+        }
+      }
+
       if (this.data.beneficiaryPatientShare) {
         this.FormItem.controls.patientSharePercent.setValue(this.data.beneficiaryPatientShare);
       }
