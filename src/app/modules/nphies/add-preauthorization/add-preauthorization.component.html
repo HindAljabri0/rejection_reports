@@ -233,7 +233,8 @@
             <div class="form-group">
               <label class="control-label">Referring Provider</label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect (selectionChange)="referralChange($event)">
+                <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect
+                  (selectionChange)="referralChange($event)">
                   <mat-option>
                     <ngx-mat-select-search placeholderLabel="Search Item" formControlName="referralFilter"
                       noEntriesFoundLabel="No Referring Provider found" name='searchedItem'>
@@ -550,10 +551,17 @@
               <tr>
                 <th width="10"></th>
                 <th>Type</th>
-                <th>Code - Description</th>
-                <th>Net/Tax</th>
+                <th>Standard Code - Description</th>
+                <th>
+                  <div class="d-flex align-items-center">
+                    <span class="pr-1">Net/Tax</span>
+                    <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+                      info</mat-icon>
+                  </div>
+                </th>
                 <th>Benefit/Tax</th>
                 <th>Status</th>
+                <th>Adjudication Reason Code</th>
                 <th>Note No.</th>
                 <!-- <th>Quantity</th>
                 <th>Unit Price</th>
@@ -588,6 +596,10 @@
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
                     <span *ngIf="!item.itemDecision"></span>
+                  </td>
+                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                    <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
+                    <span *ngIf="!item.reasonCodes">-</span>
                   </td>
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -630,21 +642,19 @@
                         <div class="col-4">
                           <table class="inline-label-table">
                             <tbody>
+
                               <tr>
-                                <td class="label">Quantity</td>
-                                <td>{{item.quantity}} {{item.quantityCode}}</td>
+                                <td class="label">Non Standard Code</td>
+                                <td>{{item.nonStandardCode}}</td>
                               </tr>
                               <tr>
-                                <td class="label">Discount(%)</td>
-                                <td>{{item.discountPercent}} %</td>
+                                <td class="label">Non Standard Desc.</td>
+                                <td>{{item.display}}</td>
                               </tr>
                               <tr>
-                                <td class="label">Tax(%)</td>
-                                <td>{{item.taxPercent}} %</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Patient Share(%)</td>
-                                <td>{{item.patientShare}} %</td>
+                                <td class="label">Serviced Date/Period</td>
+                                <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}
+                                </td>
                               </tr>
                               <tr>
                                 <td class="label">Is Package?</td>
@@ -657,12 +667,20 @@
                                 <td class="label">Body Site</td>
                                 <td>{{item.bodySiteName}}</td>
                               </tr>
+                              <tr>
+                                <td class="label">Sub Site</td>
+                                <td>{{item.subSiteName}}</td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>
                         <div class="col-4">
                           <table class="inline-label-table">
                             <tbody>
+                              <tr>
+                                <td class="label">Quantity</td>
+                                <td>{{item.quantity}} {{item.quantityCode}}</td>
+                              </tr>
                               <tr>
                                 <td class="label">Unit Price</td>
                                 <td>{{item.unitPrice}} <span class="currency">SR</span></td>
@@ -672,21 +690,37 @@
                                 <td>{{item.discount}} <span class="currency">SR</span></td>
                               </tr>
                               <tr>
-                                <td class="label">Tax</td>
+                                <td class="label">
+                                  <div class="d-flex align-items-center">
+                                    <span class="pr-1">Tax</span>
+                                    <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                                      info</mat-icon>
+                                  </div>
+                                </td>
                                 <td>{{item.tax}} <span class="currency">SR</span></td>
                               </tr>
                               <tr>
-                                <td class="label">Patient Share</td>
-                                <td>{{item.patientShare}} <span class="currency">SR</span></td>
+                                <td class="label">
+                                  <div class="d-flex align-items-center">
+                                    <span class="pr-1">Patient Share</span>
+                                    <mat-icon class="material-icons-outlined size-20"
+                                      matTooltip="Patient share without TAX">info</mat-icon>
+                                  </div>
+                                </td>
+                                <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span class="currency">%</span>)</td>
                               </tr>
                               <tr>
                                 <td class="label">Payer Share</td>
                                 <td>{{item.payerShare}} <span class="currency">SR</span></td>
                               </tr>
-                              <tr>
-                                <td class="label">Sub Site</td>
-                                <td>{{item.subSiteName}}</td>
-                              </tr>
+
+
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-4">
+                          <table class="inline-label-table">
+                            <tbody>
                               <tr>
                                 <td class="label">
                                   <div class="d-flex align-items-center">
@@ -696,24 +730,6 @@
                                   </div>
                                 </td>
                                 <td>{{item.factor}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="col-4">
-                          <table class="inline-label-table">
-                            <tbody>
-                              <tr>
-                                <td class="label">Serviced Date/Period</td>
-                                <td><span *ngIf="item.startDateStr">{{item.startDateStr}} - </span>{{item.endDateStr}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Non Standard Code</td>
-                                <td>{{item.nonStandardCode}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Display</td>
-                                <td>{{item.display}}</td>
                               </tr>
                               <tr>
                                 <td class="label">Supporting Info</td>
