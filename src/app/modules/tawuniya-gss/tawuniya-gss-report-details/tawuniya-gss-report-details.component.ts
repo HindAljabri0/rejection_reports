@@ -61,7 +61,6 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     let lossMonth = year + '/' + month;
        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe(initiateModel =>{
         this.sharedServices.loadingChanged.next(false);
-        console.log()
          if (!initiateModel) {
           this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose =>{
             this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
