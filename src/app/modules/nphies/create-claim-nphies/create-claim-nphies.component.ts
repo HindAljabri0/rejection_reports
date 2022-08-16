@@ -131,6 +131,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     isNewBorn: [false],
     preAuthResponseId: [''],
     preAuthResponseUrl: [''],
+    accountingPeriod: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -210,6 +211,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   IsAccidentTypeRequired = false;
 
   today: Date;
+  pastDate: Date;
   nationalities = nationalities;
   selectedCountry = '';
 
@@ -242,7 +244,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     private location: Location,
     private dialogService: DialogService,
     private sharedDataService: SharedDataService,
-    private sharedService: SharedServices,
+    public sharedService: SharedServices,
     private router: Router,
     public routeActive: ActivatedRoute,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
@@ -253,12 +255,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
-
-    /*this.routerSubscription = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/nphies-search-claim'))
-    ).subscribe((event) => {
-      this.ngOnInit();
-    });*/
   }
 
   InitClaimPagenation() {
@@ -1625,6 +1621,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
+      if (this.FormNphiesClaim.controls.accountingPeriod.value) {
+        // tslint:disable-next-line:max-line-length
+        preAuthorizationModel.accountingPeriod = this.datePipe.transform(this.FormNphiesClaim.controls.accountingPeriod.value, 'yyyy-MM-dd');
+      }
       if (this.FormNphiesClaim.controls.payeeType.value && this.FormNphiesClaim.controls.payeeType.value.value === 'provider') {
         // tslint:disable-next-line:max-line-length
         preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
@@ -2398,6 +2398,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.preAuthResponseUrl.setValue(response.preAuthorizationInfo.preAuthResponseUrl);
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
+    if (response.preAuthorizationInfo.accountingPeriod) {
+      this.FormNphiesClaim.controls.accountingPeriod.setValue(response.preAuthorizationInfo.accountingPeriod);
+    }
 
     if (response.preAuthorizationInfo.payeeType) {
       // tslint:disable-next-line:max-line-length
@@ -2824,6 +2827,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
       model.itemDecision = x.itemDecision;
       model.reasonCodes = x.reasonCodes;
+      model.reasonsMap = x.reasonsMap;
       model.itemDetails = x.itemDetails;
       model.sequence = x.sequence;
       model.type = x.type != null ? x.type.toLowerCase() : '';
@@ -2893,6 +2897,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // if (response.approvalResponseId) {
       //   x.isPackage = x.isPackage === true ? 1 : 2;
       // }
+      
       return model;
     }).sort((a, b) => a.sequence - b.sequence);
 
@@ -2920,6 +2925,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   //       }
   //     }
   //   }, errorEvent => {
+  //     if (errorEvent instanceof HttpErrorResponse) {
   //     if (errorEvent instanceof HttpErrorResponse) {
 
   //     }

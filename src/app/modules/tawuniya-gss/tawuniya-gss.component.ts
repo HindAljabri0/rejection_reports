@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from './models/InitiateResponse.model';
 import { TawuniyaGssService } from './Services/tawuniya-gss.service';
-import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generate-report-dialog/tawuniya-gss-generate-report-dialog.component';
-import * as _moment from 'moment';
-import { FormControl, Validators } from '@angular/forms';
-import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadStatus } from 'src/app/models/downloadRequest';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { MatDialog } from '@angular/material';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-tawuniya-gss',
@@ -29,8 +28,10 @@ export class TawuniyaGssComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: any;
 
+  envProd = false;
+  envStaging = false;
+
   constructor(
-    private dialog: MatDialog,
     private tawuniyaGssService: TawuniyaGssService,
     private store: Store,
     private router: Router,
@@ -41,26 +42,27 @@ export class TawuniyaGssComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
+    this.envStaging = (environment.name == 'oci_staging' || environment.name == 'staging');
   }
 
   openGenerateReportDialog() {
-      let lossMonthAsDate: Date  = new Date();
-      let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
-      let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear()-1 : lossMonthAsDate.getFullYear()
-      let lossMonth = year + '/' + month;
-        this.sharedServices.loadingChanged.next(true);
-        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
-          this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
-          this.sharedServices.loadingChanged.next(false);
-        }, err => {
-          console.log(err);
-          this.sharedServices.loadingChanged.next(false);
-          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
-        })
+    let lossMonthAsDate: Date = new Date();
+    let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
+    let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear() - 1 : lossMonthAsDate.getFullYear()
+    let lossMonth = year + '/' + month;
+    this.sharedServices.loadingChanged.next(true);
+    this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
+      this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
+      this.sharedServices.loadingChanged.next(false);
+    }, err => {
+      this.sharedServices.loadingChanged.next(false);
+      this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
+    })
   }
 
   openDetailView(model: InitiateResponse) {
-    this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute });
+    this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute, queryParams: { inquiry: 'true' } });
   }
 
   searchQuerySummary() {
@@ -71,7 +73,10 @@ export class TawuniyaGssComponent implements OnInit {
     const newToDate = new Date(this.toDateMonth.value);
 
     if (!this.valid(newFromDate, newToDate)) {
-      return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
+
+      // return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
+      this.fromDateMonth.setErrors({overlapped: true})
+      return;
     }
 
     this.sharedServices.loadingChanged.next(true);
@@ -81,10 +86,13 @@ export class TawuniyaGssComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
     }, err => {
       this.sharedServices.loadingChanged.next(false);
-      if (err && err.error && err.error.text) {
-        return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
+      if (err && err.error && err.error.message) {
+        // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Search Fail", err.error.message, true))
       } else {
-        return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Search Fail", 'Internal Server error', true))
+
+        // return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
 
     });
@@ -99,7 +107,8 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   downloadData(data: InitiateResponse) {
-    this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(data))
+    this.tawuniyaGssService.gssQueryDetails(data.gssReferenceNumber).subscribe(detailRespons =>{
+      this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(detailRespons))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -107,6 +116,7 @@ export class TawuniyaGssComponent implements OnInit {
           this.detailTopActionIcon = 'ic-download.svg';
         }
       });
+    })
   }
 
   onOpenCalendar(container) {
@@ -122,6 +132,6 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   getEmptyStateMessage() {
-      return 'Please apply the filter and generate the report.';
+    return 'Please apply the filter and generate the report.';
   }
 }
