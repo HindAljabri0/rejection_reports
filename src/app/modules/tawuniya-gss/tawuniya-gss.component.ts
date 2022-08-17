@@ -25,8 +25,6 @@ export class TawuniyaGssComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: any;
-  envProd = false;
-  envStaging = false;
   formIsSubmitted: boolean = false
 
   constructor(
@@ -39,8 +37,6 @@ export class TawuniyaGssComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
-    this.envStaging = (environment.name == 'oci_staging' || environment.name == 'staging');
   }
 
   openGenerateReportDialog() {
