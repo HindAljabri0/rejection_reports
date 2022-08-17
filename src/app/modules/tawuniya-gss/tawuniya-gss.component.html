@@ -57,13 +57,14 @@
     </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <!-- <div class="fixed-height fixed-height-sm"> -->
-            <div >
-            <div class="right-block" *ngIf="(initiateModel === null || initiateModel?.length===0)">
+            <div style="min-height: 500px;max-height: 500px;" >
+                
+            <div class="right-block"  *ngIf="!resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
                 <app-empty-state [message]="getEmptyStateMessage()">
                 </app-empty-state>
             </div>
-            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
+            <table *ngIf="resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead> 
                     <tr>
                         <th>Ref. No.</th>
                         <th>Loss Month</th>

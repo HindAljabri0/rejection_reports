@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from './models/InitiateResponse.model';
 import { TawuniyaGssService } from './Services/tawuniya-gss.service';
 import { environment } from 'src/environments/environment';
@@ -27,13 +25,12 @@ export class TawuniyaGssComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: any;
-
   envProd = false;
   envStaging = false;
+  formIsSubmitted: boolean = false
 
   constructor(
     private tawuniyaGssService: TawuniyaGssService,
-    private store: Store,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
@@ -76,12 +73,13 @@ export class TawuniyaGssComponent implements OnInit {
 
       // return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
       this.fromDateMonth.setErrors({overlapped: true})
+      
       return;
     }
-
+    
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
-      this.initiateModel = [];
+      this.formIsSubmitted = true
       this.initiateModel = data;
       this.sharedServices.loadingChanged.next(false);
     }, err => {
@@ -132,6 +130,16 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   getEmptyStateMessage() {
-    return 'Please apply the filter and generate the report.';
+    return 'No GSS reports found with the requested search criteria!';
   }
+
+  searchResponseIsNull(){
+    
+  }
+
+  resultHasValue(){
+    return this.initiateModel &&  this.initiateModel.length > 0 && !this.initiateModel.every(element => !element)
+  }
+  
+ 
 }
