@@ -22,7 +22,7 @@ import {
   AddEditSupportingInfoModalComponent
 } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
-import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import * as moment from 'moment';
@@ -31,7 +31,6 @@ import { AddCommunicationDialogComponent } from '../add-communication-dialog/add
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -42,7 +41,7 @@ import { filter } from 'rxjs/operators';
 export class CreateClaimNphiesComponent implements OnInit {
 
   params: SearchPageQueryParams = new SearchPageQueryParams();
-  routerSubscription: Subscription;
+  // routerSubscription: Subscription;
 
   errorMessage = null;
   beneficiarySearchController = new FormControl();
@@ -238,7 +237,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   routeMode;
   selectedTab = 0;
   claimType: string;
-  IsResubmitMode = false;
+  //IsResubmitMode = false;
   constructor(
 
     private activatedRoute: ActivatedRoute,
@@ -256,13 +255,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
-    this.pastDate = new Date();
-    this.pastDate.setDate(this.pastDate.getDate() - 1);
-    this.routerSubscription = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/nphies-search-claim'))
-    ).subscribe((event) => {
-      this.ngOnInit();
-    });
   }
 
   InitClaimPagenation() {
@@ -334,7 +326,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   toEditMode() {
-    this.pageMode = this.otherDataModel.status != 'Cancelled' ? 'EDIT' : 'RESUBMIT';
+    this.pageMode = 'EDIT';
     // this.SaveBtn = this.otherDataModel.status != 'Cancelled' ? 'Save' : 'Re-Submit';
 
     this.selectedBeneficiary = {
@@ -429,7 +421,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, '0');
       this.claimId = + this.paginationControl.searchTabCurrentResults[0];
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
-      this.resetURL();
+      this.resetURL(this.claimId.toString());
 
       // this.location.go(this.location.path().replace('#edit', ''));
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
@@ -444,7 +436,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1];
 
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
-      this.resetURL();
+      this.resetURL(this.claimId.toString());
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       // this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
@@ -459,7 +451,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1];
 
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
-      this.resetURL();
+      this.resetURL(this.claimId.toString());
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       // this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
@@ -472,15 +464,20 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1];
 
     this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
-    this.resetURL();
+    this.resetURL(this.claimId.toString());
     // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
     // this.location.go(this.location.path().replace('#edit', ''));
     this.ngOnInit();
   }
 
-  resetURL() {
-    if (this.routerSubscription.closed) { return; }
-    this.params.claimId = this.claimId.toString();
+  resetURL(claimId: string = '') {
+    // if (this.routerSubscription.closed) { return; }
+    if (claimId) {
+      this.params.claimId = claimId;
+    } else {
+      delete this.params.claimId;
+    }
+
     this.router.navigate([], {
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, reSubmitMode: null, size: null },
@@ -605,11 +602,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.eligibilityResponseId.enable();
     this.FormNphiesClaim.controls.preAuthOfflineDate.enable();
     // this.FormNphiesClaim.controls.preAuthResponseId.disable();
-    if (this.pageMode == 'RESUBMIT') {
+    /*if (this.pageMode == 'RESUBMIT') {
       this.FormNphiesClaim.controls.documentType.disable();
       this.FormNphiesClaim.controls.documentId.disable();
 
-    }
+    }*/
   }
 
   filterNationality() {
@@ -1605,12 +1602,12 @@ export class CreateClaimNphiesComponent implements OnInit {
 
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-      } else if (this.pageMode === 'RESUBMIT') {
+      } /*else if (this.pageMode === 'RESUBMIT') {
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
         this.model.relatedClaimId = this.otherDataModel.claimId;
         this.model.uploadId = this.uploadId;
-      }
+      }*/
 
       if (this.FormNphiesClaim.controls.preAuthRefNo.value) {
         this.model.preAuthRefNo = this.FormNphiesClaim.controls.preAuthRefNo.value.map(x => {
@@ -1862,19 +1859,16 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (body.isError) {
 
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
-              if (this.pageMode == 'CREATE') {
-
+              if (this.pageMode === 'CREATE') {
+                // tslint:disable-next-line:max-line-length
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
               }
             } else {
-
-              if (this.pageMode == 'CREATE') {
+              if (this.pageMode === 'CREATE') {
                 this.reset();
+                // tslint:disable-next-line:max-line-length
                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-
-
               } else {
                 this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
                 this.ngOnInit();
@@ -1888,7 +1882,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
-            if (this.pageMode == 'EDIT') {
+            if (this.pageMode === 'EDIT') {
               this.ngOnInit();
             }
           } else if (error.status === 404) {
@@ -3006,9 +3000,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    if (this.IsResubmitMode) {
-      // tslint:disable-next-line:max-line-length
-      this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
+    if (this.pageMode === 'VIEW' || this.pageMode === 'EDIT') {
+      // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
+      this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+      this.resetURL();
       setTimeout(() => {
         location.reload();
       }, 200);

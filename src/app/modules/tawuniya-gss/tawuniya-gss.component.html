@@ -9,15 +9,16 @@
         <div class="block-filter-panel">
             <div class="row small-gutter">
                 <div class="col-4">
-                    <div class="form-group"
-                        [ngClass]="{'has-error' : tawuniyaGssForm.submitted && fromDateMonth.invalid}">
+                    <div class="form-group" [ngClass]="{'has-error' : tawuniyaGssForm.submitted && fromDateMonth.invalid}">
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
+
                             <input [disabled]="envProd" autocomplete="off" class="form-control date-picker" bsDatepicker
                                 [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 placeholder="Select from month" [formControl]='fromDateMonth'
                                 (bsValueChange)="dateValidation($event)" />
+
                         </div>
                         <mat-error *ngIf="tawuniyaGssForm.submitted && fromDateMonth.invalid && fromDateMonth.hasError('required')">
                             From Loss Month is required
@@ -29,14 +30,15 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="form-group"
-                        [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && toDateMonth.invalid}">
+                    <div class="form-group" [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && toDateMonth.invalid}">
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <!--  -->
+
                             <input [disabled]="envProd" autocomplete="off" class="form-control date-picker" placeholder="Select to month"
                                 bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 [formControl]='toDateMonth' [minDate]="minDate" />
+
                         </div>
                         <mat-error *ngIf="toDateMonth.invalid && tawuniyaGssForm.submitted">To Loss Month is required
                         </mat-error>
@@ -60,8 +62,7 @@
                 <app-empty-state [message]="getEmptyStateMessage()">
                 </app-empty-state>
             </div>
-            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0"
-                cellspacing="0" border="0">
+            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th>Ref. No.</th>
@@ -84,21 +85,17 @@
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.lossMonth }}</td>
                             <td class="row-click" (click)="openDetailView(data)" class="text-center">{{
                                 data?.totalNumberOfClaim }}</td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalGross?.value }} <span
-                                    class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalGross?.value }} <span class="currency">{{
                                     data?.totalGross?.currencyCode }}</span></td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalDiscount?.value }} <span
-                                    class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalDiscount?.value }} <span class="currency">{{
                                     data?.totalDiscount?.currencyCode }}</span></td>
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.totalPatientShare?.value }}
                                 <span class="currency">{{
                                     data?.totalPatientShare?.currencyCode }}</span>
                             </td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span
-                                    class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span class="currency">{{
                                     data?.totalNet?.currencyCode }}</span></td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span
-                                    class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span class="currency">{{
                                     data?.totalNetVat?.currencyCode }}</span></td>
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetPayable?.value }}
                                 <span class="currency">{{
@@ -120,13 +117,16 @@
                 </tbody>
             </table>
         </div>
-        <div style="width: 100%; display: flex; justify-content: flex-end; padding: 10px 18px 0px 0px;">
+    </ng-scrollbar>
+
+    <div class="block-footer sticky">
+        <div class="right-block btn-list">
             <button mat-flat-button class="animate__bounceIn" color="primary" (click)="openGenerateReportDialog()">
                 Initiate GSS Report
             </button>
-            <!-- <button mat-flat-button color="primary" (click)="openGenerateReportDialog()" 
-            [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report
-        </button> -->
         </div>
-    </ng-scrollbar>
+        <!-- <button mat-flat-button color="primary" (click)="openGenerateReportDialog()" 
+                        [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report
+                    </button> -->
+    </div>
 </div>
