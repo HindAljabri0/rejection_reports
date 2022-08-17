@@ -13,6 +13,7 @@ import { NphiesPayersSelectorComponent } from '../components/reusables/nphies-pa
 import { ManageSupportingInfoComponent } from './nphies/add-preauthorization/manage-supporting-info/manage-supporting-info.component';
 import { ManageDiagnosisComponent } from './nphies/manage-diagnosis/manage-diagnosis.component';
 import { ManageCareTeamComponent } from './nphies/manage-care-team/manage-care-team.component';
+import { DragdropDirective } from '../pages/claimUploadignPage/claimfileupload/dragdrop.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ManageCareTeamComponent } from './nphies/manage-care-team/manage-care-t
     NphiesPayersSelectorComponent,
     ManageSupportingInfoComponent,
     ManageDiagnosisComponent,
-    ManageCareTeamComponent
+    ManageCareTeamComponent,
+    DragdropDirective
   ],
   imports: [
     MaterialModule,
@@ -44,7 +46,8 @@ import { ManageCareTeamComponent } from './nphies/manage-care-team/manage-care-t
     NphiesPayersSelectorComponent,
     ManageSupportingInfoComponent,
     ManageDiagnosisComponent,
-    ManageCareTeamComponent
+    ManageCareTeamComponent,
+    DragdropDirective
   ]
 })
 export class SharedModule { }
