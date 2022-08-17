@@ -170,9 +170,15 @@
                       <td>
                         <div class="form-group mb-n1 mt-n1"
                           [ngClass]="{'has-error' : transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo}">
-                          <input type="text" class="form-control" placeholder="Enter invoice no."
+                          <span class="d-flex align-items-center">
+                            <span class="pr-1">
+                              <input type="text" class="form-control" placeholder="Enter invoice no."
                             [(ngModel)]="item.invoiceNo"
                             [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
+                            </span>
+                            <mat-icon *ngIf="item.status === 'rejected'" class="material-icons-outlined size-20" matTooltip="Invoice No. is not needed for a Rejected item">info</mat-icon>
+                          </span>
+
                           <div
                             *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
                             <span class="error-text">InvoiceNo required</span>

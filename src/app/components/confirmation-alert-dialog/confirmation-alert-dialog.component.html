@@ -5,12 +5,30 @@
         <img src="./assets/ic-danger.svg" alt="Alert" *ngIf="data.mode=='alert'" />
         <img src="./assets/ic-info.svg" alt="Info" *ngIf="data.mode=='info'" />
         <div class="right-block">
-          <p *ngIf="data.transactionId" class="title">Transaction Id: {{data.transactionId}}</p>
+            <p *ngIf="data.transactionId" class="title">Transaction Id: {{data.transactionId}}</p>
             <p class="title" [innerHtml]="data.mainMessage"></p>
             <span class="subtitle" *ngIf="data.subMessage" [innerHtml]="data.subMessage"></span>
-            <ul *ngIf="data.errors && data.errors.length > 0">
-                <li *ngFor="let error of data.errors">{{error}}</li>
-            </ul>
+            <ng-container *ngIf="data.errors && data.errors.length > 0 && data.errors[0]=='TYPE-CLAIM-CONVERT-SUCCESS'; else generalError">
+                <div class="convert-preauth-upload-details">
+                    <p class="name">Upload Name: {{data.errors[1].uploadName}}</p>
+                    <span class="date">Upload Date: {{data.errors[1].uploadDate}}</span>
+                    <div class="count">
+                        <span>
+                            <img src="./assets/ic-check-success.svg" alt="Check" />
+                            <span>Accepted Claims: {{data.errors[1].acceptedClaims}}</span>
+                        </span>
+                        <span>
+                            <img src="./assets/ic-close-danger.svg" alt="Close" />
+                            <span>Not Accepted Claims: {{data.errors[1].notAcceptedClaims}}</span>
+                        </span>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #generalError>
+                <ul *ngIf="data.errors && data.errors.length > 0">
+                    <li *ngFor="let error of data.errors">{{error}}</li>
+                </ul>
+            </ng-template>
         </div>
     </div>
     <div class="btn-list text-right">
