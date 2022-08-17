@@ -14,7 +14,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { ClaimsummaryComponent } from './pages/claimUploadignPage/claimsummary/claimsummary.component';
 import { ClaimpageComponent } from './pages/claimUploadignPage/claimpage.component';
 import { AbstractcardComponent } from './components/reusables/abstractcard/abstractcard.component';
-import { DragdropDirective } from './pages/claimUploadignPage/claimfileupload/dragdrop.directive';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -115,7 +114,6 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
         UploadSummaryDialogComponent,
         ClaimpageComponent,
         AbstractcardComponent,
-        DragdropDirective,
         SearchBarComponent,
         SearchClaimsComponent,
         MessageDialogComponent,
@@ -171,7 +169,6 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
         MultiSheetFileUploadComponent,
         NphiesClaimSummaryComponent,
         AlertDialogComponent
-        
     ],
     imports: [
         AppRoutingModule,
@@ -194,9 +191,7 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
         NgxJsonViewerModule,
         ClipboardModule,
         MonacoEditorModule.forRoot(),
-        ClaimModule,
-
-
+        ClaimModule
     ],
     providers: [
         ThemeService,
