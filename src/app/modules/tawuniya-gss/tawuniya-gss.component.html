@@ -14,7 +14,7 @@
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
 
-                            <input [disabled]="envProd" autocomplete="off" class="form-control date-picker" bsDatepicker
+                            <input  autocomplete="off" class="form-control date-picker" bsDatepicker
                                 [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 placeholder="Select from month" [formControl]='fromDateMonth'
                                 (bsValueChange)="dateValidation($event)" />
@@ -35,7 +35,7 @@
                         <div class="date-picker">
                             <!--  -->
 
-                            <input [disabled]="envProd" autocomplete="off" class="form-control date-picker" placeholder="Select to month"
+                            <input  autocomplete="off" class="form-control date-picker" placeholder="Select to month"
                                 bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 [formControl]='toDateMonth' [minDate]="minDate" />
 
@@ -48,7 +48,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="control-label">&nbsp;</label>
-                        <button [disabled]="envProd" type="submit" mat-flat-button color="primary"
+                        <button  type="submit" mat-flat-button color="primary"
                             (click)="searchQuerySummary()">Search</button>
                     </div>
                 </div>
@@ -57,13 +57,15 @@
     </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <!-- <div class="fixed-height fixed-height-sm"> -->
-            <div >
-            <div class="right-block" *ngIf="(initiateModel === null || initiateModel?.length===0)">
+            <div  style="min-height: 500px;max-height: 500px;display: flex; justify-content: center;"
+            [ngStyle]="{'align-items': !resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted ? 'center' : 'unset'}" >
+                
+            <div class="right-block"  *ngIf="!resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
                 <app-empty-state [message]="getEmptyStateMessage()">
                 </app-empty-state>
             </div>
-            <table *ngIf="initiateModel && initiateModel.length > 0" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
+            <table *ngIf="resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted" class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead> 
                     <tr>
                         <th>Ref. No.</th>
                         <th>Loss Month</th>
