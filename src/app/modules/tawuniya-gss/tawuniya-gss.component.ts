@@ -70,27 +70,21 @@ export class TawuniyaGssComponent implements OnInit {
     const newToDate = new Date(this.toDateMonth.value);
 
     if (!this.valid(newFromDate, newToDate)) {
-
-      // return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
       this.fromDateMonth.setErrors({overlapped: true})
-      
       return;
     }
     
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
-      this.formIsSubmitted = true
       this.initiateModel = data;
+      this.formIsSubmitted = true
       this.sharedServices.loadingChanged.next(false);
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.message) {
-        // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Search Fail", err.error.message, true))
       } else {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Search Fail", 'Internal Server error', true))
-
-        // return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
 
     });

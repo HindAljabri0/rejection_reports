@@ -57,7 +57,8 @@
     </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <!-- <div class="fixed-height fixed-height-sm"> -->
-            <div style="min-height: 500px;max-height: 500px;" >
+            <div  style="min-height: 500px;max-height: 500px;display: flex; justify-content: center;"
+            [ngStyle]="{'align-items': !resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted ? 'center' : 'unset'}" >
                 
             <div class="right-block"  *ngIf="!resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
                 <app-empty-state [message]="getEmptyStateMessage()">
