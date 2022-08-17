@@ -151,14 +151,15 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       console.log("data: ", data);
       this.initiateModel.status = 'signed'
       this.sharedServices.loadingChanged.next(false);
-      // this.generateReport(false);
-      return this.store.dispatch(showSnackBarMessage({ message: data.message }));
+      this.dialogService.openMessageDialog(new MessageDialogData("GSS Confirmation Success", data.message, false));
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.text) {
-        return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Confirmation Fail", err.error.message, true));
+
       } else {
-        return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Confirmation Fail", 'Internal Server error', true));
+
       }
     });
   }
