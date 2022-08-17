@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import * as moment from 'moment';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -142,6 +143,7 @@ export class BeneficiaryComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
@@ -574,11 +576,16 @@ export class BeneficiaryComponent implements OnInit {
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
+        const beneficiaryId = event.body['beneficiaryId'];
         this.dialogService.openMessageDialog({
           title: '',
           message: `Beneficiary added successfully`,
           isError: false
-        }).subscribe(event => { window.location.reload(); });
+        }).subscribe(childEvent => {
+          const path = `/nphies/beneficiary/${beneficiaryId}`;
+          this.location.go(path);
+          window.location.reload();
+        });
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {

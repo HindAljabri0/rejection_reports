@@ -293,7 +293,15 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
           this.transactions.forEach(x => {
             x.episodeId = '';
+            x.totalTax = 0;
+            x.totalBenefit = 0;
+            x.totalBenefitTax = 0;
+
             if (x.items && x.items.length > 0) {
+              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
+              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
+              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
+
               x.items.forEach(y => {
                 y.invoceNo = '';
               });
@@ -399,13 +407,16 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
         const body = event.body;
 
         const messages = [];
-        messages.push('Upload Name:' + body.uploadName);
+        messages.push('TYPE-CLAIM-CONVERT-SUCCESS');
         if (body.uploadDate) {
           body.uploadDate = this.datePipe.transform(body.uploadDate, 'dd-MM-yyyy');
         }
-        messages.push('upload Date:' + body.uploadDate);
-        messages.push('Accepted Claims:' + body.noOfAcceptedClaims);
-        messages.push('Not Accepted Claims:' + body.noOfNotAcceptedClaims);
+        messages.push({
+          uploadName: body.uploadName,
+          uploadDate: body.uploadDate,
+          acceptedClaims: body.noOfAcceptedClaims,
+          notAcceptedClaims: body.noOfNotAcceptedClaims
+        });
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', messages, true).subscribe(res => {
           this.onSubmit();

@@ -33,7 +33,7 @@
                 <p class="error-text" *ngIf="error">{{error}}</p>
                 <input hidden type="file" #fileInput id="file" onclick="this.value = null"
                     (change)="selectFile($event.target.files)"
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
             </div>
         </div>
         <div class="file-upload-progress-wrapper" *ngIf="uploading">
