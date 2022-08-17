@@ -25,7 +25,6 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-
     if (!this.authService.loggedIn) {
       return this.router.createUrlTree(['/login']);
     }
@@ -105,7 +104,9 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       case NotificationsPageComponent:
         return true;
       default:
-        return true;
+        {
+          return true;
+        }
     }
   }
 
@@ -127,7 +128,9 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         console.log(error);
         return false;
       }
-    }
+    } else if (segments[0].path == 'tawuniya-gss') {
+      return true;
+    } 
 
   }
 
