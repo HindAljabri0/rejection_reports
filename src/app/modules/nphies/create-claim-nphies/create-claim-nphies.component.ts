@@ -2897,7 +2897,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // if (response.approvalResponseId) {
       //   x.isPackage = x.isPackage === true ? 1 : 2;
       // }
-      
+
       return model;
     }).sort((a, b) => a.sequence - b.sequence);
 
@@ -2937,13 +2937,23 @@ export class CreateClaimNphiesComponent implements OnInit {
   // }
 
   get IsCareTeamRequired() {
+    var isthereFiledEmpty = false;
     if (this.isSubmitted) {
       // tslint:disable-next-line:max-line-length
       if (!this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy')) {
         if (this.CareTeams.length === 0) {
           return true;
         } else {
-          return false;
+          isthereFiledEmpty = false;
+          this.CareTeams.forEach(x => {
+            console.log(x.speciality)
+            if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
+            x.speciality === null ||  x.speciality === undefined) {
+              isthereFiledEmpty = true;
+              return;
+            }
+          });
+          return isthereFiledEmpty;
         }
       }
     } else {
