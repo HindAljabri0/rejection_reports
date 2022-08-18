@@ -120,11 +120,13 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.message) {
-        this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", err.error.message, false));
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", err.error.message, true));
 
         // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
       } else {
-        return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", 'Internal Server error', true));
+
+        // return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
     });
   }
