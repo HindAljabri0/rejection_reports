@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from './models/InitiateResponse.model';
 import { TawuniyaGssService } from './Services/tawuniya-gss.service';
 import { environment } from 'src/environments/environment';
@@ -27,13 +25,10 @@ export class TawuniyaGssComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: any;
-
-  envProd = false;
-  envStaging = false;
+  formIsSubmitted: boolean = false
 
   constructor(
     private tawuniyaGssService: TawuniyaGssService,
-    private store: Store,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
@@ -42,8 +37,6 @@ export class TawuniyaGssComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
-    this.envStaging = (environment.name == 'oci_staging' || environment.name == 'staging');
   }
 
   openGenerateReportDialog() {
@@ -73,26 +66,21 @@ export class TawuniyaGssComponent implements OnInit {
     const newToDate = new Date(this.toDateMonth.value);
 
     if (!this.valid(newFromDate, newToDate)) {
-
-      // return this.store.dispatch(showSnackBarMessage({ message: "From Date can not be after To Date" }));
       this.fromDateMonth.setErrors({overlapped: true})
       return;
     }
-
+    
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
-      this.initiateModel = [];
       this.initiateModel = data;
+      this.formIsSubmitted = true
       this.sharedServices.loadingChanged.next(false);
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.message) {
-        // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Search Fail", err.error.message, true))
       } else {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Search Fail", 'Internal Server error', true))
-
-        // return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
 
     });
@@ -132,6 +120,16 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   getEmptyStateMessage() {
-    return 'Please apply the filter and generate the report.';
+    return 'No GSS reports found with the requested search criteria!';
   }
+
+  searchResponseIsNull(){
+    
+  }
+
+  resultHasValue(){
+    return this.initiateModel &&  this.initiateModel.length > 0 && !this.initiateModel.every(element => !element)
+  }
+  
+ 
 }
