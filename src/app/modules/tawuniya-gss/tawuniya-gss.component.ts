@@ -9,7 +9,6 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { SharedServices } from 'src/app/services/shared.services';
 import { InitiateResponse } from './models/InitiateResponse.model';
 import { TawuniyaGssService } from './Services/tawuniya-gss.service';
-import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -37,6 +36,7 @@ export class TawuniyaGssComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // this.validateFormWhenChanged();
   }
 
   openGenerateReportDialog() {
@@ -59,17 +59,20 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   searchQuerySummary() {
+    const newFromDate = new Date(this.fromDateMonth.value);
+    const newToDate = new Date(this.toDateMonth.value);
+    if (newFromDate && newToDate && !this.valid(newFromDate, newToDate)) {
+      this.fromDateMonth.setErrors({ overlapped: true })
+      return
+    } else {
+      this.fromDateMonth.setErrors({ overlapped: null })
+      this.fromDateMonth.updateValueAndValidity()
+    }
     if (this.fromDateMonth.invalid || this.toDateMonth.invalid) {
       return;
     }
-    const newFromDate = new Date(this.fromDateMonth.value);
-    const newToDate = new Date(this.toDateMonth.value);
 
-    if (!this.valid(newFromDate, newToDate)) {
-      this.fromDateMonth.setErrors({overlapped: true})
-      return;
-    }
-    
+
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
       this.initiateModel = data;
@@ -95,15 +98,15 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
   downloadData(data: InitiateResponse) {
-    this.tawuniyaGssService.gssQueryDetails(data.gssReferenceNumber).subscribe(detailRespons =>{
+    this.tawuniyaGssService.gssQueryDetails(data.gssReferenceNumber).subscribe(detailRespons => {
       this.downloadService.startGeneratingDownloadFile(this.tawuniyaGssService.downloadPDF(detailRespons))
-      .subscribe(status => {
-        if (status != DownloadStatus.ERROR) {
-          this.detailTopActionIcon = 'ic-check-circle.svg';
-        } else {
-          this.detailTopActionIcon = 'ic-download.svg';
-        }
-      });
+        .subscribe(status => {
+          if (status != DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
     })
   }
 
@@ -123,13 +126,53 @@ export class TawuniyaGssComponent implements OnInit {
     return 'No GSS reports found with the requested search criteria!';
   }
 
-  searchResponseIsNull(){
-    
+  searchResponseIsNull() {
+
   }
 
-  resultHasValue(){
-    return this.initiateModel &&  this.initiateModel.length > 0 && !this.initiateModel.every(element => !element)
+  resultHasValue() {
+    return this.initiateModel && this.initiateModel.length > 0 && !this.initiateModel.every(element => !element)
   }
-  
- 
+
+
+  // validateFormWhenChanged() {
+
+  //   // this.validateOverlappingDate(this.fromDateMonth)
+  //   this.fromDateMonth.valueChanges.subscribe(fromDateMonthVal =>{
+  //     console.log(`fromDateMonthVal`, fromDateMonthVal);
+  //     if(!fromDateMonthVal || !this.toDateMonth.value){
+  //       this.fromDateMonth.setErrors({overlapped: null});
+  //       this.fromDateMonth.updateValueAndValidity()
+  //       return;
+  //     }
+  //     const newFromDate = new Date(fromDateMonthVal);
+  //     const newToDate = new Date(this.toDateMonth.value);
+  //     if (!this.valid(newFromDate, newToDate)) {
+  //       this.fromDateMonth.setErrors({overlapped: true})
+  //     } else {
+  //       this.fromDateMonth.setErrors({overlapped: null});
+  //       this.fromDateMonth.updateValueAndValidity()
+  //     }
+  //   })
+
+  //   this.toDateMonth.valueChanges.subscribe(toDateMonthVal =>{
+  //     console.log(`toDateMonthVal`, toDateMonthVal);
+
+  //     if(!toDateMonthVal || !this.fromDateMonth.value){
+  //       this.fromDateMonth.setErrors({overlapped: null});
+  //       this.fromDateMonth.updateValueAndValidity()
+  //       return;
+  //     }
+  //     const newFromDate = new Date(this.fromDateMonth.value);
+  //     const newToDate = new Date(toDateMonthVal);
+  //     if (!this.valid(newFromDate, newToDate)) {
+  //       this.fromDateMonth.setErrors({overlapped: true})
+  //     } else {
+  //       this.fromDateMonth.setErrors({overlapped: null});
+  //       this.fromDateMonth.updateValueAndValidity()
+  //     }
+  //   })
+  // }
+
+
 }
