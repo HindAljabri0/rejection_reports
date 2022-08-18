@@ -413,4 +413,55 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
     return this.http.request(request);
   }
+
+  downloadMultiSheetSummaries(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
+
+    let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims/multisheet?`;
+
+    if (claimSearchCriteriaModel.payerIds != null) {
+      requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
+    }
+    if (claimSearchCriteriaModel.batchId != null) {
+      requestURL += `&batchId=${claimSearchCriteriaModel.batchId}`;
+    }
+    if (claimSearchCriteriaModel.memberId != null) {
+      requestURL += `&memberId=${claimSearchCriteriaModel.memberId}`;
+    }
+    if (claimSearchCriteriaModel.documentId != null) {
+      requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
+    }
+    if (claimSearchCriteriaModel.organizationId) {
+      requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
+    }
+    if (claimSearchCriteriaModel.uploadId != null) {
+      requestURL += `&uploadId=${claimSearchCriteriaModel.uploadId}`;
+    }
+    if (claimSearchCriteriaModel.claimSubTypes != null) {
+      requestURL += `&claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`;
+    }
+    if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
+      requestURL += `&provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`;
+
+    }
+    if (claimSearchCriteriaModel.patientFileNo != null) {
+      requestURL += `&patientFileNo=${claimSearchCriteriaModel.patientFileNo}`;
+    }
+    if (claimSearchCriteriaModel.invoiceNo != null) {
+      requestURL += `&invoiceNo=${claimSearchCriteriaModel.invoiceNo}`;
+    }
+
+    if (claimSearchCriteriaModel.claimDate != null) {
+      requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
+    }
+
+    if (claimSearchCriteriaModel.toDate != null) {
+      requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
+    }
+
+    requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '');
+
+    // tslint:disable-next-line:max-line-length
+    const request = new HttpRequest('GET', environment.nphiesClaimDownload + requestURL, '', { responseType: 'text', reportProgress: true });
+    return this.http.request(request);
+  }
 }
