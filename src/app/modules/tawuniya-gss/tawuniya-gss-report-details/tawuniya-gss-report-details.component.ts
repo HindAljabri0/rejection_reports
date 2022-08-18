@@ -115,12 +115,14 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       this.sharedServices.loadingChanged.next(false);
       if (showMessage) {
         this.startConfirmationTimer()
-        return this.store.dispatch(showSnackBarMessage({ message: "GSS Report Generated Successfully!" }));
+        // return this.store.dispatch(showSnackBarMessage({ message: "GSS Report Generated Successfully!" }));
       }
     }, err => {
       this.sharedServices.loadingChanged.next(false);
-      if (err && err.error && err.error.text) {
-        return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
+      if (err && err.error && err.error.message) {
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", err.error.message, false));
+
+        // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
       } else {
         return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
@@ -154,7 +156,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       this.dialogService.openMessageDialog(new MessageDialogData("GSS Confirmation Success", data.message, false));
     }, err => {
       this.sharedServices.loadingChanged.next(false);
-      if (err && err.error && err.error.text) {
+      if (err && err.error && err.error.message) {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Confirmation Fail", err.error.message, true));
 
       } else {
