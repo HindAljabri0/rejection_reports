@@ -1012,6 +1012,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   deleteItem(index: number) {
     this.Items.splice(index, 1);
     this.checkItemValidation();
+    this.RefershTotal();
   }
 
   openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
@@ -1178,7 +1179,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.otherDataModel.totalPayerShare += x.payerShare;
       this.otherDataModel.totalTax += x.tax;
     });
-
   }
   checkItemValidation() {
     if (this.Items.length === 0) {

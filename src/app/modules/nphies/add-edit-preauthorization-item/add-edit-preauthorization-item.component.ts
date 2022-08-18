@@ -737,7 +737,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.taxPercent = this.FormItem.controls.taxPercent.value ? parseFloat(this.FormItem.controls.taxPercent.value) : 0;
       // tslint:disable-next-line:max-line-length
       model.patientSharePercent = this.FormItem.controls.patientSharePercent.value ? parseFloat(this.FormItem.controls.patientSharePercent.value) : 0;
-      model.tax = this.FormItem.controls.tax.value;
+      model.tax = this.FormItem.controls.tax.value ? parseFloat(this.FormItem.controls.tax.value) : 0;
       model.net = this.FormItem.controls.net.value;
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
