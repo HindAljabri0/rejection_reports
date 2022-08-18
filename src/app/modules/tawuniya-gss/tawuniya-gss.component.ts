@@ -35,7 +35,7 @@ export class TawuniyaGssComponent implements OnInit {
     private dialogService: DialogService,
   ) { }
 
-  ngOnInit() {
+   ngOnInit() {
     // this.validateFormWhenChanged();
   }
 
@@ -58,7 +58,7 @@ export class TawuniyaGssComponent implements OnInit {
     this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute, queryParams: { inquiry: 'true' } });
   }
 
-  searchQuerySummary() {
+ searchQuerySummary() {
     const newFromDate = new Date(this.fromDateMonth.value);
     const newToDate = new Date(this.toDateMonth.value);
     if (newFromDate && newToDate && !this.valid(newFromDate, newToDate)) {
@@ -71,8 +71,8 @@ export class TawuniyaGssComponent implements OnInit {
     if (this.fromDateMonth.invalid || this.toDateMonth.invalid) {
       return;
     }
-
-
+   
+   
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
       this.initiateModel = data;
@@ -173,6 +173,4 @@ export class TawuniyaGssComponent implements OnInit {
   //     }
   //   })
   // }
-
-
 }
