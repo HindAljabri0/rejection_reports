@@ -190,7 +190,7 @@
                       <td>{{item.payerSahare}} <span class="currency">SAR</span></td>
                       <td>{{item.net}} <span class="currency">SAR</span> / {{item.tax}} <span class="currency">SAR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SAR</span> / {{item.benefitTax}} <span class="currency">SAR</span></td>
-                      <td><span [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{item.status | titlecase}}</span></td>
+                      <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
                     </tr>
                   </tbody>
                 </table>
