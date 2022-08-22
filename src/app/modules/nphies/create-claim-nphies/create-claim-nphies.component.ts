@@ -255,6 +255,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
+    this.pastDate = new Date();
+    this.pastDate.setDate(this.pastDate.getDate() - 1);
   }
 
   InitClaimPagenation() {
