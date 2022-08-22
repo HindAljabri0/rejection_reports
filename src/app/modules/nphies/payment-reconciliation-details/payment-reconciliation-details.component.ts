@@ -81,6 +81,12 @@ export class PaymentReconciliationDetailsComponent implements OnInit {
 
   goBack() {
     this.location.back();
+    setTimeout(() => {
+      if (window.location.href.includes('payment-reconciliation-details')) {
+        this.location.back();
+      }
+    }, 200);
+
   }
 
   toggleRow(index) {

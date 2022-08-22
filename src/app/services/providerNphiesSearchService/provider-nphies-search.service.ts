@@ -259,7 +259,7 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
     }
-   
+
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
@@ -318,6 +318,7 @@ export class ProviderNphiesSearchService {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
     }
 
+    // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
@@ -334,6 +335,9 @@ export class ProviderNphiesSearchService {
     }
     if (body.issuerId) {
       requestUrl += `issuerId=${body.issuerId}&`;
+    }
+    if (body.destinationId) {
+      requestUrl += `destinationId=${body.destinationId}&`;
     }
 
     if (body.page !== undefined && body.page !== null) {
