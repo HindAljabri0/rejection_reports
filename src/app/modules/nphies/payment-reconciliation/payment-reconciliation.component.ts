@@ -25,7 +25,7 @@ export class PaymentReconciliationComponent implements OnInit {
 
   @ViewChild('recentReconciliation', { static: false }) recentReconciliation: RecentReconciliationComponent;
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  paginatorPagesNumbers: number[]=[];
+  paginatorPagesNumbers: number[] = [];
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
   page: number;
@@ -34,7 +34,8 @@ export class PaymentReconciliationComponent implements OnInit {
   FormPaymentReconciliation: FormGroup = this.formBuilder.group({
     fromDate: [''],
     toDate: [''],
-    issuerId: ['']
+    issuerId: [''],
+    destinationId: ['']
   });
 
   isSubmitted = false;
@@ -57,7 +58,9 @@ export class PaymentReconciliationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.FormPaymentReconciliation.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    const today = new Date();
+    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    this.FormPaymentReconciliation.controls.fromDate.setValue(this.datePipe.transform(oneMonthAgo, 'yyyy-MM-dd'));
     this.FormPaymentReconciliation.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
     this.routeActive.queryParams.subscribe(params => {
@@ -74,7 +77,12 @@ export class PaymentReconciliationComponent implements OnInit {
 
       if (params.issuerId != null) {
         // tslint:disable-next-line:radix
-        this.FormPaymentReconciliation.controls.nphiesRequestId.patchValue(params.nphiesRequestId);
+        this.FormPaymentReconciliation.controls.issuerId.patchValue(params.issuerId);
+      }
+
+      if (params.destinationId != null) {
+        // tslint:disable-next-line:radix
+        this.FormPaymentReconciliation.controls.destinationId.patchValue(params.destinationId);
       }
 
       if (params.page != null) {
@@ -131,6 +139,10 @@ export class PaymentReconciliationComponent implements OnInit {
         model.issuerId = this.FormPaymentReconciliation.controls.issuerId.value;
       }
 
+      if (this.FormPaymentReconciliation.controls.destinationId.value) {
+        model.destinationId = this.FormPaymentReconciliation.controls.destinationId.value;
+      }
+
       model.page = this.page;
       model.pageSize = this.pageSize;
       this.searchModel = model;
@@ -179,6 +191,10 @@ export class PaymentReconciliationComponent implements OnInit {
 
     if (this.FormPaymentReconciliation.controls.issuerId.value) {
       path += `issuerId=${this.FormPaymentReconciliation.controls.issuerId.value}&`;
+    }
+
+    if (this.FormPaymentReconciliation.controls.destinationId.value) {
+      path += `destinationId=${this.FormPaymentReconciliation.controls.destinationId.value}&`;
     }
 
     if (this.page > 0) {
@@ -284,6 +300,21 @@ export class PaymentReconciliationComponent implements OnInit {
     }, err => {
       this.sharedServices.loadingChanged.next(false);
     });
+  }
+
+  selectPayer(event) {
+    if (event.value === '-1') {
+      this.FormPaymentReconciliation.patchValue({
+        issuerId: null,
+        destinationId: null
+      });
+    } else {
+      this.FormPaymentReconciliation.patchValue({
+        issuerId: event.value.payerNphiesId,
+        destinationId: event.value.organizationNphiesId !== '-1' ? event.value.organizationNphiesId : null
+      });
+    }
+
   }
 
   get NewRecentReconciliation() {
