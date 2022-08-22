@@ -249,7 +249,9 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.invoiceNo != null) {
       requestURL += `&invoiceNo=${claimSearchCriteriaModel.invoiceNo}`;
     }
-
+    if (claimSearchCriteriaModel.requestBundleId != null) {
+      requestURL += `&requestBundleId=${claimSearchCriteriaModel.requestBundleId}`;
+    }
     if (claimSearchCriteriaModel.claimDate != null) {
       requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
     }
@@ -257,6 +259,7 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
     }
+   
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
@@ -302,6 +305,9 @@ export class ProviderNphiesSearchService {
     }
     if (claimSearchCriteriaModel.invoiceNo != null) {
       requestURL += `&invoiceNo=${claimSearchCriteriaModel.invoiceNo}`;
+    }
+    if (claimSearchCriteriaModel.requestBundleId != null) {
+      requestURL += `&requestBundleId=${claimSearchCriteriaModel.requestBundleId}`;
     }
 
     if (claimSearchCriteriaModel.claimDate != null) {
