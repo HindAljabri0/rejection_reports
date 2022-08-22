@@ -162,6 +162,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.getItemList();
     } else {
       if (this.data.source === 'APPROVAL') {
+        this.FormItem.controls.quantity.setValue(1);
         this.FormItem.controls.startDate.setValue(this.today);
         this.FormItem.controls.endDate.setValue(this.today);
 
