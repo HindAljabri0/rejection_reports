@@ -233,6 +233,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         toDate: this.params.to,
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
+        requestBundleId:this.params.requestBundleId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -326,6 +327,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
+
+    console.log(this.params.requestBundleId + 'test')
     this.commen.loadingChanged.next(true);
     let event;
 
@@ -352,7 +355,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
-
+    this.claimSearchCriteriaModel.requestBundleId=this.params.requestBundleId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
