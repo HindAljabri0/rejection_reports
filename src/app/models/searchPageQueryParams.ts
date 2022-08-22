@@ -22,6 +22,7 @@ export class SearchPageQueryParams {
     patientFileNo?: string;
     policyNo?: string;
     nationalId?: string;
+    requestBundleId?:string
     filter_claimRefNo?: string;
     filter_memberId?: string;
     filter_patientFileNo?: string;
@@ -49,6 +50,7 @@ export class SearchPageQueryParams {
         pageParams.payerId = params.payerId;
         pageParams.organizationId = params.organizationId;
         pageParams.batchId = params.batchId;
+        pageParams.requestBundleId = params.requestBundleId;
         pageParams.uploadId = params.uploadId;
         if (params.caseTypes != null)
             pageParams.caseTypes = params.caseTypes.split(',');
@@ -78,6 +80,7 @@ export class SearchPageQueryParams {
         let criteria: ClaimCriteriaModel = new ClaimCriteriaModel();
 
         criteria.batchId = this.batchId;
+        criteria.requestBundleId = this.requestBundleId;
         criteria.casetype = this.caseTypes;
         criteria.claimRefNo = this.claimRefNo;
         criteria.fromDate = this.from;
