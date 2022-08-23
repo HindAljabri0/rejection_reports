@@ -1652,7 +1652,7 @@ body.print-eligibility {background-color: transparent;overflow-x:hidden;}
 .print-eligibility .cdk-global-overlay-wrapper{position: static;}
 .print-eligibility .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: none;height: auto;}
 .print-eligibility .mat-dialog-container .nphies-eligibility-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: auto;overflow-x:hidden;}
-.print-eligibility .primary-dialog.full-screen-dialog .primary-dialog-body.no-footer{height: auto;}
+.print-eligibility .primary-dialog.full-screen-dialog .primary-dialog-body{height: auto;}
 html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-eligibility #fc_frame{display: none;}
 .print-eligibility .dialog-close{display:none;}
