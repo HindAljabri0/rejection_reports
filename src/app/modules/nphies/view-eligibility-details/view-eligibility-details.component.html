@@ -4,7 +4,7 @@
 
   <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
-<div class="primary-dialog-body p-0 no-footer">
+<div class="primary-dialog-body p-0">
   <mat-tab-group class="primary-tab nphies-eligibility-tab">
     <mat-tab [label]="'Details'">
       <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
@@ -15,6 +15,9 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
+</div>
+<div class="primary-dialog-footer has-border text-right">
+  <button mat-flat-button color="primary">Print</button>
 </div>
 <!-- <div class="primary-dialog-footer has-border">
   <div class="d-flex">

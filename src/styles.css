@@ -639,7 +639,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .mat-dialog-container .create-claim-body{background: #fff;}
 .mat-dialog-container .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content,.mat-dialog-container .create-claim-body.nphies-create .nphies-claim-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 231px);overflow: auto;}
 .nphies-eligibility-tab .block-body{padding: 0;}
-.mat-dialog-container .nphies-eligibility-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 104px);overflow: auto;}
+.mat-dialog-container .nphies-eligibility-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: calc(100vh - 177px);overflow: auto;}
 
 /* primary card
 --------------------------------------------------------------------------------------------------------*/
@@ -1642,6 +1642,25 @@ tag tag-ripple{display:none;}
 .convert-preauth-upload-details .count{display: flex;flex-wrap: wrap;align-items: center;}
 .convert-preauth-upload-details .count>span{padding-right: 16px;display: flex;align-items: center;}
 .convert-preauth-upload-details .count>span>img{display: block;height: 24px;width: 24px;margin-right: 4px;}
+
+/* print eligibility
+--------------------------------------------------------------------------------------------------------*/
+body.print-eligibility {background-color: transparent;overflow-x:hidden;}
+.print-eligibility app-root{display: none;}
+.print-eligibility .cdk-overlay-container{position: static;height: auto;width:auto;}
+.print-eligibility .cdk-overlay-dark-backdrop{display: none;}
+.print-eligibility .cdk-global-overlay-wrapper{position: static;}
+.print-eligibility .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: none;height: auto;}
+.print-eligibility .mat-dialog-container .nphies-eligibility-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: auto;overflow-x:hidden;}
+.print-eligibility .primary-dialog.full-screen-dialog .primary-dialog-body.no-footer{height: auto;}
+html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
+.print-eligibility #fc_frame{display: none;}
+.print-eligibility .dialog-close{display:none;}
+.print-eligibility .primary-tab .mat-tab-body-content,.print-eligibility .primary-dialog-header{padding-left:0;padding-right:0;overflow-x:hidden;}
+.print-eligibility .primary-tab .mat-tab-header{display:none;}
+.print-eligibility tr>td:first-child:last-child[colspan]{padding-left:0;padding-right:0;}
+.print-eligibility thead{display: table-row-group;}
+.print-eligibility .primary-dialog-footer{display: none;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
