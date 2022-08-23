@@ -57,7 +57,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
-
+  AllTPA:any[]=[];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   beneficiaryPatientShare = 0;
@@ -211,12 +211,14 @@ export class AddPreauthorizationComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
-    private providerNphiesApprovalService: ProviderNphiesApprovalService) {
+    private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    ) {
     this.today = new Date();
   }
 
   ngOnInit() {
     this.getPayees();
+    this.getTPA();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -2201,5 +2203,25 @@ export class AddPreauthorizationComponent implements OnInit {
 
     return str;
   }
+  getTPAName(TPAId: string) {
+    const nameTPA = this.AllTPA.find(val => val.code === TPAId);
+    console.log(nameTPA.display)
+    if (nameTPA.display!='None'){
+      return nameTPA.display;}
+      else{
+        return '';
+      }
+  }
 
+  getTPA() {
+    this.providerNphiesSearchService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.AllTPA = event.body as any[];
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
+  }
 }
