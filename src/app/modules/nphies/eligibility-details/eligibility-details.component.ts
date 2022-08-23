@@ -11,7 +11,7 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
   styles: []
 })
 export class EligibilityDetailsComponent implements OnInit {
-
+  @Input() isPrint: any;
   currentOpenCoverage: number = null;
   @Input() eligibilityResponse: any;
   payers: Payer[] = [];
