@@ -1413,7 +1413,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showDownloadBtn() {
     // tslint:disable-next-line:max-line-length
-    return ['notaccepted', 'rejected', 'partial', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['notaccepted', 'rejected', 'partial', 'invalid', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   openReasonModalMultiClaims() {
