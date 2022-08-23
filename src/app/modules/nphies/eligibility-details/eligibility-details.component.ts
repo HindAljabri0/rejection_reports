@@ -15,12 +15,14 @@ export class EligibilityDetailsComponent implements OnInit {
   currentOpenCoverage: number = null;
   @Input() eligibilityResponse: any;
   payers: Payer[] = [];
+  AllTPA:any[]=[];
   constructor(private sharedDataService: SharedDataService, private nphiesSearchService: ProviderNphiesSearchService) { }
 
   eligibiltyTypeList = this.sharedDataService.beneficiaryTypeList;
 
   ngOnInit() {
     this.getPayers();
+    this.getTPA();
     // tslint:disable-next-line:max-line-length
     this.eligibilityResponse.siteEligibilityName = this.sharedDataService.siteEligibility.filter(x => x.value === this.eligibilityResponse.siteEligibility)[0] ? this.sharedDataService.siteEligibility.filter(x => x.value === this.eligibilityResponse.siteEligibility)[0].value + ' ( ' + this.sharedDataService.siteEligibility.filter(x => x.value === this.eligibilityResponse.siteEligibility)[0].name + ' )' : '-';
     // tslint:disable-next-line:max-line-length
@@ -40,11 +42,31 @@ export class EligibilityDetailsComponent implements OnInit {
       return '';
     }
   }
+  getTPAName(TPAId: string) {
+    const nameTPA = this.AllTPA.find(val => val.code === TPAId);
+    if (nameTPA!=null){
+      return nameTPA.display;}
+      else{
+        return '-';
+      }
+  }
 
   getPayers() {
     this.nphiesSearchService.getPayersNotTBA().subscribe(event => {
       if (event instanceof HttpResponse) {
         this.payers = event.body as Payer[];
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
+  }
+
+  getTPA() {
+    this.nphiesSearchService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.AllTPA = event.body as any[];
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
