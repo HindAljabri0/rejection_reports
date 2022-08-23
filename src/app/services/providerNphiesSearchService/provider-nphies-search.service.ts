@@ -460,6 +460,10 @@ export class ProviderNphiesSearchService {
       requestURL += `&invoiceNo=${claimSearchCriteriaModel.invoiceNo}`;
     }
 
+    if (claimSearchCriteriaModel.requestBundleId != null) {
+      requestURL += `&requestBundleId=${claimSearchCriteriaModel.requestBundleId}`;
+    }
+
     if (claimSearchCriteriaModel.claimDate != null) {
       requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
     }
