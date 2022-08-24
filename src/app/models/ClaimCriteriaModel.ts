@@ -43,6 +43,8 @@ export class ClaimCriteriaModel {
 
     size?: string;
 
+    requestBundleId?:string
+
     constructor() {
 
     }
@@ -107,6 +109,9 @@ export class ClaimCriteriaModel {
         if(this.batchNo != null && this.batchNo.trim().length > 0){
             params += `batchNo=${this.batchNo}&`
         }
+        if(this.requestBundleId != null && this.requestBundleId.trim().length > 0){
+            params += `requestBundleId=${this.requestBundleId}&`
+        }
         if(this.page != null && this.page.trim().length > 0){
             params += `page=${this.page}&`
         }
@@ -116,6 +121,8 @@ export class ClaimCriteriaModel {
         if(params.endsWith('&')){
             params = params.substr(0, params.length-1);
         }
+
+        console.log(this.requestBundleId)
         return params;
     }
 

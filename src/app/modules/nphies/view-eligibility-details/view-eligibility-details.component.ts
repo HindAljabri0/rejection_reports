@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 // tslint:disable-next-line:max-line-length
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
@@ -13,6 +13,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class ViewEligibilityDetailsComponent implements OnInit {
 
   detailsModel: any;
+  isPrint = false;
 
   constructor(
     private dialogRef: MatDialogRef<ViewEligibilityDetailsComponent>, private sharedServices: SharedServices,
@@ -37,6 +38,16 @@ export class ViewEligibilityDetailsComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       }
     });
+  }
+
+  print() {
+    this.isPrint = true;
+    document.body.classList.add('print-eligibility');
+    setTimeout(() => {
+      window.print();
+      document.body.classList.remove('print-eligibility');
+      this.isPrint = false;
+    }, 2000);
   }
 
   closeDialog() {

@@ -90,6 +90,7 @@
                   <mat-option value="">Select Insurance Plan</mat-option>
                   <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId"
                     (click)="selectedPlan(plan)">
+                    <h5 class="menu-opt-group" style="padding: 0px 0px">{{getTPAName(plan.tpaNphiesId)}}</h5>
                     {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
                     ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
                   </mat-option>

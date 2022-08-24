@@ -50,9 +50,8 @@ export class ReusableSearchBarComponent implements OnInit {
         this.searchTextControl.setValue('');
         break;
       case QueryType.DATEFROM:
-        this.fromDateControl.setValue('');
-        break;
       case QueryType.DATETO:
+        this.fromDateControl.setValue('');
         this.toDateControl.setValue('');
         break;
     }

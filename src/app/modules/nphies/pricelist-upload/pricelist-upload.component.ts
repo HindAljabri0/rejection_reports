@@ -18,6 +18,7 @@ export class PricelistUploadComponent implements OnInit {
     payerNphiesId: ['', Validators.required],
     effectiveDate: ['', Validators.required],
     file: ['', Validators.required],
+    tpaNphiesId: ['']
   });
 
   isSubmitted = false;
@@ -40,11 +41,13 @@ export class PricelistUploadComponent implements OnInit {
     if (event.value) {
       this.FormPriceList.patchValue({
         payerNphiesId: event.value.payerNphiesId,
-        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
       });
     } else {
-      this.FormPriceList.controls.payerNphiesId.setValue('');
-      // this.FormPriceList.controls.destinationId.setValue('');
+      this.FormPriceList.patchValue({
+        payerNphiesId: '',
+        tpaNphiesId: ''
+      });
     }
   }
 

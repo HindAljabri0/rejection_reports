@@ -35,6 +35,7 @@ export interface SearchCriteria {
     batchId?: string;
     uploadId?: string;
     nationalId?:string;
+    requestBundleId?:string;
 }
 
 

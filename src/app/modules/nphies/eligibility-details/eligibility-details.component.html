@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    
+
     <div *ngIf="eligibilityResponse.subscriberName" class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Subscriber Name</div>
@@ -41,6 +41,12 @@
       <div class="form-group form-group-static">
         <div class="control-label">Insurer</div>
         <p class="form-control-static">{{getNamePayer(eligibilityResponse.payerId)}}</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">TPA</div>
+        <p class="form-control-static">{{getTPAName(eligibilityResponse.tpa_Id)}}</p>
       </div>
     </div>
     <div class="col-4">
@@ -147,8 +153,8 @@
           <ng-container *ngFor="let coverage of eligibilityResponse.coverages;let i=index">
             <tr>
               <td class="text-primary text-center row-click" (click)="toggleRow(i)" width="10">
-                <mat-icon *ngIf="currentOpenCoverage!=i" class="size-21">add_circle_outline</mat-icon>
-                <mat-icon *ngIf="currentOpenCoverage==i" class="size-21">remove_circle_outline
+                <mat-icon *ngIf="currentOpenCoverage!=i && !isPrint" class="size-21">add_circle_outline</mat-icon>
+                <mat-icon *ngIf="currentOpenCoverage==i || isPrint" class="size-21">remove_circle_outline
                 </mat-icon>
               </td>
               <td class="row-click" (click)="toggleRow(i)">
@@ -164,7 +170,7 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subrogation}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.notInforceReason}}</td>
             </tr>
-            <tr *ngIf="currentOpenCoverage==i">
+            <tr *ngIf="currentOpenCoverage==i || isPrint">
               <td colspan="11">
                 <div class="box mb-3" *ngIf="coverage.classList">
                   <h5 class="medium pb-2">Classes</h5>
