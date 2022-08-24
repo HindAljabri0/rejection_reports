@@ -1168,9 +1168,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
   RefershTotal() {
     this.otherDataModel.totalNetAmount = 0;
+    this.otherDataModel.totalPatientShare = 0;
+    this.otherDataModel.totalPayerShare = 0;
+    this.otherDataModel.totalTax = 0;
+
     this.Items.forEach((x) => {
-      console.log("values = " + x.net);
       this.otherDataModel.totalNetAmount += x.net;
+      this.otherDataModel.totalPatientShare += x.patientShare;
+      this.otherDataModel.totalPayerShare += x.payerShare;
+      this.otherDataModel.totalTax += x.tax;
     });
 
   }
