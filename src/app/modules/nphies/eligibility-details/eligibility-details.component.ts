@@ -15,7 +15,7 @@ export class EligibilityDetailsComponent implements OnInit {
   currentOpenCoverage: number = null;
   @Input() eligibilityResponse: any;
   payers: Payer[] = [];
-  AllTPA:any[]=[];
+  AllTPA: any[] = [];
   constructor(private sharedDataService: SharedDataService, private nphiesSearchService: ProviderNphiesSearchService) { }
 
   eligibiltyTypeList = this.sharedDataService.beneficiaryTypeList;
@@ -44,11 +44,12 @@ export class EligibilityDetailsComponent implements OnInit {
   }
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
-    if (nameTPA!=null){
-      return nameTPA.display;}
-      else{
-        return '-';
-      }
+    if (nameTPA != null) {
+      return nameTPA.display;
+    }
+    else {
+      return '-';
+    }
   }
 
   getPayers() {

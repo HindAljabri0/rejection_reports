@@ -140,6 +140,7 @@
             <th>In-Force</th>
             <th>Benefit Date</th>
             <th>Member ID</th>
+            <th>Policy Number</th>
             <th>Type</th>
             <th>Status</th>
             <th>Relationship With Subscriber</th>
@@ -162,6 +163,7 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date
                 :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>
+              <td class="row-click" (click)="toggleRow(i)">{{coverage.policyNumber}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.type}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.status}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.relationship}}</td>
