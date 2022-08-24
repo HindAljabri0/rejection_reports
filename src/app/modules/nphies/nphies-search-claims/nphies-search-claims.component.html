@@ -233,7 +233,7 @@
 
                     <td class="actions">
                       <ng-container
-                        *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  || claimIsDeletable(claim.status))">
+                        *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  || claimIsDeletable(claim.status,claim.canDelete))">
                         <mat-menu #moreMenu="matMenu" xPosition="before">
                           <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
@@ -246,9 +246,9 @@
 
                             <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                           </ng-container>
-                          <button mat-menu-item *ngIf="claimIsDeletable(claim.status)"
+                          <button mat-menu-item *ngIf="claimIsDeletable(claim.status,claim.canDelete)"
                             (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
-                            <mat-icon class="material-icons-outlined">delete</mat-icon>
+                            <mat-icon class="material-icons-outlined">delete </mat-icon>
                             <span>Delete</span>
                           </button>
 
