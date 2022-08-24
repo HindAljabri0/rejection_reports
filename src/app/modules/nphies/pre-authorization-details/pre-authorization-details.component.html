@@ -45,7 +45,7 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">TPA</div>
+      <div class="control-label">TPA Name</div>
       <p class="form-control-static text-primary">{{data.tpaName!=null?data.tpaName:'-'}}</p>
     </div>
   </div>
@@ -376,9 +376,12 @@
         <th>Type</th>
         <th>Code - Description</th>
         <th><div class="d-flex align-items-center">
-          <span class="pr-1">Net/Tax</span>
+          <span class="pr-1">Net</span>
           <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
             info</mat-icon>
+            <span class="pr-1">/Tax</span>
+            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+              info</mat-icon>
         </div></th>       
         <th>Benefit/Tax</th>
         <th>Status</th>
@@ -397,17 +400,17 @@
                   {{item.sequence}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)"> {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
 
           <td class="text-nowrap row-click" (click)="toggleItem(i)">
             <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
               <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                <span *ngIf="x.category === 'benefit'">{{x.categoryValue}}</span>
-                <span *ngIf="x.category === 'tax'">/{{x.categoryValue}} <span class="currency">SR</span></span>
+                <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span class="currency">SR</span></span>
               </ng-container>
             </ng-container>
           </td>
-          <td class="row-click" (click)="toggleItem(i)">
+          <td class="row-click text-capitalize text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}" (click)="toggleItem(i)">
             <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
             <span *ngIf="!item.itemDecision">-</span>
           </td>
@@ -439,9 +442,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories"
-                  class="text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}">
-                    <td>{{res.category}}</td>
+                  <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                    <td class="text-capitalize">{{res.category}}</td>
                     <td>{{res.categoryValue}} <span class="currency">SR</span></td>
                     <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
                   </tr>

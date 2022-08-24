@@ -499,7 +499,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           if (this.searchResult.content.length > 0) {
             this.claims = this.searchResult.content;
-
+            console.log("this is what is there ="+JSON.stringify(this.searchResult.content));
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
@@ -1390,8 +1390,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   claimIsEditable(status: string) {
     return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid', 'failed'].includes(status.trim().toLowerCase());
   }
-  claimIsDeletable(status: string) {
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
+  claimIsDeletable(status: string,canDelete : boolean) {
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase()) && (canDelete!=false);
   }
   /*claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());

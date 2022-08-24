@@ -18,6 +18,7 @@ export class SearchedClaim extends Paginateable {
   unitOfNetAmount: string;
   unitOfNetVatAmount: string;
   status: string;
+  canDelete:boolean;
   statusDetail: string;
   payerId: string;
   eligibilitycheck: string;
@@ -48,6 +49,7 @@ export class SearchedClaim extends Paginateable {
       this.drName = body['drName'];
       this.providerClaimNumber = body['providerClaimNumber'];
       this.status = body['status'];
+      this.canDelete = body['canDelete'];
       this.statusDetail = body['statusDetail'];
       this.unitOfNetAmount = body['unitOfNetAmount'];
       this.unitOfNetVatAmount = body['unitOfNetVatAmount'];
