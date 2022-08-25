@@ -131,7 +131,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     isNewBorn: [false],
     preAuthResponseId: [''],
     preAuthResponseUrl: [''],
-    accountingPeriod: ['']
+    accountingPeriod: [''],
+    insurancePlanPolicyNumber: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -373,7 +374,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
         maxLimit: null,
-        patientShare: null,
+        patientShare: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -385,6 +386,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       fullName: this.otherDataModel.beneficiary.fullName,
       gender: this.otherDataModel.beneficiary.gender.toUpperCase(),
       insurancePlanMemberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+      insurancePlanPolicyNumber: this.otherDataModel.beneficiary.insurancePlan.policyNumber,
       insurancePlanCoverageType: this.otherDataModel.beneficiary.insurancePlan.coverageType,
       insurancePayerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
       insurancePlanRelationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
@@ -1589,6 +1591,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+      this.model.insurancePlan.policyNumber = this.FormNphiesClaim.controls.insurancePlanPolicyNumber.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
 
@@ -2308,6 +2311,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(this.otherDataModel.beneficiary.insurancePlan.memberCardId);
       }
 
+      if (this.otherDataModel.beneficiary.insurancePlan.policyNumber) {
+        this.FormNphiesClaim.controls.insurancePlanPolicyNumber.setValue(this.otherDataModel.beneficiary.insurancePlan.policyNumber);
+      }
+
       if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
         // tslint:disable-next-line:max-line-length
         this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber);
@@ -2957,7 +2964,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.CareTeams.forEach(x => {
             console.log(x.speciality)
             if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
-            x.speciality === null ||  x.speciality === undefined) {
+              x.speciality === null || x.speciality === undefined) {
               isthereFiledEmpty = true;
               return;
             }
