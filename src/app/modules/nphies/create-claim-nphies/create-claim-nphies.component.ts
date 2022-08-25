@@ -364,6 +364,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         payerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
         payerName: this.otherDataModel.beneficiary.insurancePlan.insurer,
         memberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+        policyNumber: this.otherDataModel.beneficiary.insurancePlan.policyNumber,
         planId: null,
         payerId: null,
         coverageType: this.otherDataModel.beneficiary.insurancePlan.insurancePlan,
@@ -2816,7 +2817,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
-      model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+      model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0].name : '';
 
       model.subSite = x.subSite;
       // tslint:disable-next-line:max-line-length
