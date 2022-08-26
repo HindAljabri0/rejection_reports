@@ -986,7 +986,8 @@ export class AddPreauthorizationComponent implements OnInit {
       beneficiaryMaxLimit: this.beneficiaryMaxLimit,
       documentId: this.FormPreAuthorization.controls.documentId.value,
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
-      beneficiaryDob: this.selectedBeneficiary.dob
+      beneficiaryDob: this.selectedBeneficiary.dob,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1118,7 +1119,8 @@ export class AddPreauthorizationComponent implements OnInit {
       item: itemModel,
       type: this.FormPreAuthorization.controls.type.value.value,
       dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
-      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);

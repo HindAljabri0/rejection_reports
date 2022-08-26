@@ -579,9 +579,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const claimType = this.data.type;
     const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
     const payerNphiesId = this.data.payerNphiesId;
+    const tpaNphiesId = this.data.tpaNphiesId;
 
     // tslint:disable-next-line:max-line-length
-    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
+    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body) {
