@@ -896,7 +896,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
-      beneficiaryDob: this.FormNphiesClaim.controls.dob.value
+      beneficiaryDob: this.FormNphiesClaim.controls.dob.value,
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1032,7 +1033,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       item: itemModel,
       type: this.FormNphiesClaim.controls.type.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
-      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
