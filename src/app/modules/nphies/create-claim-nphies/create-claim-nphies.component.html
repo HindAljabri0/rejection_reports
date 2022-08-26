@@ -4,16 +4,16 @@
     <div class="summary">
       <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
           No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong></p>
-      <p *ngIf="otherDataModel.claimResourceId"><span>Claim
-          ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
+      <p *ngIf="otherDataModel.claimResourceId"><span>Claim Request Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
       <!--p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
-        <span>Related Claim ID:</span>&nbsp;<strong>
+        <span>Related Claim Request Identifier:</span>&nbsp;<strong>
           <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
         </strong>
       </p-->
-      <p *ngIf="otherDataModel.claimRefNo"><span>NPHIES/Payer Response
-          ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
+      <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
       <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
           ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId}}</strong></p>
       <p *ngIf="otherDataModel.batchInfo && otherDataModel.batchInfo.batchId"><span>Batch
@@ -118,7 +118,7 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Eligibility Response ID</div>
+            <div class="control-label">Eligibility Response Identifier</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value ?
               FormNphiesClaim.controls.eligibilityResponseId.value : "-"}}</p>
           </div>
@@ -140,7 +140,7 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Offline Approval Date</div>
+            <div class="control-label">Offline Preauthorization Date</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value ?
               (FormNphiesClaim.controls.preAuthOfflineDate.value | date:
               'dd-MM-yyyy') : "-"}}</p>
@@ -155,7 +155,7 @@
                 </div> -->
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Pre Authorization Reference No.</div>
+            <div class="control-label">Preauthorization Reference No(s).</div>
             <p class="form-control-static">
               {{otherDataModel.preAuthRefNo ? otherDataModel.preAuthRefNo : '-'}}</p>
           </div>
@@ -196,14 +196,14 @@
 
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Pre Authorization Response ID</div>
+            <div class="control-label">Preauthorization Response Identifier (Value)</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
               FormNphiesClaim.controls.preAuthResponseId.value : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Pre Authorization Response Url</div>
+            <div class="control-label">Preauthorization Response Identifier (URL)</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseUrl.value ?
               FormNphiesClaim.controls.preAuthResponseUrl.value : '-'}}</p>
           </div>
@@ -1327,10 +1327,10 @@
       <div class="summary">
         <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
             otherDataModel.provClaimNo : '-'}}</strong></p>
-        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
+        <p><span>Claim Request Identifier:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
         </p>
 
-        <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
+        <p><span>Claim Response Identifier:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
         <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
             otherDataModel.providertransactionlogId : '-'}}</strong></p>
@@ -1491,29 +1491,29 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Eligibility Response ID</label>
-                <input class="form-control" placeholder="Eligibility Response ID" formControlName="eligibilityResponseId">
+                <label class="control-label">Eligibility Response Identifier</label>
+                <input class="form-control" placeholder="Eligibility Response Identifier" formControlName="eligibilityResponseId">
               </div>
             </div>
             <!-- <div class="col-4 col-xxl-3">
               <div class="form-group" [ngClass]="{'has-error' : IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))}">
-                <label class="control-label">Offline Approval Date</label>
+                <label class="control-label">Offline Preauthorization Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
+                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Preauthorization Date" [max]="today"
                     formControlName="preAuthOfflineDate">
                   <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                 </div>
                 <div *ngIf="IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))">
-                  <span class="error-text">Please select Offline Approval Date</span>
+                  <span class="error-text">Please select Offline Preauthorization Date</span>
                 </div>
               </div>
             </div> -->
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Offline Approval Date</label>
+                <label class="control-label">Offline Preauthorization Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
+                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Preauthorization Date" [max]="today"
                     formControlName="preAuthOfflineDate">
                   <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
@@ -1523,24 +1523,24 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
-                <label class="control-label">Preauthorization Reference No<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
-                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
+                <label class="control-label">Preauthorization Reference No(s).<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
+                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauthorization Reference No(s).'" [addOnBlur]="true">
                 </tag-input>
                 <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
-                  <span class="error-text">Please enter Preauthorization Reference No</span>
+                  <span class="error-text">Please enter Preauthorization Reference No(s)</span>
                 </div>
               </div>
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Preauthorization Response ID</label>
-                <input class="form-control" placeholder="Preauthorization Response ID" formControlName="preAuthResponseId">
+                <label class="control-label">Preauthorization Response Identifier (Value)</label>
+                <input class="form-control" placeholder="Preauthorization Response Identifier (Value)" formControlName="preAuthResponseId">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Preauthorization Response Url</label>
-                <input class="form-control" placeholder="Preauthorization Response Url" formControlName="preAuthResponseUrl">
+                <label class="control-label">Preauthorization Response Identifier (URL)</label>
+                <input class="form-control" placeholder="Preauthorization Response Identifier (URL)" formControlName="preAuthResponseUrl">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
