@@ -3026,9 +3026,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    if (this.pageMode === 'VIEW' || this.pageMode === 'EDIT') {
-      // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
-      this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+    const params: SearchPageQueryParams = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+    if (params) {
+      this.params = params;
       this.resetURL();
       setTimeout(() => {
         location.reload();

@@ -13,6 +13,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { NphiesPayersSelectorComponent } from 'src/app/components/reusables/nphies-payers-selector/nphies-payers-selector.component';
 
 @Component({
   selector: 'app-pricelist',
@@ -21,6 +22,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 })
 export class PricelistComponent implements OnInit {
 
+  @ViewChild('tpaPayers', {static: false}) tpaPayers: NphiesPayersSelectorComponent;
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
@@ -239,6 +241,7 @@ export class PricelistComponent implements OnInit {
           this.priceLists.forEach(x => {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
+            x.tpaName = this.tpaPayers.findTPAName(x.tpaNphiesId);
           });
           if (this.paginator) {
             const pages = Math.ceil((this.priceListModel.totalElements / this.paginator.pageSize));

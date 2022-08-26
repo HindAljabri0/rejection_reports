@@ -12,7 +12,7 @@
         <div class="col-xl-3 col-md-6">
           <div class="form-group">
             <label class="control-label">Payer</label>
-            <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormPriceList"
+            <app-nphies-payers-selector #tpaPayers (selectionChange)="selectPayer($event)" [(Form)]="FormPriceList"
               [isRequired]="false" [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
           </div>
         </div>
@@ -43,8 +43,8 @@
           <div class="form-group">
             <label class="control-label">To Upload Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control" [min]="FormPriceList.controls.uploadFromDate.value"
-                formControlName="uploadToDate">
+              <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control"
+                [min]="FormPriceList.controls.uploadFromDate.value" formControlName="uploadToDate">
               <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #toUploadDatePicker></mat-datepicker>
             </div>
@@ -64,6 +64,7 @@
           <tr>
             <th>PriceList ID</th>
             <th>Payer</th>
+            <th>TPA</th>
             <th>Effective Date</th>
             <th>Upload Date</th>
             <th width="10"></th>
@@ -75,6 +76,8 @@
               {{p.priceListId}}</td>
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
               {{p.payerName}}</td>
+            <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
+              {{p.tpaName}}</td>
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
               {{p.effectiveDate | date:'dd-MM-yyyy'}}</td>
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
