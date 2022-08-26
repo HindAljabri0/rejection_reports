@@ -1119,7 +1119,8 @@ export class AddPreauthorizationComponent implements OnInit {
       item: itemModel,
       type: this.FormPreAuthorization.controls.type.value.value,
       dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
-      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
