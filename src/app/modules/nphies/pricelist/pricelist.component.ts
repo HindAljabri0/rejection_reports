@@ -32,7 +32,8 @@ export class PricelistComponent implements OnInit {
     payerNphiesId: [''],
     effectiveDate: [''],
     uploadFromDate: [''],
-    uploadToDate: ['']
+    uploadToDate: [''],
+    tpaNphiesId: ['']
   });
 
   isSubmitted = false;
@@ -124,11 +125,13 @@ export class PricelistComponent implements OnInit {
     if (event.value) {
       this.FormPriceList.patchValue({
         payerNphiesId: event.value.payerNphiesId,
+        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
         // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
       });
     } else {
       this.FormPriceList.patchValue({
         payerNphiesId: '',
+        tpaNphiesId: ''
         // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
       });
     }
@@ -217,6 +220,10 @@ export class PricelistComponent implements OnInit {
 
       if (this.FormPriceList.controls.effectiveDate.value) {
         model.uploadToDate = this.datePipe.transform(this.FormPriceList.controls.uploadToDate.value, 'yyyy-MM-dd');
+      }
+
+      if (this.FormPriceList.controls.tpaNphiesId.value) {
+        model.payerNphiesId = this.FormPriceList.controls.tpaNphiesId.value;
       }
 
       model.page = this.page;
