@@ -39,6 +39,16 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
+      <div class="control-label">Sub Type</div>
+      <p class="form-control-static text-primary">
+        <span
+          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
+      </p>
+    </div>
+  </div>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
       <div class="control-label">Insurer</div>
       <p class="form-control-static text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
     </div>
@@ -51,13 +61,19 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">PreAuth Ref. No.</div>
+      <div class="control-label">Preauthorization Reference No.</div>
       <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">PreAuth Period</div>
+      <div class="control-label">Preauthorization Response Identifier</div>
+      <p class="form-control-static text-primary">{{data.claimRefNo ? data.claimRefNo : '-'}}</p>
+    </div>
+  </div>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Preauthorization Period</div>
       <p class="form-control-static text-primary">{{data.preAuthStartDate | date:'dd/MM/yyyy'}} {{data.preAuthStartDate
         &&
         data.preAuthEndDate ? "-":""}} {{data.preAuthEndDate |
@@ -66,18 +82,8 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Sub Type</div>
-      <p class="form-control-static text-primary">
-        <span
-          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
-        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
-      </p>
-    </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Related PreAuth Request ID</div>
-      <p class="form-control-static text-primary">
+      <div class="control-label">Related Preauthorization Request Identifier</div>
+      <p class="form-control-static text-primary" matTooltip="Useful for extending a transferred preauthorization">
         <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}}
           ({{data.claimReuseRelation}})</span>
         <span *ngIf="!data.claimReuseId || !data.claimReuseRelation">-</span>
@@ -102,7 +108,7 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Eligibility Response ID</div>
+      <div class="control-label">Eligibility Response Identifier</div>
       <p class="form-control-static text-primary">
         {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
     </div>
@@ -115,19 +121,19 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Is Referral</div>
+      <div class="control-label">Is Referral ?</div>
       <p class="form-control-static text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Is New Born</div>
+      <div class="control-label">Is New Born ?</div>
       <p class="form-control-static text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Pre Auth Details</div>
+      <div class="control-label">Related Preauthorization Rerefence No(s).</div>
       <p class="form-control-static text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
     </div>
   </div>
@@ -152,13 +158,13 @@
   </div>
   <div *ngIf="data.transferAuthNumber" class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Referral PreAuth Ref. No.</div>
+      <div class="control-label">Referral Preauthorization Reference No.</div>
       <p class="form-control-static text-primary">{{data.transferAuthNumber}}</p>
     </div>
   </div>
   <div *ngIf="data.transferAuthStartDate && data.transferAuthEndDate" class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Referral PreAuth Period</div>
+      <div class="control-label">Referral Preauthorization Period</div>
       <p class="form-control-static text-primary">{{data.transferAuthStartDate | date: 'dd/MM/yyyy'}} -
         {{data.transferAuthEndDate | date: 'dd/MM/yyyy'}}</p>
     </div>

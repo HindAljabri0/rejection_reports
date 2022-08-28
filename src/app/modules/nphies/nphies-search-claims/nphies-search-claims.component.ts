@@ -233,7 +233,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         toDate: this.params.to,
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
-        requestBundleId:this.params.requestBundleId,
+        requestBundleId: this.params.requestBundleId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -355,7 +355,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
-    this.claimSearchCriteriaModel.requestBundleId=this.params.requestBundleId;
+    this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
@@ -499,7 +499,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           if (this.searchResult.content.length > 0) {
             this.claims = this.searchResult.content;
-            console.log("this is what is there ="+JSON.stringify(this.searchResult.content));
+
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
@@ -1366,8 +1366,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             }
           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
-              this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+              if (errorEvent.status === 500 || errorEvent.status === 404) {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', errorEvent.message);
+              } else {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+              }
             }
           });
         }
@@ -1388,10 +1393,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid', 'failed'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'rejected', 'invalid', 'failed'].includes(status.trim().toLowerCase());
   }
-  claimIsDeletable(status: string,canDelete : boolean) {
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase()) && (canDelete!=false);
+  claimIsDeletable(status: string, canDelete: boolean) {
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase()) && (canDelete != false);
   }
   /*claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());
@@ -1555,6 +1560,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate,
             this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
               if (event instanceof HttpResponse) {
+
                 this.commen.loadingChanged.next(false);
                 const status = event.body['status'];
                 if (status === 'Deleted') {
@@ -1587,6 +1593,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                       this.router.navigate(['/nphies/uploads']);
                     });
                 } else {
+
                   const error = event.body['errors'];
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
@@ -1595,9 +1602,16 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 }
               }
             }, errorEvent => {
+
               if (errorEvent instanceof HttpErrorResponse) {
-                this.commen.loadingChanged.next(false);
-                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                const status = errorEvent.status;
+                if (status === 500 || status === 404) {
+                  this.commen.loadingChanged.next(false);
+                  this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                } else {
+                  this.commen.loadingChanged.next(false);
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                }
               }
             });
         }
