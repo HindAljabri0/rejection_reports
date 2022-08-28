@@ -497,12 +497,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
       // tslint:disable-next-line:max-line-length
       const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + tax;
-      this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
+      console.log("Quntity = "+parseFloat(this.FormItem.controls.quantity.value)+ " * Unit Price = " +parseFloat(this.FormItem.controls.unitPrice.value)+ " * factor = "+ parseFloat(this.FormItem.controls.factor.value) + " + tax = "+tax)
+      this.FormItem.controls.net.setValue(this.roundTo(netValue));
     } else {
       this.FormItem.controls.net.setValue('');
     }
   }
-
+ financial(x) {
+  console.log("x = "+x);
+    return Math.round((x+ Number.EPSILON) * 100) / 100;;
+  }
+  roundTo(num) {
+    var m = Number((Math.abs(num) * 100).toPrecision(15));
+    return Math.round(m) / 100 * Math.sign(num);
+}
   Calculate(value) {
 
     switch (value) {
@@ -725,7 +733,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-      console.log("item model = " + JSON.stringify(model));
+      //console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
