@@ -110,33 +110,33 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
 
     if (this.data.item && this.data.item.itemCode) {
-      console.log(" sub site val = "+this.data.item.subSite),
-      this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
-        nonStandardCode: this.data.item.nonStandardCode,
-        display: this.data.item.display,
-        isPackage: this.data.item.isPackage,
-        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : (this.data.item.bodySite !=null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+      console.log(" sub site val = " + this.data.item.subSite),
+        this.FormItem.patchValue({
+          type: this.typeList.filter(x => x.value === this.data.item.type)[0],
+          nonStandardCode: this.data.item.nonStandardCode,
+          display: this.data.item.display,
+          isPackage: this.data.item.isPackage,
+          bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
 
-        subSite: this.data.item.subSite !=null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
-        quantity: this.data.item.quantity,
-        quantityCode: this.data.item.quantityCode !=null ? this.data.item.quantityCode : "",
-        unitPrice: this.data.item.unitPrice,
-        discount: this.data.item.discount,
-        discountPercent: this.data.item.discountPercent,
-        // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
-        // dp = d * 100 / (qty * up)
-        factor: this.data.item.factor ? this.data.item.factor : 1,
-        taxPercent: this.data.item.taxPercent,
-        patientSharePercent: this.data.item.patientSharePercent,
-        tax: this.data.item.tax,
-        net: this.data.item.net,
-        patientShare: this.data.item.patientShare,
-        payerShare: this.data.item.payerShare,
-        startDate: this.data.item.startDate,
-        endDate: this.data.item.endDate,
-        invoiceNo: this.data.item.invoiceNo
-      });
+          subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
+          quantity: this.data.item.quantity,
+          quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
+          unitPrice: this.data.item.unitPrice,
+          discount: this.data.item.discount,
+          discountPercent: this.data.item.discountPercent,
+          // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
+          // dp = d * 100 / (qty * up)
+          factor: this.data.item.factor ? this.data.item.factor : 1,
+          taxPercent: this.data.item.taxPercent,
+          patientSharePercent: this.data.item.patientSharePercent,
+          tax: this.data.item.tax,
+          net: this.data.item.net,
+          patientShare: this.data.item.patientShare,
+          payerShare: this.data.item.payerShare,
+          startDate: this.data.item.startDate,
+          endDate: this.data.item.endDate,
+          invoiceNo: this.data.item.invoiceNo
+        });
 
       if (this.data.careTeams) {
         this.FormItem.patchValue({
@@ -161,6 +161,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       this.getItemList();
     } else {
+      if (this.data.source === 'APPROVAL') {
+        this.FormItem.controls.startDate.setValue(this.today);
+        this.FormItem.controls.endDate.setValue(this.today);
+
+        if (this.data.careTeams && this.data.careTeams.length === 1) {
+          this.FormItem.patchValue({
+            // tslint:disable-next-line:max-line-length
+            careTeamSequence: this.data.careTeams
+          });
+        }
+      }
+
       if (this.data.beneficiaryPatientShare) {
         this.FormItem.controls.patientSharePercent.setValue(this.data.beneficiaryPatientShare);
       }
@@ -462,7 +474,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.controls.discount.setValue(0);
         discount = 0;
       }
-      const factorValue = (100 - ((discount * gross) / 100)) / 100;
+      // const factorValue = (100 - ((discount / gross) * 100)) / 100;
+      const factorValue = 1 - (discount / gross);
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
       if (!this.FormItem.controls.factor.value) {
@@ -478,7 +491,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
       const gross = parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value);
-      const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) * 100) / gross;
+      // const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) * 100) / gross;
+      // const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) / 100) * gross;
+      const discount = gross * (1 - parseFloat(this.FormItem.controls.factor.value));
       this.FormItem.controls.discount.setValue(parseFloat(discount.toFixed(2)));
     } else {
       this.FormItem.controls.discount.setValue(0);
@@ -511,11 +526,33 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     var m = Number((Math.abs(num) * 100).toPrecision(15));
     return Math.round(m) / 100 * Math.sign(num);
 }
+  updatePatientShare() {
+    // tslint:disable-next-line:max-line-length
+    if (parseFloat(this.FormItem.controls.patientSharePercent.value) && this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
+      const gross = parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value);
+      const patientSharePercent = this.FormItem.controls.patientSharePercent.value;
+      const patientShareAmount = (gross * parseFloat(this.FormItem.controls.factor.value) * parseFloat(patientSharePercent)) / 100;
+      this.FormItem.controls.patientShare.setValue(parseFloat(patientShareAmount.toFixed(2)));
+    } else {
+      this.FormItem.controls.patientShare.setValue(0);
+    }
+  }
+
+  updatePayerShare() {
+    if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
+      const payerShareAmount = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
+      this.FormItem.controls.payerShare.setValue(parseFloat(payerShareAmount.toFixed(2)));
+    } else {
+      this.FormItem.controls.payerShare.setValue(0);
+    }
+  }
+
   Calculate(value) {
 
     switch (value) {
       case 'Quantity':
       case 'UitPrice':
+        this.updateDiscount();
         this.updateNet();
         break;
       case 'Discount':
@@ -528,6 +565,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       case 'Factor':
         this.updateDiscount();
         this.updateNet();
+        break;
+      case 'PatientShare':
+        this.updatePatientShare();
+        this.updatePayerShare();
         break;
     }
 

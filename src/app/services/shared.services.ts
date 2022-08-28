@@ -347,7 +347,20 @@ export class SharedServices {
     return parseInt(this.authService.getCCHIId());
   }
 
-
+  getItemRowAccentColor(status: string) {
+    switch (status.toLowerCase()) {
+      case ClaimStatus.ALL.toLowerCase():
+        return 'all-claim';
+      case ClaimStatus.REJECTED.toLowerCase():
+        return 'cancelled';
+      case ClaimStatus.APPROVED.toLowerCase():
+        return 'paid';
+      case ClaimStatus.PARTIAL.toLowerCase():
+        return 'partially-paid';
+      default:
+        return 'not-saved';
+    }
+  }
 
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {

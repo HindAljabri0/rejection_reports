@@ -104,8 +104,9 @@
             <th>Pre Authorization ID</th>
             <th>Requested Date</th>
             <!-- <th>Response Date</th> -->
-            <th>Payer/TPA</th>
-            <th>Total Net</th>
+            <th>Payer / TPA</th>
+            <th>Total Net / Tax</th>
+            <th>Total Benefit / Tax</th>
             <th>Patient Share</th>
             <th>Payer Share</th>
             <th>Status</th>
@@ -124,10 +125,13 @@
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
               <!-- <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
-              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SAR</span> / {{transaction.totalTax}} <span class="currency">SAR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SAR</span> / {{transaction.totalBenefitTax}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SAR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SAR</span></td>
-              <td (click)="toggleRow(i)">{{transaction.status}}</td>
+              <td (click)="toggleRow(i)">
+                <span [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{transaction.status | titlecase}}</span>
+              </td>
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
@@ -154,8 +158,8 @@
                       <th>Code - Description</th>
                       <th>Patient Share</th>
                       <th>Payer Share</th>
-                      <th>Net</th>
-                      <th>Approved Net</th>
+                      <th>Net / Tax</th>
+                      <th>Benefit / Tax</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -166,9 +170,15 @@
                       <td>
                         <div class="form-group mb-n1 mt-n1"
                           [ngClass]="{'has-error' : transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo}">
-                          <input type="text" class="form-control" placeholder="Enter invoice no."
+                          <span class="d-flex align-items-center">
+                            <span class="pr-1">
+                              <input type="text" class="form-control" placeholder="Enter invoice no."
                             [(ngModel)]="item.invoiceNo"
                             [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
+                            </span>
+                            <mat-icon *ngIf="item.status === 'rejected'" class="material-icons-outlined size-20" matTooltip="Invoice No. is not needed for a Rejected item">info</mat-icon>
+                          </span>
+
                           <div
                             *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
                             <span class="error-text">InvoiceNo required</span>
@@ -178,9 +188,9 @@
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                       <td>{{item.patientShare}} <span class="currency">SAR</span></td>
                       <td>{{item.payerSahare}} <span class="currency">SAR</span></td>
-                      <td>{{item.net}} <span class="currency">SAR</span></td>
-                      <td>{{item.approvedNet}} <span class="currency">SAR</span></td>
-                      <td>{{item.status}}</td>
+                      <td>{{item.net}} <span class="currency">SAR</span> / {{item.tax}} <span class="currency">SAR</span></td>
+                      <td>{{item.approvedNet}} <span class="currency">SAR</span> / {{item.benefitTax}} <span class="currency">SAR</span></td>
+                      <td><span [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{item.status | titlecase}}</span></td>
                     </tr>
                   </tbody>
                 </table>

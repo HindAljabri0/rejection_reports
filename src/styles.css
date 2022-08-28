@@ -334,7 +334,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #909090!important;}
 .text-grey,.text-duplicate{color: #707070!important;}
-.text-success{color: #6ABD63!important;}
+.text-success{color: #29bf24!important;}
 .text-cancelled,.text-danger{color: #D03131!important;}
 .text-warning{color: #C97D38!important;}
 .text-invalid,.text-purple{color: #5D2B7D!important;}
@@ -1613,7 +1613,7 @@ tag tag-ripple{display:none;}
 .status-badge.warning{background-color: #C97D38;}
 .status-badge.primary{background-color: #3060aa;}
 .status-badge.danger{background-color: #D03131;}
-.status-badge.success{background-color: #6ABD63;}
+.status-badge.success{background-color: #29bf24;}
 .status-badge.size-sm{letter-spacing: 0;text-transform: none;font-size: 12px;line-height: 18px;padding: 3px 8px;}
 .primary-grid .status-badge.size-sm{margin: -2px 0;}
 
@@ -1634,6 +1634,14 @@ tag tag-ripple{display:none;}
 .doctor-review-tab .general-info-tab>.left-block,.doctor-review-tab .general-info-tab>.right-block{padding: 14px;flex-grow: 0;flex-shrink: 0;}
 .doctor-review-tab .general-info-tab>.right-block{flex-basis: 320px;max-width: 320px;border-left: 1px solid #dedede;}
 .doctor-review-tab .general-info-tab>.left-block{flex-basis: calc(100% - 320px);max-width: calc(100% - 320px);}
+
+/* convert preauth upload details
+--------------------------------------------------------------------------------------------------------*/
+.convert-preauth-upload-details{background: #FFFFFF;border: 1px solid #BEBEBE;border-radius: 8px;padding: 12px;margin-top: 16px;}
+.convert-preauth-upload-details .date{color: #707070;padding-bottom: 8px;display: block;}
+.convert-preauth-upload-details .count{display: flex;flex-wrap: wrap;align-items: center;}
+.convert-preauth-upload-details .count>span{padding-right: 16px;display: flex;align-items: center;}
+.convert-preauth-upload-details .count>span>img{display: block;height: 24px;width: 24px;margin-right: 4px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

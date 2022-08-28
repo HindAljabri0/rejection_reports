@@ -554,12 +554,12 @@
                 <th>Standard Code - Description</th>
                 <th>
                   <div class="d-flex align-items-center">
-                    <span class="pr-1">Net</span>
+                    <span class="pr-1">Net/Tax</span>
                     <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
                       info</mat-icon>
                   </div>
                 </th>
-                <th>Approved Net</th>
+                <th>Benefit/Tax</th>
                 <th>Status</th>
                 <th>Adjudication Reason Code</th>
                 <th>Note No.</th>
@@ -583,7 +583,7 @@
                     - {{item.itemDescription}}</td>
 
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.net}} <span class="currency">SR</span></td>
+                    {{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
 
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
