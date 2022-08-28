@@ -518,10 +518,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.net.setValue('');
     }
   }
- financial(x) {
-  console.log("x = "+x);
-    return Math.round((x+ Number.EPSILON) * 100) / 100;;
-  }
+
   roundTo(num) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));
     return Math.round(m) / 100 * Math.sign(num);
