@@ -78,12 +78,14 @@ export class BeneficiaryComponent implements OnInit {
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
+    policyNumber: FormControl,
     selecteSubscriberRelationship: string
     selecteCoverageType: string,
     payerErorr: string,
     patientShare: FormControl,
     maxLimit: FormControl,
     memberCardIdErorr: string,
+    policyNumberErorr: string,
     patientShareErorr: string,
     maxLimitErorr: string,
     selecteSubscriberRelationshipErorr: string,
@@ -356,7 +358,7 @@ export class BeneficiaryComponent implements OnInit {
           selectePayer: insurancePlans.payerNphiesId,
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
-
+          policyNumber: new FormControl(insurancePlans.policyNumber),
           selecteSubscriberRelationship: insurancePlans.relationWithSubscriber
             ? insurancePlans.relationWithSubscriber.toUpperCase()
             : insurancePlans.relationWithSubscriber,
@@ -365,7 +367,7 @@ export class BeneficiaryComponent implements OnInit {
           maxLimit: insurancePlans.maxLimit ? new FormControl(insurancePlans.maxLimit) : new FormControl(),
           patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) : new FormControl(),
           // tslint:disable-next-line:max-line-length
-          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
+          payerErorr: null, policyNumberErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
           tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : (this.isCCHID ? null : '-1')
         }
       );
@@ -420,12 +422,14 @@ export class BeneficiaryComponent implements OnInit {
         selectePayer: '',
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
+        policyNumber: new FormControl(),
         selecteSubscriberRelationship: '',
         selecteCoverageType: '',
         patientShare: new FormControl(),
         maxLimit: new FormControl(),
         payerErorr: null,
         memberCardIdErorr: null,
+        policyNumberErorr: null,
         patientShareErorr: null,
         maxLimitErorr: null,
         selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null,
@@ -545,6 +549,7 @@ export class BeneficiaryComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       payerId: (insurancePlan.selectePayer == '' || insurancePlan.selectePayer == '-1') ? null : ((insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer),
       memberCardId: insurancePlan.memberCardId.value,
+      policyNumber: insurancePlan.policyNumber.value,
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == '' ? null : insurancePlan.selecteSubscriberRelationship,
       coverageType: insurancePlan.selecteCoverageType == '' ? null : insurancePlan.selecteCoverageType,
       isPrimary: insurancePlan.isPrimary,

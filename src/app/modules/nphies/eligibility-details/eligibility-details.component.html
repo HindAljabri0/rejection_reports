@@ -81,19 +81,19 @@
     </div>
     <div class="col-4">
       <div class="form-group form-group-static">
-        <div class="control-label">Eligibility Response ID</div>
-        <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group form-group-static">
         <div class="control-label">Is Referral ? </div>
         <p class="form-control-static">{{eligibilityResponse.transfer ? 'Yes' : 'No'}}</p>
       </div>
     </div>
     <div class="col-4">
       <div class="form-group form-group-static">
-        <div class="control-label">Eligibility Identifier Url</div>
+        <div class="control-label">Eligibility Response Identifier (Value)</div>
+        <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">Eligibility Response Identifier (URL)</div>
         <p class="form-control-static">{{eligibilityResponse.eligibilityIdentifierUrl ?
           eligibilityResponse.eligibilityIdentifierUrl : '-'}}</p>
       </div>
@@ -140,6 +140,7 @@
             <th>In-Force</th>
             <th>Benefit Date</th>
             <th>Member ID</th>
+            <th>Policy Number</th>
             <th>Type</th>
             <th>Status</th>
             <th>Relationship With Subscriber</th>
@@ -162,6 +163,7 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date
                 :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>
+              <td class="row-click" (click)="toggleRow(i)">{{coverage.policyNumber}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.type}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.status}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.relationship}}</td>

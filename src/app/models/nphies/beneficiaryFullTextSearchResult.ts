@@ -40,12 +40,13 @@ export class BeneficiariesSearchResult {
     payerName: string;
     expiryDate: Date;
     memberCardId: string;
+    policyNumber: string;
     primary: boolean;
     payerNphiesId: string;
     tpaNphiesId: string;
     coverageType: string;
     relationWithSubscriber: string;
-    maxLimit:number;
-    patientShare:number;
+    maxLimit: number;
+    patientShare: number;
   }[];
 }

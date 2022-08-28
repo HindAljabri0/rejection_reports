@@ -131,7 +131,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     isNewBorn: [false],
     preAuthResponseId: [''],
     preAuthResponseUrl: [''],
-    accountingPeriod: ['']
+    accountingPeriod: [''],
+    insurancePlanPolicyNumber: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -364,6 +365,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         payerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
         payerName: this.otherDataModel.beneficiary.insurancePlan.insurer,
         memberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+        policyNumber: this.otherDataModel.beneficiary.insurancePlan.policyNumber,
         planId: null,
         payerId: null,
         coverageType: this.otherDataModel.beneficiary.insurancePlan.insurancePlan,
@@ -372,7 +374,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
         maxLimit: null,
-        patientShare: null,
+        patientShare: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -384,6 +386,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       fullName: this.otherDataModel.beneficiary.fullName,
       gender: this.otherDataModel.beneficiary.gender.toUpperCase(),
       insurancePlanMemberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+      insurancePlanPolicyNumber: this.otherDataModel.beneficiary.insurancePlan.policyNumber,
       insurancePlanCoverageType: this.otherDataModel.beneficiary.insurancePlan.coverageType,
       insurancePayerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
       insurancePlanRelationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
@@ -893,7 +896,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
-      beneficiaryDob: this.FormNphiesClaim.controls.dob.value
+      beneficiaryDob: this.FormNphiesClaim.controls.dob.value,
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1029,7 +1033,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       item: itemModel,
       type: this.FormNphiesClaim.controls.type.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
-      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1588,6 +1593,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+      this.model.insurancePlan.policyNumber = this.FormNphiesClaim.controls.insurancePlanPolicyNumber.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
 
@@ -2307,6 +2313,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(this.otherDataModel.beneficiary.insurancePlan.memberCardId);
       }
 
+      if (this.otherDataModel.beneficiary.insurancePlan.policyNumber) {
+        this.FormNphiesClaim.controls.insurancePlanPolicyNumber.setValue(this.otherDataModel.beneficiary.insurancePlan.policyNumber);
+      }
+
       if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
         // tslint:disable-next-line:max-line-length
         this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.setValue(this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber);
@@ -2816,7 +2826,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
-      model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+      model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0].name : '';
 
       model.subSite = x.subSite;
       // tslint:disable-next-line:max-line-length
@@ -2956,7 +2966,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.CareTeams.forEach(x => {
             console.log(x.speciality)
             if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
-            x.speciality === null ||  x.speciality === undefined) {
+              x.speciality === null || x.speciality === undefined) {
               isthereFiledEmpty = true;
               return;
             }
@@ -3018,9 +3028,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    if (this.pageMode === 'VIEW' || this.pageMode === 'EDIT') {
-      // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
-      this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+    const params: SearchPageQueryParams = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+    if (params) {
+      this.params = params;
       this.resetURL();
       setTimeout(() => {
         location.reload();

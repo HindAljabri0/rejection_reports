@@ -475,7 +475,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.controls.discount.setValue(0);
         discount = 0;
       }
-      const factorValue = (100 - ((discount * gross) / 100)) / 100;
+      // const factorValue = (100 - ((discount / gross) * 100)) / 100;
+      const factorValue = 1 - (discount / gross);
       this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
     } else {
       if (!this.FormItem.controls.factor.value) {
@@ -491,7 +492,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
       const gross = parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value);
-      const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) * 100) / gross;
+      // const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) * 100) / gross;
+      // const discount = ((100 - (parseFloat(this.FormItem.controls.factor.value) * 100)) / 100) * gross;
+      const discount = gross * (1 - parseFloat(this.FormItem.controls.factor.value));
       this.FormItem.controls.discount.setValue(parseFloat(discount.toFixed(2)));
     } else {
       this.FormItem.controls.discount.setValue(0);
@@ -576,9 +579,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const claimType = this.data.type;
     const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
     const payerNphiesId = this.data.payerNphiesId;
+    const tpaNphiesId = this.data.tpaNphiesId;
 
     // tslint:disable-next-line:max-line-length
-    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
+    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body) {

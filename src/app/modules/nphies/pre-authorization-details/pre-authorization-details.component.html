@@ -39,6 +39,16 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
+      <div class="control-label">Sub Type</div>
+      <p class="form-control-static text-primary">
+        <span
+          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
+      </p>
+    </div>
+  </div>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
       <div class="control-label">Insurer</div>
       <p class="form-control-static text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
     </div>
@@ -51,32 +61,31 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">PreAuth Ref. No.</div>
+      <div class="control-label">Preauthorization Reference No.</div>
       <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">PreAuth Period</div>
-      <p class="form-control-static text-primary">{{data.preAuthStartDate | date:'dd/MM/yyyy'}} {{data.preAuthStartDate &&
+      <div class="control-label">Preauthorization Response Identifier</div>
+      <p class="form-control-static text-primary">{{data.claimRefNo ? data.claimRefNo : '-'}}</p>
+    </div>
+  </div>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Preauthorization Period</div>
+      <p class="form-control-static text-primary">{{data.preAuthStartDate | date:'dd/MM/yyyy'}} {{data.preAuthStartDate
+        &&
         data.preAuthEndDate ? "-":""}} {{data.preAuthEndDate |
         date:'dd/MM/yyyy'}} <span *ngIf="period">[{{period}}]</span> </p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Sub Type</div>
-      <p class="form-control-static text-primary">
-        <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
-        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
-      </p>
-    </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Related PreAuth Request ID</div>
-      <p class="form-control-static text-primary">
-        <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}} ({{data.claimReuseRelation}})</span>
+      <div class="control-label">Related Preauthorization Request Identifier</div>
+      <p class="form-control-static text-primary" matTooltip="Useful for extending a transferred preauthorization">
+        <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}}
+          ({{data.claimReuseRelation}})</span>
         <span *ngIf="!data.claimReuseId || !data.claimReuseRelation">-</span>
       </p>
     </div>
@@ -84,20 +93,24 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility ID</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
+      <p class="form-control-static text-primary">
+        {{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility Date</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date: 'dd-MM-yyyy'):'-'}}
+      <p class="form-control-static text-primary">
+        {{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date:
+        'dd-MM-yyyy'):'-'}}
       </p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Eligibility Response ID</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
+      <div class="control-label">Eligibility Response Identifier</div>
+      <p class="form-control-static text-primary">
+        {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -108,19 +121,19 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Is Referral</div>
+      <div class="control-label">Is Referral ?</div>
       <p class="form-control-static text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Is New Born</div>
+      <div class="control-label">Is New Born ?</div>
       <p class="form-control-static text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Pre Auth Details</div>
+      <div class="control-label">Related Preauthorization Rerefence No(s).</div>
       <p class="form-control-static text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
     </div>
   </div>
@@ -145,14 +158,15 @@
   </div>
   <div *ngIf="data.transferAuthNumber" class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Referral PreAuth Ref. No.</div>
+      <div class="control-label">Referral Preauthorization Reference No.</div>
       <p class="form-control-static text-primary">{{data.transferAuthNumber}}</p>
     </div>
   </div>
   <div *ngIf="data.transferAuthStartDate && data.transferAuthEndDate" class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Referral PreAuth Period</div>
-      <p class="form-control-static text-primary">{{data.transferAuthStartDate | date: 'dd/MM/yyyy'}} - {{data.transferAuthEndDate | date: 'dd/MM/yyyy'}}</p>
+      <div class="control-label">Referral Preauthorization Period</div>
+      <p class="form-control-static text-primary">{{data.transferAuthStartDate | date: 'dd/MM/yyyy'}} -
+        {{data.transferAuthEndDate | date: 'dd/MM/yyyy'}}</p>
     </div>
   </div>
   <div *ngIf="data.reIssueReasonName" class="col-4 col-xxl-3">
@@ -166,7 +180,8 @@
 
 <!-- payment info start -->
 <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, -->
-<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14" *ngIf="data.responseDecision && data.responseDecision.claimResDecisionCategories">
+<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14"
+  *ngIf="data.responseDecision && data.responseDecision.claimResDecisionCategories">
   <h5 class="align-self-center medium pb-2 text-primary">Total</h5>
   <div class="row small-gutter">
 
@@ -249,7 +264,47 @@
 </div>
 <!-- beneficiary details end -->
 
-
+<h5 class="form-title" *ngIf="data.beneficiary">
+  Insurance Plan
+</h5>
+<div class="row small-gutter" *ngIf="data.beneficiary && data.beneficiary.insurancePlan">
+  <div class="table-responsive">
+    <table class="primary-grid claim-view-table">
+      <thead>
+        <tr>
+          <th>Payer</th>
+          <th>Expiry Date</th>
+          <th>Member Card ID</th>
+          <th>Policy Number</th>
+          <th>Relation with Subscriber</th>
+          <th>Coverage Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="align-middle">
+          <td>
+            {{data.beneficiary.insurancePlan.payerName}}
+          </td>
+          <td>
+            {{data.beneficiary.insurancePlan.expiryDate}}
+          </td>
+          <td>
+            {{data.beneficiary.insurancePlan.memberCardId}}
+          </td>
+          <td>
+            {{data.beneficiary.insurancePlan.policyNumber}}
+          </td>
+          <td>
+            {{data.beneficiary.insurancePlan.relationWithSubscriberName}}
+          </td>
+          <td>
+            {{data.beneficiary.insurancePlan.coverageTypeName}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <!-- subscriber section start -->
 <h5 class="form-title" *ngIf="data.subscriber">
@@ -375,14 +430,16 @@
         <th>Sequence No.</th>
         <th>Type</th>
         <th>Code - Description</th>
-        <th><div class="d-flex align-items-center">
-          <span class="pr-1">Net</span>
-          <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
-            info</mat-icon>
+        <th>
+          <div class="d-flex align-items-center">
+            <span class="pr-1">Net</span>
+            <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+              info</mat-icon>
             <span class="pr-1">/Tax</span>
             <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
               info</mat-icon>
-        </div></th>       
+          </div>
+        </th>
         <th>Benefit/Tax</th>
         <th>Status</th>
         <th>Adjudication Reason Code</th>
@@ -397,10 +454,11 @@
             <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
           </td>
           <td class="row-click" (click)="toggleItem(i)">
-                  {{item.sequence}}</td>
+            {{item.sequence}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)"> {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)"> {{item.net}} <span class="currency">SR</span> /
+            {{item.tax}} <span class="currency">SR</span></td>
 
           <td class="text-nowrap row-click" (click)="toggleItem(i)">
             <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
@@ -410,12 +468,14 @@
               </ng-container>
             </ng-container>
           </td>
-          <td class="row-click text-capitalize text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}" (click)="toggleItem(i)">
+          <td
+            class="row-click text-capitalize text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}"
+            (click)="toggleItem(i)">
             <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
             <span *ngIf="!item.itemDecision">-</span>
           </td>
           <td class="row-click" (click)="toggleItem(i)">
-            <span class="align-items-center pl-7"  *ngFor="let res of item.reasonsMap">
+            <span class="align-items-center pl-7" *ngFor="let res of item.reasonsMap">
               <span class="pr-1">{{ res.code }}</span>
               <mat-icon class="material-icons-outlined size-20" matTooltip="{{res.reason}}">info
               </mat-icon>
@@ -457,7 +517,7 @@
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
-                      
+
                       <tr>
                         <td class="label">Non Standard Code</td>
                         <td>{{item.nonStandardCode}}</td>
@@ -505,27 +565,32 @@
                       </tr>
 
                       <tr>
-                        <td class="label"><div class="d-flex align-items-center">
-                          <span class="pr-1">Tax</span>
-                          <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
-                            info</mat-icon>
-                        </div></td>
+                        <td class="label">
+                          <div class="d-flex align-items-center">
+                            <span class="pr-1">Tax</span>
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                              info</mat-icon>
+                          </div>
+                        </td>
                         <td>{{item.tax}} <span class="currency">SR</span></td>
                       </tr>
                       <tr>
-                        <td class="label"><div class="d-flex align-items-center">
-                          <span class="pr-1">Patient Share</span>
-                          <mat-icon class="material-icons-outlined size-20"
-                            matTooltip="Patient share without TAX">info</mat-icon>
-                        </div></td>
-                        <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span class="currency">%</span>)</td>
+                        <td class="label">
+                          <div class="d-flex align-items-center">
+                            <span class="pr-1">Patient Share</span>
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="Patient share without TAX">
+                              info</mat-icon>
+                          </div>
+                        </td>
+                        <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span
+                            class="currency">%</span>)</td>
                       </tr>
                       <tr>
                         <td class="label">Payer Share</td>
                         <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       </tr>
-                      
-                      
+
+
                     </tbody>
                   </table>
                 </div>
@@ -536,7 +601,8 @@
                         <td class="label">
                           <div class="d-flex align-items-center">
                             <span class="pr-1">Factor</span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info
+                            </mat-icon>
                           </div>
                         </td>
                         <td>{{item.factor}}</td>
@@ -578,7 +644,8 @@
                     <td class="row-click">{{d.code}} - {{d.description}}</td>
                     <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
                     <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
-                    <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') : '-'}}</td>
+                    <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') : '-'}}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -714,16 +781,19 @@
             <td>{{visionSpecification.lensPower}}</td>
             <td>{{visionSpecification.lensBackCurve}}</td>
             <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}<span *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
+            <td>{{visionSpecification.lensDuration}}<span
+                *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}</td>
             <td>{{visionSpecification.lensColor}}</td>
             <td>{{visionSpecification.lensBrand}}</td>
-            <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+            <td>{{visionSpecification.prismAmount}}<span
+                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
             <td class="actions text-center">
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
                 <span *ngIf="!visionSpecification.lensNote">-</span>
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
+                [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>

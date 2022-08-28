@@ -18,8 +18,8 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
-  getSpecialityByCode(providerId: string,code:string) {
-    const requestURL = '/providers/' + providerId + '/speciallity/get/specialityname?speciallityCode='+code;
+  getSpecialityByCode(providerId: string, code: string) {
+    const requestURL = '/providers/' + providerId + '/speciallity/get/specialityname?speciallityCode=' + code;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
@@ -69,7 +69,7 @@ export class ProviderNphiesSearchService {
 
   getItemList(
     providerId: string, itemType: string, query: string, payerNphiesId: string,
-    claimType: string, requestDate: string, pageNumber: number, pageSize: number) {
+    claimType: string, requestDate: string, tpaNphiesId: string, pageNumber: number, pageSize: number) {
 
     let requestURL = '/providers/' + providerId + '/items?';
 
@@ -87,6 +87,10 @@ export class ProviderNphiesSearchService {
     }
     if (requestDate && requestDate.trim().length > 0) {
       requestURL += `requestDate=${requestDate}&`;
+    }
+
+    if (tpaNphiesId && tpaNphiesId.trim().length > 0) {
+      requestURL += `tpaNphiesId=${tpaNphiesId}&`;
     }
 
     if (pageNumber) {
