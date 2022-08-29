@@ -54,7 +54,7 @@ export class SharedDataService {
     // { value: 'CSP', name: 'CSP - Callback Placer For Scheduling' },
     // { value: 'CSR', name: 'CSR - Contact Recipient For Scheduling' },
     { value: 'EL', name: 'EL - Elective' },
-    { value: 'EM', name: 'EM - Emergency' },
+    { value: 'EM', name: 'EM - Emergency' }
     // { value: 'P', name: 'P - Preop' },
     // { value: 'PRN', name: 'PRN - As Needed' },
     // { value: 'R', name: 'R - Routine' },
