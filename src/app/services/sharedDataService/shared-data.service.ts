@@ -48,21 +48,21 @@ export class SharedDataService {
   ];
 
   encounterPriorityList = [
-    { value: 'A', name: 'A - ASAP' },
-    { value: 'CR', name: 'CR - Callback Results' },
-    { value: 'CS', name: 'CS - Callback For Scheduling' },
-    { value: 'CSP', name: 'CSP - Callback Placer For Scheduling' },
-    { value: 'CSR', name: 'CSR - Contact Recipient For Scheduling' },
+    // { value: 'A', name: 'A - ASAP' },
+    // { value: 'CR', name: 'CR - Callback Results' },
+    // { value: 'CS', name: 'CS - Callback For Scheduling' },
+    // { value: 'CSP', name: 'CSP - Callback Placer For Scheduling' },
+    // { value: 'CSR', name: 'CSR - Contact Recipient For Scheduling' },
     { value: 'EL', name: 'EL - Elective' },
     { value: 'EM', name: 'EM - Emergency' },
-    { value: 'P', name: 'P - Preop' },
-    { value: 'PRN', name: 'PRN - As Needed' },
-    { value: 'R', name: 'R - Routine' },
-    { value: 'RR', name: 'RR - Rush Reporting' },
-    { value: 'S', name: 'S - Stat' },
-    { value: 'T', name: 'T - Timing Critical' },
-    { value: 'UD', name: 'UD - Use As Directed' },
-    { value: 'UR', name: 'UR - Urgent' }
+    // { value: 'P', name: 'P - Preop' },
+    // { value: 'PRN', name: 'PRN - As Needed' },
+    // { value: 'R', name: 'R - Routine' },
+    // { value: 'RR', name: 'RR - Rush Reporting' },
+    // { value: 'S', name: 'S - Stat' },
+    // { value: 'T', name: 'T - Timing Critical' },
+    // { value: 'UD', name: 'UD - Use As Directed' },
+    // { value: 'UR', name: 'UR - Urgent' }
   ];
 
   encounterAdminSourceList = [

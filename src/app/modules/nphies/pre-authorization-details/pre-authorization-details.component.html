@@ -133,7 +133,11 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Related Preauthorization Rerefence No(s).</div>
+      <div class="control-label">Related Preauthorization Reference No(s).
+        <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
+          info</mat-icon>
+      </div>
+      
       <p class="form-control-static text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
     </div>
   </div>
