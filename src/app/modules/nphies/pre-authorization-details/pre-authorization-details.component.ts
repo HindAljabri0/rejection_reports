@@ -21,7 +21,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
   constructor(
     private sharedDataService: SharedDataService,
-    private sharedServices: SharedServices,
+    public sharedServices: SharedServices,
     private sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -294,7 +294,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
     if (this.data && this.data.items) {
       this.data.items.forEach(x => {
-
+        x.display = x.nonStandardDesc;
         // tslint:disable-next-line:max-line-length
         x.bodySiteName = this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
         // tslint:disable-next-line:max-line-length

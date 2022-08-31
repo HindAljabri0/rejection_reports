@@ -347,7 +347,20 @@ export class SharedServices {
     return parseInt(this.authService.getCCHIId());
   }
 
-
+  getItemRowAccentColor(status: string) {
+    switch (status.toLowerCase()) {
+      case ClaimStatus.ALL.toLowerCase():
+        return 'all-claim';
+      case ClaimStatus.REJECTED.toLowerCase():
+        return 'cancelled';
+      case ClaimStatus.APPROVED.toLowerCase():
+        return 'paid';
+      case ClaimStatus.PARTIAL.toLowerCase():
+        return 'partially-paid';
+      default:
+        return 'not-saved';
+    }
+  }
 
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {
@@ -751,3 +764,4 @@ export class SharedServices {
 export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
 export const NPHIES_SEARCH_TAB_RESULTS_KEY = 'nphies_search_tab_result';
 export const NPHIES_CURRENT_INDEX_KEY = 'CURRENT_PAGE_INDEX';
+export const NPHIES_CURRENT_SEARCH_PARAMS_KEY = 'NPHIES_CURRENT_SEARCH_PARAMS';
