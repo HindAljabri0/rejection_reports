@@ -291,7 +291,7 @@ export class BeneficiaryComponent implements OnInit {
       }
     });
 
-
+    this.router.resetConfig(this.router.config);
     return true;
   }
 

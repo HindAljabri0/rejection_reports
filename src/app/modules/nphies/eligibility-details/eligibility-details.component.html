@@ -147,7 +147,7 @@
             <th>Subscriber Member ID</th>
             <th>Network</th>
             <th>Subrogation</th>
-            <th>Not In-Force reason</th>
+            <th>Site Eligibility</th>
           </tr>
         </thead>
         <tbody>
@@ -170,10 +170,10 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subscriberMemberId}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.network}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subrogation}}</td>
-              <td class="row-click" (click)="toggleRow(i)">{{coverage.notInforceReason}}</td>
+              <td class="row-click" (click)="toggleRow(i)" [ngClass]="coverage.siteEligibility === 'eligible' ? 'text-success' : (coverage.siteEligibility ? 'text-danger' : '')">{{coverage.siteEligibility | titlecase}}</td>
             </tr>
             <tr *ngIf="currentOpenCoverage==i || isPrint">
-              <td colspan="11">
+              <td colspan="12">
                 <div class="box mb-3" *ngIf="coverage.classList">
                   <h5 class="medium pb-2">Classes</h5>
                   <div class="table-responsive">
