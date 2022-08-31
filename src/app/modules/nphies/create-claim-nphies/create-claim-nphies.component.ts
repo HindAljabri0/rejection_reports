@@ -1501,9 +1501,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         hasError = true;
       }
 
-      if (hasError) {
-        return;
-      }
+      // if (hasError) {
+      //   return;
+      // }
 
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
