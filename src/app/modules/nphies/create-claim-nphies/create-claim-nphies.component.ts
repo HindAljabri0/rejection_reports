@@ -1456,7 +1456,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     }
 
-
+    if (this.IsAccountingPeriodInvalid) {
+      hasError = true;
+    }
     // this.checkCareTeamValidation();
 
     if (this.FormNphiesClaim.valid) {
@@ -1866,66 +1868,66 @@ export class CreateClaimNphiesComponent implements OnInit {
         console.log('Model EDIT', this.model);
       }
 
-      requestObservable.subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status === 200) {
-            const body: any = event.body;
-            if (body.isError) {
+      // requestObservable.subscribe(event => {
+      //   if (event instanceof HttpResponse) {
+      //     if (event.status === 200) {
+      //       const body: any = event.body;
+      //       if (body.isError) {
 
-              this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
-              if (this.pageMode === 'CREATE') {
-                // tslint:disable-next-line:max-line-length
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-              }
-            } else {
-              if (this.pageMode === 'CREATE') {
-                this.reset();
-                // tslint:disable-next-line:max-line-length
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-              } else {
-                this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
-                this.ngOnInit();
-                // location.reload();
-              }
-            }
-          }
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
-            if (this.pageMode === 'EDIT') {
-              this.ngOnInit();
-            }
-          } else if (error.status === 404) {
-            const errors: any[] = [];
-            if (error.error.errors) {
-              error.error.errors.forEach(x => {
-                errors.push(x);
-              });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
-            } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
-            }
-          } else if (error.status === 500) {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.errors, '', 'alert', true, 'OK', null, true);
-          } else if (error.status === 503) {
-            const errors: any[] = [];
-            if (error.error.errors) {
-              error.error.errors.forEach(x => {
-                errors.push(x);
-              });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
-            } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
-            }
-          }
-          this.sharedServices.loadingChanged.next(false);
-        }
-      });
+      //         this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
+      //         if (this.pageMode === 'CREATE') {
+      //           // tslint:disable-next-line:max-line-length
+      //           this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+      //         }
+      //       } else {
+      //         if (this.pageMode === 'CREATE') {
+      //           this.reset();
+      //           // tslint:disable-next-line:max-line-length
+      //           this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+      //           this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
+      //         } else {
+      //           this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, true);
+      //           this.ngOnInit();
+      //           // location.reload();
+      //         }
+      //       }
+      //     }
+      //     this.sharedServices.loadingChanged.next(false);
+      //   }
+      // }, error => {
+      //   if (error instanceof HttpErrorResponse) {
+      //     if (error.status === 400) {
+      //       this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
+      //       if (this.pageMode === 'EDIT') {
+      //         this.ngOnInit();
+      //       }
+      //     } else if (error.status === 404) {
+      //       const errors: any[] = [];
+      //       if (error.error.errors) {
+      //         error.error.errors.forEach(x => {
+      //           errors.push(x);
+      //         });
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
+      //       } else {
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
+      //       }
+      //     } else if (error.status === 500) {
+      //       // tslint:disable-next-line:max-line-length
+      //       this.dialogService.showMessage(error.error.message ? error.error.message : error.error.errors, '', 'alert', true, 'OK', null, true);
+      //     } else if (error.status === 503) {
+      //       const errors: any[] = [];
+      //       if (error.error.errors) {
+      //         error.error.errors.forEach(x => {
+      //           errors.push(x);
+      //         });
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors, true);
+      //       } else {
+      //         this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
+      //       }
+      //     }
+      //     this.sharedServices.loadingChanged.next(false);
+      //   }
+      // });
     }
   }
 
@@ -1980,7 +1982,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get checkErrorClaimInfo() {
-    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || !this.FormNphiesClaim.controls.episodeId.value ||
+    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || this.IsAccountingPeriodInvalid || !this.FormNphiesClaim.controls.episodeId.value ||
       !this.FormNphiesClaim.controls.type.value) || (
         (this.FormNphiesClaim.controls.preAuthOfflineDate.value ||
           this.FormNphiesClaim.controls.preAuthResponseId.value ||
@@ -3061,7 +3063,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null
-      && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid','rejected', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
+      && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid', 'rejected', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
   get IsPreAuthRefRequired() {
@@ -3208,4 +3210,13 @@ export class CreateClaimNphiesComponent implements OnInit {
     }).join(', ');
   }
 
+  get IsAccountingPeriodInvalid() {
+    const d1 = this.datePipe.transform(new Date(this.FormNphiesClaim.controls.accountingPeriod.value), 'yyyy-MM-dd');
+    const d2 = this.datePipe.transform(new Date(this.today), 'yyyy-MM-dd');
+    if (new Date(d1) < new Date(d2)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

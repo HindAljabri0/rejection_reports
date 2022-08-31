@@ -107,7 +107,7 @@
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Payee Type</div>
-            <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value.name}}</p>
+            <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value ? FormNphiesClaim.controls.payeeType.value.name : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -1558,12 +1558,15 @@
               </div> -->
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{'has-error': IsAccountingPeriodInvalid}">
                 <label class="control-label">Accounting Period</label>
                 <div class="date-picker">
                   <input [matDatepicker]="accountingPeriodCtrl" class="form-control" placeholder="Select accounting period" [max]="pastDate" formControlName="accountingPeriod">
                   <mat-datepicker-toggle [for]="accountingPeriodCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #accountingPeriodCtrl></mat-datepicker>
+                </div>
+                <div *ngIf="IsAccountingPeriodInvalid">
+                  <span class="error-text">Accounting Period must be in the past</span>
                 </div>
               </div>
             </div>
