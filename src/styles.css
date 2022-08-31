@@ -312,7 +312,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .error-icon{color: #D03131;display: inline-block;vertical-align: top;}
 .mat-option-loader{display: flex; align-items: center; justify-content: center; min-height: 40px;}
 .mat-option-loader span{padding-left: 12px;}
-.abbr{text-decoration: underline;text-decoration-style: dashed;text-underline-offset: 4px;}
+.abbr{text-decoration: underline;text-decoration-style: dashed;text-underline-offset: 4px;color: #3060aa;}
 
 /* chat buttons
 --------------------------------------------------------------------------------------------------------*/

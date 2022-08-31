@@ -558,7 +558,7 @@
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <ng-container *ngFor="let res of item.reasonsMap;let i=index">
-                    <span matTooltip="{{res.reason}}">{{ res.code }}</span>
+                    <span class="abbr" matTooltip="{{res.reason}}">{{ res.code }}</span>
                     <ng-container *ngIf="i!=item.reasonsMap.length-1">, </ng-container>
                   </ng-container>
                   <span *ngIf="!item.reasonsMap">-</span>

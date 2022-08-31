@@ -161,8 +161,8 @@
 
           <div class="col-4 col-xxl-3">
             <div class="form-group">
-              <label class="control-label">Eligibility Response ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID"
+              <label class="control-label">Eligibility Response Identifier</label>
+              <input class="form-control" placeholder="Enter Offline Eligibility Response Identifier"
                 formControlName="eligibilityResponseId">
             </div>
           </div>
@@ -222,8 +222,11 @@
           </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
-              <label class="control-label">Related Preauthorization Reference No(s).</label>
-              <tag-input matTooltip="Useful for extending a transferred preauthorization" formControlName="preAuthRefNo" [placeholder]="'Enter Related Preauthorization Reference No(s)'" [addOnBlur]="true">
+              <label class="control-label">Related Preauthorization Reference No(s).
+              <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
+                info</mat-icon>
+              </label>
+              <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Related Preauthorization Reference No(s)'" [addOnBlur]="true">
               </tag-input>
               <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
                 <span class="error-text">Please enter Related Preauthorization Reference No(s).</span>

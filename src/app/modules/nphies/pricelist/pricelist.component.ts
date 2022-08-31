@@ -63,6 +63,10 @@ export class PricelistComponent implements OnInit {
         // tslint:disable-next-line:radix
         this.FormPriceList.controls.payerNphiesId.patchValue(params.payerNphiesId);
       }
+      if (params.tpaNphiesId != null && params.tpaNphiesId != '') {
+        // tslint:disable-next-line:radix
+        this.FormPriceList.controls.tpaNphiesId.patchValue(params.tpaNphiesId);
+      }
 
       if (params.effectiveDate != null) {
         const date = moment(moment(params.effectiveDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
@@ -225,7 +229,7 @@ export class PricelistComponent implements OnInit {
       }
 
       if (this.FormPriceList.controls.tpaNphiesId.value) {
-        model.payerNphiesId = this.FormPriceList.controls.tpaNphiesId.value;
+        model.tpaNphiesId = this.FormPriceList.controls.tpaNphiesId.value;
       }
 
       model.page = this.page;
@@ -265,6 +269,9 @@ export class PricelistComponent implements OnInit {
 
     if (this.FormPriceList.controls.payerNphiesId.value) {
       path += `payerNphiesId=${this.FormPriceList.controls.payerNphiesId.value}&`;
+    }
+    if (this.FormPriceList.controls.tpaNphiesId.value) {
+      path += `tpaNphiesId=${this.FormPriceList.controls.tpaNphiesId.value}&`;
     }
 
     if (this.FormPriceList.controls.effectiveDate.value) {
