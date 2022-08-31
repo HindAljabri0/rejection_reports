@@ -3211,12 +3211,16 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get IsAccountingPeriodInvalid() {
-    const d1 = this.datePipe.transform(new Date(this.FormNphiesClaim.controls.accountingPeriod.value), 'yyyy-MM-dd');
-    const d2 = this.datePipe.transform(new Date(this.today), 'yyyy-MM-dd');
-    if (new Date(d1) < new Date(d2)) {
-      return false;
+    if (this.FormNphiesClaim.controls.accountingPeriod.value && this.today) {
+      const d1 = this.datePipe.transform(new Date(this.FormNphiesClaim.controls.accountingPeriod.value), 'yyyy-MM-dd');
+      const d2 = this.datePipe.transform(new Date(this.today), 'yyyy-MM-dd');
+      if (new Date(d1) < new Date(d2)) {
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return false;
     }
   }
 }
