@@ -352,11 +352,11 @@ export class SharedServices {
       case ClaimStatus.ALL.toLowerCase():
         return 'all-claim';
       case ClaimStatus.REJECTED.toLowerCase():
-        return 'cancelled';
+        return 'danger';
       case ClaimStatus.APPROVED.toLowerCase():
-        return 'paid';
+        return 'success';
       case ClaimStatus.PARTIAL.toLowerCase():
-        return 'partially-paid';
+        return 'light-blue';
       default:
         return 'not-saved';
     }

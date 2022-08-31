@@ -39,6 +39,7 @@ export class NphiesConfigurationService {
     formdata.append('file', body.file);
     formdata.append('payerNphiesId', body.payerNphiesId);
     formdata.append('effectiveDate', body.effectiveDate);
+    formdata.append('tpaNphiesId', body.tpaNphiesId);
 
     const requestUrl = `/providers/${providerId}/pricelist/excel`;
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, formdata);

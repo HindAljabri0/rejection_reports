@@ -35,6 +35,8 @@ import { CancelReasonModalComponent } from '../preauthorization-transactions/can
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 import { nlLocale } from 'ngx-bootstrap/chronos';
 import { couldStartTrivia } from 'typescript';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -160,6 +162,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     public router: Router,
     private dialogService: DialogService,
     private store: Store,
+    private downloadService: DownloadService,
     private adminService: AdminService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) { }
@@ -230,6 +233,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         toDate: this.params.to,
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
+        requestBundleId: this.params.requestBundleId,
         statuses: ['All']
       }));
     }).unsubscribe();
@@ -323,6 +327,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
+
+    console.log(this.params.requestBundleId + 'test')
     this.commen.loadingChanged.next(true);
     let event;
 
@@ -349,7 +355,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
-
+    this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
@@ -1360,8 +1366,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             }
           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
-              this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+              if (errorEvent.status === 500 || errorEvent.status === 404) {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', errorEvent.message);
+              } else {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+              }
             }
           });
         }
@@ -1382,10 +1393,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   claimIsEditable(status: string) {
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid','failed'].includes(status.trim().toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'rejected', 'invalid', 'failed'].includes(status.trim().toLowerCase());
   }
-  claimIsDeletable(status: string) {
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase());
+  claimIsDeletable(status: string, canDelete: boolean) {
+    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(status.trim().toLowerCase()) && (canDelete != false);
   }
   /*claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());
@@ -1403,6 +1414,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
+  get showDownloadBtn() {
+    // tslint:disable-next-line:max-line-length
+    return ['notaccepted', 'rejected', 'partial', 'invalid', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   openReasonModalMultiClaims() {
@@ -1544,6 +1560,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate,
             this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
               if (event instanceof HttpResponse) {
+
                 this.commen.loadingChanged.next(false);
                 const status = event.body['status'];
                 if (status === 'Deleted') {
@@ -1576,6 +1593,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                       this.router.navigate(['/nphies/uploads']);
                     });
                 } else {
+
                   const error = event.body['errors'];
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
@@ -1584,9 +1602,16 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 }
               }
             }, errorEvent => {
+
               if (errorEvent instanceof HttpErrorResponse) {
-                this.commen.loadingChanged.next(false);
-                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                const status = errorEvent.status;
+                if (status === 500 || status === 404) {
+                  this.commen.loadingChanged.next(false);
+                  this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                } else {
+                  this.commen.loadingChanged.next(false);
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                }
               }
             });
         }
@@ -1644,5 +1669,22 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }, error => {
       this.commen.loadingChanged.next(false);
     });
+  }
+
+  async downloadSheetFormat() {
+    if (this.detailTopActionIcon === 'ic-check-circle.svg') { return; }
+    let event;
+    event = this.providerNphiesSearchService.downloadMultiSheetSummaries(this.claimSearchCriteriaModel);
+    if (event != null) {
+      this.downloadService.startGeneratingDownloadFile(event)
+        .subscribe(status => {
+          if (status !== DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }
+
   }
 }

@@ -28,7 +28,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
     { key: 'policyNo', label: 'Policy No.' },
-    { key: 'nationalId', label: 'National ID' }
+    { key: 'nationalId', label: 'National ID' },
+    { key: 'requestBundleId', label: 'Request Bundle ID' }
   ];
 
   searchModesNphies: { key: string, label: string }[] = [
@@ -38,7 +39,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'batchId', label: 'Batch ID' },
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
-    { key: 'nationalId', label: 'National ID' }
+    { key: 'nationalId', label: 'National ID' },
+    { key: 'requestBundleId', label: 'Request Bundle ID' }
 
   ];
 
@@ -192,6 +194,7 @@ export class SearchWithAdvanceComponent implements OnInit {
           patientFileNo: this.selectedSearchMode == 'patientFileNo' ? this.searchControl.value : null,
           policyNo: this.selectedSearchMode == 'policyNo' ? this.searchControl.value : null,
           nationalId: this.selectedSearchMode == 'nationalId' ? this.searchControl.value : null,
+          requestBundleId: this.selectedSearchMode == 'requestBundleId' ? this.searchControl.value : null,
         },
         fragment: 'reload'
       });
