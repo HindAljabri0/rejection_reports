@@ -1415,7 +1415,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
-
+  get canBeDeleted(){
+    let filteredList = this.claims.filter(flag => flag != null && flag.canDelete == false)
+    return filteredList.length == 0;
+  }
   get showDownloadBtn() {
     // tslint:disable-next-line:max-line-length
     return ['notaccepted', 'rejected', 'partial', 'invalid', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
