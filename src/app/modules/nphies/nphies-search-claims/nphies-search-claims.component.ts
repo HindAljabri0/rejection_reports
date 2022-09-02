@@ -1413,7 +1413,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
   get canBeDeleted(){
     let filteredList = this.claims.filter(flag => flag != null && flag.canDelete == false)

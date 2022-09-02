@@ -340,7 +340,7 @@
           *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <ng-container *ngIf="currentSelectedTab==0">
-          <button mat-button *ngIf="showDeleteAll === true &&  canBeDeleted === true && selectedCardKey != 0"
+          <button mat-button *ngIf="showDeleteAll === true && selectedCardKey != 0"
             (click)="deleteClaimByCriteria()">Delete
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
           <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
