@@ -7,11 +7,11 @@
       <p *ngIf="otherDataModel.claimResourceId"><span>Claim Request Identifier
           :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
-      <!--p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
+      <p *ngIf="otherDataModel.claimRelatedIdentifiers">
         <span>Related Claim Request Identifier:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
+          <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
         </strong>
-      </p-->
+      </p>
       <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
           :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
       <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction

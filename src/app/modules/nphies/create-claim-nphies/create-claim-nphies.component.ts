@@ -2237,6 +2237,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
+    this.otherDataModel.claimRelatedIdentifiers= response.claimRelatedIdentifiers;
     this.otherDataModel.isNewBorn = response.isNewBorn;
     this.otherDataModel.requestBundleId = response.requestBundleId;
     this.otherDataModel.responseBundleId = response.responseBundleId;
