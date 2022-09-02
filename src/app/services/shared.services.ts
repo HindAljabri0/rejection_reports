@@ -330,6 +330,17 @@ export class SharedServices {
     });
   }
 
+  markAllAsRead(providerId: string,notificationType: string) {
+    this.notifications.markAllNotificationAsRead(providerId, notificationType).subscribe(event => {
+      if (event instanceof HttpResponse) {
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent);
+      }
+    });
+  }
+
   public get uploadId() {
     return this.getUploadId();
   }
