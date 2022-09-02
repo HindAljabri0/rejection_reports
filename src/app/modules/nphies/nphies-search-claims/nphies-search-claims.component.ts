@@ -1569,7 +1569,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 if (status === 'Deleted') {
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
-                      `Your claims deleted successfully.`,
+                        event.body['message'],
                       false))
                     .subscribe(afterColse => {
                       const uploadId = this.params.uploadId;
