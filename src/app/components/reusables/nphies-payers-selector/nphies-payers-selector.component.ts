@@ -141,6 +141,13 @@ export class NphiesPayersSelectorComponent implements OnInit {
     }
   }
 
+  findTPAName(tpaNphiesId) {
+    if (this.organizations.find(x => x.code === tpaNphiesId)) {
+      return this.organizations.filter(x => x.code === tpaNphiesId)[0].display;
+    }
+    return '-';
+  }
+
 
   // selectPayer(event) {
   //   if (event.value) {

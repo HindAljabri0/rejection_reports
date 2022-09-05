@@ -330,6 +330,17 @@ export class SharedServices {
     });
   }
 
+  markAllAsRead(providerId: string,notificationType: string) {
+    this.notifications.markAllNotificationAsRead(providerId, notificationType).subscribe(event => {
+      if (event instanceof HttpResponse) {
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent);
+      }
+    });
+  }
+
   public get uploadId() {
     return this.getUploadId();
   }
@@ -352,11 +363,11 @@ export class SharedServices {
       case ClaimStatus.ALL.toLowerCase():
         return 'all-claim';
       case ClaimStatus.REJECTED.toLowerCase():
-        return 'cancelled';
+        return 'danger';
       case ClaimStatus.APPROVED.toLowerCase():
-        return 'paid';
+        return 'success';
       case ClaimStatus.PARTIAL.toLowerCase():
-        return 'partially-paid';
+        return 'light-blue';
       default:
         return 'not-saved';
     }

@@ -33,13 +33,14 @@
             <div class="col">
               <div class="form-group">
                 <label class="control-label">Issuer</label>
-                <mat-form-field class="form-control custom-select-control">
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+                <!-- <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="issuerId">
                     <mat-option value="">Select Issuer</mat-option>
                     <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
                       ({{payer.arabicName}})</mat-option>
                   </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
               </div>
             </div>
             <div class="col-auto">
@@ -83,7 +84,12 @@
                 <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
                   {{pr.paymentNoticeStatus}}</td>
                 <td class="actions">
-                  <mat-menu #paymentReconciliationActionsMenu xPosition="before">
+                  <button type="button" mat-icon-button class="text-primary"
+                  *ngIf="pr.paymentNoticeStatus !== 'Sent'" (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)"
+                  matTooltip="Send Payment Notice">
+                    <mat-icon class="material-icons-outlined">send</mat-icon>
+                  </button>
+                  <!-- <mat-menu #paymentReconciliationActionsMenu xPosition="before">
                     <ng-template matMenuContent>
                       <button mat-menu-item type="button" (click)="openSendPaymentNoticeConfimationDialog(pr.reconciliationId, pr.paymentAmount)">
                         <mat-icon class="material-icons-outlined">send</mat-icon>
@@ -93,7 +99,7 @@
                   </mat-menu>
                   <button type="button" *ngIf="pr.paymentNoticeStatus !== 'Sent'" mat-icon-button [matMenuTriggerFor]="paymentReconciliationActionsMenu">
                     <mat-icon>more_vert</mat-icon>
-                  </button>
+                  </button> -->
                 </td>
               </tr>
             </tbody>
