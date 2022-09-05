@@ -1590,27 +1590,29 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 } else if (status === 'AlreadySumitted') {
                   this.dialogService.openMessageDialog(
                     // tslint:disable-next-line:max-line-length
-                    new MessageDialogData('', `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                    new MessageDialogData('', 
+                    // `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                    event.body['message'],
                       false))
                     .subscribe(afterColse => {
                       this.router.navigate(['/nphies/uploads']);
                     });
                 } else {
 
-                  const error = event.body['errors'];
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
-                      error[0].description,
+                    event.body['message'],
                       false));
                 }
               }
             }, errorEvent => {
 
               if (errorEvent instanceof HttpErrorResponse) {
-                const status = errorEvent.status;
+                const status = errorEvent.status;              
                 if (status === 500 || status === 404) {
                   this.commen.loadingChanged.next(false);
-                  this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                  // this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
                 } else {
                   this.commen.loadingChanged.next(false);
                   this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));

@@ -1329,7 +1329,11 @@
             otherDataModel.provClaimNo : '-'}}</strong></p>
         <p><span>Claim Request Identifier:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
         </p>
-
+        <p *ngIf="otherDataModel.claimRelatedIdentifiers">
+          <span>Related Claim Request Identifier:</span>&nbsp;<strong>
+            <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
+          </strong>
+        </p>
         <p><span>Claim Response Identifier:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
         <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
