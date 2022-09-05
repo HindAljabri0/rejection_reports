@@ -1,0 +1,30 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Upload Medication List</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+  <form [formGroup]="FormMedicationDays" (ngSubmit)="onSubmit()">
+    <div class="row small-gutter">
+        
+        
+    </div>
+    <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormMedicationDays.get('file').touched) && FormMedicationDays.get('file').hasError('required')}">
+        <div class="custom-file-upload" appDragdrop (onFileDropped)="selectFile($event)">
+            <div class="content">
+                <img src="./assets/ic-upload.svg" alt="Upload" />
+                <p>Drag and drop file here or <span class="semibold text-primary">browse</span></p>
+                <p class="error-text" *ngIf="error">{{error}}</p>
+                <p *ngIf="FormMedicationDays.controls.file.value && !error" class="file-name">{{FormMedicationDays.controls.file.value.name}}</p>
+            </div>
+            <input type="file" class="upload-control" (change)="selectFile($event.target.files)" />
+        </div>
+        <div *ngIf="(isSubmitted || FormMedicationDays.get('file').touched) && FormMedicationDays.get('file').hasError('required')">
+          <span class="error-text">Please select File</span>
+        </div>
+    </div>
+    <div class="btn-list text-right">
+        <button type="button" mat-button (click)="closeDialog()">Close</button>
+        <button type="submit" mat-flat-button color="primary">Upload</button>
+    </div>
+  </form>
+</div>

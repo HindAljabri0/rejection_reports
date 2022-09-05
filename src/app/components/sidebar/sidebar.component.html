@@ -425,6 +425,11 @@
             <span class="text">Price List</span>
           </a>
         </li>
+        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+          <a routerLink="/nphies/days-of-supply-upload" routerLinkActive="is-active">
+            <span class="text">Days Of Supply Upload</span>
+          </a>
+        </li>
       </ul>
 
       <!-- <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">

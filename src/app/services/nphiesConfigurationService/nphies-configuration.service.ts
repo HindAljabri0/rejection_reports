@@ -33,7 +33,11 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }
-
+  downloadSampleDaysOfSupply(providerId: string): Observable<any> {
+    const requestUrl = `/providers/${providerId}/daysofsupply/download`;
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
+    return this.http.request(request);
+  }
   uploadPriceList(providerId: string, body: any): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('file', body.file);
@@ -46,6 +50,14 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
 
+  uploadMedicationDays(providerId: string, body: any): Observable<any> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', body.file);
+
+    const requestUrl = `/providers/${providerId}/daysofsupply/excel`;
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, formdata);
+    return this.http.request(request);
+  }
   getPriceList(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/pricelist/criteria?page=${body.page}&size=${body.size}`;
     delete body.page;
@@ -74,6 +86,12 @@ export class NphiesConfigurationService {
     if (physicianRole) {
       requestURL += `&physician_role=${physicianRole}`;
     }
+
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
+    return this.http.request(request);
+  }
+  getMedicationList(providerId: string, page: number, size: number) {
+    let requestURL = `/providers/${providerId}/daysofsupply?page=${page}&size=${size}`;
 
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);

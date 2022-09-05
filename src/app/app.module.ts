@@ -104,6 +104,7 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
 
 
 
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -169,6 +170,7 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
         MultiSheetFileUploadComponent,
         NphiesClaimSummaryComponent,
         AlertDialogComponent
+        
     ],
     imports: [
         AppRoutingModule,

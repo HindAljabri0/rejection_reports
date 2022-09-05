@@ -72,6 +72,8 @@ import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/conv
 import { EligiblityJsonResponseComponent } from './view-eligibility-details/eligiblity-json-response/eligiblity-json-response.component';
 import { MatTabsModule } from '@angular/material';
 import { ApprovalJsonResponseComponent } from './view-preauthorization-details/approval-json-response/approval-json-response.component';
+import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
+import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +123,9 @@ import { ApprovalJsonResponseComponent } from './view-preauthorization-details/a
     PreparePreAuthForClaimComponent,
     ConvertPreAuthToClaimComponent,
     EligiblityJsonResponseComponent,
-    ApprovalJsonResponseComponent
+    ApprovalJsonResponseComponent,
+    DaysOfSupplyUploadComponent,
+    MedicationDaysUploadComponent
   ],
   imports: [
     CommonModule,
@@ -157,7 +161,9 @@ import { ApprovalJsonResponseComponent } from './view-preauthorization-details/a
     AddPhysicianDialogComponent,
     NphiesUploadSummaryDialogComponent,
     PricelistUploadComponent,
-    AddPricelistDialogComponent
+    AddPricelistDialogComponent,
+    DaysOfSupplyUploadComponent,
+    MedicationDaysUploadComponent
   ],
   exports: [
     ApiErrorsDialogComponent
