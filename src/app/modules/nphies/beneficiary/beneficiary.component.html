@@ -322,6 +322,7 @@
                 <th>Payer<span class="asterisk">*</span></th>
                 <th>Expiry Date</th>
                 <th>Member Card ID<span class="asterisk">*</span></th>
+                <th>Policy Number</th>
                 <th>Patient Share</th>
                 <th>MaxLimit</th>
                 <th>Relation with Subscriber<span class="asterisk">*</span></th>
@@ -374,6 +375,13 @@
                     [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
                     <input type="text" class="form-control" placeholder="Enter member card ID"
                       [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.policyNumberErorr"
+                    [class.has-error]="insurancePlan.policyNumberErorr!=null && insurancePlan.policyNumberErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="New Policy Number"
+                      [formControl]="insurancePlan.policyNumber" />
                   </div>
                 </td>
 
@@ -785,6 +793,7 @@
                 <th>Payer<span class="asterisk">*</span></th>
                 <th>Expiry Date</th>
                 <th>Member Card ID<span class="asterisk">*</span></th>
+                <th>Policy Number</th>
                 <th>Patient Share</th>
                 <th>MaxLimit</th>
                 <th>Relation with Subscriber<span class="asterisk">*</span></th>
@@ -838,6 +847,14 @@
                     [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
                     <input type="text" class="form-control" placeholder="Enter member card ID"
                       [formControl]="insurancePlan.memberCardId" />
+                  </div>
+                </td>
+
+                <td>
+                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.policyNumberErorr"
+                    [class.has-error]="insurancePlan.policyNumberErorr!=null && insurancePlan.policyNumberErorr.trim().length>0">
+                    <input type="text" class="form-control" placeholder="Enter member card ID"
+                      [formControl]="insurancePlan.policyNumber" />
                   </div>
                 </td>
 
@@ -1077,6 +1094,7 @@
               <th>Payer</th>
               <th>Expiry Date</th>
               <th>Member Card ID</th>
+              <th>Policy Number</th>
               <th>Patient Share</th>
               <th>MaxLimit</th>
               <th>Relation with Subscriber</th>
@@ -1092,8 +1110,9 @@
               <td>{{getPayerName(insurancePlans.payerId)}}</td>
               <td>{{isNull(insurancePlans.expiryDate)}}</td>
               <td>{{insurancePlans.memberCardId}}</td>
-              <td>{{insurancePlans.patientShare}}</td>
-              <td>{{insurancePlans.maxLimit}}</td>
+              <td>{{isNull(insurancePlans.policyNumber)}}</td>
+              <td>{{isNull(insurancePlans.patientShare)}}</td>
+              <td>{{isNull(insurancePlans.maxLimit)}}</td>
               <td>{{isNull(getSubscriberRelationshipName(insurancePlans.relationWithSubscriber))}}</td>
               <td>{{isNull(getCoverageTypeName(insurancePlans.coverageType))}}</td>
             </tr>

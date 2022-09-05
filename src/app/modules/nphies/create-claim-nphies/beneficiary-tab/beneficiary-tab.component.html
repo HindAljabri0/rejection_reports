@@ -11,16 +11,18 @@
       <div *ngIf="pageMode === 'CREATE'" class="d-flex">
         <div class="form-group flex-grow-1"
           [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
-          <label class="control-label">Select a {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}<span *ngIf="(!IsSubscriber) || (IsSubscriber && IsNewBorn)"
-              class="asterisk">*</span></label>
-          <input type="text" class="form-control search-box" placeholder="Search for {{!IsSubscriber ? 'beneficiary': 'subscriber'}} by name or document ID..."
+          <label class="control-label">Select a {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}<span
+              *ngIf="(!IsSubscriber) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span></label>
+          <input type="text" class="form-control search-box"
+            placeholder="Search for {{!IsSubscriber ? 'beneficiary': 'subscriber'}} by name or document ID..."
             formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
               {{beneficiary.name}} ({{beneficiary.documentId}})
             </mat-option>
           </mat-autocomplete>
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
             <span class="error-text">Please select a {{!IsSubscriber ? 'Beneficiary': 'Subscriber'}}</span>
           </div>
         </div>
@@ -30,7 +32,8 @@
         </div>
         <div class="form-group">
           <label class="control-label">&nbsp;</label>
-          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New {{!IsSubscriber ? 'Beneficiary':
+          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+            color="primary">Create New {{!IsSubscriber ? 'Beneficiary':
             'Subscriber'}}</button>
         </div>
       </div>
@@ -46,13 +49,15 @@
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="insurancePlanId">
                 <mat-option value="">Select Insurance Plan</mat-option>
-                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId"  (click)="selectedPlan(plan)">
+                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId"
+                  (click)="selectedPlan(plan)">
                   {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
                   ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
               <span class="error-text">Please select an Insurance Plan</span>
             </div>
           </div>
@@ -87,12 +92,14 @@
         </div>
       </div>
       <div class="col-4 col-xxl-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')}">
           <label class="control-label">Full Name<span
               *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
               class="asterisk">*</span></label>
           <input placeholder="Enter full name" class="form-control" formControlName="fullName">
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('fullName').touched) && FormNphiesClaim.get('fullName').hasError('required')">
             <span class="error-text">Please enter full name</span>
           </div>
         </div>
@@ -104,22 +111,26 @@
         </div>
       </div>
       <div class="col-4 col-xxl-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')}">
           <label class="control-label">Date of Birth<span
               *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
               class="asterisk">*</span></label>
           <div class="date-picker">
-            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" formControlName="dob">
+            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
+              formControlName="dob">
             <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
             <mat-datepicker #dateOfBirth></mat-datepicker>
           </div>
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('dob').touched) && FormNphiesClaim.get('dob').hasError('required')">
             <span class="error-text">Please select Dob</span>
           </div>
         </div>
       </div>
       <div class="col-4 col-xxl-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')}">
           <label class="control-label">Gender<span
               *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
               class="asterisk">*</span></label>
@@ -137,7 +148,8 @@
               <mat-option value="C">Not Completed </mat-option> -->
             </mat-select>
           </mat-form-field>
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('gender').touched) && FormNphiesClaim.get('gender').hasError('required')">
             <span class="error-text">Please select Gender</span>
           </div>
         </div>
@@ -153,19 +165,22 @@
               <mat-option value="">Select Document Type</mat-option>
               <mat-option *ngFor="let dt of documentTypes" [value]="dt.Code">{{dt.Name}}</mat-option>
             </mat-select>
-            <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormNphiesClaim.get('documentType').touched) && FormNphiesClaim.get('documentType').hasError('required')">
               <span class="error-text">Please select Document Type</span>
             </div>
           </mat-form-field>
         </div>
       </div>
       <div class="col-4 col-xxl-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')}">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')}">
           <label class="control-label">Document ID<span
               *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
               class="asterisk">*</span></label>
           <input placeholder="Enter document ID" class="form-control" formControlName="documentId">
-          <div *ngIf="(isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormNphiesClaim.get('documentId').touched) && FormNphiesClaim.get('documentId').hasError('required')">
             <span class="error-text">Please select Document Id</span>
           </div>
         </div>
@@ -180,9 +195,11 @@
         <div class="form-group">
           <label class="control-label">Nationality</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select [value]="selectedNationality" formControlName="nationality" (selectionChange)="selectedNationality = $event.value;" #Nationality>
+            <mat-select [value]="selectedNationality" formControlName="nationality"
+              (selectionChange)="selectedNationality = $event.value;" #Nationality>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Select Nationality" noEntriesFoundLabel="No nationalities found" formControlName="nationalityName"
+                <ngx-mat-select-search placeholderLabel="Select Nationality"
+                  noEntriesFoundLabel="No nationalities found" formControlName="nationalityName"
                   name='selectedNationality'>
                 </ngx-mat-select-search>
               </mat-option>
@@ -219,7 +236,8 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="martialStatus">
               <mat-option value="">Select Marital Status</mat-option>
-              <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async" [value]="MaritalStatusValue.Code">
+              <mat-option *ngFor="let MaritalStatusValue of allMaritalStatuses | async"
+                [value]="MaritalStatusValue.Code">
                 {{MaritalStatusValue.Name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -285,22 +303,28 @@
 
           <tr class="align-middle">
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" formControlName="addressLine" />
+              <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"
+                formControlName="addressLine" />
             </td>
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter Street Name" formControlName="streetLine" />
+              <input type="text" class="form-control minw145" placeholder="Enter Street Name"
+                formControlName="streetLine" />
             </td>
             <td>
               <input type="text" class="form-control minw145" placeholder="Enter City" formControlName="bcity" />
             </td>
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter State/Province" formControlName="bstate" />
+              <input type="text" class="form-control minw145" placeholder="Enter State/Province"
+                formControlName="bstate" />
             </td>
             <td>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCountry" formControlName="bcountry" (selectionChange)="selectedCountry = $event.value;" #Country>
+                <mat-select [value]="selectedCountry" formControlName="bcountry"
+                  (selectionChange)="selectedCountry = $event.value;" #Country>
                   <mat-option>
-                    <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found" formControlName="bcountryName" name='selectedCountry'>
+                    <ngx-mat-select-search placeholderLabel="Select Country"
+                      noEntriesFoundLabel="No nationalities found" formControlName="bcountryName"
+                      name='selectedCountry'>
                     </ngx-mat-select-search>
                   </mat-option>
                   <mat-option value="">Select Country</mat-option>
@@ -310,7 +334,8 @@
               </mat-form-field>
             </td>
             <td>
-              <input type="text" class="form-control minw145" placeholder="Enter Postal Code" formControlName="postalCode" />
+              <input type="text" class="form-control minw145" placeholder="Enter Postal Code"
+                formControlName="postalCode" />
             </td>
           </tr>
         </tbody>
@@ -326,15 +351,20 @@
       <table class="primary-grid claim-view-table">
         <thead>
           <tr>
-            <th>Payer<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
+            <th>Payer<span
+                *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
                 class="asterisk">*</span></th>
             <th>Expiry Date</th>
-            <th>Member Card ID<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
+            <th>Member Card ID<span
+                *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
                 class="asterisk">*</span></th>
+            <th>Policy Number</th>
             <th>Relation with Subscriber<span
-                *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)" class="asterisk">*</span>
+                *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
+                class="asterisk">*</span>
             </th>
-            <th>Coverage Type<span *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
+            <th>Coverage Type<span
+                *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
                 class="asterisk">*</span></th>
           </tr>
         </thead>
@@ -351,7 +381,8 @@
                   </mat-select>
                 </mat-form-field>
                 -->
-                <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormNphiesClaim" [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormNphiesClaim"
+                  [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
                 <!-- <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanPayerId').touched) && FormNphiesClaim.get('insurancePlanPayerId').hasError('required')">
                   <span class="error-text">Please select Payer</span>
                 </div> -->
@@ -360,7 +391,8 @@
             <td>
               <div class="form-group m-0">
                 <div class="date-picker">
-                  <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" formControlName="insurancePlanExpiryDate">
+                  <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
+                    formControlName="insurancePlanExpiryDate">
                   <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
                   <mat-datepicker #expiryDate></mat-datepicker>
                 </div>
@@ -369,10 +401,18 @@
             <td>
               <div class="form-group m-0"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanMemberCardId').touched) && FormNphiesClaim.get('insurancePlanMemberCardId').hasError('required')}">
-                <input type="text" class="form-control" placeholder="Enter member card ID" formControlName="insurancePlanMemberCardId" />
-                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanMemberCardId').touched) && FormNphiesClaim.get('insurancePlanMemberCardId').hasError('required')">
+                <input type="text" class="form-control" placeholder="Enter member card ID"
+                  formControlName="insurancePlanMemberCardId" />
+                <div
+                  *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanMemberCardId').touched) && FormNphiesClaim.get('insurancePlanMemberCardId').hasError('required')">
                   <span class="error-text">Please enter Member Card ID</span>
                 </div>
+              </div>
+            </td>
+            <td>
+              <div class="form-group m-0">
+                <input type="text" class="form-control" placeholder="Enter member card ID"
+                  formControlName="insurancePlanPolicyNumber" />
               </div>
             </td>
             <td>
@@ -402,7 +442,8 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <div *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanCoverageType').touched) && FormNphiesClaim.get('insurancePlanCoverageType').hasError('required')">
+                <div
+                  *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanCoverageType').touched) && FormNphiesClaim.get('insurancePlanCoverageType').hasError('required')">
                   <span class="error-text">Please select Coverage Type</span>
                 </div>
               </div>
@@ -411,7 +452,8 @@
         </tbody>
       </table>
     </div>
-    <app-empty-state [className]="'mb-2'" *ngIf="!IsSubscriber && insurancePlans.length == 0" [message]="'No insurance plans found!'">
+    <app-empty-state [className]="'mb-2'" *ngIf="!IsSubscriber && insurancePlans.length == 0"
+      [message]="'No insurance plans found!'">
     </app-empty-state>
   </form>
 </ng-container>
@@ -421,31 +463,36 @@
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">First Name</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.firstName ?otherDataModel.beneficiary.firstName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.beneficiary.firstName
+          ?otherDataModel.beneficiary.firstName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Second Name</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.secondName?otherDataModel.beneficiary.secondName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.secondName?otherDataModel.beneficiary.secondName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Third Name</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.thirdName?otherDataModel.beneficiary.thirdName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.beneficiary.thirdName?otherDataModel.beneficiary.thirdName:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Family Name</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.familyName?otherDataModel.beneficiary.familyName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.familyName?otherDataModel.beneficiary.familyName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Full Name</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.fullName?otherDataModel.beneficiary.fullName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.beneficiary.fullName?otherDataModel.beneficiary.fullName:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
@@ -457,13 +504,15 @@
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Beneficiary File ID</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.beneficiaryFileld?otherDataModel.beneficiary.beneficiaryFileld:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.beneficiaryFileld?otherDataModel.beneficiary.beneficiaryFileld:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Date of Birth</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.dobLabel?otherDataModel.beneficiary.dobLabel:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.beneficiary.dobLabel?otherDataModel.beneficiary.dobLabel:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
@@ -475,61 +524,71 @@
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Document Type</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.documentTypeName?otherDataModel.beneficiary.documentTypeName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.documentTypeName?otherDataModel.beneficiary.documentTypeName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Document ID</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.documentId?otherDataModel.beneficiary.documentId:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.documentId?otherDataModel.beneficiary.documentId:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">E-Health ID</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.eHealthId?otherDataModel.beneficiary.eHealthId:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.beneficiary.eHealthId?otherDataModel.beneficiary.eHealthId:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Nationality</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.nationalityName?otherDataModel.beneficiary.nationalityName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.nationalityName?otherDataModel.beneficiary.nationalityName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Residency Type</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.residencyTypeName?otherDataModel.beneficiary.residencyTypeName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.residencyTypeName?otherDataModel.beneficiary.residencyTypeName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Contact Number</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.contactNumber?otherDataModel.beneficiary.contactNumber:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.contactNumber?otherDataModel.beneficiary.contactNumber:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Marital Status</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.maritalStatusName?otherDataModel.beneficiary.maritalStatusName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.maritalStatusName?otherDataModel.beneficiary.maritalStatusName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Blood Group</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.bloodGroupName?otherDataModel.beneficiary.bloodGroupName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.bloodGroupName?otherDataModel.beneficiary.bloodGroupName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Preferred Language</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.preferredLanguageName?otherDataModel.beneficiary.preferredLanguageName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.preferredLanguageName?otherDataModel.beneficiary.preferredLanguageName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Emergency Phone Number</div>
-        <p class="form-control-static">{{otherDataModel.beneficiary.emergencyPhoneNumber?otherDataModel.beneficiary.emergencyPhoneNumber:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.beneficiary.emergencyPhoneNumber?otherDataModel.beneficiary.emergencyPhoneNumber:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
@@ -588,13 +647,15 @@
     <span>Insurance Plan</span>
   </h5>
 
-  <div class="table-responsive" *ngIf="!IsSubscriber && !IsLoading && otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
+  <div class="table-responsive"
+    *ngIf="!IsSubscriber && !IsLoading && otherDataModel && otherDataModel.beneficiary && otherDataModel.beneficiary.insurancePlan">
     <table class="primary-grid claim-view-table">
       <thead>
         <tr>
           <th>Payer<span class="asterisk">*</span></th>
           <th>Expiry Date</th>
           <th>Member Card ID<span class="asterisk">*</span></th>
+          <th>Policy Number</th>
           <th>Relation with Subscriber<span class="asterisk">*</span></th>
           <th>Coverage Type<span class="asterisk">*</span></th>
         </tr>
@@ -611,6 +672,9 @@
             {{otherDataModel.beneficiary.insurancePlan.memberCardId}}
           </td>
           <td>
+            {{otherDataModel.beneficiary.insurancePlan.policyNumber}}
+          </td>
+          <td>
             {{otherDataModel.beneficiary.insurancePlan.relationWithSubscriberName}}
           </td>
           <td>
@@ -620,7 +684,8 @@
       </tbody>
     </table>
   </div>
-  <app-empty-state [className]="'mb-2'" *ngIf="!IsSubscriber && otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan"
+  <app-empty-state [className]="'mb-2'"
+    *ngIf="!IsSubscriber && otherDataModel && otherDataModel.beneficiary && !otherDataModel.beneficiary.insurancePlan"
     [message]="'No insurance plans found!'">
   </app-empty-state>
 </ng-container>
@@ -630,25 +695,29 @@
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">First Name</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.firstName?otherDataModel.subscriber.firstName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.subscriber.firstName?otherDataModel.subscriber.firstName:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Second Name</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.secondName?otherDataModel.subscriber.secondName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.subscriber.secondName?otherDataModel.subscriber.secondName:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Third Name</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.thirdName?otherDataModel.subscriber.thirdName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.subscriber.thirdName?otherDataModel.subscriber.thirdName:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Family Name</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.familyName?otherDataModel.subscriber.familyName:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.subscriber.familyName?otherDataModel.subscriber.familyName:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
@@ -660,7 +729,8 @@
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Beneficiary File ID</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.beneficiaryFileld?otherDataModel.subscriber.beneficiaryFileld:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.beneficiaryFileld?otherDataModel.subscriber.beneficiaryFileld:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
@@ -678,61 +748,71 @@
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Document Type</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.documentTypeName?otherDataModel.subscriber.documentTypeName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.documentTypeName?otherDataModel.subscriber.documentTypeName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Document ID</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.documentId?otherDataModel.subscriber.documentId:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.subscriber.documentId?otherDataModel.subscriber.documentId:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">E-Health ID</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.eHealthId?otherDataModel.subscriber.eHealthId:'-'}}</p>
+        <p class="form-control-static">{{otherDataModel.subscriber.eHealthId?otherDataModel.subscriber.eHealthId:'-'}}
+        </p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Nationality</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.nationalityName?otherDataModel.subscriber.nationalityName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.nationalityName?otherDataModel.subscriber.nationalityName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Residency Type</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.residencyTypeName?otherDataModel.subscriber.residencyTypeName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.residencyTypeName?otherDataModel.subscriber.residencyTypeName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Contact Number</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.contactNumber?otherDataModel.subscriber.contactNumber:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.contactNumber?otherDataModel.subscriber.contactNumber:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Marital Status</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.maritalStatusName?otherDataModel.subscriber.maritalStatusName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.maritalStatusName?otherDataModel.subscriber.maritalStatusName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Blood Group</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.bloodGroupName?otherDataModel.subscriber.bloodGroupName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.bloodGroupName?otherDataModel.subscriber.bloodGroupName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Preferred Language</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.preferredLanguageName?otherDataModel.subscriber.preferredLanguageName:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.preferredLanguageName?otherDataModel.subscriber.preferredLanguageName:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">
       <div class="form-group form-group-static">
         <div class="control-label">Emergency Phone Number</div>
-        <p class="form-control-static">{{otherDataModel.subscriber.emergencyPhoneNumber?otherDataModel.subscriber.emergencyPhoneNumber:'-'}}</p>
+        <p class="form-control-static">
+          {{otherDataModel.subscriber.emergencyPhoneNumber?otherDataModel.subscriber.emergencyPhoneNumber:'-'}}</p>
       </div>
     </div>
     <div class="col-4 col-xxl-3">

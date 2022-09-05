@@ -14,7 +14,7 @@
         </button> -->
         <div class="search-btns">
             <button
-                *ngIf="(isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date')"
+                *ngIf="((isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date') )&& selectedSearchMode!='requestBundleId'"
                 type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
@@ -22,7 +22,7 @@
             <span class="separator"
                 *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && (selectedSearchMode == 'payer&date' && selectedPayerType !== 'N'))"></span>
             <button
-                *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date')"
+                *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date') || selectedSearchMode=='requestBundleId'"
                 type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(false)">
                 <mat-icon>search</mat-icon>
                 <span>NPHIES</span>

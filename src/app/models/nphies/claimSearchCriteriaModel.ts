@@ -17,4 +17,5 @@ export class ClaimSearchCriteriaModel {
   payerIds?: string;
   invoiceNo?: string;
   organizationId?: string;
+  requestBundleId?: string;
 }
