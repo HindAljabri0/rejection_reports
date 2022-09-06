@@ -583,7 +583,7 @@
         </div>
       </ng-container>
       <div class="list-container pt-0"
-        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && !envProd">
+        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder)">
         <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder">
           <li>
             <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
