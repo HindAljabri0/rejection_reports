@@ -4,10 +4,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { daysSupplyModel } from 'src/app/models/daysSupplyModel';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { AddMedicationSupplyDialogComponent } from '../add-medication-supply-dialog/add-medication-supply-dialog.component';
 import { MedicationDaysUploadComponent } from '../medication-days-upload/medication-days-upload.component';
 
 @Component({
@@ -24,8 +26,7 @@ export class DaysOfSupplyUploadComponent implements OnInit {
   pageSize: number;
 
   FormList: FormGroup = this.formBuilder.group({
-    uploadFromDate: [''],
-    uploadToDate: ['']
+    searchText: ['']
   });
 
   isSubmitted = false;
@@ -120,9 +121,6 @@ export class DaysOfSupplyUploadComponent implements OnInit {
       }
     });
   }
-  DeleteSingleRow(Id : number){
-
-  }
   onSubmit() {
     this.isSubmitted = true;
     if (this.FormList.valid) {
@@ -136,7 +134,6 @@ export class DaysOfSupplyUploadComponent implements OnInit {
       this.nphiesConfigurationService.getMedicationList(this.sharedService.providerId, this.page,this.pageSize).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
-          console.log("body = "+JSON.stringify(body));
           // this.transactions = body;
           this.daysSupplyListModel = new PaginatedResult(body, daysSupplyModel);
           this.Lists = this.daysSupplyListModel.content;
@@ -156,6 +153,68 @@ export class DaysOfSupplyUploadComponent implements OnInit {
       });
 
     }
+  }
+  openAddEditDialog(item:any = null){
+    const dialogRef = this.dialog.open(AddMedicationSupplyDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-sm'],
+      autoFocus: false,
+      data: {
+        item: item
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.page = 0;
+        this.pageSize = 10;
+        this.search();
+      }
+    });
+  }
+  DeleteSingleRow(id:number,Code:string) {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Service Supply Days?',
+        `This will delete Service with Code: ${Code}. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.sharedService.loadingChanged.next(false);
+          this.nphiesConfigurationService.deleteMedicationRecord(this.sharedService.providerId, id).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              if (event.status === 200) {
+                const body: any = event.body;
+                // tslint:disable-next-line:max-line-length
+                this.dialogService.showMessage('Success:', body.message, 'success', true, 'OK');
+                this.search();
+              }
+              this.sharedService.loadingChanged.next(false);
+            }
+      
+          }, error => {
+            this.sharedService.loadingChanged.next(false);
+            if (error instanceof HttpErrorResponse) {
+              if (error.status === 400) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+              } else if (error.status === 404) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 500) {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              } else if (error.status === 503) {
+                const errors: any[] = [];
+                if (error.error.errors) {
+                  error.error.errors.forEach(x => {
+                    errors.push(x);
+                  });
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+                } else {
+                  this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+                }
+              }
+            }
+          });
+        }
+      });
   }
 
 }

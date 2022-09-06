@@ -12,27 +12,11 @@
             <div class="row small-gutter">
                 <div class="col-xl-3 col-md-6">
                     <div class="form-group">
-                        <label class="control-label">From Upload Date</label>
-                        <div class="date-picker">
-                            <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select From Upload Date"
-                                class="form-control" formControlName="uploadFromDate" (dateChange)="updateFromDate()">
-                            <mat-datepicker-toggle [for]="fromUploadDateDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker #fromUploadDateDatePicker></mat-datepicker>
-                        </div>
+                        <label class="control-label">Standard Code Or Desc<span class="asterisk">*</span></label>
+                        <input class="form-control" placeholder="Search By Standard Code or Description" type="text"
+                            formControlName="searchText">
                     </div>
 
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">To Upload Date</label>
-                        <div class="date-picker">
-                            <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date"
-                                class="form-control" [min]="FormList.controls.uploadFromDate.value"
-                                formControlName="uploadToDate">
-                            <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker #toUploadDatePicker></mat-datepicker>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="form-group text-right">
@@ -57,30 +41,35 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of Lists">
-                        <td class="row-click" >
-                          {{item.listId}}</td>
-                        <td class="row-click" >
-                          {{item.standardCode}}</td>
-                        <td class="row-click" >
-                          {{item.standardDesc}}</td>
-                          <td class="row-click" >
+                        <td class="row-click">
+                            {{item.listId}}</td>
+                        <td class="row-click">
+                            {{item.standardCode}}</td>
+                        <td class="row-click">
+                            {{item.standardDesc}}</td>
+                        <td class="row-click">
                             {{item.daysOfSupply}}</td>
-                        <td class="row-click" >
-                          {{item.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
+                        <td class="row-click">
+                            {{item.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
                         <td class="actions">
-                          <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                            <mat-icon>more_vert</mat-icon>
-                          </button>
-                          <mat-menu #actionsMenu xPosition="before">
-                            <ng-template matMenuContent>
-                              <button mat-menu-item type="button" (click)="DeleteSingleRow(item.ListId)">
-                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                <span>Delete</span>
-                              </button>
-                            </ng-template>
-                          </mat-menu>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #actionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                    <button type="button" mat-menu-item (click)="openAddEditDialog(item)">
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button mat-menu-item type="button"
+                                        (click)="DeleteSingleRow(item.listId,item.standardCode)">
+                                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </ng-template>
+                            </mat-menu>
                         </td>
-                      </tr>
+                    </tr>
                 </tbody>
             </table>
 
@@ -108,7 +97,23 @@
         </div>
     </div>
 </div>
-
-<button mat-fab color="primary" (click)="openUploadlistDialog()" class="page-fab">
-    <mat-icon class="material-icons-outlined">file_upload</mat-icon>
+<button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="addMenu">
+    <mat-icon>add</mat-icon>
 </button>
+<mat-menu #addMenu yPosition="above" xPosition="before">
+    <ng-template matMenuContent>
+        <button type="button" mat-menu-item (click)="openAddEditDialog()">
+            <span class="d-flex align-items-center">
+                <mat-icon class="material-icons-outlined">add</mat-icon>
+                <span>Add New Medication</span>
+            </span>
+        </button>
+        <button type="button" mat-menu-item (click)="openUploadlistDialog()">
+            <span class="d-flex align-items-center">
+                <mat-icon class="material-icons-outlined">file_upload</mat-icon>
+                <span>Upload Medication Supply</span>
+            </span>
+        </button>
+
+    </ng-template>
+</mat-menu>

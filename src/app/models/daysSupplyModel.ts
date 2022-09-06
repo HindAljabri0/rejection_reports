@@ -2,7 +2,7 @@ import { Paginateable } from "./paginateable";
 
 export class daysSupplyModel extends Paginateable {
 
-    ListId: number;
+    listId: number;
     standardCode: string;
     standardDesc: string;
     daysOfSupply: string;
@@ -11,7 +11,7 @@ export class daysSupplyModel extends Paginateable {
   
     constructor(body: {}) {
       super(body);
-      this.ListId = body['listId'];
+      this.listId = body['listId'];
       this.standardCode= body['standardCode'];
       this.standardDesc= body['standardDesc'];
       this.daysOfSupply=  body['daysOfSupply'];

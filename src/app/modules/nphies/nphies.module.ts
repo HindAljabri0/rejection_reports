@@ -74,6 +74,7 @@ import { MatTabsModule } from '@angular/material';
 import { ApprovalJsonResponseComponent } from './view-preauthorization-details/approval-json-response/approval-json-response.component';
 import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
 import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
+import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dialog/add-medication-supply-dialog.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { MedicationDaysUploadComponent } from './medication-days-upload/medicati
     EligiblityJsonResponseComponent,
     ApprovalJsonResponseComponent,
     DaysOfSupplyUploadComponent,
-    MedicationDaysUploadComponent
+    MedicationDaysUploadComponent,
+    AddMedicationSupplyDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -163,7 +165,8 @@ import { MedicationDaysUploadComponent } from './medication-days-upload/medicati
     PricelistUploadComponent,
     AddPricelistDialogComponent,
     DaysOfSupplyUploadComponent,
-    MedicationDaysUploadComponent
+    MedicationDaysUploadComponent,
+    AddMedicationSupplyDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent
