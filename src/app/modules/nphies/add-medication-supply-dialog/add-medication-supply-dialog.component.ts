@@ -50,11 +50,8 @@ export class AddMedicationSupplyDialogComponent implements OnInit {
     });
     //console.log("data = "+JSON.stringify(this.data));
     if (this.data && this.data.item) {
-      let service= this.itemList.filter(x => x.code === this.data.item.standardCode)[0];
-      console.log("service = "+service);
       this.FormItem.patchValue({
         listId: this.data.item.listId,
-        service:service,
         standardCode: this.data.item.standardCode,
         standardDesc: this.data.item.standardDesc,
         daysOfSupply: this.data.item.daysOfSupply,
@@ -74,7 +71,7 @@ export class AddMedicationSupplyDialogComponent implements OnInit {
           this.itemList = event.body;
           
           if (this.data.item && this.data.item.standardCode) {
-            let service= this.itemList.filter(x => x.code === this.data.item.service.code)[0]
+            let service= this.itemList.filter(x => x.code === this.data.item.standardCode)[0]
             this.FormItem.patchValue({
               service:service,
               standardCode: this.data.item.standardCode,
@@ -127,7 +124,7 @@ onSubmit() {
     this.isSubmitted = true;
     console.log(this.FormItem.value);
     if (this.FormItem.valid) {
-      console.log("on submit form valid");
+      //console.log("on submit form valid");
       const model = this.FormItem.value;
       
       delete model.filteredItem;

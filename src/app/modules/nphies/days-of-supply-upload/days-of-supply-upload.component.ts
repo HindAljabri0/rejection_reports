@@ -117,7 +117,7 @@ export class DaysOfSupplyUploadComponent implements OnInit {
         //   uploadFromDate: '',
         //   uploadToDate: ''
         // });
-        this.onSubmit();
+        
       }
     });
   }
@@ -131,7 +131,7 @@ export class DaysOfSupplyUploadComponent implements OnInit {
         model.uploadFromDate = this.datePipe.transform(this.FormPriceList.controls.uploadFromDate.value, 'yyyy-MM-dd');
       }*/
       //this.editURL(model.fromDate, model.toDate);
-      this.nphiesConfigurationService.getMedicationList(this.sharedService.providerId, this.page,this.pageSize).subscribe((event: any) => {
+      this.nphiesConfigurationService.getMedicationList(this.FormList.controls.searchText.value,this.sharedService.providerId, this.page,this.pageSize).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;

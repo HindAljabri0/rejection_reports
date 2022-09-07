@@ -96,8 +96,8 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
-  getMedicationList(providerId: string, page: number, size: number) {
-    let requestURL = `/providers/${providerId}/daysofsupply?page=${page}&size=${size}`;
+  getMedicationList(searchText:string ,providerId: string, page: number, size: number) {
+    let requestURL = `/providers/${providerId}/daysofsupply?query=${searchText}&page=${page}&size=${size}`;
 
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
