@@ -451,11 +451,11 @@
               <span class="text">Price List</span>
             </a>
           </li>
-          <!-- <li>
-            <a routerLink="/">
-              <span class="text">Medication Days of Supply</span>
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+            <a routerLink="/nphies/days-of-supply-upload" routerLinkActive="is-active">
+              <span class="text">Days Of Supply Upload</span>
             </a>
-          </li> -->
+          </li>
         </ul>
       </mat-expansion-panel>
     </mat-accordion>
