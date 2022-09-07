@@ -415,21 +415,6 @@
           </a>
           <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>
-        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
-          <a routerLink="/nphies/physicians" routerLinkActive="is-active">
-            <span class="text">Physicians</span>
-          </a>
-        </li>
-        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
-          <a routerLink="/nphies/pricelist" routerLinkActive="is-active">
-            <span class="text">Price List</span>
-          </a>
-        </li>
-        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
-          <a routerLink="/nphies/days-of-supply-upload" routerLinkActive="is-active">
-            <span class="text">Days Of Supply Upload</span>
-          </a>
-        </li>
       </ul>
 
       <!-- <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
@@ -439,6 +424,41 @@
           </a>
         </li>
       </ul> -->
+    <mat-accordion>
+      <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span class="d-flex align-items-center">
+              <span>Configurations</span>
+            </span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul class="nav-list">
+          <li>
+            <a routerLink="/nphies/configurations" routerLinkActive="is-active">
+              <!-- <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
+              <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" /> -->
+              <span class="text">Code Mapping</span>
+            </a>
+          </li>
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+            <a routerLink="/nphies/physicians" routerLinkActive="is-active">
+              <span class="text">Physicians</span>
+            </a>
+          </li>
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+            <a routerLink="/nphies/pricelist" routerLinkActive="is-active">
+              <span class="text">Price List</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a routerLink="/">
+              <span class="text">Medication Days of Supply</span>
+            </a>
+          </li> -->
+        </ul>
+      </mat-expansion-panel>
+    </mat-accordion>
 
       <ng-container *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
         <div class="list-title">

@@ -178,6 +178,12 @@ export class RecentReconciliationComponent implements OnInit {
     }
   }
 
+  readAllNotification() {
+    this.paymentReconciliations.forEach(x=>x.notificationStatus = 'read');
+    this.sharedServices.unReadRecentCount = 0;
+    this.sharedServices.markAllAsRead(this.sharedServices.providerId, "payment-reconciliation");
+  }
+
   get paginatorLength() {
     if (this.paymentReconciliationModel != null) {
       return this.paymentReconciliationModel.totalElements;
