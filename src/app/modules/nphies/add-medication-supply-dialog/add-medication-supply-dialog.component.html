@@ -36,6 +36,9 @@
         [ngClass]="{'has-error' : (isSubmitted || FormItem.get('daysOfSupply').touched) && FormItem.get('daysOfSupply').hasError('required')}">
         <label class="control-label">Days Of Supply<span class="asterisk">*</span></label>
         <input class="form-control" placeholder="Enter days of supply" type="text" formControlName="daysOfSupply">
+        <div *ngIf="IsInvalidNumber && (isSubmitted || FormItem.get('daysOfSupply').touched)">
+          <span class="error-text">Days of supply must be greater than 0</span>
+        </div>
         <div
           *ngIf="(isSubmitted || FormItem.get('daysOfSupply').touched) && FormItem.get('daysOfSupply').hasError('required')">
           <span class="error-text">Please enter days of supply</span>
