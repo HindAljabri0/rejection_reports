@@ -7,8 +7,11 @@ export interface UserPrivileges {
     isPAM: boolean,
     RCM: {
       isAdmin: boolean,
-      isDoctor: boolean,
-      isCoder: boolean
+      scrubbing: {
+        isAdmin: boolean,
+        isDoctor: boolean,
+        isCoder: boolean
+      }
     }
   };
   ProviderPrivileges: {
@@ -61,8 +64,11 @@ export const initState: MainState = {
       isPAM: false,
       RCM: {
         isAdmin: false,
-        isCoder: false,
+        scrubbing: {
+          isAdmin: false,
+          isCoder: false,
         isDoctor: false
+        }
       }
     },
     ProviderPrivileges: {
@@ -116,8 +122,11 @@ const _mainReducer = createReducer(
         isPAM: AuthService.hasPrivilege('101', '101', '22'),
         RCM: {
           isAdmin: AuthService.hasPrivilege('101', '101', '24.0'),
-          isDoctor: AuthService.hasPrivilege('101', '101', '24.41'),
-          isCoder: AuthService.hasPrivilege('101', '101', '24.42')
+          scrubbing: {
+            isDoctor: AuthService.hasPrivilege('101', '101', '24.41'),
+            isCoder: AuthService.hasPrivilege('101', '101', '24.42'),
+            isAdmin: AuthService.hasPrivilege('101', '101', '24.43'),
+          }
         }
       },
       ProviderPrivileges: {

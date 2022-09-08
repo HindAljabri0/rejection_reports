@@ -41,14 +41,14 @@ export class ClaimReviewService {
 
     fetchUnderReviewUploadsOfStatus(status: string, pageNumber: number, pageSize: number, userName: string, doctorId: string, coderId: string, providerId: string) {
         var requestURL = "";
-        if (this.sharedService.userPrivileges.WaseelPrivileges.RCM.isAdmin) {
+        if (this.sharedService.userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin) {
             requestURL = '/uploads';
         } else {
             requestURL = `/scrubbing/upload`;
         }
         return this.http.post(environment.claimReviewService + requestURL, {
-            "status": status, "page": pageNumber, "pageSize": pageSize, "userName": userName, "doctor": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isDoctor,
-            "coder": this.sharedService.userPrivileges.WaseelPrivileges.RCM.isCoder, "doctorName": doctorId, "coderName": coderId, "providerId": providerId
+            "status": status, "page": pageNumber, "pageSize": pageSize, "userName": userName, "doctor": this.sharedService.userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor,
+            "coder": this.sharedService.userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder, "doctorName": doctorId, "coderName": coderId, "providerId": providerId
         });
     }
 

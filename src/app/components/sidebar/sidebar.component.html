@@ -496,7 +496,7 @@
 
 
       <ng-container
-        *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder))">
+        *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder))">
         <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
           <hr>
         </div>
@@ -574,7 +574,7 @@
         </mat-expansion-panel>
       </div>
       <ng-container
-        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder) && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
+        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin || userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder) && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || userPrivileges.WaseelPrivileges.isPAM)">
         <div class="list-title">
           <hr>
         </div>
@@ -583,14 +583,8 @@
         </div>
       </ng-container>
       <div class="list-container pt-0"
-        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder)">
-        <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.isDoctor || userPrivileges.WaseelPrivileges.RCM.isCoder">
-          <li>
-            <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
-              <span class="text">Claims Scrubbing</span>
-            </a>
-          </li>
-        </ul>
+        *ngIf="(userPrivileges.WaseelPrivileges.RCM.isAdmin ||userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin || userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder)">
+        
         <mat-accordion displayMode="flat" *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin">
           <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
             <mat-expansion-panel-header>
@@ -618,7 +612,7 @@
           </li>
         </ul>
       </ng-container>
-      <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin">
+      <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin">
         <div class="list-title">
           <hr>
         </div>
@@ -630,6 +624,13 @@
           </li>
         </ul>
       </ng-container>
+      <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder">
+        <li>
+          <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+            <span class="text">Claims Scrubbing - Auditing</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

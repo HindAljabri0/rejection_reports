@@ -8,7 +8,6 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
 import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
 
@@ -26,9 +25,6 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
   
- 
-
-  // signed: boolean = false
 
   constructor(private activatedRoute: ActivatedRoute,
     private tawuniyaGssService: TawuniyaGssService,
@@ -65,7 +61,6 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
           this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose =>{
             this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
           });
-          //  this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
           } else {
           this.initiateModel = initiateModel
           this.startConfirmationTimer()
@@ -74,9 +69,6 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       }, error =>{
         this.sharedServices.loadingChanged.next(false);
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", error.error.message, true));
-
-        // "Could not initiate GSS report, kindly try to regenerate GSS report again later"
-        // this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
       });
   }
 
@@ -111,22 +103,16 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.generateReportInitiate(this.initiateModel.lossMonth).subscribe(data => {
       this.initiateModel = data;
-      // console.log(this.initiateModel);
       this.sharedServices.loadingChanged.next(false);
       if (showMessage) {
         this.startConfirmationTimer()
-        // return this.store.dispatch(showSnackBarMessage({ message: "GSS Report Generated Successfully!" }));
       }
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.message) {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", err.error.message, true));
-
-        // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
       } else {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", 'Internal Server error', true));
-
-        // return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
     });
   }

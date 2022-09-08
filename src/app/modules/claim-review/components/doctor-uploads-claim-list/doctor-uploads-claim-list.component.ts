@@ -94,8 +94,8 @@ export class DoctorUploadsClaimListComponent implements OnInit {
         payload: {
           page: this.pageControl.pageNumber,
           pageSize: this.pageControl.pageSize,
-          doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
-          coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder
+          doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor,
+          coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder
         }
       }
     }))
@@ -237,10 +237,10 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       if (result) {
         this.store.dispatch(markAsDoneAll({
           data: {
-            coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
-            doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
+            coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder,
+            doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor,
             provClaimNo: null, uploadId: this.uploadId,
-            userName: this.authService.getUserName()
+            userName: this.authService.getAuthUsername()
           }
         }));
         return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
@@ -256,9 +256,9 @@ export class DoctorUploadsClaimListComponent implements OnInit {
       data: {
         uploadId: this.uploadId,
         provClaimNoList: this.selectedClaimNumberIds,
-        coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder,
-        doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor,
-        userName: this.authService.getUserName()
+        coder: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder,
+        doctor: this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor,
+        userName: this.authService.getAuthUsername()
       }
     }));
     return this.store.dispatch(showSnackBarMessage({ message: 'Claim(s) Marked as Done Successfully!' }));
