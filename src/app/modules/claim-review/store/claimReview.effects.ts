@@ -31,7 +31,7 @@ export class ClaimReviewEffects {
             requestParams.tabName,
             requestParams.pageControl.pageNumber,
             requestParams.pageControl.pageSize,
-            this.authService.getUserName(),
+            this.authService.getAuthUsername(),
             requestParams.doctorId,
             requestParams.coderId,
             requestParams.providerId
