@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -78,6 +78,17 @@ export class DbMappingService {
   getNphiesPayerMapping(providerId: string) {
     const requestURL = `/providers/${providerId}/nphies/payer-mapping`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  saveNphiesPayerMapping(providerId: string, body) {
+    const requestURL = `/providers/${providerId}/nphies/payer-mapping`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
+    return this.http.request(request);
+  }
+  deleteNphiesPayerMapping(providerId: string, body) {
+    const requestURL = `/providers/${providerId}/nphies/payer-mapping`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL, body, { headers });
     return this.http.request(request);
   }
   savePollConfiguration(body, providerId) {

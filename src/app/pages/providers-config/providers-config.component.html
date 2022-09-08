@@ -249,12 +249,21 @@
 
       <ng-container *ngIf="(errors.NphiespayerMappingError == null || errors.NphiespayerMappingError == '') && !componentLoading.NphiesPayerMapping">
         <div class="row">
-          <div class="col-xxl-4 col-6" *ngFor="let Nphiepayer of addNphiesPayerMappingList;let i = index">
-            <p class="pb-2 text-primary medium">{{newNphiesPayerName[Nphiepayer]}} </p>
+          <!-- <div class="col-xxl-4 col-6" *ngFor="let Nphiepayer of addNphiesPayerMappingList;let i = index">
+            <p class="pb-2 text-primary medium">{{newNphiesPayerName[Nphiepayer.code]}}<span *ngIf="Nphiepayer.tpaNphiesId !== '-1'"> - {{Nphiepayer.tpaName}}</span> </p>
             <div class="form-group">
               <mat-form-field appearance="fill">
                 <mat-label>Maped value</mat-label>
-                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer]" required type="text">
+                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer.code]" required type="text">
+              </mat-form-field>
+            </div>
+          </div> -->
+          <div class="col-xxl-4 col-6" *ngFor="let payer of associatedNphiePayers;let i = index">
+            <p class="pb-2 text-primary medium">{{newNphiesPayerName[payer.combination]}}<span *ngIf="payer.tpaNphiesId !== '-1'"> - {{payer.tpaName}}</span> </p>
+            <div class="form-group">
+              <mat-form-field appearance="fill">
+                <mat-label>Maped value</mat-label>
+                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[payer.combination]" type="text">
               </mat-form-field>
             </div>
           </div>
