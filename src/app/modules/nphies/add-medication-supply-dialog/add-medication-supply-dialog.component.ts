@@ -15,7 +15,9 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
   templateUrl: './add-medication-supply-dialog.component.html',
   styleUrls: []
 })
+
 export class AddMedicationSupplyDialogComponent implements OnInit {
+  
   FormItem: FormGroup = this.formBuilder.group({
     listId: [''],
     standardCode: ['', Validators.required],
@@ -25,6 +27,7 @@ export class AddMedicationSupplyDialogComponent implements OnInit {
     providerId: ['', Validators.required],
     itemFilter: ['']
   });
+  
   IsItemLoading = false;
   @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
   itemList: any = [];
@@ -99,7 +102,7 @@ export class AddMedicationSupplyDialogComponent implements OnInit {
     let service= this.itemList.filter(x => x.code === this.FormItem.controls.service.value.code)[0]
     this.FormItem.patchValue({
       standardCode: service.code,
-      standardDesc : service.description.toLowerCase()
+      standardDesc : service.description
     });
   }
   filterItem() {
@@ -119,11 +122,20 @@ export class AddMedicationSupplyDialogComponent implements OnInit {
       this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
+  get IsInvalidNumber() {
+    //console.log("pattern test = "+pattern.test(parseFloat(this.FormItem.controls.daysOfSupply.value).toString()));
+    return this.FormItem.controls.daysOfSupply.value < 0;
+  }
 onSubmit() {
   
     this.isSubmitted = true;
     console.log(this.FormItem.value);
+    
     if (this.FormItem.valid) {
+      /*console.log("value="+this.IsInvalidNumber);
+      if(!this.IsInvalidNumber){
+        return;
+      }*/
       //console.log("on submit form valid");
       const model = this.FormItem.value;
       
