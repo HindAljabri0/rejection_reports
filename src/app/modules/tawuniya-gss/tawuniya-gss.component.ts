@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
@@ -9,6 +11,7 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { SharedServices } from 'src/app/services/shared.services';
 import { InitiateResponse } from './models/InitiateResponse.model';
 import { TawuniyaGssService } from './Services/tawuniya-gss.service';
+import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generate-report-dialog/tawuniya-gss-generate-report-dialog.component';
 
 
 @Component({
@@ -33,32 +36,37 @@ export class TawuniyaGssComponent implements OnInit {
     private sharedServices: SharedServices,
     private downloadService: DownloadService,
     private dialogService: DialogService,
+    private dialog: MatDialog
   ) { }
 
-   ngOnInit() {
-    // this.validateFormWhenChanged();
+  ngOnInit() {
   }
 
+
   openGenerateReportDialog() {
-    let lossMonthAsDate: Date = new Date();
-    let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
-    let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear() - 1 : lossMonthAsDate.getFullYear()
-    let lossMonth = year + '/' + month;
-    this.sharedServices.loadingChanged.next(true);
-    this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
-      this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
-      this.sharedServices.loadingChanged.next(false);
-    }, err => {
-      this.sharedServices.loadingChanged.next(false);
-      this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
+    const dialogRef = this.dialog.open(TawuniyaGssGenerateReportDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-sm']
     })
+    dialogRef.afterClosed().subscribe(lossMonth => {
+      if (lossMonth != undefined) {
+        console.log(`lossMonth: `, lossMonth);
+        this.sharedServices.loadingChanged.next(true);
+        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
+          this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
+          this.sharedServices.loadingChanged.next(false);
+        }, err => {
+          this.sharedServices.loadingChanged.next(false);
+          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", err.error.message, true));
+        })
+      }
+    });
   }
 
   openDetailView(model: InitiateResponse) {
     this.router.navigate([model.gssReferenceNumber, "report-details"], { relativeTo: this.activatedRoute, queryParams: { inquiry: 'true' } });
   }
 
- searchQuerySummary() {
+  searchQuerySummary() {
     const newFromDate = new Date(this.fromDateMonth.value);
     const newToDate = new Date(this.toDateMonth.value);
     if (newFromDate && newToDate && !this.valid(newFromDate, newToDate)) {
@@ -71,8 +79,8 @@ export class TawuniyaGssComponent implements OnInit {
     if (this.fromDateMonth.invalid || this.toDateMonth.invalid) {
       return;
     }
-   
-   
+
+
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.gssQuerySummary(newFromDate.getFullYear() + "/" + (newFromDate.getMonth() + 1), newToDate.getFullYear() + "/" + (newToDate.getMonth() + 1)).subscribe(data => {
       this.initiateModel = data;
@@ -122,9 +130,6 @@ export class TawuniyaGssComponent implements OnInit {
     this.minDate = new Date(this.minDate.setMonth(this.minDate.getMonth()));
   }
 
-  getEmptyStateMessage() {
-    return 'No GSS reports found with the requested search criteria!';
-  }
 
   searchResponseIsNull() {
 
@@ -135,42 +140,4 @@ export class TawuniyaGssComponent implements OnInit {
   }
 
 
-  // validateFormWhenChanged() {
-
-  //   // this.validateOverlappingDate(this.fromDateMonth)
-  //   this.fromDateMonth.valueChanges.subscribe(fromDateMonthVal =>{
-  //     console.log(`fromDateMonthVal`, fromDateMonthVal);
-  //     if(!fromDateMonthVal || !this.toDateMonth.value){
-  //       this.fromDateMonth.setErrors({overlapped: null});
-  //       this.fromDateMonth.updateValueAndValidity()
-  //       return;
-  //     }
-  //     const newFromDate = new Date(fromDateMonthVal);
-  //     const newToDate = new Date(this.toDateMonth.value);
-  //     if (!this.valid(newFromDate, newToDate)) {
-  //       this.fromDateMonth.setErrors({overlapped: true})
-  //     } else {
-  //       this.fromDateMonth.setErrors({overlapped: null});
-  //       this.fromDateMonth.updateValueAndValidity()
-  //     }
-  //   })
-
-  //   this.toDateMonth.valueChanges.subscribe(toDateMonthVal =>{
-  //     console.log(`toDateMonthVal`, toDateMonthVal);
-
-  //     if(!toDateMonthVal || !this.fromDateMonth.value){
-  //       this.fromDateMonth.setErrors({overlapped: null});
-  //       this.fromDateMonth.updateValueAndValidity()
-  //       return;
-  //     }
-  //     const newFromDate = new Date(this.fromDateMonth.value);
-  //     const newToDate = new Date(toDateMonthVal);
-  //     if (!this.valid(newFromDate, newToDate)) {
-  //       this.fromDateMonth.setErrors({overlapped: true})
-  //     } else {
-  //       this.fromDateMonth.setErrors({overlapped: null});
-  //       this.fromDateMonth.updateValueAndValidity()
-  //     }
-  //   })
-  // }
 }

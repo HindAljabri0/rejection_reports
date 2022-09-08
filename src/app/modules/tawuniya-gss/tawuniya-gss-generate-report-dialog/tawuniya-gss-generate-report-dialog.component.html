@@ -8,8 +8,14 @@
             <label class="control-label">Date To</label>
             <div class="date-picker">
                 <!--  -->
-                <input autocomplete="off" class="form-control date-picker" placeholder="Select Loss Month" bsDatepicker
-                    [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" [formControl]='lossMonth' [maxDate]="today" />
+                <input autocomplete="off" class="form-control date-picker" 
+                placeholder="Select Loss Month" bsDatepicker
+                    [bsConfig]="datePickerConfig" 
+                    (onShown)="onOpenCalendar($event)" 
+                    [formControl]='lossMonth' 
+                    [maxDate]="maxDate"
+                    [minDate]="minDate"
+                     />
             </div>
             <mat-error *ngIf="lossMonth.invalid && tawuniyaGssForm.submitted">Loss Month is required
             </mat-error>
