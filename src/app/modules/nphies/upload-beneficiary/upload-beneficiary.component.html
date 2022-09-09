@@ -43,27 +43,29 @@
 
     <h5 class="form-title">Upload Summary</h5>
 
-    <hr class="hr separator">
     <div class="row small-gutter pt-3">
       <div class="col-6 col-lg-4 col-xl-3 pb-2">
-        <p class="smaller-label short-text-height">Number Of Saved</p>
+        <p class="smaller-label short-text-height">No. of Beneficiaries Saved</p>
         <p class="dashboard-numbers text-success">{{data.savedBeneficiaryCount}}</p>
       </div>
       <div class="col-6 col-lg-4 col-xl-3 pb-2">
-        <p class="smaller-label short-text-height">Number Of Failed</p>
+        <p class="smaller-label short-text-height">No. of Beneficiaries Not Saved</p>
         <p class="dashboard-numbers text-danger">{{data.failToSaveBeneficiaryCount}}</p>
       </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+        <p class="smaller-label short-text-height">No. of Coverages Not Saved</p>
+        <p class="dashboard-numbers text-danger">{{data.failToSaveInsurancePlanCount}}</p>
+      </div>
+
     </div>
     <hr class="hr separator">
 
-    <ng-container *ngIf="data.documentIdNotUpdated != null && data.documentIdNotUpdated.length > 0">
-      <h5 class="medium pb-2">Errors</h5>
+    <ng-container *ngIf="data.documentIdNotUpdated != null && data.documentIdNotUpdated.length > 0">      
       <div class="table-responsive">
         <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-
-              <th class="light-bg-danger text-danger">Row No - Message</th>
+              <th class="light-bg-danger text-danger">Errors</th>
             </tr>
           </thead>
           <tbody>
