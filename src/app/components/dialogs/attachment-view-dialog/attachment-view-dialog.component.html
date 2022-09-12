@@ -3,9 +3,14 @@
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="attachment-view-body">
-    <img *ngIf="!isPdf() && !isVideo()" [src]="attachmentSource" class="attachment-view-img" [alt]="data.filename" />
+    <img *ngIf="!isPdf() && !isVideo() && !isDicom()" [src]="attachmentSource" class="attachment-view-img" [alt]="data.filename" />
 
     <iframe class="attachment-view-frame" *ngIf="isPdf()" [src]="attachmentSource"></iframe>
 
     <video class="attachment-view-video" *ngIf="isVideo()" [src]="attachmentSource" style="width: 100%;height: 99%;" autoplay controls></video>
+
+    <div *ngIf="isDicom()">
+        <p>We are currently not able to view the file here. Use some third-party tool to view the Dicom File. We are working on to View Dicom Files here.</p>
+        <a target="_blank" href="https://www.imaios.com/en/Imaios-Dicom-Viewer" class="primary-link" title="Click here to open Third-Party Dicom Opener">Click here to open Third-Parth Dicom Opener</a>
+    </div>
 </div>
