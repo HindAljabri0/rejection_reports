@@ -141,7 +141,7 @@ import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dial
     SmoothScrollModule,
     NphiesRoutingModule,
     CarouselModule,
-    StoreModule.forFeature('configurationState', configurationReducer),
+    StoreModule.forFeature('nphiesConfigurationState', configurationReducer),
     EffectsModule.forFeature([ConfigurationsEffects]),
     TagInputModule
   ],
