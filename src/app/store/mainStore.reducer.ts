@@ -43,6 +43,7 @@ export interface UserPrivileges {
       canAccessPriceList: boolean,
       canAccessPhysician: boolean,
       canAccessDaysOfSupply: boolean,
+      canAccessCodeMapping: boolean,
       canAccessConvertPreAuthToClaim: boolean,
       canAccessPrepareClaim: boolean,
       canAccessConvertClaim: boolean
@@ -98,6 +99,7 @@ export const initState: MainState = {
         canAccessPriceList: false,
         canAccessPhysician: false,
         canAccessDaysOfSupply:false,
+        canAccessCodeMapping:false,
         canAccessConvertPreAuthToClaim: false,
         canAccessPrepareClaim: false,
         canAccessConvertClaim: false
@@ -153,6 +155,7 @@ const _mainReducer = createReducer(
           canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61')),
           canAccessPhysician: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.62')),
           canAccessDaysOfSupply: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.63')),
+          canAccessCodeMapping: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.64')),
           canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.7')),
           canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
           canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),
