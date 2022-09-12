@@ -24,7 +24,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
   downloaded: boolean = false
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
-  
+  lossMonth : string;  
 
   constructor(private activatedRoute: ActivatedRoute,
     private tawuniyaGssService: TawuniyaGssService,
@@ -39,6 +39,9 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     this.sharedServices.loadingChanged.next(true);
     this.gssReferenceNumber = this.activatedRoute.snapshot.params.gssReferenceNumber;
     let isInquiry = this.activatedRoute.snapshot.queryParams.inquiry;
+    this.lossMonth = decodeURIComponent(this.activatedRoute.snapshot.queryParams.lossMonth);
+    console.log("lossMOnth : ", this.lossMonth);
+    
     if (isInquiry) {
       this.tawuniyaGssService.gssQueryDetails(this.gssReferenceNumber).subscribe( model => {
         console.log(model);
@@ -46,15 +49,11 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
         this.sharedServices.loadingChanged.next(false);
       });
     } else {
-     this.initiateGssReport();
+     this.initiateGssReport(this.lossMonth);
     }
   }
 
-  initiateGssReport() {
-    let lossMonthAsDate: Date = new Date();
-    let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
-    let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear() - 1 : lossMonthAsDate.getFullYear()
-    let lossMonth = year + '/' + month;
+  initiateGssReport(lossMonth : string ) {
        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe(initiateModel =>{
         this.sharedServices.loadingChanged.next(false);
          if (!initiateModel) {
@@ -101,7 +100,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
 
   generateReport(showMessage: Boolean) {
     this.sharedServices.loadingChanged.next(true);
-    this.tawuniyaGssService.generateReportInitiate(this.initiateModel.lossMonth).subscribe(data => {
+    this.tawuniyaGssService.generateReportInitiate(this.lossMonth).subscribe(data => {
       this.initiateModel = data;
       this.sharedServices.loadingChanged.next(false);
       if (showMessage) {
