@@ -222,7 +222,7 @@
             </div>
             <div class="form-group">
               <mat-form-field appearance="fill">
-                <mat-label>Maped value</mat-label>
+                <mat-label>Mapped value</mat-label>
                 <input matInput placeholder="Mapped value" [disabled]="!newPayerMappingEnable[payer.switchAccountId]" [(ngModel)]="newPayerMappingValue[payer.switchAccountId]"
                   required type="text">
               </mat-form-field>
@@ -253,7 +253,7 @@
             <p class="pb-2 text-primary medium">{{newNphiesPayerName[Nphiepayer.code]}}<span *ngIf="Nphiepayer.tpaNphiesId !== '-1'"> - {{Nphiepayer.tpaName}}</span> </p>
             <div class="form-group">
               <mat-form-field appearance="fill">
-                <mat-label>Maped value</mat-label>
+                <mat-label>Mapped value</mat-label>
                 <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer.code]" required type="text">
               </mat-form-field>
             </div>
@@ -262,7 +262,7 @@
             <p class="pb-2 text-primary medium">{{newNphiesPayerName[payer.combination]}}<span *ngIf="payer.tpaNphiesId !== '-1'"> - {{payer.tpaName}}</span> </p>
             <div class="form-group">
               <mat-form-field appearance="fill">
-                <mat-label>Maped value</mat-label>
+                <mat-label>Mapped value</mat-label>
                 <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[payer.combination]" type="text">
               </mat-form-field>
             </div>
@@ -302,7 +302,7 @@
             <div class="col-6">
               <div class="form-group mb-0">
                 <mat-form-field appearance="fill">
-                  <mat-label>Maped value</mat-label>
+                  <mat-label>Mapped value</mat-label>
                   <input matInput [formControl]="providerMappingController" placeholder="Mapped value" type="text">
                 </mat-form-field>
               </div>
