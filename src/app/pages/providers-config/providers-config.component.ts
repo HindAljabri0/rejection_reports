@@ -399,7 +399,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getPollConfiguration();
   }
 
-  save() {    
+  save() {      
     if (this.isLoading ||
       this.componentLoading.serviceCode ||
       this.componentLoading.portalUser ||
@@ -1332,13 +1332,18 @@ export class ProvidersConfigComponent implements OnInit {
       });      
       this.componentLoading.NphiesPayerMapping = true;
       this.dbMapping.saveNphiesPayerMapping(this.selectedProvider, selectedNphiesPayer).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          const data = event.body['response'];
-          if (data) {
-            this.getNphiesPayerMapping();
-            this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+        if (event instanceof HttpResponse) {          
+          const body: any = event.body;
+          if (body.response) {
+            this.getPayerMapping();
+            if(body.message.indexOf('Data save successfully') > -1){
+              // this.success.NphiesPayerMappingSuccess = body.message;
+              this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+            }else{
+              this.errors.NphiesMappingSaveError = body.message;    
+            }           
           } else {
-            this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
+            this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';          
           }
           this.componentLoading.NphiesPayerMapping = false;
         }
