@@ -51,6 +51,7 @@ export class AuditTrailComponent implements OnInit {
       { value: 'NphiesEligibilityAuditLogType', text: 'NphiesEligibility' },
       { value: 'NphiesPreAuthAuditLogType', text: 'NphiesPreAuth' },
       { value: 'BeneficiaryManipulationAuditLogType', text: 'BeneficairyManipulation' },
+      { value: 'NphiesLegacyClaimAuditLogType', text: 'NphiesLegacyClaimManipulation' }
 
     ];
     this.commenService.loadingChanged.next(true);

@@ -997,12 +997,27 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
-                <div class="ml-auto">
+                <div class="ml-auto action-btns">
+                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                    <mat-icon class="text-primary">text_snippet</mat-icon>
+                    <span>Notes</span>
+                  </button>   
                   <button type="button" class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
                   </button>
                 </div>
+                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                    <li *ngFor="let n of communication.communicationRequestNotesList">
+                      <p>{{n.noteText}}</p>
+                      <div class="info">
+                        <span>{{n.noteAuthor}}</span>
+                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </li>                  
+                  </ul>
+                </mat-menu>
               </div>
               <ng-container *ngIf="communication.communicationDataList">
                 <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
@@ -1160,6 +1175,23 @@
                     'dd/MM/yyyy hh:mm
                     aa'}}</span>
                 </div>
+                <div class="ml-auto action-btns">
+                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                    <mat-icon class="text-primary">text_snippet</mat-icon>
+                    <span>Notes</span>
+                  </button>                    
+                </div>
+                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                    <li *ngFor="let n of communication.communicationRequestNotesList">
+                      <p>{{n.noteText}}</p>
+                      <div class="info">
+                        <span>{{n.noteAuthor}}</span>
+                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </li>                  
+                  </ul>
+                </mat-menu>
               </div>
             </ng-container>
           </li>

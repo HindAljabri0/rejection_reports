@@ -414,6 +414,12 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .mat-menu-panel .mat-menu-item{display: flex;align-items: center;}
 .mat-menu-panel .mat-menu-item .mat-icon{margin-right: 8px;}
 .cdk-overlay-pane .mat-menu-panel{border-radius: 8px;box-shadow: 0px 11px 15px rgba(0, 0, 0, 0.2);}
+.communication-notes.mat-menu-panel{min-width: 400px;max-width: 400px;}
+.communication-notes .mat-menu-content:not(:empty){padding: 0;}
+.communication-notes .notes>li{padding: 16px;border-bottom: 1px solid #e1e1e1;}
+.communication-notes .notes>li>p{font-weight: 500;}
+.communication-notes .notes>li .info{display: flex;align-items: flex-start;}
+.communication-notes .notes>li:last-child{border-bottom: 0;}
 
 /* brand header
 --------------------------------------------------------------------------------------------------------*/
@@ -1512,7 +1518,8 @@ table.inline-label-table{width: 100%;}
 .communication .message .primary-grid{background: transparent;}
 .communication .message .nphies-items{font-size: 14px;font-weight: 400;line-height: 20px;}
 .communication .header-block{padding: 14px;display: flex;border-radius: 8px;border:1px solid #e1e1e1;position: relative;z-index: 1;background: #fff;}
-.communication .action-btn{display: flex;align-items: center;font-weight: 500;padding: 6px 10px;margin-top: -6px;margin-right: -10px;border:0;background:none;color:inherit;}
+.communication .action-btns{margin-top: -6px;margin-right: -10px;white-space: nowrap;}
+.communication .action-btn{display: inline-flex;align-items: center;font-weight: 500;padding: 6px 10px;border:0;background:none;color:inherit;}
 .communication .action-btn .mat-icon{display: block;margin-right: 6px;}
 .communication .body-block{padding: 14px;margin-top: 14px;border: 1px solid #e1e1e1;border-radius: 8px;margin-left: 48px;position: relative;}
 .communication .body-block:after{position: absolute;content:'';width: 24px;left: -24px;bottom: 14px;background: #d2d2d2;height: 1px;}
