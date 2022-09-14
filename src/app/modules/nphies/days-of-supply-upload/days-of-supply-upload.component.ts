@@ -111,13 +111,9 @@ export class DaysOfSupplyUploadComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.FormPriceList.patchValue({
-        //   payerNphiesId: result,
-        //   effectiveDate: '',
-        //   uploadFromDate: '',
-        //   uploadToDate: ''
-        // });
-        
+        this.page = 0;
+        this.pageSize = 10;
+        this.search();
       }
     });
   }
