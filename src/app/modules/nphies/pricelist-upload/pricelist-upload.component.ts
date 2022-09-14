@@ -41,7 +41,7 @@ export class PricelistUploadComponent implements OnInit {
     if (event.value) {
       this.FormPriceList.patchValue({
         payerNphiesId: event.value.payerNphiesId,
-        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : ''
       });
     } else {
       this.FormPriceList.patchValue({
