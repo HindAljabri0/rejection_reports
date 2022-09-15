@@ -22,7 +22,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 @Component({
   selector: 'app-providers-config',
   templateUrl: './providers-config.component.html',
-  styleUrls: ['./providers-config.component.css']
+  styles: []
 })
 export class ProvidersConfigComponent implements OnInit {
 
@@ -399,7 +399,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getPollConfiguration();
   }
 
-  save() {      
+  save() {
     if (this.isLoading ||
       this.componentLoading.serviceCode ||
       this.componentLoading.portalUser ||
@@ -1132,7 +1132,7 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         const response = event.body['response'];
         if (response) {
-          const mappingList = event.body['mappingList'];         
+          const mappingList = event.body['mappingList'];
           this.existingPayers = this.existingPayers.filter(payer => mappingList.findIndex(payer1 => payer1.payerId == payer.payerId));
           if (mappingList.length > 0) {
             mappingList.forEach(payer => {
@@ -1163,7 +1163,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.NphiesPayerError = null;
     this.success.NphiesPayerMappingSuccess = null;
     this.dbMapping.getNphiesPayerMapping(this.selectedProvider).subscribe(event => {
-      if (event instanceof HttpResponse) {      
+      if (event instanceof HttpResponse) {
         const response = event.body['response'];
 
         if (response) {
@@ -1171,11 +1171,11 @@ export class ProvidersConfigComponent implements OnInit {
           this.existingNphiePayers = [];
           if (mappingList.length > 0) {
             mappingList.forEach(x => {
-              x.combination = x.tpaNphiesId +':'+ x.nphiesPayerId;
-              this.newNphiesPayerMappingValue[x.combination] = x.mappingPayerValue;              
+              x.combination = x.tpaNphiesId + ':' + x.nphiesPayerId;
+              this.newNphiesPayerMappingValue[x.combination] = x.mappingPayerValue;
               this.newNphiesPayerTpaId[x.combination] = x.tpaNphiesId;
               this.newNphiesPayerName[x.combination] = x.payerName;
-              this.newNphiesPayerTpaName[x.combination] = x.tpaName != 'None' ? x.tpaName : null;              
+              this.newNphiesPayerTpaName[x.combination] = x.tpaName != 'None' ? x.tpaName : null;
 
               this.addNphiesPayerMappingList.push(x.combination);
               this.existingNphiePayers.push(x);
@@ -1299,7 +1299,7 @@ export class ProvidersConfigComponent implements OnInit {
 
     this.errors.NphiesMappingSaveError = null;
     this.success.NphiesPayerMappingSuccess = null;
-          
+
     const newNphiesPayerMapping = this.existingNphiePayers.filter(payer =>
       // tslint:disable-next-line:max-line-length
       this.newNphiesPayerMappingValue[payer.combination] && ((this.newNphiesPayerMappingValue[payer.combination].trim() != '' && this.newNphiesPayerMappingValue[payer.combination] != payer.mappingPayerValue))
@@ -1329,21 +1329,21 @@ export class ProvidersConfigComponent implements OnInit {
           mappingPayerValue: this.newNphiesPayerMappingValue[id]
         };
         selectedNphiesPayer.push(data);
-      });      
+      });
       this.componentLoading.NphiesPayerMapping = true;
       this.dbMapping.saveNphiesPayerMapping(this.selectedProvider, selectedNphiesPayer).subscribe(event => {
-        if (event instanceof HttpResponse) {          
+        if (event instanceof HttpResponse) {
           const body: any = event.body;
           if (body.response) {
             this.getPayerMapping();
-            if(body.message.indexOf('Data save successfully') > -1){
+            if (body.message.indexOf('Data save successfully') > -1) {
               // this.success.NphiesPayerMappingSuccess = body.message;
               this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
-            }else{
-              this.errors.NphiesMappingSaveError = body.message;    
-            }           
+            } else {
+              this.errors.NphiesMappingSaveError = body.message;
+            }
           } else {
-            this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';          
+            this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
           }
           this.componentLoading.NphiesPayerMapping = false;
         }
@@ -1365,7 +1365,7 @@ export class ProvidersConfigComponent implements OnInit {
           tpaNphiesId: this.newNphiesPayerTpaId[id],
         };
         deleteNphiesPayers.push(data);
-      });      
+      });
       this.componentLoading.NphiesPayerMapping = true;
       // call delete function
       this.dbMapping.deleteNphiesPayerMapping(this.selectedProvider, deleteNphiesPayers).subscribe(event => {

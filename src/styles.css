@@ -106,6 +106,8 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 --------------------------------------------------------------------------------------------------------*/
 .pl-7{padding-left: 7px !important;}
 .pr-7{padding-right: 7px !important;}
+.pt-7{padding-top: 7px !important;}
+.pb-7{padding-bottom: 7px !important;}
 .p-14{padding: 14px !important;}
 .pb-6{padding-bottom: 6px !important;}
 .pb-14{padding-bottom: 14px !important;}
@@ -1602,7 +1604,8 @@ tag tag-ripple{display:none;}
 .config-accordion .mat-expanded .mat-expansion-panel-header:after{transform: rotate(180deg);}
 .config-accordion.mat-accordion .mat-expansion-panel:last-of-type,.config-accordion.mat-accordion .mat-expansion-panel:first-of-type,.config-accordion.mat-accordion .mat-expansion-panel.mat-expanded,.config-accordion.mat-accordion .mat-expansion-panel:not(.mat-expanded), .config-accordion .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing){border-radius: 8px;}
 .config-accordion .mat-expansion-panel-body{border-top:1px solid #e1e1e1; padding: 14px;}
-.config-accordion .mat-expansion-panel-header-title{font-size: 14px;line-height: 20px;color: #333;font-weight: 500;}
+.config-accordion .mat-expansion-panel-header-title{font-size: 14px;line-height: 20px;color: #333;font-weight: 500;align-items: center;}
+.config-accordion .mat-expansion-panel-header-title button.mat-icon-button{height: 32px;width: 32px;line-height: 32px;margin-left: auto;}
 
 /* button chips
 --------------------------------------------------------------------------------------------------------*/
