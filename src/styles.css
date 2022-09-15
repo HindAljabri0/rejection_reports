@@ -928,7 +928,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-wrapper .upper-art,.login-wrapper .lower-art{display: block;width: 100%;margin: 0 auto;max-height: 132px;}
 .login-wrapper.national-day .lower-art{width: calc(100% + 44px);margin: 0 -22px -24px -22px;}
 .login-wrapper .logo{display: block;margin: 0 auto 56px;width: 164px;height: 110px;}
-.login-wrapper.national-day .logo{width: 200px;}
+.login-wrapper.national-day .logo{width: 240px;}
 .login-wrapper .right-block .middle{padding: 56px 0 48px;margin: auto 0;}
 .login-wrapper .login-contact{display: flex;justify-content: center;}
 .login-wrapper .login-contact li:not(:last-child){padding-right: 65px;position: relative;}
