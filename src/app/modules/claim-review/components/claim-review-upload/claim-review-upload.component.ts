@@ -57,14 +57,14 @@ export class ClaimReviewUploadComponent implements OnInit {
     const progressObservable = this.claimReviewService.progressChange.subscribe(progress => {
       console.log("progressChange: ", progress);
       if (progress.percentage == 100) {
-        this.dialogService.openMessageDialog(new MessageDialogData("Success", "Claim Excel file has been uploaded successfully!", false)).subscribe(value => {
-          this.router.navigateByUrl('/review/scrubbing/admin');
-        });
         progressObservable.unsubscribe();
       }
     });
     const summaryObservable = this.claimReviewService.summaryChange.subscribe(async value => {
       console.log("summaryChange: " + value);
+      this.dialogService.openMessageDialog(new MessageDialogData("Success", value, false)).subscribe(value => {
+        this.router.navigateByUrl('/review/scrubbing/admin');
+      });
       summaryObservable.unsubscribe();
       this.uploading = false;
       this.cancel();
