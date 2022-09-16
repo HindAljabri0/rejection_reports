@@ -18,8 +18,8 @@ import { DiagnosisRemarksUpdateRequest, FieldError, MarkAsDone, UploadClaimsList
 })
 export class ClaimReviewService {
 
-    summary: UploadSummary;
-    summaryChange: Subject<UploadSummary> = new Subject<UploadSummary>();
+    summary: string;
+    summaryChange: Subject<string> = new Subject<string>();
     uploading = false;
     progress: { percentage: number } = { percentage: 0 };
     progressChange: Subject<{ percentage: number }> = new Subject();
@@ -29,7 +29,7 @@ export class ClaimReviewService {
 
 
     constructor(private http: HttpClient, private sharedService: SharedServices) {
-        this.summary = new UploadSummary();
+        this.summary = '';
         this.summaryChange.subscribe((value) => {
             this.summary = value;
         });
@@ -149,8 +149,9 @@ export class ClaimReviewService {
             if (event instanceof HttpResponse) {
                 this.uploading = false;
                 this.uploadingObs.next(false);
-                const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
-                this.summaryChange.next(summary);
+                //const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
+                console.log(event.body);
+                this.summaryChange.next(event.body['message']);
                 this.progressChange.next({ percentage: 100 });
                 
             }
@@ -158,13 +159,7 @@ export class ClaimReviewService {
             this.uploading = false;
             this.uploadingObs.next(false);
             if (errorEvent instanceof HttpErrorResponse) {
-                if (errorEvent.status >= 500) {
-                    this.errorChange.next('Server could not handle your request at the moment. Please try again later..');
-                } else if (errorEvent.status >= 400) {
-                    this.errorChange.next(errorEvent.error['message']);
-                } else { 
-                    this.errorChange.next('Server could not be reached at the moment. Please try again later.'); 
-                }
+                this.errorChange.next(errorEvent.error['message']);
             }
         });
     }
