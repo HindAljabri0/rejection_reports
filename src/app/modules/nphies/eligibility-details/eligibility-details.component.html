@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    
+
     <div *ngIf="eligibilityResponse.subscriberName" class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Subscriber Name</div>
@@ -41,6 +41,12 @@
       <div class="form-group form-group-static">
         <div class="control-label">Insurer</div>
         <p class="form-control-static">{{getNamePayer(eligibilityResponse.payerId)}}</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">TPA Name</div>
+        <p class="form-control-static">{{getTPAName(eligibilityResponse.tpa_Id)}}</p>
       </div>
     </div>
     <div class="col-4">
@@ -75,19 +81,19 @@
     </div>
     <div class="col-4">
       <div class="form-group form-group-static">
-        <div class="control-label">Eligibility Response ID</div>
-        <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group form-group-static">
         <div class="control-label">Is Referral ? </div>
         <p class="form-control-static">{{eligibilityResponse.transfer ? 'Yes' : 'No'}}</p>
       </div>
     </div>
     <div class="col-4">
       <div class="form-group form-group-static">
-        <div class="control-label">Eligibility Identifier Url</div>
+        <div class="control-label">Eligibility Response Identifier (Value)</div>
+        <p class="form-control-static">{{eligibilityResponse.nphiesResponseId}}</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group form-group-static">
+        <div class="control-label">Eligibility Response Identifier (URL)</div>
         <p class="form-control-static">{{eligibilityResponse.eligibilityIdentifierUrl ?
           eligibilityResponse.eligibilityIdentifierUrl : '-'}}</p>
       </div>
@@ -134,21 +140,22 @@
             <th>In-Force</th>
             <th>Benefit Date</th>
             <th>Member ID</th>
+            <th>Policy Number</th>
             <th>Type</th>
             <th>Status</th>
             <th>Relationship With Subscriber</th>
             <th>Subscriber Member ID</th>
             <th>Network</th>
             <th>Subrogation</th>
-            <th>Not In-Force reason</th>
+            <th>Site Eligibility</th>
           </tr>
         </thead>
         <tbody>
           <ng-container *ngFor="let coverage of eligibilityResponse.coverages;let i=index">
             <tr>
               <td class="text-primary text-center row-click" (click)="toggleRow(i)" width="10">
-                <mat-icon *ngIf="currentOpenCoverage!=i" class="size-21">add_circle_outline</mat-icon>
-                <mat-icon *ngIf="currentOpenCoverage==i" class="size-21">remove_circle_outline
+                <mat-icon *ngIf="currentOpenCoverage!=i && !isPrint" class="size-21">add_circle_outline</mat-icon>
+                <mat-icon *ngIf="currentOpenCoverage==i || isPrint" class="size-21">remove_circle_outline
                 </mat-icon>
               </td>
               <td class="row-click" (click)="toggleRow(i)">
@@ -156,16 +163,17 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date
                 :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>
+              <td class="row-click" (click)="toggleRow(i)">{{coverage.policyNumber}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.type}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.status}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.relationship}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subscriberMemberId}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.network}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subrogation}}</td>
-              <td class="row-click" (click)="toggleRow(i)">{{coverage.notInforceReason}}</td>
+              <td class="row-click" (click)="toggleRow(i)" [ngClass]="coverage.siteEligibility === 'eligible' ? 'text-success' : (coverage.siteEligibility ? 'text-danger' : '')">{{coverage.siteEligibility | titlecase}}</td>
             </tr>
-            <tr *ngIf="currentOpenCoverage==i">
-              <td colspan="11">
+            <tr *ngIf="currentOpenCoverage==i || isPrint">
+              <td colspan="12">
                 <div class="box mb-3" *ngIf="coverage.classList">
                   <h5 class="medium pb-2">Classes</h5>
                   <div class="table-responsive">

@@ -143,7 +143,7 @@ const _mainReducer = createReducer(
           isPayerUser: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '99.0'),
         },
         GSSReportForTawuniya: {
-          canAccessGSSReport: AuthService.hasPrivilege(providerId, '102', '31.0')
+          canAccessGSSReport: AuthService.hasPrivilege(providerId, '102', '31.0') || AuthService.hasPrivilege(providerId, '101', '31.0')
         },
         RCM: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.0'),

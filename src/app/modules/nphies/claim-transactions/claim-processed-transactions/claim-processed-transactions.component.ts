@@ -144,6 +144,12 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
     }
   }
 
+  readAllNotification() {
+    this.processedTransactions.forEach(x=>x.notificationStatus = 'read');
+    this.sharedServices.unReadClaimProcessedCount = 0;
+    this.sharedServices.markAllAsRead(this.sharedServices.providerId, "claim-notifications");
+  }
+
   resetURL() {
     this.router.navigate([], {
       relativeTo: this.routeActive,

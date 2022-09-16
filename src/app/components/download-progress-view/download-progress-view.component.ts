@@ -37,15 +37,16 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
   }
 
   isExcel() {
-    return this.downloadRequest.contentType == 'application/ms-excel';
+    // tslint:disable-next-line:max-line-length
+    return (this.downloadRequest.contentType === 'application/ms-excel' || this.downloadRequest.contentType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8');
   }
 
   isZip() {
-    return this.downloadRequest.contentType == 'application/zip';
+    return this.downloadRequest.contentType === 'application/zip';
   }
 
   isPDF() {
-    return this.downloadRequest.contentType == 'application/pdf';
+    return this.downloadRequest.contentType === 'application/pdf';
   }
 
   getValue() {

@@ -41,6 +41,12 @@ export class NotificationsService {
     return this.httpClient.request(request);
   }
 
+  markAllNotificationAsRead(providerId: string, notificationType: string) {
+    const requestUrl = `/providers/${providerId}/markAllRead/${notificationType}`;
+    const request = new HttpRequest('PUT', environment.NotificationServiceHost + requestUrl, {});
+    return this.httpClient.request(request);
+  }
+
   private watchNewMessage(providerId: string, topic: string): Observable<string> {
     return new Observable((observer) => {
       const url = environment.NotificationServiceHost + `/to/${providerId}/topics/${topic}`;

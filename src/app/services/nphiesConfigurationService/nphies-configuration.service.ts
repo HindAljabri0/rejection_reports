@@ -37,8 +37,9 @@ export class NphiesConfigurationService {
   uploadPriceList(providerId: string, body: any): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('file', body.file);
-    formdata.append('payerNphiesId', body.payerNphiesId);
+    formdata.append('payerNphiesId', body.insurancePlanPayerId.split(':')[1]);
     formdata.append('effectiveDate', body.effectiveDate);
+    formdata.append('tpaNphiesId', body.tpaNphiesId);
 
     const requestUrl = `/providers/${providerId}/pricelist/excel`;
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, formdata);

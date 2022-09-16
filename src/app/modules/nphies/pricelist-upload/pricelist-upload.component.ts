@@ -15,9 +15,10 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 export class PricelistUploadComponent implements OnInit {
 
   FormPriceList: FormGroup = this.formBuilder.group({
-    payerNphiesId: ['', Validators.required],
+    insurancePlanPayerId: ['', Validators.required],
     effectiveDate: ['', Validators.required],
     file: ['', Validators.required],
+    tpaNphiesId: ['']
   });
 
   isSubmitted = false;
@@ -38,13 +39,18 @@ export class PricelistUploadComponent implements OnInit {
 
   selectPayer(event) {
     if (event.value) {
+      console.log(event.value.payerNphiesId)
+      console.log(event.value);
+      console.log(event.value.payerNphiesId.split(':')[1]);
       this.FormPriceList.patchValue({
-        payerNphiesId: event.value.payerNphiesId,
-        // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+        payerNphiesId: event.value.payerNphiesId.split(':')[1],
+        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
       });
     } else {
-      this.FormPriceList.controls.payerNphiesId.setValue('');
-      // this.FormPriceList.controls.destinationId.setValue('');
+      this.FormPriceList.patchValue({
+        payerNphiesId: '',
+        tpaNphiesId: ''
+      });
     }
   }
 
@@ -91,7 +97,7 @@ export class PricelistUploadComponent implements OnInit {
             if (body.response) {
               this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
             }
-            this.dialogRef.close(model.payerNphiesId);
+            this.dialogRef.close(model.insurancePlanPayerId);
           }
           this.sharedService.loadingChanged.next(false);
         }
