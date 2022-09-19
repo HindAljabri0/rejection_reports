@@ -425,7 +425,7 @@
         </li>
       </ul> -->
     <mat-accordion>
-      <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
+      <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization && !envStaging && !envProd ">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <span class="d-flex align-items-center">
@@ -434,24 +434,24 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <ul class="nav-list">
-          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
             <a routerLink="/nphies/configurations" routerLinkActive="is-active">
               <!-- <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
               <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" /> -->
               <span class="text">Code Mapping</span>
             </a>
           </li>
-          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
             <a routerLink="/nphies/physicians" routerLinkActive="is-active">
               <span class="text">Physicians</span>
             </a>
           </li>
-          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
             <a routerLink="/nphies/pricelist" routerLinkActive="is-active">
               <span class="text">Price List</span>
             </a>
           </li>
-          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
             <a routerLink="/nphies/days-of-supply-upload" routerLinkActive="is-active">
               <span class="text">Medication Days of Supply</span>
             </a>
