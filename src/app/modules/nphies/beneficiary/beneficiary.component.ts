@@ -338,7 +338,7 @@ export class BeneficiaryComponent implements OnInit {
     this.emergencyPhoneNumberController.setValue(beneficiaryinfo.emergencyNumber);
     this.selectedDocumentType = beneficiaryinfo.documentType;
     this.documentIdFormControl.setValue(beneficiaryinfo.documentId);
-    this.beneficiaryFileIdController.setValue(beneficiaryinfo.beneficiaryFileld);
+    this.beneficiaryFileIdController.setValue(beneficiaryinfo.beneficiaryFileId);
     this.EHealthIdNameController.setValue(beneficiaryinfo.eHealthId);
     this.selectedResidencyType = beneficiaryinfo.residencyType;
     this.selectedBloodGroup = beneficiaryinfo.bloodGroup;
@@ -529,7 +529,7 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.emergencyNumber = this.emergencyPhoneNumberController.value;
     this.beneficiaryModel.documentType = this.selectedDocumentType;
     this.beneficiaryModel.documentId = this.documentIdFormControl.value;
-    this.beneficiaryModel.beneficiaryFileld = this.beneficiaryFileIdController.value;
+    this.beneficiaryModel.beneficiaryFileId = this.beneficiaryFileIdController.value;
     this.beneficiaryModel.eHealthId = this.EHealthIdNameController.value;
     this.beneficiaryModel.residencyType = this.selectedResidencyType == '' ? null : this.selectedResidencyType;
     this.beneficiaryModel.bloodGroup = this.selectedBloodGroup == '' ? null : this.selectedBloodGroup;
