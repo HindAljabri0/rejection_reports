@@ -8,6 +8,7 @@ import { interval, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DialogService } from '../services/dialogsService/dialog.service';
 import { SearchService } from '../services/serchService/search.service';
+import { SharedServices } from '../services/shared.services';
 import { changePageTitle, checkAlerts, showSnackBarMessage } from './mainStore.actions';
 
 @Injectable({ providedIn: 'root' })
@@ -20,7 +21,8 @@ export class MainStoreEffects {
     private snackBar: MatSnackBar,
     private dialogService: DialogService,
     private searchService: SearchService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private commenServices: SharedServices
   ) {
     interval(3000)
       .subscribe(() => {
@@ -47,7 +49,7 @@ export class MainStoreEffects {
       if (providerId != null && providerId != '101') {
         const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
         let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay) {
+        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay && this.commenServices.isOverNphiesdwonTime()) {
           return null;
         }
         this.searchService.getClaimAlerts(providerId).subscribe(event => {

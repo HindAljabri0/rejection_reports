@@ -7,7 +7,20 @@
     <li *ngFor="let d of data">
       {{d}}
     </li>
+
   </ul>
+  <div *ngIf="isHasNphiesPrivileges && !isOverNphiesdwonTime">
+    <hr *ngIf="data.length>0">
+
+  <h4 style="color: #ff0000; text-decoration: underline;">NPHIES Downtime !!! <i class="bi bi-exclamation-triangle"></i> </h4>
+  <p style="color: #ff0000;">Please be informed that NPHIES production environment is planned to be undergoing scheduled
+    downtime, on <strong>Friday 23rd September</strong>, from&nbsp;<strong>12:01 AM&nbsp;</strong>to&nbsp;<strong>06:01
+      AM</strong></p>
+  <p style="color: #ff0000;">Please make sure to take the necessary measures to avoid any disturbance in your operation
+    during the downtime period</p>
+
+  </div>
+  
   <!-- <pre class="dialog-text">{{data}}</pre> -->
   <button mat-flat-button color="primary" (click)="closeDialog()" class="mt-4">Close</button>
 </div>
