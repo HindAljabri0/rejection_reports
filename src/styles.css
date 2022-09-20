@@ -912,25 +912,21 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* login
 --------------------------------------------------------------------------------------------------------*/
 .login-wrapper{display:flex;min-height:100vh;border-top:4px solid #3060AA;border-bottom:4px solid #3060AA;background: #FFFFFF;color: #333;}
-.login-wrapper.national-day{border-top-color:#006C32;border-bottom-color:#006C32;}
 .login-wrapper>.left-block,.login-wrapper>.right-block{flex-grow: 0;flex-shrink: 0;flex-basis: 50%;max-width: 50%;}
 .login-wrapper>.left-block{display: flex;flex-direction: column;padding: 48px 16px 40px;}
 .login-wrapper .right-block{background-color: rgba(48, 96, 170,0.08);padding: 24px 22px;color: #3060aa;display: flex;flex-direction: column;}
-.login-wrapper.national-day .right-block{color: #006C32;background-color: rgba(0, 108, 50, 0.08);}
 .login-wrapper .upper-art,.login-wrapper .lower-art{display: block;width: 100%;margin: 0 auto;max-height: 132px;}
-.login-wrapper.national-day .lower-art{width: calc(100% + 44px);margin: 0 -22px -24px -22px;}
 .login-wrapper .logo{display: block;margin: 0 auto 56px;width: 164px;height: 110px;}
-.login-wrapper.national-day .logo{width: 200px;}
 .login-wrapper .right-block .middle{padding: 56px 0 48px;margin: auto 0;}
 .login-wrapper .login-contact{display: flex;justify-content: center;}
 .login-wrapper .login-contact li:not(:last-child){padding-right: 65px;position: relative;}
 .login-wrapper .login-contact li:not(:last-child):after{width: 1px;content:'';position: absolute;right: 32px;top: 8px;bottom: 20px;display: block;background: #3060AA;opacity: 0.4;}
-.login-wrapper.national-day .login-contact li:not(:last-child):after{background: #006C32;}
 .login-wrapper .login-contact li{display: flex;flex-direction: column;align-items: center;text-align: center;font-weight: 500;font-size: 16px;line-height: 24px;color: #3060aa;}
-.login-wrapper.national-day .login-contact li{color: #006C32;}
 .login-wrapper .login-contact .icon{border: 2px solid rgba(48, 96, 170, 0.48);border-radius: 8px;padding: 10px;margin-bottom: 12px;}
-.login-wrapper.national-day .login-contact .icon{border-color:rgba(0, 108, 50, 0.478);}
 .login-wrapper .login-contact .icon>img{display: block;height: 32px;width: 32px;}
+.login-wrapper.national-day{border-top-color:#006C32;border-bottom-color:#006C32;}
+.login-wrapper.national-day .right-block{background: url('./assets/national-day-illustration.svg') center no-repeat;background-size: cover;position: relative;}
+.login-wrapper.national-day .right-block .logos{display: block;position: absolute;right: 0;bottom: -4px;}
 .login-wrapper.national-day .mat-flat-button.mat-primary, .login-wrapper.national-day .mat-raised-button.mat-primary, .login-wrapper.national-day .mat-fab.mat-primary, .login-wrapper.national-day .mat-mini-fab.mat-primary{background: #006C32;}
 .login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex:before{border-color: #006C32;}
 .login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill.mat-focused .mat-form-field-label{color: #006C32;}
@@ -1804,10 +1800,10 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
     .advance-search .mat-chip-list{width: calc(100% - 190px);}
     .advance-search .search-btn{font-size: 12px;}
     .advance-search .input-wrapper>input{padding-right: 170px;}
-    .login-wrapper.eid-adha .left-top-art, .login-wrapper.eid-adha .right-top-art{display: none;}
-    .login-wrapper.eid-adha .center-art{height: 389px;width: 429px;}
-    .login-wrapper.eid-adha .bottom-section{flex-direction: column;justify-content: flex-start;align-items: center;}
-    .login-wrapper.eid-adha .bottom-section .contact{margin-bottom: 24px;}
+    .login-wrapper.right-block{display: none;}
+    .login-wrapper>.right-block{display: none;}
+    .login-wrapper>.left-block{max-width: 100%;flex-basis: 100%;}
+    .login-language-switch{right: 16px;}
 }
 
 .mat-grid-tile .mat-figure {
