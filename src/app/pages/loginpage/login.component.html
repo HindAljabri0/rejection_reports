@@ -36,38 +36,35 @@
             </div>
         </div>
         <div class="right-block" [class.ramadan-poster]="isRamadan">
-            <ng-container *ngIf="!isRamadan && !isEidFitr && !isEidAdha">
-                <img *ngIf="!isCloseToNationalDay()" src="./assets/login-upper-art.svg" class="upper-art" alt="Abstract art" />
-                <img *ngIf="isCloseToNationalDay()" src="./assets/login-upper-art-national-day.svg" class="upper-art" alt="Abstract art" />
+            <ng-container *ngIf="!isRamadan && !isEidFitr && !isEidAdha && !isCloseToNationalDay()">
+                <img src="./assets/login-upper-art.svg" class="upper-art" alt="Abstract art" />
                 <div class="middle">
-                    <img *ngIf="!isCloseToNationalDay()" src="./assets/logo.svg" alt="Waseel" class="logo" />
-                    <img *ngIf="isCloseToNationalDay()" src="assets/national-day-logo.svg" class="logo" alt="Happy National Day">
+                    <img src="./assets/logo.svg" alt="Waseel" class="logo" />
                     <ul class="login-contact">
                         <li>
                             <span class="icon">
-                                <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-call-primary.svg" alt="Call" />
-                                <img *ngIf="isCloseToNationalDay()" src="./assets/ic-call-national-day.svg" alt="Call" />
+                                <img src="./assets/ic-call-primary.svg" alt="Call" />
                             </span>
                             <span class="text">920012099</span>
                         </li>
                         <li>
                             <span class="icon">
-                                <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-mail-primary.svg" alt="Mail" />
-                                <img *ngIf="isCloseToNationalDay()" src="./assets/ic-mail-national-day.svg" alt="Mail" />
+                                <img src="./assets/ic-mail-primary.svg" alt="Mail" />
                             </span>
                             <span class="text">customercare@waseel.com</span>
                         </li>
                         <li>
                             <span class="icon">
-                                <img *ngIf="!isCloseToNationalDay()" src="./assets/ic-chat-primary.svg" alt="Chat" />
-                                <img *ngIf="isCloseToNationalDay()" src="./assets/ic-chat-national-day.svg" alt="Chat" />
+                                <img src="./assets/ic-chat-primary.svg" alt="Chat" />
                             </span>
                             <span class="text">Instant Chat</span>
                         </li>
                     </ul>
                 </div>
-                <img *ngIf="!isCloseToNationalDay()" src="./assets/login-lower-art.svg" class="lower-art" alt="Abstract art" />
-                <img *ngIf="isCloseToNationalDay()" class="lower-art" src="assets/national-day-identitiy-footer-image.svg">
+                <img src="./assets/login-lower-art.svg" class="lower-art" alt="Abstract art" />
+            </ng-container>
+            <ng-container *ngIf="isCloseToNationalDay()">
+                <img src="./assets/national-day-logos.svg" alt="Waseel Celebrating National Day" class="logos" />
             </ng-container>
             <ng-container *ngIf="isRamadan">
                 <img src="./assets/ramadan-artwork.svg" alt="Ramadan" class="artwork" />
