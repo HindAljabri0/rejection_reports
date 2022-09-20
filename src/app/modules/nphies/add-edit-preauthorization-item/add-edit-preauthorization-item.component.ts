@@ -109,7 +109,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
 
-    if (this.data.item && this.data.item.itemCode) {
+    if (this.data.item) {
       console.log(" sub site val = " + this.data.item.subSite),
         this.FormItem.patchValue({
           type: this.typeList.filter(x => x.value === this.data.item.type)[0],
@@ -605,7 +605,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   checkItemsCodeForSupportingInfo() {
     let SeqIsThere = null;
     // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.type.value.value === 'medication-codes') {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
 
       if (this.data.supportingInfos.filter(x => x.category === 'days-supply').length === 0) {
         // tslint:disable-next-line:max-line-length
@@ -621,7 +621,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       } else {
 
 
-        if (this.FormItem.controls.type.value.value === 'medication-codes') {
+        if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
 
           //let intersecting=this.getArraysIntersection(seqList, this.Items.filter(x => x.type === 'medication-codes').map(t=>t.supportingInfoSequence));
           // tslint:disable-next-line:max-line-length
