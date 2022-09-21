@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { interval, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -22,8 +23,10 @@ export class MainStoreEffects {
     private dialogService: DialogService,
     private searchService: SearchService,
     private datePipe: DatePipe,
-    private commenServices: SharedServices
+    private commenServices: SharedServices,
+    private router: Router
   ) {
+    
     interval(3000)
       .subscribe(() => {
         if (this.messages.length > 0) {
@@ -43,13 +46,15 @@ export class MainStoreEffects {
   ), { dispatch: false });
 
   onCheckingAlerts$ = createEffect(() => this.actions$.pipe(
+  
     ofType(checkAlerts),
     tap(() => {
       const providerId = localStorage.getItem('provider_id');
       if (providerId != null && providerId != '101') {
         const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
         let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay && this.commenServices.isOverNphiesdwonTime()) {
+
+        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay &&  !this.router.url.endsWith('/')) {
           return null;
         }
         this.searchService.getClaimAlerts(providerId).subscribe(event => {

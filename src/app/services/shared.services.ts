@@ -290,12 +290,14 @@ export class SharedServices {
   }
 
   isOverNphiesdwonTime(){
+    console.log(this.router.url)
     var dateOftoday= this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     console.log("dateOftoday : " + dateOftoday);
    var overDate = this.datePipe.transform("2022-09-25", 'yyyy-MM-dd');
    
    console.log("overDate : " + overDate);
-       return dateOftoday >= overDate;
+   //dateOftoday >= overDate &&
+       return  dateOftoday >= overDate;
    }
   isHasNphiesPrivileges() {
     return this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim ||
