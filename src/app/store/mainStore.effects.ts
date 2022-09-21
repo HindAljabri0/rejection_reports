@@ -3,11 +3,13 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { interval, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DialogService } from '../services/dialogsService/dialog.service';
 import { SearchService } from '../services/serchService/search.service';
+import { SharedServices } from '../services/shared.services';
 import { changePageTitle, checkAlerts, showSnackBarMessage } from './mainStore.actions';
 
 @Injectable({ providedIn: 'root' })
@@ -20,8 +22,11 @@ export class MainStoreEffects {
     private snackBar: MatSnackBar,
     private dialogService: DialogService,
     private searchService: SearchService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private commenServices: SharedServices,
+    private router: Router
   ) {
+    
     interval(3000)
       .subscribe(() => {
         if (this.messages.length > 0) {
@@ -41,13 +46,15 @@ export class MainStoreEffects {
   ), { dispatch: false });
 
   onCheckingAlerts$ = createEffect(() => this.actions$.pipe(
+  
     ofType(checkAlerts),
     tap(() => {
       const providerId = localStorage.getItem('provider_id');
       if (providerId != null && providerId != '101') {
         const lastDateAlertAppeared = localStorage.getItem(`lastDateAlertAppeared:${providerId}`);
         let yearMonthDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay) {
+
+        if (lastDateAlertAppeared != null && lastDateAlertAppeared == yearMonthDay &&  !this.router.url.endsWith('/')) {
           return null;
         }
         this.searchService.getClaimAlerts(providerId).subscribe(event => {

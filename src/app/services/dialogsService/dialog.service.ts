@@ -180,14 +180,14 @@ export class DialogService {
   }
 
   showAlerts(messages: string[]) {
-    if (messages != null && messages.length > 0) {
+  if ((messages != null && messages.length > 0) || (this.commenServices.isHasNphiesPrivileges() && !this.commenServices.isOverNphiesdwonTime)) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: messages,
         panelClass: ['primary-dialog'],
         autoFocus: false
       });
       // dialogRef.afterClosed().subscribe(() => this.showAlerts(messages));
-    }
+  }
   }
 
   closeAll() {
