@@ -11,13 +11,14 @@
   </ul>
   <div *ngIf="isHasNphiesPrivileges && !isOverNphiesdwonTime">
     <hr *ngIf="data.length>0">
-
-  <h4 style="color: #ff0000; text-decoration: underline;">NPHIES Downtime !!! <i class="bi bi-exclamation-triangle"></i> </h4>
-  <p style="color: #ff0000;">Please be informed that NPHIES production environment is planned to be undergoing scheduled
-    downtime, on <strong>Friday 23rd September</strong>, from&nbsp;<strong>12:01 AM&nbsp;</strong>to&nbsp;<strong>06:01
-      AM</strong></p>
-  <p style="color: #ff0000;">Please make sure to take the necessary measures to avoid any disturbance in your operation
-    during the downtime period</p>
+    <div class="head-block">
+      <img src="./assets/ic-warning-illustration.svg" alt="Warning" class="illustration" />
+    <p><span style="color: #ff0000;">Notification!!!</span></p></div>
+    <ul>
+    <li class="unordered-list"><span style="color: #000000;">Please be informed there will be a planned <strong>NPHIES Downtime</strong> on its production environment on <strong>Friday 23rd September</strong>, from&nbsp;<strong>12:01 AM&nbsp;</strong>to&nbsp;<strong>06:01 AM</strong>. </span>Please make sure to take the necessary measures to avoid any disturbance in your operation during the downtime period.</li>
+    </ul>
+    <p style="color: #ff0000;">&nbsp;</p>
+    <p>&nbsp;</p>
 
   </div>
   
