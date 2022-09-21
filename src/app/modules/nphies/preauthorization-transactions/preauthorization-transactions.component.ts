@@ -649,6 +649,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           const body: any = event.body;
           this.transactions.filter(x => x.requestId === requestId)[0].status = body.outcome;
           this.transactions.filter(x => x.requestId === requestId)[0].inquiryStatus = body.inquiryOutcome;
+          this.transactions.filter(x => x.requestId === requestId)[0].preAuthRefNo = body.preAuthRefNo;
         }
         this.sharedServices.loadingChanged.next(false);
       }

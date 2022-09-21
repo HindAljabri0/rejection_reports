@@ -1,12 +1,12 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import {
-    addNewMappingValue,
-    deleteMappingValue,
-    setCodeValueManagementLoading,
-    setCodeValueManagementError,
-    storeProviderMappingValues,
-    cancelChangesOfCodeValueManagement,
-    storeSaveChangesResponsesOfCodeValueManagement
+    nphiesAddNewMappingValue,
+    nphiesDeleteMappingValue,
+    nphiesSetCodeValueManagementLoading,
+    nphiesSetCodeValueManagementError,
+    nphiesStoreProviderMappingValues,
+    nphiesCancelChangesOfCodeValueManagement,
+    nphiesStoreSaveChangesResponsesOfCodeValueManagement
 } from './configurations.actions';
 
 
@@ -34,19 +34,19 @@ const initState: ConfigurationState = {
 
 const _configurationReducer = createReducer(
     initState,
-    on(storeProviderMappingValues, (state, { values }) => ({
+    on(nphiesStoreProviderMappingValues, (state, { values }) => ({
         ...state, codeValueManagement: {
             ...state.codeValueManagement,
             currentValues: values, loading: false, newValues: [], toDeleteValues: []
         }
     })),
-    on(addNewMappingValue, (state, { value }) => ({
+    on(nphiesAddNewMappingValue, (state, { value }) => ({
         ...state, codeValueManagement: {
             ...state.codeValueManagement,
             newValues: state.codeValueManagement.newValues.concat([value])
         }
     })),
-    on(deleteMappingValue, (state, { value }) => {
+    on(nphiesDeleteMappingValue, (state, { value }) => {
         const index = state.codeValueManagement.currentValues.get(value.categoryId).codes.get(value.codeId).values.findIndex(v =>
             v == value.value);
         if (index != -1) {
@@ -67,25 +67,25 @@ const _configurationReducer = createReducer(
         }
         return { ...state };
     }),
-    on(setCodeValueManagementLoading, (state, { isLoading }) => ({
+    on(nphiesSetCodeValueManagementLoading, (state, { isLoading }) => ({
         ...state, codeValueManagement: {
             ...state.codeValueManagement,
             loading: isLoading
         }
     })),
-    on(setCodeValueManagementError, (state, error) => ({
+    on(nphiesSetCodeValueManagementError, (state, error) => ({
         ...state, codeValueManagement: {
             ...state.codeValueManagement,
             saveChangesResponses: error
         }
     })),
-    on(cancelChangesOfCodeValueManagement, (state) => ({
+    on(nphiesCancelChangesOfCodeValueManagement, (state) => ({
         ...state, codeValueManagement: {
             ...initState.codeValueManagement,
             currentValues: state.codeValueManagement.currentValues
         }
     })),
-    on(storeSaveChangesResponsesOfCodeValueManagement, (state, { responses }) => ({
+    on(nphiesStoreSaveChangesResponsesOfCodeValueManagement, (state, { responses }) => ({
         ...state,
         codeValueManagement: { ...state.codeValueManagement, saveChangesResponses: responses }
     }))
@@ -95,7 +95,7 @@ export function configurationReducer(state, action) {
     return _configurationReducer(state, action);
 }
 
-export const configurationStateSelector = createFeatureSelector<ConfigurationState>('configurationState');
+export const configurationStateSelector = createFeatureSelector<ConfigurationState>('nphiesConfigurationState');
 
 export module codeValueManagementSelectors {
     export const getCurrentValues = createSelector(configurationStateSelector, (state) => state.codeValueManagement.currentValues);

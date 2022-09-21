@@ -19,6 +19,8 @@ import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
 import { PreparePreAuthForClaimComponent } from './prepare-pre-auth-for-claim/prepare-pre-auth-for-claim.component';
 import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
+import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
+import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -42,7 +44,10 @@ const routes: Routes = [
   { path: 'pricelist', component: PricelistComponent },
   { path: 'pricelist-details', component: PricelistDetailsComponent },
   { path: 'prepare-pre-auth-for-claim', component: PreparePreAuthForClaimComponent },
-  { path: 'convert-pre-auth-to-claim', component: ConvertPreAuthToClaimComponent }
+  { path: 'convert-pre-auth-to-claim', component: ConvertPreAuthToClaimComponent },
+  { path: 'days-of-supply-upload', component: DaysOfSupplyUploadComponent },
+  { path: 'medication-days-upload', component: MedicationDaysUploadComponent }
+  
 ];
 
 @NgModule({

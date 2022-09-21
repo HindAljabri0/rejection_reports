@@ -1,0 +1,118 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p class="align-self-center">Medication Days of Supply List</p>
+        <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2"
+            (click)="downloadSample()">
+            <img src="./assets/ic-download.svg" alt="Download" />
+            <span>Download Sample</span>
+        </button>
+    </div>
+    <div class="block-filter-panel pb-14">
+        <form [formGroup]="FormList" (ngSubmit)="search()">
+            <div class="row small-gutter">
+                <div class="col-xl-5">
+                    <!--label class="control-label">Standard Code Or Desc<span class="asterisk">*</span></label-->
+                    <input class="form-control" placeholder="Search By Standard Code or Description" type="text"
+                        formControlName="searchText">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+    
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+        *ngIf="daysSupplyListModel && Lists.length > 0">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Standard Code </th>
+                        <th>Standard Description </th>
+                        <th>Days Of Supply </th>
+                        <th>Upload Date</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of Lists">
+                        <td class="row-click">
+                            {{item.listId}}</td>
+                        <td class="row-click">
+                            {{item.standardCode}}</td>
+                        <td class="row-click">
+                            {{item.standardDesc}}</td>
+                        <td class="row-click">
+                            {{item.daysOfSupply}}</td>
+                        <td class="row-click">
+                            {{item.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #actionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                    <button type="button" mat-menu-item (click)="openAddEditDialog(item)">
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button mat-menu-item type="button"
+                                        (click)="DeleteSingleRow(item.listId,item.standardCode)">
+                                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </ng-template>
+                            </mat-menu>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </ng-scrollbar>
+    <app-empty-state *ngIf="Lists.length === 0" message='No List found!'>
+    </app-empty-state>
+    <div class="block-footer sticky">
+        <div class="pagination-header" *ngIf="!(daysSupplyListModel && Lists.length === 0)">
+            <div class="form-group page-select">
+                <label class="control-label">Go to page: </label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                        <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="material-paginator">
+                <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+                    (page)="paginatorAction($event)">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+<button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="addMenu">
+    <mat-icon>add</mat-icon>
+</button>
+<mat-menu #addMenu yPosition="above" xPosition="before">
+    <ng-template matMenuContent>
+        <button type="button" mat-menu-item (click)="openAddEditDialog()">
+            <span class="d-flex align-items-center">
+                <mat-icon class="material-icons-outlined">add</mat-icon>
+                <span>Add New Medication</span>
+            </span>
+        </button>
+        <button type="button" mat-menu-item (click)="openUploadlistDialog()">
+            <span class="d-flex align-items-center">
+                <mat-icon class="material-icons-outlined">file_upload</mat-icon>
+                <span>Upload Medication Supply</span>
+            </span>
+        </button>
+
+    </ng-template>
+</mat-menu>
