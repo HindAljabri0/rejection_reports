@@ -33,7 +33,11 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }
-
+  downloadSampleDaysOfSupply(providerId: string): Observable<any> {
+    const requestUrl = `/providers/${providerId}/daysofsupply/download`;
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestUrl, { responseType: 'blob', reportProgress: true });
+    return this.http.request(request);
+  }
   uploadPriceList(providerId: string, body: any): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('file', body.file);
@@ -46,6 +50,20 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
 
+  uploadMedicationDays(providerId: string, body: any): Observable<any> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', body.file);
+
+    const requestUrl = `/providers/${providerId}/daysofsupply/excel`;
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, formdata);
+    return this.http.request(request);
+  }
+  deleteMedicationRecord(providerId: string, itemId: number) {
+    const requestUrl = `/providers/${providerId}/daysofsupply/${itemId}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('DELETE', environment.nphiesConfigurationService + requestUrl, {}, { headers });
+    return this.http.request(request);
+  }
   getPriceList(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/pricelist/criteria?page=${body.page}&size=${body.size}`;
     delete body.page;
@@ -78,7 +96,17 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
     return this.http.request(request);
   }
+  getMedicationList(searchText:string ,providerId: string, page: number, size: number) {
+    let requestURL = `/providers/${providerId}/daysofsupply?query=${searchText}&page=${page}&size=${size}`;
 
+    const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
+    return this.http.request(request);
+  }
+  addUpdateSingleMedicationSupply(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/daysofsupply`;
+    const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
+    return this.http.request(request);
+  }
   searchPractitioner(providerId: string, searchQuery: string) {
     const requestURL: string = `/providers/${providerId}/physciains/search?query=` + searchQuery;
     const request = new HttpRequest('GET', environment.nphiesConfigurationService + requestURL);
@@ -96,7 +124,7 @@ export class NphiesConfigurationService {
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
     return this.http.request(request);
   }
-
+  
   deletePhysician(providerId: string, physicianId: string) {
     const requestUrl = `/providers/${providerId}/physciains/${physicianId}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');

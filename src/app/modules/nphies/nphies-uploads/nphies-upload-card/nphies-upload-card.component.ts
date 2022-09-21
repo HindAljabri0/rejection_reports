@@ -51,12 +51,20 @@ export class NphiesUploadCardComponent implements OnInit {
             }, errorEvent => {
               this.sharedServices.loadingChanged.next(false);
               if (errorEvent instanceof HttpErrorResponse) {
+                
                 if (errorEvent.status == 404) {
                   this.dialogService.openMessageDialog({
                     title: '',
                     message: 'It appears that the claims have been already deleted for this upload.',
                     isError: true
                   });
+                } else if (errorEvent.status == 500 && errorEvent.error['status']=='NotDeleted'){
+                  this.dialogService.openMessageDialog({
+                    title: '',
+                    message: errorEvent.error['message'],
+                    isError: true
+                  });
+
                 } else {
                   this.dialogService.openMessageDialog({
                     title: '',

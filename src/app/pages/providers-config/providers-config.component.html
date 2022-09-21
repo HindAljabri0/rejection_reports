@@ -23,8 +23,21 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           MidTables Configuration
-          <span class="text-danger ml-auto" *ngIf="errors.midtableSaveError != null">{{errors.midtableSaveError}}</span>
-          <span class="text-success ml-auto" *ngIf="success.midtableSaveSuccess != null">{{success.midtableSaveSuccess}}</span>
+          <mat-menu #midtableMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.midtableSaveError != null">{{errors.midtableSaveError}}</ng-container>
+                <ng-container *ngIf="success.midtableSaveSuccess != null">{{success.midtableSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.midtableSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="midtableMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.midtableSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="midtableMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.midtableError == null || errors.midtableError == '') && !componentLoading.midtable">
@@ -163,8 +176,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           NPHIES Polling
-          <span *ngIf="errors.pollTypeConfigurationSaveError != null" class="text-danger ml-auto">{{errors.pollTypeConfigurationSaveError}}</span>
-          <span *ngIf="success.pollTypeConfigurationSaveSuccess != null" class="text-success ml-auto">{{success.pollTypeConfigurationSaveSuccess}}</span>
+          <mat-menu #pollTypeConfigurationMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.pollTypeConfigurationSaveError != null">{{errors.pollTypeConfigurationSaveError}}</ng-container>
+                <ng-container *ngIf="success.pollTypeConfigurationSaveSuccess != null">{{success.pollTypeConfigurationSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.pollTypeConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="pollTypeConfigurationMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.pollTypeConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="pollTypeConfigurationMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.pollTypeConfigurationError == null || errors.pollTypeConfigurationError == '') && !componentLoading.pollType">
@@ -182,7 +209,7 @@
           <div class="row small-gutter">
             <div class="col-auto">
               <mat-form-field appearance="fill" class="no-label">
-                <input matInput placeholder="Enter number" type="number" min="1" [formControl]="pollTypePeriodController"/>
+                <input matInput placeholder="Enter number" type="number" min="1" [formControl]="pollTypePeriodController" />
               </mat-form-field>
             </div>
             <div class="col-auto">
@@ -208,8 +235,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           Payer Selection & Mapping
-          <span class="text-danger ml-auto" *ngIf="errors.payerMappingSaveError != null">{{errors.payerMappingSaveError}}</span>
-          <span class="text-success ml-auto" *ngIf="success.payerMappingSaveSuccess != null">{{success.payerMappingSaveSuccess}}</span>
+          <mat-menu #payerMappingMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.payerMappingSaveError != null">{{errors.payerMappingSaveError}}</ng-container>
+                <ng-container *ngIf="success.payerMappingSaveSuccess != null">{{success.payerMappingSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.payerMappingSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="payerMappingMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.payerMappingSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="payerMappingMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.payerMappingError == null || errors.payerMappingError == '') && !componentLoading.payerMapping">
@@ -222,7 +263,7 @@
             </div>
             <div class="form-group">
               <mat-form-field appearance="fill">
-                <mat-label>Maped value</mat-label>
+                <mat-label>Mapped value</mat-label>
                 <input matInput placeholder="Mapped value" [disabled]="!newPayerMappingEnable[payer.switchAccountId]" [(ngModel)]="newPayerMappingValue[payer.switchAccountId]"
                   required type="text">
               </mat-form-field>
@@ -241,20 +282,43 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Nphies Payer Selection & Mapping For Legacy Midtables
-          <span *ngIf="errors.NphiespayerMappingError != null" class="text-danger ml-auto">{{errors.NphiesMappingSaveError}}</span>
-          <span *ngIf="success.NphiesPayerMappingSuccess != null" class="text-success ml-auto">{{success.NphiesPayerMappingSuccess}}</span>
+          Nphies Payer Selection & Mapping for Legacy Midtables
+          <mat-menu #NphiesMappingMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.NphiesMappingSaveError != null">{{errors.NphiesMappingSaveError}}</ng-container>
+                <ng-container *ngIf="success.NphiesPayerMappingSuccess != null">{{success.NphiesPayerMappingSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.NphiesMappingSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="NphiesMappingMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.NphiesPayerMappingSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="NphiesMappingMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <ng-container *ngIf="(errors.NphiespayerMappingError == null || errors.NphiespayerMappingError == '') && !componentLoading.NphiesPayerMapping">
         <div class="row">
-          <div class="col-xxl-4 col-6" *ngFor="let Nphiepayer of addNphiesPayerMappingList;let i = index">
-            <p class="pb-2 text-primary medium">{{newNphiesPayerName[Nphiepayer]}} </p>
+          <!-- <div class="col-xxl-4 col-6" *ngFor="let Nphiepayer of addNphiesPayerMappingList;let i = index">
+            <p class="pb-2 text-primary medium">{{newNphiesPayerName[Nphiepayer.code]}}<span *ngIf="Nphiepayer.tpaNphiesId !== '-1'"> - {{Nphiepayer.tpaName}}</span> </p>
             <div class="form-group">
               <mat-form-field appearance="fill">
-                <mat-label>Maped value</mat-label>
-                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer]" required type="text">
+                <mat-label>Mapped value</mat-label>
+                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[Nphiepayer.code]" required type="text">
+              </mat-form-field>
+            </div>
+          </div> -->
+          <div class="col-xxl-4 col-6" *ngFor="let payer of associatedNphiePayers;let i = index">
+            <p class="pb-2 text-primary medium">{{newNphiesPayerName[payer.combination]}}<span *ngIf="payer.tpaNphiesId !== '-1'"> - {{payer.tpaName}}</span> </p>
+            <div class="form-group">
+              <mat-form-field appearance="fill">
+                <mat-label>Mapped value</mat-label>
+                <input matInput placeholder="Mapped value" [(ngModel)]="newNphiesPayerMappingValue[payer.combination]" type="text">
               </mat-form-field>
             </div>
           </div>
@@ -271,8 +335,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           Provider Code Mapping & Extraction Date Config
-          <span *ngIf="errors.providerMappingSaveError != null" class="text-danger ml-auto">{{errors.providerMappingSaveError}}</span>
-          <span *ngIf="success.providerMappingSaveSuccess != null" class="text-success ml-auto">{{success.providerMappingSaveSuccess}}</span>
+          <mat-menu #providerMappingMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.providerMappingSaveError != null">{{errors.providerMappingSaveError}}</ng-container>
+                <ng-container *ngIf="success.providerMappingSaveSuccess != null">{{success.providerMappingSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.providerMappingSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="providerMappingMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.providerMappingSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="providerMappingMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.providerMappingError == null || errors.providerMappingError == '') && !componentLoading.providerMapping">
@@ -293,7 +371,7 @@
             <div class="col-6">
               <div class="form-group mb-0">
                 <mat-form-field appearance="fill">
-                  <mat-label>Maped value</mat-label>
+                  <mat-label>Mapped value</mat-label>
                   <input matInput [formControl]="providerMappingController" placeholder="Mapped value" type="text">
                 </mat-form-field>
               </div>
@@ -323,8 +401,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           Price List Validation
-          <span *ngIf="errors.serviceCodeSaveError != null" class="text-danger ml-auto">{{errors.serviceCodeSaveError}}</span>
-          <span *ngIf="success.serviceCodeSaveSuccess != null" class="text-success ml-auto">{{success.serviceCodeSaveSuccess}}</span>
+          <mat-menu #serviceCodeMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.serviceCodeSaveError != null">{{errors.serviceCodeSaveError}}</ng-container>
+                <ng-container *ngIf="success.serviceCodeSaveSuccess != null">{{success.serviceCodeSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.serviceCodeSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="serviceCodeMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.serviceCodeSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="serviceCodeMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
@@ -365,8 +457,20 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           ICD10 Validation
-          <span *ngIf="errors.ICD10SaveError != null" class="text-danger ml-auto">{{errors.ICD10SaveError}}</span>
-          <span *ngIf="success.ICD10SaveSuccess != null" class="text-success ml-auto">{{success.ICD10SaveSuccess}}</span>
+          <mat-menu #ICD10Menu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.ICD10SaveError != null">{{errors.ICD10SaveError}}</ng-container>
+                <ng-container *ngIf="success.ICD10SaveSuccess != null">{{success.ICD10SaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.ICD10SaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="ICD10Menu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.ICD10SaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="ICD10Menu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.ICD10Validation">
@@ -400,8 +504,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           Portal User Configration
-          <span *ngIf="errors.portalUserSaveError != null" class="text-danger ml-auto">{{errors.portalUserSaveError}}</span>
-          <span *ngIf="success.portalUserSaveSuccess != null" class="text-success ml-auto">{{success.portalUserSaveSuccess}}</span>
+          <mat-menu #portalUserMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.portalUserSaveError != null">{{errors.portalUserSaveError}}</ng-container>
+                <ng-container *ngIf="success.portalUserSaveSuccess != null">{{success.portalUserSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.portalUserSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="portalUserMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.portalUserSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="portalUserMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser">
@@ -436,8 +554,20 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           SFDA Validation
-          <span *ngIf="errors.sfdaSaveError != null" class="text-danger ml-auto">{{errors.sfdaSaveError}}</span>
-          <span *ngIf="success.sfdaSaveSuccess != null" class="text-success ml-auto">{{success.sfdaSaveSuccess}}</span>
+          <mat-menu #sfdaMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.sfdaSaveError != null">{{errors.sfdaSaveError}}</ng-container>
+                <ng-container *ngIf="success.sfdaSaveSuccess != null">{{success.sfdaSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.sfdaSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="sfdaMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.sfdaSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="sfdaMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.sfda">
@@ -470,8 +600,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           PBM Configuration
-          <span *ngIf="errors.pbmConfigurationSaveError != null" class="text-danger ml-auto">{{errors.pbmConfigurationSaveError}}</span>
-          <span *ngIf="success.pbmConfigurationSaveSuccess != null" class="text-success ml-auto">{{success.pbmConfigurationSaveSuccess}}</span>
+          <mat-menu #pbmConfigurationMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.pbmConfigurationSaveError != null">{{errors.pbmConfigurationSaveError}}</ng-container>
+                <ng-container *ngIf="success.pbmConfigurationSaveSuccess != null">{{success.pbmConfigurationSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.pbmConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="pbmConfigurationMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.pbmConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="pbmConfigurationMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.pbmConfigurationError == null || errors.pbmConfigurationError == '') && !componentLoading.pbmConfiguration">
@@ -500,8 +644,22 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           Net Amount Accuracy
-          <span *ngIf="errors.netAmountConfigurationSaveError != null" class="text-danger ml-auto">{{errors.netAmountConfigurationSaveError}}</span>
-          <span *ngIf="success.netAmountConfigurationSaveSuccess != null" class="text-success ml-auto">{{success.netAmountConfigurationSaveSuccess}}</span>
+          <mat-menu #netAmountConfigurationMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.netAmountConfigurationSaveError != null">{{errors.netAmountConfigurationSaveError}}</ng-container>
+                <ng-container *ngIf="success.netAmountConfigurationSaveSuccess != null">{{success.netAmountConfigurationSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.netAmountConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="netAmountConfigurationMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.netAmountConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="netAmountConfigurationMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-container *ngIf="(errors.netAmountConfigurationError == null || errors.netAmountConfigurationError == '') && !componentLoading.netAmount">

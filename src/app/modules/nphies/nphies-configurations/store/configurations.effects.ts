@@ -7,11 +7,11 @@ import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operato
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import {
-    loadProviderMappingValues,
-    saveChangesOfCodeValueManagement,
-    setCodeValueManagementError,
-    storeProviderMappingValues,
-    storeSaveChangesResponsesOfCodeValueManagement
+    nphiesLoadProviderMappingValues,
+    nphiesSaveChangesOfCodeValueManagement,
+    nphiesSetCodeValueManagementError,
+    nphiesStoreProviderMappingValues,
+    nphiesStoreSaveChangesResponsesOfCodeValueManagement
 } from './configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './configurations.reducer';
 
@@ -28,16 +28,16 @@ export class ConfigurationsEffects {
 
 
     onRequestProviderMappingValues$ = createEffect(() => this.actions$.pipe(
-        ofType(loadProviderMappingValues),
+        ofType(nphiesLoadProviderMappingValues),
         switchMap(() => this.settingsService.getNphiesProviderMappingsWithCategories(this.sharedServices.providerId).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
-            map(response => storeProviderMappingValues({ values: this.getCategorizedCodeValuesFromResponse(response) })),
-            catchError(error => of({ type: setCodeValueManagementError.type, error }))
+            map(response => nphiesStoreProviderMappingValues({ values: this.getCategorizedCodeValuesFromResponse(response) })),
+            catchError(error => of({ type: nphiesSetCodeValueManagementError.type, error }))
         ))
     ));
 
     onSavingChanges$ = createEffect(() => this.actions$.pipe(
-        ofType(saveChangesOfCodeValueManagement),
+        ofType(nphiesSaveChangesOfCodeValueManagement),
         withLatestFrom(this.store.select(codeValueManagementSelectors.getModificationsValues)),
         map(data => [data[1].newValues, data[1].toDeleteValues]),
         map(data => forkJoin(
@@ -55,8 +55,8 @@ export class ConfigurationsEffects {
             })
         )),
         map(requests => requests.subscribe(responses => {
-            this.store.dispatch(storeSaveChangesResponsesOfCodeValueManagement({ responses }));
-            this.store.dispatch(loadProviderMappingValues());
+            this.store.dispatch(nphiesStoreSaveChangesResponsesOfCodeValueManagement({ responses }));
+            this.store.dispatch(nphiesLoadProviderMappingValues());
         })),
 
     ), { dispatch: false });

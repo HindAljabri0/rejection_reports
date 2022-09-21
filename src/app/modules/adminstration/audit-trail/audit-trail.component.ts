@@ -50,7 +50,8 @@ export class AuditTrailComponent implements OnInit {
       { value: 'NphiesClaimAuditLogType', text: 'NphiesClaimManipulation' },
       { value: 'NphiesEligibilityAuditLogType', text: 'NphiesEligibility' },
       { value: 'NphiesPreAuthAuditLogType', text: 'NphiesPreAuth' },
-      { value: 'BeneficiaryManipulationAuditLogType', text: 'BeneficairyManipulation' },
+      { value: 'BeneficiaryManipulationAuditLogType', text: 'BeneficiaryManipulation' },
+      { value: 'NphiesLegacyClaimAuditLogType', text: 'NphiesLegacyClaimManipulation' }
 
     ];
     this.commenService.loadingChanged.next(true);
@@ -181,25 +182,26 @@ export class AuditTrailComponent implements OnInit {
   }
 
   viewJSON(objectId: string, log: AuditLog) {
-    let json='';
+    let json = '';
 
-    console.log('Inside viewJSON' +JSON.stringify(log));
-
-    if(log.eventType=='BeneficairyManipulation'){
-      console.log('Inside BeneficairyManipulation' +JSON.stringify(log.beneficiaryJSON));
-      json=log.beneficiaryJSON;
-    }else if(log.eventType=='NphiesEligibility'){
-      console.log('Inside NphiesEligibility' +JSON.stringify(log.eligibilityData));
-      json=log.eligibilityData;
-    }else if(log.eventType=='NphiesPreAuth'){
-      console.log('Inside NphiesPreAuth' +JSON.stringify(log.preAuthData));
-      json=log.preAuthData;
-    }else if(log.eventType=='NphiesClaim'){
-      console.log('Inside NphiesClaim' +JSON.stringify(log.claimData));
-      json=log.claimData;
-    }else if(log.eventType=='ClaimManipulation'){
-      console.log('Inside ClaimManipulation' +JSON.stringify(log.newClaimData));
-      json=log.newClaimData;
+    console.log('Inside viewJSON' + JSON.stringify(log));
+    console.log('log.eventType', log.eventType);
+    
+    if (log.eventType == 'BeneficiaryManipulation') {
+      console.log('Inside BeneficairyManipulation' + JSON.stringify(log.beneficiaryJSON));
+      json = log.beneficiaryJSON;
+    } else if (log.eventType == 'NphiesEligibility') {
+      console.log('Inside NphiesEligibility' + JSON.stringify(log.eligibilityData));
+      json = log.eligibilityData;
+    } else if (log.eventType == 'NphiesPreAuth') {
+      console.log('Inside NphiesPreAuth' + JSON.stringify(log.preAuthData));
+      json = log.preAuthData;
+    } else if (log.eventType == 'NphiesClaim') {
+      console.log('Inside NphiesClaim' + JSON.stringify(log.claimData));
+      json = log.claimData;
+    } else if (log.eventType == 'ClaimManipulation') {
+      console.log('Inside ClaimManipulation' + JSON.stringify(log.newClaimData));
+      json = log.newClaimData;
     }
 
     this.dialog.open(JsonViewDialogComponent, {

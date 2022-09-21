@@ -758,6 +758,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
 
   showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false) {
+    localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
+
     this.params.claimId = claimId;
     this.params.claimResponseId = claimResponseId;
     if (edit) {
@@ -767,9 +769,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     } else {
       this.params.editMode = null;
     }
-    this.resetURL();
-
-    localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
+    this.resetURL();   
     this.store.dispatch(cancelClaim());
 
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {

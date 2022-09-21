@@ -15,7 +15,7 @@ export class BeneficiaryModel {
   bloodGroup: string;
   documentType: string;
   documentId: string;
-  beneficiaryFileld: string;
+  beneficiaryFileId: string;
   eHealthId: string;
   residencyType: string;
   martialStatus: string;

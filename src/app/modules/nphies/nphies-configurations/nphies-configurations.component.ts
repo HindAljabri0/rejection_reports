@@ -5,12 +5,12 @@ import { Store } from '@ngrx/store';
 import { SharedServices } from 'src/app/services/shared.services';
 import { MatDialog } from '@angular/material';
 import {
-  addNewMappingValue,
-  cancelChangesOfCodeValueManagement,
-  deleteMappingValue,
-  loadProviderMappingValues,
-  saveChangesOfCodeValueManagement,
-  setCodeValueManagementLoading
+  nphiesAddNewMappingValue,
+  nphiesCancelChangesOfCodeValueManagement,
+  nphiesDeleteMappingValue,
+  nphiesLoadProviderMappingValues,
+  nphiesSaveChangesOfCodeValueManagement,
+  nphiesSetCodeValueManagementLoading
 } from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
 import { ConfiguartionModalComponent } from 'src/app/pages/configuartion-modal/configuartion-modal.component';
@@ -51,8 +51,8 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
   constructor(private store: Store, private sharedServices: SharedServices, private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
-    this.store.dispatch(loadProviderMappingValues());
+    this.store.dispatch(nphiesSetCodeValueManagementLoading({ isLoading: true }));
+    this.store.dispatch(nphiesLoadProviderMappingValues());
     this.getCategoriesFromStore();
     this.store.select(codeValueManagementSelectors.getIsLoading).subscribe(isLoading => this.isLoading = isLoading);
     this.store.select(codeValueManagementSelectors.hasNewChanges).subscribe(hasChanges => this.hasChanges = hasChanges);
@@ -146,7 +146,7 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
   }
 
   removeMappedValueFromSelections(index: number) {
-    this.store.dispatch(deleteMappingValue({
+    this.store.dispatch(nphiesDeleteMappingValue({
       value: {
         categoryId: this.selectedCategory, codeId: this.selectedCode, value:
           this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values[index]
@@ -172,7 +172,7 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
     }
     this.codeValueDictionary.get(category).codes.get(code).values.push(value);
     this.selectCode(code);
-    this.store.dispatch(addNewMappingValue({ value: { categoryId: category, codeId: code, value } }));
+    this.store.dispatch(nphiesAddNewMappingValue({ value: { categoryId: category, codeId: code, value } }));
   }
   cancel() {
     this.values = [];
@@ -182,7 +182,7 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
     this.selectedPayer = '-1';
     this.selectedCategory = '';
     this.categoriesStoreSubscription.unsubscribe();
-    this.store.dispatch(cancelChangesOfCodeValueManagement());
+    this.store.dispatch(nphiesCancelChangesOfCodeValueManagement());
     this.getCategoriesFromStore();
   }
   save() {
@@ -195,8 +195,8 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
     this.selectedCode = '';
     this.selectedPayer = '-1';
     this.selectedCategory = '';
-    this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
-    this.store.dispatch(saveChangesOfCodeValueManagement());
+    this.store.dispatch(nphiesSetCodeValueManagementLoading({ isLoading: true }));
+    this.store.dispatch(nphiesSaveChangesOfCodeValueManagement());
   }
   openCSV(event) {
     const dialogRef = this.dialog.open(ConfiguartionModalComponent,
