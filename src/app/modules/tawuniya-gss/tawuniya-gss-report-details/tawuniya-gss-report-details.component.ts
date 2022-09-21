@@ -8,7 +8,6 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { InitiateResponse } from '../models/InitiateResponse.model';
 import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
 
@@ -25,10 +24,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
   downloaded: boolean = false
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
-  
- 
-
-  // signed: boolean = false
+  lossMonth : string;  
 
   constructor(private activatedRoute: ActivatedRoute,
     private tawuniyaGssService: TawuniyaGssService,
@@ -43,6 +39,9 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     this.sharedServices.loadingChanged.next(true);
     this.gssReferenceNumber = this.activatedRoute.snapshot.params.gssReferenceNumber;
     let isInquiry = this.activatedRoute.snapshot.queryParams.inquiry;
+    this.lossMonth = decodeURIComponent(this.activatedRoute.snapshot.queryParams.lossMonth);
+    console.log("lossMOnth : ", this.lossMonth);
+    
     if (isInquiry) {
       this.tawuniyaGssService.gssQueryDetails(this.gssReferenceNumber).subscribe( model => {
         console.log(model);
@@ -50,22 +49,17 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
         this.sharedServices.loadingChanged.next(false);
       });
     } else {
-     this.initiateGssReport();
+     this.initiateGssReport(this.lossMonth);
     }
   }
 
-  initiateGssReport() {
-    let lossMonthAsDate: Date = new Date();
-    let month = lossMonthAsDate.getMonth() == 0 ? 12 : lossMonthAsDate.getMonth()
-    let year = lossMonthAsDate.getMonth() == 0 ? lossMonthAsDate.getFullYear() - 1 : lossMonthAsDate.getFullYear()
-    let lossMonth = year + '/' + month;
+  initiateGssReport(lossMonth : string ) {
        this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe(initiateModel =>{
         this.sharedServices.loadingChanged.next(false);
          if (!initiateModel) {
           this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose =>{
             this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
           });
-          //  this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
           } else {
           this.initiateModel = initiateModel
           this.startConfirmationTimer()
@@ -74,9 +68,6 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       }, error =>{
         this.sharedServices.loadingChanged.next(false);
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", error.error.message, true));
-
-        // "Could not initiate GSS report, kindly try to regenerate GSS report again later"
-        // this.store.dispatch(showSnackBarMessage({ message: "Could not initiate GSS report, kindly try to regenerate GSS report again later" }));
       });
   }
 
@@ -109,24 +100,18 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
 
   generateReport(showMessage: Boolean) {
     this.sharedServices.loadingChanged.next(true);
-    this.tawuniyaGssService.generateReportInitiate(this.initiateModel.lossMonth).subscribe(data => {
+    this.tawuniyaGssService.generateReportInitiate(this.lossMonth).subscribe(data => {
       this.initiateModel = data;
-      // console.log(this.initiateModel);
       this.sharedServices.loadingChanged.next(false);
       if (showMessage) {
         this.startConfirmationTimer()
-        // return this.store.dispatch(showSnackBarMessage({ message: "GSS Report Generated Successfully!" }));
       }
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.message) {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", err.error.message, true));
-
-        // return this.store.dispatch(showSnackBarMessage({ message: err.error.text }));
       } else {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Generation Fail", 'Internal Server error', true));
-
-        // return this.store.dispatch(showSnackBarMessage({ message: 'Internal Server error' }));
       }
     });
   }
