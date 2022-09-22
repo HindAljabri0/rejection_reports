@@ -106,7 +106,8 @@
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
                 <div class="ml-auto action-btns">
-                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
+                    [matMenuTriggerFor]="notesMenu">
                     <mat-icon class="text-primary">text_snippet</mat-icon>
                     <span>Notes</span>
                   </button>
@@ -123,7 +124,7 @@
                         <span>{{n.noteAuthor}}</span>
                         <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
                       </div>
-                    </li>                  
+                    </li>
                   </ul>
                 </mat-menu>
               </div>
@@ -274,14 +275,16 @@
                       </tbody>
                     </table>
                   </div>
-                  <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm
-                    aa'}}</span>
+                  <span>
+                    Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}
+                  </span>
                 </div>
                 <div class="ml-auto action-btns">
-                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
+                    [matMenuTriggerFor]="notesMenu">
                     <mat-icon class="text-primary">text_snippet</mat-icon>
                     <span>Notes</span>
-                  </button>                 
+                  </button>
                 </div>
                 <mat-menu #notesMenu="matMenu" class="communication-notes">
                   <ul *ngIf="communication.communicationRequestNotesList" class="notes">
@@ -291,7 +294,7 @@
                         <span>{{n.noteAuthor}}</span>
                         <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
                       </div>
-                    </li>                  
+                    </li>
                   </ul>
                 </mat-menu>
               </div>
@@ -310,7 +313,10 @@
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">
     <!-- <button mat-flat-button color="primary">Progress to Encounter</button> -->
-    <button *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial' || data.detailsModel.status === 'pended'" mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button>
+    <button mat-flat-button color="primary">UCAF Form</button>
+    <button
+      *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial' || data.detailsModel.status === 'pended'"
+      mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button>
     <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
   </div>
 </div>
