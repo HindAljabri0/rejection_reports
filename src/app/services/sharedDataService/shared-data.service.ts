@@ -217,6 +217,16 @@ export class SharedDataService {
     { value: 'oral-health-op', name: 'Oral Health OP' },
   ];
 
+  itemMedicationReasonList = [
+    { value: 'patient-request', name: '	Requested by patient' },
+    { value: 'generic', name: 'Generic' },
+    { value: 'innovative-noGeneric', name: 'Innovative without Generic' },
+    { value: 'physician-request', name: 'Requested by physician' },
+    { value: 'drug-pharmacyUnavailable', name: 'Out of pharmacy stock' },
+    { value: 'drug-marketUnavailable', name: 'Drug market unavailability' },
+    { value: 'Irreplaceable-drug', name: 'SFDA Irreplaceable drug' }
+  ];
+
 
   cancelReasonList = [
     { value: 'WI', name: 'Wrong information' },

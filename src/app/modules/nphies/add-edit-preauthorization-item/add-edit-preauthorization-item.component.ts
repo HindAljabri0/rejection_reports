@@ -62,13 +62,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisFilter: [''],
     invoiceNo: [''],
     // IsTaxApplied: [false],
-    searchQuery: ['']
+    searchQuery: [''],
+    drugSelectionReason: [''],
+    prescribedDrugCode : ['']
   });
 
   isSubmitted = false;
   typeListSearchResult = [];
   SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
+  medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+  prescribedMedicationList :any; 
   bodySiteList = [];
   subSiteList = [];
   IscareTeamSequenceRequired = false;
@@ -108,7 +112,21 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
       this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
-
+    if(this.data.type === "pharmacy"){
+      this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body) {
+           this.prescribedMedicationList = body;
+          }
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          
+        }
+      });
+    
+     }
     if (this.data.item) {
       console.log(" sub site val = " + this.data.item.subSite),
         this.FormItem.patchValue({
@@ -135,7 +153,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           payerShare: this.data.item.payerShare,
           startDate: this.data.item.startDate,
           endDate: this.data.item.endDate,
-          invoiceNo: this.data.item.invoiceNo
+          invoiceNo: this.data.item.invoiceNo,
+          drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0],
+          prescribedDrugCode : this.data.item.prescribedDrugCode
         });
 
       if (this.data.careTeams) {
@@ -773,6 +793,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
+      if(this.data.type === "pharmacy"){
+        model.drugSelectionReason=this.FormItem.controls.drugSelectionReason.value.value;
+        model.prescribedDrugCode=this.FormItem.controls.prescribedDrugCode.value;
+      }
       //console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
     }

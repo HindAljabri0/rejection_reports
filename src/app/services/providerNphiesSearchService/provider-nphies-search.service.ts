@@ -482,4 +482,10 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.nphiesClaimDownload + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
+
+  getPrescribedMedicationList(providerId: string) {
+    const requestURL = '/providers/' + providerId + '/prescribed/itemcodes';
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
 }
