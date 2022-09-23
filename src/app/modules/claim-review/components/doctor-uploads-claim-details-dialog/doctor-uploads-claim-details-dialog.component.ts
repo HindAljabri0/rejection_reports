@@ -1,4 +1,3 @@
-import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -90,8 +89,8 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
       this.diagnosis = claim.caseInformation.caseDescription.diagnosis
       this.globalDoctorRemarks = claim.doctorRemarks
     });
-    this.isCoder = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isCoder
-    this.isDoctor = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.isDoctor
+    this.isCoder = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder
+    this.isDoctor = this.sharedServices.userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor
     this.uploadId = this.data.uploadId
     this.provClaimNo = this.data.provClaimNo
   }
@@ -140,7 +139,7 @@ export class DoctorUploadsClaimDetailsDialogComponent implements OnInit {
         coder: this.isCoder,
         doctor: this.isDoctor,
         provClaimNo: this.provClaimNo, uploadId: +this.uploadId,
-        userName: this.authService.getUserName()
+        userName: this.authService.getAuthUsername()
       }
     }));
     this.dialogRef.close('mark-as-done');

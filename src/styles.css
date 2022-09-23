@@ -920,25 +920,21 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* login
 --------------------------------------------------------------------------------------------------------*/
 .login-wrapper{display:flex;min-height:100vh;border-top:4px solid #3060AA;border-bottom:4px solid #3060AA;background: #FFFFFF;color: #333;}
-.login-wrapper.national-day{border-top-color:#006C32;border-bottom-color:#006C32;}
 .login-wrapper>.left-block,.login-wrapper>.right-block{flex-grow: 0;flex-shrink: 0;flex-basis: 50%;max-width: 50%;}
 .login-wrapper>.left-block{display: flex;flex-direction: column;padding: 48px 16px 40px;}
 .login-wrapper .right-block{background-color: rgba(48, 96, 170,0.08);padding: 24px 22px;color: #3060aa;display: flex;flex-direction: column;}
-.login-wrapper.national-day .right-block{color: #006C32;background-color: rgba(0, 108, 50, 0.08);}
 .login-wrapper .upper-art,.login-wrapper .lower-art{display: block;width: 100%;margin: 0 auto;max-height: 132px;}
-.login-wrapper.national-day .lower-art{width: calc(100% + 44px);margin: 0 -22px -24px -22px;}
 .login-wrapper .logo{display: block;margin: 0 auto 56px;width: 164px;height: 110px;}
-.login-wrapper.national-day .logo{width: 240px;}
 .login-wrapper .right-block .middle{padding: 56px 0 48px;margin: auto 0;}
 .login-wrapper .login-contact{display: flex;justify-content: center;}
 .login-wrapper .login-contact li:not(:last-child){padding-right: 65px;position: relative;}
 .login-wrapper .login-contact li:not(:last-child):after{width: 1px;content:'';position: absolute;right: 32px;top: 8px;bottom: 20px;display: block;background: #3060AA;opacity: 0.4;}
-.login-wrapper.national-day .login-contact li:not(:last-child):after{background: #006C32;}
 .login-wrapper .login-contact li{display: flex;flex-direction: column;align-items: center;text-align: center;font-weight: 500;font-size: 16px;line-height: 24px;color: #3060aa;}
-.login-wrapper.national-day .login-contact li{color: #006C32;}
 .login-wrapper .login-contact .icon{border: 2px solid rgba(48, 96, 170, 0.48);border-radius: 8px;padding: 10px;margin-bottom: 12px;}
-.login-wrapper.national-day .login-contact .icon{border-color:rgba(0, 108, 50, 0.478);}
 .login-wrapper .login-contact .icon>img{display: block;height: 32px;width: 32px;}
+.login-wrapper.national-day{border-top-color:#006C32;border-bottom-color:#006C32;}
+.login-wrapper.national-day .right-block{background: url('./assets/national-day-illustration.svg') center no-repeat;background-size: cover;position: relative;}
+.login-wrapper.national-day .right-block .logos{display: block;position: absolute;right: 0;bottom: -4px;}
 .login-wrapper.national-day .mat-flat-button.mat-primary, .login-wrapper.national-day .mat-raised-button.mat-primary, .login-wrapper.national-day .mat-fab.mat-primary, .login-wrapper.national-day .mat-mini-fab.mat-primary{background: #006C32;}
 .login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex:before{border-color: #006C32;}
 .login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill.mat-focused .mat-form-field-label{color: #006C32;}
@@ -1661,7 +1657,7 @@ body.print-eligibility {background-color: transparent;overflow-x:hidden;}
 .print-eligibility .cdk-overlay-container{position: static;height: auto;width:auto;}
 .print-eligibility .cdk-overlay-dark-backdrop{display: none;}
 .print-eligibility .cdk-global-overlay-wrapper{position: static;}
-.print-eligibility .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: none;height: auto;}
+.print-eligibility .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: none;height: auto;box-shadow:none;}
 .print-eligibility .mat-dialog-container .nphies-eligibility-tab.mat-tab-group.mat-primary .mat-tab-body-content{height: auto;overflow-x:hidden;}
 .print-eligibility .primary-dialog.full-screen-dialog .primary-dialog-body{height: auto;}
 html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
@@ -1672,6 +1668,94 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-eligibility tr>td:first-child:last-child[colspan]{padding-left:0;padding-right:0;}
 .print-eligibility thead{display: table-row-group;}
 .print-eligibility .primary-dialog-footer{display: none;}
+
+/* print dialog body
+--------------------------------------------------------------------------------------------------------*/
+.print-dialog-body{background-color: #484848;padding: 48px;max-height: calc(100vh - 192px);overflow: auto;}
+.print-dialog-body .print-preview-wrapper{background-color: #fff;padding: 48px;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);border-radius: 2px;width: 1032px;}
+.print-dialog-body .caf-form {font-size: 8pt;line-height: 12pt;font-family: 'Arial', sans-serif;margin: 0;}
+.print-dialog-body .caf-form h1,.print-dialog-body .caf-form h2,.print-dialog-body .caf-form h3,.print-dialog-body .caf-form h4,.print-dialog-body .caf-form h5,.print-dialog-body .caf-form h6,.print-dialog-body .caf-form p {margin: 0;}
+.print-dialog-body .caf-form h1 {font-size: 18pt;line-height: 24pt;}
+.print-dialog-body .caf-form h3 {font-size: 9pt;line-height: 14pt;}
+.print-dialog-body .caf-form .form-container-group {border-radius: 8px;border: 2px solid #000;padding: 8px;height: 100%;}
+.print-dialog-body .caf-form .border-right {border-right: 1px solid #000;}
+.print-dialog-body .caf-form .stamp {border: 1px solid #000;border-radius: 50px;height: 16pt;width: 16pt;display: inline-block;vertical-align: top;}
+.print-dialog-body .caf-form .layout-table {width: 100%;}
+.print-dialog-body .caf-form .layout-table>tr>td {padding: 4pt;border-collapse: collapse;height: 1px;}
+.print-dialog-body .caf-form .layout-table>tr>td:first-child {padding-left: 0;}
+.print-dialog-body .caf-form .layout-table>tr>td:last-child {padding-right: 0;}
+.print-dialog-body .caf-form .text-nowrap {white-space: nowrap;}
+.print-dialog-body .caf-form .text-wrap {white-space: normal;}
+.print-dialog-body .caf-form .internal-table {border-collapse: collapse;white-space: nowrap;width: 100%;}
+.print-dialog-body .caf-form .value-holder {border-bottom: 1px dashed #707070;}
+.print-dialog-body .caf-form p>span.value-holder {display: inline-block;vertical-align: baseline;}
+.print-dialog-body .caf-form p {min-height: 12pt;}
+.print-dialog-body .caf-form .check {height: 10pt;width: 10pt;display: inline-block;vertical-align: -2pt;opacity: 0;margin: 0 -1pt;}
+.print-dialog-body .caf-form .check.checked {opacity: 1;}
+.print-dialog-body .caf-form .round-strip {border: 1px solid #000;border-radius: 50px;}
+.print-dialog-body .caf-form hr {height: 0;background: none;border: 0;margin: 4pt 0;border-bottom: 2px solid #000;}
+.print-dialog-body .caf-form .data-table {width: 100%;border-collapse: collapse;text-align: center;margin: 4pt 0;}
+.print-dialog-body .caf-form .data-table td,.print-dialog-body .caf-form .data-table th {border: 1px solid #000;}
+.print-dialog-body .caf-form .data-table th {font-weight: 700;}
+.print-dialog-body .border-left-0{border-left:0!important}
+.print-dialog-body .border-bottom-0{border-bottom:0!important}
+.print-dialog-body .border-right-0{border-right:0!important}
+.print-dialog-body .teeth{height:208pt;display:block}
+.print-dialog-body .teeth-wrapper{display:inline-block;vertical-align:top;position:relative}
+.print-dialog-body .teeth-mark{position:absolute;background-color:#000;display:block;border-radius:4pt;opacity:0}
+.print-dialog-body .teeth-mark.checked{opacity:.72}
+.print-dialog-body .teeth-mark.no-11{height:8pt;width:8pt;top:7.5pt;left:56.5pt}
+.print-dialog-body .teeth-mark.no-12{height:8pt;width:8pt;top:10.25pt;left:46pt}
+.print-dialog-body .teeth-mark.no-13{height:8pt;width:8pt;top:16.5pt;left:37pt}
+.print-dialog-body .teeth-mark.no-14{height:9pt;width:9pt;top:24pt;left:29.5pt}
+.print-dialog-body .teeth-mark.no-15{height:9pt;width:9pt;top:33pt;left:23.5pt}
+.print-dialog-body .teeth-mark.no-16{height:10pt;width:10pt;top:45.75pt;left:18.75pt}
+.print-dialog-body .teeth-mark.no-17{height:10pt;width:10pt;top:60.75pt;left:15.75pt}
+.print-dialog-body .teeth-mark.no-18{height:10pt;width:10pt;top:74.25pt;left:13.5pt}
+.print-dialog-body .teeth-mark.no-21{height:8pt;width:8pt;top:7.25pt;left:69.25pt}
+.print-dialog-body .teeth-mark.no-22{height:8pt;width:8pt;top:9.75pt;left:81pt}
+.print-dialog-body .teeth-mark.no-23{height:8pt;width:8pt;top:15pt;left:91pt}
+.print-dialog-body .teeth-mark.no-24{height:9pt;width:9pt;top:23.25pt;left:98.25pt}
+.print-dialog-body .teeth-mark.no-25{height:9pt;width:9pt;top:34pt;left:103pt}
+.print-dialog-body .teeth-mark.no-26{height:10pt;width:10pt;top:47.25pt;left:105.75pt}
+.print-dialog-body .teeth-mark.no-27{height:10pt;width:10pt;top:62.25pt;left:108pt}
+.print-dialog-body .teeth-mark.no-28{height:10pt;width:10pt;top:75.75pt;left:109.5pt}
+.print-dialog-body .teeth-mark.no-31{height:8pt;width:8pt;top:192.75pt;left:68.25pt}
+.print-dialog-body .teeth-mark.no-32{height:8pt;width:8pt;top:191.25pt;left:78pt}
+.print-dialog-body .teeth-mark.no-33{height:9pt;width:9pt;top:186pt;left:88.75pt}
+.print-dialog-body .teeth-mark.no-34{height:9pt;width:9pt;top:177.75pt;left:97.5pt}
+.print-dialog-body .teeth-mark.no-35{height:10pt;width:10pt;top:165.75pt;left:102.75pt}
+.print-dialog-body .teeth-mark.no-36{height:10pt;width:10pt;top:152.25pt;left:106.5pt}
+.print-dialog-body .teeth-mark.no-37{height:10pt;width:10pt;top:138pt;left:108pt}
+.print-dialog-body .teeth-mark.no-38{height:10pt;width:10pt;top:125.25pt;left:108pt}
+.print-dialog-body .teeth-mark.no-41{height:8pt;width:8pt;top:192pt;left:58.5pt}
+.print-dialog-body .teeth-mark.no-42{height:8pt;width:8pt;top:190.5pt;left:49.5pt}
+.print-dialog-body .teeth-mark.no-43{height:8pt;width:8pt;top:185.25pt;left:40.75pt}
+.print-dialog-body .teeth-mark.no-44{height:9pt;width:9pt;top:176.25pt;left:32.5pt}
+.print-dialog-body .teeth-mark.no-45{height:9pt;width:9pt;top:166.5pt;left:27pt}
+.print-dialog-body .teeth-mark.no-46{height:10pt;width:10pt;top:153.75pt;left:21pt}
+.print-dialog-body .teeth-mark.no-47{height:10pt;width:10pt;top:138.75pt;left:18pt}
+.print-dialog-body .teeth-mark.no-48{height:10pt;width:10pt;top:125.25pt;left:16.5pt}
+.print-dialog-body .teeth-mark.no-51{height:6pt;width:6pt;top:21.25pt;left:60.25pt}
+.print-dialog-body .teeth-mark.no-52{height:6pt;width:6pt;top:24.75pt;left:53.5pt}
+.print-dialog-body .teeth-mark.no-53{height:7pt;width:7pt;top:30pt;left:47.5pt}
+.print-dialog-body .teeth-mark.no-54{height:8pt;width:8pt;top:36.75pt;left:42pt}
+.print-dialog-body .teeth-mark.no-55{height:9pt;width:9pt;top:45.75pt;left:38.25pt}
+.print-dialog-body .teeth-mark.no-61{height:6pt;width:6pt;top:21pt;left:69.25pt}
+.print-dialog-body .teeth-mark.no-62{height:6pt;width:6pt;top:24pt;left:78pt}
+.print-dialog-body .teeth-mark.no-63{height:7pt;width:7pt;top:30pt;left:84pt}
+.print-dialog-body .teeth-mark.no-64{height:8pt;width:8pt;top:36pt;left:88.5pt}
+.print-dialog-body .teeth-mark.no-65{height:9pt;width:9pt;top:45pt;left:90pt}
+.print-dialog-body .teeth-mark.no-71{height:6pt;width:6pt;top:177.75pt;left:68.25pt}
+.print-dialog-body .teeth-mark.no-72{height:6pt;width:6pt;top:176.25pt;left:76.5pt}
+.print-dialog-body .teeth-mark.no-73{height:7pt;width:7pt;top:171pt;left:81pt}
+.print-dialog-body .teeth-mark.no-74{height:8pt;width:8pt;top:162.75pt;left:85.5pt}
+.print-dialog-body .teeth-mark.no-75{height:9pt;width:9pt;top:152.25pt;left:89.25pt}
+.print-dialog-body .teeth-mark.no-81{height:6pt;width:6pt;top:178.5pt;left:60.75pt}
+.print-dialog-body .teeth-mark.no-82{height:6pt;width:6pt;top:177pt;left:54pt}
+.print-dialog-body .teeth-mark.no-83{height:8pt;width:8pt;top:170pt;left:48pt}
+.print-dialog-body .teeth-mark.no-84{height:8pt;width:8pt;top:163pt;left:45pt}
+.print-dialog-body .teeth-mark.no-85{height:9pt;width:9pt;top:153pt;left:40pt}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
@@ -1814,10 +1898,10 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
     .advance-search .mat-chip-list{width: calc(100% - 190px);}
     .advance-search .search-btn{font-size: 12px;}
     .advance-search .input-wrapper>input{padding-right: 170px;}
-    .login-wrapper.eid-adha .left-top-art, .login-wrapper.eid-adha .right-top-art{display: none;}
-    .login-wrapper.eid-adha .center-art{height: 389px;width: 429px;}
-    .login-wrapper.eid-adha .bottom-section{flex-direction: column;justify-content: flex-start;align-items: center;}
-    .login-wrapper.eid-adha .bottom-section .contact{margin-bottom: 24px;}
+    .login-wrapper.right-block{display: none;}
+    .login-wrapper>.right-block{display: none;}
+    .login-wrapper>.left-block{max-width: 100%;flex-basis: 100%;}
+    .login-language-switch{right: 16px;}
 }
 
 .mat-grid-tile .mat-figure {

@@ -14,14 +14,38 @@ import { InitiateResponse } from '../models/InitiateResponse.model';
 })
 
 export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
-  today = new Date();
+  minDate = new Date();
+  maxDate = new Date();
+  
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
-  data : InitiateResponse[];
+  data: InitiateResponse[];
   lossMonth = new FormControl(null, Validators.required);
-  constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store : Store, private router: Router) { }
+  constructor(private dialogRef: MatDialogRef<TawuniyaGssGenerateReportDialogComponent>, private store: Store, private router: Router) { }
 
   ngOnInit() {
+    this.populateAllwedMonthsSelection()
   }
+
+  populateAllwedMonthsSelection() {
+    let numberOfAllowedMonths = 2
+    this.minDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() - numberOfAllowedMonths, 1);
+    this.maxDate = new Date(this.maxDate.getFullYear(), this.maxDate.getMonth(), 0);
+  }
+
+  // getMinDate(): Date {
+  //   // const current = new Date();
+  //   // current.setd
+  //   var current = new Date();
+  //   current.setMonth(current.getMonth() - 1);
+  //   var firstDay = new Date(current.getFullYear(), current.getMonth() - 1, 1);
+
+  // }
+
+  // getMaxDate(): Date {
+  //   var date = new Date();
+  //   var lastDateOfCurrentMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  //   return lastDateOfCurrentMonth;
+  // }
 
   closeDialog() {
     this.dialogRef.close();
@@ -29,13 +53,13 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
 
   generateReport() {
     this.lossMonth.markAllAsTouched()
-    if(this.lossMonth.invalid){
+    if (this.lossMonth.invalid) {
       return;
     }
 
     let date = new Date(this.lossMonth.value);
     let newDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
-    if(Date.parse(newDate)) {
+    if (Date.parse(newDate)) {
       this.dialogRef.close(date.getFullYear() + "/" + (date.getMonth() + 1));
     } else {
       return this.store.dispatch(showSnackBarMessage({ message: "Please select Loss Month." }));
@@ -49,5 +73,5 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
     container.setViewMode('month');
   }
 
-  
+
 }
