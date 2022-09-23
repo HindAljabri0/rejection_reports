@@ -77,6 +77,7 @@ import { MedicationDaysUploadComponent } from './medication-days-upload/medicati
 import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dialog/add-medication-supply-dialog.component';
 import { ViewPrintPreviewDialogComponent } from './view-print-preview-dialog/view-print-preview-dialog.component';
 import { UcafFormTemplateComponent } from './ucaf-form-template/ucaf-form-template.component';
+import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-template.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +132,8 @@ import { UcafFormTemplateComponent } from './ucaf-form-template/ucaf-form-templa
     MedicationDaysUploadComponent,
     AddMedicationSupplyDialogComponent,
     ViewPrintPreviewDialogComponent,
-    UcafFormTemplateComponent
+    UcafFormTemplateComponent,
+    DcafFormTemplateComponent
   ],
   imports: [
     CommonModule,
