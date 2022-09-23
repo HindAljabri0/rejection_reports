@@ -17,4 +17,10 @@ export class ViewPrintPreviewDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  print() {
+    document.querySelector('html').classList.add('print-document');
+    window.print();
+    document.querySelector('html').classList.remove('print-document');
+  }
+
 }

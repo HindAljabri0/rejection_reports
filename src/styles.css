@@ -1671,12 +1671,12 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 
 /* print dialog body
 --------------------------------------------------------------------------------------------------------*/
-.print-dialog-body{background-color: #484848;padding: 48px;max-height: calc(100vh - 192px);overflow: auto;}
-.print-dialog-body .print-preview-wrapper{background-color: #fff;padding: 48px;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);border-radius: 2px;width: 1032px;}
-.print-dialog-body .caf-form {font-size: 8pt;line-height: 12pt;font-family: 'Arial', sans-serif;margin: 0;}
+.print-dialog-body{background-color: #484848;padding: 24px;max-height: calc(100vh - 192px);overflow: auto;}
+.print-dialog-body .print-preview-wrapper{background-color: #fff;padding: 32px;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);border-radius: 2px;width: 1080px;}
+.print-dialog-body .caf-form {font-size: 11pt;line-height: 18pt;font-family: 'Arial', sans-serif;margin: 0;}
 .print-dialog-body .caf-form h1,.print-dialog-body .caf-form h2,.print-dialog-body .caf-form h3,.print-dialog-body .caf-form h4,.print-dialog-body .caf-form h5,.print-dialog-body .caf-form h6,.print-dialog-body .caf-form p {margin: 0;}
-.print-dialog-body .caf-form h1 {font-size: 18pt;line-height: 24pt;}
-.print-dialog-body .caf-form h3 {font-size: 9pt;line-height: 14pt;}
+.print-dialog-body .caf-form h1 {font-size: 24pt;line-height: 30pt;}
+.print-dialog-body .caf-form h3 {font-size: 13pt;line-height: 20pt;}
 .print-dialog-body .caf-form .form-container-group {border-radius: 8px;border: 2px solid #000;padding: 8px;height: 100%;}
 .print-dialog-body .caf-form .border-right {border-right: 1px solid #000;}
 .print-dialog-body .caf-form .stamp {border: 1px solid #000;border-radius: 50px;height: 16pt;width: 16pt;display: inline-block;vertical-align: top;}
@@ -1691,71 +1691,86 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-dialog-body .caf-form p>span.value-holder {display: inline-block;vertical-align: baseline;}
 .print-dialog-body .caf-form p {min-height: 12pt;}
 .print-dialog-body .caf-form .check {height: 10pt;width: 10pt;display: inline-block;vertical-align: -2pt;opacity: 0;margin: 0 -1pt;}
+.print-dialog-body .caf-form .check-square {height: 10pt;width: 10pt;display: inline-block;vertical-align: -2pt;margin: 0 -1pt;}
 .print-dialog-body .caf-form .check.checked {opacity: 1;}
 .print-dialog-body .caf-form .round-strip {border: 1px solid #000;border-radius: 50px;}
 .print-dialog-body .caf-form hr {height: 0;background: none;border: 0;margin: 4pt 0;border-bottom: 2px solid #000;}
 .print-dialog-body .caf-form .data-table {width: 100%;border-collapse: collapse;text-align: center;margin: 4pt 0;}
 .print-dialog-body .caf-form .data-table td,.print-dialog-body .caf-form .data-table th {border: 1px solid #000;}
 .print-dialog-body .caf-form .data-table th {font-weight: 700;}
-.print-dialog-body .border-left-0{border-left:0!important}
-.print-dialog-body .border-bottom-0{border-bottom:0!important}
-.print-dialog-body .border-right-0{border-right:0!important}
-.print-dialog-body .teeth{height:208pt;display:block}
-.print-dialog-body .teeth-wrapper{display:inline-block;vertical-align:top;position:relative}
-.print-dialog-body .teeth-mark{position:absolute;background-color:#000;display:block;border-radius:4pt;opacity:0}
-.print-dialog-body .teeth-mark.checked{opacity:.72}
-.print-dialog-body .teeth-mark.no-11{height:8pt;width:8pt;top:7.5pt;left:56.5pt}
-.print-dialog-body .teeth-mark.no-12{height:8pt;width:8pt;top:10.25pt;left:46pt}
-.print-dialog-body .teeth-mark.no-13{height:8pt;width:8pt;top:16.5pt;left:37pt}
-.print-dialog-body .teeth-mark.no-14{height:9pt;width:9pt;top:24pt;left:29.5pt}
-.print-dialog-body .teeth-mark.no-15{height:9pt;width:9pt;top:33pt;left:23.5pt}
-.print-dialog-body .teeth-mark.no-16{height:10pt;width:10pt;top:45.75pt;left:18.75pt}
-.print-dialog-body .teeth-mark.no-17{height:10pt;width:10pt;top:60.75pt;left:15.75pt}
-.print-dialog-body .teeth-mark.no-18{height:10pt;width:10pt;top:74.25pt;left:13.5pt}
-.print-dialog-body .teeth-mark.no-21{height:8pt;width:8pt;top:7.25pt;left:69.25pt}
-.print-dialog-body .teeth-mark.no-22{height:8pt;width:8pt;top:9.75pt;left:81pt}
-.print-dialog-body .teeth-mark.no-23{height:8pt;width:8pt;top:15pt;left:91pt}
-.print-dialog-body .teeth-mark.no-24{height:9pt;width:9pt;top:23.25pt;left:98.25pt}
-.print-dialog-body .teeth-mark.no-25{height:9pt;width:9pt;top:34pt;left:103pt}
-.print-dialog-body .teeth-mark.no-26{height:10pt;width:10pt;top:47.25pt;left:105.75pt}
-.print-dialog-body .teeth-mark.no-27{height:10pt;width:10pt;top:62.25pt;left:108pt}
-.print-dialog-body .teeth-mark.no-28{height:10pt;width:10pt;top:75.75pt;left:109.5pt}
-.print-dialog-body .teeth-mark.no-31{height:8pt;width:8pt;top:192.75pt;left:68.25pt}
-.print-dialog-body .teeth-mark.no-32{height:8pt;width:8pt;top:191.25pt;left:78pt}
-.print-dialog-body .teeth-mark.no-33{height:9pt;width:9pt;top:186pt;left:88.75pt}
-.print-dialog-body .teeth-mark.no-34{height:9pt;width:9pt;top:177.75pt;left:97.5pt}
-.print-dialog-body .teeth-mark.no-35{height:10pt;width:10pt;top:165.75pt;left:102.75pt}
-.print-dialog-body .teeth-mark.no-36{height:10pt;width:10pt;top:152.25pt;left:106.5pt}
-.print-dialog-body .teeth-mark.no-37{height:10pt;width:10pt;top:138pt;left:108pt}
-.print-dialog-body .teeth-mark.no-38{height:10pt;width:10pt;top:125.25pt;left:108pt}
-.print-dialog-body .teeth-mark.no-41{height:8pt;width:8pt;top:192pt;left:58.5pt}
-.print-dialog-body .teeth-mark.no-42{height:8pt;width:8pt;top:190.5pt;left:49.5pt}
-.print-dialog-body .teeth-mark.no-43{height:8pt;width:8pt;top:185.25pt;left:40.75pt}
-.print-dialog-body .teeth-mark.no-44{height:9pt;width:9pt;top:176.25pt;left:32.5pt}
-.print-dialog-body .teeth-mark.no-45{height:9pt;width:9pt;top:166.5pt;left:27pt}
-.print-dialog-body .teeth-mark.no-46{height:10pt;width:10pt;top:153.75pt;left:21pt}
-.print-dialog-body .teeth-mark.no-47{height:10pt;width:10pt;top:138.75pt;left:18pt}
-.print-dialog-body .teeth-mark.no-48{height:10pt;width:10pt;top:125.25pt;left:16.5pt}
-.print-dialog-body .teeth-mark.no-51{height:6pt;width:6pt;top:21.25pt;left:60.25pt}
-.print-dialog-body .teeth-mark.no-52{height:6pt;width:6pt;top:24.75pt;left:53.5pt}
-.print-dialog-body .teeth-mark.no-53{height:7pt;width:7pt;top:30pt;left:47.5pt}
-.print-dialog-body .teeth-mark.no-54{height:8pt;width:8pt;top:36.75pt;left:42pt}
-.print-dialog-body .teeth-mark.no-55{height:9pt;width:9pt;top:45.75pt;left:38.25pt}
-.print-dialog-body .teeth-mark.no-61{height:6pt;width:6pt;top:21pt;left:69.25pt}
-.print-dialog-body .teeth-mark.no-62{height:6pt;width:6pt;top:24pt;left:78pt}
-.print-dialog-body .teeth-mark.no-63{height:7pt;width:7pt;top:30pt;left:84pt}
-.print-dialog-body .teeth-mark.no-64{height:8pt;width:8pt;top:36pt;left:88.5pt}
-.print-dialog-body .teeth-mark.no-65{height:9pt;width:9pt;top:45pt;left:90pt}
-.print-dialog-body .teeth-mark.no-71{height:6pt;width:6pt;top:177.75pt;left:68.25pt}
-.print-dialog-body .teeth-mark.no-72{height:6pt;width:6pt;top:176.25pt;left:76.5pt}
-.print-dialog-body .teeth-mark.no-73{height:7pt;width:7pt;top:171pt;left:81pt}
-.print-dialog-body .teeth-mark.no-74{height:8pt;width:8pt;top:162.75pt;left:85.5pt}
-.print-dialog-body .teeth-mark.no-75{height:9pt;width:9pt;top:152.25pt;left:89.25pt}
-.print-dialog-body .teeth-mark.no-81{height:6pt;width:6pt;top:178.5pt;left:60.75pt}
-.print-dialog-body .teeth-mark.no-82{height:6pt;width:6pt;top:177pt;left:54pt}
-.print-dialog-body .teeth-mark.no-83{height:8pt;width:8pt;top:170pt;left:48pt}
-.print-dialog-body .teeth-mark.no-84{height:8pt;width:8pt;top:163pt;left:45pt}
-.print-dialog-body .teeth-mark.no-85{height:9pt;width:9pt;top:153pt;left:40pt}
+.print-dialog-body .caf-form .border-left-0{border-left:0!important}
+.print-dialog-body .caf-form .border-bottom-0{border-bottom:0!important}
+.print-dialog-body .caf-form .border-right-0{border-right:0!important}
+.print-dialog-body .caf-form .border-top-0{border-top:0!important}
+.print-dialog-body .caf-form .teeth{height:270pt;display:block}
+.print-dialog-body .caf-form .teeth-wrapper{display:inline-block;vertical-align:top;position:relative}
+.print-dialog-body .caf-form .teeth-mark{position:absolute;background-color:#000;display:block;border-radius:4pt;opacity:0}
+.print-dialog-body .caf-form .teeth-mark.checked{opacity:.72}
+.print-dialog-body .caf-form .teeth-mark.no-11{height:10.384pt;width:10.384pt;top:9.735pt;left:73.337pt;}
+.print-dialog-body .caf-form .teeth-mark.no-12{height:10.384pt;width:10.384pt;top:13.3045pt;left:59.708pt;}
+.print-dialog-body .caf-form .teeth-mark.no-13{height:10.384pt;width:10.384pt;top:21.417pt;left:48.026pt;}
+.print-dialog-body .caf-form .teeth-mark.no-14{height:11.682pt;width:11.682pt;top:31.152pt;left:38.291pt;}
+.print-dialog-body .caf-form .teeth-mark.no-15{height:11.682pt;width:11.682pt;top:42.834pt;left:30.503pt;}
+.print-dialog-body .caf-form .teeth-mark.no-16{height:12.98pt;width:10pt;top:59.3835pt;left:24.3375pt;}
+.print-dialog-body .caf-form .teeth-mark.no-17{height:12.98pt;width:10pt;top:78.8535pt;left:20.4435pt;}
+.print-dialog-body .caf-form .teeth-mark.no-18{height:12.98pt;width:10pt;top:96.3765pt;left:17.523pt;}
+.print-dialog-body .caf-form .teeth-mark.no-21{height:10.384pt;width:10.384pt;top:9.4105pt;left:89.8865pt;}
+.print-dialog-body .caf-form .teeth-mark.no-22{height:10.384pt;width:10.384pt;top:12.6555pt;left:105.138pt;}
+.print-dialog-body .caf-form .teeth-mark.no-23{height:10.384pt;width:10.384pt;top:19.47pt;left:118.118pt;}
+.print-dialog-body .caf-form .teeth-mark.no-24{height:11.682pt;width:11.682pt;top:30.1785pt;left:127.5285pt;}
+.print-dialog-body .caf-form .teeth-mark.no-25{height:11.682pt;width:11.682pt;top:44.132pt;left:133.694pt;}
+.print-dialog-body .caf-form .teeth-mark.no-26{height:12.98pt;width:10pt;top:61.3305pt;left:137.2635pt;}
+.print-dialog-body .caf-form .teeth-mark.no-27{height:12.98pt;width:10pt;top:80.8005pt;left:140.184pt;}
+.print-dialog-body .caf-form .teeth-mark.no-28{height:12.98pt;width:10pt;top:98.3235pt;left:142.131pt;}
+.print-dialog-body .caf-form .teeth-mark.no-31{height:10.384pt;width:10.384pt;top:250.1895pt;left:88.5885pt;}
+.print-dialog-body .caf-form .teeth-mark.no-32{height:10.384pt;width:10.384pt;top:248.2425pt;left:101.244pt;}
+.print-dialog-body .caf-form .teeth-mark.no-33{height:11.682pt;width:11.682pt;top:241.428pt;left:115.1975pt;}
+.print-dialog-body .caf-form .teeth-mark.no-34{height:11.682pt;width:11.682pt;top:230.7195pt;left:126.555pt;}
+.print-dialog-body .caf-form .teeth-mark.no-35{height:12.98pt;width:10pt;top:215.1435pt;left:133.3695pt;}
+.print-dialog-body .caf-form .teeth-mark.no-36{height:12.98pt;width:10pt;top:197.6205pt;left:138.237pt;}
+.print-dialog-body .caf-form .teeth-mark.no-37{height:12.98pt;width:10pt;top:179.124pt;left:140.184pt;}
+.print-dialog-body .caf-form .teeth-mark.no-38{height:12.98pt;width:10pt;top:162.5745pt;left:140.184pt;}
+.print-dialog-body .caf-form .teeth-mark.no-41{height:10.384pt;width:10.384pt;top:249.216pt;left:75.933pt;}
+.print-dialog-body .caf-form .teeth-mark.no-42{height:10.384pt;width:10.384pt;top:247.269pt;left:64.251pt;}
+.print-dialog-body .caf-form .teeth-mark.no-43{height:10.384pt;width:10.384pt;top:240.4545pt;left:52.8935pt;}
+.print-dialog-body .caf-form .teeth-mark.no-44{height:11.682pt;width:11.682pt;top:228.7725pt;left:42.185pt;}
+.print-dialog-body .caf-form .teeth-mark.no-45{height:11.682pt;width:11.682pt;top:216.117pt;left:35.046pt;}
+.print-dialog-body .caf-form .teeth-mark.no-46{height:12.98pt;width:10pt;top:199.5675pt;left:27.258pt;}
+.print-dialog-body .caf-form .teeth-mark.no-47{height:12.98pt;width:10pt;top:180.0975pt;left:23.364pt;}
+.print-dialog-body .caf-form .teeth-mark.no-48{height:12.98pt;width:10pt;top:162.5745pt;left:21.417pt;}
+.print-dialog-body .caf-form .teeth-mark.no-51{height:7.788pt;width:7.788pt;top:27.5825pt;left:78.2045pt;}
+.print-dialog-body .caf-form .teeth-mark.no-52{height:7.788pt;width:7.788pt;top:32.1255pt;left:69.443pt;}
+.print-dialog-body .caf-form .teeth-mark.no-53{height:9.086pt;width:9.086pt;top:38.94pt;left:61.655pt;}
+.print-dialog-body .caf-form .teeth-mark.no-54{height:10.384pt;width:10.384pt;top:47.7015pt;left:54.516pt;}
+.print-dialog-body .caf-form .teeth-mark.no-55{height:11.682pt;width:11.682pt;top:59.3835pt;left:49.6485pt;}
+.print-dialog-body .caf-form .teeth-mark.no-61{height:7.788pt;width:7.788pt;top:27.258pt;left:89.8865pt;}
+.print-dialog-body .caf-form .teeth-mark.no-62{height:7.788pt;width:7.788pt;top:31.152pt;left:101.244pt;}
+.print-dialog-body .caf-form .teeth-mark.no-63{height:9.086pt;width:9.086pt;top:38.94pt;left:109.032pt;}
+.print-dialog-body .caf-form .teeth-mark.no-64{height:10.384pt;width:10.384pt;top:46.728pt;left:114.873pt;}
+.print-dialog-body .caf-form .teeth-mark.no-65{height:11.682pt;width:11.682pt;top:58.41pt;left:116.82pt;}
+.print-dialog-body .caf-form .teeth-mark.no-71{height:7.788pt;width:7.788pt;top:230.7195pt;left:88.5885pt;}
+.print-dialog-body .caf-form .teeth-mark.no-72{height:7.788pt;width:7.788pt;top:228.7725pt;left:99.297pt;}
+.print-dialog-body .caf-form .teeth-mark.no-73{height:9.086pt;width:9.086pt;top:221.958pt;left:105.138pt;}
+.print-dialog-body .caf-form .teeth-mark.no-74{height:10.384pt;width:10.384pt;top:211.2495pt;left:110.979pt;}
+.print-dialog-body .caf-form .teeth-mark.no-75{height:11.682pt;width:11.682pt;top:197.6205pt;left:115.8465pt;}
+.print-dialog-body .caf-form .teeth-mark.no-81{height:7.788pt;width:7.788pt;top:231.693pt;left:78.8535pt;}
+.print-dialog-body .caf-form .teeth-mark.no-82{height:7.788pt;width:7.788pt;top:229.746pt;left:70.092pt;}
+.print-dialog-body .caf-form .teeth-mark.no-83{height:10.384pt;width:10.384pt;top:220.66pt;left:62.304pt;}
+.print-dialog-body .caf-form .teeth-mark.no-84{height:10.384pt;width:10.384pt;top:211.574pt;left:58.41pt;}
+.print-dialog-body .caf-form .teeth-mark.no-85{height:11.682pt;width:11.682pt;top:198.594pt;left:51.92pt;}
+.print-document body {background-color: transparent;overflow-x:hidden;}
+.print-document app-root{display: none;}
+.print-document .cdk-overlay-container{position: static;height: auto;width:auto;}
+.print-document .cdk-overlay-dark-backdrop{display: none;}
+.print-document .cdk-global-overlay-wrapper{position: static;}
+.print-document .primary-dialog .mat-dialog-container{max-height: none;height: auto;box-shadow:none;}
+.print-document .print-dialog-wrapper .print-dialog-body{max-height: none;overflow: visible;padding: 0;background: none;}
+.print-document .print-dialog-wrapper .print-dialog-body .print-preview-wrapper{padding: 0;box-shadow:none;border-radius: 0;width: 100%;}
+html.print-document.cdk-global-scrollblock{position: static;overflow-x:hidden;}
+.print-document #fc_frame{display: none;}
+.print-document .primary-dialog-header{display:none;}
+.print-document .primary-dialog-footer{display: none;}
+.print-document .primary-dialog.dialog-xl{width: 100%;max-width: none!important;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

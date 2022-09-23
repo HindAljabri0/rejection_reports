@@ -1,16 +1,19 @@
-<div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">UCAF Form</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
-</div>
-<div class="print-dialog-body">
-    <div class="print-preview-wrapper">
-        <app-ucaf-form-template></app-ucaf-form-template>
-        <!-- <app-dcaf-form-template></app-dcaf-form-template> -->
+<div class="print-dialog-wrapper">
+    <div class="primary-dialog-header has-border">
+        <h5 class="primary-dialog-title">UCAF Form</h5>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
-</div>
-<div class="primary-dialog-footer has-border">
-    <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary">Print</button>
+    <div class="print-dialog-body">
+        <div class="print-preview-wrapper">
+            <app-ucaf-form-template></app-ucaf-form-template>
+            <!-- <app-dcaf-form-template></app-dcaf-form-template> -->
+            <!-- <app-ocaf-form-template></app-ocaf-form-template> -->
+        </div>
+    </div>
+    <div class="primary-dialog-footer has-border">
+        <div class="btn-list text-right">
+            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="print()">Print</button>
+        </div>
     </div>
 </div>
