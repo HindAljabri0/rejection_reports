@@ -1,0 +1,51 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>NPHIES Attachment Configuration</p>
+    </div>
+    <div class="block-body">
+        <h5 class="semibold pb-2">Select Provider</h5>
+        <div class="form-group mb-0">
+            <mat-form-field appearance="fill">
+                <mat-label>Select provider</mat-label>
+                <input placeholder="Search provider here" matInput type="text" />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <h5 class="semibold pb-2">Do you want to enable option for generate attachment?</h5>
+        <div class="form-group">
+            <mat-radio-group class="radio-group inline pt-0" formControlName="eye">
+                <mat-radio-button value="enable" color="primary">Enable</mat-radio-button>
+                <mat-radio-button value="disable" color="primary">Disable</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="row small-gutter">
+            <div class="col-6">
+                <h5 class="semibold pb-2">Upload Header Image</h5>
+                <div class="custom-file-upload size-sm">
+                    <div class="content">
+                        <img src="./assets/ic-upload.svg" alt="Upload" />
+                        <p>Drag and drop header image file here or <span class="semibold text-primary">browse</span></p>
+                        <span>Only image files allowed</span>
+                    </div>
+                    <input type="file" class="upload-control">
+                </div>
+            </div>
+            <div class="col-6">
+                <h5 class="semibold pb-2">Upload Footer Image</h5>
+                <div class="custom-file-upload size-sm">
+                    <div class="content">
+                        <img src="./assets/ic-upload.svg" alt="Upload" />
+                        <p>Drag and drop footer image file here or <span class="semibold text-primary">browse</span></p>
+                        <span>Only image files allowed</span>
+                    </div>
+                    <input type="file" class="upload-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-footer sticky">
+        <div class="right-block">
+            <button type="button" color="primary" mat-flat-button>Save</button>
+        </div>
+    </div>
+</div>

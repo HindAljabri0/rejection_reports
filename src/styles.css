@@ -1158,6 +1158,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .custom-file-upload>.content>p{font-size: 16px;}
 .custom-file-upload>.content>span{color:#707070;font-size: 14px;}
 .custom-file-upload>.content>p,.custom-file-upload>.content>span{max-width: 300px;margin: 0 auto;display: block;}
+.custom-file-upload.size-sm>.content{padding-top: 56px;padding-bottom: 56px;}
 
 /* file upload wrapper
 --------------------------------------------------------------------------------------------------------*/
