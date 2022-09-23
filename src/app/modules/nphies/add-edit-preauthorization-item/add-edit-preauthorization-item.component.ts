@@ -796,6 +796,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       if(this.data.type === "pharmacy"){
         model.drugSelectionReason=this.FormItem.controls.drugSelectionReason.value.value;
         model.prescribedDrugCode=this.FormItem.controls.prescribedDrugCode.value;
+        model.drugSelectionReasonName=this.FormItem.controls.drugSelectionReason.value.name;
       }
       //console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
