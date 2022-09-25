@@ -61,7 +61,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     preAuthRefNo: [''],
     provClaimNo: [''],
     destinationId: [''],
-    type: ['']
+    type: [''],
+    RequestBundleId:['']
   });
 
   payersList = [];
@@ -320,6 +321,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       if (this.FormPreAuthTransaction.controls.type.value) {
         model.type = this.FormPreAuthTransaction.controls.type.value;
+      }
+      if (this.FormPreAuthTransaction.controls.RequestBundleId.value) {
+        model.requestBundleId = this.FormPreAuthTransaction.controls.RequestBundleId.value;
       }
 
 
