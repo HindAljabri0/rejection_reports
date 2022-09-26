@@ -1,10 +1,7 @@
 import { style } from '@angular/animations';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-/* import * as es6printJS from "print-js"; */
-import * as print from "print-js";
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
-/* import * as printJS from "print-js"; */
 
 @Component({
   selector: 'app-view-print-preview-dialog',
