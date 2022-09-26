@@ -1772,6 +1772,7 @@ html.print-document.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-document .primary-dialog-header{display:none;}
 .print-document .primary-dialog-footer{display: none;}
 .print-document .primary-dialog.dialog-xl{width: 100%;max-width: none!important;}
+.print-document .view-preauth-details {display: none;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

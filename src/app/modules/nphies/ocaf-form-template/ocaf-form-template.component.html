@@ -11,7 +11,7 @@
                                 <p>Provider Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.providerName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -21,7 +21,7 @@
                                 <p>Insurance Company Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.payerName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -31,7 +31,7 @@
                                 <p>TPA Company Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.tpaName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -41,7 +41,7 @@
                                 <p>Patient File Number:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.fileId}}</p>
                             </td>
                         </tr>
                     </table>
@@ -73,7 +73,7 @@
                                 <p>Insured Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.fullName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -83,19 +83,19 @@
                                 <p>ID. Card No.:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.memberCardId}}</p>
                             </td>
                             <td width="10">
                                 <p>Sex:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.gender}}</p>
                             </td>
                             <td width="10">
                                 <p>Age:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{calculateAge()}}</p>
                             </td>
                             <td width="10">
                                 <p>Y</p>
@@ -114,7 +114,7 @@
                                 <p>Policy No.:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.beneficiary.policyNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -124,7 +124,7 @@
                                 <p>Expiry Date:</p>
                             </td>
                             <td>
-                                <p class="value-holder">25 / 12 / 2022</p>
+                                <p class="value-holder">{{OCAF.beneficiary.expiryDate}}</p>
                             </td>
                         </tr>
                     </table>
@@ -140,7 +140,7 @@
                                 <p>Approval:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.approvalReferenceNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -365,12 +365,12 @@
                                 <p><strong>Please specify # of pairs:</strong></p>
                             </td>
                             <td width="80">
-                                <p class="value-holder"></p>
+                                <p class="value-holder"> {{OCAF.items[0].quantity}}</p>
                             </td>
                             <td></td>
                         </tr>
                     </table>
-                    <p><strong>Estimated Cost:</strong></p>
+                    <p><strong>Estimated Cost:</strong> {{OCAF.totalNet}}</p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">

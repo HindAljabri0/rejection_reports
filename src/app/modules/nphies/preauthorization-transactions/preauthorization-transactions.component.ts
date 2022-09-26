@@ -492,7 +492,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           }
 
           const dialogConfig = new MatDialogConfig();
-          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog','view-preauth-details'];
           dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
             detailsModel: body
