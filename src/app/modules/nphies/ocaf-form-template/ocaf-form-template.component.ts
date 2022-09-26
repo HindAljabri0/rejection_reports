@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -15,29 +16,25 @@ export class OcafFormTemplateComponent implements OnInit {
 
   ngOnInit() {
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId).subscribe((res:any)=>{
-      this.OCAF = res.body;
-      console.log(res.body)
-    });
+      this.sharedServices.loadingChanged.next(true);
+      if (res instanceof HttpResponse) {
+        const body = res.body;
+        if (body) {
+          this.OCAF = body;
+        this.sharedServices.loadingChanged.next(false);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+      this.sharedServices.loadingChanged.next(false);
+      }
+    });  
   }
 
-  /* getSupptingInfo(key: string) {
-    return this.providerNphiesSearchService.getSupptingInfoPrintingFom(key, this.OCAF)
-  }
-
-  getPrincipalCode(index: number) {
-    return this.providerNphiesSearchService.getPrincipalCodePrintingFom(index, this.OCAF);
-  }
-
-  getDiagnosis(){
-    return this.providerNphiesSearchService.getDiagnosisPrintingFom(this.OCAF);
-  } */
   calculateAge(){
-    
-  /* let latest_date =this.datepipe.transform(this.OCAF.beneficiary.dob, 'yyyy-MM-dd'); */
-  let timeDiff = Math.abs( this.OCAF.beneficiary.dob - this.OCAF.beneficiary.dob.getTime());
-  let age = Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
-  console.log(age)
-  return age;
+    const ageDifMs = Date.now() - new Date(this.OCAF.beneficiary.dob).getTime();
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
 }

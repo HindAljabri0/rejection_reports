@@ -25,14 +25,14 @@ export class ViewPrintPreviewDialogComponent implements OnInit {
 
   printForm(){
     document.querySelector('html').classList.add('print-document');
+    document.title=this.getType();
     window.print();
     document.querySelector('html').classList.remove('print-document');
-    /* print(
-      {
-        printable:'print_id', 
-        type:'html',
-        style:this.sharedDataService.style,
-      }); */
+  }
+  getType(){
+    if(this.type === 'oral') return "DCAF Form"
+    else if (this.type === 'vision') return "OCAF Form"
+    else return "UCAF Form"
   }
 
 }

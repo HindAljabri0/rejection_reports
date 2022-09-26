@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -15,22 +16,39 @@ export class DcafFormTemplateComponent implements OnInit {
 
   ngOnInit() {
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId).subscribe((res:any)=>{
-      this.DCAF = res.body;
-      console.log(res)
-    });
-    console.log('DCAFData',this.DCAF);
-  }
-
-  /* getSupptingInfo(key: string) {
-    return this.providerNphiesSearchService.getSupptingInfoPrintingFom(key, this.DCAF)
-  }
-
-  getPrincipalCode(index: number) {
-    return this.providerNphiesSearchService.getPrincipalCodePrintingFom(index, this.DCAF);
+      this.sharedServices.loadingChanged.next(true);
+      if (res instanceof HttpResponse) {
+        const body = res.body;
+        if (body) {
+          this.DCAF = body;
+        this.sharedServices.loadingChanged.next(false);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+      this.sharedServices.loadingChanged.next(false);
+      }
+    });  
   }
 
   getDiagnosis(){
-    return this.providerNphiesSearchService.getDiagnosisPrintingFom(this.DCAF);
-  } */
+    const {diagnosis} = this.DCAF;
+    if(diagnosis.length > 0) return diagnosis.map(res=>res.diagnosisDescription).join(', ');
+    else return '';
+  }
+
+  calculateAge(){
+    const ageDifMs = Date.now() - new Date(this.DCAF.beneficiary.dob).getTime();
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  }
+
+  countTotal(){
+    let total = 0;
+     this.DCAF.items.forEach(i => {
+       total += i.unitPrice 
+    });
+    return total;
+  }
 
 }

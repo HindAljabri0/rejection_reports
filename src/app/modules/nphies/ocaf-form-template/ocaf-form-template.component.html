@@ -45,7 +45,7 @@
                             </td>
                         </tr>
                     </table>
-                    <p>Date of visit: <span class="value-holder">25 / 12 / 2022</span></p>
+                    <p>Date of visit: <span class="value-holder"></span></p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -95,7 +95,7 @@
                                 <p>Age:</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{calculateAge()}}</p>
+                                <p class="value-holder">{{ calculateAge() }}</p>
                             </td>
                             <td width="10">
                                 <p>Y</p>
@@ -124,7 +124,7 @@
                                 <p>Expiry Date:</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{OCAF.beneficiary.expiryDate}}</p>
+                                <p class="value-holder">{{OCAF.beneficiary.expiryDate | date: 'dd / MM / yyyy'}}</p>
                             </td>
                         </tr>
                     </table>
