@@ -112,11 +112,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
       this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
-    if(this.data.type === "pharmacy"){
+    // if(this.data.type === "pharmacy"){
       this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           if (body) {
+            debugger
            this.prescribedMedicationList = body;
           }
         }
@@ -126,7 +127,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
       });
     
-     }
+    //  }
     if (this.data.item) {
       console.log(" sub site val = " + this.data.item.subSite),
         this.FormItem.patchValue({
@@ -795,7 +796,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.itemDetails = [];
       if(this.data.type === "pharmacy"){
         model.drugSelectionReason=this.FormItem.controls.drugSelectionReason.value.value;
-        model.prescribedDrugCode=this.FormItem.controls.prescribedDrugCode.value;
+        model.prescribedDrugCode=this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
         model.drugSelectionReasonName=this.FormItem.controls.drugSelectionReason.value.name;
       }
       //console.log("item model = " + JSON.stringify(model));

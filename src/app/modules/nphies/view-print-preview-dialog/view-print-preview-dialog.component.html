@@ -1,16 +1,26 @@
-<div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">UCAF Form</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
-</div>
-<div class="print-dialog-body">
-    <div class="print-preview-wrapper">
-        <app-ucaf-form-template></app-ucaf-form-template>
-        <!-- <app-dcaf-form-template></app-dcaf-form-template> -->
+<div class="print-dialog-wrapper">
+    <div class="primary-dialog-header has-border">
+        <h5 class="primary-dialog-title">UCAF Form</h5>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
-</div>
+    <div class="print-dialog-body">
+        <div class="print-preview-wrapper">
+            <ng-container *ngIf="!(type === 'dental' || type === 'oral')">
+                <app-ucaf-form-template [preAuthId]="preAuthId"></app-ucaf-form-template>
+            </ng-container>
+            <ng-container *ngIf="type === 'dental'">
+                <app-dcaf-form-template [preAuthId]="preAuthId"></app-dcaf-form-template>
+            </ng-container>
+            <ng-container *ngIf="type === 'oral'">
+                <app-ocaf-form-template [preAuthId]="preAuthId"></app-ocaf-form-template>
+            </ng-container>
+            
+        </div>
+    </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary">Print</button>
+        <button mat-flat-button color="primary" (click)="printForm()">Print</button>
     </div>
+</div>
 </div>

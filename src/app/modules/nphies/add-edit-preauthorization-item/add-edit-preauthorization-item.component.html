@@ -275,7 +275,7 @@
             <span class="error-text">Please enter Invoice No</span>
           </div>
         </div>
-        
+
         <!-- <div class="form-group">
           <label class="control-label">Invoice No.</label>
           <input class="form-control" placeholder="Enter invoice number" formControlName="invoiceNo" maxlength="64">
@@ -294,7 +294,7 @@
         </div>
       </div>
 
-      <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
+      <!-- <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('prescribedDrugCode').touched) && FormItem.get('prescribedDrugCode').hasError('required')}">
           <label class="control-label">Prescribed Medication</label>
           <mat-form-field class="form-control custom-select-control">
@@ -304,7 +304,54 @@
             </mat-select>
           </mat-form-field>
         </div>
+      </div> -->
+      <!-- *ngIf="data.type === 'pharmacy'" -->
+      <div class="col-4 col-lg-6" >
+      <!-- <div class="form-group flex-grow-1">
+
+        <input type="text" class="form-control search-box" placeholder="Search for Prescribed Medication" formControlName="prescribedDrugCode" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
+          <ng-container>
+            <mat-option *ngFor="let type of prescribedMedicationList">
+              <span class="strength text-medium-grey">{{type.descriptionCode}} ( {{type.tradeName}} )</span>
+              <span class="text-primary non-standard-code" >{{type.gtinNumber}} </span>
+            </mat-option>
+            <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'>
+            </ngx-mat-select-search>
+          </ng-container>
+
+          <mat-option>
+            <div class="mat-option-loader">
+              <mat-spinner diameter="24"></mat-spinner>
+              <span>Searching</span>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+
+      </div> -->
+
+      <div class="form-group" >
+        <label class="control-label">Prescribed Medication</label>
+        <mat-form-field class="form-control custom-select-control">
+          <mat-select formControlName="prescribedDrugCode">
+            <mat-option>
+              <ngx-mat-select-search placeholderLabel="Search prescribed Medication" noEntriesFoundLabel="No prescribed medication found" name='searchedItem'>
+              </ngx-mat-select-search>
+            </mat-option>
+            <ng-container>
+              <mat-option value="">Select prescribed Medication </mat-option>
+              <mat-option *ngFor="let type of prescribedMedicationList" [value]="type">
+                <span class="strength text-medium-grey">{{type.descriptionCode}} ( {{type.tradeName}} )</span>
+              <span class="text-primary non-standard-code" >{{type.gtinNumber}} </span>
+              </mat-option>
+            </ng-container>
+
+          </mat-select>
+        </mat-form-field>
       </div>
+
+      
+    </div>
 
     </div>
     <hr class="hr mb-3">

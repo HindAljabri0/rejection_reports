@@ -17,7 +17,6 @@ export class CreateByApprovalFormComponent implements OnInit {
   payers;
   selectedPayer = -1;
   payersHasError = false;
-
   title: string;
   loading = false;
 

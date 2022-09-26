@@ -313,7 +313,9 @@
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">
     <!-- <button mat-flat-button color="primary">Progress to Encounter</button> -->
-    <button mat-flat-button color="primary">UCAF Form</button>
+    <button mat-flat-button color="primary" (click)="openPreviewDialog()">
+        {{getType()}}
+    </button>
     <button
       *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial' || data.detailsModel.status === 'pended'"
       mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button>

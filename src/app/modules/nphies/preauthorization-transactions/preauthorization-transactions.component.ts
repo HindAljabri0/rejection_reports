@@ -61,7 +61,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     preAuthRefNo: [''],
     provClaimNo: [''],
     destinationId: [''],
-    type: ['']
+    type: [''],
+    RequestBundleId:['']
   });
 
   payersList = [];
@@ -321,6 +322,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (this.FormPreAuthTransaction.controls.type.value) {
         model.type = this.FormPreAuthTransaction.controls.type.value;
       }
+      if (this.FormPreAuthTransaction.controls.RequestBundleId.value) {
+        model.requestBundleId = this.FormPreAuthTransaction.controls.RequestBundleId.value;
+      }
 
 
       model.page = this.page;
@@ -488,7 +492,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           }
 
           const dialogConfig = new MatDialogConfig();
-          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog','view-preauth-details'];
           dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
             detailsModel: body

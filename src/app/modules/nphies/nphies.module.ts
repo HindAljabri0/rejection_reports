@@ -78,6 +78,7 @@ import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dial
 import { ViewPrintPreviewDialogComponent } from './view-print-preview-dialog/view-print-preview-dialog.component';
 import { UcafFormTemplateComponent } from './ucaf-form-template/ucaf-form-template.component';
 import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-template.component';
+import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-templa
     AddMedicationSupplyDialogComponent,
     ViewPrintPreviewDialogComponent,
     UcafFormTemplateComponent,
-    DcafFormTemplateComponent
+    DcafFormTemplateComponent,
+    OcafFormTemplateComponent
   ],
   imports: [
     CommonModule,

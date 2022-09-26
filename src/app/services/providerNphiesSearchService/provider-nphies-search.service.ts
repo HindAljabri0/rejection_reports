@@ -488,4 +488,31 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+
+  getJsonFormData(providerId, preAuthId){
+    const requestURL = '/providers/' + providerId + '/json/' + preAuthId;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
+
+  /* getSupptingInfoPrintingFom(key: string, data:any) {
+    const { supportingInfo } = data;
+    if (supportingInfo.length > 0) {
+      const index = supportingInfo.findIndex(rec => rec.category === key);
+      if (index >= 0) return supportingInfo[index].value;
+      else return '';
+    } else return '';
+  }
+
+  getPrincipalCodePrintingFom(index: number, data:any) {
+    const { careTeam } = data;
+    if (careTeam.length >= index + 1) return careTeam[index].specialityCode;
+    else return '';
+  }
+
+  getDiagnosisPrintingFom(data:any){
+    const {diagnosis} = data;
+    if(diagnosis.length > 0) return diagnosis.map(res=>res.diagnosisDescription).join(', ');
+    else return '';
+  } */
 }
