@@ -11,7 +11,7 @@
                                 <p>Provider Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.providerName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -21,7 +21,7 @@
                                 <p>Insurance Company Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.payerName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -31,7 +31,7 @@
                                 <p>TPA Company Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.tpaName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -41,11 +41,11 @@
                                 <p>Patient File Number:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.fileId}}</p>
                             </td>
                         </tr>
                     </table>
-                    <p>Date of visit: <span class="value-holder">25 / 12 / 2022</span></p>
+                    <p>Date of visit: <span class="value-holder"></span></p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -73,7 +73,7 @@
                                 <p>Insured Name:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.fullName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -83,19 +83,19 @@
                                 <p>ID. Card No.:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{ DCAF.beneficiary.memberCardId }}</p>
                             </td>
                             <td width="10">
                                 <p>Sex:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.gender}}</p>
                             </td>
                             <td width="10">
                                 <p>Age:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{calculateAge()}}</p>
                             </td>
                             <td width="10">
                                 <p>Y</p>
@@ -114,7 +114,7 @@
                                 <p>Policy No.:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.policyNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -124,7 +124,7 @@
                                 <p>Expiry Date:</p>
                             </td>
                             <td>
-                                <p class="value-holder">25 / 12 / 2022</p>
+                                <p class="value-holder">{{DCAF.beneficiary.expiryDate | date: 'dd / MM / yyyy'}}</p>
                             </td>
                         </tr>
                     </table>
@@ -144,7 +144,7 @@
                                 <p>Approval:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder"> {{DCAF.approvalReferenceNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -195,7 +195,7 @@
                                             <p>Diagnoses (ICD10):</p>
                                         </td>
                                         <td>
-                                            <p class="value-holder"></p>
+                                            <p class="value-holder">{{getDiagnosis()}}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -367,23 +367,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                                <td>lorem</td>
+                            <tr *ngFor="let i of DCAF.items;"> 
+                                <td>{{i.itemCode}}</td>
+                                <td>{{i.itemDescription}}</td>
+                                <td>{{i.bodySite}}</td>
+                                <td>{{i.unitPrice}}</td>
                             </tr>
-                            <tr>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                            </tr>
+                            
                             <tr>
                                 <td class="border-left-0 border-bottom-0 border-right-0"></td>
                                 <td class="border-left-0 border-bottom-0"></td>
                                 <td><strong>Total</strong></td>
-                                <td><strong>lorem</strong></td>
+                                <td><strong>{{ countTotal() }}</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -408,7 +403,7 @@
                                 <p>Date:</p>
                             </td>
                             <td width="10">
-                                <p class="value-holder">25 / 12 / 2022</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
@@ -422,15 +417,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                                <td>lorem</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
-                            <tr>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                                <td>lorem</td>
-                            </tr>
+                           
                         </tbody>
                     </table>
                 </div>
@@ -476,7 +467,7 @@
                                         </td>
                                         <td width="10"></td>
                                         <td>
-                                            <p class="value-holder">25 / 12 / 2022</p>
+                                            <p class="value-holder"></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -509,7 +500,7 @@
                                             <p>Date:</p>
                                         </td>
                                         <td width="10">
-                                            <p class="value-holder">25 / 12 /2022</p>
+                                            <p class="value-holder"></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -581,7 +572,7 @@
                                 <p><strong>Date:</strong></p>
                             </td>
                             <td width="10">
-                                <p class="value-holder">25 / 12 / 2022</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
