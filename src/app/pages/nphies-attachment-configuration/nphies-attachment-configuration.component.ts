@@ -232,7 +232,6 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
     this.sharedServices.loadingChanged.next(true);
     if(!this.selectedProvider){
       this.dialogService.openMessageDialog({
