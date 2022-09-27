@@ -22,6 +22,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   itemList: any = [];
   // tslint:disable-next-line:max-line-length
   filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredSupportingInfo: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -33,6 +34,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     type: ['', Validators.required],
     item: ['', Validators.required],
     itemFilter: [''],
+    prescribedMedicationItemFilter: [''],
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
@@ -118,6 +120,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const body = event.body;
           if (body) {
            this.prescribedMedicationList = body;
+           if (this.data.item) {
+            const res=this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0];
+              this.FormItem.patchValue({
+                prescribedDrugCode:res
+              });
+              this.filterPrescribedMedicationItem();
+            }
           }
         }
       }, errorEvent => {
@@ -125,10 +134,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           
         }
       });
-    
+      this.FormItem.controls.prescribedMedicationItemFilter.valueChanges
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(() => {
+        this.filterPrescribedMedicationItem();
+      });
     }
     if (this.data.item) {
-      console.log(" sub site val = " + this.data.item.subSite),
+      console.log(" sub site val = " + JSON.stringify(this.data.item)),
         this.FormItem.patchValue({
           type: this.typeList.filter(x => x.value === this.data.item.type)[0],
           nonStandardCode: this.data.item.nonStandardCode,
@@ -154,8 +167,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           startDate: this.data.item.startDate,
           endDate: this.data.item.endDate,
           invoiceNo: this.data.item.invoiceNo,
-          drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0],
-          prescribedDrugCode : this.data.item.prescribedDrugCode
+          drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0]
+          
         });
 
       if (this.data.careTeams) {
@@ -430,6 +443,25 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
+
+  filterPrescribedMedicationItem() {
+    if (!this.prescribedMedicationList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormItem.controls.prescribedMedicationItemFilter.value;
+    if (!search) {
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredPescribedMedicationItem.next(
+      this.prescribedMedicationList.filter(item => item.descriptionCode.toLowerCase().indexOf(search) > -1 || item.tradeName.toString().toLowerCase().indexOf(search) > -1)
+    );
+  }
+
 
   filterSupportingInfo() {
     if (!this.data.supportingInfos) {
@@ -798,8 +830,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.prescribedDrugCode=this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
         model.drugSelectionReasonName=this.FormItem.controls.drugSelectionReason.value.name;
       }
-      //console.log("item model = " + JSON.stringify(model));
-      this.dialogRef.close(model);
+     // console.log("item model = " + JSON.stringify(model));
+     this.dialogRef.close(model);
     }
   }
 
