@@ -10,11 +10,12 @@
                     [class.no-spacing]="selectedProvider == null || selectedProvider == ''">
                     <mat-label>Select provider</mat-label>
                     <input matInput type="text" [matAutocomplete]="auto" [formControl]="providerController"
-                        (input)="updateFilter()" [readonly]="isLoading" (keyup.enter)="selectProvider()" />
+                        (input)="updateFilter()" [readonly]="isLoading" />
                     <mat-icon matSuffix>search</mat-icon>
                     <mat-autocomplete autoActiveFirstOption #auto>
                         <mat-option *ngFor="let provider of filteredProviders"
-                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name">
+                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                            (click)="selectProvider();">
                             {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                         </mat-option>
                         <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
