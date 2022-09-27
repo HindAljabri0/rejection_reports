@@ -330,7 +330,7 @@
 
       </div> -->
 
-      <div class="form-group" >
+      <div class="form-group" *ngIf="data.type === 'pharmacy'">
         <label class="control-label">Prescribed Medication</label>
         <mat-form-field class="form-control custom-select-control">
           <mat-select formControlName="prescribedDrugCode">
