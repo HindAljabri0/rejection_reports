@@ -43,7 +43,7 @@
                                 <p>Dept:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> - &nbsp;</p>
+                                <p class="value-holder"> {{UCAFData.type}} - {{UCAFData.careTeam[0].specialityCode}} &nbsp;</p>
                             </td>
                         </tr>
                     </table>
@@ -52,38 +52,41 @@
                             <td width="10">
                                 <p>Single (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.beneficiary.maritalStatus === 'U' "/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Married (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.beneficiary.maritalStatus === 'M' "/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
-                                <p>Plan Type (<img src="./assets/form-check.svg" class="check" [class.checked]="!UCAFData.beneficiary.maritalStatus"/>)</p>
+                                <p>Plan Type</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{UCAFData.beneficiary.coverageType}}  &nbsp;</p>
                             </td>
                             <td></td>
                         </tr>
                     </table>
-                    <p>Date of visit:&nbsp; <span class="value-holder"> - </span></p>
+                    <p>Date of visit:&nbsp; <span class="value-holder"> {{UCAFData.dateOrdered | date: 'dd / MM / yyyy'}} </span></p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>New visit (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('new-visit')"/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
-                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('follow-up')"/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
-                                <p>Refill (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>Refill (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('refill')"/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
-                                <p>Walk In (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>Walk In (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('walk-in')"/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
-                                <p>Referral (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>Referral (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('referral')"/>)</p>
                             </td>
                             <td></td>
                         </tr>
@@ -182,7 +185,7 @@
                             <td width="10">
                                 <p>Inpatient (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.subType === 'ip' "/>)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Outpatient (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.subType === 'op' "/>)</p>
                             </td>
@@ -220,7 +223,7 @@
                                 <p>BP:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getSupportingInfo("vital-sign-systolic")}} /  {{getSupportingInfo("vital-sign-diastolic")}}&nbsp;</p>
+                                <p class="value-holder">{{ getBp() }}&nbsp;</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
@@ -284,7 +287,7 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p class="text-wrap">Chief Complaints and Main Symptoms:&nbsp; <br><br></p>
+                                <p class="text-wrap">Chief Complaints and Main Symptoms:&nbsp;&nbsp; {{ getSupportingInfoForChiefComplaints() }}<br><br></p>
                             </td>
                         </tr>
                     </table>
@@ -324,28 +327,28 @@
                                 <p>Principal Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getPrincipalCode(0)}} &nbsp;</p>
+                                <p class="value-holder">{{getPrincipalCode()}} &nbsp;</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>2nd Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getPrincipalCode(1)}}  &nbsp;</p>
+                                <p class="value-holder">{{getCode(0)}}  &nbsp;</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>3rd Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getPrincipalCode(2)}}  &nbsp;</p>
+                                <p class="value-holder">{{getCode(1)}}  &nbsp;</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>4th Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getPrincipalCode(3)}}  &nbsp;</p>
+                                <p class="value-holder">{{getCode(2)}}  &nbsp;</p>
                             </td>
                         </tr>
                     </table>
@@ -356,23 +359,23 @@
                             <td width="10">
                                 <p>Chronic (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Congenital (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>RTA (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Work Related (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Vaccination (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Check-Up (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
@@ -384,11 +387,11 @@
                             <td width="10">
                                 <p>Psychiatric (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Infertility (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
-                            <td width="6"></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p>Pregnancy (<img src="./assets/form-check.svg" class="check" />)</p>
                             </td>
@@ -457,10 +460,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                            <tr *ngFor="let medication of getMedicationCode()">
+                                <td> {{medication.prescribedDrugCode}}</td>
+                                <td>{{medication.type}}</td>
+                                <td>{{medication.quantity}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -488,7 +491,7 @@
                             <td width="10">
                                 <p>days</p>
                             </td>
-                            <td></td>
+                            <td width="16"></td>
                             <td width="10">
                                 <p><strong>Expected date of admission:&nbsp;</strong></p>
                             </td>
@@ -528,7 +531,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p class="value-holder">  &nbsp;</p>
+                                            <p class="value-holder">{{UCAFData.careTeam[0].practitionerName}}  &nbsp;</p>
                                         </td>
                                         <td width="10"></td>
                                         <td>
@@ -595,11 +598,11 @@
                             <td width="10">
                                 <p><strong>Approved (<img src="./assets/form-check.svg" class="check" />)</strong></p>
                             </td>
-                            <td width="3"></td>
+                            <td width="12"></td>
                             <td width="10">
                                 <p><strong>Not Approved (<img src="./assets/form-check.svg" class="check" />)</strong></p>
                             </td>
-                            <td></td>
+                            <td width="12"></td>
                             <td width="10">
                                 <p><strong>Approval No.:&nbsp;</strong></p>
                             </td>

@@ -49,7 +49,7 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>Plan Type (<img src="./assets/check.svg" class="check" />)</p>
+                                <p>Plan Type <span class="value-holder">{{OCAF.beneficiary.coverageType}}</span></p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
@@ -152,7 +152,7 @@
                 <div class="form-container-group">
                     <h3><strong>To be Completed by the Optician:</strong></h3>
                     <table class="internal-table">
-                        <tr>
+                        <tr *ngFor="let lens of lensDataList;let i = index">
                             <td width="50%">
                                 <table class="data-table text-center">
                                     <tr>
@@ -167,21 +167,21 @@
                                         <td>Prism</td>
                                         <td>V/N</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngFor="let right of lens.right">
                                         <td>Distance</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
+                                            <td>{{right.sphere}}</td>
+                                            <td>{{right.cylinder}}</td>
+                                            <td>{{right.axis}}</td>
+                                            <td>{{right.prismAmount}}</td>
+                                        <td><span></span></td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngFor="let left of lens.left">
                                         <td>Near</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
+                                            <td><span>{{left.sphere}}</span></td>
+                                            <td><span>{{left.cylinder}}</span></td>
+                                            <td><span>{{left.axis}}</span></td>
+                                            <td><span>{{left.prismAmount}}</span></td>
+                                        <td><span></span></td>
                                     </tr>
                                 </table>
                             </td>
@@ -422,7 +422,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p class="value-holder"></p>
+                                            <p class="value-holder">{{OCAF.careTeam[0].practitionerName}}</p>
                                         </td>
                                         <td width="10"></td>
                                         <td>

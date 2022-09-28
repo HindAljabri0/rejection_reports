@@ -27,6 +27,7 @@ export class ViewPrintPreviewDialogComponent implements OnInit {
     document.querySelector('html').classList.add('print-document');
     document.title=this.getType();
     window.print();
+    document.title = 'Waseel E-Claims';
     document.querySelector('html').classList.remove('print-document');
   }
   getType(){

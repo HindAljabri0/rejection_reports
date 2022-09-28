@@ -1688,7 +1688,7 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-dialog-body .caf-form .text-nowrap {white-space: nowrap;}
 .print-dialog-body .caf-form .text-wrap {white-space: normal;}
 .print-dialog-body .caf-form .internal-table {border-collapse: collapse;white-space: nowrap;width: 100%;}
-.print-dialog-body .caf-form .value-holder {border-bottom: 1px dashed #707070;}
+.print-dialog-body .caf-form .value-holder {border-bottom: 1px dashed #333; padding:0 4pt;}
 .print-dialog-body .caf-form p>span.value-holder {display: inline-block;vertical-align: baseline;}
 .print-dialog-body .caf-form p {min-height: 12pt;}
 .print-dialog-body .caf-form .check {height: 10pt;width: 10pt;display: inline-block;vertical-align: -2pt;opacity: 0;margin: 0 -1pt;}

@@ -12,6 +12,9 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class OcafFormTemplateComponent implements OnInit {
   OCAF : any;
   @Input() preAuthId: any;
+  
+  lensDataList =[];
+  contactDataList =[];
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService,private sharedServices: SharedServices,public datepipe: DatePipe) { }
 
   ngOnInit() {
@@ -21,6 +24,7 @@ export class OcafFormTemplateComponent implements OnInit {
         const body = res.body;
         if (body) {
           this.OCAF = body;
+          this.getLensSpecifications();
         this.sharedServices.loadingChanged.next(false);
         }
       }
@@ -34,7 +38,136 @@ export class OcafFormTemplateComponent implements OnInit {
   calculateAge(){
     const ageDifMs = Date.now() - new Date(this.OCAF.beneficiary.dob).getTime();
     const ageDate = new Date(ageDifMs);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+    if(Math.abs(ageDate.getUTCFullYear() - 1970) == 0){
+      return `0. ${new Date().getMonth() -  new Date(this.OCAF.beneficiary.dob).getMonth() + 1}` 
+    } else return Math.abs(ageDate.getUTCFullYear() - 1970);
+  }
+
+  getLensSpecifications(){
+    
+    this.OCAF.visionPrescription.lensSpecifications.forEach(res=>{
+      if(res.product === 'lens'){
+        let model :any ={};
+        model.left =[];
+        model.right =[];
+        
+        if(res.eye === 'left'){
+          let left :any ={};
+          left.distance = res.sphere < 0 ? true:false;
+          left.product= res.product;
+          left.eye= res.eye;
+          left.sphere= res.sphere;
+          left.cylinder= res.cylinder;
+          left.axis= res.axis;
+          left.prismAmount=res.prismAmount;
+          left.lensNote= res.lensNote;
+          left.lensPower= res.lensPower;
+          
+          model.left.push(left);
+
+          let right :any ={};
+          right.distance = res.sphere < 0 ? true:false;
+          right.product= "-";
+          right.eye= "-";
+          right.sphere= "-";
+          right.cylinder= "-";
+          right.axis= "-";
+          right.prismAmount="-";
+          right.lensNote= "-";
+          right.lensPower= "-";
+          model.right.push(right);
+        }
+
+        if(res.eye === 'right'){
+          let right :any ={};
+          right.distance = res.sphere < 0 ? true:false;
+          right.product= res.product;
+          right.eye= res.eye;
+          right.sphere= res.sphere;
+          right.cylinder= res.cylinder;
+          right.axis= res.axis;
+          right.prismAmount=res.prismAmount;
+          right.lensNote= res.lensNote;
+          right.lensPower= res.lensPower;
+          model.right.push(right);
+
+          let left :any ={};
+          left.distance = res.sphere < 0 ? true:false;
+          left.product= "-";
+          left.eye= "-";
+          left.sphere= "-";
+          left.cylinder= "-";
+          left.axis= "-";
+          left.prismAmount="-";
+          left.lensNote= "-";
+          left.lensPower= "-";
+          model.left.push(left)
+        }
+        this.lensDataList.push(model);
+      }
+      if(res.product === 'contact'){
+        let model :any ={};
+        model.left =[];
+        model.right =[];
+        
+        if(res.eye === 'left'){
+          let left :any ={};
+          left.distance = res.lensPower < 0 ? true:false;
+          left.product= res.product;
+          left.eye= res.eye;
+          left.sphere= res.sphere;
+          left.cylinder= res.cylinder;
+          left.axis= res.axis;
+          left.prismAmount=res.prismAmount;
+          left.lensNote= res.lensNote;
+          left.lensPower= res.lensPower;
+          
+          model.left.push(left);
+
+          let right :any ={};
+          right.distance = res.lensPower < 0 ? true:false;
+          right.product= "-";
+          right.eye= "-";
+          right.sphere= "-";
+          right.cylinder= "-";
+          right.axis= "-";
+          right.prismAmount="-";
+          right.lensNote= "-";
+          right.lensPower= "-";
+          model.right.push(right);
+        }
+
+        if(res.eye === 'right'){
+          let right :any ={};
+          right.distance = res.sphere < 0 ? true:false;
+          right.product= res.product;
+          right.eye= res.eye;
+          right.sphere= res.sphere;
+          right.cylinder= res.cylinder;
+          right.axis= res.axis;
+          right.prismAmount=res.prismAmount;
+          right.lensNote= res.lensNote;
+          right.lensPower= res.lensPower;
+          model.right.push(right);
+
+          let left :any ={};
+          left.distance = res.sphere < 0 ? true:false;
+          left.product= "-";
+          left.eye= "-";
+          left.sphere= "-";
+          left.cylinder= "-";
+          left.axis= "-";
+          left.prismAmount="-";
+          left.lensNote= "-";
+          left.lensPower= "-";
+          model.left.push(left)
+        }
+        this.contactDataList.push(model);
+        }
+    });
+    console.log('contactDataList',this.contactDataList)
+    console.log('lensDataList',this.lensDataList)
+	
   }
 
 }
