@@ -9,6 +9,7 @@ import { ViewportScroller } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ChangeLogDialogComponent } from 'src/app/components/change-log-dialog/change-log-dialog.component';
+import { UpcomingFeatureDialogComponent } from 'src/app/components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
 
 @Component({
     selector: 'app-dashboard',
@@ -20,7 +21,7 @@ export class DashboardComponent implements OnInit {
     dashboardTour: GuidedTour = {
         tourId: '1',
         skipCallback: (stepNumber) => {
-            window.localStorage.setItem('onboarding-demo-done', 'true');
+            window.localStorage.setItem('onboarding-demo-done', 'true');            
         },
         completeCallback: () => {
             document.body.classList.remove('guided-tour-active');
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit {
             this.commen.showUploadsCenterChange.next(false);
             this.commen.showNotificationCenterChange.next(false);
             this.commen.showAnnouncementCenterChange.next(false);
-            window.localStorage.setItem('onboarding-demo-done', 'true');
+            window.localStorage.setItem('onboarding-demo-done', 'true');            
         },
         steps: [
             {
@@ -176,6 +177,13 @@ export class DashboardComponent implements OnInit {
                     this.dashboardSections = newOrderedDashboard;
                 }
             }
+        }
+        if (!window.localStorage.getItem('upcoming-feature-done')) {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.panelClass = ['primary-dialog'];
+            dialogConfig.autoFocus = false;
+            this.dialog.open(UpcomingFeatureDialogComponent, dialogConfig);    
+            window.localStorage.setItem('upcoming-feature-done', 'true');        
         }
         if (!window.localStorage.getItem('onboarding-demo-done') && (environment.name == 'dev' || environment.name == 'oci_qa')) {
             const dialogConfig = new MatDialogConfig();
