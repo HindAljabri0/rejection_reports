@@ -101,6 +101,7 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
 import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
 import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-dialog.component';
+import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
 
 
 
@@ -169,8 +170,8 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
         UploadClaimComponent,
         MultiSheetFileUploadComponent,
         NphiesClaimSummaryComponent,
-        AlertDialogComponent
-        
+        AlertDialogComponent,
+        UpcomingFeatureDialogComponent
     ],
     imports: [
         AppRoutingModule,
@@ -247,7 +248,8 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
         XmlViewDialogComponent,
         EditClaimComponent,
         ConfirmationAlertDialogComponent,
-        CertificateConfigurationModelComponent
+        CertificateConfigurationModelComponent,
+        UpcomingFeatureDialogComponent
     ],
 })
 export class AppModule { }

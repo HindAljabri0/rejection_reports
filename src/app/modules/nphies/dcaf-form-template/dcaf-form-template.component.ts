@@ -33,14 +33,23 @@ export class DcafFormTemplateComponent implements OnInit {
 
   getDiagnosis(){
     const {diagnosis} = this.DCAF;
-    if(diagnosis.length > 0) return diagnosis.map(res=>res.diagnosisDescription).join(', ');
+    if(diagnosis.length > 0) return diagnosis.map(res=> `(${res.diagnosisCode}) - (${res.diagnosisDescription})`).join(', ');
     else return '';
   }
+
+  getSupportingInfoForChiefComplaints(){
+    const {supportingInfo} = this.DCAF;
+    if(supportingInfo.length > 0) return supportingInfo.map(res=> `(${res.code}) - (${res.value})`).join(', ');
+    else return '';
+  }
+
 
   calculateAge(){
     const ageDifMs = Date.now() - new Date(this.DCAF.beneficiary.dob).getTime();
     const ageDate = new Date(ageDifMs);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+    if(Math.abs(ageDate.getUTCFullYear() - 1970) == 0){
+      return `0. ${new Date().getMonth() -  new Date(this.DCAF.beneficiary.dob).getMonth() + 1}` 
+    } else return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
   countTotal(){
@@ -50,5 +59,15 @@ export class DcafFormTemplateComponent implements OnInit {
     });
     return total;
   }
+
+  getMedicationCode() {
+    return this.DCAF.items.filter(res=>!!res.prescribedDrugCode) || [];
+  }
+
+  getVisitReason(code :string){
+    const index = this.DCAF.supportingInfo.findIndex(res=>res.category === "reasonForVisit");
+    if(index != -1) return this.DCAF.supportingInfo[index].code == code;
+    else false;
+}
 
 }

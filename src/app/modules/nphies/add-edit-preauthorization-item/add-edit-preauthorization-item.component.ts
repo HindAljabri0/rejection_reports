@@ -120,11 +120,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const body = event.body;
           if (body) {
            this.prescribedMedicationList = body;
+           this.filteredPescribedMedicationItem.next(body);
            if (this.data.item) {
             const res=this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0];
               this.FormItem.patchValue({
                 prescribedDrugCode:res
               });
+              this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
               this.filterPrescribedMedicationItem();
             }
           }

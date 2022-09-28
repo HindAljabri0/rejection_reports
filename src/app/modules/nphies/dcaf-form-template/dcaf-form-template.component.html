@@ -49,15 +49,15 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>Plan Type (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>Plan Type <span class="value-holder">{{DCAF.beneficiary.coverageType}}</span></p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
-                                <p>New visit (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('new-visit')"/>)</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
-                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" />)</p>
+                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('follow-up')"/>)</p>
                             </td>
                             <td></td>
                         </tr>
@@ -175,7 +175,7 @@
                                 <table class="internal-table">
                                     <tr>
                                         <td width="10">
-                                            <p class="text-wrap">Chief Complaints and Main Symptoms: <br><br></p>
+                                            <p class="text-wrap">Chief Complaints and Main Symptoms:&nbsp; {{getSupportingInfoForChiefComplaints()}} <br><br></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -416,10 +416,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                            <tr *ngFor="let medication of getMedicationCode()">
+                                <td> {{medication.prescribedDrugCode}}</td>
+                                <td>{{medication.type}}</td>
+                                <td>{{medication.quantity}}</td>
                             </tr>
                            
                         </tbody>
@@ -455,7 +455,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p class="value-holder"></p>
+                                            <p class="value-holder">{{DCAF.careTeam[0].practitionerName}}</p>
                                         </td>
                                         <td width="10"></td>
                                         <td>
