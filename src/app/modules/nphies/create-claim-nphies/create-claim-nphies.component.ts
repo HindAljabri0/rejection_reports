@@ -1688,7 +1688,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.diagnosis = this.Diagnosises.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
-        model.diagnosisDescription = x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim();
+        console.log(x.diagnosisCode + "omar");
+        console.log(x.diagnosisDescription + "omar2");
+        model.diagnosisDescription = x.diagnosisDescriptio!=null? x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim():null;
         model.type = x.type;
         model.onAdmission = x.onAdmission;
         model.diagnosisCode = x.diagnosisCode;
