@@ -115,10 +115,10 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     }, error => { });
   }
 
-  /* getType(){
+  getType(){
     const {type} = this. data.detailsModel.preAuthorizationInfo;
     if( type === 'oral') return "DCAF Form"
     else if (type === 'vision') return "OCAF Form"
     else return "UCAF Form"
-  } */
+  } 
 }
