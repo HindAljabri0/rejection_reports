@@ -50,8 +50,7 @@ export class OcafFormTemplateComponent implements OnInit {
     this.contactData.left = [];
     this.contactData.right = [];
 
-    this.OCAF.visionPrescription.lensSpecifications.forEach(res => {
-      debugger;
+    this.OCAF.visionPrescription.lensSpecifications.forEach(res => {      
       if (res.product === 'lens') {
 
         if (res.eye === 'left') {

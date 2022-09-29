@@ -458,9 +458,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     } else {
       search = search.toLowerCase();
     }
-    // filter the nations
+    // filter the nations    
     this.filteredPescribedMedicationItem.next(
-      this.prescribedMedicationList.filter(item => item.descriptionCode.toLowerCase().indexOf(search) > -1 || item.tradeName.toString().toLowerCase().indexOf(search) > -1)
+      this.prescribedMedicationList.filter(item => (item.descriptionCode && item.descriptionCode.toLowerCase().indexOf(search) > -1) || (item.tradeName && item.tradeName.toString().toLowerCase().indexOf(search) > -1) || (item.gtinNumber && item.gtinNumber.toString().toLowerCase().indexOf(search) > -1))
     );
   }
 
