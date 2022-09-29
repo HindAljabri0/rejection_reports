@@ -120,5 +120,5 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     if( type === 'oral') return "DCAF Form"
     else if (type === 'vision') return "OCAF Form"
     else return "UCAF Form"
-  }
+  } 
 }

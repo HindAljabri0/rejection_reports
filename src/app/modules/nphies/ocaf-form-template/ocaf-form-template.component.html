@@ -152,7 +152,8 @@
                 <div class="form-container-group">
                     <h3><strong>To be Completed by the Optician:</strong></h3>
                     <table class="internal-table">
-                        <tr *ngFor="let lens of lensDataList">
+                        <tr
+                            *ngIf="lensData.left.length > 0 && lensData.right.length > 0 && lensData.left.length === lensData.right.length">
                             <td width="50%">
                                 <table class="data-table text-center">
                                     <tr>
@@ -167,20 +168,12 @@
                                         <td>Prism</td>
                                         <td>V/N</td>
                                     </tr>
-                                    <tr *ngFor="let right of lens.right">
-                                        <td>Distance</td>
-                                            <td>{{right.sphere}}</td>
-                                            <td>{{right.cylinder}}</td>
-                                            <td>{{right.axis}}</td>
-                                            <td>{{right.prismAmount}}</td>
-                                        <td><span></span></td>
-                                    </tr>
-                                    <tr *ngFor="let left of lens.left">
-                                        <td>Near</td>
-                                            <td><span>{{left.sphere}}</span></td>
-                                            <td><span>{{left.cylinder}}</span></td>
-                                            <td><span>{{left.axis}}</span></td>
-                                            <td><span>{{left.prismAmount}}</span></td>
+                                    <tr *ngFor="let right of lensData.right">
+                                        <td>{{right.isDistance ? 'Distance':'Near'}}</td>
+                                        <td>{{right.sphere ? right.sphere : '-'}}</td>
+                                        <td>{{right.cylinder ? right.cylinder : '-'}}</td>
+                                        <td>{{right.axis ? right.axis : '-'}}</td>
+                                        <td>{{right.prismAmount ? right.prismAmount : '-'}}</td>
                                         <td><span></span></td>
                                     </tr>
                                 </table>
@@ -200,21 +193,65 @@
                                         <td>V/N</td>
                                         <td class="border-top-0 border-right-0">PD</td>
                                     </tr>
+                                    <tr *ngFor="let left of lensData.left">
+                                        <td>{{left.sphere ? left.sphere : '-'}}</td>
+                                        <td>{{left.cylinder ? left.cylinder : '-'}}</td>
+                                        <td>{{left.axis ? left.axis : '-'}}</td>
+                                        <td>{{left.prismAmount ? left.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                        <td><span></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="contactData.left.length > 0 && contactData.right.length > 0 && contactData.left.length === contactData.right.length">
+                            <td width="50%">
+                                <table class="data-table text-center">
                                     <tr>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td></td>
+                                        <td class="border-top-0 border-left-0 border-bottom-0"></td>
+                                        <td colspan="5">RIGHT EYE</td>
                                     </tr>
                                     <tr>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td></td>
+                                        <td class="border-top-0 border-left-0"></td>
+                                        <td>Sphere</td>
+                                        <td>Cylinder</td>
+                                        <td>Axis</td>
+                                        <td>Prism</td>
+                                        <td>V/N</td>
+                                    </tr>
+                                    <tr *ngFor="let right of contactData.right">
+                                        <td>{{right.isDistance ? 'Distance':'Near'}}</td>
+                                        <td>{{right.sphere ? right.sphere : '-'}}</td>
+                                        <td>{{right.cylinder ? right.cylinder : '-'}}</td>
+                                        <td>{{right.axis ? right.axis : '-'}}</td>
+                                        <td>{{right.prismAmount ? right.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td width="50%">
+                                <table class="data-table text-center">
+                                    <tr>
+                                        <td colspan="5">LEFT EYE</td>
+                                        <td class="border-top-0 border-right-0 border-bottom-0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sphere</td>
+                                        <td>Cylinder</td>
+                                        <td>Axis</td>
+                                        <td>Prism</td>
+                                        <td>V/N</td>
+                                        <td class="border-top-0 border-right-0">PD</td>
+                                    </tr>
+                                    <tr *ngFor="let left of contactData.left">
+                                        <td>{{left.sphere ? left.sphere : '-'}}</td>
+                                        <td>{{left.cylinder ? left.cylinder : '-'}}</td>
+                                        <td>{{left.axis ? left.axis : '-'}}</td>
+                                        <td>{{left.prismAmount ? left.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                        <td><span></span></td>
                                     </tr>
                                 </table>
                             </td>
@@ -277,7 +314,8 @@
                                 <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Medium</p>
                             </td>
                             <td width="25%">
-                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Anti-reflecting coating</p>
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp;
+                                    Anti-reflecting coating</p>
                             </td>
                             <td width="25%"></td>
                         </tr>
@@ -298,7 +336,8 @@
                                 <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Light</p>
                             </td>
                             <td width="25%">
-                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Single Vision</p>
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Single
+                                    Vision</p>
                             </td>
                             <td width="25%">
                                 <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; High Index</p>
@@ -313,7 +352,8 @@
                                 <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Dark</p>
                             </td>
                             <td width="25%">
-                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Colored</p>
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Colored
+                                </p>
                             </td>
                             <td width="25%"></td>
                         </tr>
@@ -322,7 +362,8 @@
                                 <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Bifocal</p>
                             </td>
                             <td width="25%">
-                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Safety Thickness</p>
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Safety Thickness
+                                </p>
                             </td>
                             <td width="25%">
                                 <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Anti-Scratch</p>
@@ -350,11 +391,13 @@
                             </td>
                             <td width="10"></td>
                             <td width="10">
-                                <p><strong><img src="./assets/check-square.svg" class="check-square" />&nbsp; Yes</strong></p>
+                                <p><strong><img src="./assets/check-square.svg" class="check-square" />&nbsp;
+                                        Yes</strong></p>
                             </td>
                             <td width="10"></td>
                             <td width="10">
-                                <p><strong><img src="./assets/check-square.svg" class="check-square" />&nbsp; No</strong></p>
+                                <p><strong><img src="./assets/check-square.svg" class="check-square" />&nbsp;
+                                        No</strong></p>
                             </td>
                             <td></td>
                         </tr>
@@ -400,7 +443,8 @@
                     <table class="internal-table">
                         <tr>
                             <td class="text-wrap">
-                                <p>I hereby certify that ALL information mentioned are correct and that the medical services shown on this form were medically indicated and
+                                <p>I hereby certify that ALL information mentioned are correct and that the medical
+                                    services shown on this form were medically indicated and
                                     necessary for the management of this case.</p>
                                 <table class="internal-table text-center">
                                     <tr>
@@ -443,7 +487,8 @@
                             <td class="border-right"></td>
                             <td width="10"></td>
                             <td class="text-wrap">
-                                <p>I hereby certify that ALL statements and information provided concerning patient identification and the present illness or injury are TRUE.</p>
+                                <p>I hereby certify that ALL statements and information provided concerning patient
+                                    identification and the present illness or injury are TRUE.</p>
                                 <table class="internal-table">
                                     <tr>
                                         <td width="10">
@@ -512,7 +557,8 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p><strong>Comments (include approved days/services if different from the requested):</strong></p>
+                                <p><strong>Comments (include approved days/services if different from the
+                                        requested):</strong></p>
                             </td>
                             <td>
                                 <p class="value-holder"></p>
