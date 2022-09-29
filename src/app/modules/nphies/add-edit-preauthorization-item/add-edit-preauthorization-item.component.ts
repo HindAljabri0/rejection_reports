@@ -460,7 +460,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     // filter the nations
     this.filteredPescribedMedicationItem.next(
-      this.prescribedMedicationList.filter(item => item.descriptionCode.toLowerCase().indexOf(search) > -1 || item.tradeName.toString().toLowerCase().indexOf(search) > -1)
+      this.prescribedMedicationList.filter(item => item.descriptionCode.toLowerCase().indexOf(search) > -1 || item.tradeName.toString().toLowerCase().indexOf(search) > -1 || item.gtinNumber.toString().toLowerCase().indexOf(search) > -1)
     );
   }
 
