@@ -1669,6 +1669,21 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-eligibility thead{display: table-row-group;}
 .print-eligibility .primary-dialog-footer{display: none;}
 
+
+/* upcoming feature
+--------------------------------------------------------------------------------------------------------*/
+.upcoming-feature-header{background: #598ad4;background: -moz-linear-gradient(-45deg,  #598ad4 0%, #3060aa 40%, #144186 88%);background: -webkit-linear-gradient(-45deg,  #598ad4 0%,#3060aa 40%,#144186 88%);background: linear-gradient(135deg,  #598ad4 0%,#3060aa 40%,#144186 88%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#598ad4', endColorstr='#144186',GradientType=1 );padding: 32px 16px;color: #fff;text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);text-align: center;position: relative;}
+.upcoming-feature-header p{opacity: 0.56;font-size: 16px;line-height: 24px;}
+.upcoming-feature-header img{display: block;height: 56px;width: 88px;margin: 0 auto 16px;}
+.upcoming-feature-header .btn-close{position: absolute;top: 8px;right: 8px;padding: 8px;opacity: 0.32;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);background: none;border:0;border-radius: 50px;}
+.upcoming-feature-header .btn-close:hover,.upcoming-feature-header .btn-close:focus,.upcoming-feature-header .btn-close:active{opacity: 0.72;}
+.upcoming-feature-header .btn-close>img{display: block;height: 24px;width: 24px;margin-bottom: 0;}
+.upcoming-feature-body{padding: 24px;}
+.upcoming-feature-body h2{padding-bottom: 8px;}
+.upcoming-feature-body p{padding-bottom: 16px;font-size: 16px;line-height: 26px;color: #505050;}
+.upcoming-feature-body img{display: block;max-width: 100%;margin-bottom: 4px;border-radius: 8px;border:1px solid #bebebe;}
+.upcoming-feature-body>li:not(:last-child){padding-bottom: 24px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
