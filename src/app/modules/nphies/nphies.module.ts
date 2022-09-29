@@ -75,6 +75,10 @@ import { ApprovalJsonResponseComponent } from './view-preauthorization-details/a
 import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
 import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
 import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dialog/add-medication-supply-dialog.component';
+import { ViewPrintPreviewDialogComponent } from './view-print-preview-dialog/view-print-preview-dialog.component';
+import { UcafFormTemplateComponent } from './ucaf-form-template/ucaf-form-template.component';
+import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-template.component';
+import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +132,10 @@ import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dial
     DaysOfSupplyUploadComponent,
     MedicationDaysUploadComponent,
     AddMedicationSupplyDialogComponent,
+    ViewPrintPreviewDialogComponent,
+    UcafFormTemplateComponent,
+    DcafFormTemplateComponent,
+    OcafFormTemplateComponent
   ],
   imports: [
     CommonModule,
@@ -166,7 +174,8 @@ import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dial
     AddPricelistDialogComponent,
     DaysOfSupplyUploadComponent,
     MedicationDaysUploadComponent,
-    AddMedicationSupplyDialogComponent
+    AddMedicationSupplyDialogComponent,
+    ViewPrintPreviewDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent

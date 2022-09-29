@@ -22,6 +22,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   itemList: any = [];
   // tslint:disable-next-line:max-line-length
   filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredSupportingInfo: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -33,6 +34,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     type: ['', Validators.required],
     item: ['', Validators.required],
     itemFilter: [''],
+    prescribedMedicationItemFilter: [''],
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
@@ -62,13 +64,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisFilter: [''],
     invoiceNo: [''],
     // IsTaxApplied: [false],
-    searchQuery: ['']
+    searchQuery: [''],
+    drugSelectionReason: [''],
+    prescribedDrugCode : ['']
   });
 
   isSubmitted = false;
   typeListSearchResult = [];
   SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
+  medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+  prescribedMedicationList :any; 
   bodySiteList = [];
   subSiteList = [];
   IscareTeamSequenceRequired = false;
@@ -108,9 +114,36 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
       this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
-
+    if(this.data.type === "pharmacy"){
+      this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body) {
+           this.prescribedMedicationList = body;
+           this.filteredPescribedMedicationItem.next(body);
+           if (this.data.item) {
+            const res=this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0];
+              this.FormItem.patchValue({
+                prescribedDrugCode:res
+              });
+              this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+              this.filterPrescribedMedicationItem();
+            }
+          }
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          
+        }
+      });
+      this.FormItem.controls.prescribedMedicationItemFilter.valueChanges
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(() => {
+        this.filterPrescribedMedicationItem();
+      });
+    }
     if (this.data.item) {
-      console.log(" sub site val = " + this.data.item.subSite),
+      console.log(" sub site val = " + JSON.stringify(this.data.item)),
         this.FormItem.patchValue({
           type: this.typeList.filter(x => x.value === this.data.item.type)[0],
           nonStandardCode: this.data.item.nonStandardCode,
@@ -135,7 +168,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           payerShare: this.data.item.payerShare,
           startDate: this.data.item.startDate,
           endDate: this.data.item.endDate,
-          invoiceNo: this.data.item.invoiceNo
+          invoiceNo: this.data.item.invoiceNo,
+          drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0]
+          
         });
 
       if (this.data.careTeams) {
@@ -410,6 +445,25 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
+
+  filterPrescribedMedicationItem() {
+    if (!this.prescribedMedicationList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormItem.controls.prescribedMedicationItemFilter.value;
+    if (!search) {
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations    
+    this.filteredPescribedMedicationItem.next(
+      this.prescribedMedicationList.filter(item => (item.descriptionCode && item.descriptionCode.toLowerCase().indexOf(search) > -1) || (item.tradeName && item.tradeName.toString().toLowerCase().indexOf(search) > -1) || (item.gtinNumber && item.gtinNumber.toString().toLowerCase().indexOf(search) > -1))
+    );
+  }
+
 
   filterSupportingInfo() {
     if (!this.data.supportingInfos) {
@@ -773,8 +827,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-      //console.log("item model = " + JSON.stringify(model));
-      this.dialogRef.close(model);
+      if(this.data.type === "pharmacy"){
+        model.drugSelectionReason=this.FormItem.controls.drugSelectionReason.value.value;
+        model.prescribedDrugCode=this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
+        model.drugSelectionReasonName=this.FormItem.controls.drugSelectionReason.value.name;
+      }
+     // console.log("item model = " + JSON.stringify(model));
+     this.dialogRef.close(model);
     }
   }
 

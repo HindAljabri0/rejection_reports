@@ -740,6 +740,16 @@
                                 <td>{{item.factor}}</td>
                               </tr>
                               <tr>
+                                <td class="label">Medication Selection Reason </td>
+                                <td>{{item.drugSelectionReasonName ?
+                                  item.drugSelectionReasonName:"-"}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Prescribed Medication </td>
+                                <td>{{item.prescribedDrugCode ?
+                                  item.prescribedDrugCode:"-"}}</td>
+                              </tr>
+                              <tr>
                                 <td class="label">Supporting Info</td>
                                 <td>{{item.supportingInfoNames}}</td>
                               </tr>
