@@ -22,6 +22,7 @@ import {
 } from 'src/app/components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { AlertDialogComponent } from 'src/app/components/dialogs/alert-dialog/alert-dialog.component';
+import { UpcomingFeatureDialogComponent } from 'src/app/components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -180,14 +181,21 @@ export class DialogService {
   }
 
   showAlerts(messages: string[]) {
-  if ((messages != null && messages.length > 0) || (this.commenServices.isHasNphiesPrivileges() && !this.commenServices.isOverNphiesdwonTime)) {
+    if ((messages != null && messages.length > 0) || (this.commenServices.isHasNphiesPrivileges() && !this.commenServices.isOverNphiesdwonTime)) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: messages,
         panelClass: ['primary-dialog'],
         autoFocus: false
       });
       // dialogRef.afterClosed().subscribe(() => this.showAlerts(messages));
+    }
   }
+
+  showUpcomingFeatures(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.autoFocus = false;
+    this.dialog.open(UpcomingFeatureDialogComponent, dialogConfig);    
   }
 
   closeAll() {

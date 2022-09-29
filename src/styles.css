@@ -1670,6 +1670,7 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-eligibility thead{display: table-row-group;}
 .print-eligibility .primary-dialog-footer{display: none;}
 
+
 /* print dialog body
 --------------------------------------------------------------------------------------------------------*/
 .print-dialog-body{background-color: #484848;padding: 24px;max-height: calc(100vh - 192px);overflow: auto;}
@@ -1773,6 +1774,7 @@ html.print-document.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-document .primary-dialog-footer{display: none;}
 .print-document .primary-dialog.dialog-xl{width: 100%;max-width: none!important;}
 .print-document .view-preauth-details {display: none;}
+
 
 /* upcoming feature
 --------------------------------------------------------------------------------------------------------*/

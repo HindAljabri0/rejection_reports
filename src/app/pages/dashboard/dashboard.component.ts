@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     dashboardTour: GuidedTour = {
         tourId: '1',
         skipCallback: (stepNumber) => {
-            window.localStorage.setItem('onboarding-demo-done', 'true');
+            window.localStorage.setItem('onboarding-demo-done', 'true');            
         },
         completeCallback: () => {
             document.body.classList.remove('guided-tour-active');
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
             this.commen.showUploadsCenterChange.next(false);
             this.commen.showNotificationCenterChange.next(false);
             this.commen.showAnnouncementCenterChange.next(false);
-            window.localStorage.setItem('onboarding-demo-done', 'true');
+            window.localStorage.setItem('onboarding-demo-done', 'true');            
         },
         steps: [
             {
