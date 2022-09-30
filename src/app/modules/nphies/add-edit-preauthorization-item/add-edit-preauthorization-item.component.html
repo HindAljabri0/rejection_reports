@@ -112,7 +112,7 @@
         <div class="form-group">
           <label class="control-label">Sub Site</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="subSite" [disabled]="!FormItem.get('bodySite').value">
+            <mat-select formControlName="subSite" [disabled]="!FormItem.controls.bodySite.value">
               <mat-option value="">Select Sub Site</mat-option>
               <mat-option *ngFor="let subSite of subSiteList" [value]="subSite">{{subSite.name}}</mat-option>
             </mat-select>

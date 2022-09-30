@@ -862,7 +862,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   onBodySiteChange(event){
     if(event.value === ""){
-      this.FormItem.get('subSite').setValue("");
+      this.FormItem.controls.subSite.setValue("");
     }
   }
 }
