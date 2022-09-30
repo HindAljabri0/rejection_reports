@@ -217,6 +217,16 @@ export class SharedDataService {
     { value: 'oral-health-op', name: 'Oral Health OP' },
   ];
 
+  itemMedicationReasonList = [
+    { value: 'patient-request', name: '	Requested by patient' },
+    { value: 'generic', name: 'Generic' },
+    { value: 'innovative-noGeneric', name: 'Innovative without Generic' },
+    { value: 'physician-request', name: 'Requested by physician' },
+    { value: 'drug-pharmacyUnavailable', name: 'Out of pharmacy stock' },
+    { value: 'drug-marketUnavailable', name: 'Drug market unavailability' },
+    { value: 'Irreplaceable-drug', name: 'SFDA Irreplaceable drug' }
+  ];
+
 
   cancelReasonList = [
     { value: 'WI', name: 'Wrong information' },
@@ -334,6 +344,8 @@ export class SharedDataService {
     { value: 'audit', name: 'Audit' },
     { value: 'other', name: 'Other' }
   ];
+
+  style = ".caf-form {font-size: 8pt;line-height: 12pt;font-family: 'Arial', sans-serif;margin: 0;} .caf-form h1,.caf-form h2,.caf-form h3,.caf-form h4,.caf-form h5,.caf-form h6,.caf-form p {margin: 0;} .caf-form h1 {font-size: 18pt;line-height: 24pt;} .caf-form h3 {font-size: 9pt;line-height: 14pt;} .caf-form .form-container-group {border-radius: 8px;border: 2px solid #000;padding: 8px;height: 100%;} .caf-form .border-right {border-right: 1px solid #000;} .caf-form .stamp {border: 1px solid #000;border-radius: 50px;height: 16pt;width: 16pt;display: inline-block;vertical-align: top;} .caf-form .layout-table {width: 100%;} .caf-form .layout-table>tr>td {padding: 4pt;border-collapse: collapse;height: 1px;} .caf-form .layout-table>tr>td:first-child {padding-left: 0;} .caf-form .layout-table>tr>td:last-child {padding-right: 0;} .caf-form .text-nowrap {white-space: nowrap;} .caf-form .text-wrap {white-space: normal;} .caf-form .internal-table {border-collapse: collapse;white-space: nowrap;width: 100%;} .caf-form .value-holder {border-bottom: 1px dashed #707070;} .caf-form p>span.value-holder {display: inline-block;vertical-align: baseline;} .caf-form p {min-height: 12pt;} .caf-form .check {height: 10pt;width: 10pt;display: inline-block;vertical-align: -2pt;opacity: 0;margin: 0 -1pt;} .caf-form .check.checked {opacity: 1;} .caf-form .round-strip {border: 1px solid #000;border-radius: 50px;} .caf-form hr {height: 0;background: none;border: 0;margin: 4pt 0;border-bottom: 2px solid #000;} .caf-form .data-table {width: 100%;border-collapse: collapse;text-align: center;margin: 4pt 0;} .caf-form .data-table td,.caf-form .data-table th {border: 1px solid #000;} .caf-form .data-table th {font-weight: 700;}";
 
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService) { }
 
@@ -510,4 +522,5 @@ export class SharedDataService {
     }
     return subSite;
   }
+
 }

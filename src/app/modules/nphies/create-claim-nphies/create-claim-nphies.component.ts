@@ -940,6 +940,9 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
+              x.drugSelectionReason  = result.drugSelectionReason ;
+              x.drugSelectionReasonName  = result.drugSelectionReasonName ;
+              x.prescribedDrugCode  = result.prescribedDrugCode ;
               x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1819,6 +1822,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
           model.invoiceNo = x.invoiceNo;
+          model.drugSelectionReason = x.drugSelectionReason;
+          model.prescribedDrugCode = x.prescribedDrugCode;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
@@ -2880,6 +2885,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
       model.invoiceNo = x.invoiceNo;
+      model.drugSelectionReason  = x.drugSelectionReason;
+      model.drugSelectionReasonName  = this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0].name : "-" ;
+      model.prescribedDrugCode  = x.prescribedDrugCode ;
 
       x.discount = parseFloat(x.discount);
       x.quantity = parseFloat(x.quantity);

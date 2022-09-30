@@ -83,4 +83,16 @@ export class SettingsService {
     return this.httpClient.request(requestWithBody);
   }
 
+  saveNphiesAttachmentConfigData(providerId: string, newValues: FormData) {
+    const requestUrl = `/providers/${providerId}/nphies/attachment-config`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestUrl, newValues);
+    return this.httpClient.request(request);
+  }
+
+  getNphiesAttachmentConfigDetails(providerId: any) {
+    const requestURL =`/providers/${providerId}/nphies/attachment-config`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
 }

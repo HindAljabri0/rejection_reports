@@ -1029,6 +1029,8 @@ export class AddPreauthorizationComponent implements OnInit {
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+              x.drugSelectionReason  = result.drugSelectionReason ;
+              x.prescribedDrugCode  = result.prescribedDrugCode ;
 
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1973,6 +1975,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
           model.invoiceNo = null;
+          model.drugSelectionReason = x.drugSelectionReason;
+          model.prescribedDrugCode = x.prescribedDrugCode;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
