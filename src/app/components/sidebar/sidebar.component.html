@@ -263,7 +263,7 @@
 
 
 
-      <ng-container *ngIf="hasAnyNphiesPrivilege">
+      <ng-container *ngIf="hasAnyNphiesPrivilege || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
         <div class="list-title">
           <hr>
         </div>
