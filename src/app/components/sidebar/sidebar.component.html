@@ -263,7 +263,7 @@
 
 
 
-      <ng-container *ngIf="hasAnyNphiesPrivilege">
+      <ng-container *ngIf="hasAnyNphiesPrivilege || userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
         <div class="list-title">
           <hr>
         </div>
@@ -428,7 +428,7 @@
         </li>
       </ul> -->
     <mat-accordion>
-      <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isAdmin ||userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization && !envStaging && !envProd ">
+      <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isAdmin ||userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <span class="d-flex align-items-center">
