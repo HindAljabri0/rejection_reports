@@ -20,16 +20,30 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
   providerController: FormControl = new FormControl();
   headerFile: any;
   headerFileName: string;
+  headerWidth: any;
+  headerHeight: any;
+  footerWidth: any;
+  footerHeight: any;
   footerFile: any;
   footerFileName: string;
-  enabled: boolean=false;
-  isHeaderSubmitted:boolean=false;
-  isFooterSubmitted:boolean=false;
+  enabled: boolean = false;
+  isHeaderNotSubmitted: boolean = false;
+  isFooterNotSubmitted: boolean = false;
+  isHeaderSize: boolean = false;
+  isFooterSize: boolean = false;
   header: any;
   footer: any;
   HeadersizeInMB: string;
   FootersizeInMB: string;
-
+  isHeaderDimension: boolean = false;
+  isFooterDimension: boolean = false;
+  isValidateMessage: boolean = false;
+  isSubmitted: boolean = false;
+  isHeaderFormat: boolean = false;
+  isFooterFormat: boolean = false;
+  HeaderFormat: string;
+  FooterFormat: string;
+  ImageFormat = ["jpg", "jpeg"];
 
   errors: {
     providersError?: string
@@ -44,7 +58,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     private dialogService: DialogService
   ) { }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.superAdmin.getProviders().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
@@ -59,6 +73,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
               this.providerController.setValue(`${provider.switchAccountId} | ${provider.code} | ${provider.name}`);
               this.updateFilter();
             } else {
+              this.selectedProvider = "";
               this.sharedServices.loadingChanged.next(false);
             }
           } else {
@@ -99,7 +114,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
 
       if (event instanceof HttpResponse) {
         var result = event.body["attachment"];
-        if (event.status == 200) {
+        if (event.status == 200 && result != null) {
           this.footer = this.dataURLtoFile("data:text/plain;base64," + result.footerFile, result.footerFileName);
           this.footerFile = this.dataURLtoFile("data:text/plain;base64," + result.footerFile, result.footerFileName);
           this.footerFileName = result.footerFileName;
@@ -108,6 +123,9 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
           this.headerFileName = result.headerFileName;
           this.enabled = result.isEnabled
           this.selectedProvider = result.providerId;
+          this.sharedServices.loadingChanged.next(false);
+        }
+        else {
           this.sharedServices.loadingChanged.next(false);
         }
       }
@@ -140,83 +158,106 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
   }
 
   selectHeaderFile(event) {
-    this.headerFile = event.target.files[0];
     this.HeadersizeInMB = '';
+    this.HeaderFormat = event.target.files[0].name.split('.').pop();
     this.headerFileName = event.target.files[0].name;
-    // this.supportingInfoList[i].attachmentType = event.target.files[0].type;
-    // this.supportingInfoList[i].attachmentDate = new Date();
     this.HeadersizeInMB = this.sharedServices.formatBytes(event.target.files[0].size);
-
-    // if (event.target.files[0].size > 9437184) {
-    //   this.supportingInfoList[i].fileError = 'File must be less than or equal to 10 MB';
-    //   this.supportingInfoList[i].uploadContainerClass = 'has-error';
-    //   this.supportingInfoList[i].attachment = null;
-    //   return;
-    // }
-
-    // if (!this.checkfile(i)) {
-    //   this.supportingInfoList[i].attachment = null;
-    //   return;
-    // }
-
+    if (!this.ImageFormat.includes(this.HeaderFormat.toLowerCase())) {
+      this.isHeaderFormat = true;
+      this.isHeaderSize = false;
+      this.isHeaderDimension = false;
+      this.isHeaderNotSubmitted = false;
+    }
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onloadend = () => {
       const data: string = reader.result as string;
       this.header = data.substring(data.indexOf(',') + 1);
+      const img = new Image();
+      img.src = reader.result as string;
+      img.onload = () => {
+        this.headerHeight = img.naturalHeight;
+        this.headerWidth = img.naturalWidth;
+        if (!this.HeadersizeInMB.includes('KB') ||
+          !(this.headerHeight <= 100 && this.headerWidth <= 500)) {
+          this.isHeaderNotSubmitted = false;
+          if (this.HeadersizeInMB.includes('KB')) {
+            var hdSize = parseFloat(this.HeadersizeInMB.replace("KB", "").trim());
+            if (hdSize > 300) {
+              this.isHeaderSize = true;
+            }
+          }
+          if (!(this.headerHeight <= 100 && this.headerWidth <= 500)) this.isHeaderDimension = true;
+        } else {
+          this.headerFile = event.target.files[0];
+          this.isHeaderSize = false;
+          this.isHeaderDimension = false;
+          this.isHeaderNotSubmitted = false;
+          this.isHeaderFormat = false;
+        }
+      };
     };
+
+
   }
 
   selectFooterFile(event) {
-    this.footerFile = event.target.files[0];
-    let FootersizeInMB = '';
     this.footerFileName = event.target.files[0].name;
-    // this.supportingInfoList[i].attachmentType = event.target.files[0].type;
-    // this.supportingInfoList[i].attachmentDate = new Date();
+    this.FooterFormat = event.target.files[0].name.split('.')[1];
     this.FootersizeInMB = this.sharedServices.formatBytes(event.target.files[0].size);
-
-    // if (event.target.files[0].size > 9437184) {
-    //   this.supportingInfoList[i].fileError = 'File must be less than or equal to 10 MB';
-    //   this.supportingInfoList[i].uploadContainerClass = 'has-error';
-    //   this.supportingInfoList[i].attachment = null;
-    //   return;
-    // }
-
-    // if (!this.checkfile(i)) {
-    //   this.supportingInfoList[i].attachment = null;
-    //   return;
-    // }
-
+    if (!this.ImageFormat.includes(this.FooterFormat.toLowerCase())) {
+      this.isFooterFormat = true;
+      this.isFooterSize = false;
+      this.isFooterDimension = false;
+      this.isFooterNotSubmitted = false;
+    }
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onloadend = () => {
       const data: string = reader.result as string;
       this.footer = data.substring(data.indexOf(',') + 1);
-    };
-  }
+      const img = new Image();
+      img.src = reader.result as string;
+      img.onload = () => {
+        this.footerHeight = img.naturalHeight;
+        this.footerWidth = img.naturalWidth;
+        if (!this.FootersizeInMB.includes('KB') ||
+          !(this.footerHeight <= 100 && this.footerWidth <= 500)) {
+          this.isFooterNotSubmitted = false;
 
-  // checkfile(i) {
-  //   const validExts = ['.pdf', '.jpg', '.jpeg'];
-  //   let fileExt = this.supportingInfoList[i].attachmentName;
-  //   fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-  //   if (validExts.indexOf(fileExt) < 0) {
-  //     this.supportingInfoList[i].fileError = 'Invalid file selected, valid files are of ' + validExts.toString() + ' types.';
-  //     this.supportingInfoList[i].uploadContainerClass = 'has-error';
-  //     this.supportingInfoList[i].attachment = null;
-  //     return false;
-  //   } else {
-  //     this.supportingInfoList[i].uploadContainerClass = '';
-  //     this.supportingInfoList[i].fileError = '';
-  //     return true;
-  //   }
-  // }
+          if (this.FootersizeInMB.includes('KB')) {
+            var ftSize = parseFloat(this.FootersizeInMB.replace("KB", "").trim());
+            if (ftSize > 300) {
+              this.isFooterSize = true;
+            }
+          }
+          if (!(this.footerHeight <= 100 && this.footerWidth <= 500)) this.isFooterDimension = true;
+        } else {
+          this.footerFile = event.target.files[0];
+          this.isFooterSize = false;
+          this.isFooterDimension = false;
+          this.isFooterNotSubmitted = false;
+          this.isFooterFormat = false;
+        }
+      };
+    };
+
+  }
 
   headerClearFiles(event) {
     event.target.value = '';
     this.headerFile = "";
     this.headerFileName = "";
     this.HeadersizeInMB = "";
-    this.header="";
+    this.header = "";
+    this.isHeaderDimension = false;
+    this.isHeaderSize = false;
+    this.isHeaderNotSubmitted = false;
+    this.isHeaderFormat = false;
+    if (this.isSubmitted) {
+      if (!this.headerFile) this.isHeaderNotSubmitted = true;
+      this.sharedServices.loadingChanged.next(false);
+    }
   }
 
   footerClearFiles(event) {
@@ -224,44 +265,50 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     this.footerFile = "";
     this.footerFileName = "";
     this.FootersizeInMB = "";
-    this.footer="";
+    this.footer = "";
+    this.isFooterDimension = false;
+    this.isFooterSize = false;
+    this.isFooterNotSubmitted = false;
+    this.isFooterFormat = false;
+    if (this.isSubmitted) {
+      if (!this.footerFile) this.isFooterNotSubmitted = true;
+      this.sharedServices.loadingChanged.next(false);
+    }
   }
 
   enabledChange(event) {
     this.enabled = event.value;
   }
 
-  onSubmit() {
-    this.sharedServices.loadingChanged.next(true);
-    if(!this.selectedProvider){
+  checkValidation() {
+    this.isSubmitted = true;
+    if (!this.selectedProvider || this.selectedProvider == undefined || this.selectedProvider == "") {
       this.dialogService.openMessageDialog({
         title: '',
         message: "Please select provider.",
         isError: true
       });
-      this.isHeaderSubmitted=true;
-      this.isFooterSubmitted=true;
-      this.sharedServices.loadingChanged.next(false);
-      return false;
     }
-    
-    if(this.headerFile){
-     this.isHeaderSubmitted=false;
+    if (!this.headerFile || !this.footerFile) {
+      if (!this.headerFile) this.isHeaderNotSubmitted = true;
+      if (!this.footerFile) this.isFooterNotSubmitted = true;
     }
-    else{
-      this.isHeaderSubmitted=true;
-      this.sharedServices.loadingChanged.next(false);
+    else if (!this.isHeaderSize && !this.isHeaderDimension && !this.isFooterSize && !this.isFooterDimension && !this.isHeaderFormat && !this.isFooterFormat) {
+      this.onSubmit();
     }
 
-    if(this.footerFile){
-     this.isFooterSubmitted=false;
-    }
-    else{
-      this.isFooterSubmitted=true;
-      this.sharedServices.loadingChanged.next(false);
-    }
+  }
 
-    if(this.isFooterSubmitted == true || this.isHeaderSubmitted==true){
+  onSubmit() {
+
+    this.sharedServices.loadingChanged.next(true);
+    if (!this.selectedProvider || this.selectedProvider == undefined || this.selectedProvider == "") {
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: "Please select provider.",
+        isError: true
+      });
+      this.sharedServices.loadingChanged.next(false);
       return false;
     }
     const body: FormData = new FormData();
@@ -279,6 +326,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
             message: "Data saved successfully.",
             isError: false
           });
+          location.reload();
           this.sharedServices.loadingChanged.next(false);
         }
       }
