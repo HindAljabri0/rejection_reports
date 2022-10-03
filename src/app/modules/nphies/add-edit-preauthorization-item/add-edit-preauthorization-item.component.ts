@@ -381,15 +381,32 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.quantityCode.updateValueAndValidity();
     }
     this.FormItem.controls.item.setValue('');
-    this.itemList = [{ "code": type.code, "description": type.display }];
+    
+    //this.itemList = [{ "code": type.code, "description": type.display }];
 
-    if (type) {
-      this.FormItem.patchValue({
-        item: this.itemList.filter(x => x.code === type.code)[0]
-      });
-    }
+    this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.itemList = event.body;
+        if (type) {
+          this.FormItem.patchValue({
+            item: this.itemList.filter(x => x.code === type.code)[0]
+          });
+        }
+    
+        this.filteredItem.next(this.itemList.slice());
+        this.FormItem.controls.filteredItem.valueChanges
+        .pipe(takeUntil(this.onDestroy))
+        .subscribe(() => {
+          this.filterItem();
+        });
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+      }
+    });
 
-    this.filteredItem.next(this.itemList.slice());
+    
 
   }
   typeChange(type = null) {
