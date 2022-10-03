@@ -214,7 +214,7 @@
                                     </tr>
                                     <tr>
                                         <td class="border-top-0 border-left-0"></td>
-                                        <td>Sphere</td>
+                                        <td>Lens Power</td>
                                         <td>Cylinder</td>
                                         <td>Axis</td>
                                         <td>Prism</td>
@@ -222,7 +222,7 @@
                                     </tr>
                                     <tr *ngFor="let right of contactData.right">
                                         <td>{{right.isDistance ? 'Distance':'Near'}}</td>
-                                        <td>{{right.sphere ? right.sphere : '-'}}</td>
+                                        <td>{{right.lensPower ? right.lensPower : '-'}}</td>
                                         <td>{{right.cylinder ? right.cylinder : '-'}}</td>
                                         <td>{{right.axis ? right.axis : '-'}}</td>
                                         <td>{{right.prismAmount ? right.prismAmount : '-'}}</td>
@@ -238,7 +238,7 @@
                                         <td class="border-top-0 border-right-0 border-bottom-0"></td>
                                     </tr>
                                     <tr>
-                                        <td>Sphere</td>
+                                        <td>Lens Power</td>
                                         <td>Cylinder</td>
                                         <td>Axis</td>
                                         <td>Prism</td>
@@ -246,7 +246,7 @@
                                         <td class="border-top-0 border-right-0">PD</td>
                                     </tr>
                                     <tr *ngFor="let left of contactData.left">
-                                        <td>{{left.sphere ? left.sphere : '-'}}</td>
+                                        <td>{{left.lensPower ? left.lensPower : '-'}}</td>
                                         <td>{{left.cylinder ? left.cylinder : '-'}}</td>
                                         <td>{{left.axis ? left.axis : '-'}}</td>
                                         <td>{{left.prismAmount ? left.prismAmount : '-'}}</td>
