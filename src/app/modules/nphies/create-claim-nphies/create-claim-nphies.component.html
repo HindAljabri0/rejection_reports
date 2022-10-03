@@ -1948,9 +1948,12 @@
                       <span class="pr-1">Net</span>
                       <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
                         info</mat-icon>
+                      <span class="pr-1">/Tax</span>
+                      <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                        info</mat-icon>
                     </div>
                   </th>
-                  <th>Approved Net</th>
+                  <th>Benefit/Tax</th>
                   <th>Status</th>
                   <th>Adjudication Reason Code</th>
                   <th>Note No.</th>
@@ -1978,17 +1981,16 @@
                       {{item.typeName}}</td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.itemCode}} - {{item.itemDescription}}</td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.net}} <span class="currency">SR</span></td>
-                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
-                        <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                          <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                      <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                        {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
+                      <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                        <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                          <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
+                            <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                            <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span class="currency">SR</span></span>
+                          </ng-container>
                         </ng-container>
-                      </ng-container>
-                      <ng-container *ngIf="!item.itemDecision || (item.itemDecision && !item.itemDecision.claimItemDecisionCategories)">
-                        -</ng-container>
-                    </td>
+                      </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.status ? item.itemDecision.status :
                         '-'}}</span>

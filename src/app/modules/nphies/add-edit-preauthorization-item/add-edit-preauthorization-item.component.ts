@@ -325,11 +325,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   selectItem(type) {
     if (type) {
-      this.FormItem.patchValue({
-        prescribedDrugCode: ""
-      });
-      this.setPrescribedMedication(type.code);    
-
       if (type.itemType && type.itemType === 'medication-codes') {
         this.FormItem.controls.quantityCode.setValidators([Validators.required]);
         this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -352,6 +347,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.SetSingleRecord(type);
       this.updateDiscount();
       this.updateNet();
+      if(this.data.type === "pharmacy"){
+        this.FormItem.patchValue({
+          prescribedDrugCode: ""
+        });
+        this.setPrescribedMedication(type.code);    
+      }
     }
   }
 
@@ -881,4 +882,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onBodySiteChange(event){
+    if(event.value === ""){
+      this.FormItem.controls.subSite.setValue("");
+    }
+  }
 }
