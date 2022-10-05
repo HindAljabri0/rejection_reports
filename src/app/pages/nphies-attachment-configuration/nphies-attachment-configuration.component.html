@@ -26,7 +26,7 @@
             </div>
             <h5 class="semibold pb-2">Enable generating claim attachments? <span class="strength text-medium-grey">(Invoices, UCAF/DCAF/OCAF)</span></h5>
             <div class="form-group">
-                <mat-radio-group class="radio-group inline pt-0" [(ngModel)]="enabled" (change)="enabledChange($event)" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group class="radio-group inline pt-0" [(ngModel)]="enabled" (change)="enabledChange($event)" [ngModelOptions]="{standalone: true}" [disabled]="!selectedProvider">
                     <mat-radio-button [value]="true" color="primary">Yes</mat-radio-button>
                     <mat-radio-button [value]="false" color="primary">No</mat-radio-button>
                 </mat-radio-group>
@@ -39,7 +39,7 @@
                             <img src="./assets/ic-upload.svg" alt="Upload" />
                             <p>Drag and drop header image file here or <span class="semibold text-primary">browse</span>
                             </p>
-                            <span>allowed only jpg , jpeg and png image files and image size should be in KB</span>
+                            <span>allowed only jpg and jpeg image files and image size should be less than 300 KB</span>
                         </div>
                         <div class="content" *ngIf="headerFileName">
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
@@ -50,7 +50,7 @@
                         </div>
                         <input type="file" accept=".jpg , .jpeg " [(ngModel)]="headerFile" [ngModelOptions]="{standalone: true}" *ngIf="!headerFileName"
                             (change)="selectHeaderFile($event)"
-                            class="upload-control" required>
+                            class="upload-control" required [disabled]="(!selectedProvider)">
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderNotSubmitted">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
@@ -76,7 +76,7 @@
                             <img src="./assets/ic-upload.svg" alt="Upload" />
                             <p>Drag and drop footer image file here or <span class="semibold text-primary">browse</span>
                             </p>
-                            <span>allowed only jpg , jpeg and png image files and image size should be in KB</span>
+                            <span>allowed only jpg and jpeg image files and image size should be less than 300 KB</span>
                         </div>
                         <div class="content" *ngIf="footerFileName">
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
@@ -87,7 +87,7 @@
                         </div>
                         <input type="file" accept=".jpg , .jpeg " [(ngModel)]="footerFile" [ngModelOptions]="{standalone: true}" *ngIf="!footerFileName"
                             (change)="selectFooterFile($event)"
-                            class="upload-control" required>
+                            class="upload-control" required [disabled]="(!selectedProvider)">
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterNotSubmitted">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
