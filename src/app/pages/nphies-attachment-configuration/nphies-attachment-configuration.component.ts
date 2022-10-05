@@ -109,14 +109,14 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
   }
 
   selectProvider(providerId: string = null) {
+    this.headerClearFiles();
+    this.footerClearFiles();
     if (providerId !== null)
       this.selectedProvider = providerId;
-
     else {
       const providerId = this.providerController.value.split('|')[0].trim();
       this.selectedProvider = providerId;
     }
-
 
     this.sharedServices.loadingChanged.next(true);
     this.settingsServices.getNphiesAttachmentConfigDetails(this.selectedProvider).subscribe(event => {
@@ -312,8 +312,8 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
 
   }
 
-  headerClearFiles(event) {
-    event.target.value = '';
+  headerClearFiles(event = null) {
+    event != null? event.target.value  = '' : event = null; 
     this.headerFile = "";
     this.headerFileName = "";
     this.HeadersizeInMB = "";
@@ -328,8 +328,8 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     }
   }
 
-  footerClearFiles(event) {
-    event.target.value = '';
+  footerClearFiles(event = null) {
+    event != null? event.target.value  = '' : event = null; 
     this.footerFile = "";
     this.footerFileName = "";
     this.FootersizeInMB = "";
