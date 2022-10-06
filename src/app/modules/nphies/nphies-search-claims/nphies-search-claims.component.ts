@@ -1411,6 +1411,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showGenerateAttachment() {
+    return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'error', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
@@ -1691,5 +1695,107 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         });
     }
 
+  }
+
+  generateAttachmentAll(){
+    if (this.selectedClaims.length == 0) {
+      this.allGenerateAttachment();
+    } else {
+      this.selectedGenerateAttachment();
+    }
+  }
+
+  allGenerateAttachment() {
+    if (this.commen.loading) {
+      return;
+    }
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+    debugger
+    this.commen.loadingChanged.next(true);
+    this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
+      this.params.uploadId, this.params.claimRefNo, this.params.to,
+      payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
+    ).subscribe((event) => {
+      debugger
+      if (event instanceof HttpResponse) {
+        if (event.body['status'] == 'Queued') {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+          ).subscribe(result => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      this.commen.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+      }
+    });
+  }
+
+  selectedGenerateAttachment() {
+    if (this.commen.loading) {
+      return;
+    } else if (this.selectedClaims.length == 0) {
+      this.dialogService.openMessageDialog(new MessageDialogData('', 'Please select at least 1 Accepted claim first.', true));
+      return;
+    }
+    this.commen.loadingChanged.next(true);
+    debugger
+    this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims, null).subscribe((event) => {
+      debugger
+      if (event instanceof HttpResponse) {
+        if (event.body['status'] == 'Queued') {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+          ).subscribe(result => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        if (event['error'] != null) {
+          for (const error of event['error']['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+        this.commen.loadingChanged.next(false);
+      }
+      this.deSelectAll();
+    }, errorEvent => {
+      this.commen.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+      }
+      this.deSelectAll();
+    });
   }
 }
