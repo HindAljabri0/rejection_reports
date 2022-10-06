@@ -325,11 +325,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   selectItem(type) {
     if (type) {
-      this.FormItem.patchValue({
-        prescribedDrugCode: ""
-      });
-      this.setPrescribedMedication(type.code);    
-
       if (type.itemType && type.itemType === 'medication-codes') {
         this.FormItem.controls.quantityCode.setValidators([Validators.required]);
         this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -352,23 +347,31 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.SetSingleRecord(type);
       this.updateDiscount();
       this.updateNet();
+      if (this.data.type === "pharmacy") {
+        this.FormItem.patchValue({
+          prescribedDrugCode: ""
+        });
+        this.setPrescribedMedication(type.code);
+      }
     }
   }
 
-  setPrescribedMedication(gtinNumber:any){
-    this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
-    const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
-    if(res != undefined){
-      this.FormItem.patchValue({
-        prescribedDrugCode: res
-      });
-    }else{
-      this.FormItem.patchValue({
-        prescribedDrugCode: ""
-      });
+  setPrescribedMedication(gtinNumber: any) {
+    if (this.data.type === "pharmacy") {
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
+      const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
+      if (res != undefined) {
+        this.FormItem.patchValue({
+          prescribedDrugCode: res
+        });
+      } else {
+        this.FormItem.patchValue({
+          prescribedDrugCode: ""
+        });
+      }
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+      this.filterPrescribedMedicationItem();
     }
-    this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
-    this.filterPrescribedMedicationItem();
   }
 
   SetSingleRecord(type = null) {
@@ -380,15 +383,29 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.quantityCode.updateValueAndValidity();
     }
     this.FormItem.controls.item.setValue('');
-    this.itemList = [{ "code": type.code, "description": type.display }];
+    // this.itemList = [{ "code": type.code, "description": type.display }];
 
-    if (type) {
-      this.FormItem.patchValue({
-        item: this.itemList.filter(x => x.code === type.code)[0]
-      });
-    }
+    this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.itemList = event.body;
+        if (type) {
+          this.FormItem.patchValue({
+            item: this.itemList.filter(x => x.code === type.code)[0]
+          });
+        }
 
-    this.filteredItem.next(this.itemList.slice());
+        this.filteredItem.next(this.itemList.slice());
+        this.FormItem.controls.itemFilter.valueChanges
+          .pipe(takeUntil(this.onDestroy))
+          .subscribe(() => {
+            this.filterItem();
+          });
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+      }
+    });
 
   }
   typeChange(type = null) {
