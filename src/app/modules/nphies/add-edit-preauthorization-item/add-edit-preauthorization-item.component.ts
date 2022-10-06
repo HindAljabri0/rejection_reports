@@ -394,7 +394,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
     
         this.filteredItem.next(this.itemList.slice());
-        this.FormItem.controls.filteredItem.valueChanges
+        this.FormItem.controls.itemFilter.valueChanges
         .pipe(takeUntil(this.onDestroy))
         .subscribe(() => {
           this.filterItem();
