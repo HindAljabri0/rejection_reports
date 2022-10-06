@@ -162,9 +162,6 @@ export class OcafFormTemplateComponent implements OnInit {
       }
     });
 
-    console.log('contactDataList', this.contactData);
-    console.log('lensDataList', this.lensData);
-
   }
 
 }
