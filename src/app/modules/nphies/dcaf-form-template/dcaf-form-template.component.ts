@@ -37,12 +37,11 @@ export class DcafFormTemplateComponent implements OnInit {
     else return '';
   }
 
-  getSupportingInfoForChiefComplaints(){
-    const {supportingInfo} = this.DCAF;
-    if(supportingInfo.length > 0) return supportingInfo.map(res=> `(${res.code}) - (${res.value})`).join(', ');
+  getSupportingInfoForChiefComplaints() {
+    const { supportingInfo } = this.DCAF;
+    if (supportingInfo.length > 0) return supportingInfo.map(res => `${res.code ? `(${res.code}) ` : ''} ${res.code && res.value ? '-' : ''} ${res.value ? `(${res.value})`: ''}`).join(', ');
     else return '';
   }
-
 
   calculateAge(){
     const ageDifMs = Date.now() - new Date(this.DCAF.beneficiary.dob).getTime();
@@ -64,10 +63,15 @@ export class DcafFormTemplateComponent implements OnInit {
     return this.DCAF.items.filter(res=>!!res.prescribedDrugCode) || [];
   }
 
-  getVisitReason(code :string){
-    const index = this.DCAF.supportingInfo.findIndex(res=>res.category === "reasonForVisit");
-    if(index != -1) return this.DCAF.supportingInfo[index].code == code;
-    else false;
-}
+  getVisitReason(code: string) {
+    const index = this.DCAF.supportingInfo.findIndex(res => res.category === "reason-for-visit");
+    if (index !== -1) {
+      return this.DCAF.supportingInfo[index].code === code;
+    } else return false
+  }
+
+  getBodySites(toothNo){
+    return this.DCAF.items.spome(res=>res.bodySite == toothNo);
+  }
 
 }

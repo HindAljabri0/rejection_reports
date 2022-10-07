@@ -45,7 +45,7 @@
                             </td>
                         </tr>
                     </table>
-                    <p>Date of visit: <span class="value-holder"></span></p>
+                    <p>Date of visit: <span class="value-holder">{{DCAF.dateOrdered | date: 'dd / MM / yyyy'}}</span></p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -298,58 +298,58 @@
                                 <span class="teeth-wrapper">
                                     <img src="./assets/teeth.jpg" class="teeth" alt="Teeth">
                                     <div class="teeth-marks">
-                                        <span class="teeth-mark no-11"></span>
-                                        <span class="teeth-mark no-12"></span>
-                                        <span class="teeth-mark no-13"></span>
-                                        <span class="teeth-mark no-14"></span>
-                                        <span class="teeth-mark no-15 checked"></span>
-                                        <span class="teeth-mark no-16 checked"></span>
-                                        <span class="teeth-mark no-17"></span>
-                                        <span class="teeth-mark no-18"></span>
-                                        <span class="teeth-mark no-21"></span>
-                                        <span class="teeth-mark no-22"></span>
-                                        <span class="teeth-mark no-23"></span>
-                                        <span class="teeth-mark no-24 checked"></span>
-                                        <span class="teeth-mark no-25"></span>
-                                        <span class="teeth-mark no-26"></span>
-                                        <span class="teeth-mark no-27 checked"></span>
-                                        <span class="teeth-mark no-28"></span>
-                                        <span class="teeth-mark no-31"></span>
-                                        <span class="teeth-mark no-32"></span>
-                                        <span class="teeth-mark no-33"></span>
-                                        <span class="teeth-mark no-34"></span>
-                                        <span class="teeth-mark no-35 checked"></span>
-                                        <span class="teeth-mark no-36"></span>
-                                        <span class="teeth-mark no-37"></span>
-                                        <span class="teeth-mark no-38 checked"></span>
-                                        <span class="teeth-mark no-41"></span>
-                                        <span class="teeth-mark no-42"></span>
-                                        <span class="teeth-mark no-43"></span>
-                                        <span class="teeth-mark no-44"></span>
-                                        <span class="teeth-mark no-45"></span>
-                                        <span class="teeth-mark no-46 checked"></span>
-                                        <span class="teeth-mark no-47 checked"></span>
-                                        <span class="teeth-mark no-48"></span>
-                                        <span class="teeth-mark no-51"></span>
-                                        <span class="teeth-mark no-52 checked"></span>
-                                        <span class="teeth-mark no-53"></span>
-                                        <span class="teeth-mark no-54"></span>
-                                        <span class="teeth-mark no-55"></span>
-                                        <span class="teeth-mark no-61"></span>
-                                        <span class="teeth-mark no-62"></span>
-                                        <span class="teeth-mark no-63 checked"></span>
-                                        <span class="teeth-mark no-64"></span>
-                                        <span class="teeth-mark no-65"></span>
-                                        <span class="teeth-mark no-71"></span>
-                                        <span class="teeth-mark no-72"></span>
-                                        <span class="teeth-mark no-73 checked"></span>
-                                        <span class="teeth-mark no-74 checked"></span>
-                                        <span class="teeth-mark no-75"></span>
-                                        <span class="teeth-mark no-81"></span>
-                                        <span class="teeth-mark no-82"></span>
-                                        <span class="teeth-mark no-83"></span>
-                                        <span class="teeth-mark no-84"></span>
-                                        <span class="teeth-mark no-85 checked"></span>
+                                        <span class="teeth-mark no-11" [class.checked] ="getBodySites(11)"></span>
+                                        <span class="teeth-mark no-12" [class.checked] ="getBodySites(12)"></span>
+                                        <span class="teeth-mark no-13" [class.checked] ="getBodySites(13)"></span>
+                                        <span class="teeth-mark no-14" [class.checked] ="getBodySites(14)"></span>
+                                        <span class="teeth-mark no-15" [class.checked] ="getBodySites(15)"></span>
+                                        <span class="teeth-mark no-16" [class.checked] ="getBodySites(16)"></span>
+                                        <span class="teeth-mark no-17" [class.checked] ="getBodySites(17)"></span>
+                                        <span class="teeth-mark no-18" [class.checked] ="getBodySites(18)"></span>
+                                        <span class="teeth-mark no-21" [class.checked] ="getBodySites(21)"></span>
+                                        <span class="teeth-mark no-22" [class.checked] ="getBodySites(22)"></span>
+                                        <span class="teeth-mark no-23" [class.checked] ="getBodySites(23)"></span>
+                                        <span class="teeth-mark no-24" [class.checked] ="getBodySites(24)"></span>
+                                        <span class="teeth-mark no-25" [class.checked] ="getBodySites(25)"></span>
+                                        <span class="teeth-mark no-26" [class.checked] ="getBodySites(26)"></span>
+                                        <span class="teeth-mark no-27" [class.checked] ="getBodySites(27)"></span>
+                                        <span class="teeth-mark no-28" [class.checked] ="getBodySites(28)"></span>
+                                        <span class="teeth-mark no-31" [class.checked] ="getBodySites(31)"></span>
+                                        <span class="teeth-mark no-32" [class.checked] ="getBodySites(32)"></span>
+                                        <span class="teeth-mark no-33" [class.checked] ="getBodySites(33)"></span>
+                                        <span class="teeth-mark no-34" [class.checked] ="getBodySites(34)"></span>
+                                        <span class="teeth-mark no-35" [class.checked] ="getBodySites(35)"></span>
+                                        <span class="teeth-mark no-36" [class.checked] ="getBodySites(36)"></span>
+                                        <span class="teeth-mark no-37" [class.checked] ="getBodySites(37)"></span>
+                                        <span class="teeth-mark no-38" [class.checked] ="getBodySites(38)"></span>
+                                        <span class="teeth-mark no-41" [class.checked] ="getBodySites(41)"></span>
+                                        <span class="teeth-mark no-42" [class.checked] ="getBodySites(42)"></span>
+                                        <span class="teeth-mark no-43" [class.checked] ="getBodySites(43)"></span>
+                                        <span class="teeth-mark no-44" [class.checked] ="getBodySites(44)"></span>
+                                        <span class="teeth-mark no-45" [class.checked] ="getBodySites(45)"></span>
+                                        <span class="teeth-mark no-46" [class.checked] ="getBodySites(46)"></span>
+                                        <span class="teeth-mark no-47" [class.checked] ="getBodySites(47)"></span>
+                                        <span class="teeth-mark no-48" [class.checked] ="getBodySites(48)"></span>
+                                        <span class="teeth-mark no-51" [class.checked] ="getBodySites(51)"></span>
+                                        <span class="teeth-mark no-52" [class.checked] ="getBodySites(52)"></span>
+                                        <span class="teeth-mark no-53" [class.checked] ="getBodySites(53)"></span>
+                                        <span class="teeth-mark no-54" [class.checked] ="getBodySites(54)"></span>
+                                        <span class="teeth-mark no-55" [class.checked] ="getBodySites(55)"></span>
+                                        <span class="teeth-mark no-61" [class.checked] ="getBodySites(61)"></span>
+                                        <span class="teeth-mark no-62" [class.checked] ="getBodySites(62)"></span>
+                                        <span class="teeth-mark no-63" [class.checked] ="getBodySites(63)"></span>
+                                        <span class="teeth-mark no-64" [class.checked] ="getBodySites(64)"></span>
+                                        <span class="teeth-mark no-65" [class.checked] ="getBodySites(65)"></span>
+                                        <span class="teeth-mark no-71" [class.checked] ="getBodySites(71)"></span>
+                                        <span class="teeth-mark no-72" [class.checked] ="getBodySites(72)"></span>
+                                        <span class="teeth-mark no-73" [class.checked] ="getBodySites(73)"></span>
+                                        <span class="teeth-mark no-74" [class.checked] ="getBodySites(74)"></span>
+                                        <span class="teeth-mark no-75" [class.checked] ="getBodySites(75)"></span>
+                                        <span class="teeth-mark no-81" [class.checked] ="getBodySites(81)"></span>
+                                        <span class="teeth-mark no-82" [class.checked] ="getBodySites(82)"></span>
+                                        <span class="teeth-mark no-83" [class.checked] ="getBodySites(83)"></span>
+                                        <span class="teeth-mark no-84" [class.checked] ="getBodySites(84)"></span>
+                                        <span class="teeth-mark no-85" [class.checked] ="getBodySites(85)"></span>
                                     </div>
                                 </span>
                             </td>
@@ -416,6 +416,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <ng-container *ngIf="getMedicationCode().length === 0">
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </ng-container>
                             <tr *ngFor="let medication of getMedicationCode()">
                                 <td> {{medication.prescribedDrugCode}}</td>
                                 <td>{{medication.type}}</td>
