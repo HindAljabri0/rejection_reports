@@ -1712,15 +1712,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     const payerIds: string[] = [];
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
-    }
-    debugger
+    }    
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
-    ).subscribe((event) => {
-      debugger
+    ).subscribe((event) => {     
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
           this.dialogService.openMessageDialog(
@@ -1758,10 +1756,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.dialogService.openMessageDialog(new MessageDialogData('', 'Please select at least 1 Accepted claim first.', true));
       return;
     }
-    this.commen.loadingChanged.next(true);
-    debugger
-    this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims, null).subscribe((event) => {
-      debugger
+    this.commen.loadingChanged.next(true);    
+    this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims, null).subscribe((event) => {      
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
           this.dialogService.openMessageDialog(

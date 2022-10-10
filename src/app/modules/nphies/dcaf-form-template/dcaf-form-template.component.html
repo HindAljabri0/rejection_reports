@@ -1,4 +1,4 @@
-<div class="caf-form">
+<div class="caf-form" *ngIf="DCAF">
     <h1 class="text-center"><strong>DCAF 2.0</strong></h1>
     <table class="layout-table">
         <tr>
@@ -371,7 +371,7 @@
                                 <td>{{i.itemCode}}</td>
                                 <td>{{i.itemDescription}}</td>
                                 <td>{{i.bodySite}}</td>
-                                <td>{{i.unitPrice}}</td>
+                                <td>{{i.netAmount}}</td>
                             </tr>
                             
                             <tr>

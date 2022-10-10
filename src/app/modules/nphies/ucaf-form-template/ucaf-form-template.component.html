@@ -1,4 +1,4 @@
-<div class="caf-form" id="print_id">
+<div class="caf-form" id="print_id" *ngIf="UCAFData">
     <h1 class="text-center"><strong>UCAF 2.0</strong></h1>
     <table class="layout-table">
         <tr>
@@ -422,7 +422,7 @@
                                 <td>{{i.itemDescription}}</td>
                                 <td>{{i.type}}</td>
                                 <td>{{i.quantity}}</td>
-                                <td>{{i.unitPrice}}</td>
+                                <td>{{i.netAmount}}</td>
                             </tr>
                         </tbody>
                     </table>
