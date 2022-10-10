@@ -1719,10 +1719,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
     ).subscribe((event) => {     
-      if (event instanceof HttpResponse) {
-        if (event.body['status'] == 'Queued') {
+      if (event instanceof HttpResponse) {        
+        if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
           this.dialogService.openMessageDialog(
-            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+            new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
             this.resetURL();
             this.fetchData();
@@ -1758,10 +1758,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     this.commen.loadingChanged.next(true);    
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims, null).subscribe((event) => {      
-      if (event instanceof HttpResponse) {
-        if (event.body['status'] == 'Queued') {
+      if (event instanceof HttpResponse) {        
+        if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
           this.dialogService.openMessageDialog(
-            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+            new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
             this.resetURL();
             this.fetchData();
