@@ -1706,7 +1706,7 @@ html.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .print-dialog-body .caf-form .border-top-0{border-top:0!important}
 .print-dialog-body .caf-form .teeth{height:270pt;display:block}
 .print-dialog-body .caf-form .teeth-wrapper{display:inline-block;vertical-align:top;position:relative}
-.print-dialog-body .caf-form .teeth-mark{position:absolute;background-color:#000;display:block;border-radius:4pt;opacity:0}
+.print-dialog-body .caf-form .teeth-mark{position:absolute;background-color:#000;display:block;border-radius:4pt;opacity:0;-webkit-print-color-adjust:exact !important;print-color-adjust: exact !important;color-adjust:exact !important;}
 .print-dialog-body .caf-form .teeth-mark.checked{opacity:.72}
 .print-dialog-body .caf-form .teeth-mark.no-11{height:10.384pt;width:10.384pt;top:9.735pt;left:73.337pt;}
 .print-dialog-body .caf-form .teeth-mark.no-12{height:10.384pt;width:10.384pt;top:13.3045pt;left:59.708pt;}

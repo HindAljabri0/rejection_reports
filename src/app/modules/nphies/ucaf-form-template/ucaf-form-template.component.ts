@@ -75,9 +75,12 @@ export class UcafFormTemplateComponent implements OnInit {
     else return '';
   }
 
-  getSupportingInfoForChiefComplaints() {
+   getSupportingInfoForChiefComplaints() {
     const { supportingInfo } = this.UCAFData;
-    if (supportingInfo.length > 0) return supportingInfo.map(res => `${res.code ? `(${res.code}) ` : ''} ${res.code && res.value ? '-' : ''} ${res.value ? `(${res.value})`: ''}`).join(', ');
+    const index = this.UCAFData.supportingInfo.findIndex(res => res.category === "chief-complaint");
+    if(index !== -1){
+      return `${supportingInfo[index].code ? `(${supportingInfo[index].code}) ` : ''} ${supportingInfo[index].code && supportingInfo[index].value ? '-' : ''} ${supportingInfo[index].value ? `(${supportingInfo[index].value})`: ''}`;
+    }
     else return '';
   }
 
