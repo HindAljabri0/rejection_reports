@@ -289,16 +289,16 @@ export class SharedServices {
     });
   }
 
-  isOverNphiesdwonTime(){
+  isOverNphiesdwonTime() {
     console.log(this.router.url)
-    var dateOftoday= this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    var dateOftoday = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     console.log("dateOftoday : " + dateOftoday);
-   var overDate = this.datePipe.transform("2022-09-25", 'yyyy-MM-dd');
-   
-   console.log("overDate : " + overDate);
-   //dateOftoday >= overDate &&
-       return  dateOftoday >= overDate;
-   }
+    var overDate = this.datePipe.transform("2022-09-25", 'yyyy-MM-dd');
+
+    console.log("overDate : " + overDate);
+    //dateOftoday >= overDate &&
+    return dateOftoday >= overDate;
+  }
   isHasNphiesPrivileges() {
     return this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim ||
       this.userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation;
@@ -432,7 +432,7 @@ export class SharedServices {
     }
   }
 
-  statusToName(status: string) {
+  statusToName(status: string) {    
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
         return 'Ready for Submission';
@@ -466,6 +466,8 @@ export class SharedServices {
         return 'Failed By NPHIES';
       case ClaimStatus.PARTIAL.toLowerCase():
         return 'Partially Approved';
+      case ClaimStatus.CREATINGATTACHMENT.toLowerCase():
+        return 'Creating Attachment';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
