@@ -24,8 +24,8 @@ export class OcafFormTemplateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId, this.preAuthId).subscribe((res: any) => {
-      this.sharedServices.loadingChanged.next(true);
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {
@@ -208,6 +208,14 @@ export class OcafFormTemplateComponent implements OnInit {
     });
 
 
+  }
+
+  getVisitReason(code: string) {
+    const index = this.OCAF.supportingInfo.findIndex(res => res.category === "reason-for-visit");
+    if (index !== -1) {
+      console.log(this.OCAF.supportingInfo[index].code === code);
+      return this.OCAF.supportingInfo[index].code === code;
+    } else return false
   }
 
 }
