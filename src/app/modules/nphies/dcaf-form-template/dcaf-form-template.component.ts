@@ -15,8 +15,8 @@ export class DcafFormTemplateComponent implements OnInit {
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService,private sharedServices: SharedServices,) { }
 
   ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId).subscribe((res:any)=>{
-      this.sharedServices.loadingChanged.next(true);
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {
