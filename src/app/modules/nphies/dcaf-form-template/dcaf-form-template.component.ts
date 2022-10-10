@@ -54,7 +54,7 @@ export class DcafFormTemplateComponent implements OnInit {
   countTotal(){
     let total = 0;
      this.DCAF.items.forEach(i => {
-       total += i.unitPrice 
+       total += i.netAmount;
     });
     return total;
   }
@@ -71,7 +71,7 @@ export class DcafFormTemplateComponent implements OnInit {
   }
 
   getBodySites(toothNo){
-    return this.DCAF.items.spome(res=>res.bodySite == toothNo);
+    return this.DCAF.items.some(res=>res.bodySite == toothNo);
   }
 
 }
