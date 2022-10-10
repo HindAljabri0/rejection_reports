@@ -117,7 +117,7 @@ export class HeaderComponent implements OnInit {
             });
         }
         // tslint:disable-next-line:max-line-length
-        if (this.userPrivileges.WaseelPrivileges.isPAM || (this.userPrivileges.WaseelPrivileges.RCM.isAdmin || this.userPrivileges.WaseelPrivileges.RCM.isDoctor || this.userPrivileges.WaseelPrivileges.RCM.isCoder)) {
+        if (this.userPrivileges.WaseelPrivileges.isPAM || (this.userPrivileges.WaseelPrivileges.RCM.isAdmin || this.userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || this.userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder)) {
             this.reportsService.getAllDownloadsForProvider(this.authUsername, null, null).subscribe(downloads => {
                 this.adminDownloads = [];
                 if (downloads instanceof HttpResponse) {

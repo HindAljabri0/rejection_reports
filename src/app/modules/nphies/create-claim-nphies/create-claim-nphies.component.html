@@ -7,11 +7,11 @@
       <p *ngIf="otherDataModel.claimResourceId"><span>Claim Request Identifier
           :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
-      <!--p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
+      <p *ngIf="otherDataModel.claimRelatedIdentifiers">
         <span>Related Claim Request Identifier:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
+          <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
         </strong>
-      </p-->
+      </p>
       <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
           :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
       <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
@@ -107,7 +107,7 @@
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Payee Type</div>
-            <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value.name}}</p>
+            <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value ? FormNphiesClaim.controls.payeeType.value.name : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -692,6 +692,16 @@
                               <td>{{item.factor}}</td>
                             </tr>
                             <tr>
+                              <td class="label">Medication Selection Reason </td>
+                              <td>{{item.drugSelectionReasonName ?
+                                item.drugSelectionReasonName:"-"}}</td>
+                            </tr>
+                            <tr>
+                              <td class="label">Prescribed Medication </td>
+                              <td>{{item.prescribedDrugCode ?
+                                item.prescribedDrugCode:"-"}}</td>
+                            </tr>
+                            <tr>
                               <td class="label">Supporting Info</td>
                               <td>{{item.supportingInfoNames ?
                                 item.supportingInfoNames:"-"}}</td>
@@ -997,12 +1007,27 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
-                <div class="ml-auto">
+                <div class="ml-auto action-btns">
+                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                    <mat-icon class="text-primary">text_snippet</mat-icon>
+                    <span>Notes</span>
+                  </button>   
                   <button type="button" class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
                   </button>
                 </div>
+                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                    <li *ngFor="let n of communication.communicationRequestNotesList">
+                      <p>{{n.noteText}}</p>
+                      <div class="info">
+                        <span>{{n.noteAuthor}}</span>
+                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </li>                  
+                  </ul>
+                </mat-menu>
               </div>
               <ng-container *ngIf="communication.communicationDataList">
                 <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
@@ -1160,6 +1185,23 @@
                     'dd/MM/yyyy hh:mm
                     aa'}}</span>
                 </div>
+                <div class="ml-auto action-btns">
+                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                    <mat-icon class="text-primary">text_snippet</mat-icon>
+                    <span>Notes</span>
+                  </button>                    
+                </div>
+                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                    <li *ngFor="let n of communication.communicationRequestNotesList">
+                      <p>{{n.noteText}}</p>
+                      <div class="info">
+                        <span>{{n.noteAuthor}}</span>
+                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </li>                  
+                  </ul>
+                </mat-menu>
               </div>
             </ng-container>
           </li>
@@ -1329,7 +1371,11 @@
             otherDataModel.provClaimNo : '-'}}</strong></p>
         <p><span>Claim Request Identifier:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
         </p>
-
+        <p *ngIf="otherDataModel.claimRelatedIdentifiers">
+          <span>Related Claim Request Identifier:</span>&nbsp;<strong>
+            <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
+          </strong>
+        </p>
         <p><span>Claim Response Identifier:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
             otherDataModel.claimRefNo : '-'}}</strong></p>
         <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
@@ -1558,12 +1604,15 @@
               </div> -->
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{'has-error': IsAccountingPeriodInvalid}">
                 <label class="control-label">Accounting Period</label>
                 <div class="date-picker">
                   <input [matDatepicker]="accountingPeriodCtrl" class="form-control" placeholder="Select accounting period" [max]="pastDate" formControlName="accountingPeriod">
                   <mat-datepicker-toggle [for]="accountingPeriodCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #accountingPeriodCtrl></mat-datepicker>
+                </div>
+                <div *ngIf="IsAccountingPeriodInvalid">
+                  <span class="error-text">Accounting Period must be in the past</span>
                 </div>
               </div>
             </div>
@@ -2080,6 +2129,16 @@
                                     </div>
                                   </td>
                                   <td>{{item.factor}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Medication Selection Reason </td>
+                                  <td>{{item.drugSelectionReason ?
+                                    item.drugSelectionReason:"-"}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Prescribed Medication </td>
+                                  <td>{{item.prescribedDrugCode ?
+                                    item.prescribedDrugCode:"-"}}</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Supporting Info</td>

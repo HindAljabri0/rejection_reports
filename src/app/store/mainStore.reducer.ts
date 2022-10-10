@@ -7,8 +7,11 @@ export interface UserPrivileges {
     isPAM: boolean,
     RCM: {
       isAdmin: boolean,
-      isDoctor: boolean,
-      isCoder: boolean
+      scrubbing: {
+        isAdmin: boolean,
+        isDoctor: boolean,
+        isCoder: boolean
+      }
     }
   };
   ProviderPrivileges: {
@@ -40,8 +43,11 @@ export interface UserPrivileges {
       canAccessClaim: boolean,
       canAccessBeneficiary: boolean,
       canAccessPaymentReconciliation: boolean,
+      canAccessConfigurations:boolean,
       canAccessPriceList: boolean,
       canAccessPhysician: boolean,
+      canAccessDaysOfSupply: boolean,
+      canAccessCodeMapping: boolean,
       canAccessConvertPreAuthToClaim: boolean,
       canAccessPrepareClaim: boolean,
       canAccessConvertClaim: boolean
@@ -61,8 +67,11 @@ export const initState: MainState = {
       isPAM: false,
       RCM: {
         isAdmin: false,
-        isCoder: false,
+        scrubbing: {
+          isAdmin: false,
+          isCoder: false,
         isDoctor: false
+        }
       }
     },
     ProviderPrivileges: {
@@ -94,8 +103,11 @@ export const initState: MainState = {
         canAccessClaim: false,
         canAccessBeneficiary: false,
         canAccessPaymentReconciliation: false,
+        canAccessConfigurations:false,
         canAccessPriceList: false,
         canAccessPhysician: false,
+        canAccessDaysOfSupply:false,
+        canAccessCodeMapping:false,
         canAccessConvertPreAuthToClaim: false,
         canAccessPrepareClaim: false,
         canAccessConvertClaim: false
@@ -116,8 +128,11 @@ const _mainReducer = createReducer(
         isPAM: AuthService.hasPrivilege('101', '101', '22'),
         RCM: {
           isAdmin: AuthService.hasPrivilege('101', '101', '24.0'),
-          isDoctor: AuthService.hasPrivilege('101', '101', '24.41'),
-          isCoder: AuthService.hasPrivilege('101', '101', '24.42')
+          scrubbing: {
+            isDoctor: AuthService.hasPrivilege('101', '101', '24.41'),
+            isCoder: AuthService.hasPrivilege('101', '101', '24.42'),
+            isAdmin: AuthService.hasPrivilege('101', '101', '24.43'),
+          }
         }
       },
       ProviderPrivileges: {
@@ -148,8 +163,11 @@ const _mainReducer = createReducer(
           canAccessClaim: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.3'),
           canAccessBeneficiary: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.4'),
           canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.5'),
+          canAccessConfigurations: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.6')),
           canAccessPriceList: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.61')),
           canAccessPhysician: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.62')),
+          canAccessDaysOfSupply: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.63')),
+          canAccessCodeMapping: providerId != '101' && (AuthService.hasPrivilege(providerId, '101', '25.64')),
           canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.7')),
           canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
           canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),

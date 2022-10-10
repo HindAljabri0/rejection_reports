@@ -15,12 +15,14 @@ import { Location, DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 
 @Component({
   selector: 'app-providers-config',
   templateUrl: './providers-config.component.html',
-  styleUrls: ['./providers-config.component.css']
+  styles: []
 })
 export class ProvidersConfigComponent implements OnInit {
 
@@ -110,6 +112,8 @@ export class ProvidersConfigComponent implements OnInit {
   newNphiesPayerMappingEnable: { [key: number]: boolean } = {};
   newNphiesPayerMappingValue: { [key: number]: string } = {};
   newNphiesPayerName: { [key: number]: string } = {};
+  newNphiesPayerTpaId: { [key: number]: string } = {};
+  newNphiesPayerTpaName: { [key: number]: string } = {};
   deleteNphiesPayerMappingList: any[] = [];
 
   addPayerMappingList: any[] = [];
@@ -138,6 +142,20 @@ export class ProvidersConfigComponent implements OnInit {
   isBothSame = true;
   dbConfigs = [];
 
+  organizations: {
+    id: string
+    code: string,
+    display: string,
+    displayAlt: string,
+    subList: {
+      value: string,
+      id: string,
+      code: string,
+      display: string,
+      displayAlt: string
+    }[]
+  }[] = [];
+
   constructor(
     public datepipe: DatePipe,
     private superAdmin: SuperAdminService,
@@ -146,6 +164,7 @@ export class ProvidersConfigComponent implements OnInit {
     private location: Location,
     private dialogService: DialogService,
     private formBuilder: FormBuilder,
+    private providerNphiesSearchService: ProviderNphiesSearchService,
     private dbMapping: DbMappingService) {
     sharedServices.loadingChanged.next(true);
   }
@@ -171,7 +190,7 @@ export class ProvidersConfigComponent implements OnInit {
               this.providerController.setValue(`${provider.switchAccountId} | ${provider.code} | ${provider.name}`);
               this.updateFilter();
               this.getAssociatedPayers();
-
+              this.getLovPayers();
 
             } else {
               this.sharedServices.loadingChanged.next(false);
@@ -222,6 +241,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.location.go(`/administration/config/providers/${providerId}`);
     this.reset();
     this.getAssociatedPayers();
+    this.getLovPayers();
 
   }
 
@@ -278,6 +298,44 @@ export class ProvidersConfigComponent implements OnInit {
     });
   }
 
+  getLovPayers() {
+    this.componentLoading.NphiesPayerMapping = true;
+    this.providerNphiesSearchService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        if (body instanceof Array) {
+          this.associatedNphiePayers = [];
+          body.forEach(x => {
+            x.subList.forEach(y => {
+              y.nphiesPayerId = y.code;
+              y.payerName = y.display;
+              y.tpaNphiesId = x.code;
+              y.tpaName = x.display;
+              y.combination = x.code + ':' + y.code;
+            });
+            this.associatedNphiePayers = [...this.associatedNphiePayers, ...x.subList];
+          });
+
+          this.associatedNphiePayers.forEach(x => {
+            this.newNphiesPayerMappingValue[x.combination] = '';
+            this.newNphiesPayerName[x.combination] = x.display;
+            this.newNphiesPayerTpaId[x.combination] = x.tpaNphiesId;
+            this.newNphiesPayerTpaName[x.combination] = x.tpaName != 'None' ? x.tpaName : null;
+            this.addNphiesPayerMappingList = [];
+          });
+
+          this.componentLoading.NphiesPayerMapping = false;
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.NphiespayerMappingError = 'Could not load payer mapping, please try again later.';
+        }
+      }
+      this.componentLoading.NphiesPayerMapping = false;
+    });
+  }
 
   serviceAndPriceValidationSetting() {
     this.componentLoading.serviceCode = true;
@@ -367,6 +425,7 @@ export class ProvidersConfigComponent implements OnInit {
     // change on 02-01-2021 start
     const dbFlag = this.addDatabaseConfig();
     const payerFlag = this.savePayerMapping();
+    const nphiesPayerFlag = this.saveNphiesPayerMapping();
     const providerFlag = this.addProviderMapping();
     const priceListFlag = this.updatePriceListValidationSetting();
     const netAmountFlag = this.setNetAmountAccuracy();
@@ -374,7 +433,7 @@ export class ProvidersConfigComponent implements OnInit {
     // change on 02-01-2021 end
     // && priceUnitFlag && serviceCodeFlag
     if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-      && payerFlag && providerFlag && pbmFlag && priceListFlag && netAmountFlag && pollConfigFlag) {
+      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && priceListFlag && netAmountFlag && pollConfigFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -1063,6 +1122,81 @@ export class ProvidersConfigComponent implements OnInit {
     }
   }
 
+
+  getPayerMapping() {
+    this.componentLoading.payerMapping = true;
+    this.errors.payerMappingError = null;
+    this.errors.payerMappingSaveError = null;
+    this.success.payerMappingSaveSuccess = null;
+    this.dbMapping.getPayerMapping(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const response = event.body['response'];
+        if (response) {
+          const mappingList = event.body['mappingList'];
+          this.existingPayers = this.existingPayers.filter(payer => mappingList.findIndex(payer1 => payer1.payerId == payer.payerId));
+          if (mappingList.length > 0) {
+            mappingList.forEach(payer => {
+              this.newPayerMappingEnable[payer.payerId] = payer.enabled;
+              this.newPayerMappingValue[payer.payerId] = payer.mappingName;
+              this.payerMappingValue[payer.payerId] = payer.mappingName;
+              this.newPayerName[payer.payerId] = payer.payerName;
+              this.addPayerMappingList.push(payer.payerId);
+              this.existingPayers.push(payer);
+            });
+          }
+        }
+        this.componentLoading.payerMapping = false;
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.payerMappingError = 'Could not load payer mapping, please try again later.';
+        }
+      }
+      this.componentLoading.payerMapping = false;
+    });
+  }
+
+  getNphiesPayerMapping() {
+    this.componentLoading.NphiesPayerMapping = true;
+    this.errors.NphiesMappingSaveError = null;
+    this.errors.NphiesPayerError = null;
+    this.success.NphiesPayerMappingSuccess = null;
+    this.dbMapping.getNphiesPayerMapping(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const response = event.body['response'];
+
+        if (response) {
+          const mappingList = event.body['mappingList'];
+          this.existingNphiePayers = [];
+          if (mappingList.length > 0) {
+            mappingList.forEach(x => {
+              x.combination = x.tpaNphiesId + ':' + x.nphiesPayerId;
+              this.newNphiesPayerMappingValue[x.combination] = x.mappingPayerValue;
+              this.newNphiesPayerTpaId[x.combination] = x.tpaNphiesId;
+              this.newNphiesPayerName[x.combination] = x.payerName;
+              this.newNphiesPayerTpaName[x.combination] = x.tpaName != 'None' ? x.tpaName : null;
+
+              this.addNphiesPayerMappingList.push(x.combination);
+              this.existingNphiePayers.push(x);
+            });
+          }
+        }
+        this.componentLoading.NphiesPayerMapping = false;
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.NphiespayerMappingError = 'Could not load payer mapping, please try again later.';
+        }
+      }
+      this.componentLoading.NphiesPayerMapping = false;
+
+    });
+
+  }
+
+
   savePayerMapping() {
     this.errors.payerMappingSaveError = null;
     this.success.payerMappingSaveSuccess = null;
@@ -1161,77 +1295,112 @@ export class ProvidersConfigComponent implements OnInit {
     return false;
   }
 
-  getPayerMapping() {
-    this.componentLoading.payerMapping = true;
-    this.errors.payerMappingError = null;
-    this.errors.payerMappingSaveError = null;
-    this.success.payerMappingSaveSuccess = null;
-    this.dbMapping.getPayerMapping(this.selectedProvider).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const response = event.body['response'];
-        if (response) {
-          const mappingList = event.body['mappingList'];
-          this.existingPayers = this.existingPayers.filter(payer => mappingList.findIndex(payer1 => payer1.payerId == payer.payerId));
-          if (mappingList.length > 0) {
-            mappingList.forEach(payer => {
-              this.newPayerMappingEnable[payer.payerId] = payer.enabled;
-              this.newPayerMappingValue[payer.payerId] = payer.mappingName;
-              this.payerMappingValue[payer.payerId] = payer.mappingName;
-              this.newPayerName[payer.payerId] = payer.payerName;
-              this.addPayerMappingList.push(payer.payerId);
-              this.existingPayers.push(payer);
-            });
-          }
-        }
-        this.componentLoading.payerMapping = false;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status != 404) {
-          this.errors.payerMappingError = 'Could not load payer mapping, please try again later.';
-        }
-      }
-      this.componentLoading.payerMapping = false;
-    });
-  }
+  saveNphiesPayerMapping() {
 
-  getNphiesPayerMapping() {
-    this.componentLoading.NphiesPayerMapping = true;
     this.errors.NphiesMappingSaveError = null;
-    this.errors.NphiesPayerError = null;
     this.success.NphiesPayerMappingSuccess = null;
 
-    this.dbMapping.getNphiesPayerMapping(this.selectedProvider).subscribe(event => {
-      if (event instanceof HttpResponse) {
+    const newNphiesPayerMapping = this.existingNphiePayers.filter(payer =>
+      // tslint:disable-next-line:max-line-length
+      this.newNphiesPayerMappingValue[payer.combination] && ((this.newNphiesPayerMappingValue[payer.combination].trim() != '' && this.newNphiesPayerMappingValue[payer.combination] != payer.mappingPayerValue))
+    );
 
-        const response = event.body['response'];
+    this.addNphiesPayerMappingList = newNphiesPayerMapping.map(payer => payer.combination);
 
-        if (response) {
-          const mappingList = event.body['mappingList'];
-          this.existingNphiePayers = this.existingNphiePayers.filter(Nphiepayer => mappingList.findIndex(Nphiepayer1 => Nphiepayer1.NphiepayerId == Nphiepayer.NphiepayerId));
-          if (mappingList.length > 0) {
-            mappingList.forEach(Nphiepayer => {
-              this.newNphiesPayerMappingEnable[Nphiepayer.nphiesPayerId] = Nphiepayer.enabled;
-              this.newNphiesPayerMappingValue[Nphiepayer.nphiesPayerId] = Nphiepayer.mappingName;
-              this.newNphiesPayerName[Nphiepayer.nphiesPayerId] = Nphiepayer.payerName;
-              this.addNphiesPayerMappingList.push(Nphiepayer.nphiesPayerId);
-              this.existingNphiePayers.push(Nphiepayer);
-            });
+    this.addNphiesPayerMappingList = [...this.addNphiesPayerMappingList, ...this.associatedNphiePayers.filter(x => this.newNphiesPayerMappingValue[x.combination] && !this.addNphiesPayerMappingList.find(y => y == x.combination) && !this.existingNphiePayers.find(z => z.combination == x.combination)).map(x => x.combination)];
+
+    const toDeleteNphiesPayerMapping = this.existingNphiePayers.filter(payer =>
+      payer.mappingPayerValue !== '' && !this.newNphiesPayerMappingValue[payer.combination]
+    );
+    this.deleteNphiesPayerMappingList = toDeleteNphiesPayerMapping.map(payer => payer.combination);
+
+    if (this.addNphiesPayerMappingList.length == 0 && this.deleteNphiesPayerMappingList.length == 0) {
+      return true;
+    }
+
+    const selectedNphiesPayer = [];
+    if (this.addNphiesPayerMappingList.length > 0) {
+      this.addNphiesPayerMappingList.forEach(id => {
+        const data = {
+          nphiesPayerId: id.split(':')[1],
+          tpaNphiesId: this.newNphiesPayerTpaId[id],
+          payerName: this.newNphiesPayerName[id],
+          tpaName: this.newNphiesPayerTpaName[id],
+          mappingPayerValue: this.newNphiesPayerMappingValue[id]
+        };
+        selectedNphiesPayer.push(data);
+      });
+      this.componentLoading.NphiesPayerMapping = true;
+      this.dbMapping.saveNphiesPayerMapping(this.selectedProvider, selectedNphiesPayer).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body: any = event.body;
+          if (body.response) {
+            this.getPayerMapping();
+            if (body.message.indexOf('Data save successfully') > -1) {
+              // this.success.NphiesPayerMappingSuccess = body.message;
+              this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+            } else {
+              this.errors.NphiesMappingSaveError = body.message;
+            }
+          } else {
+            this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
+          }
+          this.componentLoading.NphiesPayerMapping = false;
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status != 404) {
+            this.errors.NphiesMappingSaveError = 'Could not change nphies payer mapping, please try again later.';
           }
         }
         this.componentLoading.NphiesPayerMapping = false;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status != 404) {
-          this.errors.NphiespayerMappingError = 'Could not load payer mapping, please try again later.';
-        }
-      }
-      this.componentLoading.NphiesPayerMapping = false;
+      });
+    }
 
-    });
+    const deleteNphiesPayers = [];
+    if (this.deleteNphiesPayerMappingList.length > 0) {
+      this.deleteNphiesPayerMappingList.forEach(id => {
+        const data = {
+          nphiesPayerId: id.split(':')[1],
+          tpaNphiesId: this.newNphiesPayerTpaId[id],
+        };
+        deleteNphiesPayers.push(data);
+      });
+      this.componentLoading.NphiesPayerMapping = true;
+      // call delete function
+      this.dbMapping.deleteNphiesPayerMapping(this.selectedProvider, deleteNphiesPayers).subscribe(event => {
+        this.deleteNphiesPayerMappingList = [];
+        if (event instanceof HttpResponse) {
+          const data = event.body['response'];
+          if (data) {
+            this.getPayerMapping();
+            this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+          } else {
+            this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
+          }
+          this.componentLoading.NphiesPayerMapping = false;
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status != 404) {
+            this.errors.NphiesMappingSaveError = 'Could not change nphies payer mapping, please try again later.';
+          }
+        }
+        this.componentLoading.NphiesPayerMapping = false;
+      });
+    }
+    return false;
+  }
+
+  getTpaName(tpaNphiesId) {
+    if (tpaNphiesId !== '-1') {
+      return this.organizations.filter(x => x.code === tpaNphiesId)[0] ? this.organizations.filter(x => x.code === tpaNphiesId)[0].display : '';
+    } else {
+      return '';
+    }
 
   }
+
   get selectedProviderName() {
     return this.providers.find(provider => provider.switchAccountId == this.selectedProvider).name;
   }
@@ -1339,6 +1508,8 @@ export class ProvidersConfigComponent implements OnInit {
     this.newNphiesPayerMappingValue = {};
     this.payerMappingValue = {};
     this.newNphiesPayerName = {};
+    this.newNphiesPayerTpaId = {};
+    this.newNphiesPayerTpaName = {};
     this.newPayerName = {};
     this.addPayerMappingList = [];
     this.addNphiesPayerMappingList = [];

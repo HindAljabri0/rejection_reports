@@ -1,0 +1,59 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">
+      <span *ngIf="!data || (data && !data.item)">Add</span>
+      <span *ngIf="data && data.item">Edit</span> Medication Supply Days
+    </h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+  </div>
+  <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
+    <div class="primary-dialog-body pb-0">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('service').touched) && FormItem.get('service').hasError('required')}">
+            <label class="control-label">Standard Code - Description<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="service" (selectionChange)="itemchange()" [disabled]="IsItemLoading" #itemSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'>
+                  </ngx-mat-select-search>
+                </mat-option>
+  
+                <ng-container *ngIf="IsItemLoading">
+                  <mat-option value="">Loading Code - Description ...</mat-option>
+                </ng-container>
+                <ng-container *ngIf="!IsItemLoading">
+                  <mat-option value="">Select Code - Description</mat-option>
+                  <mat-option *ngFor="let item of filteredItem  | async" [value]="item">
+                    {{item.code}} - {{item.description}}
+                  </mat-option>
+                </ng-container>
+  
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="(isSubmitted || FormItem.get('service').touched) && FormItem.get('service').hasError('required')">
+              <span class="error-text">Please select a Code - Description</span>
+            </div>
+          </div>
+      <div class="form-group"
+        [ngClass]="{'has-error' : (isSubmitted || FormItem.get('daysOfSupply').touched) && FormItem.get('daysOfSupply').hasError('required')}">
+        <label class="control-label">Days Of Supply<span class="asterisk">*</span></label>
+        <input class="form-control" placeholder="Enter days of supply" type="text" formControlName="daysOfSupply">
+        <div *ngIf="IsInvalidNumber && (isSubmitted || FormItem.get('daysOfSupply').touched)">
+          <span class="error-text">Days of supply must be greater than 0</span>
+        </div>
+        <div
+          *ngIf="(isSubmitted || FormItem.get('daysOfSupply').touched) && FormItem.get('daysOfSupply').hasError('required')">
+          <span class="error-text">Please enter days of supply</span>
+        </div>
+      </div>
+  
+    </div>
+    <div class="primary-dialog-footer has-border">
+      <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()" type="button">Close</button>
+        <button mat-flat-button color="primary" type="submit">
+          <span *ngIf="!data || (data && !data.item)">Add</span>
+          <span *ngIf="data && data.item">Save</span>
+        </button>
+      </div>
+    </div>
+  </form>
+  

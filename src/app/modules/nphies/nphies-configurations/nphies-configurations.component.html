@@ -27,13 +27,13 @@
                       </div>
                       <div class="item" *ngFor="let category of categories"
                           [class.selected]="selectedCategory == category.key" (click)="selectCategory(category.key);">
-                          {{category.label}}
+                         {{category.label}}
                       </div>
                   </div>
               </div>
               <div class="cardInCodeValueManagement">
                   <header>
-                      WLE Codes
+                      NPHIES Codes
                   </header>
                   <div style="height: 85%; overflow-y: auto;">
                       <div class="item" *ngIf="codes.length > 10" style="cursor: unset;">
@@ -43,7 +43,7 @@
                       <div class="item"
                           *ngFor="let code of (filterWLECodesControl.value == ''? codes : filteredCodes)"
                           [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)">
-                          {{code.label}}
+                          <span *ngIf="selectedCategory != 'claimType'">{{code.key}} - </span>{{code.label}}
                       </div>
                   </div>
               </div>

@@ -141,6 +141,12 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
     }
   }
 
+  readAllNotification() {
+    this.communicationRequests.forEach(x=>x.notificationStatus = 'read');
+    this.sharedServices.unReadClaimComunicationRequestCount = 0;
+    this.sharedServices.markAllAsRead(this.sharedServices.providerId, "claim-communication-request-notification");
+  }
+
   resetURL(openCommunicationTab = false) {
     if (openCommunicationTab) {
       this.router.navigate([], {

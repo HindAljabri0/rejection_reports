@@ -758,6 +758,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
 
   showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false) {
+    localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
+
     this.params.claimId = claimId;
     this.params.claimResponseId = claimResponseId;
     if (edit) {
@@ -767,9 +769,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     } else {
       this.params.editMode = null;
     }
-    this.resetURL();
-
-    localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
+    this.resetURL();   
     this.store.dispatch(cancelClaim());
 
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
@@ -1413,9 +1413,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
-    return ['accepted', 'notaccepted', 'error', 'cancelled', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['accepted', 'notaccepted', 'error', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
-
+  get canBeDeleted(){
+    let filteredList = this.claims.filter(flag => flag != null && flag.canDelete == false)
+    return filteredList.length == 0;
+  }
   get showDownloadBtn() {
     // tslint:disable-next-line:max-line-length
     return ['notaccepted', 'rejected', 'partial', 'invalid', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
@@ -1566,7 +1569,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 if (status === 'Deleted') {
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
-                      `Your claims deleted successfully.`,
+                        event.body['message'],
                       false))
                     .subscribe(afterColse => {
                       const uploadId = this.params.uploadId;
@@ -1587,27 +1590,29 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 } else if (status === 'AlreadySumitted') {
                   this.dialogService.openMessageDialog(
                     // tslint:disable-next-line:max-line-length
-                    new MessageDialogData('', `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                    new MessageDialogData('', 
+                    // `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                    event.body['message'],
                       false))
                     .subscribe(afterColse => {
                       this.router.navigate(['/nphies/uploads']);
                     });
                 } else {
 
-                  const error = event.body['errors'];
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
-                      error[0].description,
+                    event.body['message'],
                       false));
                 }
               }
             }, errorEvent => {
 
               if (errorEvent instanceof HttpErrorResponse) {
-                const status = errorEvent.status;
+                const status = errorEvent.status;              
                 if (status === 500 || status === 404) {
                   this.commen.loadingChanged.next(false);
-                  this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                  // this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
                 } else {
                   this.commen.loadingChanged.next(false);
                   this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));

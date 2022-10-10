@@ -940,6 +940,9 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
+              x.drugSelectionReason  = result.drugSelectionReason ;
+              x.drugSelectionReasonName  = result.drugSelectionReasonName ;
+              x.prescribedDrugCode  = result.prescribedDrugCode ;
               x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1455,8 +1458,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.IsPrescriberRequired = false;
       }
     }
-
-
+  
+    if (this.IsAccountingPeriodInvalid) {
+      hasError = true;
+    }
     // this.checkCareTeamValidation();
 
     if (this.FormNphiesClaim.valid) {
@@ -1686,7 +1691,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.diagnosis = this.Diagnosises.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
-        model.diagnosisDescription = x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim();
+        model.diagnosisDescription = x.diagnosisDescription !=null ? x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim():null;
         model.type = x.type;
         model.onAdmission = x.onAdmission;
         model.diagnosisCode = x.diagnosisCode;
@@ -1815,6 +1820,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
           model.invoiceNo = x.invoiceNo;
+          model.drugSelectionReason = x.drugSelectionReason;
+          model.prescribedDrugCode = x.prescribedDrugCode;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
@@ -1980,7 +1987,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get checkErrorClaimInfo() {
-    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || !this.FormNphiesClaim.controls.episodeId.value ||
+    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || this.IsAccountingPeriodInvalid || !this.FormNphiesClaim.controls.episodeId.value ||
       !this.FormNphiesClaim.controls.type.value) || (
         (this.FormNphiesClaim.controls.preAuthOfflineDate.value ||
           this.FormNphiesClaim.controls.preAuthResponseId.value ||
@@ -2235,6 +2242,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
+    this.otherDataModel.claimRelatedIdentifiers= response.claimRelatedIdentifiers;
     this.otherDataModel.isNewBorn = response.isNewBorn;
     this.otherDataModel.requestBundleId = response.requestBundleId;
     this.otherDataModel.responseBundleId = response.responseBundleId;
@@ -2875,6 +2883,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
       model.invoiceNo = x.invoiceNo;
+      model.drugSelectionReason  = x.drugSelectionReason;
+      model.drugSelectionReasonName  = this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0].name : "-" ;
+      model.prescribedDrugCode  = x.prescribedDrugCode ;
 
       x.discount = parseFloat(x.discount);
       x.quantity = parseFloat(x.quantity);
@@ -3061,7 +3072,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null
-      && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid','rejected', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
+      && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid', 'rejected', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
   get IsPreAuthRefRequired() {
@@ -3208,4 +3219,17 @@ export class CreateClaimNphiesComponent implements OnInit {
     }).join(', ');
   }
 
+  get IsAccountingPeriodInvalid() {
+    if (this.FormNphiesClaim.controls.accountingPeriod.value && this.today) {
+      const d1 = this.datePipe.transform(new Date(this.FormNphiesClaim.controls.accountingPeriod.value), 'yyyy-MM-dd');
+      const d2 = this.datePipe.transform(new Date(this.today), 'yyyy-MM-dd');
+      if (new Date(d1) < new Date(d2)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 }

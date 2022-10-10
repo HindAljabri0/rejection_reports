@@ -1,0 +1,596 @@
+<div class="caf-form">
+    <h1 class="text-center"><strong>OCAF 2.0</strong></h1>
+    <table class="layout-table">
+        <tr>
+            <td>
+                <div class="form-container-group">
+                    <h3><strong>To be completed by the reception/nurse:</strong></h3>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Provider Name:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.providerName}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Insurance Company Name:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.payerName}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>TPA Company Name:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.tpaName}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Patient File Number:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.fileId}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Date of visit: <span class="value-holder"></span></p>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Plan Type <span class="value-holder">{{OCAF.beneficiary.coverageType}}</span></p>
+                            </td>
+                            <td width="6"></td>
+                            <td width="10">
+                                <p>New visit (<img src="./assets/check.svg" class="check" />)</p>
+                            </td>
+                            <td width="6"></td>
+                            <td width="10">
+                                <p>Follow Up (<img src="./assets/check.svg" class="check" />)</p>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="form-container-group">
+                    <h3><strong>Print/Fill in clear letters or Emboss Card:</strong></h3>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Insured Name:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.fullName}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>ID. Card No.:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.memberCardId}}</p>
+                            </td>
+                            <td width="10">
+                                <p>Sex:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.gender}}</p>
+                            </td>
+                            <td width="10">
+                                <p>Age:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{ calculateAge() }}</p>
+                            </td>
+                            <td width="10">
+                                <p>Y</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Policy Holder:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                            <td width="10">
+                                <p>Policy No.:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.policyNumber}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Expiry Date:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.beneficiary.expiryDate | date: 'dd / MM / yyyy'}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Class:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                            <td width="10">
+                                <p>Approval:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.approvalReferenceNumber}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="form-container-group">
+                    <h3><strong>To be Completed by the Optician:</strong></h3>
+                    <table class="internal-table">
+                        <tr
+                            *ngIf="lensData.left.length > 0 && lensData.right.length > 0 && lensData.left.length === lensData.right.length">
+                            <td width="50%">
+                                <table class="data-table text-center">
+                                    <tr>
+                                        <td class="border-top-0 border-left-0 border-bottom-0"></td>
+                                        <td colspan="5">RIGHT EYE</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-top-0 border-left-0"></td>
+                                        <td>Sphere</td>
+                                        <td>Cylinder</td>
+                                        <td>Axis</td>
+                                        <td>Prism</td>
+                                        <td>V/N</td>
+                                    </tr>
+                                    <tr *ngFor="let right of lensData.right">
+                                        <td>{{right.isDistance ? 'Distance':'Near'}}</td>
+                                        <td>{{right.sphere ? right.sphere : '-'}}</td>
+                                        <td>{{right.cylinder ? right.cylinder : '-'}}</td>
+                                        <td>{{right.axis ? right.axis : '-'}}</td>
+                                        <td>{{right.prismAmount ? right.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td width="50%">
+                                <table class="data-table text-center">
+                                    <tr>
+                                        <td colspan="5">LEFT EYE</td>
+                                        <td class="border-top-0 border-right-0 border-bottom-0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sphere</td>
+                                        <td>Cylinder</td>
+                                        <td>Axis</td>
+                                        <td>Prism</td>
+                                        <td>V/N</td>
+                                        <td class="border-top-0 border-right-0">PD</td>
+                                    </tr>
+                                    <tr *ngFor="let left of lensData.left">
+                                        <td>{{left.sphere ? left.sphere : '-'}}</td>
+                                        <td>{{left.cylinder ? left.cylinder : '-'}}</td>
+                                        <td>{{left.axis ? left.axis : '-'}}</td>
+                                        <td>{{left.prismAmount ? left.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                        <td><span></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="contactData.left.length > 0 && contactData.right.length > 0 && contactData.left.length === contactData.right.length">
+                            <td width="50%">
+                                <table class="data-table text-center">
+                                    <tr>
+                                        <td class="border-top-0 border-left-0 border-bottom-0"></td>
+                                        <td colspan="5">RIGHT EYE</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-top-0 border-left-0"></td>
+                                        <td>Sphere</td>
+                                        <td>Cylinder</td>
+                                        <td>Axis</td>
+                                        <td>Prism</td>
+                                        <td>V/N</td>
+                                    </tr>
+                                    <tr *ngFor="let right of contactData.right">
+                                        <td>{{right.isDistance ? 'Distance':'Near'}}</td>
+                                        <td>{{right.sphere ? right.sphere : '-'}}</td>
+                                        <td>{{right.cylinder ? right.cylinder : '-'}}</td>
+                                        <td>{{right.axis ? right.axis : '-'}}</td>
+                                        <td>{{right.prismAmount ? right.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td width="50%">
+                                <table class="data-table text-center">
+                                    <tr>
+                                        <td colspan="5">LEFT EYE</td>
+                                        <td class="border-top-0 border-right-0 border-bottom-0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sphere</td>
+                                        <td>Cylinder</td>
+                                        <td>Axis</td>
+                                        <td>Prism</td>
+                                        <td>V/N</td>
+                                        <td class="border-top-0 border-right-0">PD</td>
+                                    </tr>
+                                    <tr *ngFor="let left of contactData.left">
+                                        <td>{{left.sphere ? left.sphere : '-'}}</td>
+                                        <td>{{left.cylinder ? left.cylinder : '-'}}</td>
+                                        <td>{{left.axis ? left.axis : '-'}}</td>
+                                        <td>{{left.prismAmount ? left.prismAmount : '-'}}</td>
+                                        <td><span></span></td>
+                                        <td><span></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td></td>
+                            <td width="10">
+                                <table class="data-table">
+                                    <tr>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bifocal &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td></td>
+                            <td width="10">
+                                <table class="data-table">
+                                    <tr>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Vertex &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td></td>
+                            <td width="10">
+                                <table class="data-table">
+                                    <tr>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bifocal &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <p><strong>Regular Lenses Type:</strong></p>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Glass</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Plastic</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; None</p>
+                            </td>
+                            <td width="25%"></td>
+                        </tr>
+                    </table>
+                    <p><strong>Lenses Specification:</strong></p>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Multi-coated</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Medium</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp;
+                                    Anti-reflecting coating</p>
+                            </td>
+                            <td width="25%"></td>
+                        </tr>
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Varilux</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Lenticular</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Photosensitive</p>
+                            </td>
+                            <td width="25%"></td>
+                        </tr>
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Light</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Single
+                                    Vision</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; High Index</p>
+                            </td>
+                            <td width="25%"></td>
+                        </tr>
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Aspheric</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Dark</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square-checked.svg" class="check-square" />&nbsp; Colored
+                                </p>
+                            </td>
+                            <td width="25%"></td>
+                        </tr>
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Bifocal</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Safety Thickness
+                                </p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Anti-Scratch</p>
+                            </td>
+                            <td width="25%"></td>
+                        </tr>
+                    </table>
+                    <p><strong>Contact Lenses Type:</strong></p>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Permanent</p>
+                            </td>
+                            <td width="25%">
+                                <p><img src="./assets/check-square.svg" class="check-square" />&nbsp; Disposal</p>
+                            </td>
+                            <td width="25%"></td>
+                            <td width="25%"></td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p><strong>Frames:</strong></p>
+                            </td>
+                            <td width="10"></td>
+                            <td width="10">
+                                <p><strong><img src="./assets/check-square.svg" class="check-square" />&nbsp;
+                                        Yes</strong></p>
+                            </td>
+                            <td width="10"></td>
+                            <td width="10">
+                                <p><strong><img src="./assets/check-square.svg" class="check-square" />&nbsp;
+                                        No</strong></p>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p><strong>Please specify # of pairs:</strong></p>
+                            </td>
+                            <td width="80">
+                                <p class="value-holder"> {{OCAF.items[0].quantity}}</p>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <p><strong>Estimated Cost:</strong> {{OCAF.totalNet}}</p>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p><strong>Lenses: SR.</strong></p>
+                            </td>
+                            <td width="80">
+                                <p class="value-holder"></p>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="10">
+                                <p><strong>Frame: SR.</strong></p>
+                            </td>
+                            <td width="80">
+                                <p class="value-holder"></p>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="form-container-group">
+                    <table class="internal-table">
+                        <tr>
+                            <td class="text-wrap">
+                                <p>I hereby certify that ALL information mentioned are correct and that the medical
+                                    services shown on this form were medically indicated and
+                                    necessary for the management of this case.</p>
+                                <table class="internal-table text-center">
+                                    <tr>
+                                        <td>
+                                            <p>Optician</p>
+                                        </td>
+                                        <td width="10"></td>
+                                        <td>
+                                            <p>Signature</p>
+                                        </td>
+                                        <td width="10"></td>
+                                        <td>
+                                            <p>Stamp</p>
+                                        </td>
+                                        <td width="10"></td>
+                                        <td>
+                                            <p>Date</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p class="value-holder">{{OCAF.careTeam[0].practitionerName}}</p>
+                                        </td>
+                                        <td width="10"></td>
+                                        <td>
+                                            <p class="value-holder"></p>
+                                        </td>
+                                        <td width="10"></td>
+                                        <td>
+                                            <span class="stamp"></span>
+                                        </td>
+                                        <td width="10"></td>
+                                        <td>
+                                            <p class="value-holder">25 / 12 / 2022</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td width="10"></td>
+                            <td class="border-right"></td>
+                            <td width="10"></td>
+                            <td class="text-wrap">
+                                <p>I hereby certify that ALL statements and information provided concerning patient
+                                    identification and the present illness or injury are TRUE.</p>
+                                <table class="internal-table">
+                                    <tr>
+                                        <td width="10">
+                                            <p><strong>Name (and relationship (if guardian)):</strong></p>
+                                        </td>
+                                        <td>
+                                            <p class="value-holder"></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="internal-table">
+                                    <tr>
+                                        <td width="10">
+                                            <p>Signature (*):</p>
+                                        </td>
+                                        <td>
+                                            <p class="value-holder"></p>
+                                        </td>
+                                        <td></td>
+                                        <td width="10">
+                                            <p>Date:</p>
+                                        </td>
+                                        <td width="10">
+                                            <p class="value-holder">25 / 12 /2022</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="form-container-group">
+                    <p><strong>For Insurance Company Use Only:</strong></p>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p><strong>Approved (<img src="./assets/check.svg" class="check" />)</strong></p>
+                            </td>
+                            <td width="6"></td>
+                            <td width="10">
+                                <p><strong>Not Approved (<img src="./assets/check.svg" class="check" />)</strong></p>
+                            </td>
+                            <td width="10"></td>
+                            <td width="10">
+                                <p><strong>Approval No.:</strong></p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                            <td width="10">
+                                <p><strong>Approval validity:</strong></p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                            <td width="10">
+                                <p><strong>Days</strong></p>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p><strong>Comments (include approved days/services if different from the
+                                        requested):</strong></p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p><strong>Approved/Disapproved By:</strong></p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                            <td width="10">
+                                <p><strong>Signature:</strong></p>
+                            </td>
+                            <td>
+                                <p class="value-holder"></p>
+                            </td>
+                            <td></td>
+                            <td width="10">
+                                <p><strong>Date:</strong></p>
+                            </td>
+                            <td width="10">
+                                <p class="value-holder">25 / 12 / 2022</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

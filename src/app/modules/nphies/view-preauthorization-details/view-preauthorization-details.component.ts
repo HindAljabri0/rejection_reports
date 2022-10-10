@@ -6,6 +6,8 @@ import { HttpResponse } from '@angular/common/http';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { ViewPrintPreviewDialogComponent } from '../view-print-preview-dialog/view-print-preview-dialog.component';
+import { I } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-view-preauthorization-details',
@@ -29,6 +31,7 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     if (this.data.detailsModel.communicationId) {
       this.selectedTab = 1;
     }
+    
     this.getCommunications();
   }
 
@@ -63,7 +66,7 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.data.detailsModel.approvalResponseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
-        this.communications = event.body.communicationList;
+        this.communications = event.body.communicationList;            
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
@@ -97,4 +100,25 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
+  openPreviewDialog(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      preAuthId: this.data.detailsModel.approvalRequestId,
+      type: this.data.detailsModel.preAuthorizationInfo.type,
+    };
+    const dialogRef = this.dialog.open(ViewPrintPreviewDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+      }
+    }, error => { });
+  }
+
+  getType(){
+    const {type} = this. data.detailsModel.preAuthorizationInfo;
+    if( type === 'oral') return "DCAF Form"
+    else if (type === 'vision') return "OCAF Form"
+    else return "UCAF Form"
+  } 
 }
