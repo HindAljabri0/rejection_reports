@@ -472,4 +472,12 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     return img
   }
 
+  resetForm(){
+    this.headerClearFiles();
+    this.footerClearFiles();
+    this.enabled = false;
+    this.providerController.setValue('');
+    this.selectedProvider = null;
+  }
+
 }
