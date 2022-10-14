@@ -1,4 +1,4 @@
-<div class="caf-form" id="print_id">
+<div class="caf-form" id="print_id" *ngIf="UCAFData">
     <h1 class="text-center"><strong>UCAF 2.0</strong></h1>
     <table class="layout-table">
         <tr>
@@ -11,7 +11,7 @@
                                 <p>Provider Name:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.providerName}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.providerName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -21,13 +21,13 @@
                                 <p>Insurance Company Name:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.payerName}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.payerName}}</p>
                             </td>
                             <td width="10">
                                 <p>TPA Company Name:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.tpaName}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.tpaName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -37,13 +37,13 @@
                                 <p>Patient File Number:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> {{UCAFData.beneficiary.fileId}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.fileId}}</p>
                             </td>
                             <td width="10">
                                 <p>Dept:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> {{UCAFData.type}} - {{UCAFData.careTeam[0].specialityCode}} &nbsp;</p>
+                                <p class="value-holder">{{getDeptName()}}</p>
                             </td>
                         </tr>
                     </table>
@@ -61,28 +61,28 @@
                                 <p>Plan Type</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.coverageType}}  &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.coverageType}}</p>
                             </td>
                             <td></td>
                         </tr>
                     </table>
-                    <p>Date of visit:&nbsp; <span class="value-holder"> {{UCAFData.dateOrdered | date: 'dd / MM / yyyy'}} </span></p>
+                    <p>Date of visit:&nbsp; <span class="value-holder">{{UCAFData.dateOrdered | date: 'dd / MM / yyyy'}} </span></p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('new-visit')"/>)</p>
+                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('new-visit')"/>)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('follow-up')"/>)</p>
+                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('follow-up')"/>)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Refill (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('refill')"/>)</p>
+                                <p>Refill (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('refill')"/>)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Walk In (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('walk-in')"/>)</p>
+                                <p>Walk In (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('walk-in')"/>)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
@@ -102,7 +102,7 @@
                                 <p>Insured Name:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.fullName}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.fullName}}</p>
                             </td>
                         </tr>
                     </table>
@@ -112,19 +112,19 @@
                                 <p>ID. Card No.:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.memberCardId}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.memberCardId}}</p>
                             </td>
                             <td width="10">
                                 <p>Sex:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.gender}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.gender}}</p>
                             </td>
                             <td width="10">
                                 <p>Age:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> {{ calculateAge() }} &nbsp;</p>
+                                <p class="value-holder">{{ calculateAge() }}</p>
                             </td>
                             <td width="10">
                                 <p>Y</p>
@@ -137,13 +137,13 @@
                                 <p>Policy Holder:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="10">
                                 <p>Policy No.:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.policyNumber}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.policyNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -153,13 +153,13 @@
                                 <p>Expiry Date:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.expiryDate | date: 'dd / MM / yyyy'}} &nbsp;</p>
+                                <p class="value-holder">{{UCAFData.beneficiary.expiryDate | date: 'dd / MM / yyyy'}}</p>
                             </td>
                             <td width="10">
                                 <p>Class:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> - &nbsp;</p>
+                                <p class="value-holder">-</p>
                             </td>
                         </tr>
                     </table>
@@ -230,7 +230,7 @@
                                 <p>Pulse:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getSupportingInfo("pulse")}} &nbsp;</p>
+                                <p class="value-holder">{{getSupportingInfo("pulse")}}</p>
                             </td>
                             <td width="10">
                                 <p>bpm</p>
@@ -240,7 +240,7 @@
                                 <p>Temp:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getSupportingInfo("temperature")}} &nbsp;</p>
+                                <p class="value-holder">{{getSupportingInfo("temperature")}}</p>
                             </td>
                             <td width="10">
                                 <p>°C</p>
@@ -250,7 +250,7 @@
                                 <p>Weight:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getSupportingInfo("vital-sign-weight")}} &nbsp;</p>
+                                <p class="value-holder">{{getSupportingInfo("vital-sign-weight")}}</p>
                             </td>
                             <td width="10">
                                 <p>kg</p>
@@ -260,7 +260,7 @@
                                 <p>Height:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getSupportingInfo("vital-sign-height")}} &nbsp;</p>
+                                <p class="value-holder">{{getSupportingInfo("vital-sign-height")}}</p>
                             </td>
                             <td width="10">
                                 <p>cm</p>
@@ -270,14 +270,14 @@
                                 <p>R.R:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getSupportingInfo("respiratory-rate")}} &nbsp;</p>
+                                <p class="value-holder">{{getSupportingInfo("respiratory-rate")}}</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>Duration of Illness:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="10">
                                 <p>(Days)</p>
@@ -297,7 +297,7 @@
                                 <p>Significant Signs:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
@@ -307,7 +307,7 @@
                                 <p>Other Conditions:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
@@ -317,7 +317,7 @@
                                 <p>Diagnosis:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"> {{getDiagnosis()}} &nbsp;</p>
+                                <p class="value-holder">{{getDiagnosis()}}</p>
                             </td>
                         </tr>
                     </table>
@@ -327,28 +327,28 @@
                                 <p>Principal Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getPrincipalCode()}} &nbsp;</p>
+                                <p class="value-holder">{{getPrincipalCode()}}</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>2nd Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getCode(0)}}  &nbsp;</p>
+                                <p class="value-holder">{{getCode(0)}}</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>3rd Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getCode(1)}}  &nbsp;</p>
+                                <p class="value-holder">{{getCode(1)}}</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>4th Code:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{getCode(2)}}  &nbsp;</p>
+                                <p class="value-holder">{{getCode(2)}}</p>
                             </td>
                         </tr>
                     </table>
@@ -400,7 +400,7 @@
                                 <p>Indicate LMP:&nbsp;</p>
                             </td>
                             <td width="60">
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
@@ -422,7 +422,7 @@
                                 <td>{{i.itemDescription}}</td>
                                 <td>{{i.type}}</td>
                                 <td>{{i.quantity}}</td>
-                                <td>{{i.unitPrice}}</td>
+                                <td>{{i.netAmount}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -433,21 +433,21 @@
                                 <p>Completed/Coded By:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>Signature:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td></td>
                             <td width="10">
                                 <p>Date:&nbsp;</p>
                             </td>
                             <td width="10">
-                                <p class="value-holder"></p>
+                                <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </td>
                         </tr>
                     </table>
@@ -460,8 +460,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <ng-container *ngIf="getMedicationCode().length === 0">
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </ng-container>
                             <tr *ngFor="let medication of getMedicationCode()">
-                                <td> {{medication.prescribedDrugCode}}</td>
+                                <td>({{medication.prescribedDrugCode}}) {{medication.tradeName}}</td>
                                 <td>{{medication.type}}</td>
                                 <td>{{medication.quantity}}</td>
                             </tr>
@@ -476,7 +483,7 @@
                                 <p>Please specify possible line of management when applicable:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
@@ -486,7 +493,7 @@
                                 <p><strong>Estimated Length of stay:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="10">
                                 <p>days</p>
@@ -496,7 +503,7 @@
                                 <p><strong>Expected date of admission:&nbsp;</strong></p>
                             </td>
                             <td width="10">
-                                <p class="value-holder"></p>
+                                <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </td>
                         </tr>
                     </table>
@@ -531,11 +538,11 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p class="value-holder">{{UCAFData.careTeam[0].practitionerName}}  &nbsp;</p>
+                                            <p class="value-holder">{{UCAFData.careTeam.length > 0 ? UCAFData.careTeam[0].practitionerName : '-'}}</p>
                                         </td>
                                         <td width="10"></td>
                                         <td>
-                                            <p class="value-holder">  &nbsp;</p>
+                                            <p class="value-holder"></p>
                                         </td>
                                         <td width="10"></td>
                                         <td>
@@ -543,7 +550,7 @@
                                         </td>
                                         <td width="10"></td>
                                         <td>
-                                            <p class="value-holder"></p>
+                                            <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -559,7 +566,7 @@
                                             <p><strong>Name (and relationship (if guardian)):&nbsp;</strong></p>
                                         </td>
                                         <td>
-                                            <p class="value-holder">  &nbsp;</p>
+                                            <p class="value-holder"></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -569,14 +576,14 @@
                                             <p>Signature (*):&nbsp;</p>
                                         </td>
                                         <td>
-                                            <p class="value-holder">  &nbsp;</p>
+                                            <p class="value-holder"></p>
                                         </td>
                                         <td></td>
                                         <td width="10">
                                             <p>Date:&nbsp;</p>
                                         </td>
                                         <td width="10">
-                                            <p class="value-holder"></p>
+                                            <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -607,13 +614,13 @@
                                 <p><strong>Approval No.:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="10">
                                 <p><strong>Approval validity:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="10">
                                 <p><strong>Days</strong></p>
@@ -626,7 +633,7 @@
                                 <p><strong>Comments (include approved days/services if different from the requested):&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                         </tr>
                     </table>
@@ -637,20 +644,20 @@
                                 <p><strong>Approved/Disapproved By:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td width="10">
                                 <p><strong>Signature:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  &nbsp;</p>
+                                <p class="value-holder"></p>
                             </td>
                             <td></td>
                             <td width="10">
                                 <p><strong>Date:&nbsp;</strong></p>
                             </td>
                             <td width="10">
-                                <p class="value-holder"></p>
+                                <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </td>
                         </tr>
                     </table>

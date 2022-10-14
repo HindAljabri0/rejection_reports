@@ -345,7 +345,10 @@ export class AddPreauthorizationComponent implements OnInit {
       }).sort((a, b) => a.sequence - b.sequence);
     }
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
-      this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
+      const date = moment(this.data.visionPrescription.dateWritten, 'DD-MM-YYYY').format('YYYY-MM-DD');
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.dateWritten.setValue(date);
+      //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
       this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
       this.VisionSpecifications = this.data.visionPrescription.lensSpecifications;
     }
@@ -1571,8 +1574,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-
-    this.isSubmitted = true;
+        this.isSubmitted = true;
     let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
@@ -1759,6 +1761,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
       if (this.FormPreAuthorization.controls.insurancePlanExpiryDate.value) {
         // tslint:disable-next-line:max-line-length
+
         this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormPreAuthorization.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
       }
 
