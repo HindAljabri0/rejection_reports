@@ -147,7 +147,7 @@
                     </mat-icon>
                   </th>
 
-                  <th
+                  <th *ngIf="isGenerateAttachment"
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Attachment Status</th>
 
@@ -208,7 +208,7 @@
                       </div>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click">
+                    <td *ngIf="isGenerateAttachment" (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click">
                       <mat-icon *ngIf="claim.attachmentStatus === 'success'" matTooltip="Attachment Generated Successfully" class="material-icons-outlined text-success">check_circle</mat-icon>
                       <!-- <mat-icon matTooltip="Generating Attachment" class="text-warning">cached</mat-icon> -->
                       <mat-icon *ngIf="claim.attachmentStatus === 'failure'" matTooltip="Generating Attachment Failed" class="text-danger">error_outline</mat-icon>

@@ -1799,7 +1799,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
   getNphiesAttachmentConfiguration(){
     this.settingsServices.getNphiesAttachmentConfigDetails(this.commen.providerId).subscribe((event:any) => {
-      if (event instanceof HttpResponse) {
+      if (event instanceof HttpResponse) {      
         if(event.body.attachment) {
           this.isGenerateAttachment = event.body.attachment.isEnabled;
         }
