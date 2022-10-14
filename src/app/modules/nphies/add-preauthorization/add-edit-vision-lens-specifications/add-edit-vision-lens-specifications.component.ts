@@ -179,13 +179,13 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
   checkPrismAmount() {
     const value = this.FormVisionSpecification.controls.prismAmount.value;
 
-    if (value) {
-      if (value < 0) {
-        this.prismAmountError = 'Value can not be less than 0';
-      } else if (value > 10) {
-        this.prismAmountError = 'Value can not be greater than 10';
-      } else if (value % 0.5 !== 0) {
-        this.prismAmountError = 'Value should be the multiple of 0.50';
+    if (value != undefined || value != null) {
+      if (value < 0.25) {
+        this.prismAmountError = 'Value can not be less than 0.25';
+      } else if (value > 30) {
+        this.prismAmountError = 'Value can not be greater than 30';
+      } else if (value % 0.25 !== 0) {
+        this.prismAmountError = 'Value should be the multiple of 0.25';
       } else {
         this.prismAmountError = '';
       }

@@ -15,8 +15,8 @@ export class DcafFormTemplateComponent implements OnInit {
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService,private sharedServices: SharedServices,) { }
 
   ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId).subscribe((res:any)=>{
-      this.sharedServices.loadingChanged.next(true);
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {
@@ -37,12 +37,14 @@ export class DcafFormTemplateComponent implements OnInit {
     else return '';
   }
 
-  getSupportingInfoForChiefComplaints(){
-    const {supportingInfo} = this.DCAF;
-    if(supportingInfo.length > 0) return supportingInfo.map(res=> `(${res.code}) - (${res.value})`).join(', ');
+  getSupportingInfoForChiefComplaints() {
+    const { supportingInfo } = this.DCAF;
+    const index = this.DCAF.supportingInfo.findIndex(res => res.category === "chief-complaint");
+    if(index !== -1){
+      return `${supportingInfo[index].code ? `(${supportingInfo[index].code}) ` : ''} ${supportingInfo[index].code && supportingInfo[index].value ? '-' : ''} ${supportingInfo[index].value ? `(${supportingInfo[index].value})`: ''}`;
+    }
     else return '';
   }
-
 
   calculateAge(){
     const ageDifMs = Date.now() - new Date(this.DCAF.beneficiary.dob).getTime();
@@ -55,7 +57,7 @@ export class DcafFormTemplateComponent implements OnInit {
   countTotal(){
     let total = 0;
      this.DCAF.items.forEach(i => {
-       total += i.unitPrice 
+       total += i.netAmount;
     });
     return total;
   }
@@ -64,10 +66,15 @@ export class DcafFormTemplateComponent implements OnInit {
     return this.DCAF.items.filter(res=>!!res.prescribedDrugCode) || [];
   }
 
-  getVisitReason(code :string){
-    const index = this.DCAF.supportingInfo.findIndex(res=>res.category === "reasonForVisit");
-    if(index != -1) return this.DCAF.supportingInfo[index].code == code;
-    else false;
-}
+  getVisitReason(code: string) {
+    const index = this.DCAF.supportingInfo.findIndex(res => res.category === "reason-for-visit");
+    if (index !== -1) {
+      return this.DCAF.supportingInfo[index].code === code;
+    } else return false
+  }
+
+  getBodySites(toothNo){
+    return this.DCAF.items.some(res=>res.bodySite == toothNo);
+  }
 
 }

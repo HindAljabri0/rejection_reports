@@ -16,17 +16,20 @@ export class UcafFormTemplateComponent implements OnInit {
   Diagnosis: string;
   @Input() preAuthId: any;
   MedicationCode: any;
+  specialityList : any = [];
+  specialityName : string;
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices,) { }
   ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId, this.preAuthId).subscribe((res: any) => {
-      this.sharedServices.loadingChanged.next(true);
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {
           this.UCAFData = body;
+          this.getSpeciality();
+        } else{
           this.sharedServices.loadingChanged.next(false);
-
         }
       }
     }, errorEvent => {
@@ -72,9 +75,12 @@ export class UcafFormTemplateComponent implements OnInit {
     else return '';
   }
 
-  getSupportingInfoForChiefComplaints() {
+   getSupportingInfoForChiefComplaints() {
     const { supportingInfo } = this.UCAFData;
-    if (supportingInfo.length > 0) return supportingInfo.map(res => `(${res.code}) - (${res.value})`).join(', ');
+    const index = this.UCAFData.supportingInfo.findIndex(res => res.category === "chief-complaint");
+    if(index !== -1){
+      return `${supportingInfo[index].code ? `(${supportingInfo[index].code}) ` : ''} ${supportingInfo[index].code && supportingInfo[index].value ? '-' : ''} ${supportingInfo[index].value ? `(${supportingInfo[index].value})`: ''}`;
+    }
     else return '';
   }
 
@@ -92,10 +98,34 @@ export class UcafFormTemplateComponent implements OnInit {
     return this.UCAFData.items.filter(res=>!!res.prescribedDrugCode) || [];
   }
   
-  getVisitReason(code :string){
-      const index = this.UCAFData.supportingInfo.findIndex(res=>res.category === "reasonForVisit");
-      if(index != -1) return this.UCAFData.supportingInfo[index].code == code;
-      else false;
+  getVisitReason(code: string) {
+    const index = this.UCAFData.supportingInfo.findIndex(res => res.category === "reason-for-visit");
+    if (index !== -1) {
+      return this.UCAFData.supportingInfo[index].code === code;
+    } else return false
+  }
+
+  getSpeciality(){
+    const request = this.providerNphiesSearchService.getSpecialityList(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.specialityList = event.body;
+        const index = this.UCAFData.careTeam.length > 0 ? this.specialityList.findIndex(res=>res.speciallityCode ===  this.UCAFData.careTeam[0].specialityCode): -1; 
+        if(index !== -1) this.specialityName = this.specialityList[index].speciallityName;
+        else this.specialityName = '';
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  getDeptName(){
+    if(this.UCAFData.careTeam.length > 0) return `${this.UCAFData.type} - ${this.UCAFData.careTeam[0].specialityCode} - ${this.specialityName}`;
+    else return `${this.UCAFData.type}`;
+    
   }
 
 }
