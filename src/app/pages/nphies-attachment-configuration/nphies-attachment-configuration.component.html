@@ -44,7 +44,7 @@
                         <div class="content" *ngIf="headerFileName">
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
                             <p>{{headerFileName}}</p>
-                            <span>File Size: {{HeadersizeInMB}}</span>
+                            <span *ngIf="HeadersizeInMB">File Size: {{HeadersizeInMB}}</span>
                             <a href="#" class="primary-link"
                                 (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a>
                         </div>
@@ -60,10 +60,10 @@
                         <mat-icon class="material-icons-outlined">error</mat-icon>
                         <span>Header image size should be 300KB</span>
                     </div>
-                    <!-- <div class="alert mt-14 danger" *ngIf="isHeaderDimension">
+                    <div class="alert mt-14 danger" *ngIf="isHeaderDimension">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image height and width should be 500 X 100.</span>
-                    </div> -->
+                        <span>Image should be in landscape.</span>
+                    </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
                         <span>Image should be jpg , jpeg .</span>
@@ -81,7 +81,7 @@
                         <div class="content" *ngIf="footerFileName">
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
                             <p>{{footerFileName}}</p>
-                            <span>File Size: {{FootersizeInMB}}</span>
+                            <span *ngIf="FootersizeInMB">File Size: {{FootersizeInMB}}</span>
                             <a href="#" class="primary-link"
                                 (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a>
                         </div>
@@ -97,10 +97,10 @@
                         <mat-icon class="material-icons-outlined">error</mat-icon>
                         <span>Footer image size should be less than 300KB.</span>
                     </div>
-                    <!-- <div class="alert mt-14 danger" *ngIf="isFooterDimension">
+                    <div class="alert mt-14 danger" *ngIf="isFooterDimension">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image height and width should be 500 X 100.</span>
-                    </div> -->
+                        <span>Image should be in landscape.</span>
+                    </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
                         <span>Image should be jpg , jpeg .</span>
@@ -110,7 +110,11 @@
         </div>
         <div class="block-footer sticky">
             <div class="right-block">
+                <div class="btn-list">
                 <button type="button" color="primary" mat-flat-button (click)="checkValidation()">Save</button>
+                <button type="button" mat-button (click)="resetForm()">Reset</button>
+
+            </div>
             </div>
         </div>
     </div>

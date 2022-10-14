@@ -187,7 +187,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     if (!this.ImageFormat.includes(event.target.files[0].name.split('.').pop().toLowerCase())) {
       this.isHeaderFormat = true;
       this.isHeaderSize = false;
-      // this.isHeaderDimension = false;
+      this.isHeaderDimension = false;
       this.isHeaderNotSubmitted = false;
     }
 
@@ -208,9 +208,10 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
           img.onload = () => {
             this.headerHeight = img.naturalHeight;
             this.headerWidth = img.naturalWidth;
+            const maxHeight = this.headerWidth - (parseFloat(this.headerWidth) / 3);
             if (!this.HeadersizeInMB.includes('KB')
-              // ||
-              //   !(this.headerHeight <= 100 && this.headerWidth <= 500)
+               ||
+                 !(this.headerHeight < maxHeight)
             ) {
               this.isHeaderNotSubmitted = false;
               if (this.HeadersizeInMB.includes('KB')) {
@@ -224,7 +225,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isHeaderSize = true;
                 this.isHeaderFormat = false;
               }
-              // if (!(this.headerHeight <= 100 && this.headerWidth <= 500)) this.isHeaderDimension = true;
+               if (!(this.headerHeight < maxHeight)) this.isHeaderDimension = true;
             } else {
               if (this.HeadersizeInMB.includes('KB')) {
                 var hdSize = parseFloat(this.HeadersizeInMB.replace("KB", "").trim());
@@ -235,9 +236,9 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isHeaderSize = false;
               }
 
-              // this.headerFile = event.target.files[0];
+              this.headerFile = event.target.files[0];
               this.headerFile = headerCompressedImage;
-              // this.isHeaderDimension = false;
+              this.isHeaderDimension = false;
               this.isHeaderNotSubmitted = false;
               this.isHeaderFormat = false;
             }
@@ -253,7 +254,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     if (!this.ImageFormat.includes(event.target.files[0].name.split('.').pop().toLowerCase())) {
       this.isFooterFormat = true;
       this.isFooterSize = false;
-      // this.isFooterDimension = false;
+      this.isFooterDimension = false;
       this.isFooterNotSubmitted = false;
     }
     this.compressImage(event.target.files[0])
@@ -273,9 +274,10 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
           img.onload = () => {
             this.footerHeight = img.naturalHeight;
             this.footerWidth = img.naturalWidth;
+            const maxHeight = this.footerWidth - (parseFloat(this.footerWidth) / 3);
             if (!this.FootersizeInMB.includes('KB')
-              // ||
-              //   !(this.footerHeight <= 100 && this.footerWidth <= 500)
+               ||
+                 !(this.footerHeight < maxHeight)
             ) {
               this.isFooterNotSubmitted = false;
 
@@ -290,7 +292,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isFooterSize = true;
                 this.isFooterFormat = false;
               }
-              // if (!(this.footerHeight <= 100 && this.footerWidth <= 500)) this.isFooterDimension = true;
+              if (!(this.footerHeight < maxHeight)) this.isFooterDimension = true;
             } else {
               if (this.FootersizeInMB.includes('KB')) {
                 var ftSize = parseFloat(this.FootersizeInMB.replace("KB", "").trim());
@@ -302,7 +304,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
               }
 
               this.footerFile = event.target.files[0];
-              // this.isFooterDimension = false;
+              this.isFooterDimension = false;
               this.isFooterNotSubmitted = false;
               this.isFooterFormat = false;
             }
@@ -318,7 +320,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     this.headerFileName = "";
     this.HeadersizeInMB = "";
     this.header = "";
-    // this.isHeaderDimension = false;
+    this.isHeaderDimension = false;
     this.isHeaderSize = false;
     this.isHeaderNotSubmitted = false;
     this.isHeaderFormat = false;
@@ -334,7 +336,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     this.footerFileName = "";
     this.FootersizeInMB = "";
     this.footer = "";
-    // this.isFooterDimension = false;
+    this.isFooterDimension = false;
     this.isFooterSize = false;
     this.isFooterNotSubmitted = false;
     this.isFooterFormat = false;
@@ -362,9 +364,9 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
       if (!this.footerFile) this.isFooterNotSubmitted = true;
     }
     else if (!this.isHeaderSize &&
-      //  !this.isHeaderDimension &&
+        !this.isHeaderDimension &&
       !this.isFooterSize &&
-      //  !this.isFooterDimension &&
+        !this.isFooterDimension &&
       !this.isHeaderFormat && !this.isFooterFormat) {
       this.onSubmit();
     }
@@ -468,6 +470,14 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     const img = new Image()
     img.src = imageContent
     return img
+  }
+
+  resetForm(){
+    this.headerClearFiles();
+    this.footerClearFiles();
+    this.enabled = false;
+    this.providerController.setValue('');
+    this.selectedProvider = null;
   }
 
 }

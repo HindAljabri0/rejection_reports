@@ -37,6 +37,7 @@ import { nlLocale } from 'ngx-bootstrap/chronos';
 import { couldStartTrivia } from 'typescript';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { SettingsService } from 'src/app/services/settingsService/settings.service';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -154,6 +155,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   claimDialogRef: MatDialogRef<any, any>;
 
+  isGenerateAttachment = false;
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -165,7 +167,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private downloadService: DownloadService,
     private adminService: AdminService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
-    private providerNphiesApprovalService: ProviderNphiesApprovalService) { }
+    private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    private settingsServices: SettingsService,) { }
 
   ngOnDestroy(): void {
 
@@ -175,7 +178,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   ngOnInit() {
-
+    this.getNphiesAttachmentConfiguration();
     this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
@@ -1792,6 +1795,16 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
       }
       this.deSelectAll();
+    });
+  }
+  getNphiesAttachmentConfiguration(){
+    this.settingsServices.getNphiesAttachmentConfigDetails(this.commen.providerId).subscribe((event:any) => {
+      if (event instanceof HttpResponse) {
+        if(event.body.attachment) {
+          this.isGenerateAttachment = event.body.attachment.isEnabled;
+        }
+      }
+    }, eventError => {
     });
   }
 }
