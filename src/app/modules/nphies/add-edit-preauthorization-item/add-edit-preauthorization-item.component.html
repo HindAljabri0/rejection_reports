@@ -89,7 +89,7 @@
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="bodySite">
+            <mat-select formControlName="bodySite" (selectionChange)="onBodySiteChange($event)">
               <mat-option value="">Select Body Site</mat-option>
               <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite" >{{bodySite.name}}</mat-option>
             </mat-select>

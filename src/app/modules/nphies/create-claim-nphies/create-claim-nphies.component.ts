@@ -940,9 +940,9 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
-              x.drugSelectionReason  = result.drugSelectionReason ;
-              x.drugSelectionReasonName  = result.drugSelectionReasonName ;
-              x.prescribedDrugCode  = result.prescribedDrugCode ;
+              x.drugSelectionReason = result.drugSelectionReason;
+              x.drugSelectionReasonName = result.drugSelectionReasonName;
+              x.prescribedDrugCode = result.prescribedDrugCode;
               x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1458,7 +1458,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.IsPrescriberRequired = false;
       }
     }
-  
+
     if (this.IsAccountingPeriodInvalid) {
       hasError = true;
     }
@@ -2242,7 +2242,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
-    this.otherDataModel.claimRelatedIdentifiers= response.claimRelatedIdentifiers;
+    this.otherDataModel.claimRelatedIdentifiers = response.claimRelatedIdentifiers;
     this.otherDataModel.isNewBorn = response.isNewBorn;
     this.otherDataModel.requestBundleId = response.requestBundleId;
     this.otherDataModel.responseBundleId = response.responseBundleId;
@@ -2883,9 +2883,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
       model.invoiceNo = x.invoiceNo;
-      model.drugSelectionReason  = x.drugSelectionReason;
-      model.drugSelectionReasonName  = this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0].name : "-" ;
-      model.prescribedDrugCode  = x.prescribedDrugCode ;
+      model.drugSelectionReason = x.drugSelectionReason;
+      model.drugSelectionReasonName = this.sharedDataService.itemMedicationReasonList.filter(e => e.value === x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e => e.value === x.drugSelectionReason)[0].name : "-";
+      model.prescribedDrugCode = x.prescribedDrugCode;
 
       x.discount = parseFloat(x.discount);
       x.quantity = parseFloat(x.quantity);

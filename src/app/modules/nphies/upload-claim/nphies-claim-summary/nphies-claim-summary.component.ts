@@ -347,7 +347,7 @@ export class NphiesClaimSummaryComponent implements OnInit {
         }
       }, err => {
         if (err.status) {
-          this.authService.logout();
+          //this.authService.logout();
         }
       }), eventError => {
         this.commen.loadingChanged.next(false);
