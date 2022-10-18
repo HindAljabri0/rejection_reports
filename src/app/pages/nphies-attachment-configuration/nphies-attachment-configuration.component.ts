@@ -208,10 +208,9 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
           img.onload = () => {
             this.headerHeight = img.naturalHeight;
             this.headerWidth = img.naturalWidth;
-            const maxHeight = this.headerWidth - (parseFloat(this.headerWidth) / 3);
             if (!this.HeadersizeInMB.includes('KB')
                ||
-                 !(this.headerHeight < maxHeight)
+                 !(this.headerHeight == 120 && this.headerWidth == 698)
             ) {
               this.isHeaderNotSubmitted = false;
               if (this.HeadersizeInMB.includes('KB')) {
@@ -225,7 +224,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isHeaderSize = true;
                 this.isHeaderFormat = false;
               }
-               if (!(this.headerHeight < maxHeight)) this.isHeaderDimension = true;
+               if (!(this.headerHeight == 120 && this.headerWidth == 698)) this.isHeaderDimension = true;
             } else {
               if (this.HeadersizeInMB.includes('KB')) {
                 var hdSize = parseFloat(this.HeadersizeInMB.replace("KB", "").trim());
@@ -274,10 +273,9 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
           img.onload = () => {
             this.footerHeight = img.naturalHeight;
             this.footerWidth = img.naturalWidth;
-            const maxHeight = this.footerWidth - (parseFloat(this.footerWidth) / 3);
             if (!this.FootersizeInMB.includes('KB')
                ||
-                 !(this.footerHeight < maxHeight)
+                 !(this.footerHeight == 120 && this.footerWidth == 698)
             ) {
               this.isFooterNotSubmitted = false;
 
@@ -292,7 +290,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isFooterSize = true;
                 this.isFooterFormat = false;
               }
-              if (!(this.footerHeight < maxHeight)) this.isFooterDimension = true;
+              if (!(this.footerHeight == 120 && this.footerWidth == 698)) this.isFooterDimension = true;
             } else {
               if (this.FootersizeInMB.includes('KB')) {
                 var ftSize = parseFloat(this.FootersizeInMB.replace("KB", "").trim());
