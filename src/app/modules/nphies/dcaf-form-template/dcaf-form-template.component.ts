@@ -76,5 +76,14 @@ export class DcafFormTemplateComponent implements OnInit {
   getBodySites(toothNo){
     return this.DCAF.items.some(res=>res.bodySite == toothNo);
   }
+  getPeriodDays(){
+    if(this.DCAF.preAuthStartDate!=null && this.DCAF.preAuthEndDate!=null){
+    var StartDate = new Date(this.DCAF.preAuthStartDate);
+    var EndDate = new Date(this.DCAF.preAuthEndDate);
+    return StartDate.getTime() - EndDate.getTime()}else{
+  
+      return '';
+    }
+  }
 
 }
