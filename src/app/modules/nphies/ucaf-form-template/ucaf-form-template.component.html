@@ -173,6 +173,16 @@
                             </td>
                         </tr>
                     </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Approval Status:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder"> {{UCAFData.status}}</p>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </td>
         </tr>
@@ -614,16 +624,19 @@
                                 <p><strong>Approval No.:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder"> </p>
                             </td>
                             <td width="10">
                                 <p><strong>Approval validity:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">  {{UCAFData.preAuthStartDate | date:'dd/MM/yyyy'}} {{UCAFData.preAuthStartDate
+                                    &&
+                                    UCAFData.preAuthEndDate ? "-":""}} {{UCAFData.preAuthEndDate |
+                                    date:'dd/MM/yyyy'}} </p>
                             </td>
                             <td width="10">
-                                <p><strong>Days</strong></p>
+                                <p>  {{getPeriodDays()}} <strong>Days</strong></p>
                             </td>
                         </tr>
                     </table>
