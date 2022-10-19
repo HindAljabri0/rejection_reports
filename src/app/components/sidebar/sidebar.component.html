@@ -316,7 +316,7 @@
             <mat-panel-title>
               <span class="d-flex align-items-center">
                 <span>Pre Authorization</span>
-                <span *ngIf="NewAuthTransactions > 0" class="alert-marker ml-auto alert-count">{{NewAuthTransactions}}</span>
+                <span *ngIf="NewAuthTransactions > 0" class="alert-marker ml-auto alert-count">.</span>
               </span>
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -329,7 +329,7 @@
             <li>
               <a routerLink="/nphies/preauthorization-transactions" routerLinkActive="is-active">
                 <span class="text">Pre Authorization Transactions</span>
-                <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">{{NewAuthTransactions}}</span>
+                <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">.</span>
               </a>
             </li>
           </ul>
@@ -363,7 +363,7 @@
             <mat-panel-title>
               <span class="d-flex align-items-center">
                 <span>Claims</span>
-                <span *ngIf="NewClaimTransactions > 0" class="alert-marker ml-auto alert-count">{{NewClaimTransactions}}</span>
+                <span *ngIf="NewClaimTransactions > 0" class="alert-marker ml-auto alert-count">.</span>
               </span>
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -414,7 +414,7 @@
         <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation">
           <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
             <span class="text">Payment Reconciliation</span>
-            <span *ngIf="RecentReconciliations > 0" class="alert-marker ml-auto alert-count">{{RecentReconciliations}}</span>
+            <span *ngIf="RecentReconciliations > 0" class="alert-marker ml-auto alert-count">.</span>
           </a>
           <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>

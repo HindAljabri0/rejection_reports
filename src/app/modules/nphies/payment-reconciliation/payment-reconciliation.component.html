@@ -127,7 +127,7 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Recent</span>
-          <span *ngIf="NewRecentReconciliation > 0" class="alert-marker ml-2 alert-count">{{NewRecentReconciliation}}</span>
+          <span *ngIf="NewRecentReconciliation > 0" class="alert-marker ml-2 alert-count">.</span>
         </div>
       </ng-template>
       <app-recent-reconciliation #recentReconciliation [searchModel]="searchModel" [payersList]="payersList"></app-recent-reconciliation>
