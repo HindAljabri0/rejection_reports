@@ -7,7 +7,7 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Processed</span>
-          <span *ngIf="NewClaimTransactionProcessed > 0" class="alert-marker ml-2 alert-count">.</span>
+          <span *ngIf="NewClaimTransactionProcessed > 0" class="alert-marker ml-2 alert-count">{{NewClaimTransactionProcessed}}</span>
         </div>
       </ng-template>
 
@@ -19,7 +19,7 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication Request</span>
-          <span *ngIf="NewClaimComunicationRequests > 0" class="alert-marker ml-2 alert-count">.</span>
+          <span *ngIf="NewClaimComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewClaimComunicationRequests}}</span>
         </div>
       </ng-template>
       <app-claim-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList">

@@ -229,7 +229,7 @@
         <div class="d-flex align-items-center">
           <span>Processed</span>
           <span *ngIf="NewTransactionProcessed > 0"
-            class="alert-marker ml-2 alert-count">.</span>
+            class="alert-marker ml-2 alert-count">{{NewTransactionProcessed}}</span>
         </div>
       </ng-template>
 
@@ -243,7 +243,7 @@
         <div class="d-flex align-items-center">
           <span>Communication Request</span>
           <span *ngIf="NewComunicationRequests > 0"
-            class="alert-marker ml-2 alert-count">.</span>
+            class="alert-marker ml-2 alert-count">{{NewComunicationRequests}}</span>
         </div>
       </ng-template>
       <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList"
