@@ -92,8 +92,7 @@ export class HeaderComponent implements OnInit {
         this.sharedServices.getClaimProcessedCount();
         this.sharedServices.getClaimCommunicationRequestCount();
 
-        this.watchPreAuthorizationChanges();
-
+        // this.watchPreAuthorizationChanges();
 
         this.downloadService.providerDownloads.subscribe(downloads => {
             this.providerDownloads.unshift(...downloads);
