@@ -163,7 +163,7 @@
                       <td>{{item.patientInvoiceNo}}</td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                       <td>{{item.patientShare}} <span class="currency">SR</span></td>
-                      <td>{{item.payerSahare}} <span class="currency">SR</span></td>
+                      <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
                       <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
