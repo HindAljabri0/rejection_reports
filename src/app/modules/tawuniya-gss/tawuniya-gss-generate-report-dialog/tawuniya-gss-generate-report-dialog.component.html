@@ -1,27 +1,21 @@
 <div class="primary-dialog-header">
-    <h5 class="primary-dialog-title">Generate Report</h5>
+    <h5 class="primary-dialog-title">Initiate GSS Report</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form #tawuniyaGssForm='ngForm' (ngSubmit)='tawuniyaGssForm.valid'>
     <div class="primary-dialog-body pt-0">
         <div class="form-group" [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && lossMonth.invalid}">
-            <label class="control-label">Date To</label>
+            <label class="control-label">Loss Month</label>
             <div class="date-picker">
                 <!--  -->
-                <input autocomplete="off" class="form-control date-picker" 
-                placeholder="Select Loss Month" bsDatepicker
-                    [bsConfig]="datePickerConfig" 
-                    (onShown)="onOpenCalendar($event)" 
-                    [formControl]='lossMonth' 
-                    [maxDate]="maxDate"
-                    [minDate]="minDate"
-                     />
+                <input autocomplete="off" class="form-control date-picker" placeholder="Select loss month" bsDatepicker [bsConfig]="datePickerConfig"
+                    (onShown)="onOpenCalendar($event)" [formControl]='lossMonth' [maxDate]="maxDate" [minDate]="minDate" />
             </div>
             <mat-error *ngIf="lossMonth.invalid && tawuniyaGssForm.submitted">Loss Month is required
             </mat-error>
         </div>
         <div class="text-right">
-            <button type="submit" mat-flat-button color="primary" (click)="generateReport()">Generate Report</button>
+            <button type="submit" mat-flat-button color="primary" (click)="generateReport()">Initiate Report</button>
         </div>
     </div>
 </form>
