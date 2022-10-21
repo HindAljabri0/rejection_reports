@@ -772,7 +772,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     } else {
       this.params.editMode = null;
     }
-    this.resetURL();   
+    this.resetURL();
     this.store.dispatch(cancelClaim());
 
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
@@ -1422,7 +1422,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'error', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
-  get canBeDeleted(){
+  get canBeDeleted() {
     let filteredList = this.claims.filter(flag => flag != null && flag.canDelete == false)
     return filteredList.length == 0;
   }
@@ -1576,7 +1576,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 if (status === 'Deleted') {
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
-                        event.body['message'],
+                      event.body['message'],
                       false))
                     .subscribe(afterColse => {
                       const uploadId = this.params.uploadId;
@@ -1597,9 +1597,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 } else if (status === 'AlreadySumitted') {
                   this.dialogService.openMessageDialog(
                     // tslint:disable-next-line:max-line-length
-                    new MessageDialogData('', 
-                    // `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
-                    event.body['message'],
+                    new MessageDialogData('',
+                      // `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                      event.body['message'],
                       false))
                     .subscribe(afterColse => {
                       this.router.navigate(['/nphies/uploads']);
@@ -1608,14 +1608,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
                   this.dialogService.openMessageDialog(
                     new MessageDialogData('',
-                    event.body['message'],
+                      event.body['message'],
                       false));
                 }
               }
             }, errorEvent => {
 
               if (errorEvent instanceof HttpErrorResponse) {
-                const status = errorEvent.status;              
+                const status = errorEvent.status;
                 if (status === 500 || status === 404) {
                   this.commen.loadingChanged.next(false);
                   // this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
@@ -1700,29 +1700,29 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   }
 
-  generateAttachmentAll(){
+  generateAttachmentAll(attachmentStatus: string = null) {
     if (this.selectedClaims.length == 0) {
-      this.allGenerateAttachment();
+      this.allGenerateAttachment(attachmentStatus);
     } else {
       this.selectedGenerateAttachment();
     }
   }
 
-  allGenerateAttachment() {
+  allGenerateAttachment(attachmentStatus: string = null) {
     if (this.commen.loading) {
       return;
     }
     const payerIds: string[] = [];
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
-    }    
+    }
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
-    ).subscribe((event) => {     
-      if (event instanceof HttpResponse) {        
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, attachmentStatus
+    ).subscribe((event) => {
+      if (event instanceof HttpResponse) {
         if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
@@ -1759,9 +1759,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.dialogService.openMessageDialog(new MessageDialogData('', 'Please select at least 1 Accepted claim first.', true));
       return;
     }
-    this.commen.loadingChanged.next(true);    
-    this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims, null).subscribe((event) => {      
-      if (event instanceof HttpResponse) {        
+    this.commen.loadingChanged.next(true);
+    this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims, null).subscribe((event) => {
+      if (event instanceof HttpResponse) {
         if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
@@ -1797,10 +1797,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.deSelectAll();
     });
   }
-  getNphiesAttachmentConfiguration(){
-    this.settingsServices.getNphiesAttachmentConfigDetails(this.commen.providerId).subscribe((event:any) => {
-      if (event instanceof HttpResponse) {      
-        if(event.body.attachment) {
+  getNphiesAttachmentConfiguration() {
+    this.settingsServices.getNphiesAttachmentConfigDetails(this.commen.providerId).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.body.attachment) {
           this.isGenerateAttachment = event.body.attachment.isEnabled;
         }
       }
