@@ -46,7 +46,9 @@
                             <p>{{headerFileName}}</p>
                             <span *ngIf="HeadersizeInMB">File Size: {{HeadersizeInMB}}</span>
                             <a href="#" class="primary-link"
-                                (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a>
+                                (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a><br>
+                                <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();viewAttachment('header');">Preview</a>
                         </div>
                         <input type="file" accept=".jpg , .jpeg " [(ngModel)]="headerFile" [ngModelOptions]="{standalone: true}" *ngIf="!headerFileName"
                             (change)="selectHeaderFile($event)"
@@ -62,7 +64,7 @@
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderDimension">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image should be in landscape.</span>
+                        <span>Image height x width should be 120 x 698.</span>
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
@@ -83,7 +85,9 @@
                             <p>{{footerFileName}}</p>
                             <span *ngIf="FootersizeInMB">File Size: {{FootersizeInMB}}</span>
                             <a href="#" class="primary-link"
-                                (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a>
+                                (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a><br>
+                                <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();viewAttachment('footer');">Preview</a>
                         </div>
                         <input type="file" accept=".jpg , .jpeg " [(ngModel)]="footerFile" [ngModelOptions]="{standalone: true}" *ngIf="!footerFileName"
                             (change)="selectFooterFile($event)"
@@ -99,7 +103,7 @@
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterDimension">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image should be in landscape.</span>
+                        <span>Image height x width should be 120 x 698.</span>
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
