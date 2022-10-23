@@ -489,11 +489,13 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
-  getJsonFormData(providerId, preAuthId){
+  getJsonFormData(providerId, preAuthId) {
     const requestURL = '/providers/' + providerId + '/json/' + preAuthId;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+
+ 
 
   /* getSupptingInfoPrintingFom(key: string, data:any) {
     const { supportingInfo } = data;

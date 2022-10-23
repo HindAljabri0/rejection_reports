@@ -25,6 +25,9 @@ import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ReuseApprovalModalComponent } from './reuse-approval-modal/reuse-approval-modal.component';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { NphiesDownloadApprovalEligibilityService } from 'src/app/services/nphies_download_approval_eligibility/nphies-download-approval-eligibility.service';
 
 
 @Component({
@@ -43,7 +46,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   manualPage = null;
   page: number;
   pageSize: number;
-
+  detailTopActionIcon = 'ic-download.svg';
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
 
@@ -70,6 +73,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   errorMessage: string;
   transactionModel: PaginatedResult<PreAuthorizationTransaction>;
   transactions = [];
+  approvalSearchRequest:ApprovalSearchRequest={}
 
   statusList = [
     { value: 'queued', name: 'Queued' },
@@ -93,6 +97,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private datePipe: DatePipe,
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
+    private nphiesDownloadApprovalEligibilityService:NphiesDownloadApprovalEligibilityService,
+    private downloadService: DownloadService,
     private dialogService: DialogService,
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
@@ -331,12 +337,14 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.pageSize = this.pageSize;
 
       this.editURL(model.fromDate, model.toDate);
+      this.detailTopActionIcon = 'ic-download.svg';
       this.providerNphiesApprovalService.getApprovalRequestTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, PreAuthorizationTransaction);
           this.transactions = this.transactionModel.content;
+          
           this.transactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
@@ -642,6 +650,62 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   }
 
+  async downloadSheetFormat() {
+    if (this.detailTopActionIcon === 'ic-check-circle.svg') { return; }
+    this.approvalSearchRequest={};
+    let event;
+    const model: any = {};
+    this.approvalSearchRequest.providerId=this.sharedServices.providerId;
+    this.approvalSearchRequest.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
+    this.approvalSearchRequest.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
+
+    if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+      this.approvalSearchRequest.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
+    }
+
+    if (this.FormPreAuthTransaction.controls.payerId.value) {
+      this.approvalSearchRequest.payerId = this.FormPreAuthTransaction.controls.payerId.value;
+    }
+
+    if (this.FormPreAuthTransaction.controls.destinationId.value) {
+      this.approvalSearchRequest.destinationId = this.FormPreAuthTransaction.controls.destinationId.value;
+    }
+
+    // tslint:disable-next-line:max-line-length
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+      this.approvalSearchRequest.documentId = this.FormPreAuthTransaction.controls.documentId.value;
+    }
+
+    if (this.FormPreAuthTransaction.controls.status.value) {
+      this.approvalSearchRequest.status = this.FormPreAuthTransaction.controls.status.value;
+    }
+
+    if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+      this.approvalSearchRequest.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value;
+      // model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
+      //   return x.value;
+      // });
+    }
+
+
+    if (this.FormPreAuthTransaction.controls.type.value) {
+      this.approvalSearchRequest.type = this.FormPreAuthTransaction.controls.type.value;
+    }
+    if (this.FormPreAuthTransaction.controls.RequestBundleId.value) {
+      this.approvalSearchRequest.requestBundleId = this.FormPreAuthTransaction.controls.RequestBundleId.value;
+    }
+
+    event = this.nphiesDownloadApprovalEligibilityService.downloadApprovleExcelsheet(this.approvalSearchRequest);
+    if (event != null) {
+      this.downloadService.startGeneratingDownloadFile(event)
+        .subscribe(status => {
+          if (status !== DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }}
   inquireApprovalRequest(requestId) {
 
     this.sharedServices.loadingChanged.next(true);

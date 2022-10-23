@@ -14,6 +14,9 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EligibilityTransaction } from 'src/app/models/eligibility-transaction';
 import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { NphiesDownloadApprovalEligibilityService } from 'src/app/services/nphies_download_approval_eligibility/nphies-download-approval-eligibility.service';
 
 @Component({
   selector: 'app-eligibility-transactions',
@@ -31,7 +34,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
-
+  eligibilitySearchModel:EligibilitySearchModel={};
   payersList = [];
   FormEligibilityTransaction: FormGroup = this.formBuilder.group({
     fromDate: ['', Validators.required],
@@ -55,7 +58,9 @@ export class EligibilityTransactionsComponent implements OnInit {
     public sharedServices: SharedServices,
     private formBuilder: FormBuilder,
     private location: Location,
+    private downloadService: DownloadService,
     private datePipe: DatePipe,
+    private nphiesDownloadApprovalEligibilityService:NphiesDownloadApprovalEligibilityService,
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
@@ -249,6 +254,7 @@ export class EligibilityTransactionsComponent implements OnInit {
       model.pageSize = this.pageSize;
 
       this.editURL(model.fromDate, model.toDate);
+      this.detailTopActionIcon = 'ic-download.svg';
       this.providersNphiesEligibilityService.getEligibilityTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -274,6 +280,47 @@ export class EligibilityTransactionsComponent implements OnInit {
 
     }
   }
+
+  async downloadSheetFormat() {
+    if (this.detailTopActionIcon === 'ic-check-circle.svg') { return; }
+    this.eligibilitySearchModel={};
+    let event;
+  
+    this.eligibilitySearchModel.providerId=this.sharedServices.providerId;
+    this.eligibilitySearchModel.fromDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'yyyy-MM-dd');
+    this.eligibilitySearchModel.toDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd');
+
+    if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
+      this.eligibilitySearchModel.eligibilityId = this.FormEligibilityTransaction.controls.eligibilityId.value;
+    }
+
+    if (this.FormEligibilityTransaction.controls.payerId.value) {
+      this.eligibilitySearchModel.payerId = this.FormEligibilityTransaction.controls.payerId.value;
+    }
+
+    
+    // tslint:disable-next-line:max-line-length
+    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
+      //model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
+      this.eligibilitySearchModel.documentId = this.FormEligibilityTransaction.controls.documentId.value;
+    }
+
+    if (this.FormEligibilityTransaction.controls.status.value) {
+      this.eligibilitySearchModel.status = this.FormEligibilityTransaction.controls.status.value;
+    }
+
+
+    event = this.nphiesDownloadApprovalEligibilityService.downloadEligibilityExcelsheet( this.eligibilitySearchModel);
+    if (event != null) {
+      this.downloadService.startGeneratingDownloadFile(event)
+        .subscribe(status => {
+          if (status !== DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }}
 
   editURL(fromDate?: string, toDate?: string) {
     let path = '/nphies/eligibility-transactions?';

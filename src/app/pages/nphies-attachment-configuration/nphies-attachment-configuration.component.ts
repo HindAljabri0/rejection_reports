@@ -8,6 +8,9 @@ import { SettingsService } from 'src/app/services/settingsService/settings.servi
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs'
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { MatDialog } from '@angular/material';
 
 
 // in bytes, compress images larger than 1MB
@@ -53,6 +56,8 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
   HeaderFormat: string;
   FooterFormat: string;
   ImageFormat = ["jpg", "jpeg"];
+  HeaderByteArray:any;
+  FooterByteArray:any;
 
   errors: {
     providersError?: string
@@ -64,7 +69,8 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     private sharedServices: SharedServices,
     private formBuilder: FormBuilder,
     private settingsServices: SettingsService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -132,6 +138,8 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
           this.headerFileName = result.headerFileName;
           this.enabled = result.isEnabled
           this.selectedProvider = result.providerId;
+          this.HeaderByteArray = result.headerFile;
+          this.FooterByteArray = result.footerFile
 
           this.isHeaderSize = false;
           this.isHeaderNotSubmitted = false;
@@ -203,15 +211,15 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
         reader.onloadend = () => {
           const data: string = reader.result as string;
           this.header = data.substring(data.indexOf(',') + 1);
+          this.HeaderByteArray = data.substring(data.indexOf(',') + 1);
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
             this.headerHeight = img.naturalHeight;
             this.headerWidth = img.naturalWidth;
-            const maxHeight = this.headerWidth - (parseFloat(this.headerWidth) / 3);
             if (!this.HeadersizeInMB.includes('KB')
                ||
-                 !(this.headerHeight < maxHeight)
+                 !(this.headerHeight == 120 && this.headerWidth == 698)
             ) {
               this.isHeaderNotSubmitted = false;
               if (this.HeadersizeInMB.includes('KB')) {
@@ -225,7 +233,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isHeaderSize = true;
                 this.isHeaderFormat = false;
               }
-               if (!(this.headerHeight < maxHeight)) this.isHeaderDimension = true;
+               if (!(this.headerHeight == 120 && this.headerWidth == 698)) this.isHeaderDimension = true;
             } else {
               if (this.HeadersizeInMB.includes('KB')) {
                 var hdSize = parseFloat(this.HeadersizeInMB.replace("KB", "").trim());
@@ -269,15 +277,15 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
         reader.onloadend = () => {
           const data: string = reader.result as string;
           this.footer = data.substring(data.indexOf(',') + 1);
+          this.FooterByteArray = data.substring(data.indexOf(',') + 1);
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
             this.footerHeight = img.naturalHeight;
             this.footerWidth = img.naturalWidth;
-            const maxHeight = this.footerWidth - (parseFloat(this.footerWidth) / 3);
             if (!this.FootersizeInMB.includes('KB')
                ||
-                 !(this.footerHeight < maxHeight)
+                 !(this.footerHeight == 120 && this.footerWidth == 698)
             ) {
               this.isFooterNotSubmitted = false;
 
@@ -292,7 +300,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
                 this.isFooterSize = true;
                 this.isFooterFormat = false;
               }
-              if (!(this.footerHeight < maxHeight)) this.isFooterDimension = true;
+              if (!(this.footerHeight == 120 && this.footerWidth == 698)) this.isFooterDimension = true;
             } else {
               if (this.FootersizeInMB.includes('KB')) {
                 var ftSize = parseFloat(this.FootersizeInMB.replace("KB", "").trim());
@@ -478,6 +486,24 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
     this.enabled = false;
     this.providerController.setValue('');
     this.selectedProvider = null;
+  }
+ 
+  viewAttachment(img:string) {
+    let fileName ='';
+    let byteArray = '';
+    if(img === 'header')
+    {
+      fileName = this.headerFileName;
+      byteArray = this.HeaderByteArray
+    } else {
+      fileName = this.footerFileName;
+      byteArray = this.FooterByteArray
+    }
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: fileName, attachment: byteArray
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }
