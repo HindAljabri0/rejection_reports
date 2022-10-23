@@ -34,6 +34,8 @@ export const environment = {
     nphiesConfigurationService: `${host}/nphies-configurations`,
     tawuniyaGssReport: `${host}/gss-report`,
     nphiesClaimDownload: `${host}/nphiesDownloads`,
-    nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`
+    nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`,
+    providerNphiesApprovalInquiry: `${host}/nphies-approval-inquiry`
+
 
 };

@@ -40,7 +40,9 @@ export const environment = {
     nphiesConfigurationService: `${host}:8092`,
     tawuniyaGssReport: `${host}:8011`,
     nphiesClaimDownload: `${host}:8054/nphiesDownloads`,
-    nphiesDownloadApprovleEligibility: `${host}:8055/nphiesApprovalEligibilityDownloads`
+    nphiesDownloadApprovleEligibility: `${host}:8055/nphiesApprovalEligibilityDownloads`,
+    providerNphiesApprovalInquiry: `${host}:8101`
+
 };
 
 /*
