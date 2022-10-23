@@ -420,7 +420,7 @@ export class ProviderNphiesApprovalService {
     if (requestId) {
       requestUrl += `approvalRequestId=${requestId}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApprovalInquiry + requestUrl, {});
+    const request = new HttpRequest('POST', environment.nphiesApprovalInquiry + requestUrl, {});
     return this.http.request(request);
   }
 
