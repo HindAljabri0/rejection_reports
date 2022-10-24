@@ -11,10 +11,11 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { PreAuthorizationTransaction } from 'src/app/models/pre-authorization-transaction';
 import { PaymentReconciliation } from 'src/app/models/payment-reconciliation';
 import { NphiesPollManagementService } from 'src/app/services/nphiesPollManagement/nphies-poll-management.service';
 import { RecentReconciliationComponent } from './recent-reconciliation/recent-reconciliation.component';
+import { NphiesPayersSelectorComponent } from 'src/app/components/reusables/nphies-payers-selector/nphies-payers-selector.component';
+
 
 @Component({
   selector: 'app-payment-reconciliation',
@@ -24,6 +25,7 @@ import { RecentReconciliationComponent } from './recent-reconciliation/recent-re
 export class PaymentReconciliationComponent implements OnInit {
 
   @ViewChild('recentReconciliation', { static: false }) recentReconciliation: RecentReconciliationComponent;
+  @ViewChild('tpaPayers', {static: false}) tpaPayers: NphiesPayersSelectorComponent;
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[] = [];
   paginatorPageSizeOptions = [10, 20, 50, 100];
@@ -155,7 +157,8 @@ export class PaymentReconciliationComponent implements OnInit {
           this.paymentReconciliations = this.paymentReconciliationModel.content;
           this.paymentReconciliations.forEach(x => {
             // tslint:disable-next-line:max-line-length
-            x.issuerName = this.payersList.find(y => y.nphiesId === x.issuerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.issuerNphiesId)[0].englistName : '';
+            x.issuerName = this.payersList.find(y => y.nphiesId === x.issuerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.issuerNphiesId)[0].englistName : '-';
+            x.tpaName= this.tpaPayers.findTPAName(x.destinationId);
           });
           // console.log(this.paymentReconciliations);
           const pages = Math.ceil((this.paymentReconciliationModel.totalElements / this.pageSize));
