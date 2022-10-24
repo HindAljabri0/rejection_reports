@@ -156,8 +156,8 @@
                       <th>Type</th>
                       <th>Invoice No. <span class="asterisk">*</span></th>
                       <th>Code - Description</th>
-                      <th>Patient Share</th>
-                      <th>Payer Share</th>
+                      <th>Patient Share <span class="asterisk">*</span></th>
+                      <th>Payer Share <span class="asterisk">*</span></th>
                       <th>Net / Tax</th>
                       <th>Benefit / Tax</th>
                       <th>Status</th>
@@ -186,8 +186,36 @@
                         </div>
                       </td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
-                      <td>{{item.patientShare}} <span class="currency">SR</span></td>
-                      <td>{{item.payerSahare}} <span class="currency">SR</span></td>
+                    <td>
+                      <div class="form-group mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : transaction.submitted && !item.patientShare}">
+                        <span class="d-flex align-items-center">
+                          <span class="pr-1">
+                            <input type="text" class="form-control" placeholder="Enter Patient Share" [(ngModel)]="item.patientShare"
+                               />
+                          </span>
+                        </span>
+                        <div
+                          *ngIf="transaction.submitted && !item.patientShare">
+                          <span class="error-text">Patient Share required</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : transaction.submitted && !item.payerShare}">
+                        <span class="d-flex align-items-center">
+                          <span class="pr-1">
+                            <input type="text" class="form-control" placeholder="Enter Payer Sahare" [(ngModel)]="item.payerShare"
+                               />
+                          </span>
+                        </span>
+                        <div
+                          *ngIf="transaction.submitted && !item.payerShare">
+                          <span class="error-text">Payer Share required</span>
+                        </div>
+                      </div>
+                    </td>
                       <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
                       <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
