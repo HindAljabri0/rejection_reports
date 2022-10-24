@@ -18,7 +18,7 @@ export class NphiesDownloadApprovalEligibilityService {
   }
   downloadApprovleExcelsheet(approvalSearchRequest: ApprovalSearchRequest) {
 
-    let requestURL = `/providers/${approvalSearchRequest.providerId}/approvle?`;
+    let requestURL = `/providers/${approvalSearchRequest.providerId}/approval?`;
 
     if (approvalSearchRequest.payerId != null) {
       requestURL += `&payerId=${approvalSearchRequest.payerId}`;
