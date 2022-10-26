@@ -56,6 +56,7 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');
+    localStorage.removeItem('organizationId');
     const providerId = localStorage.getItem('provider_id');
     localStorage.removeItem('provider_id');
     this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
@@ -151,6 +152,7 @@ export class AuthService {
           || element['authority'].split('|')[1] == '25.71'
           || element['authority'].split('|')[1] == '25.72'
           || element['authority'].split('|')[1] == '31.0'
+          || element['authority'].split('|')[1] == '32.0'
         );
         if (hasClaimPrivileges) {
           authorities.forEach(element => {
@@ -168,6 +170,7 @@ export class AuthService {
           localStorage.setItem('user_name', event.body['fullName']);
           localStorage.setItem('auth_username', event.body['username']);
           localStorage.setItem('provider_name', event.body['providerName']);
+          localStorage.setItem('organizationId', event.body['organizationId']);
           const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
