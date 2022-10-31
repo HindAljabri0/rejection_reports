@@ -109,8 +109,9 @@
             <th>Payer/TPA</th>
             <th>Total Net / Tax</th>
             <th>Total Benefit / Tax</th>
-            <th>Patient Share</th>
-            <th>Payer Share</th>
+            <th>Total Patient Share</th>
+            <th>Total Payer Share</th>
+            <th>Total Discount</th>
             <!-- <th>Status</th> -->
           </tr>
         </thead>
@@ -135,6 +136,7 @@
               <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span> / {{transaction.totalBenefitTax}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalDiscount}} <span class="currency">SR</span></td>
               <!-- <td (click)="toggleRow(i)"> {{transaction.status}}</td> -->
             </tr>
             <tr *ngIf="currentOpenRow==i">
@@ -153,6 +155,7 @@
                       <th>Payer Share</th>
                       <th>Net / Tax</th>
                       <th>Benefit / Tax</th>
+                      <th>Discount</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -166,6 +169,7 @@
                       <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
+                      <td>{{item.discount}} <span class="currency">SR</span></td>
                       <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
                     </tr>
                   </tbody>

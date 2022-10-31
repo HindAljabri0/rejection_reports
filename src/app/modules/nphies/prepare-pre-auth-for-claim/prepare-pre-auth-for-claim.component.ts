@@ -294,11 +294,13 @@ export class PreparePreAuthForClaimComponent implements OnInit {
             x.totalTax = 0;
             x.totalBenefit = 0;
             x.totalBenefitTax = 0;
+            x.totalDiscount = 0;
 
             if (x.items && x.items.length > 0) {
               x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
               x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
               x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
+              x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => prev + next);
 
               x.items.forEach(y => {
                 y.invoiceNo = '';
@@ -415,6 +417,8 @@ export class PreparePreAuthForClaimComponent implements OnInit {
               itemModel.itemStatus = x.status;
               itemModel.patientShare = parseFloat(x.patientShare);
               itemModel.payerShare = parseFloat(x.payerShare);
+              itemModel.net = parseFloat(x.net);
+              itemModel.discount = parseFloat(x.discount);
               return itemModel;
             })
           }
