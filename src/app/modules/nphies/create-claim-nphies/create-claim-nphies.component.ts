@@ -32,11 +32,10 @@ import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attach
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 
-
 @Component({
   selector: 'app-create-claim-nphies',
   templateUrl: './create-claim-nphies.component.html',
-  styles: []
+  styles: [],
 })
 export class CreateClaimNphiesComponent implements OnInit {
 
@@ -318,7 +317,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     //   this.disableControls();
     //   this.getClaimDetails();
     // }
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormNphiesClaim.controls.dateOrdered.setValue(moment(new Date()));
     this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.fragment === 'CommunicationRequest') {
@@ -1639,7 +1638,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value ? this.FormNphiesClaim.controls.preAuthResponseId.value : null;
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;
-      preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
+      //preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd HH:mm:ss');
+      preAuthorizationModel.dateOrdered = moment(this.FormNphiesClaim.controls.dateOrdered.value).utc();
       if (this.FormNphiesClaim.controls.accountingPeriod.value) {
         // tslint:disable-next-line:max-line-length
         preAuthorizationModel.accountingPeriod = this.datePipe.transform(this.FormNphiesClaim.controls.accountingPeriod.value, 'yyyy-MM-dd');
@@ -1723,7 +1723,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
-        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormNphiesClaim.controls.dateWritten.value, 'yyyy-MM-dd');
+        this.model.visionPrescription.dateWritten = moment(this.FormNphiesClaim.controls.dateWritten.value).utc();
         this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
         this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
           const model: any = {};
@@ -1772,8 +1772,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = x.startDate;
-          model.endDate = x.endDate;
+          model.startDate = moment(x.startDate).utc();
+          model.endDate = moment(x.endDate).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1814,8 +1814,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = x.startDate;
-          model.endDate = x.endDate;
+          model.startDate = moment(x.startDate).utc();
+          model.endDate = moment(x.endDate).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1849,8 +1849,8 @@ export class CreateClaimNphiesComponent implements OnInit {
         encounterModel.status = this.FormNphiesClaim.controls.status.value;
         encounterModel.encounterClass = this.FormNphiesClaim.controls.encounterClass.value;
         encounterModel.serviceType = this.FormNphiesClaim.controls.serviceType.value;
-        encounterModel.startDate = this.datePipe.transform(this.FormNphiesClaim.controls.startDate.value, 'yyyy-MM-dd');
-        encounterModel.periodEnd = this.datePipe.transform(this.FormNphiesClaim.controls.periodEnd.value, 'yyyy-MM-dd');
+        encounterModel.startDate = moment(this.FormNphiesClaim.controls.startDate.value).utc();
+        encounterModel.periodEnd = moment(this.FormNphiesClaim.controls.periodEnd.value).utc();
         encounterModel.origin = parseFloat(this.FormNphiesClaim.controls.origin.value);
         encounterModel.adminSource = this.FormNphiesClaim.controls.adminSource.value;
         encounterModel.reAdmission = this.FormNphiesClaim.controls.reAdmission.value;
@@ -1947,7 +1947,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       accidentType: '',
       country: ''
     });
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm aa'));
     this.CareTeams = [];
     this.Diagnosises = [];
     this.VisionSpecifications = [];
@@ -2210,7 +2210,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     return speciality;
   }*/
   setData(response) {
-
     this.sharedServices.loadingChanged.next(true);
     this.reset();
 
@@ -2875,10 +2874,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.payerShare = x.payerShare;
       model.startDate = x.startDate;
       if (model.startDate) {
-        model.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+        model.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD HH:mm:ss')).format('DD/MM/YYYY hh:mm aa');
       }
       model.endDate = x.endDate;
-      model.endDateStr = moment(moment(x.endDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+      model.endDateStr = moment(moment(x.endDate, 'YYYY-MM-DD HH:mm:ss')).format('DD/MM/YYYY hh:mm aa');
       model.supportingInfoSequence = x.supportingInfoSequence;
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;

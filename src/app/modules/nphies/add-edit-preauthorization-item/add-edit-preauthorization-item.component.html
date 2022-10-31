@@ -128,16 +128,17 @@
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="today">
+              <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="today">
+                  <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                  <owl-date-time #startDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="FormItem.controls.endDate.value">
-              <!--[max]="today" [min]="data.dateOrdered"-->
+              <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" [max]="FormItem.controls.endDate.value" formControlName="startDate">
+                  <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                  <owl-date-time #startDate></owl-date-time>
             </ng-container>
 
 
-            <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
-            <mat-datepicker #startDate></mat-datepicker>
           </div>
           <!-- <div
             *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
@@ -162,15 +163,17 @@
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [max]="today">
+             <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [max]="today">
+                  <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                  <owl-date-time #endDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate">
+              <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate">
+              <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+              <owl-date-time #endDate></owl-date-time>
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
 
-            <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
-            <mat-datepicker #endDate></mat-datepicker>
           </div>
           <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
             <span class="error-text">Please enter service end date</span>
