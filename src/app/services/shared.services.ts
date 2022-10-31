@@ -196,13 +196,7 @@ export class SharedServices {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
-    });
-
-    this.getProcessedCount();
-    this.getCommunicationRequestCount();
-    this.getRecentReconciliationCount();
-    this.getClaimProcessedCount();
-    this.getClaimCommunicationRequestCount();
+    });    
   }
 
   getAnnouncements() {
