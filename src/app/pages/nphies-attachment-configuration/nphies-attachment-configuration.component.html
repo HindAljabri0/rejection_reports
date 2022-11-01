@@ -39,7 +39,9 @@
                             <img src="./assets/ic-upload.svg" alt="Upload" />
                             <p>Drag and drop header image file here or <span class="semibold text-primary">browse</span>
                             </p>
-                            <span>allowed only jpg and jpeg image files and image size should be less than 300 KB</span>
+                            <span>Allowed only jpg, jpeg and png files</span>
+                            <span>Image size should be less than 300 KB</span>
+                            <span>Image dimension should be 120px X 698px</span>
                         </div>
                         <div class="content" *ngIf="headerFileName">
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
@@ -51,7 +53,7 @@
                                 <a href="#" class="primary-link"
                                 (click)="$event.preventDefault();viewAttachment('header');">Preview</a>
                         </div>
-                        <input type="file" accept=".jpg , .jpeg " [(ngModel)]="headerFile" [ngModelOptions]="{standalone: true}" *ngIf="!headerFileName"
+                        <input type="file" accept=".jpg , .jpeg, .png" [(ngModel)]="headerFile" [ngModelOptions]="{standalone: true}" *ngIf="!headerFileName"
                             (change)="selectHeaderFile($event)"
                             class="upload-control" required [disabled]="(!selectedProvider)">
                     </div>
@@ -65,7 +67,7 @@
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderDimension">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image height x width should be 120 x 698.</span>
+                        <span>Image height x width should be 120px x 698px.</span>
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
@@ -79,7 +81,9 @@
                             <img src="./assets/ic-upload.svg" alt="Upload" />
                             <p>Drag and drop footer image file here or <span class="semibold text-primary">browse</span>
                             </p>
-                            <span>allowed only jpg and jpeg image files and image size should be less than 300 KB</span>
+                            <span>Allowed only jpg, jpeg and png files</span>
+                            <span>Image size should be less than 300 KB</span>
+                            <span>Image dimension should be 120px X 698px</span>
                         </div>
                         <div class="content" *ngIf="footerFileName">
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
@@ -91,7 +95,7 @@
                                 <a href="#" class="primary-link"
                                 (click)="$event.preventDefault();viewAttachment('footer');">Preview</a>
                         </div>
-                        <input type="file" accept=".jpg , .jpeg " [(ngModel)]="footerFile" [ngModelOptions]="{standalone: true}" *ngIf="!footerFileName"
+                        <input type="file" accept=".jpg , .jpeg , .png" [(ngModel)]="footerFile" [ngModelOptions]="{standalone: true}" *ngIf="!footerFileName"
                             (change)="selectFooterFile($event)"
                             class="upload-control" required [disabled]="(!selectedProvider)">
                     </div>
@@ -105,7 +109,7 @@
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterDimension">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image height x width should be 120 x 698.</span>
+                        <span>Image height x width should be 120px x 698px.</span>
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
