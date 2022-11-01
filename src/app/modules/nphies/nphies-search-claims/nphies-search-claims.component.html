@@ -189,7 +189,7 @@
                     </mat-icon>
                   </th>
 
-                  <th *ngIf="showGenerateAttachment === true && isGenerateAttachment"
+                  <th *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0"
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Attachment Status</th>
 
@@ -256,7 +256,7 @@
                       </div>
                     </td>
 
-                    <td  *ngIf="showGenerateAttachment === true && isGenerateAttachment" (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                    <td  *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0" (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
                       class="text-center row-click">
                       <mat-icon *ngIf="claim.attachmentStatus === 'Success'" class="material-icons-outlined text-success">check_circle</mat-icon>
                       <mat-icon *ngIf="claim.attachmentStatus === 'FaultyAttachment'" matTooltip="Faulty Attachment" class="material-icons-outlined text-danger">broken_image</mat-icon>
