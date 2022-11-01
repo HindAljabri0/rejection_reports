@@ -130,13 +130,13 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       this.data.accident.date = moment(this.data.accident.date).format('DD-MM-YYYY');
     }
 
-    if (this.data && this.data.preAuthorizationInfo.dateOrdered) {
-      this.data.preAuthorizationInfo.dateOrdered = moment(this.data.preAuthorizationInfo.dateOrdered).format('DD-MM-YYYY');
-    }
+    // if (this.data && this.data.preAuthorizationInfo.dateOrdered) {
+    //   this.data.preAuthorizationInfo.dateOrdered = moment(this.data.preAuthorizationInfo.dateOrdered).format('DD-MM-YYYY');
+    // }
 
-    if (this.data.visionPrescription && this.data.visionPrescription.dateWritten) {
-      this.data.visionPrescription.dateWritten = moment(this.data.visionPrescription.dateWritten).format('DD-MM-YYYY');
-    }
+    // if (this.data.visionPrescription && this.data.visionPrescription.dateWritten) {
+    //   this.data.visionPrescription.dateWritten = moment(this.data.visionPrescription.dateWritten).format('DD-MM-YYYY');
+    // }
 
 
 
@@ -368,10 +368,10 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
         this.paymentAmount += x.net;
-        if (x.startDate) {
-          x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
-        }
-        x.endDate = moment(moment(x.endDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+        // if (x.startDate) {
+        //   x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+        // }
+        // x.endDate = moment(moment(x.endDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
 
         x.discount = parseFloat(x.discount);
         x.quantity = parseFloat(x.quantity);
