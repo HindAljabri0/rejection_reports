@@ -21,6 +21,7 @@ import { PreparePreAuthForClaimComponent } from './prepare-pre-auth-for-claim/pr
 import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/convert-pre-auth-to-claim.component';
 import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
 import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
+import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -46,7 +47,8 @@ const routes: Routes = [
   { path: 'prepare-pre-auth-for-claim', component: PreparePreAuthForClaimComponent },
   { path: 'convert-pre-auth-to-claim', component: ConvertPreAuthToClaimComponent },
   { path: 'days-of-supply-upload', component: DaysOfSupplyUploadComponent },
-  { path: 'medication-days-upload', component: MedicationDaysUploadComponent }
+  { path: 'medication-days-upload', component: MedicationDaysUploadComponent },
+  { path: 'switch-group-provider', component: SwitchGroupProviderComponent}
   
 ];
 

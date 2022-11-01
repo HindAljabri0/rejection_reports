@@ -368,6 +368,11 @@ export class SharedServices {
   public get providerId() {
     return this.authService.getProviderId();
   }
+
+  public get providerGroupId() {
+    return this.authService.getOrganizationId();
+  }
+
   provider(): String {
     return this.authService.getProviderId();
   }
