@@ -166,8 +166,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           net: this.data.item.net,
           patientShare: this.data.item.patientShare,
           payerShare: this.data.item.payerShare,
-          startDate: this.data.item.startDate,
-          endDate: this.data.item.endDate,
+          startDate: new Date(this.data.item.startDate),
+          endDate: new Date(this.data.item.endDate),
           invoiceNo: this.data.item.invoiceNo,
           drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0]
 
@@ -844,10 +844,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
       model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd hh:mm aa');
-      model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy');
+      model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy hh:mm aa');
 
       model.endDate = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
-      model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy');
+      model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
 
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
         model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });

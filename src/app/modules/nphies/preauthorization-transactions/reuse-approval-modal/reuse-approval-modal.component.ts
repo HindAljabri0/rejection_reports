@@ -34,12 +34,10 @@ export class ReuseApprovalModalComponent implements OnInit {
 
     if (this.data.detailsModel && this.data.detailsModel.preAuthorizationInfo.dateOrdered) {
       // tslint:disable-next-line:max-line-length
-      this.data.detailsModel.preAuthorizationInfo.dateOrdered = moment(this.data.detailsModel.preAuthorizationInfo.dateOrdered).format('DD-MM-YYYY');
     }
 
     if (this.data.detailsModel.visionPrescription && this.data.detailsModel.visionPrescription.dateWritten) {
       // tslint:disable-next-line:max-line-length
-      this.data.detailsModel.visionPrescription.dateWritten = moment(this.data.detailsModel.visionPrescription.dateWritten).format('DD-MM-YYYY');
     }
 
     this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
@@ -166,9 +164,9 @@ export class ReuseApprovalModalComponent implements OnInit {
         x.typeName = this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(i => i.value === x.type)[0].name : '';
 
         if (x.startDate) {
-          x.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+            x.startDateStr = moment(x.startDate).format('DD/MM/YYYY hh:mm a');
         }
-        x.endDateStr = moment(moment(x.endDate, 'YYYY-MM-DD')).format('DD/MM/YYYY');
+         x.endDateStr = moment(x.endDate).format('DD/MM/YYYY hh:mm a');
 
         // x.supportingInfoSequence = x.supportingInfoSequence ? x.supportingInfoSequence.toString() : '-';
         // x.careTeamSequence = x.careTeamSequence ? x.careTeamSequence.toString() : '';

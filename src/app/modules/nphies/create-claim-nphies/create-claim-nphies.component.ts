@@ -317,7 +317,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     //   this.disableControls();
     //   this.getClaimDetails();
     // }
-    this.FormNphiesClaim.controls.dateOrdered.setValue(moment(new Date()));
+    this.FormNphiesClaim.controls.dateOrdered.setValue(new Date());
     this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.fragment === 'CommunicationRequest') {
@@ -1638,7 +1638,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value ? this.FormNphiesClaim.controls.preAuthResponseId.value : null;
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;
-      //preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd HH:mm:ss');
       preAuthorizationModel.dateOrdered = moment(this.FormNphiesClaim.controls.dateOrdered.value).utc();
       if (this.FormNphiesClaim.controls.accountingPeriod.value) {
         // tslint:disable-next-line:max-line-length
@@ -2874,10 +2873,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.payerShare = x.payerShare;
       model.startDate = x.startDate;
       if (model.startDate) {
-        model.startDateStr = moment(moment(x.startDate, 'YYYY-MM-DD HH:mm:ss')).format('DD/MM/YYYY hh:mm aa');
+        model.startDateStr = moment(x.startDate).format('DD/MM/YYYY hh:mm a');
       }
       model.endDate = x.endDate;
-      model.endDateStr = moment(moment(x.endDate, 'YYYY-MM-DD HH:mm:ss')).format('DD/MM/YYYY hh:mm aa');
+      model.endDateStr = moment(x.endDate).format('DD/MM/YYYY hh:mm a');
       model.supportingInfoSequence = x.supportingInfoSequence;
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
