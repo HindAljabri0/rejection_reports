@@ -141,6 +141,12 @@ export class SuperAdminService {
     const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, body);
     return this.http.request(req);
   }
+
+  getProvidersWithinGroup(providerId: string, providerGroupId: string) {
+    const requestURL = `/providers/providersWithinGroup/${providerId}/${providerGroupId}`;
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
 }
 
 export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';

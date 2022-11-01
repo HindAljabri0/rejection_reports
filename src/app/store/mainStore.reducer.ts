@@ -50,7 +50,8 @@ export interface UserPrivileges {
       canAccessCodeMapping: boolean,
       canAccessConvertPreAuthToClaim: boolean,
       canAccessPrepareClaim: boolean,
-      canAccessConvertClaim: boolean
+      canAccessConvertClaim: boolean,
+      canSwitchGroupProvider: boolean
     }
   };
 }
@@ -110,7 +111,8 @@ export const initState: MainState = {
         canAccessCodeMapping:false,
         canAccessConvertPreAuthToClaim: false,
         canAccessPrepareClaim: false,
-        canAccessConvertClaim: false
+        canAccessConvertClaim: false,
+        canSwitchGroupProvider: false
       }
     }
   }
@@ -171,6 +173,7 @@ const _mainReducer = createReducer(
           canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.7')),
           canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
           canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),
+          canSwitchGroupProvider: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '32.0')),
         }
       }
     };

@@ -80,6 +80,7 @@ import { UcafFormTemplateComponent } from './ucaf-form-template/ucaf-form-templa
 import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-template.component';
 import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ViewPrintPreviewDialogComponent,
     UcafFormTemplateComponent,
     DcafFormTemplateComponent,
-    OcafFormTemplateComponent
+    OcafFormTemplateComponent,
+    SwitchGroupProviderComponent
   ],
   imports: [
     CommonModule,
