@@ -95,7 +95,7 @@
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value ?
-              (FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy') : '-'}}
+              (FormNphiesClaim.controls.dateOrdered.value | date: 'dd/MM/yyyy hh:mm aa') : '-'}}
             </p>
           </div>
         </div>
@@ -187,8 +187,8 @@
             <div class="control-label">Batch Period</div>
             <p class="form-control-static">
               <span *ngIf="otherDataModel.batchInfo">
-                {{otherDataModel.batchInfo.startDate | date: 'dd/MM/yyyy'}} -
-                {{otherDataModel.batchInfo.endDate | date: 'dd/MM/yyyy'}}
+                {{otherDataModel.batchInfo.startDate | date: 'dd/MM/yyyy hh:mm a'}} -
+                {{otherDataModel.batchInfo.endDate | date: 'dd/MM/yyyy hh:mm a'}}
               </span>
               <span *ngIf="!otherDataModel.batchInfo">-</span>
             </p>
@@ -353,7 +353,7 @@
           <div class="form-group">
             <label class="control-label">Date Written</label>
             <label>
-              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd-MM-yyyy'}}
+              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd/MM/yyyy hh:mm aa'}}
             </label>
             <!-- <div class="date-picker">
               <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
@@ -1504,10 +1504,9 @@
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
                 <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
-                    [max]="today" formControlName="dateOrdered">
+                  <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"  formControlName="dateOrdered">
                   <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
-                  <mat-datepicker #dateOrderedCtrl></mat-datepicker>
+                  <owl-date-time #dateOrderedCtrl></owl-date-time>
                 </div>
                 <div
                   *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
@@ -1835,10 +1834,10 @@
                 <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                     class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
-                    formControlName="dateWritten">
+                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"  formControlName="dateWritten">
                   <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
-                  <mat-datepicker #visionWrittenDate></mat-datepicker>
+                  <owl-date-time #visionWrittenDate></owl-date-time>
+
                 </div>
                 <div
                   *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">

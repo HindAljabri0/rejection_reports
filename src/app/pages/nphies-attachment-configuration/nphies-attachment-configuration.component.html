@@ -45,6 +45,7 @@
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
                             <p>{{headerFileName}}</p>
                             <span *ngIf="HeadersizeInMB">File Size: {{HeadersizeInMB}}</span>
+                            <span *ngIf="headerHeight && headerWidth">Dimension: {{headerHeight}}px X {{headerWidth}}px</span>
                             <a href="#" class="primary-link"
                                 (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a><br>
                                 <a href="#" class="primary-link"
@@ -68,7 +69,7 @@
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isHeaderFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image should be jpg , jpeg .</span>
+                        <span>Image should be jpg , jpeg , png.</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -84,6 +85,7 @@
                             <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
                             <p>{{footerFileName}}</p>
                             <span *ngIf="FootersizeInMB">File Size: {{FootersizeInMB}}</span>
+                            <span *ngIf="footerHeight && footerWidth">Dimension: {{footerHeight}}px X {{footerWidth}}px</span>
                             <a href="#" class="primary-link"
                                 (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a><br>
                                 <a href="#" class="primary-link"
@@ -107,7 +109,7 @@
                     </div>
                     <div class="alert mt-14 danger" *ngIf="isFooterFormat">
                         <mat-icon class="material-icons-outlined">error</mat-icon>
-                        <span>Image should be jpg , jpeg .</span>
+                        <span>Image should be jpg , jpeg , png.</span>
                     </div>
                 </div>
             </div>

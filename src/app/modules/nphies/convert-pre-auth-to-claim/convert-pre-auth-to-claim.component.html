@@ -9,8 +9,7 @@
           <div class="form-group">
             <label class="control-label">From Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                formControlName="fromDate">
+              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
               <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
               <mat-datepicker #filterFromDate></mat-datepicker>
             </div>
@@ -20,8 +19,8 @@
           <div class="form-group">
             <label class="control-label">To Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
-                [min]="FormPreAuthTransaction.controls.fromDate.value" formControlName="toDate">
+              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPreAuthTransaction.controls.fromDate.value"
+                formControlName="toDate">
               <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
               <mat-datepicker #filterToDate></mat-datepicker>
             </div>
@@ -53,12 +52,10 @@
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
-              <input type="text" class="form-control search-box"
-                placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+              <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
                 [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
-                  (click)="selectBeneficiary(beneficiary)">
+                <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
                   {{beneficiary.name}} ({{beneficiary.documentId}})
                 </mat-option>
               </mat-autocomplete>
@@ -92,8 +89,7 @@
     </form>
   </div>
 
-  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
-    *ngIf="transactionModel && transactions.length > 0">
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
     <div class="fixed-height fixed-height-sm">
       <table class="primary-grid sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
         <thead>
@@ -111,6 +107,7 @@
             <th>Total Benefit / Tax</th>
             <th>Patient Share</th>
             <th>Payer Share</th>
+            <th>Discount</th>
             <!-- <th>Status</th> -->
           </tr>
         </thead>
@@ -118,7 +115,8 @@
           <ng-container *ngFor="let transaction of transactions; let i = index">
             <tr class="row-click">
               <td>
-                <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectedApprovals.includes(transaction.convertToClaimEpisodeId)" (change)="selectApproval(transaction.convertToClaimEpisodeId)"></mat-checkbox>
+                <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectedApprovals.includes(transaction.convertToClaimEpisodeId)"
+                  (change)="selectApproval(transaction.convertToClaimEpisodeId)"></mat-checkbox>
               </td>
               <td (click)="toggleRow(i)" class="text-primary text-center">
                 <mat-icon *ngIf="currentOpenRow!=i">add_circle_outline</mat-icon>
@@ -135,14 +133,14 @@
               <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span> / {{transaction.totalBenefitTax}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">0 <span class="currency">SR</span></td>
               <!-- <td (click)="toggleRow(i)"> {{transaction.status}}</td> -->
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
               <td></td>
               <td colspan="10">
-                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0"
-                  *ngIf="transaction && transaction.items && transaction.items.length > 0">
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0" *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
                       <th>Sequence No.</th>
@@ -153,11 +151,12 @@
                       <th>Payer Share</th>
                       <th>Net / Tax</th>
                       <th>Benefit / Tax</th>
+                      <th>Discount</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr  *ngFor="let item of transaction.items" class="align-middle">
+                    <tr *ngFor="let item of transaction.items" class="align-middle">
                       <td>{{item.itemSequenceNo}}</td>
                       <td>{{item.itemType}}</td>
                       <td>{{item.patientInvoiceNo}}</td>
@@ -166,7 +165,10 @@
                       <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
-                      <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
+                      <td>0 <span class="currency">SR</span></td>
+                      <td><span
+                          [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status
+                          | titlecase}}</span></td>
                     </tr>
                   </tbody>
                 </table>
@@ -180,8 +182,7 @@
 
   <app-empty-state *ngIf="isSubmitted && transactionModel && transactions.length === 0" message='No approvals found!'>
   </app-empty-state>
-  <app-empty-state *ngIf="!isSubmitted && transactions && transactions.length === 0"
-    message='Please search to filter approvals'>
+  <app-empty-state *ngIf="!isSubmitted && transactions && transactions.length === 0" message='Please search to filter approvals'>
   </app-empty-state>
 
 
@@ -196,15 +197,15 @@
       </mat-form-field>
     </div>
     <div class="material-paginator">
-      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-        (page)="paginatorAction($event)">
+      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
       </mat-paginator>
     </div>
   </div>
 
   <div class="block-footer sticky">
     <div class="right-block">
-      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()">Convert {{selectedApprovals.length==0?" All":"Selection ("+this.selectedApprovals.length+")"}}</button>
+      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()">Convert {{selectedApprovals.length==0?" All":"Selection
+        ("+this.selectedApprovals.length+")"}}</button>
     </div>
   </div>
 </div>
