@@ -1213,8 +1213,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         //  this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0]
         // === ClaimStatus.Accepted.toLowerCase() ? true : false;
         this.isPBMValidationVisible = this.apiPBMValidationEnabled
-          && (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase()
-            || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+          && (this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Accepted.toLowerCase()
+            || this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
@@ -1807,4 +1807,52 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }, eventError => {
     });
   }
+
+  applyPBMValidation() {
+    this.commen.loadingChanged.next(true);
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+    // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+    // const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
+    const status = this.isPBMValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
+    this.providerNphiesApprovalService.PBMValidation(this.providerId, this.selectedClaims,
+      this.params.uploadId, this.params.claimRefNo, this.params.to,
+      payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                this.commen.loadingChanged.next(false);
+                if (event.body['response']) {
+                    this.dialogService.openMessageDialog(
+                        new MessageDialogData('',
+                            event.body['message'],
+                            true))
+                        .subscribe(afterColse => {
+                            location.reload();
+                        });
+                } else {
+                    this.dialogService.openMessageDialog(
+                        new MessageDialogData('',
+                            event.body['message'],
+                            false))
+                        .subscribe(afterColse => {
+                            location.reload();
+                        });
+                }
+                this.commen.loadingChanged.next(false);
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+                if (errorEvent.status === 404) {
+                    this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
+                } else {
+                    this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                }
+            }
+            this.commen.loadingChanged.next(false);
+        });
+    // }
+    // });
+}
 }
