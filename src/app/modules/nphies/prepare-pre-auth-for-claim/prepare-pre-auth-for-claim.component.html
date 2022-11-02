@@ -137,7 +137,7 @@
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
-              <td colspan="10">
+              <td colspan="11">
                 <div class="row small-gutter">
                   <div class="col-4 col-xxl-3">
                     <!-- <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}"> -->
@@ -167,7 +167,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of transaction.items" class="align-middle">
+                    <tr *ngFor="let item of transaction.items; let j = index" class="align-middle">
                       <td>{{item.itemSequenceNo}}</td>
                       <td>{{item.itemType}}</td>
                       <td>
@@ -191,7 +191,7 @@
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                     <td>
                       <div class="form-group mb-n1 mt-n1"
-                        [ngClass]="{'has-error' : transaction.submitted && !item.patientShare}">
+                        [ngClass]="{'has-error' : transaction.submitted && (item.patientShare === undefined || item.patientShare === null)}">
                         <span class="d-flex align-items-center">
                           <span class="pr-1">
                             <input type="text" class="form-control" placeholder="Enter Patient Share" [(ngModel)]="item.patientShare"
@@ -199,14 +199,14 @@
                           </span>
                         </span>
                         <div
-                          *ngIf="transaction.submitted && !item.patientShare">
+                          *ngIf="transaction.submitted && (item.patientShare === undefined || item.patientShare === null)">
                           <span class="error-text">Patient Share required</span>
                         </div>
                       </div>
                     </td>
                     <td>
                       <div class="form-group mb-n1 mt-n1"
-                        [ngClass]="{'has-error' : transaction.submitted && !item.payerShare}">
+                        [ngClass]="{'has-error' : transaction.submitted && (item.payerShare === undefined || item.payerShare === null)}">
                         <span class="d-flex align-items-center">
                           <span class="pr-1">
                             <input type="text" class="form-control" placeholder="Enter Payer Share" [(ngModel)]="item.payerShare"
@@ -214,7 +214,7 @@
                           </span>
                         </span>
                         <div
-                          *ngIf="transaction.submitted && !item.payerShare">
+                          *ngIf="transaction.submitted && (item.payerShare === undefined || item.payerShare === null)">
                           <span class="error-text">Payer Share required</span>
                         </div>
                       </div>
@@ -226,7 +226,7 @@
                           [ngClass]="{'has-error' : transaction.submitted && !item.discount}">
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
-                              <input type="text" class="form-control" placeholder="Enter Discount" [(ngModel)]="item.discount"
+                              <input type="text" class="form-control" placeholder="Enter Discount" [(ngModel)]="item.discount" (blur)="calculateShares(i, j)"
                                  />
                             </span>
                           </span>
