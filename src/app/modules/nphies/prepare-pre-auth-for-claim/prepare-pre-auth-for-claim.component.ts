@@ -422,7 +422,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
               itemModel.itemStatus = x.status;
               itemModel.patientShare = parseFloat(x.patientShare);
               itemModel.payerShare = parseFloat(x.payerShare);
-              itemModel.net = parseFloat(x.approvedNet > 0 ? x.approvedNet : x.net);
+              itemModel.net = parseFloat(x.approvedNet > 0 ? x.approvedNet : x.grossAmount);
               itemModel.discount = parseFloat(x.discount);
               return itemModel;
             })
