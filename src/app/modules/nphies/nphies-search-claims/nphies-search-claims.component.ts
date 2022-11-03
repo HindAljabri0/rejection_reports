@@ -1823,23 +1823,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 this.commen.loadingChanged.next(false);
-                if (event.body['response']) {
-                    this.dialogService.openMessageDialog(
-                        new MessageDialogData('',
-                            event.body['message'],
-                            true))
-                        .subscribe(afterColse => {
-                            location.reload();
-                        });
-                } else {
-                    this.dialogService.openMessageDialog(
-                        new MessageDialogData('',
-                            event.body['message'],
-                            false))
-                        .subscribe(afterColse => {
-                            location.reload();
-                        });
+                let message = event.body['message'];
+                if(event.body['message'].indexOf('0') > -1){
+                  message = "The selected claim(s) cannot be validated with PBM as it does not contain any services of type Medication-Codes";
                 }
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                      message,
+                      event.body['message'].indexOf('0') > -1 ? true:false))
+                  .subscribe(afterColse => {
+                      location.reload();
+                  });
                 this.commen.loadingChanged.next(false);
             }
         }, errorEvent => {
