@@ -290,7 +290,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
           });
 
-          this.transactions.forEach(x => {
+          this.transactions.forEach(x => {            
             x.totalTax = 0;
             x.totalBenefit = 0;
             x.totalBenefitTax = 0;
@@ -405,13 +405,12 @@ export class PreparePreAuthForClaimComponent implements OnInit {
 
     if (!hasError) {
       // tslint:disable-next-line:max-line-length
-      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];
-
-      if (data.totalPatientShare > data.maxLimit) {
+      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];      
+      if (data.maxLimit > 0 && data.totalPatientShare > data.maxLimit) {
         this.dialogService.showMessageObservable('Exceed Max Copay Limit ', '', 'alert', true, 'OK', ['Total Patient Share must not exceed Max Copay Limit [' + data.maxLimit + ' SR]. Please adjust item Discounts.'], true).subscribe(res => { });
         return;
       }
-    
+
       const model: any = {
         authItems: [
           {
@@ -509,7 +508,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     this.transactions[transactionIndex].items[itemIndex].payerShare = amount - discount + tax - this.transactions[transactionIndex].items[itemIndex].patientShare;
 
     this.transactions[transactionIndex].totalPatientShare = 0;
-    this.transactions[transactionIndex].totalPayerShare = 0;    
+    this.transactions[transactionIndex].totalPayerShare = 0;
 
     this.transactions[transactionIndex].totalPatientShare = this.transactions[transactionIndex].items.map(item => item.patientShare).reduce((prev, next) => parseFloat(prev) + parseFloat(next));
     this.transactions[transactionIndex].totalPayerShare = this.transactions[transactionIndex].items.map(item => item.payerShare).reduce((prev, next) => parseFloat(prev) + parseFloat(next));
