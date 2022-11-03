@@ -46,7 +46,9 @@
                             <p>{{headerFileName}}</p>
                             <span *ngIf="HeadersizeInMB">File Size: {{HeadersizeInMB}}</span>
                             <a href="#" class="primary-link"
-                                (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a>
+                                (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a><br>
+                                <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();viewAttachment('header');">Preview</a>
                         </div>
                         <input type="file" accept=".jpg , .jpeg " [(ngModel)]="headerFile" [ngModelOptions]="{standalone: true}" *ngIf="!headerFileName"
                             (change)="selectHeaderFile($event)"
@@ -83,7 +85,9 @@
                             <p>{{footerFileName}}</p>
                             <span *ngIf="FootersizeInMB">File Size: {{FootersizeInMB}}</span>
                             <a href="#" class="primary-link"
-                                (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a>
+                                (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a><br>
+                                <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();viewAttachment('footer');">Preview</a>
                         </div>
                         <input type="file" accept=".jpg , .jpeg " [(ngModel)]="footerFile" [ngModelOptions]="{standalone: true}" *ngIf="!footerFileName"
                             (change)="selectFooterFile($event)"

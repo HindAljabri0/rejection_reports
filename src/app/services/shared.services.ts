@@ -171,7 +171,8 @@ export class SharedServices {
 
   }
 
-  getNotifications() {
+  getNotifications() {    
+
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -185,6 +186,7 @@ export class SharedServices {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
+
     this.notifications.getNotifications(this.providerId, 'batch-summary-inquiry', 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const paginatedResult: PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
@@ -194,7 +196,7 @@ export class SharedServices {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
-    });
+    });    
   }
 
   getAnnouncements() {
@@ -299,10 +301,12 @@ export class SharedServices {
     //dateOftoday >= overDate &&
     return dateOftoday >= overDate;
   }
+
   isHasNphiesPrivileges() {
     return this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim ||
       this.userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation;
   }
+
   getClaimProcessedCount() {
     // tslint:disable-next-line:max-line-length
     this.notifications.getNotificationsCountByWeek(this.providerId, 'claim-notifications', 'unread').subscribe((event: any) => {
@@ -432,7 +436,7 @@ export class SharedServices {
     }
   }
 
-  statusToName(status: string) {    
+  statusToName(status: string) {
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
         return 'Ready for Submission';

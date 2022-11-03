@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
         });
         this.authService.isUserNameUpdated.subscribe((isUpdated) => {
             if (isUpdated) {
-                this.getUserData();
+                this.getUserData();                
                 this.sharedServices.getNotifications();
                 this.sharedServices.getUploads();
                 this.sharedServices.getAnnouncements();
@@ -92,8 +92,7 @@ export class HeaderComponent implements OnInit {
         this.sharedServices.getClaimProcessedCount();
         this.sharedServices.getClaimCommunicationRequestCount();
 
-        this.watchPreAuthorizationChanges();
-
+        // this.watchPreAuthorizationChanges();
 
         this.downloadService.providerDownloads.subscribe(downloads => {
             this.providerDownloads.unshift(...downloads);

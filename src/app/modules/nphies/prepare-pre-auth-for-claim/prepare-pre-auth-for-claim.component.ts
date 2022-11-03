@@ -74,7 +74,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
   ngOnInit() {
 
     const today = new Date();
-    const oneMonthAgo = new Date(today. getFullYear(), today. getMonth() - 1, today. getDate());
+    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
     this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(oneMonthAgo, 'yyyy-MM-dd'));
     this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(today, 'yyyy-MM-dd'));
 
@@ -290,15 +290,17 @@ export class PreparePreAuthForClaimComponent implements OnInit {
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
           });
 
-          this.transactions.forEach(x => {
+          this.transactions.forEach(x => {            
             x.totalTax = 0;
             x.totalBenefit = 0;
             x.totalBenefitTax = 0;
+            x.totalDiscount = 0;
 
             if (x.items && x.items.length > 0) {
               x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
               x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
               x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
+              x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => prev + next);
 
               x.items.forEach(y => {
                 y.invoiceNo = '';
@@ -403,7 +405,12 @@ export class PreparePreAuthForClaimComponent implements OnInit {
 
     if (!hasError) {
       // tslint:disable-next-line:max-line-length
-      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];
+      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];      
+      if (data.maxLimit > 0 && data.totalPatientShare > data.maxLimit) {
+        this.dialogService.showMessageObservable('Exceed Max Copay Limit ', '', 'alert', true, 'OK', ['Total Patient Share must not exceed Max Copay Limit [' + data.maxLimit + ' SR]. Please adjust item Discounts.'], true).subscribe(res => { });
+        return;
+      }
+
       const model: any = {
         authItems: [
           {
@@ -413,6 +420,10 @@ export class PreparePreAuthForClaimComponent implements OnInit {
               itemModel.itemId = x.itemId;
               itemModel.invoiceNo = x.invoiceNo;
               itemModel.itemStatus = x.status;
+              itemModel.patientShare = parseFloat(x.patientShare);
+              itemModel.payerShare = parseFloat(x.payerShare);
+              itemModel.net = parseFloat(x.approvedNet > 0 ? x.approvedNet : x.grossAmount);
+              itemModel.discount = parseFloat(x.discount);
               return itemModel;
             })
           }
@@ -481,6 +492,28 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     }
   }
 
+  calculateShares(transactionIndex: number, itemIndex: number) {
+    let amount = 0;
 
+    if (this.transactions[transactionIndex].items[itemIndex].approvedNet === 0) {
+      amount = this.transactions[transactionIndex].items[itemIndex].grossAmount;
+    } else {
+      amount = this.transactions[transactionIndex].items[itemIndex].approvedNet;
+    }
+
+    let discount = parseFloat(this.transactions[transactionIndex].items[itemIndex].discount);
+    let tax = this.transactions[transactionIndex].items[itemIndex].tax;
+
+    this.transactions[transactionIndex].items[itemIndex].patientShare = amount - discount - tax;
+    this.transactions[transactionIndex].items[itemIndex].payerShare = amount - discount + tax - this.transactions[transactionIndex].items[itemIndex].patientShare;
+
+    this.transactions[transactionIndex].totalPatientShare = 0;
+    this.transactions[transactionIndex].totalPayerShare = 0;
+
+    this.transactions[transactionIndex].totalPatientShare = this.transactions[transactionIndex].items.map(item => item.patientShare).reduce((prev, next) => parseFloat(prev) + parseFloat(next));
+    this.transactions[transactionIndex].totalPayerShare = this.transactions[transactionIndex].items.map(item => item.payerShare).reduce((prev, next) => parseFloat(prev) + parseFloat(next));
+    this.transactions[transactionIndex].totalDiscount = this.transactions[transactionIndex].items.map(item => item.discount).reduce((prev, next) => parseFloat(prev) + parseFloat(next));
+
+  }
 
 }
