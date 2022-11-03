@@ -64,7 +64,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         items: 3,
         slideBy: 3
       },
-      992: {
+      1600: {
         items: 4,
         slideBy: 4
       }
