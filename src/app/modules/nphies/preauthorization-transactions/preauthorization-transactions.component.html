@@ -166,10 +166,10 @@
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
                     <button mat-icon-button matTooltip="Get current status of preauth" class="text-primary ml-n2"
-                      (click)="checkStatus(transaction.responseId)">
+                      (click)="checkStatus(transaction.responseId)" *ngIf="transaction.status !== 'Error'">
                       <mat-icon>refresh</mat-icon>
                     </button>
-                    <span *ngIf="!transaction.processingStatus" class="pl-1">Check Status</span>
+                    <span *ngIf="!transaction.processingStatus && transaction.status !== 'Error'" class="pl-1">Check Status</span>
                     <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
 
                   </div>
@@ -205,7 +205,7 @@
                       </button> -->
                       <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                     </mat-menu>
-                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
+                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" *ngIf="transaction.status !== 'Error'">
                       <mat-icon>more_vert</mat-icon>
                     </button>
                   </ng-container>
