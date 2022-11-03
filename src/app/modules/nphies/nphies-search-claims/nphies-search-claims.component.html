@@ -38,7 +38,7 @@
                       *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span class="dashboard-numbers">{{summary.value.deductibleAmount}}</span><span class="currency">
+                    <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency">
                       SR</span>
                   </td>
 
@@ -59,7 +59,7 @@
                       *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
                   </td>
                   <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span class="dashboard-numbers">{{summary.value.approvalAmount}}</span><span class="currency"> SR</span>
+                    <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
                   </td>
 
                 </tr>
