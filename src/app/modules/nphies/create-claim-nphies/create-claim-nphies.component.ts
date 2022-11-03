@@ -2416,6 +2416,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     // this.otherDataModel.claimEncounter = response.claimEncounter;
 
     this.otherDataModel.errors = response.errors;
+    this.otherDataModel.pbmComments = response.pbmComments;
+    
     this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
@@ -2826,11 +2828,11 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     }
 
-
     this.Items = response.items.map(x => {
       const model: any = {};
       model.itemId = x.itemId;
       model.bodySite = x.bodySite;
+      model.pbmStatus = x.pbmStatus;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0].name : '';
 
@@ -2927,7 +2929,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       return model;
     }).sort((a, b) => a.sequence - b.sequence);
-
     this.sharedServices.loadingChanged.next(false);
     // this.setBeneficiary(response);
   }
