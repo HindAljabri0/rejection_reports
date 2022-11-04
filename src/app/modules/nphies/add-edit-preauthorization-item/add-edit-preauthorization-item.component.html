@@ -158,7 +158,7 @@
 
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('matDatepickerMax') || serviceDataError)}">
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('owlDateTimeMax') || serviceDataError)}">
           <label class="control-label">Service End Date<span class="asterisk">*</span></label>
           <div class="date-picker">
 
@@ -178,7 +178,7 @@
           <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
             <span class="error-text">Please enter service end date</span>
           </div>
-          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('matDatepickerMax')">
+          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('owlDateTimeMax')">
             <span class="error-text" *ngIf="data.source === 'CLAIM'">End date must be on or before Claim date</span>
             <span class="error-text" *ngIf="data.source === 'APPROVAL'">End date must be on or after Approval
               date</span>
