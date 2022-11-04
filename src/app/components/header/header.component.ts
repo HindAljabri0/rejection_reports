@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
         });
         this.authService.isUserNameUpdated.subscribe((isUpdated) => {
             if (isUpdated) {
-                this.getUserData();                
+                this.getUserData();
                 this.sharedServices.getNotifications();
                 this.sharedServices.getUploads();
                 this.sharedServices.getAnnouncements();
@@ -86,11 +86,17 @@ export class HeaderComponent implements OnInit {
 
         this.getUserData();
 
-        this.sharedServices.getProcessedCount();
-        this.sharedServices.getCommunicationRequestCount();
-        this.sharedServices.getRecentReconciliationCount();
-        this.sharedServices.getClaimProcessedCount();
-        this.sharedServices.getClaimCommunicationRequestCount();
+        if (!this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin &&
+            !this.userPrivileges.ProviderPrivileges.RCM.isAdmin &&
+            !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin &&
+            !this.userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin &&
+            !this.userPrivileges.WaseelPrivileges.RCM.isAdmin) {
+            this.sharedServices.getProcessedCount();
+            this.sharedServices.getCommunicationRequestCount();
+            this.sharedServices.getRecentReconciliationCount();
+            this.sharedServices.getClaimProcessedCount();
+            this.sharedServices.getClaimCommunicationRequestCount();
+        }
 
         // this.watchPreAuthorizationChanges();
 
