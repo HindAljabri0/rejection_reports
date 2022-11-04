@@ -31,6 +31,7 @@ import { AddCommunicationDialogComponent } from '../add-communication-dialog/add
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
+import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -237,6 +238,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   routeMode;
   selectedTab = 0;
   claimType: string;
+  isPBMValidationVisible = false;
   //IsResubmitMode = false;
   constructor(
 
@@ -252,6 +254,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private nphiesClaimUploaderService: NphiesClaimUploaderService,
+    private adminService: AdminService,
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
@@ -324,6 +327,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') ? 9 : 8;
     }
+    this.getPBMValidation();
 
   }
 
@@ -3230,5 +3234,17 @@ export class CreateClaimNphiesComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  getPBMValidation() {
+    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isPBMValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
   }
 }

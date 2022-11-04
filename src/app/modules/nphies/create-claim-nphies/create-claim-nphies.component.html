@@ -612,15 +612,15 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="box mb-2" *ngIf="item.pbmStatus && item.pbmStatus.status &&  otherDataModel.status === 'Accepted'">
+                  <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status">
                     <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{item.pbmStatus.status | uppercase }}</span></h5>
                     <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                     <div class="table-responsive">
                       <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                         <thead>
                           <tr>
-                            <th class="light-bg-danger text-danger">Code</th>
-                            <th class="light-bg-danger text-danger">Error</th>
+                            <th class="light-bg-danger text-danger">PBM Error Code</th>
+                            <th class="light-bg-danger text-danger">PBM Error Description</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1395,7 +1395,7 @@
       </ng-template>
     </mat-tab>
 
-    <mat-tab *ngIf="otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus && otherDataModel.status === 'Accepted'"    
+    <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
     [label]="'PBM Comments'">
     <div class="table-responsive">
       <div class="d-flex justify-content-end pb-2 align-items-center">
@@ -2212,15 +2212,15 @@
                           </tbody>
                         </table>
                       </div>
-                      <div class="box mb-2" *ngIf="item.pbmStatus && item.pbmStatus.status && otherDataModel.status === 'Accepted'">
+                      <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status">
                         <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{item.pbmStatus.status | uppercase }}</span></h5>
                         <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                         <div class="table-responsive">
                           <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                             <thead>
                               <tr>
-                                <th class="light-bg-danger text-danger">Code</th>
-                                <th class="light-bg-danger text-danger">Error</th>
+                                <th class="light-bg-danger text-danger">PBM Error Code</th>
+                                <th class="light-bg-danger text-danger">PBM Error Description</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -3129,7 +3129,7 @@
             </table>
           </div>
         </mat-tab>
-        <mat-tab *ngIf="otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus && otherDataModel.status === 'Accepted'"    
+        <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
         [label]="'PBM Comments'">
         <div class="table-responsive">
           <div class="d-flex justify-content-end pb-2 align-items-center">
