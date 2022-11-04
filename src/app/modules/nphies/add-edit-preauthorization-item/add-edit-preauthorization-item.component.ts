@@ -898,9 +898,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onBodySiteChange(event){
-    if(event.value === ""){
+  onBodySiteChange(event) {
+    if (event.value === "") {
       this.FormItem.controls.subSite.setValue("");
     }
   }
+
 }
