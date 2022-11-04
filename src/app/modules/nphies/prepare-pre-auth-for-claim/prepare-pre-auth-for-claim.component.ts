@@ -290,7 +290,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
           });
 
-          this.transactions.forEach(x => {            
+          this.transactions.forEach(x => {
             x.totalTax = 0;
             x.totalBenefit = 0;
             x.totalBenefitTax = 0;
@@ -405,7 +405,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
 
     if (!hasError) {
       // tslint:disable-next-line:max-line-length
-      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];      
+      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];
       if (data.maxLimit > 0 && data.totalPatientShare > data.maxLimit) {
         this.dialogService.showMessageObservable('Exceed Max Copay Limit ', '', 'alert', true, 'OK', ['Total Patient Share must not exceed Max Copay Limit [' + data.maxLimit + ' SR]. Please adjust item Discounts.'], true).subscribe(res => { });
         return;
@@ -504,7 +504,12 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     let discount = parseFloat(this.transactions[transactionIndex].items[itemIndex].discount);
     let tax = this.transactions[transactionIndex].items[itemIndex].tax;
 
-    this.transactions[transactionIndex].items[itemIndex].patientShare = amount - discount - tax;
+    if (this.transactions[transactionIndex].items[itemIndex].maxLimit === 0) {
+      this.transactions[transactionIndex].items[itemIndex].patientShare = 0;
+    } else {
+      this.transactions[transactionIndex].items[itemIndex].patientShare = amount - discount - tax;
+    }
+
     this.transactions[transactionIndex].items[itemIndex].payerShare = amount - discount + tax - this.transactions[transactionIndex].items[itemIndex].patientShare;
 
     this.transactions[transactionIndex].totalPatientShare = 0;
