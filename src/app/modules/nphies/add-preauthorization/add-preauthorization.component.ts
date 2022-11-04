@@ -220,7 +220,7 @@ export class AddPreauthorizationComponent implements OnInit {
   ngOnInit() {
     this.getPayees();
     this.getTPA();
-    this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm aa'));
+    this.FormPreAuthorization.controls.dateOrdered.setValue(new Date());
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
       this.getRefferalProviders();
