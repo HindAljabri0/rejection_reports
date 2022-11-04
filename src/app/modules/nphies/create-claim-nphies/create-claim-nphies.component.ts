@@ -2873,8 +2873,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.net = x.net;
       model.patientShare = x.patientShare;
       model.payerShare = x.payerShare;
-      model.startDate = x.startDate;
-      if (model.startDate) {
+      if(x.startDate){
+        model.startDate = x.startDate;
         model.startDateStr = moment(x.startDate).format('DD/MM/YYYY hh:mm a');
       }
       model.endDate = x.endDate;

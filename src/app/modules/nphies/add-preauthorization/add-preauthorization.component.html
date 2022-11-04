@@ -290,7 +290,7 @@
                 <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                     class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"  formControlName="dateWritten">
+                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"  formControlName="dateWritten" [max]="FormPreAuthorization.controls.dateOrdered.value">
                   <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                   <owl-date-time #visionWrittenDate></owl-date-time>
                 </div>
