@@ -624,7 +624,7 @@ export class AddPreauthorizationComponent implements OnInit {
       searchStr = this.FormPreAuthorization.controls.subscriberName.value;
     }
     // tslint:disable-next-line:max-line-length
-    if (searchStr.length > 2) {
+    if (searchStr.length > 4) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;

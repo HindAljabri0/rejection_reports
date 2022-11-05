@@ -666,7 +666,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
 
   searchItems() {
-    this.loadSearchItem = true;
     if (this.SearchRequest) {
       this.SearchRequest.unsubscribe();
     }
@@ -678,20 +677,25 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
     const tpaNphiesId = this.data.tpaNphiesId;
 
-    // tslint:disable-next-line:max-line-length
-    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body) {
-          this.typeListSearchResult = body['content'];
+    if (searchStr.length > 4) {
+      this.loadSearchItem = true;
+    
+      // tslint:disable-next-line:max-line-length
+      this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body) {
+            this.typeListSearchResult = body['content'];
+          }
+          this.loadSearchItem = false;
         }
-        this.loadSearchItem = false;
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.loadSearchItem = false;
-      }
-    });
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.loadSearchItem = false;
+        }
+      });
+    }
+
   }
 
   checkItemsCodeForSupportingInfo() {
@@ -898,8 +902,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onBodySiteChange(event){
-    if(event.value === ""){
+  onBodySiteChange(event) {
+    if (event.value === "") {
       this.FormItem.controls.subSite.setValue("");
     }
   }

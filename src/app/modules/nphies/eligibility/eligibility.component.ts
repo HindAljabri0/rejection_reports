@@ -165,7 +165,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       searchStr = this.subscriberSearchController.value;
     }
 
-    if (searchStr.length > 2) {
+    if (searchStr.length > 4) {
       this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
