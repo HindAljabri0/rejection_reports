@@ -666,7 +666,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
 
   searchItems() {
-    this.loadSearchItem = true;
     if (this.SearchRequest) {
       this.SearchRequest.unsubscribe();
     }
@@ -679,6 +678,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const tpaNphiesId = this.data.tpaNphiesId;
 
     if (searchStr.length > 4) {
+      this.loadSearchItem = true;
+    
       // tslint:disable-next-line:max-line-length
       this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
