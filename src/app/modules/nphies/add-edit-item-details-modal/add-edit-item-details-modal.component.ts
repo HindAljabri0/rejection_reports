@@ -186,7 +186,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
     const tpaNphiesId = this.data.tpaNphiesId;
 
-    if (searchStr.length > 4) {
+    if (searchStr.length > 2) {
       // tslint:disable-next-line:max-line-length
       this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
         if (event instanceof HttpResponse) {

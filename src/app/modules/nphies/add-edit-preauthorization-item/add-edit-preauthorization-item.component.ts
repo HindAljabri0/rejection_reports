@@ -677,7 +677,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
     const tpaNphiesId = this.data.tpaNphiesId;
 
-    if (searchStr.length > 4) {
+    if (searchStr.length > 2) {
       this.loadSearchItem = true;
     
       // tslint:disable-next-line:max-line-length
