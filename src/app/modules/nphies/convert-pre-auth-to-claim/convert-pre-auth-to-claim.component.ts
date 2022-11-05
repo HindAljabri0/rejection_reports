@@ -149,7 +149,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   }
 
   searchBeneficiaries() {
-    if (this.FormPreAuthTransaction.controls.beneficiaryName.value.length > 2) {
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value.length > 4) {
       // tslint:disable-next-line:max-line-length
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthTransaction.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {

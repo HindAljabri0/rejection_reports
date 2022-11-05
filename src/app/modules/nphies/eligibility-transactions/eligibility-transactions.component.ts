@@ -142,7 +142,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormEligibilityTransaction.controls.beneficiaryName.value.length > 2) {
+    if (this.FormEligibilityTransaction.controls.beneficiaryName.value.length > 4) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormEligibilityTransaction.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
