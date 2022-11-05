@@ -190,7 +190,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormPreAuthTransaction.controls.beneficiaryName.value.length > 4) {
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value.length > 3) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthTransaction.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
