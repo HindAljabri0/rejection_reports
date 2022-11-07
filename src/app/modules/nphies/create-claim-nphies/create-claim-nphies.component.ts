@@ -3237,7 +3237,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   getPBMValidation() {
-    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+    this.adminService.checkIfNphiesPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event['body'];
         this.isPBMValidationVisible = body.value === '1' ? true : false;

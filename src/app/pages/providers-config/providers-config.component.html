@@ -599,7 +599,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          PBM Configuration
+          Waseel PBM Configuration
           <mat-menu #pbmConfigurationMenu xPosition="before">
             <ng-template matMenuContent>
               <div class="pt-7 pb-7 pr-14 pl-14">
@@ -634,8 +634,52 @@
             </div>
           </div>
         </div>
-      </ng-container>
+      </ng-container>    
       <div *ngIf="componentLoading.pbmConfiguration" class="inline-loader">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Nphies PBM Configuration
+          <mat-menu #nphiesPbmConfigurationMenu xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.nphiesPbmConfigurationSaveError != null">{{errors.nphiesPbmConfigurationSaveError}}</ng-container>
+                <ng-container *ngIf="success.nphiesPbmConfigurationSaveSuccess != null">{{success.nphiesPbmConfigurationSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.nphiesPbmConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="nphiesPbmConfigurationMenu">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.nphiesPbmConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button
+            [matMenuTriggerFor]="nphiesPbmConfigurationMenu">
+            <mat-icon>check_circle</mat-icon>
+          </button>
+        </mat-panel-title>
+      </mat-expansion-panel-header>     
+      <ng-container *ngIf="(errors.nphiesPbmConfigurationError == null || errors.nphiesPbmConfigurationError == '') && !componentLoading.nphiesPbmConfiguration">
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-6">
+              <div class="form-group form-group-static">
+                <label class="control-label">Provider</label>
+                <p class="form-control-static">{{selectedProviderName}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group pt-2">
+                <mat-slide-toggle color="primary" [(ngModel)]="newNphiesPBMValidationSettings['101']">Enable</mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div *ngIf="componentLoading.nphiesPbmConfiguration" class="inline-loader">
         <mat-spinner diameter="48"></mat-spinner>
       </div>
     </mat-expansion-panel>
