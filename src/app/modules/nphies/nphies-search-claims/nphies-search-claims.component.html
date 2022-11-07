@@ -93,8 +93,8 @@
           </button>
 
           <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length === 0" matRipple [matMenuTriggerFor]="downloadMenu" mat-flat-button
-            color="primary">
-            Generate Attachment
+            color="primary" class="dropdown-toggle">
+            Generate Attachment 
           </button>
 
           <mat-menu #downloadMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items download-menu">
@@ -106,7 +106,7 @@
             </button>
             <button mat-menu-item (click)="generateAttachmentAll('failed')">
               <span class="title">Failed -
-                <span class="text-grey">Generate attachment for claims with attachment status failed</span>
+                <span class="text-grey">Regenerate Failed attachments</span>
               </span>
             </button>
             <button mat-menu-item (click)="generateAttachmentAll('remaining')">
@@ -236,7 +236,7 @@
                     <td *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0"
                       (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click">
                       <mat-icon *ngIf="claim.attachmentStatus === 'Success'" class="material-icons-outlined text-success">check_circle</mat-icon>
-                      <mat-icon *ngIf="claim.attachmentStatus === 'FaultyAttachment'" matTooltip="Faulty Attachment" class="material-icons-outlined text-danger">broken_image
+                      <mat-icon *ngIf="claim.attachmentStatus === 'FaultyAttachment'" matTooltip="Faulty (Claim was edited after generating attachment)" class="material-icons-outlined text-danger">broken_image
                       </mat-icon>
                       <mat-icon *ngIf="claim.attachmentStatus === 'Failed'" matTooltip="Failed" class="text-danger">error_outline</mat-icon>
                     </td>
