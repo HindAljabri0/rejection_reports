@@ -142,8 +142,8 @@ export class SuperAdminService {
     return this.http.request(req);
   }
 
-  getProvidersWithinGroup(providerId: string, providerGroupId: string) {
-    const requestURL = `/providers/providersWithinGroup/${providerId}/${providerGroupId}`;
+  getProvidersWithinGroup(parentProviderId: string, providerGroupId: string) {    
+    const requestURL = `/providers/providersWithinGroup/${parentProviderId}/${providerGroupId}`;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
