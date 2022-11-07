@@ -1821,32 +1821,38 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId).subscribe(event => {
-            if (event instanceof HttpResponse) {
-                this.commen.loadingChanged.next(false);
-                let message = event.body['message'];
-                if(event.body['message'].indexOf('0') > -1){
-                  message = "The selected claim(s) cannot be validated with PBM as it does not contain any services of type Medication-Codes";
-                }
-                this.dialogService.openMessageDialog(
-                  new MessageDialogData('',
-                      message,
-                      event.body['message'].indexOf('0') > -1 ? true:false))
-                  .subscribe(afterColse => {
-                      location.reload();
-                  });
-                this.commen.loadingChanged.next(false);
-            }
-        }, errorEvent => {
-            if (errorEvent instanceof HttpErrorResponse) {
-                if (errorEvent.status === 404) {
-                    this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
-                } else {
-                    this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-                }
-            }
-            this.commen.loadingChanged.next(false);
-        });
+        if (event instanceof HttpResponse) {
+          this.commen.loadingChanged.next(false);
+          if (event.body['status'] === 'Success') {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('',
+                event.body['message'],
+                false))
+              .subscribe(afterColse => {
+                location.reload();
+              });
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('',
+                event.body['message'],
+                true))
+              .subscribe(afterColse => {
+                location.reload();
+              });
+          }
+          this.commen.loadingChanged.next(false);
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          if (errorEvent.status === 404) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+          }
+        }
+        this.commen.loadingChanged.next(false);
+      });
     // }
     // });
-}
+  }
 }

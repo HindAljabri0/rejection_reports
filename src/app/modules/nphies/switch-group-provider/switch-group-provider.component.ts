@@ -28,8 +28,9 @@ export class SwitchGroupProviderComponent implements OnInit {
     sharedServices.loadingChanged.next(true);
   }
 
-  ngOnInit() {    
-    this.superAdmin.getProvidersWithinGroup(this.sharedServices.providerId, this.sharedServices.providerGroupId).subscribe(event => {
+  ngOnInit() {   
+    const parentProviderId = localStorage.getItem('parentProviderId'); 
+    this.superAdmin.getProvidersWithinGroup(parentProviderId, this.sharedServices.providerGroupId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.providers = event.body;
@@ -65,9 +66,10 @@ export class SwitchGroupProviderComponent implements OnInit {
   }
 
   switch() {
-    if (!this.isLoading) {
+    if (!this.isLoading) {         
+      const parentProviderId = localStorage.getItem('parentProviderId');
       this.sharedServices.loadingChanged.next(true);
-      this.authService.getSwitchUserToken(this.selectedProvider, 'o').subscribe(event => {
+      this.authService.getSwitchUserGroupToken(parentProviderId, this.selectedProvider, 'o').subscribe(event => {
         if (event instanceof HttpResponse) {
           this.authService.isUserNameUpdated.subscribe(updated => {
             if (updated) {

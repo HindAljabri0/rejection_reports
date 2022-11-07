@@ -26,7 +26,7 @@
                 <tr>
                   <th class="label">Net</th>
                   <th class="label">Patient Share</th>
-                  <th class="label" *ngIf="summary.value.statuses[0] == 'partial'">Deductible</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partial'">Rejected</th>
                 </tr>
                 <tr>
                   <td class="pb-6 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
@@ -94,7 +94,7 @@
 
           <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length === 0" matRipple [matMenuTriggerFor]="downloadMenu" mat-flat-button
             color="primary" class="dropdown-toggle">
-            Generate Attachment 
+            Generate Attachment
           </button>
 
           <mat-menu #downloadMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items download-menu">
