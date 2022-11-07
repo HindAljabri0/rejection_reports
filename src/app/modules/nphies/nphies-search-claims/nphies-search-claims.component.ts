@@ -1202,12 +1202,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   setReloadedInputFilters(name: string, value: string) {
     this.claimList[name] = value;
   }
+
   checkReloadedFilter() {
     this.reloadInputFilters();
   }
+
   getPBMValidation() {
-    this.adminService.checkIfPBMValidationIsEnabled(this.commen.providerId, '101').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
+    this.adminService.checkIfNphiesPBMValidationIsEnabled(this.commen.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {        
         const body = event['body'];
         this.apiPBMValidationEnabled = body.value === '1' ? true : false;
         //  this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0]
@@ -1797,9 +1799,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.deSelectAll();
     });
   }
+
   getNphiesAttachmentConfiguration() {
     this.settingsServices.getNphiesAttachmentConfigDetails(this.commen.providerId).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
+      if (event instanceof HttpResponse) {        
         if (event.body.attachment) {
           this.isGenerateAttachment = event.body.attachment.isEnabled;
         }
