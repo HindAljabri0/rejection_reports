@@ -514,8 +514,7 @@ export class ProvidersConfigComponent implements OnInit {
       });
       if (newSettingsKeys.length > 0) {
         this.setComponentLoading(URLKey, true);
-        this.setSaveError(URLKey, null);
-        debugger;
+        this.setSaveError(URLKey, null);        
         this.setSaveSuccess(URLKey, null);
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId,

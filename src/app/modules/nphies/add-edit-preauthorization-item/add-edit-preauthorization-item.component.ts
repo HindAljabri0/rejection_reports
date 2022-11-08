@@ -142,8 +142,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           this.filterPrescribedMedicationItem();
         });
     }
-    if (this.data.item) {
-      console.log(" sub site val = " + JSON.stringify(this.data.item)),
+    if (this.data.item) {        
         this.FormItem.patchValue({
           type: this.typeList.filter(x => x.value === this.data.item.type)[0],
           nonStandardCode: this.data.item.nonStandardCode,
@@ -166,7 +165,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           net: this.data.item.net,
           patientShare: this.data.item.patientShare,
           payerShare: this.data.item.payerShare,
-          startDate: new Date(this.data.item.startDate),
+          startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
           endDate: new Date(this.data.item.endDate),
           invoiceNo: this.data.item.invoiceNo,
           drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0]
@@ -842,7 +841,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.tax = this.FormItem.controls.tax.value ? parseFloat(this.FormItem.controls.tax.value) : 0;
       model.net = this.FormItem.controls.net.value;
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
-      model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
+      model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;      
       model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd hh:mm aa');
       model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy hh:mm aa');
 
