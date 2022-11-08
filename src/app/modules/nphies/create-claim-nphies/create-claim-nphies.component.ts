@@ -907,12 +907,12 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (this.Items.find(x => x.sequence === result.sequence)) {
+        if (this.Items.find(x => x.sequence === result.sequence)) {          
           this.Items.map(x => {
             if (x.sequence === result.sequence) {
               x.type = result.type.toLowerCase();
-              x.typeName = result.typeName,
-                x.itemCode = result.itemCode;
+              x.typeName = result.typeName;
+              x.itemCode = result.itemCode;
               x.itemDescription = result.itemDescription;
               x.nonStandardCode = result.nonStandardCode;
               x.display = result.display;
@@ -1694,7 +1694,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.diagnosis = this.Diagnosises.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
-        model.diagnosisDescription = x.diagnosisDescription !=null ? x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim():null;
+        model.diagnosisDescription = x.diagnosisDescription != null ? x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim() : null;
         model.type = x.type;
         model.onAdmission = x.onAdmission;
         model.diagnosisCode = x.diagnosisCode;
@@ -1750,7 +1750,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           return model;
         });
       }
-
+      
       this.model.items = this.Items.map(x => {
         // tslint:disable-next-line:max-line-length
         if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
@@ -1775,7 +1775,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = moment(x.startDate).utc();
+          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
           model.endDate = moment(x.endDate).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
@@ -1817,7 +1817,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = moment(x.startDate).utc();
+          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
           model.endDate = moment(x.endDate).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
@@ -2421,7 +2421,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel.errors = response.errors;
     this.otherDataModel.pbmComments = response.pbmComments;
-    
+
     this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
@@ -2877,7 +2877,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.net = x.net;
       model.patientShare = x.patientShare;
       model.payerShare = x.payerShare;
-      if(x.startDate){
+      if (x.startDate) {
         model.startDate = x.startDate;
         model.startDateStr = moment(x.startDate).format('DD/MM/YYYY hh:mm a');
       }

@@ -1931,7 +1931,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = moment(x.startDate).utc();
+          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
           model.endDate = moment(x.endDate).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
@@ -1972,7 +1972,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = moment(x.startDate).utc();
+          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
           model.endDate = moment(x.endDate).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
