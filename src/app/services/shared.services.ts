@@ -195,7 +195,7 @@ export class SharedServices {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
-    });    
+    });
   }
 
   getAnnouncements() {
@@ -476,6 +476,8 @@ export class SharedServices {
         return 'Partially Approved';
       case ClaimStatus.CREATINGATTACHMENT.toLowerCase():
         return 'Creating Attachment';
+      case ClaimStatus.UNDER_PBM_VALIDATION.toLowerCase():
+        return 'Under PBM Validation';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
