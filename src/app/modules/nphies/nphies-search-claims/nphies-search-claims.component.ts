@@ -1849,6 +1849,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (errorEvent instanceof HttpErrorResponse) {
           if (errorEvent.status === 404) {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
+          } else if(errorEvent.status === 400){
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
           }
