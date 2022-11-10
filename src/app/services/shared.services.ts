@@ -171,7 +171,8 @@ export class SharedServices {
 
   }
 
-  getNotifications() {
+  getNotifications() {    
+
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -195,7 +196,7 @@ export class SharedServices {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
-    });
+    });    
   }
 
   getAnnouncements() {

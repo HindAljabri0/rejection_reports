@@ -36,4 +36,5 @@ export const environment = {
     nphiesClaimDownload: `${host}/nphiesDownloads`,
     nphiesApprovalInquiry: `${host}/nphies-approval-inquiry`,
     nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`
+
 };

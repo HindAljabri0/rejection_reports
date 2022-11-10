@@ -186,17 +186,20 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
     const tpaNphiesId = this.data.tpaNphiesId;
 
-    // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        this.typeListSearchResult = body['content'];
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
+    if (searchStr.length > 2) {
+      // tslint:disable-next-line:max-line-length
+      this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          this.typeListSearchResult = body['content'];
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+        }
+      });
+    }
+
   }
 
   selectItem(type) {

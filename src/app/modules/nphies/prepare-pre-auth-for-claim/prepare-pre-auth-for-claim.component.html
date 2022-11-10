@@ -103,9 +103,9 @@
             <th>Payer / TPA</th>
             <th>Total Net / Tax</th>
             <th>Total Benefit / Tax</th>
-            <th>Patient Share</th>
-            <th>Payer Share</th>
-            <th>Discount</th>
+            <th>Total Patient Share</th>
+            <th>Total Payer Share</th>
+            <th>Total Discount</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -126,7 +126,7 @@
               <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span> / {{transaction.totalBenefitTax}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SR</span></td>
-              <td (click)="toggleRow(i)">0 <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalDiscount}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">
                 <span
                   [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{transaction.status
@@ -135,7 +135,7 @@
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
-              <td colspan="10">
+              <td colspan="11">
                 <div class="row small-gutter">
                   <div class="col-4 col-xxl-3">
                     <!-- <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}"> -->
@@ -165,7 +165,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of transaction.items" class="align-middle">
+                    <tr *ngFor="let item of transaction.items; let j = index" class="align-middle">
                       <td>{{item.itemSequenceNo}}</td>
                       <td>{{item.itemType}}</td>
                       <td>
@@ -186,36 +186,54 @@
                         </div>
                       </td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
-                      <td>
-                        <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : transaction.submitted && !item.patientShare}">
-                          <span class="d-flex align-items-center">
-                            <span class="pr-1">
-                              <input type="text" class="form-control" placeholder="Enter Patient Share" [(ngModel)]="item.patientShare" />
-                            </span>
+                    <td>
+                      <div class="form-group mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : transaction.submitted && (item.patientShare === undefined || item.patientShare === null)}">
+                        <span class="d-flex align-items-center">
+                          <span class="pr-1">
+                            <input type="text" class="form-control" placeholder="Enter Patient Share" [(ngModel)]="item.patientShare"
+                               />
                           </span>
-                          <div *ngIf="transaction.submitted && !item.patientShare">
-                            <span class="error-text">Patient Share required</span>
-                          </div>
+                        </span>
+                        <div
+                          *ngIf="transaction.submitted && (item.patientShare === undefined || item.patientShare === null)">
+                          <span class="error-text">Patient Share required</span>
                         </div>
-                      </td>
-                      <td>
-                        <div class="form-group mb-n1 mt-n1" [ngClass]="{'has-error' : transaction.submitted && !item.payerShare}">
-                          <span class="d-flex align-items-center">
-                            <span class="pr-1">
-                              <input type="text" class="form-control" placeholder="Enter Payer Sahare" [(ngModel)]="item.payerShare" />
-                            </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group mb-n1 mt-n1"
+                        [ngClass]="{'has-error' : transaction.submitted && (item.payerShare === undefined || item.payerShare === null)}">
+                        <span class="d-flex align-items-center">
+                          <span class="pr-1">
+                            <input type="text" class="form-control" placeholder="Enter Payer Share" [(ngModel)]="item.payerShare"
+                               />
                           </span>
-                          <div *ngIf="transaction.submitted && !item.payerShare">
-                            <span class="error-text">Payer Share required</span>
-                          </div>
+                        </span>
+                        <div
+                          *ngIf="transaction.submitted && (item.payerShare === undefined || item.payerShare === null)">
+                          <span class="error-text">Payer Share required</span>
                         </div>
-                      </td>
+                      </div>
+                    </td>
                       <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
                       <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
-                      <td>0 <span class="currency">SR</span></td>
-                      <td><span
-                          [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status
-                          | titlecase}}</span></td>
+                      <td>
+                        <div class="form-group mb-n1 mt-n1"
+                          [ngClass]="{'has-error' : transaction.submitted && !item.discount}">
+                          <span class="d-flex align-items-center">
+                            <span class="pr-1">
+                              <input type="text" class="form-control" placeholder="Enter Discount" [(ngModel)]="item.discount" (blur)="calculateShares(i, j)"
+                                 />
+                            </span>
+                          </span>
+                          <div
+                            *ngIf="transaction.submitted && !item.discount">
+                            <span class="error-text">Discount required</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
                     </tr>
                   </tbody>
                 </table>
