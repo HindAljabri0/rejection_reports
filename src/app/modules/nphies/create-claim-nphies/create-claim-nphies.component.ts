@@ -3247,4 +3247,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
 
   }
+
+  upperCaseAndReplace(status:string){
+      return status.replace('_',' ').toUpperCase();
+  }
+
 }
