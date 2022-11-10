@@ -185,7 +185,7 @@
                   <mat-spinner diameter="20"></mat-spinner> -->
                 </td>
                 <td class="actions">
-                  <ng-container>
+                  <ng-container *ngIf="transaction.status != 'cancelled'">
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item
                         *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' || transaction.status === 'pended' || transaction.status === 'not-required'"
