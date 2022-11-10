@@ -127,5 +127,15 @@ export class UcafFormTemplateComponent implements OnInit {
     else return `${this.UCAFData.type}`;
     
   }
+getPeriodDays(){
+  if(this.UCAFData.preAuthStartDate!=null && this.UCAFData.preAuthEndDate!=null){
+  var StartDate = new Date(this.UCAFData.preAuthStartDate);
+  var EndDate = new Date(this.UCAFData.preAuthEndDate);
+  return StartDate.getTime() - EndDate.getTime()}else{
+
+    return '';
+  }
+}
+  
 
 }

@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { checkAlerts, evaluateUserPrivileges } from 'src/app/store/mainStore.actions';
+import { SharedServices } from '../shared.services';
 // import { ApmService } from '@elastic/apm-rum-angular';
 
 @Injectable({
@@ -44,7 +45,7 @@ export class AuthService {
 
 
   logout(expired?: boolean, hasClaimPrivileges?: boolean) {
-    this.onCancelPendingHttpRequests$.next();    
+    this.onCancelPendingHttpRequests$.next();
     let demoDoneValue;
     if (window.localStorage.getItem('onboarding-demo-done')) {
       demoDoneValue = window.localStorage.getItem('onboarding-demo-done');
@@ -56,6 +57,7 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');
+    localStorage.removeItem('organizationId');
     const providerId = localStorage.getItem('provider_id');
     localStorage.removeItem('provider_id');
     this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
@@ -76,7 +78,7 @@ export class AuthService {
       window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
     }
 
-    if(upcomingFeatureDoneValue){
+    if (upcomingFeatureDoneValue) {
       window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
     }
     promise.then(() => location.reload());
@@ -122,6 +124,12 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
+  getSwitchUserGroupToken(parentProviderId: string, providerId: string, username: string) {
+    const requestURL = '/switch_user_withinGroup?parentProviderId=' + parentProviderId + '&switchedProviderId=' + providerId + '&currentUser=' + username;
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
   setTokens(body: {}) {
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
@@ -151,6 +159,7 @@ export class AuthService {
           || element['authority'].split('|')[1] == '25.71'
           || element['authority'].split('|')[1] == '25.72'
           || element['authority'].split('|')[1] == '31.0'
+          || element['authority'].split('|')[1] == '32.0'
         );
         if (hasClaimPrivileges) {
           authorities.forEach(element => {
@@ -163,11 +172,14 @@ export class AuthService {
               localStorage.setItem(key, currentValue + '|' + value);
             }
           });
-          localStorage.setItem('cchi_id', event.body['cchiId']);
+          
+          localStorage.setItem('cchi_id', event.body['cchiId']);          
+          localStorage.setItem('parentProviderId', event.body['parentProviderId']);
           localStorage.setItem('provider_id', event.body['providerId']);
           localStorage.setItem('user_name', event.body['fullName']);
           localStorage.setItem('auth_username', event.body['username']);
           localStorage.setItem('provider_name', event.body['providerName']);
+          localStorage.setItem('organizationId', event.body['organizationId']);
           const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
@@ -195,6 +207,9 @@ export class AuthService {
   }
   getProviderId() {
     return localStorage.getItem('provider_id');
+  }
+  getOrganizationId() {
+    return localStorage.getItem('organizationId');
   }
   getUserName() {
     return localStorage.getItem('user_name');
@@ -260,5 +275,6 @@ export class AuthService {
     } catch (error) {
       return false;
     }
-  }
+  } 
+
 }

@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
         });
         this.authService.isUserNameUpdated.subscribe((isUpdated) => {
             if (isUpdated) {
-                this.getUserData();
+                this.getUserData();                
                 this.sharedServices.getNotifications();
                 this.sharedServices.getUploads();
                 this.sharedServices.getAnnouncements();

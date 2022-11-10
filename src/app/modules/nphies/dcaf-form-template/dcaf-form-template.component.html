@@ -148,6 +148,16 @@
                             </td>
                         </tr>
                     </table>
+                    <table class="internal-table">
+                        <tr>
+                            <td width="10">
+                                <p>Approval Status:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder"> {{DCAF.status}}</p>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </td>
         </tr>
@@ -538,13 +548,16 @@
                                 <p class="value-holder"></p>
                             </td>
                             <td width="10">
-                                <p><strong>Approval validity:</strong></p>
+                                <p><strong>Approval validity:</strong>   {{DCAF.preAuthStartDate | date:'dd/MM/yyyy'}} {{DCAF.preAuthStartDate
+                                    &&
+                                    DCAF.preAuthEndDate ? "-":""}} {{DCAF.preAuthEndDate |
+                                    date:'dd/MM/yyyy'}}</p>
                             </td>
                             <td>
                                 <p class="value-holder"></p>
                             </td>
                             <td width="10">
-                                <p><strong>Days</strong></p>
+                                <p> {{getPeriodDays()}} <strong>Days</strong></p>
                             </td>
                             <td></td>
                         </tr>
