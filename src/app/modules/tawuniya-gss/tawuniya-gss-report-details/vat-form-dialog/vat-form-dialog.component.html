@@ -1,0 +1,127 @@
+<div class="primary-dialog-body"
+    style="    height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+    <p class="title primary-text-btn semibold" style="font-size: large;">Confirm GSS Report</p>
+    <div class="gss-vat-form-dialog"
+        style="display: flex; width: 100%; border-bottom: 1px solid lightgray; padding-bottom: 1rem;">
+        <div class="left-block" style="display: flex; width: 66.66%">
+            <form [formGroup]="form" style="width: 100%;">
+                <div class="vat-form-wrapper" style="display: flex; flex-wrap: wrap; gap: 5%; ">
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('vatNo').invalid}">
+                        <label class="control-label">VAT No</label>
+                        <input maxlength="15" class="form-control" placeholder="Enter VAT No" formControlName="vatNo">
+
+                        <mat-error *ngIf="formIsSubmitted && form.get('vatNo').hasError('required')">
+                            VAT No is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="formIsSubmitted && (form.get('vatNo').hasError('maxLength') || form.get('vatNo').hasError('minlength'))">
+                            VAT No must be exactly 15 digit
+                        </mat-error>
+                    </div>
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('claimCount').hasError('required')}">
+                        <label class="control-label">Claim Count</label>
+                        <input type="number" class="form-control" placeholder="Enter Claim Count"
+                            formControlName="claimCount">
+                        <mat-error *ngIf="formIsSubmitted && form.get('claimCount').hasError('required')">
+                            Claim Count is required
+                        </mat-error>
+                    </div>
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('grossAmount').hasError('required')}">
+                        <label class="control-label">Gross Amount</label>
+                        <input type="number" class="form-control" placeholder="Enter Gross Amount"
+                            formControlName="grossAmount">
+                        <mat-error *ngIf="formIsSubmitted && form.get('grossAmount').hasError('required')">
+                            Gross Amount is required
+                        </mat-error>
+                    </div>
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('discount').hasError('required')}">
+                        <label class="control-label">Discount</label>
+                        <input type="number" class="form-control" placeholder="Enter Discount"
+                            formControlName="discount">
+                        <mat-error *ngIf="formIsSubmitted && form.get('discount').hasError('required')">
+                            Discount is required
+                        </mat-error>
+                    </div>
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('patientShare').hasError('required')}">
+                        <label class="control-label">Patient Share</label>
+                        <input type="number" class="form-control" placeholder="Enter Patient Share"
+                            formControlName="patientShare">
+                        <mat-error *ngIf="formIsSubmitted && form.get('patientShare').hasError('required')">
+                            Patient Share is required
+                        </mat-error>
+                    </div>
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('taxableAmount').hasError('required')}">
+                        <label class="control-label">Taxable Amount</label>
+                        <input type="number" class="form-control" placeholder="Enter Taxable Amount"
+                            formControlName="taxableAmount">
+                        <mat-error *ngIf="formIsSubmitted && form.get('taxableAmount').hasError('required')">
+                            Enter Taxable is required
+                        </mat-error>
+                    </div>
+                    <div style="width: 45%; padding: 0px 0px; margin-bottom: 0px" class="form-group"
+                        [ngClass]="{'has-error' : formIsSubmitted && form.get('nonTaxableAmount').hasError('required')}">
+                        <label class="control-label">Non-Taxable Amount</label>
+                        <input type="number" class="form-control" placeholder="Enter Non-Taxable Amount"
+                            formControlName="nonTaxableAmount">
+                        <mat-error *ngIf="formIsSubmitted && form.get('nonTaxableAmount').hasError('required')">
+                            Non-Taxable is required
+                        </mat-error>
+                    </div>
+                    <div style="width: 100%; padding-right: 5%;" class="form-group">
+
+                        <label class="control-label">VAT Invoice PDF</label>
+                        <mat-form-field appearance="fill">
+                            <input [value]="uploadedFileName" readonly matInput type="text">
+                            <button (click)="fileInput.click()" matSuffix mat-icon-button aria-label="Clear">
+                                <mat-icon class="primary-text-btn">file_upload</mat-icon>
+                            </button>
+                            <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                                (change)="selectFile($event.target.files)" accept="application/pdf" />
+                        </mat-form-field>
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : formIsSubmitted && form.get('vatInvoice').hasError()">
+                            <label *ngIf="formIsSubmitted && form.get('vatInvoice').hasError('required')"
+                                class="control-label">VAT Invoice PDF file is required</label>
+                            <label *ngIf="formIsSubmitted && form.get('vatInvoice').hasError('size')"
+                                class="control-label">Uploaded file size must not exceed 5 MB</label>
+                            <label *ngIf="formIsSubmitted && form.get('vatInvoice').hasError('format')"
+                                class="control-label">Uploaded file must be in PDF format</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="right-block" style="width: 33.33%; border-left: 1px solid lightgray; padding-left: 1rem;">
+            <div class="form-group form-group-static">
+                <label class="control-label">GSS Reference Number</label>
+                <span class="form-control-static">{{initiateModel.gssReferenceNumber}}</span>
+            </div>
+            <div class="form-group form-group-static">
+                <label class="control-label">Net Amount</label>
+                <span class="form-control-static">{{netAmount}}
+                    <span class="medium">SAR</span>
+                </span>
+            </div>
+            <div class="form-group form-group-static">
+                <label class="control-label">VAT Rate</label>
+                <span class="form-control-static">{{vatRate ? vatRate + '%' : 'fetching ...'}}</span>
+            </div>
+            <div class="form-group form-group-static">
+                <label class="control-label">VAT Amount</label>
+                <span class="form-control-static">{{vatAmount}}
+                    <span class="medium">SAR</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="btn-list text-right" style="padding-top: 1rem;">
+        <button mat-flat-button type="button" (click)="cancelClick()">Cancel</button>
+        <button mat-flat-button type="button" (click)="confirmClick()" color="primary">Confirm</button>
+    </div>
+</div>

@@ -10,13 +10,18 @@
         </div>
         <div class="right-block">
             <div class="d-flex align-items-center mb-n2 mt-n2">
-                <span class="status-badge size-sm primary" [ngClass]="{'primary': initiateModel?.status?.toLowerCase() === 'new', 
-                'success' : initiateModel?.status?.toLowerCase() === 'signed',
-                'danger' : initiateModel?.status?.toLowerCase() === 'cancelled' }">
+                <span class="status-badge size-sm primary" [ngClass]="
+                {
+                'primary': isNew(), 
+                'bg-parrot' : isSigned(),
+                'success' : isConfirmed(), 
+                'danger' : isRejected(), 
+                'bg-warning' : isPending() 
+            }">
                     {{initiateModel?.status | titlecase}}
                 </span>
-                <button type="button" [disabled]="downloaded" mat-icon-button class="text-primary" [ngStyle]="{'cursor': downloaded ? 'default' : 'pointer'}"
-                    (click)="downloadData()">
+                <button type="button" [disabled]="downloaded" mat-icon-button class="text-primary"
+                    [ngStyle]="{'cursor': downloaded ? 'default' : 'pointer'}" (click)="downloadData()">
                     <mat-icon *ngIf="!downloaded">file_download</mat-icon>
                     <mat-icon *ngIf="downloaded">check_circle</mat-icon>
                 </button>
@@ -67,7 +72,8 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Patient Share</label>
-                    <span class="form-control-static">{{ initiateModel?.totalPatientShare?.value }} <span class="currency">{{ initiateModel?.totalPatientShare?.currencyCode
+                    <span class="form-control-static">{{ initiateModel?.totalPatientShare?.value }} <span
+                            class="currency">{{ initiateModel?.totalPatientShare?.currencyCode
                             }}</span></span>
                 </div>
             </div>
@@ -88,7 +94,8 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Discount</label>
-                    <span class="form-control-static">{{ initiateModel?.totalDiscount?.value }} <span class="currency">{{ initiateModel?.totalDiscount?.currencyCode
+                    <span class="form-control-static">{{ initiateModel?.totalDiscount?.value }} <span
+                            class="currency">{{ initiateModel?.totalDiscount?.currencyCode
                             }}</span></span>
                 </div>
             </div>
@@ -96,7 +103,8 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Payable</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNetPayable?.value }} <span class="currency">{{ initiateModel?.totalNetPayable?.currencyCode
+                    <span class="form-control-static">{{ initiateModel?.totalNetPayable?.value }} <span
+                            class="currency">{{ initiateModel?.totalNetPayable?.currencyCode
                             }}</span></span>
                 </div>
             </div>
@@ -144,11 +152,8 @@
     </div>
     <div class="block-footer sticky">
         <div class="right-block btn-list">
-            <button mat-flat-button color="primary" (click)="generateReport(true)" *ngIf="timeleft <= 0"
-                [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report</button>
-            <button id="confirm-btn" *ngIf="timeleft > 0 || initiateModel?.status?.toLowerCase()?.trim() != 'new'" mat-flat-button color="primary" (click)="confirmReport()"
-                [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'"> {{ initiateModel?.status?.toLowerCase()?.trim() != 'new' ? 'Confirm' : 'Confirm within ' +
-                timeleft + ' second' }}</button>
+            <button color="primary" mat-stroked-button (click)="generateReport(true)" [disabled]="disabledConfirmBtn()">Regenerate GSS Report</button>
+            <button id="confirm-btn" mat-flat-button color="primary" (click)="confirmReport()" [disabled]="disabledConfirmBtn()"> Confirm </button>
         </div>
     </div>
 </div>

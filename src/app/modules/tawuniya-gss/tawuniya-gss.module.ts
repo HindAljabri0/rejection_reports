@@ -10,11 +10,12 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { TawuniyaGssReportDetailsComponent } from './tawuniya-gss-report-details/tawuniya-gss-report-details.component';
 import { TawuniyaGssGenerateReportDialogComponent } from './tawuniya-gss-generate-report-dialog/tawuniya-gss-generate-report-dialog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { VatFormDialogComponent } from './tawuniya-gss-report-details/vat-form-dialog/vat-form-dialog.component';
 
 
 
 @NgModule({
-  declarations: [TawuniyaGssComponent, TawuniyaGssReportDetailsComponent, TawuniyaGssGenerateReportDialogComponent],
+  declarations: [TawuniyaGssComponent, TawuniyaGssReportDetailsComponent, TawuniyaGssGenerateReportDialogComponent, VatFormDialogComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -31,7 +32,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     BsDatepickerModule
   ],
   entryComponents: [
-    TawuniyaGssGenerateReportDialogComponent
+    TawuniyaGssGenerateReportDialogComponent,
+    VatFormDialogComponent
   ]
 })
 export class TawuniyaGssModule { }
