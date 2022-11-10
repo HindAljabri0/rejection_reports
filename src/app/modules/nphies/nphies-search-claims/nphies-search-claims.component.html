@@ -176,6 +176,10 @@
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Attachment Status</th>
 
+                    <th *ngIf="selectedCardKey != 0 && isPBMValidationVisible"
+                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    PBM Status</th>
+
                   <th *ngIf="showInquireAll === true"
                     class="text-nowrap text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <span class="inline-text pr-1">Inquiry</span>
@@ -240,6 +244,18 @@
                       </mat-icon>
                       <mat-icon *ngIf="claim.attachmentStatus === 'Failed'" matTooltip="Failed" class="text-danger">error_outline</mat-icon>
                     </td>
+
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click" *ngIf="isPBMValidationVisible && selectedCardKey != 0">
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                          matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                          matTooltip="Partially Approved">report
+                      </mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='invalid'" class="material-icons-outlined size-21 text-danger"
+                          matTooltip="Invalid">dangerous</mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                          matTooltip="Rejected">dangerous</mat-icon>
+                  </td>
 
                     <td *ngIf="showInquireAll === true" class="actions text-center">
                       <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')"
