@@ -534,7 +534,8 @@ export class ProviderNphiesApprovalService {
     patientFileNo?: string,
     claimDate?: string,
     documentId?: string,
-    organizationId?: string) {
+    organizationId?: string,
+    statuses?: string[]) {
     let requestURL = `/providers/${providerId}/claims/pbm-validation?`;
     if (provderClaimReferenceNumber) {
       requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
@@ -581,6 +582,9 @@ export class ProviderNphiesApprovalService {
     }
     if (documentId) {
       requestURL += `&documentId=${documentId}`;
+    }
+    if (statuses) {
+      requestURL += `&statuses=${statuses}`;
     }
       
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
