@@ -95,7 +95,7 @@
           <div class="form-group form-group-static">
             <div class="control-label">Date Ordered</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value ?
-              (FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy') : '-'}}
+              (FormNphiesClaim.controls.dateOrdered.value | date: 'dd/MM/yyyy hh:mm aa') : '-'}}
             </p>
           </div>
         </div>
@@ -187,8 +187,8 @@
             <div class="control-label">Batch Period</div>
             <p class="form-control-static">
               <span *ngIf="otherDataModel.batchInfo">
-                {{otherDataModel.batchInfo.startDate | date: 'dd/MM/yyyy'}} -
-                {{otherDataModel.batchInfo.endDate | date: 'dd/MM/yyyy'}}
+                {{otherDataModel.batchInfo.startDate | date: 'dd/MM/yyyy hh:mm a'}} -
+                {{otherDataModel.batchInfo.endDate | date: 'dd/MM/yyyy hh:mm a'}}
               </span>
               <span *ngIf="!otherDataModel.batchInfo">-</span>
             </p>
@@ -353,7 +353,7 @@
           <div class="form-group">
             <label class="control-label">Date Written</label>
             <label>
-              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd-MM-yyyy'}}
+              {{FormNphiesClaim.controls.dateWritten.value | date: 'dd/MM/yyyy hh:mm aa'}}
             </label>
             <!-- <div class="date-picker">
               <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written" formControlName="dateWritten">
@@ -529,6 +529,7 @@
               <th>Benefit/Tax</th>
               <th>Status</th>
               <th>Adjudication Reason Code</th>
+              <th *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">PBM</th>
               <th>Note No.</th>
 
               <!-- <th>Quantity</th>
@@ -581,7 +582,17 @@
                   <!--span >{{item.reasonCodes}}</span-->
 
                 </td>
-
+                <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                      matTooltip="Approved">check_circle</mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                      matTooltip="Partially Approved">report
+                  </mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger"
+                      matTooltip="Invalid">error_outline</mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                      matTooltip="Rejected">dangerous</mat-icon>
+                </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
                   <span *ngIf="!item.itemDecision">-</span>
@@ -589,7 +600,7 @@
 
               </tr>
               <tr *ngIf="currentOpenItem==i">
-                <td colspan="10">
+                <td colspan="11">
                   <div class="box mb-2" *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                     <h5 class="align-self-center medium pb-2">Adjudication</h5>
                     <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
@@ -611,6 +622,26 @@
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+                  <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
+                    <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span></h5>
+                    <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+                    <div class="table-responsive">
+                      <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                          <tr>
+                            <th class="light-bg-danger text-danger">PBM Error Code</th>
+                            <th class="light-bg-danger text-danger">PBM Error Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let error of item.pbmStatus.errors">
+                            <td>{{error.errorCode}}</td>
+                            <td>{{error.errorDescription}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div class="box mb-2">
                     <h5 class="align-self-center medium pb-2">Item Info</h5>
@@ -772,6 +803,9 @@
                     </table>
                   </div>
                 </td>
+              </tr>
+              <tr>
+                
               </tr>
             </ng-container>
           </tbody>
@@ -1371,6 +1405,28 @@
         <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
       </ng-template>
     </mat-tab>
+
+    <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
+    [label]="'PBM Comments'">
+    <div class="table-responsive">
+      <div class="d-flex justify-content-end pb-2 align-items-center">
+        PBM Status: <span class="status ml-2" [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span></div>
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+          <thead>
+            <tr>
+              <th class="light-bg-danger text-danger">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let comment of otherDataModel.pbmComments.pbmClaimErrors">
+              <td>{{comment}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
+        </app-empty-state>
+    </div>
+  </mat-tab>
   </mat-tab-group>
 
   <div class="block-footer sticky" *ngIf="!isLoading">
@@ -1502,12 +1558,11 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
-                <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
+                <label class="control-label">Date Ordered<span cngClasslass="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
-                    [max]="today" formControlName="dateOrdered">
+                  <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"  formControlName="dateOrdered">
                   <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
-                  <mat-datepicker #dateOrderedCtrl></mat-datepicker>
+                  <owl-date-time #dateOrderedCtrl></owl-date-time>
                 </div>
                 <div
                   *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
@@ -1835,10 +1890,10 @@
                 <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                     class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
-                    formControlName="dateWritten">
+                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"  formControlName="dateWritten" [max]="FormNphiesClaim.controls.dateOrdered.value">
                   <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
-                  <mat-datepicker #visionWrittenDate></mat-datepicker>
+                  <owl-date-time #visionWrittenDate></owl-date-time>
+
                 </div>
                 <div
                   *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
@@ -2064,6 +2119,7 @@
                   <th>Benefit/Tax</th>
                   <th>Status</th>
                   <th>Adjudication Reason Code</th>
+                  <th *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">PBM</th>
                   <th>Note No.</th>
                   <!-- <th>Quantity</th>
                   <th>Unit Price</th>
@@ -2111,6 +2167,17 @@
                       <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
                       <span *ngIf="!item.reasonCodes">-</span>
                     </td>
+                    <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                          matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                          matTooltip="Partially Approved">report
+                      </mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger"
+                      matTooltip="Invalid">error_outline</mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                          matTooltip="Rejected">dangerous</mat-icon>
+                    </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
                         '-'}}</span>
@@ -2147,7 +2214,49 @@
                     </td>
                   </tr>
                   <tr *ngIf="currentOpenItem==i">
-                    <td colspan="11">
+                    <td colspan="12">
+                      <div class="box mb-2" *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                        <h5 class="align-self-center medium pb-2">Adjudication</h5>
+                        <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+                        <table class="primary-grid">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th>Value</th>
+                              <th>Reason</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+    
+                              <td class="text-capitalize">{{res.category}}</td>
+                              <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'"
+                                  class="currency">SR</span></td>
+                              <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
+                        <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span></h5>
+                        <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+                        <div class="table-responsive">
+                          <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                            <thead>
+                              <tr>
+                                <th class="light-bg-danger text-danger">PBM Error Code</th>
+                                <th class="light-bg-danger text-danger">PBM Error Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let error of item.pbmStatus.errors">
+                                <td>{{error.errorCode}}</td>
+                                <td>{{error.errorDescription}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                       <div class="box mb-2">
                         <h5 class="align-self-center medium pb-2">Item Info</h5>
                         <div class="row">
@@ -2332,6 +2441,7 @@
                       </div>
                     </td>
                   </tr>
+                  
                   <tr *ngIf="item.careTeamSequenceRequired || item.detailsRequired">
                     <td colspan="10">
                       <p class="error-card" *ngIf="item.careTeamSequenceRequired">Item must have atleast one Care Team
@@ -3044,6 +3154,27 @@
             </table>
           </div>
         </mat-tab>
+        <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
+        [label]="'PBM Comments'">
+        <div class="table-responsive">
+          <div class="d-flex justify-content-end pb-2 align-items-center">
+            PBM Status: <span class="status ml-2" [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span></div>
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+              <thead>
+                <tr>
+                  <th class="light-bg-danger text-danger">Comments</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let comment of otherDataModel.pbmComments.pbmClaimErrors">
+                  <td>{{comment}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
+            </app-empty-state>
+        </div>
+      </mat-tab>
 
       </mat-tab-group>
 

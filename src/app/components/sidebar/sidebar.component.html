@@ -645,6 +645,18 @@
           </li>
         </ul>
       </ng-container>
+      <ng-container *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider">
+        <div class="list-title">
+          <hr>
+        </div>
+        <ul class="nav-list">
+          <li>
+            <a routerLink="/nphies/switch-group-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
+              <span class="text">Switch Group Provider</span>
+            </a>
+          </li>
+        </ul>
+      </ng-container>
       <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin">
         <div class="list-title">
           <hr>

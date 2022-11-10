@@ -171,7 +171,8 @@ export class SharedServices {
 
   }
 
-  getNotifications() {
+  getNotifications() {    
+
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -368,6 +369,11 @@ export class SharedServices {
   public get providerId() {
     return this.authService.getProviderId();
   }
+
+  public get providerGroupId() {
+    return this.authService.getOrganizationId();
+  }
+
   provider(): String {
     return this.authService.getProviderId();
   }
@@ -471,6 +477,8 @@ export class SharedServices {
         return 'Partially Approved';
       case ClaimStatus.CREATINGATTACHMENT.toLowerCase():
         return 'Creating Attachment';
+      case ClaimStatus.UNDER_PBM_VALIDATION.toLowerCase():
+        return 'Under PBM Validation';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }

@@ -53,7 +53,7 @@
                       <ng-container>
                         <!-- <mat-option value="">Select Care Team</mat-option> -->
                         <mat-option *ngFor="let item of filteredItem  | async" [value]="item">
-                          <span>[ Item - {{item.sequence}} ] {{item.typeName}}<span class="d-none">&nbsp;&nbsp;|&nbsp;&nbsp;</span><br />{{item.itemCode}}
+                          <span>[ Item - {{item.sequence}} ] {{item.typeName}}  ({{item.status}})<span class="d-none">&nbsp;&nbsp;|&nbsp;&nbsp;</span><br />{{item.itemCode}}
                             ({{item.itemDescription}})<span class="d-none">&nbsp;&nbsp;|&nbsp;&nbsp;</span></span>
                           <span class="text-primary non-standard-code" *ngIf="item.nonStandardCode || item.nonStandardDesc">{{item.nonStandardCode}} <ng-container
                               *ngIf="item.nonStandardDesc">({{item.nonStandardDesc}})</ng-container></span>

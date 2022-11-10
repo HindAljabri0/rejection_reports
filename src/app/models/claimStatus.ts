@@ -44,5 +44,6 @@ export enum ClaimStatus {
     SUBMITTED_OUTSIDE_WASEEL = 'SUBMITTED_OUTSIDE_WASEEL',
     TOTALNOTSUBMITTED = 'Totalnotsubmitted',
     TOTALSUBMITTED = 'Totalsubmitted',
-    CREATINGATTACHMENT = 'creatingAttachment'
+    CREATINGATTACHMENT = 'creatingAttachment',
+    UNDER_PBM_VALIDATION = 'under_pbm_validation'
 }

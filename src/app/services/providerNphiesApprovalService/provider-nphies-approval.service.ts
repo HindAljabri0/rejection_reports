@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -520,4 +520,76 @@ export class ProviderNphiesApprovalService {
       const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
       return this.http.request(request);
   }
+
+  PBMValidation(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    documentId?: string,
+    organizationId?: string,
+    statuses?: string[]) {
+    let requestURL = `/providers/${providerId}/claims/pbm-validation?`;
+    if (provderClaimReferenceNumber) {
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
+    }
+
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    if (uploadId) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+
+    if (claimDate) {
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
+    }
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+    if (statuses) {
+      requestURL += `&statuses=${statuses}`;
+    }
+      
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const httpRequest = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {}, { headers });
+    return this.http.request(httpRequest);
+  }
+
 }
