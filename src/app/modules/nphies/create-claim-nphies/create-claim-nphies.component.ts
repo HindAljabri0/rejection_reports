@@ -1642,6 +1642,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value ? this.FormNphiesClaim.controls.preAuthResponseId.value : null;
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;      
+      
       preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateOrdered.value)).utc();
       if (this.FormNphiesClaim.controls.accountingPeriod.value) {
         // tslint:disable-next-line:max-line-length
@@ -1724,7 +1725,8 @@ export class CreateClaimNphiesComponent implements OnInit {
         return model;
       });
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
-        this.model.visionPrescription = {};        
+        this.model.visionPrescription = {};     
+          
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc();
         this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
@@ -1774,7 +1776,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.tax = x.tax;
           model.net = x.net;
           model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
+          model.payerShare = x.payerShare;          
           model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
           model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
@@ -1816,7 +1818,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.tax = x.tax;
           model.net = x.net;
           model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
+          model.payerShare = x.payerShare;          
           model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
           model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
@@ -3252,9 +3254,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     return status.replace('_', ' ').toUpperCase();
   }
 
-  removeSecondsFromDate(date: Date) {
-    date.setSeconds(0, 0);
-    return new Date(date);
+  removeSecondsFromDate(date: any) {
+    let newDate = new Date(date);
+    newDate.setSeconds(0, 0);
+    return new Date(newDate);
   }
 
 }
