@@ -319,8 +319,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     //   }
     //   this.disableControls();
     //   this.getClaimDetails();
-    // }
-    this.FormNphiesClaim.controls.dateOrdered.setValue(new Date());
+    // }    
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));    
     this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.fragment === 'CommunicationRequest') {
@@ -907,7 +907,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (this.Items.find(x => x.sequence === result.sequence)) {          
+        if (this.Items.find(x => x.sequence === result.sequence)) {
           this.Items.map(x => {
             if (x.sequence === result.sequence) {
               x.type = result.type.toLowerCase();
@@ -1641,8 +1641,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value ? this.FormNphiesClaim.controls.preAuthResponseId.value : null;
       // tslint:disable-next-line:max-line-length
-      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;
-      preAuthorizationModel.dateOrdered = moment(this.FormNphiesClaim.controls.dateOrdered.value).utc();
+      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;      
+      
+      preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateOrdered.value)).utc();
       if (this.FormNphiesClaim.controls.accountingPeriod.value) {
         // tslint:disable-next-line:max-line-length
         preAuthorizationModel.accountingPeriod = this.datePipe.transform(this.FormNphiesClaim.controls.accountingPeriod.value, 'yyyy-MM-dd');
@@ -1724,9 +1725,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         return model;
       });
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
-        this.model.visionPrescription = {};
+        this.model.visionPrescription = {};     
+          
         // tslint:disable-next-line:max-line-length
-        this.model.visionPrescription.dateWritten = moment(this.FormNphiesClaim.controls.dateWritten.value).utc();
+        this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc();
         this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
         this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
           const model: any = {};
@@ -1750,7 +1752,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           return model;
         });
       }
-      
+
       this.model.items = this.Items.map(x => {
         // tslint:disable-next-line:max-line-length
         if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
@@ -1774,9 +1776,9 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.tax = x.tax;
           model.net = x.net;
           model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
-          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
-          model.endDate = moment(x.endDate).utc();
+          model.payerShare = x.payerShare;          
+          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1816,9 +1818,9 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.tax = x.tax;
           model.net = x.net;
           model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
-          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
-          model.endDate = moment(x.endDate).utc();
+          model.payerShare = x.payerShare;          
+          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1950,7 +1952,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       accidentType: '',
       country: ''
     });
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm aa'));
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.CareTeams = [];
     this.Diagnosises = [];
     this.VisionSpecifications = [];
@@ -2426,7 +2428,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
     this.FormNphiesClaim.controls.preAuthResponseUrl.setValue(response.preAuthorizationInfo.preAuthResponseUrl);
-    this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
+    this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);    
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
     if (response.preAuthorizationInfo.accountingPeriod) {
       this.FormNphiesClaim.controls.accountingPeriod.setValue(response.preAuthorizationInfo.accountingPeriod);
@@ -2794,7 +2796,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }).sort((a, b) => a.sequence - b.sequence);
     }
 
-    if (response.visionPrescription) {
+    if (response.visionPrescription) {      
       this.FormNphiesClaim.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
       this.FormNphiesClaim.controls.prescriber.setValue(response.visionPrescription.prescriber);
 
@@ -2876,7 +2878,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.tax = x.tax;
       model.net = x.net;
       model.patientShare = x.patientShare;
-      model.payerShare = x.payerShare;
+      model.payerShare = x.payerShare;      
       if (x.startDate) {
         model.startDate = x.startDate;
         model.startDateStr = moment(x.startDate).format('DD/MM/YYYY hh:mm a');
@@ -3248,8 +3250,14 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   }
 
-  upperCaseAndReplace(status:string){
-      return status.replace('_',' ').toUpperCase();
+  upperCaseAndReplace(status: string) {
+    return status.replace('_', ' ').toUpperCase();
+  }
+
+  removeSecondsFromDate(date: any) {
+    let newDate = new Date(date);
+    newDate.setSeconds(0, 0);
+    return new Date(newDate);
   }
 
 }
