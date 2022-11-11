@@ -57,7 +57,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
-  AllTPA:any[]=[];
+  AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   beneficiaryPatientShare = 0;
@@ -213,7 +213,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
-    ) {
+  ) {
     this.today = new Date();
   }
 
@@ -345,7 +345,7 @@ export class AddPreauthorizationComponent implements OnInit {
       }).sort((a, b) => a.sequence - b.sequence);
     }
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
-     const date =this.data.visionPrescription.dateWritten;
+      const date = this.data.visionPrescription.dateWritten;
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.dateWritten.setValue(this.removeSecondsFromDate(date));
       //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
@@ -364,8 +364,7 @@ export class AddPreauthorizationComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          this.selectedBeneficiary = body[0];
-
+          this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] : null;
           this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
@@ -386,7 +385,8 @@ export class AddPreauthorizationComponent implements OnInit {
             insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
             // tslint:disable-next-line:max-line-length
-            insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
+            // insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
+            insurancePlanTpaNphiesId: res.beneficiary.insurancePlan.tpaNphiesId
           });
 
           if (res.subscriber) {
@@ -1032,8 +1032,8 @@ export class AddPreauthorizationComponent implements OnInit {
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
-              x.drugSelectionReason  = result.drugSelectionReason ;
-              x.prescribedDrugCode  = result.prescribedDrugCode ;
+              x.drugSelectionReason = result.drugSelectionReason;
+              x.prescribedDrugCode = result.prescribedDrugCode;
 
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1574,7 +1574,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-        this.isSubmitted = true;
+    this.isSubmitted = true;
     let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
@@ -2221,11 +2221,12 @@ export class AddPreauthorizationComponent implements OnInit {
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
     console.log(nameTPA.display)
-    if (nameTPA.display!='None'){
-      return nameTPA.display;}
-      else{
-        return '';
-      }
+    if (nameTPA.display != 'None') {
+      return nameTPA.display;
+    }
+    else {
+      return '';
+    }
   }
 
   getTPA() {
@@ -2240,9 +2241,10 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-  
-  removeSecondsFromDate(date: Date) {
-    date.setSeconds(0, 0);
-    return new Date(date);
+
+  removeSecondsFromDate(date: any) {
+    let newDate = new Date(date);
+    newDate.setSeconds(0, 0);
+    return new Date(newDate);
   }
 }
