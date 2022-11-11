@@ -1561,7 +1561,7 @@
                 <label class="control-label">Date Ordered<span cngClasslass="asterisk">*</span></label>
                 <div class="date-picker">
                   <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"  formControlName="dateOrdered">
-                  <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
                   <owl-date-time #dateOrderedCtrl></owl-date-time>
                 </div>
                 <div
@@ -1891,7 +1891,7 @@
                     class="asterisk">*</span></label>
                 <div class="date-picker">
                   <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"  formControlName="dateWritten" [max]="FormNphiesClaim.controls.dateOrdered.value">
-                  <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate"></mat-datepicker-toggle>
                   <owl-date-time #visionWrittenDate></owl-date-time>
 
                 </div>
