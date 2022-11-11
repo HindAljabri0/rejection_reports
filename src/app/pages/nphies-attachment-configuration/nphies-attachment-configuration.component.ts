@@ -54,7 +54,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
   isHeaderFormat: boolean = false;
   isFooterFormat: boolean = false;
   HeaderFormat: string;
-  FooterFormat: string;
+  FooterFormat: string;  
   ImageFormat = ["jpg", "jpeg", "png"];
   HeaderByteArray:any;
   FooterByteArray:any;
