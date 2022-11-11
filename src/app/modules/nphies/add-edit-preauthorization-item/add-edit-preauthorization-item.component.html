@@ -129,12 +129,12 @@
 
             <ng-container *ngIf="data.source === 'CLAIM'">
               <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="FormItem.controls.endDate.value ? FormItem.controls.endDate.value : today">
-                  <mat-datepicker-toggle [for]="startDate" ></mat-datepicker-toggle>
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
                   <owl-date-time #startDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
               <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" [max]="FormItem.controls.endDate.value" formControlName="startDate">
-                  <mat-datepicker-toggle [for]="startDate" ></mat-datepicker-toggle>
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
                   <owl-date-time #startDate ></owl-date-time>
             </ng-container>
 
@@ -163,12 +163,12 @@
 
             <ng-container *ngIf="data.source === 'CLAIM'">
              <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value" [max]="today">
-                  <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="endDate"></mat-datepicker-toggle>
                   <owl-date-time #endDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
               <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value">
-              <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker-toggle [owlDateTimeTrigger]="endDate"></mat-datepicker-toggle>
               <owl-date-time #endDate></owl-date-time>
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
