@@ -220,7 +220,7 @@ export class AddPreauthorizationComponent implements OnInit {
   ngOnInit() {
     this.getPayees();
     this.getTPA();
-    this.FormPreAuthorization.controls.dateOrdered.setValue(new Date());
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
       this.getRefferalProviders();
@@ -260,7 +260,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
     const date = this.data.preAuthorizationInfo.dateOrdered;
     // tslint:disable-next-line:max-line-length\
-    this.FormPreAuthorization.controls.dateOrdered.setValue(date);
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(date));
     if (this.data.preAuthorizationInfo.payeeType) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] ? this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] : '');
@@ -347,7 +347,7 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
      const date =this.data.visionPrescription.dateWritten;
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.dateWritten.setValue(date);
+      this.FormPreAuthorization.controls.dateWritten.setValue(this.removeSecondsFromDate(date));
       //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
       this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
       this.VisionSpecifications = this.data.visionPrescription.lensSpecifications;
@@ -1780,7 +1780,7 @@ export class AddPreauthorizationComponent implements OnInit {
       // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       const preAuthorizationModel: any = {};
-      preAuthorizationModel.dateOrdered = moment(this.FormPreAuthorization.controls.dateOrdered.value).utc();
+      preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateOrdered.value)).utc();
       if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
         // tslint:disable-next-line:max-line-length
         preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
@@ -1881,7 +1881,7 @@ export class AddPreauthorizationComponent implements OnInit {
         if (this.FormPreAuthorization.controls.prescriber.value) {
           this.model.visionPrescription = {};
           // tslint:disable-next-line:max-line-length
-          this.model.visionPrescription.dateWritten = moment(this.FormPreAuthorization.controls.dateWritten.value).utc();
+          this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateWritten.value)).utc();
           this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
           this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
             const model: any = {};
@@ -1931,8 +1931,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
-          model.endDate = moment(x.endDate).utc();
+          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1972,8 +1972,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = x.startDate ? moment(x.startDate).utc() : null;
-          model.endDate = moment(x.endDate).utc();
+          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -2238,5 +2238,11 @@ export class AddPreauthorizationComponent implements OnInit {
 
       }
     });
+  }
+
+  
+  removeSecondsFromDate(date: Date) {
+    date.setSeconds(0, 0);
+    return new Date(date);
   }
 }
