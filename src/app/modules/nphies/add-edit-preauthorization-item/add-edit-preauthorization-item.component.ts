@@ -93,6 +93,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     private sharedServices: SharedServices, private formBuilder: FormBuilder,
     private providerNphiesSearchService: ProviderNphiesSearchService) {
     this.today = new Date();
+    this.today.setSeconds(0, 0);
   }
 
   ngOnInit() {
@@ -123,11 +124,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.filteredPescribedMedicationItem.next(body);
             if (this.data.item) {
               const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
-              if(res){
+              if (res) {
                 this.FormItem.patchValue({
                   prescribedDrugCode: res
                 });
-              }              
+              }
               this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
               this.filterPrescribedMedicationItem();
             }
@@ -144,7 +145,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           this.filterPrescribedMedicationItem();
         });
     }
-    if (this.data.item) {      
+    if (this.data.item) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
@@ -680,7 +681,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     if (searchStr.length > 2) {
       this.loadSearchItem = true;
-    
       // tslint:disable-next-line:max-line-length
       this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -696,7 +696,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
       });
     }
-
   }
 
   checkItemsCodeForSupportingInfo() {
@@ -847,7 +846,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.tax = this.FormItem.controls.tax.value ? parseFloat(this.FormItem.controls.tax.value) : 0;
       model.net = this.FormItem.controls.net.value;
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
-      model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;      
+      model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
       model.startDate = this.FormItem.controls.startDate.value; //this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd hh:mm aa');
       model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy hh:mm aa');
 
