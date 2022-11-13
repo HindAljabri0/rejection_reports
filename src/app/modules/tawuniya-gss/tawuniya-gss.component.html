@@ -107,9 +107,14 @@
                                     data?.totalNetPayable?.currencyCode }}</span>
                             </td>
                             <td class="row-click" (click)="openDetailView(data)">
-                                <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new',
-                                'success' : data?.status?.toLowerCase() === 'signed',
-                                'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status |
+                                <span class="status-badge size-sm primary" 
+                                [ngClass]="{
+                                'primary': data?.status?.toLowerCase() === 'new',
+                                'bg-parrot' : data?.status?.toLowerCase() === 'signed',
+                                'success' : data?.status?.toLowerCase() === 'confirmed',
+                                'danger' : data?.status?.toLowerCase() === 'rejected', 
+                                'bg-warning' : data?.status?.toLowerCase() === 'pending'  
+                            }">{{data?.status |
                                     titlecase}}</span>
                                 <!-- <span class="status-badge size-sm warning">Pending</span>
                                     <span class="status-badge size-sm dark-green">Signed</span> -->
