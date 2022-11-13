@@ -131,7 +131,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     isNewBorn: [false],
     preAuthResponseId: [''],
     preAuthResponseUrl: [''],
-    accountingPeriod: ['']
+    accountingPeriod: [''],
+    insurancePlanPolicyNumber: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -255,6 +256,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
+    this.pastDate = new Date();
+    this.pastDate.setDate(this.pastDate.getDate() - 1);
   }
 
   InitClaimPagenation() {
@@ -362,6 +365,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         payerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
         payerName: this.otherDataModel.beneficiary.insurancePlan.insurer,
         memberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+        policyNumber: this.otherDataModel.beneficiary.insurancePlan.policyNumber,
         planId: null,
         payerId: null,
         coverageType: this.otherDataModel.beneficiary.insurancePlan.insurancePlan,
@@ -370,7 +374,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
         maxLimit: null,
-        patientShare: null,
+        patientShare: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -382,6 +386,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       fullName: this.otherDataModel.beneficiary.fullName,
       gender: this.otherDataModel.beneficiary.gender.toUpperCase(),
       insurancePlanMemberCardId: this.otherDataModel.beneficiary.insurancePlan.memberCardId,
+      insurancePlanPolicyNumber: this.otherDataModel.beneficiary.insurancePlan.policyNumber,
       insurancePlanCoverageType: this.otherDataModel.beneficiary.insurancePlan.coverageType,
       insurancePayerNphiesId: this.otherDataModel.beneficiary.insurancePlan.payerId,
       insurancePlanRelationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
@@ -891,7 +896,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
-      beneficiaryDob: this.FormNphiesClaim.controls.dob.value
+      beneficiaryDob: this.FormNphiesClaim.controls.dob.value,
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -934,6 +940,9 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
               x.invoiceNo = result.invoiceNo;
+              x.drugSelectionReason = result.drugSelectionReason;
+              x.drugSelectionReasonName = result.drugSelectionReasonName;
+              x.prescribedDrugCode = result.prescribedDrugCode;
               x.requestDate = this.otherDataModel.submissionDate;
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1012,6 +1021,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   deleteItem(index: number) {
     this.Items.splice(index, 1);
     this.checkItemValidation();
+    this.RefershTotal();
   }
 
   openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
@@ -1026,7 +1036,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       item: itemModel,
       type: this.FormNphiesClaim.controls.type.value.value,
       dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value,
-      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1178,7 +1189,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.otherDataModel.totalPayerShare += x.payerShare;
       this.otherDataModel.totalTax += x.tax;
     });
-
   }
   checkItemValidation() {
     if (this.Items.length === 0) {
@@ -1449,7 +1459,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     }
 
-
+    if (this.IsAccountingPeriodInvalid) {
+      hasError = true;
+    }
     // this.checkCareTeamValidation();
 
     if (this.FormNphiesClaim.valid) {
@@ -1586,6 +1598,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
+      this.model.insurancePlan.policyNumber = this.FormNphiesClaim.controls.insurancePlanPolicyNumber.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
 
@@ -1678,7 +1691,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.diagnosis = this.Diagnosises.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
-        model.diagnosisDescription = x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim();
+        model.diagnosisDescription = x.diagnosisDescription !=null ? x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim():null;
         model.type = x.type;
         model.onAdmission = x.onAdmission;
         model.diagnosisCode = x.diagnosisCode;
@@ -1807,6 +1820,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
           model.invoiceNo = x.invoiceNo;
+          model.drugSelectionReason = x.drugSelectionReason;
+          model.prescribedDrugCode = x.prescribedDrugCode;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
@@ -1972,7 +1987,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get checkErrorClaimInfo() {
-    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || !this.FormNphiesClaim.controls.episodeId.value ||
+    if (this.isSubmitted && ((!this.FormNphiesClaim.controls.dateOrdered.value || this.IsAccountingPeriodInvalid || !this.FormNphiesClaim.controls.episodeId.value ||
       !this.FormNphiesClaim.controls.type.value) || (
         (this.FormNphiesClaim.controls.preAuthOfflineDate.value ||
           this.FormNphiesClaim.controls.preAuthResponseId.value ||
@@ -2227,6 +2242,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.batchInfo = response.batchInfo;
     this.otherDataModel.relatedClaimId = response.relatedClaimId;
     this.otherDataModel.relatedClaimDate = response.relatedClaimDate;
+    this.otherDataModel.claimRelatedIdentifiers = response.claimRelatedIdentifiers;
     this.otherDataModel.isNewBorn = response.isNewBorn;
     this.otherDataModel.requestBundleId = response.requestBundleId;
     this.otherDataModel.responseBundleId = response.responseBundleId;
@@ -2303,6 +2319,10 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       if (this.otherDataModel.beneficiary.insurancePlan.memberCardId) {
         this.FormNphiesClaim.controls.insurancePlanMemberCardId.setValue(this.otherDataModel.beneficiary.insurancePlan.memberCardId);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.policyNumber) {
+        this.FormNphiesClaim.controls.insurancePlanPolicyNumber.setValue(this.otherDataModel.beneficiary.insurancePlan.policyNumber);
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
@@ -2814,7 +2834,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       // tslint:disable-next-line:max-line-length
-      model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+      model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0].name : '';
 
       model.subSite = x.subSite;
       // tslint:disable-next-line:max-line-length
@@ -2863,6 +2883,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.careTeamSequence = x.careTeamSequence;
       model.diagnosisSequence = x.diagnosisSequence;
       model.invoiceNo = x.invoiceNo;
+      model.drugSelectionReason = x.drugSelectionReason;
+      model.drugSelectionReasonName = this.sharedDataService.itemMedicationReasonList.filter(e => e.value === x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e => e.value === x.drugSelectionReason)[0].name : "-";
+      model.prescribedDrugCode = x.prescribedDrugCode;
 
       x.discount = parseFloat(x.discount);
       x.quantity = parseFloat(x.quantity);
@@ -2954,7 +2977,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.CareTeams.forEach(x => {
             console.log(x.speciality)
             if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
-            x.speciality === null ||  x.speciality === undefined) {
+              x.speciality === null || x.speciality === undefined) {
               isthereFiledEmpty = true;
               return;
             }
@@ -3016,9 +3039,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    if (this.pageMode === 'VIEW' || this.pageMode === 'EDIT') {
-      // this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-search-claim?uploadId=${this.uploadId}`);
-      this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+    const params: SearchPageQueryParams = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
+    if (params) {
+      this.params = params;
       this.resetURL();
       setTimeout(() => {
         location.reload();
@@ -3049,7 +3072,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null
-      && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
+      && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid', 'rejected', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
   get IsPreAuthRefRequired() {
@@ -3196,4 +3219,17 @@ export class CreateClaimNphiesComponent implements OnInit {
     }).join(', ');
   }
 
+  get IsAccountingPeriodInvalid() {
+    if (this.FormNphiesClaim.controls.accountingPeriod.value && this.today) {
+      const d1 = this.datePipe.transform(new Date(this.FormNphiesClaim.controls.accountingPeriod.value), 'yyyy-MM-dd');
+      const d2 = this.datePipe.transform(new Date(this.today), 'yyyy-MM-dd');
+      if (new Date(d1) < new Date(d2)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 }

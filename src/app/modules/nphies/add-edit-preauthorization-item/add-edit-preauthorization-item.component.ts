@@ -22,6 +22,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   itemList: any = [];
   // tslint:disable-next-line:max-line-length
   filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredSupportingInfo: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -33,6 +34,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     type: ['', Validators.required],
     item: ['', Validators.required],
     itemFilter: [''],
+    prescribedMedicationItemFilter: [''],
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
@@ -62,13 +64,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     diagnosisFilter: [''],
     invoiceNo: [''],
     // IsTaxApplied: [false],
-    searchQuery: ['']
+    searchQuery: [''],
+    drugSelectionReason: [''],
+    prescribedDrugCode: ['']
   });
 
   isSubmitted = false;
   typeListSearchResult = [];
   SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
+  medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+  prescribedMedicationList: any;
   bodySiteList = [];
   subSiteList = [];
   IscareTeamSequenceRequired = false;
@@ -108,9 +114,36 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
       this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
+    if (this.data.type === "pharmacy") {
+      this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body) {
+            this.prescribedMedicationList = body;
+            this.filteredPescribedMedicationItem.next(body);
+            if (this.data.item) {
+              const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0];
+              this.FormItem.patchValue({
+                prescribedDrugCode: res
+              });
+              this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+              this.filterPrescribedMedicationItem();
+            }
+          }
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
 
-    if (this.data.item && this.data.item.itemCode) {
-      console.log(" sub site val = " + this.data.item.subSite),
+        }
+      });
+      this.FormItem.controls.prescribedMedicationItemFilter.valueChanges
+        .pipe(takeUntil(this.onDestroy))
+        .subscribe(() => {
+          this.filterPrescribedMedicationItem();
+        });
+    }
+    if (this.data.item) {
+      console.log(" sub site val = " + JSON.stringify(this.data.item)),
         this.FormItem.patchValue({
           type: this.typeList.filter(x => x.value === this.data.item.type)[0],
           nonStandardCode: this.data.item.nonStandardCode,
@@ -135,7 +168,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           payerShare: this.data.item.payerShare,
           startDate: this.data.item.startDate,
           endDate: this.data.item.endDate,
-          invoiceNo: this.data.item.invoiceNo
+          invoiceNo: this.data.item.invoiceNo,
+          drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0]
+
         });
 
       if (this.data.careTeams) {
@@ -162,6 +197,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.getItemList();
     } else {
       if (this.data.source === 'APPROVAL') {
+        this.FormItem.controls.quantity.setValue(1);
         this.FormItem.controls.startDate.setValue(this.today);
         this.FormItem.controls.endDate.setValue(this.today);
 
@@ -289,7 +325,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   selectItem(type) {
     if (type) {
-
       if (type.itemType && type.itemType === 'medication-codes') {
         this.FormItem.controls.quantityCode.setValidators([Validators.required]);
         this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -312,8 +347,33 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.SetSingleRecord(type);
       this.updateDiscount();
       this.updateNet();
+      if (this.data.type === "pharmacy") {
+        this.FormItem.patchValue({
+          prescribedDrugCode: ""
+        });
+        this.setPrescribedMedication(type.code);
+      }
     }
   }
+
+  setPrescribedMedication(gtinNumber: any) {
+    if (this.data.type === "pharmacy") {
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
+      const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
+      if (res != undefined) {
+        this.FormItem.patchValue({
+          prescribedDrugCode: res
+        });
+      } else {
+        this.FormItem.patchValue({
+          prescribedDrugCode: ""
+        });
+      }
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+      this.filterPrescribedMedicationItem();
+    }
+  }
+
   SetSingleRecord(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
@@ -323,15 +383,29 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.quantityCode.updateValueAndValidity();
     }
     this.FormItem.controls.item.setValue('');
-    this.itemList = [{ "code": type.code, "description": type.display }];
+    // this.itemList = [{ "code": type.code, "description": type.display }];
 
-    if (type) {
-      this.FormItem.patchValue({
-        item: this.itemList.filter(x => x.code === type.code)[0]
-      });
-    }
+    this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.itemList = event.body;
+        if (type) {
+          this.FormItem.patchValue({
+            item: this.itemList.filter(x => x.code === type.code)[0]
+          });
+        }
 
-    this.filteredItem.next(this.itemList.slice());
+        this.filteredItem.next(this.itemList.slice());
+        this.FormItem.controls.itemFilter.valueChanges
+          .pipe(takeUntil(this.onDestroy))
+          .subscribe(() => {
+            this.filterItem();
+          });
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+      }
+    });
 
   }
   typeChange(type = null) {
@@ -409,6 +483,25 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
     );
   }
+
+  filterPrescribedMedicationItem() {
+    if (!this.prescribedMedicationList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormItem.controls.prescribedMedicationItemFilter.value;
+    if (!search) {
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations    
+    this.filteredPescribedMedicationItem.next(
+      this.prescribedMedicationList.filter(item => (item.descriptionCode && item.descriptionCode.toLowerCase().indexOf(search) > -1) || (item.tradeName && item.tradeName.toString().toLowerCase().indexOf(search) > -1) || (item.gtinNumber && item.gtinNumber.toString().toLowerCase().indexOf(search) > -1))
+    );
+  }
+
 
   filterSupportingInfo() {
     if (!this.data.supportingInfos) {
@@ -512,7 +605,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
       // tslint:disable-next-line:max-line-length
       const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + tax;
-      console.log("Quntity = "+parseFloat(this.FormItem.controls.quantity.value)+ " * Unit Price = " +parseFloat(this.FormItem.controls.unitPrice.value)+ " * factor = "+ parseFloat(this.FormItem.controls.factor.value) + " + tax = "+tax)
+      console.log("Quntity = " + parseFloat(this.FormItem.controls.quantity.value) + " * Unit Price = " + parseFloat(this.FormItem.controls.unitPrice.value) + " * factor = " + parseFloat(this.FormItem.controls.factor.value) + " + tax = " + tax)
       this.FormItem.controls.net.setValue(this.roundTo(netValue));
     } else {
       this.FormItem.controls.net.setValue('');
@@ -522,7 +615,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   roundTo(num) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));
     return Math.round(m) / 100 * Math.sign(num);
-}
+  }
   updatePatientShare() {
     // tslint:disable-next-line:max-line-length
     if (parseFloat(this.FormItem.controls.patientSharePercent.value) && this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && parseFloat(this.FormItem.controls.factor.value) >= 0 && parseFloat(this.FormItem.controls.factor.value) <= 1) {
@@ -583,9 +676,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const claimType = this.data.type;
     const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
     const payerNphiesId = this.data.payerNphiesId;
+    const tpaNphiesId = this.data.tpaNphiesId;
 
     // tslint:disable-next-line:max-line-length
-    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, 0, 10).subscribe(event => {
+    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body) {
@@ -603,7 +697,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   checkItemsCodeForSupportingInfo() {
     let SeqIsThere = null;
     // tslint:disable-next-line:max-line-length
-    if (this.FormItem.controls.type.value.value === 'medication-codes') {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
 
       if (this.data.supportingInfos.filter(x => x.category === 'days-supply').length === 0) {
         // tslint:disable-next-line:max-line-length
@@ -619,7 +713,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       } else {
 
 
-        if (this.FormItem.controls.type.value.value === 'medication-codes') {
+        if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
 
           //let intersecting=this.getArraysIntersection(seqList, this.Items.filter(x => x.type === 'medication-codes').map(t=>t.supportingInfoSequence));
           // tslint:disable-next-line:max-line-length
@@ -745,7 +839,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.taxPercent = this.FormItem.controls.taxPercent.value ? parseFloat(this.FormItem.controls.taxPercent.value) : 0;
       // tslint:disable-next-line:max-line-length
       model.patientSharePercent = this.FormItem.controls.patientSharePercent.value ? parseFloat(this.FormItem.controls.patientSharePercent.value) : 0;
-      model.tax = this.FormItem.controls.tax.value;
+      model.tax = this.FormItem.controls.tax.value ? parseFloat(this.FormItem.controls.tax.value) : 0;
       model.net = this.FormItem.controls.net.value;
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
@@ -771,7 +865,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         model.invoiceNo = this.FormItem.controls.invoiceNo.value;
       }
       model.itemDetails = [];
-      //console.log("item model = " + JSON.stringify(model));
+      if (this.data.type === "pharmacy") {
+        model.drugSelectionReason = this.FormItem.controls.drugSelectionReason.value.value;
+        model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
+        model.drugSelectionReasonName = this.FormItem.controls.drugSelectionReason.value.name;
+      }
+      // console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);
     }
   }
@@ -799,4 +898,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onBodySiteChange(event){
+    if(event.value === ""){
+      this.FormItem.controls.subSite.setValue("");
+    }
+  }
 }

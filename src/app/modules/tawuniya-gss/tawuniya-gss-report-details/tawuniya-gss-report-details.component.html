@@ -10,7 +10,7 @@
         </div>
         <div class="right-block">
             <div class="d-flex align-items-center mb-n2 mt-n2">
-                <span class="status-badge size-sm primary" [ngClass]="
+                <span class="status-badge size-sm primary" *ngIf="initiateModel?.status" [ngClass]="
                 {
                 'primary': isNew(), 
                 'bg-parrot' : isSigned(),
@@ -108,6 +108,14 @@
                             }}</span></span>
                 </div>
             </div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
+                <div class="form-group form-group-static">
+                    <button mat-stroked-button color="primary" (click)="onShowVatInformation()">Show VAT Information</button>
+                </div>
+            </div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
         </div>
         <h5 class="form-title no-border pb-3">Policy Details</h5>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
@@ -153,7 +161,7 @@
     <div class="block-footer sticky">
         <div class="right-block btn-list">
             <button color="primary" mat-stroked-button (click)="generateReport(true)" [disabled]="disabledConfirmBtn()">Regenerate GSS Report</button>
-            <button id="confirm-btn" mat-flat-button color="primary" (click)="confirmReport()" [disabled]="disabledConfirmBtn()"> Confirm </button>
+            <button id="confirm-btn" mat-flat-button color="primary" (click)="onConfirm()" [disabled]="disabledConfirmBtn()"> Confirm </button>
         </div>
     </div>
 </div>

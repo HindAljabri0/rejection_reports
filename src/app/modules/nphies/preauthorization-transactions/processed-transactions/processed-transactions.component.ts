@@ -75,6 +75,11 @@ export class ProcessedTransactionsComponent implements OnInit {
     });
   }
 
+  readAllNotification() {
+    this.processedTransactions.forEach(x=>x.notificationStatus = 'read');
+    this.sharedServices.unReadProcessedCount = 0;
+    this.sharedServices.markAllAsRead(this.sharedServices.providerId, "approval-notifications");
+  }
 
   updateManualPage(index) {
     this.manualPage = index;

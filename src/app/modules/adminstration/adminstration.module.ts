@@ -16,6 +16,7 @@ import { SwitchProviderComponentComponent } from './switch-provider/switch-provi
 import { TransactionsLogComponent } from './transactions-log/transactions-log.component';
 import { CertificateConfigurationComponent } from 'src/app/pages/certificate-configuration/certificate-configuration.component';
 import { CreateProviderComponent } from './create-provider/create-provider.component';
+import { NphiesAttachmentConfigurationComponent } from 'src/app/pages/nphies-attachment-configuration/nphies-attachment-configuration.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CreateProviderComponent } from './create-provider/create-provider.compo
     AddProviderContractDialogComponent,
     SwitchProviderComponentComponent,
     TransactionsLogComponent,
-    CreateProviderComponent
+    CreateProviderComponent,
+    NphiesAttachmentConfigurationComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -39,7 +41,8 @@ import { CreateProviderComponent } from './create-provider/create-provider.compo
       { path: 'config/payer-payment-contract', component: ProviderContractComponent },
       { path: 'switch-provider', component: SwitchProviderComponentComponent },
       { path: 'config/providerCertificate', component: CertificateConfigurationComponent },
-      { path: 'config/createProvider', component:CreateProviderComponent  }
+      { path: 'config/createProvider', component: CreateProviderComponent },
+      { path: 'config/nphies-attachment-configuration', component: NphiesAttachmentConfigurationComponent }
     ]),
     CommonModule,
     MaterialModule,

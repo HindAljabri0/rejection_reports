@@ -57,7 +57,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
-
+  AllTPA:any[]=[];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   beneficiaryPatientShare = 0;
@@ -128,6 +128,7 @@ export class AddPreauthorizationComponent implements OnInit {
     referral: [''],
     referralFilter: [''],
     otherReferral: [''],
+    insurancePlanPolicyNumber: ['']
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -211,12 +212,14 @@ export class AddPreauthorizationComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
-    private providerNphiesApprovalService: ProviderNphiesApprovalService) {
+    private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    ) {
     this.today = new Date();
   }
 
   ngOnInit() {
     this.getPayees();
+    this.getTPA();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -342,7 +345,10 @@ export class AddPreauthorizationComponent implements OnInit {
       }).sort((a, b) => a.sequence - b.sequence);
     }
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
-      this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
+      const date = moment(this.data.visionPrescription.dateWritten, 'DD-MM-YYYY').format('YYYY-MM-DD');
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.dateWritten.setValue(date);
+      //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
       this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
       this.VisionSpecifications = this.data.visionPrescription.lensSpecifications;
     }
@@ -369,6 +375,7 @@ export class AddPreauthorizationComponent implements OnInit {
             fullName: res.beneficiary.fullName,
             gender: res.beneficiary.gender,
             insurancePlanMemberCardId: res.beneficiary.insurancePlan.memberCardId,
+            insurancePlanPolicyNumber: res.beneficiary.insurancePlan.policyNumber,
             insurancePlanCoverageType: res.beneficiary.insurancePlan.coverageType,
             insurancePayerNphiesId: res.beneficiary.insurancePlan.payerId,
             insurancePlanPayerId: res.beneficiary.insurancePlan.payerId,
@@ -769,6 +776,9 @@ export class AddPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId);
       // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
+
+      this.FormPreAuthorization.controls.insurancePlanPolicyNumber.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].policyNumber);
     }
   }
 
@@ -979,7 +989,8 @@ export class AddPreauthorizationComponent implements OnInit {
       beneficiaryMaxLimit: this.beneficiaryMaxLimit,
       documentId: this.FormPreAuthorization.controls.documentId.value,
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
-      beneficiaryDob: this.selectedBeneficiary.dob
+      beneficiaryDob: this.selectedBeneficiary.dob,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1021,6 +1032,8 @@ export class AddPreauthorizationComponent implements OnInit {
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+              x.drugSelectionReason  = result.drugSelectionReason ;
+              x.prescribedDrugCode  = result.prescribedDrugCode ;
 
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1111,7 +1124,8 @@ export class AddPreauthorizationComponent implements OnInit {
       item: itemModel,
       type: this.FormPreAuthorization.controls.type.value.value,
       dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
-      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1560,8 +1574,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-
-    this.isSubmitted = true;
+        this.isSubmitted = true;
     let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
@@ -1743,10 +1756,12 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.insurancePlan = {};
       this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
       this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
+      this.model.insurancePlan.policyNumber = this.FormPreAuthorization.controls.insurancePlanPolicyNumber.value;
       this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
       if (this.FormPreAuthorization.controls.insurancePlanExpiryDate.value) {
         // tslint:disable-next-line:max-line-length
+
         this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormPreAuthorization.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
       }
 
@@ -1963,6 +1978,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
           model.invoiceNo = null;
+          model.drugSelectionReason = x.drugSelectionReason;
+          model.prescribedDrugCode = x.prescribedDrugCode;
 
           model.itemDetails = x.itemDetails.map(y => {
             const dmodel: any = {};
@@ -2201,5 +2218,25 @@ export class AddPreauthorizationComponent implements OnInit {
 
     return str;
   }
+  getTPAName(TPAId: string) {
+    const nameTPA = this.AllTPA.find(val => val.code === TPAId);
+    console.log(nameTPA.display)
+    if (nameTPA.display!='None'){
+      return nameTPA.display;}
+      else{
+        return '';
+      }
+  }
 
+  getTPA() {
+    this.providerNphiesSearchService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.AllTPA = event.body as any[];
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
+  }
 }

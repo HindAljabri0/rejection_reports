@@ -44,10 +44,14 @@ export class AuthService {
 
 
   logout(expired?: boolean, hasClaimPrivileges?: boolean) {
-    this.onCancelPendingHttpRequests$.next();
+    this.onCancelPendingHttpRequests$.next();    
     let demoDoneValue;
     if (window.localStorage.getItem('onboarding-demo-done')) {
       demoDoneValue = window.localStorage.getItem('onboarding-demo-done');
+    }
+    let upcomingFeatureDoneValue;
+    if (window.localStorage.getItem('upcoming-feature-done')) {
+      upcomingFeatureDoneValue = window.localStorage.getItem('upcoming-feature-done');
     }
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
@@ -72,6 +76,9 @@ export class AuthService {
       window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
     }
 
+    if(upcomingFeatureDoneValue){
+      window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
+    }
     promise.then(() => location.reload());
   }
 

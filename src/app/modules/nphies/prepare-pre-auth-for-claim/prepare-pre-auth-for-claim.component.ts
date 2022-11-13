@@ -412,6 +412,9 @@ export class PreparePreAuthForClaimComponent implements OnInit {
               const itemModel: any = {};
               itemModel.itemId = x.itemId;
               itemModel.invoiceNo = x.invoiceNo;
+              itemModel.itemStatus = x.status;
+              itemModel.patientShare = parseFloat(x.patientShare);
+              itemModel.payerShare = parseFloat(x.payerShare);
               return itemModel;
             })
           }

@@ -6,6 +6,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { MatDialog } from '@angular/material';
+import { Payer } from 'src/app/models/nphies/payer';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -18,15 +21,48 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
   beneficiaryTypeList = this.sharedDataService.beneficiaryTypeList;
+  payersList: Payer[] = [];
+
+  subscriberRelationship: { Code: string, Name: string }[] = [
+    { Code: 'child', Name: 'Child' },
+    { Code: 'parent', Name: 'Parent' },
+    { Code: 'spouse', Name: 'Spouse' },
+    { Code: 'common', Name: 'Common Law Spouse' },
+    { Code: 'self', Name: 'Self' },
+    { Code: 'injured', Name: 'Injured Party' },
+    { Code: 'other', Name: 'Other' },
+  ];
+
+
+  coverageTypes: { Code: string, Name: string }[] = [
+    { Code: 'EHCPOL', Name: 'Extended healthcare' },
+    { Code: 'PUBLICPOL', Name: 'Public healthcare' }
+  ];
 
   constructor(
     private sharedDataService: SharedDataService,
+    private providersBeneficiariesService: ProvidersBeneficiariesService,
     public sharedServices: SharedServices,
     private sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.getPayers();
     this.readNotification();
-    this.setDescriptions();
+  }
+
+  getPayers() {
+    this.providersBeneficiariesService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.payersList = event.body as Payer[];
+          this.setDescriptions();
+        }
+      }
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        console.log(err.message);
+      }
+    });
   }
 
   readNotification() {
@@ -65,6 +101,24 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     if (this.data.beneficiary && this.data.beneficiary.documentType) {
       // tslint:disable-next-line:max-line-length
       this.data.beneficiary.documentTypeName = this.beneficiaryTypeList.filter(x => x.value === this.data.beneficiary.documentType)[0] ? this.beneficiaryTypeList.filter(x => x.value === this.data.beneficiary.documentType)[0].name : '-';
+    }
+
+    if (this.data.beneficiary && this.data.beneficiary.insurancePlan) {
+
+      if (this.data.beneficiary.insurancePlan.payerId) {
+        // tslint:disable-next-line:max-line-length
+        this.data.beneficiary.insurancePlan.payerName = this.payersList.filter(x => x.nphiesId === this.data.beneficiary.insurancePlan.payerId)[0] ? (this.payersList.filter(x => x.nphiesId === this.data.beneficiary.insurancePlan.payerId)[0].englistName + ' (' + this.payersList.filter(x => x.nphiesId === this.data.beneficiary.insurancePlan.payerId)[0].arabicName + ')') : '-';
+      }
+
+      if (this.data.beneficiary.insurancePlan.relationWithSubscriber) {
+        // tslint:disable-next-line:max-line-length
+        this.data.beneficiary.insurancePlan.relationWithSubscriberName = this.subscriberRelationship.filter(x => x.Code.toLowerCase() === this.data.beneficiary.insurancePlan.relationWithSubscriber.toLowerCase())[0] ? this.subscriberRelationship.filter(x => x.Code.toLowerCase() === this.data.beneficiary.insurancePlan.relationWithSubscriber.toLowerCase())[0].Name : '-';
+      }
+
+      if (this.data.beneficiary.insurancePlan.coverageType) {
+        // tslint:disable-next-line:max-line-length
+        this.data.beneficiary.insurancePlan.coverageTypeName = this.coverageTypes.filter(x => x.Code.toLowerCase() === this.data.beneficiary.insurancePlan.coverageType.toLowerCase())[0] ? this.coverageTypes.filter(x => x.Code.toLowerCase() === this.data.beneficiary.insurancePlan.coverageType.toLowerCase())[0].Name : '-';
+      }
     }
 
     if (this.data.subscriber && this.data.subscriber.documentType) {
@@ -299,7 +353,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         x.bodySiteName = this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
         // tslint:disable-next-line:max-line-length
         x.subSiteName = this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
-
+        x.drugSelectionReasonName  = this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0].name : "-" ;
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
             // tslint:disable-next-line:max-line-length

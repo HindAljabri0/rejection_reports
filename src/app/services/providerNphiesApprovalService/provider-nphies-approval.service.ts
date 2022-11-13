@@ -420,7 +420,7 @@ export class ProviderNphiesApprovalService {
     if (requestId) {
       requestUrl += `approvalRequestId=${requestId}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
+    const request = new HttpRequest('POST', environment.nphiesApprovalInquiry + requestUrl, {});
     return this.http.request(request);
   }
 
@@ -446,5 +446,78 @@ export class ProviderNphiesApprovalService {
     const requestUrl = `/providers/${providerId}/approval/convert/claim`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
+  }
+
+  generateAttachment(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    documentId?: string,
+    organizationId?: string,
+    attachmentStatus?: string) {
+      let requestURL = `/providers/${providerId}/claims/generate/attchment?`;
+
+      if (provderClaimReferenceNumber) {
+        requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
+      }
+  
+      if (toDate) {
+        requestURL += `&toDate=${this.formatDate(toDate)}`;
+      }
+  
+      if (payerIds && payerIds.length > 0) {
+        requestURL += `&payerIds=${payerIds.join(',')}`;
+      }
+  
+      if (batchId) {
+        requestURL += `&batchId=${batchId}`;
+      }
+  
+      if (uploadId) {
+        requestURL += `&uploadId=${uploadId}`;
+      }
+  
+      if (claimIds && claimIds.length > 0) {
+        requestURL += `&claimIds=${claimIds.join(',')}`;
+      }
+  
+      if (memberId) {
+        requestURL += `&memberId=${memberId}`;
+      }
+  
+      if (invoiceNo) {
+        requestURL += `&invoiceNo=${invoiceNo}`;
+      }
+  
+      if (patientFileNo) {
+        requestURL += `&patientFileNo=${patientFileNo}`;
+      }
+  
+      if (claimDate) {
+        requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+      }
+  
+      if (organizationId) {
+        requestURL += `&organizationId=${organizationId}`;
+      }
+  
+      if (documentId) {
+        requestURL += `&documentId=${documentId}`;
+      }
+
+      if (attachmentStatus) {
+        requestURL += `&attachmentStatus=${attachmentStatus}`;
+      }
+  
+      const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+      return this.http.request(request);
   }
 }

@@ -74,6 +74,11 @@ export class AttachmentViewDialogComponent implements OnInit {
     return fileExt.toLowerCase() === 'pdf';
   }
 
+  isDicom() {
+    const fileExt = this.data.filename.split('.').pop();
+    return fileExt.toLowerCase() === 'dcm';
+  }
+
   isVideo() {
     const fileExt = this.data.filename.split('.').pop();
     return fileExt.toLowerCase() == 'mp4' || fileExt.toLowerCase() == 'mov' || fileExt.toLowerCase() == 'webm';

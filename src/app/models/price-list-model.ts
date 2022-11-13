@@ -9,6 +9,7 @@ export class PriceListModel extends Paginateable {
   priceListId: number;
   providerId: number;
   uploadedDate: string;
+  tpaNphiesId: string;
 
   constructor(body: {}) {
     super(body);
@@ -19,5 +20,6 @@ export class PriceListModel extends Paginateable {
     this.priceListId = body['priceListId'];
     this.providerId = body['providerId'];
     this.uploadedDate = body['uploadedDate'];
+    this.tpaNphiesId =  body['tpaNphiesId'];
   }
 }

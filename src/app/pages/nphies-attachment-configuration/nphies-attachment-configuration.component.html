@@ -1,0 +1,125 @@
+<form>
+    <div class="animate__animated animate__faster animate__fadeIn block-card">
+        <div class="block-header">
+            <p>NPHIES Attachment Configuration</p>
+        </div>
+        <div class="block-body">
+            <h5 class="semibold pb-2">Select Provider</h5>
+            <div class="form-group">
+                <mat-form-field appearance="fill"
+                    [class.no-spacing]="selectedProvider == null || selectedProvider == ''">
+                    <mat-label>Select provider</mat-label>
+                    <input matInput type="text" [matAutocomplete]="auto" [formControl]="providerController"
+                        (input)="updateFilter()" [readonly]="isLoading" />
+                    <mat-icon matSuffix>search</mat-icon>
+                    <mat-autocomplete autoActiveFirstOption #auto>
+                        <mat-option *ngFor="let provider of filteredProviders"
+                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                            (click)="selectProvider();">
+                            {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                        </mat-option>
+                        <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
+                            {{errors.providersError}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <h5 class="semibold pb-2">Enable generating claim attachments? <span class="strength text-medium-grey">(Invoices, UCAF/DCAF/OCAF)</span></h5>
+            <div class="form-group">
+                <mat-radio-group class="radio-group inline pt-0" [(ngModel)]="enabled" (change)="enabledChange($event)" [ngModelOptions]="{standalone: true}" [disabled]="!selectedProvider">
+                    <mat-radio-button [value]="true" color="primary">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false" color="primary">No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="row small-gutter">
+                <div class="col-6">
+                    <h5 class="semibold pb-2">Upload Header Image</h5>
+                    <div class="custom-file-upload size-sm">
+                        <div class="content" *ngIf="!headerFileName">
+                            <img src="./assets/ic-upload.svg" alt="Upload" />
+                            <p>Drag and drop header image file here or <span class="semibold text-primary">browse</span>
+                            </p>
+                            <span>allowed only jpg and jpeg image files and image size should be less than 300 KB</span>
+                        </div>
+                        <div class="content" *ngIf="headerFileName">
+                            <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
+                            <p>{{headerFileName}}</p>
+                            <span *ngIf="HeadersizeInMB">File Size: {{HeadersizeInMB}}</span>
+                            <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();headerClearFiles($event);">Delete File</a><br>
+                                <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();viewAttachment('header');">Preview</a>
+                        </div>
+                        <input type="file" accept=".jpg , .jpeg " [(ngModel)]="headerFile" [ngModelOptions]="{standalone: true}" *ngIf="!headerFileName"
+                            (change)="selectHeaderFile($event)"
+                            class="upload-control" required [disabled]="(!selectedProvider)">
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isHeaderNotSubmitted">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Please select header image.</span>
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isHeaderSize">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Header image size should be 300KB</span>
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isHeaderDimension">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Image height x width should be 120 x 698.</span>
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isHeaderFormat">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Image should be jpg , jpeg .</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h5 class="semibold pb-2">Upload Footer Image</h5>
+                    <div class="custom-file-upload size-sm">
+                        <div class="content" *ngIf="!footerFileName">
+                            <img src="./assets/ic-upload.svg" alt="Upload" />
+                            <p>Drag and drop footer image file here or <span class="semibold text-primary">browse</span>
+                            </p>
+                            <span>allowed only jpg and jpeg image files and image size should be less than 300 KB</span>
+                        </div>
+                        <div class="content" *ngIf="footerFileName">
+                            <img src="./assets/file-types/ic-other-file.svg" alt=".p12 File" />
+                            <p>{{footerFileName}}</p>
+                            <span *ngIf="FootersizeInMB">File Size: {{FootersizeInMB}}</span>
+                            <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();footerClearFiles($event);">Delete File</a><br>
+                                <a href="#" class="primary-link"
+                                (click)="$event.preventDefault();viewAttachment('footer');">Preview</a>
+                        </div>
+                        <input type="file" accept=".jpg , .jpeg " [(ngModel)]="footerFile" [ngModelOptions]="{standalone: true}" *ngIf="!footerFileName"
+                            (change)="selectFooterFile($event)"
+                            class="upload-control" required [disabled]="(!selectedProvider)">
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isFooterNotSubmitted">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Please select footer image.</span>
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isFooterSize">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Footer image size should be less than 300KB.</span>
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isFooterDimension">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Image height x width should be 120 x 698.</span>
+                    </div>
+                    <div class="alert mt-14 danger" *ngIf="isFooterFormat">
+                        <mat-icon class="material-icons-outlined">error</mat-icon>
+                        <span>Image should be jpg , jpeg .</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="block-footer sticky">
+            <div class="right-block">
+                <div class="btn-list">
+                <button type="button" color="primary" mat-flat-button (click)="checkValidation()">Save</button>
+                <button type="button" mat-button (click)="resetForm()">Reset</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+</form>

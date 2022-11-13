@@ -1,43 +1,49 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { files, file } from 'jszip';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
-import { InitiateResponse } from '../../models/InitiateResponse.model';
-import { TawuniyaGssService } from '../../Services/tawuniya-gss.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { SharedServices } from 'src/app/services/shared.services';
+import { InitiateResponse } from '../models/InitiateResponse.model';
+import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
 
 @Component({
-  selector: 'app-vat-form-dialog',
-  templateUrl: './vat-form-dialog.component.html',
+  selector: 'app-vat-info-dialog',
+  templateUrl: './vat-info-dialog.component.html',
   styles: []
 })
-export class VatFormDialogComponent implements OnInit {
+export class VatInfoDialogComponent implements OnInit {
+
   netAmount: number = 0;
   vatRate: number;
   vatAmount: number = 0;
   initiateModel: InitiateResponse;
   form!: FormGroup;
   formIsSubmitted: boolean = false;
-  uploadedFileName: any = "";
-  lossMonth
-  constructor(private tawuniyaGssService: TawuniyaGssService,
-    private dialogRef: MatDialogRef<VatFormDialogComponent>,
-    private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      lossMonth: string,
-      initiateModel: InitiateResponse,
+  readonly: boolean = true; // view form only
+  // uploadedFileName: string = "";
 
+
+  constructor(private tawuniyaGssService: TawuniyaGssService,
+    private dialogRef: MatDialogRef<VatInfoDialogComponent>,
+    private dialog: MatDialog,
+    private sharedServices: SharedServices,
+    private dialogService: DialogService,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      initiateModel: InitiateResponse,
+      readonly: boolean
     }) {
     this.initiateModel = data.initiateModel;
-    this.lossMonth = data.lossMonth
+    this.readonly = data.readonly
   }
 
   ngOnInit() {
     this.initForm();
     this.calculateFields();
     this.fetchVatNo();
+    this.fetchFormDataIfAvailable();
   }
-  
 
   initForm() {
     this.form = new FormGroup({
@@ -53,7 +59,7 @@ export class VatFormDialogComponent implements OnInit {
   }
 
   calculateFields() {
-    this.tawuniyaGssService.getVatRate(this.lossMonth).subscribe(response => {
+    this.tawuniyaGssService.getVatRate(this.initiateModel.lossMonth).subscribe(response => {
       this.vatRate = response.vatRate
       this.calculateVatAmount();
     });
@@ -74,13 +80,37 @@ export class VatFormDialogComponent implements OnInit {
     this.netAmount = +(+this.form.get('taxableAmount').value + +this.form.get('nonTaxableAmount').value).toFixed(2);;
   }
 
-  fetchVatNo() {
-    this.tawuniyaGssService.getVatInfoByProviderId().subscribe(vatInfo => {
-      this.form.get('vatNo').setValue(vatInfo.vatNo)
-    });
+  fetchFormDataIfAvailable() {
+    if (this.readonly && this.initiateModel) {
+      // response must come from the same gss reference no
+      this.tawuniyaGssService.getVatInfoByGssRefNo(this.initiateModel.gssReferenceNumber).subscribe(vatInfo => {
+        if (vatInfo) {
+          this.form.get('vatNo').setValue(vatInfo.vatNo)
+          this.form.get('grossAmount').setValue(vatInfo.grossAmount);
+          this.form.get('discount').setValue(vatInfo.discount);
+          this.form.get('claimCount').setValue(vatInfo.claimCount);
+          this.form.get('grossAmount').setValue(vatInfo.grossAmount);
+          this.form.get('patientShare').setValue(vatInfo.patientShare);
+          this.form.get('taxableAmount').setValue(vatInfo.taxableAmount);
+          this.form.get('nonTaxableAmount').setValue(vatInfo.nonTaxableAmount);
+          this.form.get('vatInvoice').setValue(vatInfo.vatAttachmentUrl);
+        }
+      });
+    }
   }
 
-  confirmClick() {
+  fetchVatNo() {
+    // set last vat No for this provider from any previous record  
+    if (!this.readonly) {
+      this.tawuniyaGssService.getVatInfoByProviderId().subscribe(vatInfo => {
+        if (vatInfo) {
+          this.form.get('vatNo').setValue(vatInfo.vatNo)
+        }
+      });
+    }
+  }
+
+  onConfirm() {
     console.log('vatInvoiceErrors', this.form.get('vatInvoice').errors);
     this.formIsSubmitted = true
     if (this.form.valid) {
@@ -96,6 +126,8 @@ export class VatFormDialogComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
+    this.sharedServices.loadingChanged.next(true);
+
           this.dialogRef.close(this.form.value);
         }
       }, error => { });
@@ -104,31 +136,38 @@ export class VatFormDialogComponent implements OnInit {
 
   selectFile(files) {
     if (files) {
-      this.validateUploadedFile(files[0]);
-      this.uploadedFileName = files[0].name
-      this.form.get('vatInvoice').setValue(files[0]);
+      if (this.validateUploadedFile(files[0])) {
+        this.form.get('vatInvoice').setValue(files[0]);
+      }
     }
   }
 
-  private validateUploadedFile(file) {
+
+  private validateUploadedFile(file): boolean {
+    if (!file) {
+      return false;
+    }
     let allowedSize = 5; // MB
     let allowedType = 'application/pdf'
-    console.log('file.size ', file.size);
-    console.log('file.type ', file.type);
     if (file.size / (1024 * 1024) > allowedSize) {
-      this.form.controls['vatInvoice'].setErrors({ size: true })
+      this.form.controls['vatInvoice'].setErrors({ 'size': true })
+      return false;
     } else if (file.type !== allowedType) {
-      console.log(this.form.get('vatInvoice'));
-      console.log('we should throw an error for file type');
-      this.form.controls['vatInvoice'].setErrors({'format': true})
+      this.form.controls['vatInvoice'].setErrors({ 'format': true })
+      return false;
+    } else {
+      this.form.controls['vatInvoice'].setErrors(null)
+      return true;
     }
-    this.form.updateValueAndValidity()
-    console.log('errors: ', this.form.get('vatInvoice'));
-    console.log('type', file.type);
   }
 
-  cancelClick() {
-    this.dialogRef.close(null);
+  removeAttachment() {
+    this.form.get('vatInvoice').setValue(null);
+  }
+
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
 }

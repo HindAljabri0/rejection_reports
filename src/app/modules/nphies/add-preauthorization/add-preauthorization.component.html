@@ -90,6 +90,7 @@
                   <mat-option value="">Select Insurance Plan</mat-option>
                   <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId"
                     (click)="selectedPlan(plan)">
+                    <h5 class="menu-opt-group" style="padding: 0px 0px">{{getTPAName(plan.tpaNphiesId)}}</h5>
                     {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
                     ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
                   </mat-option>
@@ -160,8 +161,8 @@
 
           <div class="col-4 col-xxl-3">
             <div class="form-group">
-              <label class="control-label">Eligibility Response ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID"
+              <label class="control-label">Eligibility Response Identifier</label>
+              <input class="form-control" placeholder="Enter Offline Eligibility Response Identifier"
                 formControlName="eligibilityResponseId">
             </div>
           </div>
@@ -221,11 +222,15 @@
           </div>
           <div class="col-4 col-xxl-3">
             <div class="form-group">
-              <label class="control-label">Preauthorization Reference No</label>
-              <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
+              <label class="control-label">Related Preauthorization Reference No(s).
+              <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
+                info</mat-icon>
+              </label>
+              <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Related Preauthorization Reference No(s)'" [addOnBlur]="true">
               </tag-input>
               <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
-                <span class="error-text">Please enter Preauthorization Reference No</span>
+                <span class="error-text">Please enter Related Preauthorization Reference No(s).</span>
+                <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">info</mat-icon>
               </div> -->
             </div>
           </div>
@@ -554,8 +559,11 @@
                 <th>Standard Code - Description</th>
                 <th>
                   <div class="d-flex align-items-center">
-                    <span class="pr-1">Net/Tax</span>
+                    <span class="pr-1">Net</span>
                     <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+                      info</mat-icon>
+                      <span class="pr-1">/Tax</span>
+                    <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
                       info</mat-icon>
                   </div>
                 </th>
@@ -583,7 +591,7 @@
                     - {{item.itemDescription}}</td>
 
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
+                    {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
 
                   <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
@@ -730,6 +738,16 @@
                                   </div>
                                 </td>
                                 <td>{{item.factor}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Medication Selection Reason </td>
+                                <td>{{item.drugSelectionReasonName ?
+                                  item.drugSelectionReasonName:"-"}}</td>
+                              </tr>
+                              <tr>
+                                <td class="label">Prescribed Medication </td>
+                                <td>{{item.prescribedDrugCode ?
+                                  item.prescribedDrugCode:"-"}}</td>
                               </tr>
                               <tr>
                                 <td class="label">Supporting Info</td>

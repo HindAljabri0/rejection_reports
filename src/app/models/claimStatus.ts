@@ -43,5 +43,6 @@ export enum ClaimStatus {
     Submitted = 'SUBMITTED',
     SUBMITTED_OUTSIDE_WASEEL = 'SUBMITTED_OUTSIDE_WASEEL',
     TOTALNOTSUBMITTED = 'Totalnotsubmitted',
-    TOTALSUBMITTED = 'Totalsubmitted'
+    TOTALSUBMITTED = 'Totalsubmitted',
+    CREATINGATTACHMENT = 'creatingAttachment'
 }

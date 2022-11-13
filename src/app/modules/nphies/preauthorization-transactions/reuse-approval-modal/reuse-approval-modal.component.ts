@@ -68,6 +68,8 @@ export class ReuseApprovalModalComponent implements OnInit {
           ? this.sharedDataService.careTeamRoleList.filter(x => x.value === i.careTeamRole)[0].name
           : '';
       });
+
+      this.data.detailsModel.careTeam = this.data.detailsModel.careTeam.map(x => {return x;}).sort((a, b) => a.sequence - b.sequence);
     }
 
     if (this.data.detailsModel.diagnosis && this.data.detailsModel.diagnosis.length > 0) {
@@ -79,6 +81,8 @@ export class ReuseApprovalModalComponent implements OnInit {
           ? this.sharedDataService.onAdmissionList.filter(x => x.value === i.onAdmission)[0].name
           : '';
       });
+
+      this.data.detailsModel.diagnosis = this.data.detailsModel.diagnosis.map(x => {return x;}).sort((a, b) => a.sequence - b.sequence);
     }
 
     if (this.data.detailsModel.visionPrescription && this.data.detailsModel.visionPrescription.prescriber) {
@@ -99,6 +103,8 @@ export class ReuseApprovalModalComponent implements OnInit {
           ? this.sharedDataService.baseList.filter(x => x.value === i.prismBase)[0].name
           : '';
       });
+
+      this.data.detailsModel.visionPrescription.lensSpecifications = this.data.detailsModel.visionPrescription.lensSpecifications.map(x => {return x;}).sort((a, b) => a.sequence - b.sequence);
     }
 
     if (this.data.detailsModel.supportingInfo && this.data.detailsModel.supportingInfo.length > 0) {
@@ -133,6 +139,8 @@ export class ReuseApprovalModalComponent implements OnInit {
         i.byteArray = i.attachment;
         // i.file = this.getImageOfBlob();
       });
+
+      this.data.detailsModel.supportingInfo = this.data.detailsModel.supportingInfo.map(x => {return x;}).sort((a, b) => a.sequence - b.sequence);
     }
 
     if (this.data.detailsModel && this.data.detailsModel.items) {
@@ -143,7 +151,7 @@ export class ReuseApprovalModalComponent implements OnInit {
         x.bodySiteName = this.sharedDataService.getBodySite(this.data.detailsModel.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.detailsModel.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
         // tslint:disable-next-line:max-line-length
         x.subSiteName = this.sharedDataService.getSubSite(this.data.detailsModel.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(this.data.detailsModel.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
-
+        x.drugSelectionReasonName  = this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0].name : "-" ;
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {
             // tslint:disable-next-line:max-line-length
@@ -195,6 +203,8 @@ export class ReuseApprovalModalComponent implements OnInit {
         // }
 
       });
+
+      this.data.detailsModel.items = this.data.detailsModel.items.map(x => {return x;}).sort((a, b) => a.sequence - b.sequence);
     }
 
     this.IsDescriptionLoaded = true;

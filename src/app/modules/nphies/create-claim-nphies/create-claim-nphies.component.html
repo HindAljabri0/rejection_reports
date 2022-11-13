@@ -6,16 +6,16 @@
     <div class="summary">
       <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
           No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong></p>
-      <p *ngIf="otherDataModel.claimResourceId"><span>Claim
-          ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
+      <p *ngIf="otherDataModel.claimResourceId"><span>Claim Request Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
-      <!--p *ngIf="otherDataModel.relatedClaimId && otherDataModel.relatedClaimDate">
-        <span>Related Claim ID:</span>&nbsp;<strong>
-          <span> <strong>{{otherDataModel.relatedClaimDate + "-"+ otherDataModel.relatedClaimId}} </strong></span>
+      <p *ngIf="otherDataModel.claimRelatedIdentifiers">
+        <span>Related Claim Request Identifier:</span>&nbsp;<strong>
+          <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
         </strong>
-      </p-->
-      <p *ngIf="otherDataModel.claimRefNo"><span>NPHIES/Payer Response
-          ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
+      </p>
+      <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
       <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
           ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId}}</strong></p>
       <p *ngIf="otherDataModel.batchInfo && otherDataModel.batchInfo.batchId"><span>Batch
@@ -115,7 +115,8 @@
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
             <div class="control-label">Payee Type</div>
-            <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value.name}}</p>
+            <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value ?
+              FormNphiesClaim.controls.payeeType.value.name : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -126,7 +127,7 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Eligibility Response ID</div>
+            <div class="control-label">Eligibility Response Identifier</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value ?
               FormNphiesClaim.controls.eligibilityResponseId.value : "-"}}</p>
           </div>
@@ -148,7 +149,7 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Offline Approval Date</div>
+            <div class="control-label">Offline Preauthorization Date</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthOfflineDate.value ?
               (FormNphiesClaim.controls.preAuthOfflineDate.value | date:
               'dd-MM-yyyy') : "-"}}</p>
@@ -163,7 +164,7 @@
                 </div> -->
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Pre Authorization Reference No.</div>
+            <div class="control-label">Preauthorization Reference No(s).</div>
             <p class="form-control-static">
               {{otherDataModel.preAuthRefNo ? otherDataModel.preAuthRefNo : '-'}}</p>
           </div>
@@ -204,14 +205,14 @@
 
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Pre Authorization Response ID</div>
+            <div class="control-label">Preauthorization Response Identifier (Value)</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseId.value ?
               FormNphiesClaim.controls.preAuthResponseId.value : '-'}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Pre Authorization Response Url</div>
+            <div class="control-label">Preauthorization Response Identifier (URL)</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.preAuthResponseUrl.value ?
               FormNphiesClaim.controls.preAuthResponseUrl.value : '-'}}</p>
           </div>
@@ -517,11 +518,14 @@
               <th>Code - Description</th>
               <th>
                 <div class="d-flex align-items-center">
-                  <span class="pr-1">Net/Tax</span>
+                  <span class="pr-1">Net</span>
                   <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
                     info</mat-icon>
+                  <span class="pr-1">/Tax</span>
+                  <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                    info</mat-icon>
                 </div>
-              </th>            
+              </th>
               <th>Benefit/Tax</th>
               <th>Status</th>
               <th>Adjudication Reason Code</th>
@@ -552,29 +556,30 @@
                 <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   {{item.itemCode}} - {{item.itemDescription}}</td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  {{item.net}}/{{item.tax}} <span class="currency">SR</span></td>
+                  {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                     <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                      <span *ngIf="x.category === 'benefit'">{{x.categoryValue}}</span>
-                      <span *ngIf="x.category === 'tax'">/{{x.categoryValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                      <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span class="currency">SR</span></span>
                     </ng-container>
                   </ng-container>
                 </td>
-                <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                <td
+                  class="row-click text-capitalize text-{{sharedService.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}"
+                  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                  <span class="align-items-center pl-7"  *ngFor="let res of item.reasonsMap">
-                    <span class="pr-1">{{ res.code }}</span>
-                    <mat-icon class="material-icons-outlined size-20" matTooltip="{{res.reason}}">info
-                    </mat-icon>
-                  </span>
+                  <ng-container *ngFor="let res of item.reasonsMap;let i=index">
+                    <span class="abbr" matTooltip="{{res.reason}}">{{ res.code }}</span>
+                    <ng-container *ngIf="i!=item.reasonsMap.length-1">, </ng-container>
+                  </ng-container>
                   <span *ngIf="!item.reasonsMap">-</span>
                   <!--span >{{item.reasonCodes}}</span-->
-                  
+
                 </td>
 
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -597,10 +602,9 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories"
-                        class="text-{{sharedService.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}">
+                        <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
 
-                          <td>{{res.category}}</td>
+                          <td class="text-capitalize">{{res.category}}</td>
                           <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'"
                               class="currency">SR</span></td>
                           <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
@@ -708,6 +712,16 @@
                                 </div>
                               </td>
                               <td>{{item.factor}}</td>
+                            </tr>
+                            <tr>
+                              <td class="label">Medication Selection Reason </td>
+                              <td>{{item.drugSelectionReasonName ?
+                                item.drugSelectionReasonName:"-"}}</td>
+                            </tr>
+                            <tr>
+                              <td class="label">Prescribed Medication </td>
+                              <td>{{item.prescribedDrugCode ?
+                                item.prescribedDrugCode:"-"}}</td>
                             </tr>
                             <tr>
                               <td class="label">Supporting Info</td>
@@ -933,14 +947,14 @@
         </div>
       </ng-template>
       <div class="communication-wrapper">
-        <h5 class="form-title px-14 py-0 mb-0">
+        <!-- <h5 class="form-title px-14 py-0 mb-0">
           <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
             (click)="openAddCommunicationDialog()">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
-        </h5>
-        <ul class="communication">
+        </h5> -->
+        <ul class="communication" *ngIf="communications.length > 0">
           <li *ngFor="let communication of communications">
             <ng-container *ngIf="communication.communicationRequestId">
               <div class="header-block">
@@ -1020,13 +1034,30 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
-                <div class="ml-auto">
-                  <button type="button" class="action-btn"
+                <div class="ml-auto action-btns">
+                  <button
+                    *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                    type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                    <mat-icon class="text-primary">text_snippet</mat-icon>
+                    <span>Notes</span>
+                  </button>
+                  <!-- <button type="button" class="action-btn"
                     (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
-                  </button>
+                  </button> -->
                 </div>
+                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                    <li *ngFor="let n of communication.communicationRequestNotesList">
+                      <p>{{n.noteText}}</p>
+                      <div class="info">
+                        <span>{{n.noteAuthor}}</span>
+                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </mat-menu>
               </div>
               <ng-container *ngIf="communication.communicationDataList">
                 <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
@@ -1192,10 +1223,31 @@
                     'dd/MM/yyyy hh:mm
                     aa'}}</span>
                 </div>
+                <div class="ml-auto action-btns">
+                  <button
+                    *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                    type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                    <mat-icon class="text-primary">text_snippet</mat-icon>
+                    <span>Notes</span>
+                  </button>
+                </div>
+                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                    <li *ngFor="let n of communication.communicationRequestNotesList">
+                      <p>{{n.noteText}}</p>
+                      <div class="info">
+                        <span>{{n.noteAuthor}}</span>
+                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </mat-menu>
               </div>
             </ng-container>
           </li>
         </ul>
+        <app-empty-state *ngIf="communications.length === 0" message='No Communications found!'>
+        </app-empty-state>
       </div>
     </mat-tab>
 
@@ -1366,27 +1418,40 @@
       <p *ngIf="pageMode == 'EDIT'" class="title">Edit Claim</p>
 
       <div class="summary">
-        <p><span>Provider Reference No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo ?
-            otherDataModel.provClaimNo : '-'}}</strong></p>
-        <p><span>Claim ID:</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
+        <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
+            No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong></p>
+        <p *ngIf="otherDataModel.claimResourceId"><span>Claim Request Identifier
+            :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
         </p>
-
-        <p><span>NPHIES/Payer Response ID:</span>&nbsp;<strong>{{otherDataModel.claimRefNo ?
-            otherDataModel.claimRefNo : '-'}}</strong></p>
-        <p><span>Transaction ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId ?
-            otherDataModel.providertransactionlogId : '-'}}</strong></p>
-        <p><span>Batch ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo ? (otherDataModel.batchInfo.batchId ?
-            otherDataModel.batchInfo.batchId : '-') : '-'}}</strong></p>
-        <p>
-          <span>Submission Date:</span>&nbsp;<strong>
-            <span *ngIf="otherDataModel.submissionDate">{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</span>
-            <span *ngIf="!otherDataModel.submissionDate">-</span>
+        <p *ngIf="otherDataModel.claimRelatedIdentifiers">
+          <span>Related Claim Request Identifier:</span>&nbsp;<strong>
+            <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
           </strong>
         </p>
-        <p><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome ? otherDataModel.outcome : '-'}}</strong></p>
-        <p><span>Status:</span>&nbsp;<strong>{{otherDataModel.status ? otherDataModel.status : '-'}}</strong></p>
+        <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
+            :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
+        <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
+            ID:</span>&nbsp;<strong>{{otherDataModel.providertransactionlogId}}</strong></p>
+        <p *ngIf="otherDataModel.batchInfo && otherDataModel.batchInfo.batchId"><span>Batch
+            ID:</span>&nbsp;<strong>{{otherDataModel.batchInfo.batchId}}</strong></p>
+        <p *ngIf="otherDataModel.submissionDate"><span>Submission
+            Date:</span>&nbsp;<strong>{{otherDataModel.submissionDate | date: 'dd-MM-yyyy'}}</strong></p>
+        <p *ngIf="otherDataModel.outcome"><span>Outcome:</span>&nbsp;<strong>{{otherDataModel.outcome}}</strong></p>
+        <p *ngIf="otherDataModel.status"><span>Status:</span>&nbsp;<strong
+            class="text-capitalize">{{otherDataModel.status}}</strong></p>
         <p *ngIf="otherDataModel.statusDesc"><span>Status Description:</span>&nbsp;<strong
-          class="text-capitalize">{{otherDataModel.statusDesc}}</strong></p>
+            class="text-capitalize">{{otherDataModel.statusDesc}}</strong></p>
+        <p *ngIf="otherDataModel.disposition">
+          <span>Disposition:</span>&nbsp;<strong>{{otherDataModel.disposition}}</strong>
+        </p>
+
+        <p *ngIf="otherDataModel.cancelStatus"><span>Cancellation
+            Status:</span>&nbsp;<strong>{{otherDataModel.cancelStatus}}</strong></p>
+        <p *ngIf="otherDataModel.cancelResponseReason"><span>Cancellation Status
+            Reason:</span>&nbsp;<strong>{{otherDataModel.cancelResponseReason}}</strong></p>
+        <p *ngIf="otherDataModel.reIssueReasonName"><span>Reissue
+            Reason:</span>&nbsp;<strong>{{otherDataModel.reIssueReasonName}}</strong></p>
+
       </div>
     </div>
     <ul class="claim-totals"
@@ -1547,31 +1612,32 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Eligibility Response ID</label>
-                <input class="form-control" placeholder="Eligibility Response ID"
+                <label class="control-label">Eligibility Response Identifier</label>
+                <input class="form-control" placeholder="Eligibility Response Identifier"
                   formControlName="eligibilityResponseId">
               </div>
             </div>
             <!-- <div class="col-4 col-xxl-3">
               <div class="form-group" [ngClass]="{'has-error' : IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))}">
-                <label class="control-label">Offline Approval Date</label>
+                <label class="control-label">Offline Preauthorization Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Approval Date" [max]="today"
+                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Preauthorization Date" [max]="today"
                     formControlName="preAuthOfflineDate">
                   <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                 </div>
                 <div *ngIf="IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))">
-                  <span class="error-text">Please select Offline Approval Date</span>
+                  <span class="error-text">Please select Offline Preauthorization Date</span>
                 </div>
               </div>
             </div> -->
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Offline Approval Date</label>
+                <label class="control-label">Offline Preauthorization Date</label>
                 <div class="date-picker">
                   <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control"
-                    placeholder="Select Offline Approval Date" [max]="today" formControlName="preAuthOfflineDate">
+                    placeholder="Select Offline Preauthorization Date" [max]="today"
+                    formControlName="preAuthOfflineDate">
                   <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
                 </div>
@@ -1580,27 +1646,28 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
-                <label class="control-label">Preauthorization Reference No<span *ngIf="IsPreAuthRefRequired"
+                <label class="control-label">Preauthorization Reference No(s).<span *ngIf="IsPreAuthRefRequired"
                     class="asterisk">*</span></label>
-                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauth Ref No'" [addOnBlur]="true">
+                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauthorization Reference No(s).'"
+                  [addOnBlur]="true">
                 </tag-input>
                 <div
                   *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
-                  <span class="error-text">Please enter Preauthorization Reference No</span>
+                  <span class="error-text">Please enter Preauthorization Reference No(s)</span>
                 </div>
               </div>
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Preauthorization Response ID</label>
-                <input class="form-control" placeholder="Preauthorization Response ID"
+                <label class="control-label">Preauthorization Response Identifier (Value)</label>
+                <input class="form-control" placeholder="Preauthorization Response Identifier (Value)"
                   formControlName="preAuthResponseId">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Preauthorization Response Url</label>
-                <input class="form-control" placeholder="Preauthorization Response Url"
+                <label class="control-label">Preauthorization Response Identifier (URL)</label>
+                <input class="form-control" placeholder="Preauthorization Response Identifier (URL)"
                   formControlName="preAuthResponseUrl">
               </div>
             </div>
@@ -1620,12 +1687,16 @@
               </div> -->
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{'has-error': IsAccountingPeriodInvalid}">
                 <label class="control-label">Accounting Period</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="accountingPeriodCtrl" class="form-control" placeholder="Select accounting period" [max]="pastDate" formControlName="accountingPeriod">
+                  <input [matDatepicker]="accountingPeriodCtrl" class="form-control"
+                    placeholder="Select accounting period" [max]="pastDate" formControlName="accountingPeriod">
                   <mat-datepicker-toggle [for]="accountingPeriodCtrl"></mat-datepicker-toggle>
                   <mat-datepicker #accountingPeriodCtrl></mat-datepicker>
+                </div>
+                <div *ngIf="IsAccountingPeriodInvalid">
+                  <span class="error-text">Accounting Period must be in the past</span>
                 </div>
               </div>
             </div>
@@ -1638,6 +1709,7 @@
                             </div> -->
           </div>
         </mat-tab>
+
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="checkErrorBeneficiaryInfo === true"
@@ -1649,6 +1721,7 @@
             [(FormNphiesClaim)]="FormNphiesClaim" [(selectedBeneficiary)]="selectedBeneficiary"
             (emitSelectedBenificiary)="selectedBenificiaryChange($event)"></app-beneficiary-tab>
         </mat-tab>
+
         <mat-tab *ngIf="FormNphiesClaim.controls.isNewBorn.value">
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="checkErrorSubscriberInfo === true"
@@ -1661,6 +1734,7 @@
             [(selectedBeneficiary)]="selectedSubscriber" (emitSelectedBenificiary)="selectedSubscriberChange($event)">
           </app-beneficiary-tab>
         </mat-tab>
+
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="IsCareTeamRequired" [class.text-danger]="IsCareTeamRequired">
@@ -1730,6 +1804,7 @@
           <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams" [pageMode]="pageMode">
           </app-manage-care-team>
         </mat-tab>
+
         <mat-tab>
 
           <ng-template mat-tab-label>
@@ -1743,6 +1818,7 @@
           </app-manage-diagnosis>
 
         </mat-tab>
+
         <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="checkErrorVision === true" [class.text-danger]="checkErrorVision === true">
@@ -1864,6 +1940,7 @@
             </app-empty-state>
           </div>
         </mat-tab>
+
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="IsSupposrtingInfoError === true"
@@ -1973,12 +2050,18 @@
                   <th>Invoice No.</th>
                   <th>Type</th>
                   <th>Code - Description</th>
-                  <th><div class="d-flex align-items-center">
-                    <span class="pr-1">Net</span>
-                    <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
-                      info</mat-icon>
-                  </div></th>
-                  <th>Approved Net</th>
+                  <th>
+                    <div class="d-flex align-items-center">
+                      <span class="pr-1">Net</span>
+                      <mat-icon class="material-icons-outlined size-20"
+                        matTooltip="Unit Price * Quantity * Factor + TAX">
+                        info</mat-icon>
+                      <span class="pr-1">/Tax</span>
+                      <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                        info</mat-icon>
+                    </div>
+                  </th>
+                  <th>Benefit/Tax</th>
                   <th>Status</th>
                   <th>Adjudication Reason Code</th>
                   <th>Note No.</th>
@@ -2008,17 +2091,16 @@
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.itemCode}} - {{item.itemDescription}}</td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                      {{item.net}} <span class="currency">SR</span></td>
+                      {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                         <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
                           <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span
                               class="currency">SR</span></span>
+                          <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span
+                              class="currency">SR</span></span>
                         </ng-container>
                       </ng-container>
-                      <ng-container
-                        *ngIf="!item.itemDecision || (item.itemDecision && !item.itemDecision.claimItemDecisionCategories)">
-                        -</ng-container>
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.status ? item.itemDecision.status :
@@ -2125,7 +2207,8 @@
                                   <td class="label">
                                     <div class="d-flex align-items-center">
                                       <span class="pr-1">Tax</span>
-                                      <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                                      <mat-icon class="material-icons-outlined size-20"
+                                        matTooltip="Payer share Tax only">
                                         info</mat-icon>
                                     </div>
                                   </td>
@@ -2161,11 +2244,22 @@
                                   <td class="label">
                                     <div class="d-flex align-items-center">
                                       <span class="pr-1">Factor</span>
-                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info
+                                      <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">
+                                        info
                                       </mat-icon>
                                     </div>
                                   </td>
                                   <td>{{item.factor}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Medication Selection Reason </td>
+                                  <td>{{item.drugSelectionReason ?
+                                    item.drugSelectionReason:"-"}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Prescribed Medication </td>
+                                  <td>{{item.prescribedDrugCode ?
+                                    item.prescribedDrugCode:"-"}}</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Supporting Info</td>
@@ -2509,6 +2603,325 @@
 
           </div>
         </mat-tab>
+
+        <mat-tab
+          *ngIf="responseId && otherDataModel.status !== 'Error' && otherDataModel.status !== 'Accepted' && otherDataModel.status !== 'Failed' && otherDataModel.status !== 'NotAccepted'">
+          <ng-template mat-tab-label>
+            <div class="d-flex align-items-center">
+              <span>Communication</span>
+            </div>
+          </ng-template>
+          <div class="communication-wrapper">
+            <h5 class="form-title px-14 py-0 mb-0">
+              <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
+                (click)="openAddCommunicationDialog()">
+                <mat-icon>add_circle_outline</mat-icon>
+                <span class="pl-1">Add Communication</span>
+              </button>
+            </h5>
+            <ul class="communication" *ngIf="communications.length > 0">
+              <li *ngFor="let communication of communications">
+                <ng-container *ngIf="communication.communicationRequestId">
+                  <div class="header-block">
+                    <div class="message">
+                      <div class="table-responsive pb-2">
+                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+                          <tbody>
+                            <ng-container *ngFor="let payload of communication.payloadList">
+                              <tr *ngIf="payload.payloadValue">
+                                <td class="px-0">
+                                  {{payload.payloadValue}}
+                                  <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                    <span>[ <span class="medium">Item</span> {{payload.payloadItemModel.itemSequence}} ]
+                                      -
+                                      {{payload.payloadItemModel.itemType}}<br />{{payload.payloadItemModel.code}}
+                                      ({{payload.payloadItemModel.description}})</span>
+                                    <span class="text-primary non-standard-code"
+                                      *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                      <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr
+                                *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                <td class="px-0">
+                                  <ul class="inline-attachments no-space">
+                                    <li>
+                                      <button type="button"
+                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                        <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                        <span>{{payload.attachmentName}}</span>
+                                      </button>
+                                    </li>
+                                  </ul>
+                                  <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                    <span>[ <span class="medium">Item</span> {{payload.payloadItemModel.itemSequence}} ]
+                                      -
+                                      {{payload.payloadItemModel.itemType}}<br />{{payload.payloadItemModel.code}}
+                                      ({{payload.payloadItemModel.description}})</span>
+                                    <span class="text-primary non-standard-code"
+                                      *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                      <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr
+                                *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                <td class="px-0">
+                                  <ul class="inline-attachments no-space">
+                                    <li>
+                                      <button type="button"
+                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                        <span>{{payload.attachmentName}}</span>
+                                      </button>
+                                    </li>
+                                  </ul>
+                                  <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                    <span>[ <span class="medium">Item</span> {{payload.payloadItemModel.itemSequence}} ]
+                                      -
+                                      {{payload.payloadItemModel.itemType}}<br />{{payload.payloadItemModel.code}}
+                                      ({{payload.payloadItemModel.description}})</span>
+                                    <span class="text-primary non-standard-code"
+                                      *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                      <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                      <span>Communication Request ID: {{communication.requestIdentifierId}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                    </div>
+                    <div class="ml-auto action-btns">
+                      <button
+                        *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                        type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                        <mat-icon class="text-primary">text_snippet</mat-icon>
+                        <span>Notes</span>
+                      </button>
+                      <button type="button" class="action-btn"
+                        (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                        <mat-icon class="text-primary">reply</mat-icon>
+                        <span>Reply</span>
+                      </button>
+                    </div>
+                    <mat-menu #notesMenu="matMenu" class="communication-notes">
+                      <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                        <li *ngFor="let n of communication.communicationRequestNotesList">
+                          <p>{{n.noteText}}</p>
+                          <div class="info">
+                            <span>{{n.noteAuthor}}</span>
+                            <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </mat-menu>
+                  </div>
+                  <ng-container *ngIf="communication.communicationDataList">
+                    <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
+                      <div class="message size-sm">
+                        <div class="table-responsive pb-2">
+                          <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+                            <tbody>
+                              <ng-container *ngFor="let payload of reply.payloadList">
+                                <tr *ngIf="payload.payloadValue">
+                                  <td class="px-0">
+                                    {{payload.payloadValue}}
+                                    <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                      <span><span class="medium">Item</span> -
+                                        {{payload.payloadItemModel.itemSequence}} -
+                                        {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                        {{payload.payloadItemModel.description}}</span>
+                                      <span class="text-primary non-standard-code"
+                                        *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                        <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                          ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr
+                                  *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                  <td class="px-0">
+                                    <ul class="inline-attachments no-space">
+                                      <li>
+                                        <button type="button"
+                                          (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                          <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                          <span>{{payload.attachmentName}}</span>
+                                        </button>
+                                      </li>
+                                    </ul>
+                                    <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                      <span><span class="medium">Item</span> -
+                                        {{payload.payloadItemModel.itemSequence}} -
+                                        {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                        {{payload.payloadItemModel.description}}</span>
+                                      <span class="text-primary non-standard-code"
+                                        *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                        <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                          ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr
+                                  *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                  <td class="px-0">
+                                    <ul class="inline-attachments no-space">
+                                      <li>
+                                        <button type="button"
+                                          (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                          <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                          <span>{{payload.attachmentName}}</span>
+                                        </button>
+                                      </li>
+                                    </ul>
+                                    <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                      <span><span class="medium">Item</span> -
+                                        {{payload.payloadItemModel.itemSequence}} -
+                                        {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
+                                        {{payload.payloadItemModel.description}}</span>
+                                      <span class="text-primary non-standard-code"
+                                        *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                        <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                          ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+                        <span>Communication ID: {{reply.communicationResponseId}}
+                          &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                          {{reply.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </ng-container>
+                <ng-container *ngIf="!communication.communicationRequestId">
+                  <div class="header-block sent">
+                    <div class="message">
+                      <div class="table-responsive pb-2">
+                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+                          <tbody>
+                            <ng-container *ngFor="let payload of communication.payloadList">
+                              <tr *ngIf="payload.payloadValue">
+                                <td class="px-0">
+                                  {{payload.payloadValue}}
+                                  <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                    <span>[ <span class="medium">Item</span> {{payload.payloadItemModel.itemSequence}} ]
+                                      -
+                                      {{payload.payloadItemModel.itemType}}<br />{{payload.payloadItemModel.code}}
+                                      ({{payload.payloadItemModel.description}})</span>
+                                    <span class="text-primary non-standard-code"
+                                      *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                      <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr
+                                *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                <td class="px-0">
+                                  <ul class="inline-attachments no-space">
+                                    <li>
+                                      <button type="button"
+                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                        <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                        <span>{{payload.attachmentName}}</span>
+                                      </button>
+                                    </li>
+                                  </ul>
+                                  <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                    <span>[ <span class="medium">Item</span> {{payload.payloadItemModel.itemSequence}} ]
+                                      -
+                                      {{payload.payloadItemModel.itemType}}<br />{{payload.payloadItemModel.code}}
+                                      ({{payload.payloadItemModel.description}})</span>
+                                    <span class="text-primary non-standard-code"
+                                      *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                      <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr
+                                *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                <td class="px-0">
+                                  <ul class="inline-attachments no-space">
+                                    <li>
+                                      <button type="button"
+                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                        <span>{{payload.attachmentName}}</span>
+                                      </button>
+                                    </li>
+                                  </ul>
+                                  <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
+                                    <span>[ <span class="medium">Item</span> {{payload.payloadItemModel.itemSequence}} ]
+                                      -
+                                      {{payload.payloadItemModel.itemType}}<br />{{payload.payloadItemModel.code}}
+                                      ({{payload.payloadItemModel.description}})</span>
+                                    <span class="text-primary non-standard-code"
+                                      *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                      <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                      <span>Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                        {{communication.communicationDate | date :
+                        'dd/MM/yyyy hh:mm
+                        aa'}}</span>
+                    </div>
+                    <div class="ml-auto action-btns">
+                      <button
+                        *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                        type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                        <mat-icon class="text-primary">text_snippet</mat-icon>
+                        <span>Notes</span>
+                      </button>
+                    </div>
+                    <mat-menu #notesMenu="matMenu" class="communication-notes">
+                      <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                        <li *ngFor="let n of communication.communicationRequestNotesList">
+                          <p>{{n.noteText}}</p>
+                          <div class="info">
+                            <span>{{n.noteAuthor}}</span>
+                            <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </mat-menu>
+                  </div>
+                </ng-container>
+              </li>
+            </ul>
+            <app-empty-state *ngIf="communications.length === 0" message='No Communications found!'>
+            </app-empty-state>
+          </div>
+        </mat-tab>
+
         <mat-tab
           *ngIf="pageMode == 'EDIT' && otherDataModel.status !== 'approved' && otherDataModel.status !== 'partial' && otherDataModel.status !== 'pended' && otherDataModel.errors && otherDataModel.errors.length>0"
           [label]="'Errors'">
@@ -2522,6 +2935,46 @@
               </thead>
               <tbody>
                 <tr *ngFor="let err of otherDataModel.errors">
+                  <td>{{err.code}}</td>
+                  <td>{{err.error}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+
+        <mat-tab *ngIf="otherDataModel.cancelErrors && otherDataModel.cancelErrors.length>0"
+          [label]="'Cancellation Errors'">
+          <div class="table-responsive">
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th class="light-bg-danger text-danger">Code</th>
+                  <th class="light-bg-danger text-danger">Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let err of otherDataModel.cancelErrors">
+                  <td>{{err.code}}</td>
+                  <td>{{err.error}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+
+        <mat-tab *ngIf="otherDataModel.inquiryErrors && otherDataModel.inquiryErrors.length>0"
+          [label]="'Inquiry Errors'">
+          <div class="table-responsive">
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th class="light-bg-danger text-danger">Code</th>
+                  <th class="light-bg-danger text-danger">Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let err of otherDataModel.inquiryErrors">
                   <td>{{err.code}}</td>
                   <td>{{err.error}}</td>
                 </tr>
@@ -2550,6 +3003,14 @@
               </tbody>
             </table>
           </div>
+        </mat-tab>
+
+        <mat-tab
+          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled'"
+          [label]="'JSON'">
+          <ng-template matTabContent>
+            <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
+          </ng-template>
         </mat-tab>
 
         <mat-tab [label]="'Payments'"
@@ -2583,6 +3044,7 @@
             </table>
           </div>
         </mat-tab>
+
       </mat-tab-group>
 
       <div class="block-footer sticky">

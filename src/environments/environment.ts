@@ -17,6 +17,7 @@ export const environment = {
     claimServiceHost: `${host}:8081`,
     NotificationServiceHost: `${host}:8222/notification-service`,
     authenticationHost: `${host}:8086`,
+    //authenticationHost: 'https://api.qa-eclaims.waseel.com/oauth',
     adminServiceHost: `${host}:8087`,
     auditTrailServiceHost: `${host}:8089`,
     settingsServiceHost: `${host}:8111`,
@@ -29,7 +30,7 @@ export const environment = {
     approvalDetailInquiryService: `${host}:8333`,
     providersBeneficiariesService: `${host}:8995`,
     providerNphiesEligibility: `${host}:8022`,
-    providerNphiesSearch: `${host}:8090`,//`https://api.qa-eclaims.waseel.com/provider-nphies-search`,
+    providerNphiesSearch: `${host}:8090`,
     providerNphiesApproval: `${host}:8025`,
     nphiesClaimUploader: `${host}:8088`,
     claimsDownloadsService: `${host}:8052`,
@@ -37,7 +38,10 @@ export const environment = {
     contractManagementService: `${host}:8099`,
     claimReviewService: `${host}:8100`,
     nphiesConfigurationService: `${host}:8092`,
-    tawuniyaGssReport: `${host}:8011`
+    tawuniyaGssReport: `${host}:8011`,
+    nphiesClaimDownload: `${host}:8054/nphiesDownloads`,
+    nphiesApprovalInquiry: `${host}:8101`,
+    nphiesDownloadApprovleEligibility: `${host}:8055/nphiesApprovalEligibilityDownloads`,
 };
 
 /*

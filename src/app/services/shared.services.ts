@@ -14,6 +14,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from '../store/mainStore.reducer';
 import { ProviderNphiesSearchService } from './providerNphiesSearchService/provider-nphies-search.service';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +90,7 @@ export class SharedServices {
     private announcements: AnnouncementsService,
     private searchService: SearchService,
     private store: Store,
+    private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService
   ) {
 
@@ -183,6 +185,7 @@ export class SharedServices {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
+
     this.notifications.getNotifications(this.providerId, 'batch-summary-inquiry', 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const paginatedResult: PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
@@ -192,7 +195,7 @@ export class SharedServices {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
-    });
+    });    
   }
 
   getAnnouncements() {
@@ -287,6 +290,22 @@ export class SharedServices {
     });
   }
 
+  isOverNphiesdwonTime() {
+    console.log(this.router.url)
+    var dateOftoday = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    console.log("dateOftoday : " + dateOftoday);
+    var overDate = this.datePipe.transform("2022-09-25", 'yyyy-MM-dd');
+
+    console.log("overDate : " + overDate);
+    //dateOftoday >= overDate &&
+    return dateOftoday >= overDate;
+  }
+
+  isHasNphiesPrivileges() {
+    return this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim ||
+      this.userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation;
+  }
+
   getClaimProcessedCount() {
     // tslint:disable-next-line:max-line-length
     this.notifications.getNotificationsCountByWeek(this.providerId, 'claim-notifications', 'unread').subscribe((event: any) => {
@@ -330,6 +349,17 @@ export class SharedServices {
     });
   }
 
+  markAllAsRead(providerId: string, notificationType: string) {
+    this.notifications.markAllNotificationAsRead(providerId, notificationType).subscribe(event => {
+      if (event instanceof HttpResponse) {
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent);
+      }
+    });
+  }
+
   public get uploadId() {
     return this.getUploadId();
   }
@@ -352,11 +382,11 @@ export class SharedServices {
       case ClaimStatus.ALL.toLowerCase():
         return 'all-claim';
       case ClaimStatus.REJECTED.toLowerCase():
-        return 'cancelled';
+        return 'danger';
       case ClaimStatus.APPROVED.toLowerCase():
-        return 'paid';
+        return 'success';
       case ClaimStatus.PARTIAL.toLowerCase():
-        return 'partially-paid';
+        return 'light-blue';
       default:
         return 'not-saved';
     }
@@ -437,8 +467,10 @@ export class SharedServices {
         return 'Cancelled';
       case ClaimStatus.FAILEDNPHIES.toLowerCase():
         return 'Failed By NPHIES';
-        case ClaimStatus.PARTIAL.toLowerCase():
-          return 'Partially Approved';
+      case ClaimStatus.PARTIAL.toLowerCase():
+        return 'Partially Approved';
+      case ClaimStatus.CREATINGATTACHMENT.toLowerCase():
+        return 'Creating Attachment';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
@@ -652,7 +684,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -670,7 +702,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

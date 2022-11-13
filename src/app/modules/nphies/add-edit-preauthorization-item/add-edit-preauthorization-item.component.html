@@ -48,7 +48,7 @@
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Standard Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect>
+            <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)">
               <mat-option>
                 <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'>
                 </ngx-mat-select-search>
@@ -89,9 +89,9 @@
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="bodySite">
+            <mat-select formControlName="bodySite" (selectionChange)="onBodySiteChange($event)">
               <mat-option value="">Select Body Site</mat-option>
-              <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite">{{bodySite.name}}</mat-option>
+              <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite" >{{bodySite.name}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -112,7 +112,7 @@
         <div class="form-group">
           <label class="control-label">Sub Site</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="subSite">
+            <mat-select formControlName="subSite" [disabled]="!FormItem.controls.bodySite.value">
               <mat-option value="">Select Sub Site</mat-option>
               <mat-option *ngFor="let subSite of subSiteList" [value]="subSite">{{subSite.name}}</mat-option>
             </mat-select>
@@ -275,11 +275,49 @@
             <span class="error-text">Please enter Invoice No</span>
           </div>
         </div>
+
         <!-- <div class="form-group">
           <label class="control-label">Invoice No.</label>
           <input class="form-control" placeholder="Enter invoice number" formControlName="invoiceNo" maxlength="64">
         </div> -->
       </div>
+
+      <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('drugSelectionReason').touched) && FormItem.get('drugSelectionReason').hasError('required')}">
+          <label class="control-label">Medication Selection Reason</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="drugSelectionReason">
+              <mat-option value="">Select medication reason</mat-option>
+              <mat-option *ngFor="let medication of medicationReasonList" [value]="medication">{{medication.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="col-4 col-lg-6" *ngIf="data.type === 'pharmacy'">
+      <div class="form-group">
+        <label class="control-label">Prescribed Medication</label>
+        <mat-form-field class="form-control custom-select-control">
+          <mat-select formControlName="prescribedDrugCode">
+            <mat-option>
+              <ngx-mat-select-search placeholderLabel="Search prescribed Medication" formControlName="prescribedMedicationItemFilter" noEntriesFoundLabel="No prescribed medication found" name='searchedItem'>
+              </ngx-mat-select-search>
+            </mat-option>
+            <ng-container>
+              <mat-option value="">Select Prescribed Medication </mat-option>
+              <mat-option *ngFor="let type of filteredPescribedMedicationItem  | async" [value]="type">
+                <span>{{type.descriptionCode}} ( {{type.tradeName}} )</span><br/>
+              <span class="text-primary non-standard-code" >{{type.gtinNumber}} </span>
+              </mat-option>
+            </ng-container>
+
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      
+    </div>
+
     </div>
     <hr class="hr mb-3">
     <div class="row">
@@ -389,7 +427,7 @@
                 </span>
               </label>
               <div class="input-group">
-                <input class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('Tax')">
+                <input type="number" class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('Tax')">
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>

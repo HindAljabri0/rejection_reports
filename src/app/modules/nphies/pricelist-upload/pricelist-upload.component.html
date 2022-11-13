@@ -6,7 +6,7 @@
   <form [formGroup]="FormPriceList" (ngSubmit)="onSubmit()">
     <div class="row small-gutter">
         <div class="col-sm-6">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceList.get('payerNphiesId').touched) && FormPriceList.get('payerNphiesId').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceList.get('insurancePlanPayerId').touched) && FormPriceList.get('insurancePlanPayerId').hasError('required')}">
                 <label class="control-label">Payer</label>
                 <app-nphies-payers-selector (selectionChange)="selectPayer($event)" [(Form)]="FormPriceList" [(isSubmitted)]="isSubmitted"></app-nphies-payers-selector>
             </div>

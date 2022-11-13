@@ -58,12 +58,17 @@ export class TawuniyaGssService {
   }
 
   getVatRate(lossMonth: string){
-    const requestUrl = '/gss/vat-rate/' + lossMonth.replace('/', '-');
-    return this.http.get<{vatRate: number}>(environment.tawuniyaGssReport + requestUrl);
+    const requestUrl = '/gss/vat-rate';
+    return this.http.get<{vatRate: number}>(environment.tawuniyaGssReport + requestUrl, {params: {"loss-month": lossMonth}});
   }
 
   getVatInfoByProviderId(){
     const requestUrl = '/gss/vat-info';
     return this.http.get<any>(environment.tawuniyaGssReport + requestUrl, {params: {"provider-id": localStorage.getItem('provider_id')}});
+  }
+
+  getVatInfoByGssRefNo(gssRefNo: string){
+    const requestUrl = '/gss/vat-info';
+    return this.http.get<any>(environment.tawuniyaGssReport + requestUrl, {params: {"gss-ref-no": gssRefNo}});
   }
 }

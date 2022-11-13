@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
@@ -52,7 +51,7 @@ export class TawuniyaGssComponent implements OnInit {
         console.log(`lossMonth: `, lossMonth);
         this.sharedServices.loadingChanged.next(true);
         this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((data: InitiateResponse) => {
-          this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute });
+          this.router.navigate([encodeURIComponent(data.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute, queryParams: { lossMonth: encodeURIComponent(lossMonth) } });
           this.sharedServices.loadingChanged.next(false);
         }, err => {
           this.sharedServices.loadingChanged.next(false);
