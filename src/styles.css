@@ -1,5 +1,5 @@
 @charset "utf-8";
-
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 /*
 ------------------------------------------------------------
 Project Name : Waseel GUI;
@@ -522,6 +522,7 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 .form-group.form-group-lg{margin-bottom: 24px;}
 .form-control,.form-control[readonly],.form-control:disabled{border:1px solid #d3e0f5;height:40px;background-color: #EFF5FF;padding: 4px 12px;color: #3060AA;border-radius: 8px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: none;caret-color: #3060AA;font-size:14px;line-height: 20px;}
 .form-control.search-box,.form-control.search-box[readonly],.form-control.search-box:disabled{background-image: url('./assets/ic-search.svg');background-size: 24px 24px;background-position:right 6px center;background-repeat: no-repeat;padding-right: 38px;}
+.form-control.upload-box,.form-control.upload-box[readonly],.form-control.upload-box:disabled{background-image: url('./assets/ic-upload-primary.svg');background-size: 24px 24px;background-position:right 6px center;background-repeat: no-repeat;padding-right: 38px;}
 select.form-control{cursor: pointer;}
 textarea.form-control,textarea.form-control:disabled,textarea.form-control[readonly]{min-height: 40px;resize: vertical;padding-top: 9px;padding-bottom: 9px;height:auto;}
 .form-control:focus,.form-control[readonly]:focus,.form-control.custom-select-control.mat-form-field.mat-focused{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
@@ -567,6 +568,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-group .control-hint{font-size: 12px;line-height: 20px;color: #707070;padding-top: 4px;}
 .form-group-static .control-label{color:#707070;padding-bottom: 0;}
 .form-control-static{color:#333333;font-weight: 500;}
+.form-control-static.size-lg{font-size: 20px;line-height: 24px;}
 .form-group .block-slide-toggle.mat-slide-toggle{padding: 12px 0;height: auto;}
 
 /* select control
@@ -599,6 +601,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-group.has-error .form-control:-ms-input-placeholder { color: rgba(205, 73, 73,0.64); }
 .form-group.has-error .form-control:-moz-placeholder { color: rgba(205, 73, 73,0.64); }
 .form-group.has-error .form-control.search-box,.form-group.has-error .form-control.search-box[readonly],.form-group.has-error .form-control.search-box:disabled{background-image: url('./assets/ic-search-danger.svg');}
+.form-group.has-error .form-control.upload-box,.form-group.has-error .form-control.upload-box[readonly],.form-group.has-error .form-control.upload-box:disabled{background-image: url('./assets/ic-upload-danger.svg');}
 .control-error{padding-top: 4px;}
 
 /* date picker
@@ -1622,6 +1625,7 @@ tag tag-ripple{display:none;}
 .status-badge.primary{background-color: #3060aa;}
 .status-badge.danger{background-color: #D03131;}
 .status-badge.success{background-color: #29bf24;}
+.status-badge.dark-green{background-color: #36793D;}
 .status-badge.size-sm{letter-spacing: 0;text-transform: none;font-size: 12px;line-height: 18px;padding: 3px 8px;}
 .primary-grid .status-badge.size-sm{margin: -2px 0;}
 
@@ -1790,6 +1794,16 @@ html.print-document.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .upcoming-feature-body p{padding-bottom: 16px;font-size: 16px;line-height: 26px;color: #505050;}
 .upcoming-feature-body img{display: block;max-width: 100%;margin-bottom: 4px;border-radius: 8px;border:1px solid #bebebe;}
 .upcoming-feature-body>li:not(:last-child){padding-bottom: 24px;}
+
+/* vat info summary
+--------------------------------------------------------------------------------------------------------*/
+.vat-info-summary{width: 244px;border-left: 1px solid #e1e1e1;}
+.inline-file{display: flex;align-items: center;padding: 8px 8px 8px 12px;border: 1px solid #E1E1E1;border-radius: 8px;}
+.inline-file>img{display: block;height: 24px;width: 24px;margin-right: 8px;flex-shrink: 0;}
+.inline-file>span{flex-grow: 1;min-width: 0;white-space: nowrap;text-overflow: ellipsis;display: block;overflow: hidden;}
+.inline-file>.actions{margin: -8px;margin-left: auto;flex-shrink: 0;white-space: nowrap;}
+.inline-file>.actions .mat-icon-button{display: inline-block;vertical-align: top;}
+.inline-file>.actions .mat-icon-button+.mat-icon-button{margin-left: -8px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

@@ -1,0 +1,26 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Switch Providers</p>
+    </div>
+    <div class="block-body">
+        <div class="form-group mb-0">
+            <label class="control-label">Select Provider</label>
+            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..." [formControl]="providerController" (input)="updateFilter()"
+                (keyup.enter)="selectProvider()" [readonly]="isLoading">
+            <mat-autocomplete autoActiveFirstOption #auto>
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                    (click)="selectProvider(provider.switchAccountId)">
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                </mat-option>
+                <mat-option *ngIf="error!= null && error != '' && !isLoading">
+                    {{error}}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+    </div>
+    <div class="block-footer" *ngIf="!isLoading && selectedProvider!=null && selectedProvider!=''">
+        <div class="right-block">
+            <button type="button" mat-flat-button color="primary" (click)="switch()">Switch</button>
+        </div>
+    </div>
+</div>

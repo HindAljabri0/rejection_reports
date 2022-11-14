@@ -10,6 +10,7 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { SharedServices } from 'src/app/services/shared.services';
 import { InitiateResponse } from '../models/InitiateResponse.model';
 import { TawuniyaGssService } from '../Services/tawuniya-gss.service';
+import { VatInfoDialogComponent } from '../vat-info-dialog/vat-info-dialog.component';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
   downloaded: boolean = false
   initiateModel: InitiateResponse;
   gssReferenceNumber: string;
-  lossMonth : string;  
+  lossMonth: string;
 
   constructor(private activatedRoute: ActivatedRoute,
     private tawuniyaGssService: TawuniyaGssService,
@@ -41,34 +42,34 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     let isInquiry = this.activatedRoute.snapshot.queryParams.inquiry;
     this.lossMonth = decodeURIComponent(this.activatedRoute.snapshot.queryParams.lossMonth);
     console.log("lossMOnth : ", this.lossMonth);
-    
+
     if (isInquiry) {
-      this.tawuniyaGssService.gssQueryDetails(this.gssReferenceNumber).subscribe( model => {
+      this.tawuniyaGssService.gssQueryDetails(this.gssReferenceNumber).subscribe(model => {
         console.log(model);
         this.initiateModel = model;
         this.sharedServices.loadingChanged.next(false);
       });
     } else {
-     this.initiateGssReport(this.lossMonth);
+      this.initiateGssReport(this.lossMonth);
     }
   }
 
-  initiateGssReport(lossMonth : string ) {
-       this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe(initiateModel =>{
-        this.sharedServices.loadingChanged.next(false);
-         if (!initiateModel) {
-          this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose =>{
-            this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-          });
-          } else {
-          this.initiateModel = initiateModel
-          this.startConfirmationTimer()
-        }
-          
-      }, error =>{
-        this.sharedServices.loadingChanged.next(false);
-        this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", error.error.message, true));
-      });
+  initiateGssReport(lossMonth: string) {
+    this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe(initiateModel => {
+      this.sharedServices.loadingChanged.next(false);
+      if (!initiateModel) {
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose => {
+          this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+        });
+      } else {
+        this.initiateModel = initiateModel
+        this.startConfirmationTimer()
+      }
+
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", error.error.message, true));
+    });
   }
 
   startConfirmationTimer() {
@@ -151,5 +152,11 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
 
       }
     });
+  }
+
+  openVatInfoDialog() {
+    const dialogRef = this.dialog.open(VatInfoDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-lg']
+    })
   }
 }

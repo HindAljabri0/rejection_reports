@@ -79,6 +79,8 @@ import { ViewPrintPreviewDialogComponent } from './view-print-preview-dialog/vie
 import { UcafFormTemplateComponent } from './ucaf-form-template/ucaf-form-template.component';
 import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-template.component';
 import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +137,8 @@ import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-templa
     ViewPrintPreviewDialogComponent,
     UcafFormTemplateComponent,
     DcafFormTemplateComponent,
-    OcafFormTemplateComponent
+    OcafFormTemplateComponent,
+    SwitchGroupProviderComponent
   ],
   imports: [
     CommonModule,
@@ -151,7 +154,9 @@ import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-templa
     CarouselModule,
     StoreModule.forFeature('nphiesConfigurationState', configurationReducer),
     EffectsModule.forFeature([ConfigurationsEffects]),
-    TagInputModule
+    TagInputModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
   ],
   entryComponents: [
     ViewEligibilityDetailsComponent,

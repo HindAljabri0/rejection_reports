@@ -50,7 +50,8 @@ export interface UserPrivileges {
       canAccessCodeMapping: boolean,
       canAccessConvertPreAuthToClaim: boolean,
       canAccessPrepareClaim: boolean,
-      canAccessConvertClaim: boolean
+      canAccessConvertClaim: boolean,
+      canSwitchGroupProvider: boolean
     }
   };
 }
@@ -110,7 +111,8 @@ export const initState: MainState = {
         canAccessCodeMapping:false,
         canAccessConvertPreAuthToClaim: false,
         canAccessPrepareClaim: false,
-        canAccessConvertClaim: false
+        canAccessConvertClaim: false,
+        canSwitchGroupProvider: false
       }
     }
   }
@@ -120,7 +122,8 @@ const _mainReducer = createReducer(
   initState,
   on(actions.hideHeaderAndSideMenu, (state) => ({ ...state, headerAndSideMenuIsHidden: true })),
   on(actions.showHeaderAndSideMenu, (state) => ({ ...state, headerAndSideMenuIsHidden: false })),
-  on(actions.evaluateUserPrivileges, (state) => {
+  on(actions.evaluateUserPrivileges, (state) => {    
+    const parentProviderId = localStorage.getItem('parentProviderId');
     const providerId = localStorage.getItem('provider_id');
     const payerIds = AuthService.getPayersList().map(payer => `${payer.id}`);
     const userPrivileges = {
@@ -171,6 +174,7 @@ const _mainReducer = createReducer(
           canAccessConvertPreAuthToClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.7')),
           canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
           canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),
+          canSwitchGroupProvider: providerId != '101' && (AuthService.hasPrivilegeSubString(parentProviderId, '101', '32.0')),
         }
       }
     };

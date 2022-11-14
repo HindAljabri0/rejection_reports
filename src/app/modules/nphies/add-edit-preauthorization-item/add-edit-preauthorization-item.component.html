@@ -121,35 +121,35 @@
       </div>
 
       <div class="col-4 col-lg-3">
-        <!-- <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('matDatepickerMax') || serviceDataError)}"> -->
-        <div class="form-group">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && (FormItem.get('startDate').hasError('owlDateTimeMax'))}">
+        <!-- <div class="form-group"> -->
           <label class="control-label">Service Start Date</label>
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="today">
+              <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="FormItem.controls.endDate.value ? FormItem.controls.endDate.value : today">
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
+                  <owl-date-time #startDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="startDate" class="form-control" placeholder="Select service start date" formControlName="startDate" [max]="FormItem.controls.endDate.value">
-              <!--[max]="today" [min]="data.dateOrdered"-->
+              <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" [max]="FormItem.controls.endDate.value" formControlName="startDate">
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
+                  <owl-date-time #startDate ></owl-date-time>
             </ng-container>
 
 
-            <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
-            <mat-datepicker #startDate></mat-datepicker>
           </div>
           <!-- <div
             *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
             <span class="error-text">Please enter start date</span>
-          </div>
+          </div> -->
           <div
-            *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('matDatepickerMax')">
-            <span class="error-text" *ngIf="data.source === 'CLAIM'">Item date must be on or before Claim date</span>
-            <span class="error-text" *ngIf="data.source === 'APPROVAL'">Item date must be on or after Approval
-              date</span>
+            *ngIf="(isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('owlDateTimeMax')">
+            <span class="error-text" *ngIf="data.source === 'CLAIM'">Start date must be on or before End date</span>
+            <span class="error-text" *ngIf="data.source === 'APPROVAL'">Start date must be on or before End date</span>
           </div>
-          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && serviceDataError">
+          <!-- <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && serviceDataError">
             <span class="error-text">{{serviceDataError}}</span>
           </div> -->
         </div>
@@ -157,28 +157,29 @@
 
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('matDatepickerMax') || serviceDataError)}">
+          [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && (FormItem.get('endDate').hasError('required') || FormItem.get('endDate').hasError('owlDateTimeMax') || serviceDataError)}">
           <label class="control-label">Service End Date<span class="asterisk">*</span></label>
           <div class="date-picker">
 
             <ng-container *ngIf="data.source === 'CLAIM'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [max]="today">
+             <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value" [max]="today">
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="endDate"></mat-datepicker-toggle>
+                  <owl-date-time #endDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [matDatepicker]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate">
+              <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value">
+              <mat-datepicker-toggle [owlDateTimeTrigger]="endDate"></mat-datepicker-toggle>
+              <owl-date-time #endDate></owl-date-time>
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
 
-            <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
-            <mat-datepicker #endDate></mat-datepicker>
           </div>
           <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')">
             <span class="error-text">Please enter service end date</span>
           </div>
-          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('matDatepickerMax')">
+          <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('owlDateTimeMax')">
             <span class="error-text" *ngIf="data.source === 'CLAIM'">End date must be on or before Claim date</span>
-            <span class="error-text" *ngIf="data.source === 'APPROVAL'">End date must be on or after Approval
-              date</span>
+            <span class="error-text" *ngIf="data.source === 'APPROVAL'">End date must be on or before Approval date</span>
           </div>
           <div *ngIf="(isSubmitted || FormItem.get('endDate').touched) && serviceDataError">
             <span class="error-text">{{serviceDataError}}</span>
