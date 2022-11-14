@@ -6,6 +6,7 @@ import {
   VALIDATE_RESTRICT_PRICE_UNIT,
   SFDA_RESTRICTION_KEY,
   PBM_RESTRICTION_KEY,
+  NPHIES_PBM_RESTRICTION_KEY,
   NET_AMOUNT_RESTRICTION_KEY
 } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -53,6 +54,10 @@ export class ProvidersConfigComponent implements OnInit {
     providerMappingSaveError?: string,
     pbmConfigurationError?: string,
     pbmConfigurationSaveError?: string,
+
+    nphiesPbmConfigurationError?: string,
+    nphiesPbmConfigurationSaveError?: string,
+
     netAmountConfigurationError?: string,
     netAmountConfigurationSaveError?: string,
     pollTypeConfigurationError?: string,
@@ -68,6 +73,7 @@ export class ProvidersConfigComponent implements OnInit {
     NphiesPayerMappingSuccess?: string,
     providerMappingSaveSuccess?: string,
     pbmConfigurationSaveSuccess?: string,
+    nphiesPbmConfigurationSaveSuccess?: string,
     netAmountConfigurationSaveSuccess?: string
     pollTypeConfigurationSaveSuccess?: string
 
@@ -78,6 +84,7 @@ export class ProvidersConfigComponent implements OnInit {
     ICD10Validation: true,
     sfda: true,
     pbmConfiguration: true,
+    nphiesPbmConfiguration: true,
     midtable: true,
     payerMapping: true,
     NphiesPayerMapping: true,
@@ -95,11 +102,13 @@ export class ProvidersConfigComponent implements OnInit {
   ICD10ValidationSettings: any[] = [];
   sfdaValidationSettings: any[] = [];
   pbmValidationSettings: any[] = [];
+  nphiesPbmValidationSettings: any[] = [];
   newServiceValidationSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
   newSFDAValidationSettings: { [key: string]: boolean } = {};
   newPBMValidationSettings: { [key: string]: boolean } = {};
+  newNphiesPBMValidationSettings: { [key: string]: boolean } = {};
 
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
@@ -252,6 +261,7 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.newPBMValidationSettings['101'] = false;
+          this.newNphiesPBMValidationSettings['101'] = false;
           this.associatedPayers = event.body;
           this.associatedPayers.forEach(payer => {
             // this.newServiceValidationSettings[payer.switchAccountId] = false;
@@ -382,6 +392,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getSetting(ICD10_RESTRICTION_KEY, this.ICD10ValidationSettings, this.newICD10ValidationSettings, false);
     this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings, false);
     this.getSetting(PBM_RESTRICTION_KEY, this.pbmValidationSettings, this.newPBMValidationSettings, false);
+    this.getSetting(NPHIES_PBM_RESTRICTION_KEY, this.nphiesPbmValidationSettings, this.newNphiesPBMValidationSettings, false);
     this.getPortalUserSettings();
     // ####### Chages on 02-01-2021 start
     this.getDatabaseConfig();
@@ -406,6 +417,7 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.ICD10Validation ||
       this.componentLoading.sfda ||
       this.componentLoading.pbmConfiguration ||
+      this.componentLoading.nphiesPbmConfiguration ||
       this.componentLoading.midtable ||
       this.componentLoading.payerMapping ||
       this.componentLoading.NphiesPayerMapping ||
@@ -422,6 +434,7 @@ export class ProvidersConfigComponent implements OnInit {
     // const priceUnitFlag = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings, this.priceUnitSettings);
     const sfdaFlag = this.saveSettings(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings, this.sfdaValidationSettings);
     const pbmFlag = this.saveSettings(PBM_RESTRICTION_KEY, this.newPBMValidationSettings, this.pbmValidationSettings);
+    const nphiesPbmFlag = this.saveSettings(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings, this.nphiesPbmValidationSettings);
     // change on 02-01-2021 start
     const dbFlag = this.addDatabaseConfig();
     const payerFlag = this.savePayerMapping();
@@ -433,7 +446,7 @@ export class ProvidersConfigComponent implements OnInit {
     // change on 02-01-2021 end
     // && priceUnitFlag && serviceCodeFlag
     if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && priceListFlag && netAmountFlag && pollConfigFlag) {
+      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && nphiesPbmFlag && priceListFlag && netAmountFlag && pollConfigFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -501,7 +514,7 @@ export class ProvidersConfigComponent implements OnInit {
       });
       if (newSettingsKeys.length > 0) {
         this.setComponentLoading(URLKey, true);
-        this.setSaveError(URLKey, null);
+        this.setSaveError(URLKey, null);        
         this.setSaveSuccess(URLKey, null);
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId,
@@ -575,6 +588,14 @@ export class ProvidersConfigComponent implements OnInit {
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
         break;
+      case NPHIES_PBM_RESTRICTION_KEY:
+        this.nphiesPbmValidationSettings.push({
+          providerId: this.selectedProvider,
+          payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
+        break;
     }
   }
 
@@ -594,6 +615,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case PBM_RESTRICTION_KEY:
         this.pbmValidationSettings[index].value = value;
+        break;
+      case NPHIES_PBM_RESTRICTION_KEY:
+        this.nphiesPbmValidationSettings[index].value = value;
         break;
     }
   }
@@ -644,6 +668,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.resetSection(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings);
     this.resetSection(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings);
     this.resetSection(PBM_RESTRICTION_KEY, this.newPBMValidationSettings);
+    this.resetSection(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings);
     this.resetDbAndMapping();
     this.resetUserMessages();
   }
@@ -672,6 +697,10 @@ export class ProvidersConfigComponent implements OnInit {
         case PBM_RESTRICTION_KEY:
           setTimeout(() => this.componentLoading.pbmConfiguration = false, 100);
           this.newPBMValidationSettings = {};
+          break;
+        case NPHIES_PBM_RESTRICTION_KEY:
+          setTimeout(() => this.componentLoading.nphiesPbmConfiguration = false, 100);
+          this.newNphiesPBMValidationSettings = {};
           break;
       }
     }
@@ -743,6 +772,9 @@ export class ProvidersConfigComponent implements OnInit {
       case PBM_RESTRICTION_KEY:
         this.errors.pbmConfigurationError = message;
         break;
+      case NPHIES_PBM_RESTRICTION_KEY:
+        this.errors.nphiesPbmConfigurationError = message;
+        break;
       case NET_AMOUNT_RESTRICTION_KEY:
         this.errors.netAmountConfigurationError = message;
         break;
@@ -764,6 +796,9 @@ export class ProvidersConfigComponent implements OnInit {
       case PBM_RESTRICTION_KEY:
         this.componentLoading.pbmConfiguration = componentLoading;
         break;
+      case NPHIES_PBM_RESTRICTION_KEY:
+        this.componentLoading.nphiesPbmConfiguration = componentLoading;
+        break;
     }
   }
 
@@ -781,6 +816,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case PBM_RESTRICTION_KEY:
         this.errors.pbmConfigurationSaveError = value;
+        break;
+      case NPHIES_PBM_RESTRICTION_KEY:
+        this.errors.nphiesPbmConfigurationSaveError = value;
         break;
       case NET_AMOUNT_RESTRICTION_KEY:
         this.errors.netAmountConfigurationSaveError = value;
@@ -803,6 +841,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case PBM_RESTRICTION_KEY:
         this.success.pbmConfigurationSaveSuccess = value;
+        break;
+      case NPHIES_PBM_RESTRICTION_KEY:
+        this.success.nphiesPbmConfigurationSaveSuccess = value;
         break;
       case NET_AMOUNT_RESTRICTION_KEY:
         this.success.netAmountConfigurationSaveSuccess = value;

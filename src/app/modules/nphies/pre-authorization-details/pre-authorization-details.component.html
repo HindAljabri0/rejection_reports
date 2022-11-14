@@ -16,7 +16,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date Ordered</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered}}</p>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered | date : 'dd-MM-yyyy hh:mm aa'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -534,10 +534,10 @@
                       </tr>
                       <tr>
                         <td class="label">Serviced Date/Period</td>
-                        <td><span *ngIf="item.startDate">{{item.startDate}} - </span>{{item.endDate}}</td>
+                        <td><span *ngIf="item.startDate">{{item.startDate |  date : 'dd/MM/yyyy hh:mm aa'}} - </span>{{item.endDate |  date : 'dd/MM/yyyy hh:mm aa'}}</td>
                       </tr>
                       <tr>
-                        <td class="label">Is Package?</td>
+                        <td class="label">Is Package?</td> 
                         <td>
                           <span *ngIf="item.isPackage === 1">Yes</span>
                           <span *ngIf="item.isPackage === 2">No</span>
@@ -743,7 +743,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date Written</div>
-      <p class="form-control-static">{{data.visionPrescription.dateWritten}}</p>
+      <p class="form-control-static">{{data.visionPrescription.dateWritten | date : 'dd-MM-yyyy hh:mm aa'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">

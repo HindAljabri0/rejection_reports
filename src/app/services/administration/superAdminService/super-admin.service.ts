@@ -141,6 +141,12 @@ export class SuperAdminService {
     const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, body);
     return this.http.request(req);
   }
+
+  getProvidersWithinGroup(parentProviderId: string, providerGroupId: string) {    
+    const requestURL = `/providers/providersWithinGroup/${parentProviderId}/${providerGroupId}`;
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
 }
 
 export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';
@@ -148,4 +154,5 @@ export const VALIDATE_RESTRICT_PRICE_UNIT = 'validateOrRestrictUnitPrice';
 export const ICD10_RESTRICTION_KEY = 'ICD10Validation';
 export const SFDA_RESTRICTION_KEY = 'sfdaRestriction';
 export const PBM_RESTRICTION_KEY = 'pbmValidation';
+export const NPHIES_PBM_RESTRICTION_KEY = 'NphiesPbmValidation';
 export const NET_AMOUNT_RESTRICTION_KEY = 'netAmountValidation';

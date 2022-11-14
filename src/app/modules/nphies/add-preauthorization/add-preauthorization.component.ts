@@ -57,7 +57,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
-  AllTPA:any[]=[];
+  AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   beneficiaryPatientShare = 0;
@@ -213,14 +213,14 @@ export class AddPreauthorizationComponent implements OnInit {
     private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
-    ) {
+  ) {
     this.today = new Date();
   }
 
   ngOnInit() {
     this.getPayees();
     this.getTPA();
-    this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
       this.getRefferalProviders();
@@ -258,9 +258,9 @@ export class AddPreauthorizationComponent implements OnInit {
       }
     }
 
-    const date = moment(this.data.preAuthorizationInfo.dateOrdered, 'DD-MM-YYYY').format('YYYY-MM-DD');
-    // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.dateOrdered.setValue(date);
+    const date = this.data.preAuthorizationInfo.dateOrdered;
+    // tslint:disable-next-line:max-line-length\
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(date));
     if (this.data.preAuthorizationInfo.payeeType) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] ? this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] : '');
@@ -345,9 +345,9 @@ export class AddPreauthorizationComponent implements OnInit {
       }).sort((a, b) => a.sequence - b.sequence);
     }
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
-      const date = moment(this.data.visionPrescription.dateWritten, 'DD-MM-YYYY').format('YYYY-MM-DD');
+      const date = this.data.visionPrescription.dateWritten;
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.dateWritten.setValue(date);
+      this.FormPreAuthorization.controls.dateWritten.setValue(this.removeSecondsFromDate(date));
       //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
       this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
       this.VisionSpecifications = this.data.visionPrescription.lensSpecifications;
@@ -364,8 +364,7 @@ export class AddPreauthorizationComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          this.selectedBeneficiary = body[0];
-
+          this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] : null;
           this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
@@ -386,7 +385,8 @@ export class AddPreauthorizationComponent implements OnInit {
             insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
             // tslint:disable-next-line:max-line-length
-            insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId
+            // insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
+            insurancePlanTpaNphiesId: res.beneficiary.insurancePlan.tpaNphiesId
           });
 
           if (res.subscriber) {
@@ -624,7 +624,7 @@ export class AddPreauthorizationComponent implements OnInit {
       searchStr = this.FormPreAuthorization.controls.subscriberName.value;
     }
     // tslint:disable-next-line:max-line-length
-    if (searchStr.length > 2) {
+    if (searchStr.length > 3) {
       this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, searchStr).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
@@ -1032,8 +1032,8 @@ export class AddPreauthorizationComponent implements OnInit {
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
-              x.drugSelectionReason  = result.drugSelectionReason ;
-              x.prescribedDrugCode  = result.prescribedDrugCode ;
+              x.drugSelectionReason = result.drugSelectionReason;
+              x.prescribedDrugCode = result.prescribedDrugCode;
 
               if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
@@ -1574,7 +1574,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-        this.isSubmitted = true;
+    this.isSubmitted = true;
     let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
@@ -1780,7 +1780,7 @@ export class AddPreauthorizationComponent implements OnInit {
       // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       const preAuthorizationModel: any = {};
-      preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
+      preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateOrdered.value)).utc();
       if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
         // tslint:disable-next-line:max-line-length
         preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
@@ -1881,7 +1881,7 @@ export class AddPreauthorizationComponent implements OnInit {
         if (this.FormPreAuthorization.controls.prescriber.value) {
           this.model.visionPrescription = {};
           // tslint:disable-next-line:max-line-length
-          this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
+          this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateWritten.value)).utc();
           this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
           this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
             const model: any = {};
@@ -1931,8 +1931,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = x.startDate;
-          model.endDate = x.endDate;
+          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1972,8 +1972,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.net = x.net;
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;
-          model.startDate = x.startDate;
-          model.endDate = x.endDate;
+          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -2221,11 +2221,12 @@ export class AddPreauthorizationComponent implements OnInit {
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
     console.log(nameTPA.display)
-    if (nameTPA.display!='None'){
-      return nameTPA.display;}
-      else{
-        return '';
-      }
+    if (nameTPA.display != 'None') {
+      return nameTPA.display;
+    }
+    else {
+      return '';
+    }
   }
 
   getTPA() {
@@ -2238,5 +2239,12 @@ export class AddPreauthorizationComponent implements OnInit {
 
       }
     });
+  }
+
+
+  removeSecondsFromDate(date: any) {
+    let newDate = new Date(date);
+    newDate.setSeconds(0, 0);
+    return new Date(newDate);
   }
 }

@@ -33,7 +33,7 @@
             <div class="col">
               <div class="form-group">
                 <label class="control-label">Issuer</label>
-                <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+                <app-nphies-payers-selector #tpaPayers (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
                 <!-- <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="issuerId">
                     <mat-option value="">Select Issuer</mat-option>
@@ -61,6 +61,7 @@
                 <th>Period Start Date</th>
                 <th>Period End Date</th>
                 <th>Issuer</th>
+                <th>TPA</th>
                 <th>Payment Date</th>
                 <th>Amount</th>
                 <th>Payment Notice</th>
@@ -77,6 +78,8 @@
                   {{pr.periodEndDate | date: 'dd/MM/yyyy'}}</td>
                 <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
                   {{pr.issuerName}}</td>
+                  <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
+                    {{pr.tpaName}}</td>
                 <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">
                   {{pr.paymentDate | date: 'dd/MM/yyyy'}}</td>
                 <td class="row-click" [routerLink]="['/nphies/payment-reconciliation-details', pr.reconciliationId]">

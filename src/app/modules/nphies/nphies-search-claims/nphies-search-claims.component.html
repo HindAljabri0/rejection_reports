@@ -16,42 +16,30 @@
       <p class="ml-auto">{{summaries[0].uploadDate | date: 'dd/MM/yyyy'}}</p>
     </div>
     <div class="block-body pb-0">
-      <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width"
-        [class.fixed-card]="summaries.length<4">
+      <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
         <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
           <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
-            <app-abstractcard [clickable]="cardsClickAble"
-              [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
-              [totalCount]="summary.value.totalClaims"
-              [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])"
-              (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
+            <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="summary.value.totalClaims"
+              [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
               <span class="label total">Totals</span>
               <table>
                 <tr>
                   <th class="label">Net</th>
                   <th class="label">Patient Share</th>
-                  <th class="label" *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Deducted</th>
-                  <th class="label" *ngIf="summary.value.statuses[0] == 'partially_paid'">Actual Paid</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partial'">Rejected</th>
                 </tr>
                 <tr>
                   <td class="pb-6 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span
-                      class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span
-                      *ngIf="summary.value.totalNetAmount!=null" class="currency"> SR</span>
+                    <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span *ngIf="summary.value.totalNetAmount!=null"
+                      class="currency"> SR</span>
                   </td>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span
-                      class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
+                    <span class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
                       *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
                   </td>
-                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'"
-                    class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                  <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
                     <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency">
                       SR</span>
-                  </td>
-                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'"
-                    class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
                   </td>
 
                 </tr>
@@ -59,21 +47,21 @@
                 <tr>
                   <th class="label">Tax</th>
                   <th class="label">Payer Share</th>
+                  <th class="label" *ngIf="summary.value.statuses[0] == 'partial'">Approved</th>
                 </tr>
                 <tr>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span
-                      class="dashboard-numbers">{{summary.value.totalTax!=null?summary.value.totalTax:'-'}}</span><span
-                      *ngIf="summary.value.totalTax!=null" class="currency">
+                    <span class="dashboard-numbers">{{summary.value.totalTax!=null?summary.value.totalTax:'-'}}</span><span *ngIf="summary.value.totalTax!=null" class="currency">
                       SR</span>
                   </td>
                   <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                    <span
-                      class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
+                    <span class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
                       *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
                   </td>
+                  <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                    <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
+                  </td>
 
-                  <td *ngIf="summary.value.statuses[0] == 'partially_paid'"></td>
                 </tr>
               </table>
             </app-abstractcard>
@@ -83,12 +71,10 @@
     </div>
   </div>
 
-  <div class="block-card"
-    *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
-    <div
-      class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-      <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
-        *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
+  <div class="block-card" *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
+    <div class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+      <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn" *ngIf="summaries != null && summaries[selectedCardKey] != null"
+        (click)="currentSelectedTab=0">
         {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
       </button>
 
@@ -98,44 +84,42 @@
             *ngIf="showDownloadBtn && searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
             <img src="./assets/{{detailTopActionIcon}}" />
           </button>
-          <button *ngIf="showInquireAll === true" (click)="inquireClaimByCriteria()" mat-flat-button
-            color="primary">Inquire
+          <button *ngIf="showInquireAll === true" (click)="inquireClaimByCriteria()" mat-flat-button color="primary">Inquire
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
 
-          <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length > 0" (click)="generateAttachmentAll()"
-            mat-flat-button color="primary">
+          <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length > 0" (click)="generateAttachmentAll()" mat-flat-button color="primary">
             {{selectedClaims.length==0?"Generate Attachment All":"Generate Attachment
             ("+this.selectedClaims.length+")"}}
           </button>
 
-          <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length === 0" matRipple [matMenuTriggerFor]="downloadMenu" mat-flat-button color="primary" >
+          <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length === 0" matRipple [matMenuTriggerFor]="downloadMenu" mat-flat-button
+            color="primary" class="dropdown-toggle">
             Generate Attachment
           </button>
 
           <mat-menu #downloadMenu="matMenu" xPosition="before" class="primary-menu primary-menu-items download-menu">
             <button mat-menu-item (click)="generateAttachmentAll('all')">
-              <span class="title">All - 
+              <span class="title">All -
                 <span class="text-grey">Generate attachment for all claims</span>
               </span>
-              
+
             </button>
             <button mat-menu-item (click)="generateAttachmentAll('failed')">
-              <span class="title">Failed - 
-                <span class="text-grey">Generate attachment for claims with attachment status failed</span>
-              </span>              
+              <span class="title">Failed -
+                <span class="text-grey">Regenerate Failed attachments</span>
+              </span>
             </button>
             <button mat-menu-item (click)="generateAttachmentAll('remaining')">
-              <span class="title">Remaining - 
+              <span class="title">Remaining -
                 <span class="text-grey">Generate attachment for claims without attachments</span>
-              </span>              
+              </span>
             </button>
           </mat-menu>
         </div>
       </div>
 
     </div>
-    <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null"
-      class="hide-tab-header">
+    <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
       <mat-tab>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchResult != null">
           <div class="fixed-height">
@@ -144,8 +128,8 @@
                 <tr *ngIf="summaries != null && summaries[selectedCardKey] != null">
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    <mat-checkbox class="grid-checkbox" color="primary" [(checked)]="allCheckBoxIsChecked"
-                      [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
+                    <mat-checkbox class="grid-checkbox" color="primary" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate"
+                      (change)="selectAllinPage()">
                     </mat-checkbox>
                   </th>
                   <th
@@ -184,20 +168,22 @@
                   <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
                     class="text-nowrap text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <span class="inline-text pr-1">Processing Status</span>
-                    <mat-icon matTooltip="This will request for the current processing status of the claim"
-                      class="material-icons-outlined size-20 inline-text">info
+                    <mat-icon matTooltip="This will request for the current processing status of the claim" class="material-icons-outlined size-20 inline-text">info
                     </mat-icon>
                   </th>
 
-                  <th *ngIf="isGenerateAttachment"
+                  <th *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0"
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Attachment Status</th>
+
+                    <th *ngIf="selectedCardKey != 0 && isPBMValidationVisible"
+                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    PBM Status</th>
 
                   <th *ngIf="showInquireAll === true"
                     class="text-nowrap text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <span class="inline-text pr-1">Inquiry</span>
-                    <mat-icon
-                      matTooltip="This will send the same claim request again to NPHIES to fetch latest response from NPHIES queue"
+                    <mat-icon matTooltip="This will send the same claim request again to NPHIES to fetch latest response from NPHIES queue"
                       class="material-icons-outlined size-20 inline-text">info
                     </mat-icon>
                   </th>
@@ -212,8 +198,7 @@
                 <ng-container *ngIf='claims.length > 0'>
                   <tr *ngFor="let claim of claims">
                     <td>
-                      <mat-checkbox class="grid-checkbox" color="primary"
-                        [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)">
+                      <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)">
                       </mat-checkbox>
                     </td>
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
@@ -231,24 +216,20 @@
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
                       <span class="text-monospace">{{claim.patientFileNumber}}</span>
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
-                      class="row-click text-nowrap">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click text-nowrap">
                       {{claim.claimDate | date: 'dd-MM-yyyy'}}
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
-                      class="row-click text-nowrap">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click text-nowrap">
                       {{claim.netAmount}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
                     </td>
 
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
-                      class="text-center row-click">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click">
                       <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                     </td>
                     <td *ngIf="showColumns(selectedCardKey,claim.status)" class="actions text-left text-wrap">
                       <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
-                        <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2"
-                          (click)="checkStatus(claim.claimResponseId)">
+                        <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2" (click)="checkStatus(claim.claimResponseId)">
                           <mat-icon>refresh</mat-icon>
                         </button>
                         <span *ngIf="!claim.processingStatus" class="pl-1">Check Status</span>
@@ -256,16 +237,28 @@
                       </div>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
-                      class="text-center row-click">
+                    <td *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0"
+                      (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click">
                       <mat-icon *ngIf="claim.attachmentStatus === 'Success'" class="material-icons-outlined text-success">check_circle</mat-icon>
-                      <mat-icon *ngIf="claim.attachmentStatus === 'FaultyAttachment'" matTooltip="Faulty Attachment" class="material-icons-outlined text-danger">broken_image</mat-icon>
+                      <mat-icon *ngIf="claim.attachmentStatus === 'FaultyAttachment'" matTooltip="Faulty (Claim was edited after generating attachment)" class="material-icons-outlined text-danger">broken_image
+                      </mat-icon>
                       <mat-icon *ngIf="claim.attachmentStatus === 'Failed'" matTooltip="Failed" class="text-danger">error_outline</mat-icon>
                     </td>
 
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click" *ngIf="isPBMValidationVisible && selectedCardKey != 0">
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                          matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                          matTooltip="Partially Approved">report
+                      </mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='invalid'" class="size-21 text-danger"
+                          matTooltip="Invalid">error_outline</mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                          matTooltip="Rejected">dangerous</mat-icon>
+                  </td>
+
                     <td *ngIf="showInquireAll === true" class="actions text-center">
-                      <span class="action-letter-btn"
-                        [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')"
+                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : '')"
                         [matTooltip]="claim.inquiryStatus === 'failed' ? 'Failed': (claim.inquiryStatus === 'passed' ? 'Passed' : 'Get latest claim response from NPHIES queue')">I</span>
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
@@ -278,22 +271,19 @@
                           <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
-                            <button mat-menu-item
-                              (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
+                            <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
                               <mat-icon class="material-icons-outlined">close</mat-icon>
                               <span>Cancel</span>
                             </button>
 
                             <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                           </ng-container>
-                          <button mat-menu-item *ngIf="claimIsDeletable(claim.status,claim.canDelete)"
-                            (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
+                          <button mat-menu-item *ngIf="claimIsDeletable(claim.status,claim.canDelete)" (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
                             <mat-icon class="material-icons-outlined">delete </mat-icon>
                             <span>Delete</span>
                           </button>
 
-                          <button mat-menu-item *ngIf="claimIsEditable(claim.status)"
-                            (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
+                          <button mat-menu-item *ngIf="claimIsEditable(claim.status)" (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
                             <mat-icon class="material-icons-outlined">edit</mat-icon>
                             <span>Edit Claim</span>
                           </button>
@@ -369,22 +359,25 @@
     </mat-tab-group>
     <div class="block-footer sticky" *ngIf="claims.length > 0">
       <div class="left-block">
-        <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
-          [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons" [pageSizeOptions]="pageSizeOptions"
-          [pageIndex]="pageIndex">
+        <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons"
+          [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
         </mat-paginator>
 
       </div>
       <div class="right-block btn-list">
-        <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary"
-          *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
+        <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary" *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
           {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         <ng-container *ngIf="currentSelectedTab==0">
-          <button mat-button *ngIf="showDeleteAll === true && selectedCardKey != 0"
-            (click)="deleteClaimByCriteria()">Delete
+          <button mat-button *ngIf="showDeleteAll === true && selectedCardKey != 0" (click)="deleteClaimByCriteria()">Delete
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
           <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
+        </ng-container>
+        <ng-container
+          *ngIf="(summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Accepted.toLowerCase()
+                    || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0) && (isPBMValidationVisible)">
+          <button (click)="applyPBMValidation()" mat-flat-button color="primary">PBM Validate {{selectedClaims.length==0?"
+            All":"Selection ("+this.selectedClaims.length+")"}}</button>
         </ng-container>
       </div>
     </div>

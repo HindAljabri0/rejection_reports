@@ -12,7 +12,7 @@ import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-c
 import { EffectsModule } from '@ngrx/effects';
 import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
 import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/claim-data.component';
-import { MatTabsModule, MatButtonToggleModule } from '@angular/material';
+import { MatTabsModule, MatButtonToggleModule, MatDatepickerModule } from '@angular/material';
 import { ClaimDiagnosisComponent } from 'src/app/claim-module-components/claim-diagnosis/claim-diagnosis.component';
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
@@ -48,6 +48,8 @@ import { CancelReasonModalComponent } from '../nphies/preauthorization-transacti
 import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-transactions.component';
 import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
 import { JsonResponseComponent } from '../nphies/create-claim-nphies/json-response/json-response.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE  } from 'ng-pick-datetime';
+
 
 @NgModule({
   declarations: [
@@ -88,7 +90,9 @@ import { JsonResponseComponent } from '../nphies/create-claim-nphies/json-respon
     MatTabsModule,
     MatButtonToggleModule,
     TagInputModule,
-    FormsModule
+    FormsModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule    
   ],
   exports: [
     CreateByApprovalFormComponent,
@@ -124,7 +128,10 @@ import { JsonResponseComponent } from '../nphies/create-claim-nphies/json-respon
     CancelReasonModalComponent
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    {provide: OWL_DATE_TIME_LOCALE , useValue: 'en-IN'},
+    
   ]
 })
+
 export class ClaimModule { }

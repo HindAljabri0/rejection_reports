@@ -93,6 +93,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     private sharedServices: SharedServices, private formBuilder: FormBuilder,
     private providerNphiesSearchService: ProviderNphiesSearchService) {
     this.today = new Date();
+    this.today.setSeconds(0, 0);
   }
 
   ngOnInit() {
@@ -122,10 +123,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.prescribedMedicationList = body;
             this.filteredPescribedMedicationItem.next(body);
             if (this.data.item) {
-              const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0];
-              this.FormItem.patchValue({
-                prescribedDrugCode: res
-              });
+              const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+              if (res) {
+                this.FormItem.patchValue({
+                  prescribedDrugCode: res
+                });
+              }
               this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
               this.filterPrescribedMedicationItem();
             }
@@ -143,35 +146,34 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
     if (this.data.item) {
-      console.log(" sub site val = " + JSON.stringify(this.data.item)),
-        this.FormItem.patchValue({
-          type: this.typeList.filter(x => x.value === this.data.item.type)[0],
-          nonStandardCode: this.data.item.nonStandardCode,
-          display: this.data.item.display,
-          isPackage: this.data.item.isPackage,
-          bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+      this.FormItem.patchValue({
+        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
+        nonStandardCode: this.data.item.nonStandardCode,
+        display: this.data.item.display,
+        isPackage: this.data.item.isPackage,
+        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
 
-          subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
-          quantity: this.data.item.quantity,
-          quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
-          unitPrice: this.data.item.unitPrice,
-          discount: this.data.item.discount,
-          discountPercent: this.data.item.discountPercent,
-          // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
-          // dp = d * 100 / (qty * up)
-          factor: this.data.item.factor ? this.data.item.factor : 1,
-          taxPercent: this.data.item.taxPercent,
-          patientSharePercent: this.data.item.patientSharePercent,
-          tax: this.data.item.tax,
-          net: this.data.item.net,
-          patientShare: this.data.item.patientShare,
-          payerShare: this.data.item.payerShare,
-          startDate: this.data.item.startDate,
-          endDate: this.data.item.endDate,
-          invoiceNo: this.data.item.invoiceNo,
-          drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0]
+        subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
+        quantity: this.data.item.quantity,
+        quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
+        unitPrice: this.data.item.unitPrice,
+        discount: this.data.item.discount,
+        discountPercent: this.data.item.discountPercent,
+        // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
+        // dp = d * 100 / (qty * up)
+        factor: this.data.item.factor ? this.data.item.factor : 1,
+        taxPercent: this.data.item.taxPercent,
+        patientSharePercent: this.data.item.patientSharePercent,
+        tax: this.data.item.tax,
+        net: this.data.item.net,
+        patientShare: this.data.item.patientShare,
+        payerShare: this.data.item.payerShare,
+        startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
+        endDate: new Date(this.data.item.endDate),
+        invoiceNo: this.data.item.invoiceNo,
+        drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
 
-        });
+      });
 
       if (this.data.careTeams) {
         this.FormItem.patchValue({
@@ -666,7 +668,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
 
   searchItems() {
-    this.loadSearchItem = true;
     if (this.SearchRequest) {
       this.SearchRequest.unsubscribe();
     }
@@ -678,20 +679,23 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const payerNphiesId = this.data.payerNphiesId;
     const tpaNphiesId = this.data.tpaNphiesId;
 
-    // tslint:disable-next-line:max-line-length
-    this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body) {
-          this.typeListSearchResult = body['content'];
+    if (searchStr.length > 2) {
+      this.loadSearchItem = true;
+      // tslint:disable-next-line:max-line-length
+      this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body) {
+            this.typeListSearchResult = body['content'];
+          }
+          this.loadSearchItem = false;
         }
-        this.loadSearchItem = false;
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.loadSearchItem = false;
-      }
-    });
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.loadSearchItem = false;
+        }
+      });
+    }
   }
 
   checkItemsCodeForSupportingInfo() {
@@ -843,11 +847,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.net = this.FormItem.controls.net.value;
       model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
       model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
-      model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd');
-      model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy');
+      model.startDate = this.FormItem.controls.startDate.value; //this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd hh:mm aa');
+      model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy hh:mm aa');
 
-      model.endDate = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd');
-      model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy');
+      model.endDate = this.FormItem.controls.endDate.value; //this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
+      model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
 
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
         model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
@@ -898,9 +902,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onBodySiteChange(event){
-    if(event.value === ""){
+  onBodySiteChange(event) {
+    if (event.value === "") {
       this.FormItem.controls.subSite.setValue("");
     }
   }
+
 }
