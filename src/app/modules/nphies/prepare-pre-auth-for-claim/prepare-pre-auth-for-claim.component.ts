@@ -297,11 +297,11 @@ export class PreparePreAuthForClaimComponent implements OnInit {
             x.totalDiscount = 0;
 
             if (x.items && x.items.length > 0) {
-              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
-              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
-              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
-              x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => prev + next);
-              x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => prev + next);
+              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
 
               x.items.forEach(y => {
                 y.invoiceNo = '';
@@ -423,7 +423,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
               itemModel.itemStatus = x.status;
               itemModel.patientShare = parseFloat(x.patientShare);
               itemModel.payerShare = parseFloat(x.payerShare);
-              itemModel.net = parseFloat(x.approvedNet > 0 ? x.approvedNet : x.grossAmount);
+              itemModel.grossOrBenefit = parseFloat(x.approvedNet > 0 ? x.approvedNet : x.grossAmount);
               itemModel.discount = parseFloat(x.discount);
               itemModel.payerShareWithVat = parseFloat(x.payerShareWithVat);
               itemModel.taxAmount = parseFloat(x.tax);
@@ -496,6 +496,9 @@ export class PreparePreAuthForClaimComponent implements OnInit {
   }
 
   calculateShares(transactionIndex: number, itemIndex: number) {
+
+    let maxLimit = this.transactions[transactionIndex].maxLimit;
+
     let amount = 0;
 
     if (this.transactions[transactionIndex].items[itemIndex].approvedNet === 0) {
@@ -505,24 +508,106 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     }
 
     let discount = !this.transactions[transactionIndex].items[itemIndex].discount ? 0 : parseFloat(this.transactions[transactionIndex].items[itemIndex].discount);
-   
-    if (this.transactions[transactionIndex].maxLimit === 0) {
+
+    if (maxLimit === 0) {
+
       this.transactions[transactionIndex].items[itemIndex].patientShare = 0;
+
+      this.transactions[transactionIndex].items[itemIndex].payerShare = amount - discount - this.transactions[transactionIndex].items[itemIndex].patientShare;
+      this.transactions[transactionIndex].items[itemIndex].payerShare = parseFloat(this.transactions[transactionIndex].items[itemIndex].payerShare).toFixed(2);
+
+      if (this.transactions[transactionIndex].claimType === 'vision') {
+        this.transactions[transactionIndex].items[itemIndex].tax = 0;
+      } else {
+        if (this.transactions[transactionIndex].claimType === 'oral' && this.transactions[transactionIndex].items[itemIndex].itemType === 'medication-codes') {
+          this.transactions[transactionIndex].items[itemIndex].tax = 0;
+        } else {
+          this.transactions[transactionIndex].items[itemIndex].tax = this.transactions[transactionIndex].items[itemIndex].payerShare * 0.15;
+        }
+      }
+
+      this.transactions[transactionIndex].items[itemIndex].tax = parseFloat(this.transactions[transactionIndex].items[itemIndex].tax).toFixed(2);
+
+      this.transactions[transactionIndex].items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].items[itemIndex].payerShare) + parseFloat(this.transactions[transactionIndex].items[itemIndex].tax);
+      this.transactions[transactionIndex].items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].items[itemIndex].payerShareWithVat).toFixed(2);
     } else {
-      this.transactions[transactionIndex].items[itemIndex].patientShare = amount - discount;
+
+      let patientShareAmt = amount - discount;
+      patientShareAmt = (patientShareAmt * this.transactions[transactionIndex].maxPercent) / 100;
+
+      if (patientShareAmt < maxLimit) {
+        this.transactions[transactionIndex].items[itemIndex].patientShare = patientShareAmt;
+      } else {
+        this.transactions[transactionIndex].items[itemIndex].patientShare = maxLimit;
+      }
+
+      this.transactions[transactionIndex].items[itemIndex].patientShare = parseFloat(this.transactions[transactionIndex].items[itemIndex].patientShare).toFixed(2);
+
+      maxLimit = maxLimit - this.transactions[transactionIndex].items[itemIndex].patientShare;
+
+      this.transactions[transactionIndex].items[itemIndex].payerShare = amount - discount - this.transactions[transactionIndex].items[itemIndex].patientShare;
+      this.transactions[transactionIndex].items[itemIndex].payerShare = parseFloat(this.transactions[transactionIndex].items[itemIndex].payerShare).toFixed(2);
+
+      if (this.transactions[transactionIndex].claimType === 'vision') {
+        this.transactions[transactionIndex].items[itemIndex].tax = 0;
+      } else {
+        if (this.transactions[transactionIndex].claimType === 'oral' && this.transactions[transactionIndex].items[itemIndex].itemType === 'medication-codes') {
+          this.transactions[transactionIndex].items[itemIndex].tax = 0;
+        } else {
+          this.transactions[transactionIndex].items[itemIndex].tax = this.transactions[transactionIndex].items[itemIndex].payerShare * 0.15;
+        }
+      }
+
+      this.transactions[transactionIndex].items[itemIndex].tax = parseFloat(this.transactions[transactionIndex].items[itemIndex].tax).toFixed(2);
+
+      this.transactions[transactionIndex].items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].items[itemIndex].payerShare) + parseFloat(this.transactions[transactionIndex].items[itemIndex].tax);
+      this.transactions[transactionIndex].items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].items[itemIndex].payerShareWithVat).toFixed(2);
+
+      this.transactions[transactionIndex].items.filter((x, index) => index != itemIndex && x.status && x.status.toLowerCase() !== 'rejected').forEach((x, index) => {
+
+        let amount = 0;
+
+        if (x.approvedNet === 0) {
+          amount = x.grossAmount;
+        } else {
+          amount = x.approvedNet;
+        }
+
+        let discount = !x.discount ? 0 : parseFloat(x.discount);
+
+        let patientShareAmt = amount - discount;
+        patientShareAmt = (patientShareAmt * this.transactions[transactionIndex].maxPercent) / 100;
+
+        if (patientShareAmt < maxLimit) {
+          x.patientShare = patientShareAmt;
+        } else {
+          x.patientShare = maxLimit;
+        }
+
+        x.patientShare = parseFloat(x.patientShare).toFixed(2);
+
+        maxLimit = maxLimit - x.patientShare;
+
+        x.payerShare = amount - discount - x.patientShare;
+        x.payerShare = parseFloat(x.payerShare).toFixed(2);
+
+        if (this.transactions[transactionIndex].claimType === 'vision') {
+          x.tax = 0;
+        } else {
+          if (this.transactions[transactionIndex].claimType === 'oral' && x.itemType === 'medication-codes') {
+            x.tax = 0;
+          } else {
+            x.tax = x.payerShare * 0.15;
+          }
+        }
+
+        x.tax = parseFloat(x.tax).toFixed(2);
+
+        x.payerShareWithVat = parseFloat(x.payerShare) + parseFloat(x.tax);
+        x.payerShareWithVat = parseFloat(x.payerShareWithVat).toFixed(2);
+      });
+
     }
-
-    this.transactions[transactionIndex].items[itemIndex].payerShare = amount - discount - this.transactions[transactionIndex].items[itemIndex].patientShare;
-
-    if (this.transactions[transactionIndex].claimType === 'optical') {
-      this.transactions[transactionIndex].items[itemIndex].tax = 0;
-    } else {
-      this.transactions[transactionIndex].items[itemIndex].tax = this.transactions[transactionIndex].items[itemIndex].payerShare * 0.15;
-    }
-
-    let tax = this.transactions[transactionIndex].items[itemIndex].tax;
-
-    this.transactions[transactionIndex].items[itemIndex].payerShareWithVat = this.transactions[transactionIndex].items[itemIndex].payerShare + tax;
 
     this.transactions[transactionIndex].totalPatientShare = 0;
     this.transactions[transactionIndex].totalPayerShare = 0;

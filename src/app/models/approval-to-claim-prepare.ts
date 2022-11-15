@@ -22,6 +22,8 @@ export class ApprovalToClaimPrepare extends Paginateable {
   totalBenefit: number;
   totalDiscount: number;
   maxLimit: number;
+  maxPercent: number;
+  claimType: string;
   totalPayerShareWithVat: number;
 
   constructor(body: {}) {
@@ -47,6 +49,8 @@ export class ApprovalToClaimPrepare extends Paginateable {
     this.totalDiscount = body["totalDiscount"];  
     this.totalPayerShareWithVat = body["totalPayerShareWithVat"];     
     this.maxLimit = body["maxLimit"];    
+    this.maxPercent = body["maxPercent"];  
+    this.claimType = body["claimType"];  
   }
 }
 

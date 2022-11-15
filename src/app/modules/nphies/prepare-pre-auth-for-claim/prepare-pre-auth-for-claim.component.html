@@ -206,7 +206,7 @@
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
                               <input type="text" class="form-control" placeholder="Enter Patient Share"
-                                [(ngModel)]="item.patientShare" />
+                                [(ngModel)]="item.patientShare" [disabled]="item.status === 'rejected'"/>
                             </span>
                           </span>
                           <div
@@ -221,7 +221,7 @@
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
                               <input type="text" class="form-control" placeholder="Enter Payer Share"
-                                [(ngModel)]="item.payerShare" />
+                                [(ngModel)]="item.payerShare" [disabled]="item.status === 'rejected'"/>
                             </span>
                           </span>
                           <div
@@ -239,7 +239,7 @@
                           [ngClass]="{'has-error' : transaction.submitted && (item.discount === undefined || item.discount === null || item.discount === '')}">
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
-                              <input type="text" class="form-control" placeholder="Enter Discount"
+                              <input type="text" class="form-control" placeholder="Enter Discount"  [disabled]="item.status === 'rejected'"
                                 [(ngModel)]="item.discount" (blur)="calculateShares(i, j)" />
                             </span>
                           </span>
