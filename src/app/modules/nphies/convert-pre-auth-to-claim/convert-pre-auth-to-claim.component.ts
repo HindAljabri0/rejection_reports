@@ -239,6 +239,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
     this.isSubmitted = true;
     if (this.FormPreAuthTransaction.valid) {
       this.sharedServices.loadingChanged.next(true);
@@ -282,10 +283,11 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.editURL(model.fromDate, model.toDate);
       this.providerNphiesSearchService.getApprovalToClaimConvertCriteria(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
-          const body = event.body;
+          const body = event.body ? event.body.page : {};
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, ApprovalToClaimTransaction);
           this.transactions = this.transactionModel.content;
+          console.log(this.transactions)
           this.transactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
             x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
@@ -303,7 +305,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
               x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
               x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
               x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => prev + next);
-
+              x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => prev + next);
               x.items.forEach(y => {
                 y.invoceNo = '';
               });

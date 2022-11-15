@@ -22,6 +22,7 @@ export class ApprovalToClaimPrepare extends Paginateable {
   totalBenefit: number;
   totalDiscount: number;
   maxLimit: number;
+  totalPayerShareWithVat: number;
 
   constructor(body: {}) {
     super(body);
@@ -43,7 +44,8 @@ export class ApprovalToClaimPrepare extends Paginateable {
     this.preparedDate = body["preparedDate"];
     this.totalPatientShare = body["totalPatientShare"];
     this.totalPayerShare = body["totalPayerShare"];
-    this.totalDiscount = body["totalDiscount"];    
+    this.totalDiscount = body["totalDiscount"];  
+    this.totalPayerShareWithVat = body["totalPayerShareWithVat"];     
     this.maxLimit = body["maxLimit"];    
   }
 }
@@ -64,4 +66,5 @@ class Item {
   patientInvoiceNo: string;
   tax: number;
   discount: number;
+  payerShareWithVat:number;
 }
