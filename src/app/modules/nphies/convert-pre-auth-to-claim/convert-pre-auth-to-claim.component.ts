@@ -238,8 +238,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    debugger
+  onSubmit() {    
     this.isSubmitted = true;
     if (this.FormPreAuthTransaction.valid) {
       this.sharedServices.loadingChanged.next(true);
