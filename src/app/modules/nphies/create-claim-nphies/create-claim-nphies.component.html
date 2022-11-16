@@ -981,13 +981,13 @@
         </div>
       </ng-template>
       <div class="communication-wrapper">
-        <!-- <h5 class="form-title px-14 py-0 mb-0">
+        <h5 class="form-title px-14 py-0 mb-0">
           <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-            (click)="openAddCommunicationDialog()">
+            (click)="openAddCommunicationDialog()" *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
-        </h5> -->
+        </h5>
         <ul class="communication" *ngIf="communications.length > 0">
           <li *ngFor="let communication of communications">
             <ng-container *ngIf="communication.communicationRequestId">
@@ -2724,7 +2724,7 @@
           <div class="communication-wrapper">
             <h5 class="form-title px-14 py-0 mb-0">
               <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-                (click)="openAddCommunicationDialog()">
+                (click)="openAddCommunicationDialog()" *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
                 <mat-icon>add_circle_outline</mat-icon>
                 <span class="pl-1">Add Communication</span>
               </button>

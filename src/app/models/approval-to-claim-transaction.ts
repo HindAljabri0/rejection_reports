@@ -22,6 +22,7 @@ export class ApprovalToClaimTransaction extends Paginateable {
   convertToClaimEpisodeId: number;
   totalBenefit: number;
   totalDiscount: number;
+  totalPayerShareWithVat: number;
 
   constructor(body: {}) {
     super(body);
@@ -45,6 +46,7 @@ export class ApprovalToClaimTransaction extends Paginateable {
     this.totalPayerShare = body["totalPayerShare"];
     this.convertToClaimEpisodeId = body["convertToClaimEpisodeId"];
     this.preparedTimeStamp = body["preparedTimeStamp"];
+    this.totalPayerShareWithVat = body["totalPayerShareWithVat"];
   }
 }
 
@@ -63,4 +65,5 @@ class Item {
   benefitTax: number;
   tax: number;
   discount: number;
+  payerShareWithVat: number;
 }

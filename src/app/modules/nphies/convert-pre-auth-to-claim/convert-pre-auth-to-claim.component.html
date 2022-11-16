@@ -103,10 +103,12 @@
             <th>Date Ordered</th>
             <!-- <th>Response Date</th> -->
             <th>Payer/TPA</th>
-            <th>Total Net / Tax</th>
-            <th>Total Benefit / Tax</th>
             <th>Total Patient Share</th>
             <th>Total Payer Share</th>
+            <th>Total Net </th>
+            <th>Total Tax <mat-icon class="material-icons-outlined" matTooltip="Payer Share Tax only">info</mat-icon></th>
+            <th>Total Payer Share with Tax</th>
+            <th>Total Benefit</th>
             <th>Total Discount</th>
             <!-- <th>Status</th> -->
           </tr>
@@ -129,18 +131,19 @@
               <td (click)="toggleRow(i)">{{transaction.preparedTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td>
               <!-- <td (click)="toggleRow(i)"> {{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
-              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SR</span> / {{transaction.totalTax}} <span class="currency">SR</span></td>
-              <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span> / {{transaction.totalBenefitTax}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SR</span></td>
-
+              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalTax}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPayerShareWithVat}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalDiscount}} <span class="currency">SR</span></td>
               <!-- <td (click)="toggleRow(i)"> {{transaction.status}}</td> -->
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
               <td></td>
-              <td colspan="10">
+              <td colspan="12">
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0" *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
@@ -150,8 +153,10 @@
                       <th>Standard Code - Description</th>
                       <th>Patient Share</th>
                       <th>Payer Share</th>
-                      <th>Net / Tax</th>
-                      <th>Benefit / Tax</th>
+                      <th>Net </th>
+                      <th>Tax <mat-icon class="material-icons-outlined" matTooltip="Payer Share Tax only">info</mat-icon></th>
+                      <th>Payer Share with Tax</th>
+                      <th>Benefit </th>
                       <th>Discount</th>
                       <th>Status</th>
                     </tr>
@@ -164,8 +169,10 @@
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                       <td>{{item.patientShare}} <span class="currency">SR</span></td>
                       <td>{{item.payerShare}} <span class="currency">SR</span></td>
-                      <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
-                      <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
+                      <td>{{item.net}} <span class="currency">SR</span>  </td>
+                      <td>{{item.tax}} <span class="currency">SR</span>  </td>
+                      <td>{{item.payerShareWithVat}} <span class="currency">SR</span></td>
+                      <td>{{item.approvedNet}} <span class="currency">SR</span>  </td>
                       <td>{{item.discount}} <span class="currency">SR</span></td>
                       <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
                     </tr>
@@ -203,7 +210,7 @@
 
   <div class="block-footer sticky">
     <div class="right-block">
-      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()">Convert {{selectedApprovals.length==0?" All":"Selection
+      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()" *ngIf="transactions.length > 0">Convert {{selectedApprovals.length==0?" All":"Selection
         ("+this.selectedApprovals.length+")"}}</button>
     </div>
   </div>
