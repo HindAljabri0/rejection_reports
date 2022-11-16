@@ -210,7 +210,7 @@
 
   <div class="block-footer sticky">
     <div class="right-block">
-      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()">Convert {{selectedApprovals.length==0?" All":"Selection
+      <button type="button" color="primary" mat-flat-button (click)="convertToClaim()" *ngIf="transactions.length > 0">Convert {{selectedApprovals.length==0?" All":"Selection
         ("+this.selectedApprovals.length+")"}}</button>
     </div>
   </div>

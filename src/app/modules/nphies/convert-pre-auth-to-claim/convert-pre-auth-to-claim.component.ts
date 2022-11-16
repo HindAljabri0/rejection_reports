@@ -238,7 +238,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     }
   }
 
-  onSubmit() {    
+  onSubmit() {
     this.isSubmitted = true;
     if (this.FormPreAuthTransaction.valid) {
       this.sharedServices.loadingChanged.next(true);
@@ -300,11 +300,11 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
             x.totalDiscount = 0;
 
             if (x.items && x.items.length > 0) {
-              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => prev + next);
-              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => prev + next);
-              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => prev + next);
-              x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => prev + next);
-              x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => prev + next);
+              x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.items.forEach(y => {
                 y.invoceNo = '';
               });
@@ -395,17 +395,52 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   }
 
   convertToClaim() {
-    let episodeIds = [];
-    if (this.selectedApprovals.length === 0) {
-      episodeIds = this.transactions.map(x => {
-        return x.convertToClaimEpisodeId;
-      });
-    } else {
-      episodeIds = this.selectedApprovals;
+    // let episodeIds = [];
+    // if (this.selectedApprovals.length === 0) {
+    //   episodeIds = this.transactions.map(x => {
+    //     return x.convertToClaimEpisodeId;
+    //   });
+    // } else {
+    //   episodeIds = this.selectedApprovals;
+    // }
+
+    let model: any = {};
+    if (this.selectedApprovals.length > 0) {
+      model.episodeIds = this.selectedApprovals;
     }
+    else{
+      model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
+      model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
+      if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+        model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
+      }
+  
+      if (this.FormPreAuthTransaction.controls.payerId.value) {
+        model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
+      }
+  
+      if (this.FormPreAuthTransaction.controls.destinationId.value) {
+        model.destinationId = this.FormPreAuthTransaction.controls.destinationId.value;
+      }
+  
+      // tslint:disable-next-line:max-line-length
+      if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+        model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
+      }
+  
+      if (this.FormPreAuthTransaction.controls.status.value) {
+        model.status = this.FormPreAuthTransaction.controls.status.value;
+      }
+  
+      if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+        model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value;
+      }
+    }
+   
+
     this.sharedServices.loadingChanged.next(true);
 
-    this.providerNphiesApprovalService.convertToClaim(this.sharedServices.providerId, episodeIds).subscribe((event: any) => {
+    this.providerNphiesApprovalService.convertToClaim(this.sharedServices.providerId, model).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event.body;
 
@@ -423,6 +458,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', messages, true).subscribe(res => {
           this.onSubmit();
+          this.selectedApprovals = [];
         });
         this.sharedServices.loadingChanged.next(false);
       }
@@ -431,6 +467,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400) {
           this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          this.selectedApprovals = [];
         } else if (error.status === 404) {
           const errors: any[] = [];
           if (error.error.errors) {
@@ -438,12 +475,15 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
               errors.push(x);
             });
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            this.selectedApprovals = [];
           } else {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            this.selectedApprovals = [];
           }
         } else if (error.status === 500) {
           // tslint:disable-next-line:max-line-length
           this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
+          this.selectedApprovals = [];
         } else if (error.status === 503) {
           const errors: any[] = [];
           if (error.error.errors) {
@@ -451,8 +491,10 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
               errors.push(x);
             });
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            this.selectedApprovals = [];
           } else {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            this.selectedApprovals = [];
           }
         }
       }
