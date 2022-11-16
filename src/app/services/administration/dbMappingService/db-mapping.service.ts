@@ -101,4 +101,15 @@ export class DbMappingService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+  saveProviderTypeConfiguration(body, providerId) {
+    const requestURL: string = `/providers/` + providerId + `/nphies/provider-type-config`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
+    return this.http.request(request);
+  }
+  getProviderTypeConfiguration(providerId) {
+    const requestURL: string = `/providers/` + providerId + `/nphies/provider-type-config`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  
 }
