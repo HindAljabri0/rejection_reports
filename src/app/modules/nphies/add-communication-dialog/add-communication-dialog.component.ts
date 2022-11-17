@@ -61,9 +61,11 @@ export class AddCommunicationDialogComponent implements OnInit {
         model.itemDescription = x.itemDescription;
         model.nonStandardCode = x.nonStandardCode;
         model.nonStandardDesc = x.display;
-        model.status=x.itemDecision.status
+        model.status=x.itemDecision!= null?x.itemDecision.status:null
         return model;
       });
+
+     
 
       this.filteredItem.next(this.items.slice());
       this.FormCommunication.controls.claimItemIdFilter.valueChanges
