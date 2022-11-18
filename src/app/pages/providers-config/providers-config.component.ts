@@ -154,7 +154,7 @@ export class ProvidersConfigComponent implements OnInit {
   pollTypePeriod: number;
   pollTypePeriodUnitController: FormControl = new FormControl('');
   pollTypePeriodUnit: string;
-  providerTypeController: FormControl = new FormControl(null);
+  
 
   isBothSame = true;
   dbConfigs = [];
@@ -172,6 +172,10 @@ export class ProvidersConfigComponent implements OnInit {
       displayAlt: string
     }[]
   }[] = [];
+
+  providerTypeConfig = new FormGroup({
+    providerTypeController: new FormControl()
+  });
 
   constructor(
     public datepipe: DatePipe,
@@ -1758,16 +1762,22 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         const data:any = event.body;
         if (data.details != null) {
-          this.providerTypeController.setValue(data.details.claimType) 
+          this.providerTypeConfig.patchValue({
+            providerTypeController : data.details.claimType ? data.details.claimType : null
+          })
         } else {
-          this.providerController.setValue(null);
+          this.providerTypeConfig.patchValue({
+            providerTypeController :  null
+          })
         }
       }
       this.componentLoading.providerType = false;
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status == 404) {
-          this.providerTypeController.setValue(null);
+          this.providerTypeConfig.patchValue({
+            providerTypeController :  null
+          })
         }
         if (error.status != 404) {
           this.errors.providerTypeConfigurationError = 'Could not load provider settings, please try again later.';
@@ -1781,9 +1791,9 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.providerTypeConfigurationError = null
     this.errors.providerTypeConfigurationSaveError = null;
     this.success.providerTypeConfigurationSaveSuccess = null;
-    if ((this.providerTypeController.value != null && this.providerTypeController.value != '')) {
+    if (this.providerTypeConfig.controls.providerTypeController.value !== null) {
       const body = {
-        claimType: this.providerTypeController.value,
+        claimType: this.providerTypeConfig.controls.providerTypeController.value ? this.providerTypeConfig.controls.providerTypeController.value : null,
         providerId: this.selectedProvider
       };
       this.componentLoading.providerType = true;
