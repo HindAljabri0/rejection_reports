@@ -659,4 +659,13 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+  relatedClaim(providerId: string, claimId:string) {
+    let  requestUrl = `/providers/${providerId}/claims/partial/resubmit?`;
+    if (claimId) {
+      requestUrl += `claimId=${claimId}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
+    return this.http.request(request);
+  }
+
 }

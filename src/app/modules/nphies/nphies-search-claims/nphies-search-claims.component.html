@@ -276,6 +276,11 @@
                           <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
+                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId)" *ngIf="claim.status === 'partial'">
+                              <mat-icon class="material-icons-outlined">edit</mat-icon>
+                              <span>Create Related Claim</span>
+                            </button> 
+
                             <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
                               <mat-icon class="material-icons-outlined">close</mat-icon>
                               <span>Cancel</span>
