@@ -1425,20 +1425,13 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  checkMode(){
-    if(this.pageMode === 'CREATE'){
-      this.onSubmit()
-    } else if(this.pageMode === 'EDIT'){
-      if(this.FormNphiesClaim.controls.type.value.value !== this.providerType){
-        this.dialogService.showMessage('Error', 'Claim type should be same as provider type : ' +  this.providerType, 'alert', true, 'OK');
-      } else{
-        this.onSubmit();
-      }
-
-    }
-  }
-
   onSubmit() {
+    if(this.pageMode === 'EDIT'){
+      if(this.FormNphiesClaim.controls.type.value.value !== this.providerType){
+        this.dialogService.showMessage('Error', 'Claim type ' + this.FormNphiesClaim.controls.type.value.value + ' is not supported for Provider type ' + this.providerType, 'alert', true, 'OK');
+        return;
+      } 
+    }
     this.isSubmitted = true;
     let hasError = false;
 

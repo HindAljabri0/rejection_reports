@@ -1577,19 +1577,14 @@ export class AddPreauthorizationComponent implements OnInit {
       return true;
     }
   }
-  checkMode(){
-    if(!this.claimReuseId){
-      this.onSubmit();
-    } else if(this.claimReuseId){
+  
+  onSubmit() {
+    if(this.claimReuseId){
       if(this.FormPreAuthorization.controls.type.value.value !== this.providerType){
-        this.dialogService.showMessage('Error', 'Claim type should be same as provider type : ' +  this.providerType, 'alert', true, 'OK');
-      } else{
-        this.onSubmit();
+        this.dialogService.showMessage('Error', 'Claim type ' + this.FormPreAuthorization.controls.type.value.value + ' is not supported for Provider type ' + this.providerType, 'alert', true, 'OK');
+        return;
       }
     }
-  }
-
-  onSubmit() {
     this.isSubmitted = true;
     
      let hasError = false;
