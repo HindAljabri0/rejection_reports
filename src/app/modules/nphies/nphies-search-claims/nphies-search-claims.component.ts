@@ -1971,4 +1971,40 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.deSelectAll();
     });
   }
+
+  createRelatedClaim(claimId:string){
+    this.commen.loadingChanged.next(true);
+    this.providerNphiesApprovalService.relatedClaim(this.commen.providerId, claimId).subscribe((event) => {
+      if (event instanceof HttpResponse) {
+        if (event.status == 200) {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', event.body['message'], false)
+          ).subscribe(result => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      this.commen.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if(errorEvent.status == 400 || errorEvent.status == 500){
+          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
+        }
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+      }
+    });
+  }
 }
