@@ -32,6 +32,7 @@ import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attach
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -239,6 +240,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   selectedTab = 0;
   claimType: string;
   isPBMValidationVisible = false;
+  providerType = '';
   //IsResubmitMode = false;
   constructor(
 
@@ -255,6 +257,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private nphiesClaimUploaderService: NphiesClaimUploaderService,
     private adminService: AdminService,
+    private dbMapping: DbMappingService
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
@@ -328,6 +331,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') ? 9 : 8;
     }
     this.getPBMValidation();
+    this.getProviderTypeConfiguration()
 
   }
 
@@ -900,7 +904,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
       beneficiaryDob: this.FormNphiesClaim.controls.dob.value,
-      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value,
+      providerType: this.providerType
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1420,9 +1425,21 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
+  checkMode(){
+    if(this.pageMode === 'CREATE'){
+      this.onSubmit()
+    } else if(this.pageMode === 'EDIT'){
+      if(this.FormNphiesClaim.controls.type.value.value !== this.providerType){
+        this.dialogService.showMessage('Error', 'Claim type should be same as provider type : ' +  this.providerType, 'alert', true, 'OK');
+      } else{
+        this.onSubmit();
+      }
+
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
-
     let hasError = false;
 
     if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
@@ -3259,5 +3276,40 @@ export class CreateClaimNphiesComponent implements OnInit {
     newDate.setSeconds(0, 0);
     return new Date(newDate);
   }
+
+  getProviderTypeConfiguration() {
+    this.sharedServices.loadingChanged.next(true);
+    this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data:any = event.body;
+        if (data && data.details) {
+          this.providerType = data.details.claimType;
+            if(data.details.claimType === "vision"){
+              if(this.pageMode === 'CREATE'){
+                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'vision')[0]);
+                this.claimType = "vision";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
+                this.FormNphiesClaim.controls.type.disable();
+                this.FormNphiesClaim.controls.subType.disable();
+              }
+              
+            }
+        } 
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 404) {
+        }
+        if (error.status != 404) {
+        }
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
+  }
+
 
 }
