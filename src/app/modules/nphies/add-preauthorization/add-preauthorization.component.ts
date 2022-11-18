@@ -26,6 +26,7 @@ import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-d
 import { DomSanitizer } from '@angular/platform-browser';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { takeUntil } from 'rxjs/operators';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -201,6 +202,7 @@ export class AddPreauthorizationComponent implements OnInit {
   claimType: string;
   defualtPageMode = "";
   selectedDefaultPlan = null;
+  providerType = "";
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -213,6 +215,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    private dbMapping: DbMappingService
   ) {
     this.today = new Date();
   }
@@ -229,6 +232,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.getRefferalProviders();
       this.defualtPageMode = "CREATE"
     }
+    this.getProviderTypeConfiguration();
   }
 
   setReuseValues() {
@@ -902,7 +906,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   openAddEditDiagnosis(diagnosis: any = null) {
-
+    
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -990,7 +994,8 @@ export class AddPreauthorizationComponent implements OnInit {
       documentId: this.FormPreAuthorization.controls.documentId.value,
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
       beneficiaryDob: this.selectedBeneficiary.dob,
-      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
+      providerType : this.providerType
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1572,10 +1577,22 @@ export class AddPreauthorizationComponent implements OnInit {
       return true;
     }
   }
+  checkMode(){
+    if(!this.claimReuseId){
+      this.onSubmit();
+    } else if(this.claimReuseId){
+      if(this.FormPreAuthorization.controls.type.value.value !== this.providerType){
+        this.dialogService.showMessage('Error', 'Claim type should be same as provider type : ' +  this.providerType, 'alert', true, 'OK');
+      } else{
+        this.onSubmit();
+      }
+    }
+  }
 
   onSubmit() {
     this.isSubmitted = true;
-    let hasError = false;
+    
+     let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
@@ -2072,7 +2089,7 @@ export class AddPreauthorizationComponent implements OnInit {
           }
         }
       });
-    }
+    }   
   }
 
   getTransactionDetails(requestId = null, responseId = null) {
@@ -2241,10 +2258,44 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-
   removeSecondsFromDate(date: any) {
     let newDate = new Date(date);
     newDate.setSeconds(0, 0);
     return new Date(newDate);
+  }
+
+  getProviderTypeConfiguration() {
+    this.sharedServices.loadingChanged.next(true);
+    this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data:any = event.body;
+        if (data && data.details) {
+          this.providerType = data.details.claimType;
+            if(data.details.claimType === "vision"){
+              console.log(this.claimReuseId)
+              if (!this.claimReuseId) {
+                this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
+                this.claimType = "vision";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+                this.FormPreAuthorization.controls.type.disable();
+                this.FormPreAuthorization.controls.subType.disable();
+              }
+               
+            }
+        } 
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 404) {
+        }
+        if (error.status != 404) {
+        }
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
   }
 }

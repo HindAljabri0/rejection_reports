@@ -97,6 +97,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.data.providerType ==='vision' && !this.data.item) {
+      const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
+      if (principalDiagnosis.length > 0) {
+        this.FormItem.controls.diagnosisSequence.setValue([principalDiagnosis[0]]);
+      } else {
+        this.FormItem.controls.diagnosisSequence.setValue([this.data.diagnosises[0]]);
+      }
+    }
+    
     if (this.data.source === 'APPROVAL') {
       this.FormItem.controls.invoiceNo.clearValidators();
       this.FormItem.controls.invoiceNo.updateValueAndValidity();
@@ -254,6 +263,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
 
+    if(this.data.providerType ==='vision'){
+      this.FormItem.controls.factor.setValue(1);
+    }
   }
 
   setTypes(type) {
@@ -346,6 +358,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         factor: type.factor ? type.factor : 1,
         tax: 0
       });
+      if(this.data.providerType ==='vision'){
+        this.FormItem.controls.factor.setValue(1);
+      }
       this.SetSingleRecord(type);
       this.updateDiscount();
       this.updateNet();
@@ -521,6 +536,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.filteredSupportingInfo.next(
       this.data.supportingInfos.filter(item => item.categoryName.toLowerCase().indexOf(search) > -1)
     );
+
   }
 
   filterCareTeam() {
