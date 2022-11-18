@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
 
   <ng-container *ngIf="!IsJSONPosted">
-    <form [formGroup]="FormPreAuthorization" (ngSubmit)="checkMode()">
+    <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
       <div class="block-header">
         <p>Request Pre Authorization</p>
         <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary"

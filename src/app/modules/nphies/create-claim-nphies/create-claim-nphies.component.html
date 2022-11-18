@@ -1466,7 +1466,7 @@
   </mat-progress-bar>
 
 
-  <form [formGroup]="FormNphiesClaim" (ngSubmit)="checkMode()">
+  <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
     <div class="block-header" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
       <p>Create Claim</p>
     </div>

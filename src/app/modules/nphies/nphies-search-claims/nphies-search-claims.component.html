@@ -384,6 +384,10 @@
           <button (click)="applyPBMValidation()" mat-flat-button color="primary">PBM Validate {{selectedClaims.length==0?"
             All":"Selection ("+this.selectedClaims.length+")"}}</button>
         </ng-container>
+        <ng-container
+          *ngIf="showMoveToReadyState === true && selectedCardKey != 0">
+          <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>
+        </ng-container>
       </div>
     </div>
   </div>
