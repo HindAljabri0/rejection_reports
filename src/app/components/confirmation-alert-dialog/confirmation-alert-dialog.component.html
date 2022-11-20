@@ -4,24 +4,46 @@
         <img src="./assets/ic-warning.svg" alt="Warning" *ngIf="data.mode=='warning'" />
         <img src="./assets/ic-danger.svg" alt="Alert" *ngIf="data.mode=='alert'" />
         <img src="./assets/ic-info.svg" alt="Info" *ngIf="data.mode=='info'" />
+        <img src="./assets/ic-info.svg" alt="Info" *ngIf="data.mode=='info_summary_conversion'" />
         <div class="right-block">
             <p *ngIf="data.transactionId" class="title">Transaction Id: {{data.transactionId}}</p>
             <p class="title" [innerHtml]="data.mainMessage"></p>
-            <span class="subtitle" *ngIf="data.subMessage" [innerHtml]="data.subMessage"></span>
-            <ng-container *ngIf="data.errors && data.errors.length > 0 && data.errors[0]=='TYPE-CLAIM-CONVERT-SUCCESS'; else generalError">
+            <span class="subtitle" *ngIf="data.subMessage && data.errors[0]!='SUMMARY_OF_CONVERSION'" [innerHtml]="data.subMessage"></span>
+            <ng-container
+                *ngIf="data.errors && data.errors.length > 0 && (data.errors[0]=='TYPE-CLAIM-CONVERT-SUCCESS'|| data.errors[0]=='SUMMARY_OF_CONVERSION'); else generalError">
                 <div class="convert-preauth-upload-details">
-                    <p class="name">Upload Name: {{data.errors[1].uploadName}}</p>
-                    <span class="date">Upload Date: {{data.errors[1].uploadDate}}</span>
-                    <div class="count">
-                        <span>
-                            <img src="./assets/ic-check-success.svg" alt="Check" />
-                            <span>Accepted Claims: {{data.errors[1].acceptedClaims}}</span>
-                        </span>
-                        <span>
-                            <img src="./assets/ic-close-danger.svg" alt="Close" />
-                            <span>Not Accepted Claims: {{data.errors[1].notAcceptedClaims}}</span>
-                        </span>
+                    <div *ngIf="data.errors[0]=='TYPE-CLAIM-CONVERT-SUCCESS'">
+                        <p class="name">Upload Name: {{data.errors[1].uploadName}}</p>
+                        <span class="date">Upload Date: {{data.errors[1].uploadDate}}</span>
+                        <div class="count">
+                            <span>
+                                <img src="./assets/ic-check-success.svg" alt="Check" />
+                                <span>Accepted Claims: {{data.errors[1].acceptedClaims}}</span>
+                            </span>
+                            <span>
+                                <img src="./assets/ic-close-danger.svg" alt="Close" />
+                                <span>Not Accepted Claims: {{data.errors[1].notAcceptedClaims}}</span>
+                            </span>
+                        </div>
                     </div>
+                    <div *ngIf="data.errors[0]=='SUMMARY_OF_CONVERSION'">
+
+
+
+                        <p class="name">Total Net: {{data.errors[1].totalNet.toFixed(2)}}</p>
+                        <p class="name">Total Tax: {{data.errors[1].totalTax.toFixed(2)}}</p>
+                        <p class="name">Total Benefit: {{data.errors[1].totalBenefit.toFixed(2)}}</p>
+                        <div class="count">
+                            <span>
+                                <span>Total No. of Claims: {{data.errors[1].totalofClaims}}</span>
+                            </span>
+                            <span>
+                                <span>Period : {{data.errors[1].startPeriod +" - "+ data.errors[1].endPeriod}} </span>
+                            </span>
+                        </div>
+                     
+                    </div>
+
                 </div>
             </ng-container>
             <ng-template #generalError>
@@ -31,8 +53,22 @@
             </ng-template>
         </div>
     </div>
-    <div class="btn-list text-right">
-        <button mat-flat-button type="button" *ngIf="!data.hideNoButton" (click)="noClick()">{{data.noButtonText || 'No'}}</button>
-        <button mat-flat-button type="button" (click)="yesClick()" color="primary">{{data.yesButtonText || 'Yes'}}</button>
+    <div  class="btn-list text-right">
+        <div *ngIf="data.mode!='info_summary_conversion'">
+
+            <button mat-flat-button type="button" *ngIf="!data.hideNoButton" (click)="noClick()">{{data.noButtonText ||
+                'No'}}</button>
+            <button mat-flat-button type="button" (click)="yesClick()" color="primary">{{data.yesButtonText ||
+                'Yes'}}</button>
+                
+        </div>
+        
+        <div *ngIf="data.mode=='info_summary_conversion'"  >
+
+            <button  mat-flat-button (click)="yesClick()" type="button">Close</button>
+            <button mat-flat-button type="button" (click)="Convert()" color="primary">Convert</button>
+                
+        </div>
     </div>
+   
 </div>
