@@ -33,6 +33,7 @@ import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-d
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -241,6 +242,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   claimType: string;
   isPBMValidationVisible = false;
   providerType = '';
+  submittionErrors: Map<string, string>;
   //IsResubmitMode = false;
   constructor(
 
@@ -3304,5 +3306,39 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
   }
 
+  createRelatedClaim(){
+    this.sharedService.loadingChanged.next(true);
+    this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString()).subscribe((event) => {
+      if (event instanceof HttpResponse) {
+        if (event.status == 200) {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', event.body['message'], false)
+          ).subscribe(result => {
+            this.resetURL();
+          });
+        }
+        this.sharedService.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      this.sharedService.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if(errorEvent.status == 400 || errorEvent.status == 500){
+          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
+        }
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+      }
+    });
+  }
 
 }
