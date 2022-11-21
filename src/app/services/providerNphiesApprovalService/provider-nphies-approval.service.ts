@@ -605,7 +605,8 @@ export class ProviderNphiesApprovalService {
     patientFileNo?: string,
     claimDate?: string,
     documentId?: string,
-    organizationId?: string
+    organizationId?: string,
+    statuses?: string[]
   ) {
     let requestURL = `/providers/${providerId}/claims/move-to-ready?`;
     if (provderClaimReferenceNumber) {
@@ -653,6 +654,9 @@ export class ProviderNphiesApprovalService {
     }
     if (documentId) {
       requestURL += `&documentId=${documentId}`;
+    }
+    if (statuses) {
+      requestURL += `&statuses=${statuses}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
