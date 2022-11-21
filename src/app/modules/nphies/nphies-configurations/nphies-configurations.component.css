@@ -31,7 +31,9 @@
   height: 50vh;
   background-color: #f9f9f9;
 }
-
+.disable{
+  pointer-events:none;
+}
 .cardInCodeValueManagement header {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;

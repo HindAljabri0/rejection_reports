@@ -25,8 +25,8 @@
                               <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
                           </select>
                       </div>
-                      <div class="item" *ngFor="let category of categories"
-                          [class.selected]="selectedCategory == category.key" (click)="selectCategory(category.key);">
+                      <div class="item" *ngFor="let category of categories" 
+                          [class.selected]="selectedCategory == category.key"  (click)="selectCategory(category.key);">
                          {{category.label}}
                       </div>
                   </div>
@@ -42,7 +42,8 @@
                       </div>
                       <div class="item"
                           *ngFor="let code of (filterWLECodesControl.value == ''? codes : filteredCodes)"
-                          [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)">
+                          [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)"
+                          [ngClass]=" {'disable':(code.key == 'professional' || code.key == 'institutional')}">
                           <span *ngIf="selectedCategory != 'claimType'">{{code.key}} - </span>{{code.label}}
                       </div>
                   </div>

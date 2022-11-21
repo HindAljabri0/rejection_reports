@@ -99,7 +99,6 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
   selectCategory(category: string) {
     this.filterWLECodesControl.setValue('');
     this.codes = [];
-    console.log("category = "+category);
     if (category == 'departmentName_') {
       category += this.getPayerCode();
     }
@@ -107,7 +106,6 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
     if (this.codeValueDictionary.has(category)) {
       this.codeValueDictionary.get(category).codes.forEach((value, key) => {
         
-        if(key !== "institutional" && key !== "professional")
         this.codes.push({ label: value.label, key });
         this.codes.sort((c1, c2) => c1.label.localeCompare(c2.label));
       });
