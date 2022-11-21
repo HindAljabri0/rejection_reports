@@ -8,7 +8,8 @@
         <div class="right-block">
             <p *ngIf="data.transactionId" class="title">Transaction Id: {{data.transactionId}}</p>
             <p class="title" [innerHtml]="data.mainMessage"></p>
-            <span class="subtitle" *ngIf="data.subMessage && data.errors[0]!='SUMMARY_OF_CONVERSION'" [innerHtml]="data.subMessage"></span>
+            <span class="subtitle" *ngIf="data.subMessage && data.mode!='info_summary_conversion'"
+                [innerHtml]="data.subMessage"></span>
             <ng-container
                 *ngIf="data.errors && data.errors.length > 0 && (data.errors[0]=='TYPE-CLAIM-CONVERT-SUCCESS'|| data.errors[0]=='SUMMARY_OF_CONVERSION'); else generalError">
                 <div class="convert-preauth-upload-details">
@@ -30,9 +31,12 @@
 
 
 
-                        <p class="name">Total Net: {{data.errors[1].totalNet.toFixed(2)}}</p>
-                        <p class="name">Total Tax: {{data.errors[1].totalTax.toFixed(2)}}</p>
-                        <p class="name">Total Benefit: {{data.errors[1].totalBenefit.toFixed(2)}}</p>
+                        <p class="name">Total Net: {{ 
+                            data.errors[1].totalNet?data.errors[1].totalNet.toFixed(2):0}}</p>
+                        <p class="name">Total Tax: {{data.errors[1].totalTax?
+                            data.errors[1].totalTax.toFixed(2):0}}</p>
+                        <p class="name">Total Benefit: {{data.errors[1].totalBenefit?
+                            data.errors[1].totalBenefit.toFixed(2):0}}</p>
                         <div class="count">
                             <span>
                                 <span>Total No. of Claims: {{data.errors[1].totalofClaims}}</span>
@@ -41,7 +45,7 @@
                                 <span>Period : {{data.errors[1].startPeriod +" - "+ data.errors[1].endPeriod}} </span>
                             </span>
                         </div>
-                     
+
                     </div>
 
                 </div>
@@ -53,22 +57,22 @@
             </ng-template>
         </div>
     </div>
-    <div  class="btn-list text-right">
+    <div class="btn-list text-right">
         <div *ngIf="data.mode!='info_summary_conversion'">
 
             <button mat-flat-button type="button" *ngIf="!data.hideNoButton" (click)="noClick()">{{data.noButtonText ||
                 'No'}}</button>
             <button mat-flat-button type="button" (click)="yesClick()" color="primary">{{data.yesButtonText ||
                 'Yes'}}</button>
-                
-        </div>
-        
-        <div *ngIf="data.mode=='info_summary_conversion'"  >
 
-            <button  mat-flat-button (click)="yesClick()" type="button">Close</button>
+        </div>
+
+        <div *ngIf="data.mode=='info_summary_conversion'">
+
+            <button mat-flat-button (click)="yesClick()" type="button">Close</button>
             <button mat-flat-button type="button" (click)="Convert()" color="primary">Convert</button>
-                
+
         </div>
     </div>
-   
+
 </div>
