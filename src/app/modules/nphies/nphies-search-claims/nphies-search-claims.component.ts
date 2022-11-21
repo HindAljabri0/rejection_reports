@@ -1884,11 +1884,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
     }
+    const status =  this.summaries[this.selectedCardKey].statuses;
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.moveToReadyState(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
