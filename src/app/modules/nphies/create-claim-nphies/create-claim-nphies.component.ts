@@ -1428,12 +1428,12 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.pageMode === 'EDIT'){
-      if(this.FormNphiesClaim.controls.type.value.value !== this.providerType){
-        this.dialogService.showMessage('Error', 'Claim type ' + this.FormNphiesClaim.controls.type.value.value + ' is not supported for Provider type ' + this.providerType, 'alert', true, 'OK');
+      if(this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType){
+        const providerTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.providerType)[0].name;
+        const claimTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.FormNphiesClaim.controls.type.value.value)[0].name;
+        this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
         return;
       } 
-    }
     this.isSubmitted = true;
     let hasError = false;
 
@@ -3290,7 +3290,28 @@ export class CreateClaimNphiesComponent implements OnInit {
                 this.FormNphiesClaim.controls.type.disable();
                 this.FormNphiesClaim.controls.subType.disable();
               }
-              
+            } else if(data.details.claimType === "oral"){
+              if(this.pageMode === 'CREATE'){
+                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'oral')[0]);
+                this.claimType = "oral";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
+                this.FormNphiesClaim.controls.type.disable();
+                this.FormNphiesClaim.controls.subType.disable();
+              } 
+            }else if(data.details.claimType === "pharmacy"){
+              if(this.pageMode === 'CREATE'){
+                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'pharmacy')[0]);
+                this.claimType = "pharmacy";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
+                this.FormNphiesClaim.controls.type.disable();
+                this.FormNphiesClaim.controls.subType.disable();
+              } 
             }
         } 
         this.sharedServices.loadingChanged.next(false);

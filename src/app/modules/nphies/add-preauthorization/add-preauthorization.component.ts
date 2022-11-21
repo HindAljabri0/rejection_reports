@@ -1579,12 +1579,12 @@ export class AddPreauthorizationComponent implements OnInit {
   }
   
   onSubmit() {
-    if(this.claimReuseId){
-      if(this.FormPreAuthorization.controls.type.value.value !== this.providerType){
-        this.dialogService.showMessage('Error', 'Claim type ' + this.FormPreAuthorization.controls.type.value.value + ' is not supported for Provider type ' + this.providerType, 'alert', true, 'OK');
+      if(this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType){
+        const providerTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.providerType)[0].name;
+        const claimTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.FormPreAuthorization.controls.type.value.value)[0].name;
+        this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
         return;
       }
-    }
     this.isSubmitted = true;
     
      let hasError = false;
@@ -2267,7 +2267,6 @@ export class AddPreauthorizationComponent implements OnInit {
         if (data && data.details) {
           this.providerType = data.details.claimType;
             if(data.details.claimType === "vision"){
-              console.log(this.claimReuseId)
               if (!this.claimReuseId) {
                 this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
                 this.claimType = "vision";
@@ -2278,7 +2277,28 @@ export class AddPreauthorizationComponent implements OnInit {
                 this.FormPreAuthorization.controls.type.disable();
                 this.FormPreAuthorization.controls.subType.disable();
               }
-               
+            } else if(data.details.claimType === "oral"){
+              if (!this.claimReuseId) {
+                this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
+                this.claimType = "oral";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+                this.FormPreAuthorization.controls.type.disable();
+                this.FormPreAuthorization.controls.subType.disable();
+              }
+            } else if(data.details.claimType === "pharmacy"){
+              if (!this.claimReuseId) {
+                this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
+                this.claimType = "pharmacy";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+                this.FormPreAuthorization.controls.type.disable();
+                this.FormPreAuthorization.controls.subType.disable();
+              }
             }
         } 
         this.sharedServices.loadingChanged.next(false);
