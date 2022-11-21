@@ -1455,6 +1455,7 @@
       <button mat-flat-button (click)="close()">Close</button>
       <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
         Edit</button>
+        <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'" (click)="createRelatedClaim()">Create Related Claim</button>
     </div>
   </div>
 </div>
