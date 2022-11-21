@@ -105,6 +105,7 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
     this.selectedCategory = category;
     if (this.codeValueDictionary.has(category)) {
       this.codeValueDictionary.get(category).codes.forEach((value, key) => {
+        
         this.codes.push({ label: value.label, key });
         this.codes.sort((c1, c2) => c1.label.localeCompare(c2.label));
       });
@@ -114,6 +115,7 @@ export class NphiesConfigurationsComponent implements OnInit, OnDestroy {
 
   selectCode(code: string) {
     this.selectedCode = code;
+    
     this.values = [];
     if (code != '') {
       this.values = this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values;
