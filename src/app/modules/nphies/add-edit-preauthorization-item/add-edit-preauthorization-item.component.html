@@ -402,7 +402,7 @@
               </div>
             </div>
           </div>
-          <div [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'" class="col-7">
+          <div *ngIf="data.source === 'APPROVAL' && data.providerType !=='vision'" class="col-7">
             <div class="form-group">
               <label class="control-label">Patient Share (%)</label>
               <div class="input-group">
