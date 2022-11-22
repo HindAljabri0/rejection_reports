@@ -2058,7 +2058,11 @@ export class AddPreauthorizationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+            //this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+            this.dialogService.showMessageObservable(error.error.message, '', 'alert', true, 'OK', error.error.errors, true).subscribe(res => {
+              this.reset();
+              this.getProviderTypeConfiguration();
+            });
           } else if (error.status === 404) {
             const errors: any[] = [];
             if (error.error.errors) {
@@ -2124,6 +2128,8 @@ export class AddPreauthorizationComponent implements OnInit {
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();
+    this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+    this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
     this.FormPreAuthorization.patchValue({
       insurancePlanId: '',
       type: '',

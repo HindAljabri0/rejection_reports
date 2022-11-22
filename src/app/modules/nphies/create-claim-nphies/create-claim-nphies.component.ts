@@ -1895,11 +1895,14 @@ export class CreateClaimNphiesComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.isError) {
-
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
               if (this.pageMode === 'CREATE') {
+                if(body.claimId && body.uploadId){
                 // tslint:disable-next-line:max-line-length
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                }
+                this.reset();
+                this.getProviderTypeConfiguration();
               }
             } else {
               if (this.pageMode === 'CREATE') {
@@ -1957,6 +1960,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.model = {};
     this.detailsModel = {};
     this.FormNphiesClaim.reset();
+    this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+    this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     this.FormNphiesClaim.patchValue({
       insurancePlanId: '',
       type: '',
@@ -3335,7 +3340,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
-            this.resetURL();
+            this.close();
           });
         }
         this.sharedService.loadingChanged.next(false);
