@@ -263,8 +263,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
 
-    if(this.data.providerType ==='vision'){
+    if(this.data.providerType ==='vision' && this.data.source === 'APPROVAL'){
       this.FormItem.controls.factor.setValue(1);
+      this.FormItem.controls.factor.disable();
     }
   }
 
@@ -358,8 +359,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         factor: type.factor ? type.factor : 1,
         tax: 0
       });
-      if(this.data.providerType ==='vision'){
+      if(this.data.providerType ==='vision' && this.data.source === 'APPROVAL'){
         this.FormItem.controls.factor.setValue(1);
+        this.FormItem.controls.factor.disable();
       }
       this.SetSingleRecord(type);
       this.updateDiscount();

@@ -1428,7 +1428,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
-      if(this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType){
+      if(this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE'){
         const providerTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.providerType)[0].name;
         const claimTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.FormNphiesClaim.controls.type.value.value)[0].name;
         this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
