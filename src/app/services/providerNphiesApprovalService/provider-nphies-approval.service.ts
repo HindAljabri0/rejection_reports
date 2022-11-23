@@ -19,7 +19,8 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
-  deleteClaimByCriteria(
+
+  /* deleteClaimByCriteria(
     providerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
     claimIDs: string[], fromDate: string, toDate: string, payerIds?: string[], drname?: string, nationalId?: string, claimDate?: string,
@@ -91,7 +92,69 @@ export class ProviderNphiesApprovalService {
 
     const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
     return this.http.request(request);
+  } */
+
+  deleteClaimByCriteria(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    documentId?: string,
+    organizationId?: string,
+    statuses?: string[],) {
+    let requestURL = `/providers/${providerId}/remove/criteria?`;
+    
+   
+    if (provderClaimReferenceNumber) {
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
+    }
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+    if (uploadId) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+    if (claimDate) {
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+    }
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
+    }
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+    if (statuses) {
+      requestURL += `&statuses=${statuses}`;
+    }
+    const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
+    return this.http.request(request);
   }
+
   getApprovalRequestTransactions(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approvals/fetch/criteria`;
     const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);

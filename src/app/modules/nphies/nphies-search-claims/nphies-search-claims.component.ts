@@ -1567,15 +1567,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.commen.loadingChanged.next(true);
           const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
           const payerIds: string[] = [];
-          if (this.params.payerId) {
-            payerIds.push(this.params.payerId);
-          }
-          this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.params.organizationId,
-            this.params.uploadId, this.params.batchId, null, this.params.filter_claimRefNo,
-            this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status,
-            this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to, payerIds,
-            this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate,
-            this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
+          this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
+            this.params.uploadId, this.params.claimRefNo, this.params.to,
+            payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
+            this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, status
+          ).subscribe(event => {
               if (event instanceof HttpResponse) {
 
                 this.commen.loadingChanged.next(false);
