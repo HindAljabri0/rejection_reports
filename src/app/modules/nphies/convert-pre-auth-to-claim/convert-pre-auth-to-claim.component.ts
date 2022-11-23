@@ -426,9 +426,9 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.transactions.forEach(element => {
 
         if (this.selectedApprovals.includes(element.convertToClaimEpisodeId)) {
-          this.totlaNetOfAllClaimsSlectedApprovals =  this.totlaNetOfAllClaimsSlectedApprovals+ element.totalNet;
-          this.totalBenefitOfAllClaimsSlectedApprovals = this.totalBenefitOfAllClaimsSlectedApprovals+ element.totalBenefit;
-          this.totlaTaxAmountOfAllClaimsSlectedApprovals =this.totlaTaxAmountOfAllClaimsSlectedApprovals + element.totalTax;
+          this.totlaNetOfAllClaimsSlectedApprovals =  this.totlaNetOfAllClaimsSlectedApprovals+ Number(element.totalNet);
+          this.totalBenefitOfAllClaimsSlectedApprovals = this.totalBenefitOfAllClaimsSlectedApprovals+ Number(element.totalBenefit);
+          this.totlaTaxAmountOfAllClaimsSlectedApprovals =this.totlaTaxAmountOfAllClaimsSlectedApprovals + Number(element.totalTax);
           this.totlaNumberOfClaimsSlectedApprovals++;
 
         }
@@ -448,10 +448,10 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.getCalculateSummaryConversions();
 
     messages.push({
-      totalNet: this.isConvertAll() ? this.totlaNetOfAllClaims : this.totlaNetOfAllClaimsSlectedApprovals,
-      totalTax: this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totalBenefitOfAllClaimsSlectedApprovals,
-      totalBenefit: this.isConvertAll() ? this.totalBenefitOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals,
-      totalofClaims: this.isConvertAll() ? this.totlaNumberOfClaims : this.totlaNumberOfClaimsSlectedApprovals,
+      totalNet:  Number(this.isConvertAll() ? this.totlaNetOfAllClaims : this.totlaNetOfAllClaimsSlectedApprovals),
+      totalTax:  Number(this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totalBenefitOfAllClaimsSlectedApprovals),
+      totalBenefit: Number(this.isConvertAll() ? this.totalBenefitOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals),
+      totalofClaims: Number(this.isConvertAll() ? this.totlaNumberOfClaims : this.totlaNumberOfClaimsSlectedApprovals),
       startPeriod: this.datePipe.transform(this.startPeriod, 'MM-dd-yyyy'),
       endPeriod: this.datePipe.transform(this.endPeriod, 'MM-dd-yyyy')
 
