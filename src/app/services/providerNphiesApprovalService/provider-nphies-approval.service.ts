@@ -108,7 +108,8 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     documentId?: string,
     organizationId?: string,
-    statuses?: string[],) {
+    statuses?: string[],
+    requestBundleId?:string) {
     let requestURL = `/providers/${providerId}/remove/criteria?`;
     
    
@@ -150,6 +151,9 @@ export class ProviderNphiesApprovalService {
     }
     if (statuses) {
       requestURL += `&statuses=${statuses}`;
+    }
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
     }
     const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
     return this.http.request(request);
@@ -216,7 +220,8 @@ export class ProviderNphiesApprovalService {
     // claimSubTypes?: string[],
     // statuses?: string[],
     documentId?: string,
-    organizationId?: string
+    organizationId?: string,
+    requestBundleId?:string
   ) {
 
     // fromDate?: string,
@@ -306,6 +311,9 @@ export class ProviderNphiesApprovalService {
 
     if (documentId) {
       requestURL += `&documentId=${documentId}`;
+    }
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
@@ -416,7 +424,8 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     documentId?: string,
     statuses?: string[],
-    organizationId?: string
+    organizationId?: string,
+    requestBundleId?:string
   ) {
 
     let requestURL = `/providers/${providerId}/claims/inquiry?`;
@@ -473,6 +482,9 @@ export class ProviderNphiesApprovalService {
       requestURL += `&statuses=${statuses.join(',')}`;
     }
 
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
+    }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
@@ -525,7 +537,8 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     documentId?: string,
     organizationId?: string,
-    attachmentStatus?: string) {
+    attachmentStatus?: string,
+    requestBundleId?: string) {
       let requestURL = `/providers/${providerId}/claims/generate/attchment?`;
 
       if (provderClaimReferenceNumber) {
@@ -579,6 +592,11 @@ export class ProviderNphiesApprovalService {
       if (attachmentStatus) {
         requestURL += `&attachmentStatus=${attachmentStatus}`;
       }
+
+      if (requestBundleId) {
+        requestURL += `&requestBundleId=${requestBundleId}`;
+      }
+  
   
       const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
       return this.http.request(request);
@@ -598,7 +616,8 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     documentId?: string,
     organizationId?: string,
-    statuses?: string[]) {
+    statuses?: string[],
+    requestBundleId?:string) {
     let requestURL = `/providers/${providerId}/claims/pbm-validation?`;
     if (provderClaimReferenceNumber) {
       requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
@@ -649,6 +668,9 @@ export class ProviderNphiesApprovalService {
     if (statuses) {
       requestURL += `&statuses=${statuses}`;
     }
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
+    }
       
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const httpRequest = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {}, { headers });
@@ -669,7 +691,8 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     documentId?: string,
     organizationId?: string,
-    statuses?: string[]
+    statuses?: string[],
+    requestBundleId?: string
   ) {
     let requestURL = `/providers/${providerId}/claims/move-to-ready?`;
     if (provderClaimReferenceNumber) {
@@ -720,6 +743,9 @@ export class ProviderNphiesApprovalService {
     }
     if (statuses) {
       requestURL += `&statuses=${statuses}`;
+    }
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});

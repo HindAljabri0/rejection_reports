@@ -646,7 +646,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -1570,7 +1570,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-            this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, status
+            this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId 
           ).subscribe(event => {
               if (event instanceof HttpResponse) {
 
@@ -1663,7 +1663,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId);
+        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
     } else {
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
     }
@@ -1723,7 +1723,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, attachmentStatus
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
@@ -1824,7 +1824,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.PBMValidation(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status).subscribe(event => {
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
           if (event.body['status'] === 'Success') {
@@ -1885,7 +1885,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.moveToReadyState(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
