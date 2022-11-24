@@ -35,7 +35,7 @@ export class NphiesUploadCardComponent implements OnInit {
           this.sharedServices.loadingChanged.next(true);
           // tslint:disable-next-line:max-line-length
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.sharedServices.providerId, null, this.data.uploadId, null, null, null,
-            null, null, null, null, null, null, null, null)
+            null, null, null, null, null, null, null, null, null)
             .subscribe(event => {
               if (event instanceof HttpResponse) {
                 this.dialogService.openMessageDialog(new MessageDialogData('',
