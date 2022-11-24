@@ -446,11 +446,11 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     messages.push('SUMMARY_OF_CONVERSION');
     if (!this.isConvertAll())
       this.getCalculateSummaryConversions();
-
+      
     messages.push({
       totalNet:  Number(this.isConvertAll() ? this.totlaNetOfAllClaims : this.totlaNetOfAllClaimsSlectedApprovals),
-      totalTax:  Number(this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totalBenefitOfAllClaimsSlectedApprovals),
-      totalBenefit: Number(this.isConvertAll() ? this.totalBenefitOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals),
+      totalTax:  Number(this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals),
+      totalBenefit: Number(this.isConvertAll() ? this.totalBenefitOfAllClaims : this.totalBenefitOfAllClaimsSlectedApprovals),
       totalofClaims: Number(this.isConvertAll() ? this.totlaNumberOfClaims : this.totlaNumberOfClaimsSlectedApprovals),
       startPeriod: this.datePipe.transform(this.startPeriod, 'MM-dd-yyyy'),
       endPeriod: this.datePipe.transform(this.endPeriod, 'MM-dd-yyyy')
