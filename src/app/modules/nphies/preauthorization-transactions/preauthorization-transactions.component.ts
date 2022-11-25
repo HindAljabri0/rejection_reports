@@ -735,6 +735,16 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
         }
         this.sharedServices.loadingChanged.next(false);
       }
