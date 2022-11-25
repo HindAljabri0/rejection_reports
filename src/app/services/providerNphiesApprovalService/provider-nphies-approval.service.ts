@@ -218,10 +218,10 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     // claimTypes?: string[],
     // claimSubTypes?: string[],
-    // statuses?: string[],
     documentId?: string,
     organizationId?: string,
-    requestBundleId?:string
+    requestBundleId?:string,
+    statuses?: string[],
   ) {
 
     // fromDate?: string,
@@ -305,9 +305,9 @@ export class ProviderNphiesApprovalService {
     //   requestURL += `&claimSubTypes=${claimSubTypes.join(',')}`;
     // }
 
-    // if (statuses && statuses.length > 0) {
-    //   requestURL += `&statuses=${statuses.join(',')}`;
-    // }
+    if (statuses && statuses.length > 0) {
+      requestURL += `&statuses=${statuses.join(',')}`;
+    }
 
     if (documentId) {
       requestURL += `&documentId=${documentId}`;
