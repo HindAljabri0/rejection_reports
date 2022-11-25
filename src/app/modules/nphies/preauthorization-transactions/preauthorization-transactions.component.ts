@@ -737,8 +737,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
         } else if (error.status === 503) {
           const errors: any[] = [];
-          if (error.error.errors) {
-            error.error.errors.forEach(x => {
+          if (error.error && error.error.error && error.error.error.length > 0) {
+            error.error.error.forEach(x => {
               errors.push(x);
             });
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
