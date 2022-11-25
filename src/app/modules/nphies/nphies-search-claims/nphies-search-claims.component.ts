@@ -286,7 +286,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         underProcessingIsDone = true;
       } else if (this.isRejectedByPayerStatus(status)) {
         if (!rejectedByPayerIsDone) {
-          await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
+          await this.getSummaryOfStatus([ClaimStatus.REJECTED]);
         }
         rejectedByPayerIsDone = true;
       } else if (this.isReadyForSubmissionStatus(status)) {
@@ -642,11 +642,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
     }
+    const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, this.params.requestBundleId,status
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -977,8 +978,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   isRejectedByPayerStatus(status: string) {
     status = status ? status.toUpperCase() : status;
-    return status == ClaimStatus.REJECTED.toUpperCase() ||
-      status == 'DUPLICATE';
+    return status == ClaimStatus.REJECTED.toUpperCase();
   }
 
   isReadyForSubmissionStatus(status: string) {
