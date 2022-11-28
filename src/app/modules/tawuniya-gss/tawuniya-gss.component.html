@@ -84,7 +84,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let data of gssReportResponses">
+                    <ng-container *ngFor="let data of initiateModel">
                         <tr *ngIf="data != null">
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.gssReferenceNumber }}</td>
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.lossMonth }}</td>
@@ -132,5 +132,8 @@
                 Initiate GSS Report
             </button>
         </div>
+        <!-- <button mat-flat-button color="primary" (click)="openGenerateReportDialog()" 
+                        [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report
+                    </button> -->
     </div>
 </div>
