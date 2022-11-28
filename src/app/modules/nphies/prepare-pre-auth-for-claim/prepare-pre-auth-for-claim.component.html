@@ -9,7 +9,8 @@
           <div class="form-group">
             <label class="control-label">From Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
+              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
+                formControlName="fromDate">
               <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
               <mat-datepicker #filterFromDate></mat-datepicker>
             </div>
@@ -19,8 +20,8 @@
           <div class="form-group">
             <label class="control-label">To Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPreAuthTransaction.controls.fromDate.value"
-                formControlName="toDate">
+              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
+                [min]="FormPreAuthTransaction.controls.fromDate.value" formControlName="toDate">
               <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
               <mat-datepicker #filterToDate></mat-datepicker>
             </div>
@@ -52,10 +53,12 @@
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
-              <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+              <input type="text" class="form-control search-box"
+                placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
                 [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                  (click)="selectBeneficiary(beneficiary)">
                   {{beneficiary.name}} ({{beneficiary.documentId}})
                 </mat-option>
               </mat-autocomplete>
@@ -89,7 +92,8 @@
     </form>
   </div>
 
-  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
+  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+    *ngIf="transactionModel && transactions.length > 0">
     <div class="fixed-height fixed-height-sm">
       <table class="primary-grid sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0">
         <thead>
@@ -101,10 +105,12 @@
             <th>Requested Date</th>
             <!-- <th>Response Date</th> -->
             <th>Payer / TPA</th>
-            <th>Total Net / Tax</th>
-            <th>Total Benefit / Tax</th>
             <th>Total Patient Share</th>
             <th>Total Payer Share</th>
+            <th>Total Net</th>
+            <th>Total Tax <mat-icon class="material-icons-outlined" matTooltip="Payer Share Tax only">info</mat-icon></th>
+            <th>Total Payer Share with Tax</th>
+            <th>Total Benefit</th>
             <th>Total Discount</th>
             <th>Status</th>
           </tr>
@@ -122,11 +128,14 @@
               <td (click)="toggleRow(i)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm aa'}}</td>
               <!-- <td (click)="toggleRow(i)">{{transaction.responseTimeStamp | date: 'dd-MM-yyyy hh:mm aa'}}</td> -->
               <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
-              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SR</span> / {{transaction.totalTax}} <span class="currency">SR</span></td>
-              <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span> / {{transaction.totalBenefitTax}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalTax}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalPayerShareWithVat}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalDiscount}} <span class="currency">SR</span></td>
+
               <td (click)="toggleRow(i)">
                 <span
                   [ngClass]="transaction.status === 'approved' ? 'text-success' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'partial' ? 'text-light-blue' : ''))">{{transaction.status
@@ -135,7 +144,7 @@
             </tr>
             <tr *ngIf="currentOpenRow==i">
               <td></td>
-              <td colspan="11">
+              <td colspan="13">
                 <div class="row small-gutter">
                   <div class="col-4 col-xxl-3">
                     <!-- <div class="form-group" [ngClass]="{'has-error' : transaction.submitted && !transaction.episodeNo}"> -->
@@ -148,8 +157,8 @@
                     </div>
                   </div>
                 </div>
-                <table class="primary-grid mb-3 sticky-header claim-view-table" cellpadding="0" cellspacing="0" border="0"
-                  *ngIf="transaction && transaction.items && transaction.items.length > 0">
+                <table class="primary-grid mb-3 sticky-header claim-view-table" cellpadding="0" cellspacing="0"
+                  border="0" *ngIf="transaction && transaction.items && transaction.items.length > 0">
                   <thead>
                     <tr>
                       <th>Sequence No.</th>
@@ -158,9 +167,11 @@
                       <th>Code - Description</th>
                       <th>Patient Share <span class="asterisk">*</span></th>
                       <th>Payer Share <span class="asterisk">*</span></th>
-                      <th>Net / Tax</th>
-                      <th>Benefit / Tax</th>
-                      <th>Discount</th>
+                      <th>Net</th>
+                      <th>Tax <mat-icon class="material-icons-outlined" matTooltip="Payer Share Tax only">info</mat-icon></th>
+                      <th>Payer Share with Tax</th>
+                      <th>Benefit</th>
+                      <th>Discount <span class="asterisk">*</span></th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -173,71 +184,79 @@
                           [ngClass]="{'has-error' : transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo}">
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
-                              <input type="text" class="form-control" placeholder="Enter invoice no." [(ngModel)]="item.invoiceNo"
+                              <input type="text" class="form-control" placeholder="Enter invoice no."
+                                [(ngModel)]="item.invoiceNo"
                                 [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
                             </span>
-                            <mat-icon *ngIf="item.status === 'rejected'" class="material-icons-outlined size-20" matTooltip="Invoice No. is not needed for a Rejected item">info
+                            <mat-icon *ngIf="item.status === 'rejected'" class="material-icons-outlined size-20"
+                              matTooltip="Invoice No. is not needed for a Rejected item">info
                             </mat-icon>
                           </span>
 
-                          <div *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
+                          <div
+                            *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.invoiceNo">
                             <span class="error-text">InvoiceNo required</span>
                           </div>
                         </div>
                       </td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
-                    <td>
-                      <div class="form-group mb-n1 mt-n1"
-                        [ngClass]="{'has-error' : transaction.submitted && (item.patientShare === undefined || item.patientShare === null)}">
-                        <span class="d-flex align-items-center">
-                          <span class="pr-1">
-                            <input type="text" class="form-control" placeholder="Enter Patient Share" [(ngModel)]="item.patientShare"
-                               />
-                          </span>
-                        </span>
-                        <div
-                          *ngIf="transaction.submitted && (item.patientShare === undefined || item.patientShare === null)">
-                          <span class="error-text">Patient Share required</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-group mb-n1 mt-n1"
-                        [ngClass]="{'has-error' : transaction.submitted && (item.payerShare === undefined || item.payerShare === null)}">
-                        <span class="d-flex align-items-center">
-                          <span class="pr-1">
-                            <input type="text" class="form-control" placeholder="Enter Payer Share" [(ngModel)]="item.payerShare"
-                               />
-                          </span>
-                        </span>
-                        <div
-                          *ngIf="transaction.submitted && (item.payerShare === undefined || item.payerShare === null)">
-                          <span class="error-text">Payer Share required</span>
-                        </div>
-                      </div>
-                    </td>
-                      <td>{{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
-                      <td>{{item.approvedNet}} <span class="currency">SR</span> / {{item.benefitTax}} <span class="currency">SR</span></td>
                       <td>
                         <div class="form-group mb-n1 mt-n1"
-                          [ngClass]="{'has-error' : transaction.submitted && !item.discount}">
+                          [ngClass]="{'has-error' : transaction.submitted && (item.patientShare === undefined || item.patientShare === null || item.patientShare === '')}">
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
-                              <input type="text" class="form-control" placeholder="Enter Discount" [(ngModel)]="item.discount" (blur)="calculateShares(i, j)"
-                                 />
+                              <input type="text" class="form-control" placeholder="Enter Patient Share"
+                                [(ngModel)]="item.patientShare" [disabled]="item.status === 'rejected'"/>
                             </span>
                           </span>
                           <div
-                            *ngIf="transaction.submitted && !item.discount">
-                            <span class="error-text">Discount required</span>
+                            *ngIf="transaction.submitted && (item.patientShare === undefined || item.patientShare === '' )">
+                            <span class="error-text">Patient Share required</span>
                           </div>
                         </div>
                       </td>
-                      <td><span [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status | titlecase}}</span></td>
+                      <td>
+                        <div class="form-group mb-n1 mt-n1"
+                          [ngClass]="{'has-error' : transaction.submitted && (item.payerShare === undefined || item.payerShare === null)}">
+                          <span class="d-flex align-items-center">
+                            <span class="pr-1">
+                              <input type="text" class="form-control" placeholder="Enter Payer Share"
+                                [(ngModel)]="item.payerShare" [disabled]="item.status === 'rejected'"/>
+                            </span>
+                          </span>
+                          <div
+                            *ngIf="transaction.submitted && (item.payerShare === undefined || item.payerShare === null)">
+                            <span class="error-text">Payer Share required</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{{item.net}} <span class="currency">SR</span></td>
+                      <td>{{item.tax}} <span class="currency">SR</span></td>
+                      <td>{{item.payerShareWithVat}} <span class="currency">SR</span></td>    
+                      <td>{{item.approvedNet}} <span class="currency">SR</span></td>    
+                      <td>
+                        <div class="form-group mb-n1 mt-n1"
+                          [ngClass]="{'has-error' : transaction.submitted && (item.discount === undefined || item.discount === null || item.discount === '')}">
+                          <span class="d-flex align-items-center">
+                            <span class="pr-1">
+                              <input type="text" class="form-control" placeholder="Enter Discount"  [disabled]="item.status === 'rejected'"
+                                [(ngModel)]="item.discount" (blur)="calculateShares(i, j)" />
+                            </span>
+                          </span>
+                          <div
+                            *ngIf="transaction.submitted && (item.discount === undefined || item.discount === null || item.discount === '') ">
+                            <span class="error-text">Discount is required</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span
+                          [ngClass]="item.status === 'approved' ? 'text-success' : (item.status === 'not-required' ? 'text-purple' : (item.status === 'partial' ? 'text-light-blue' : (item.status === 'rejected' ? 'text-danger' : '')))">{{item.status
+                          | titlecase}}</span></td>
                     </tr>
                   </tbody>
                 </table>
-                <div class="text-right"><button type="button" mat-flat-button color="primary" (click)="prepareToClaim(transaction)">Save</button></div>
+                <div class="text-right"><button type="button" mat-flat-button color="primary"
+                    (click)="prepareToClaim(transaction)">Save</button></div>
               </td>
             </tr>
           </ng-container>
@@ -248,7 +267,8 @@
 
   <app-empty-state *ngIf="isSubmitted && transactionModel && transactions.length === 0" message='No approvals found!'>
   </app-empty-state>
-  <app-empty-state *ngIf="!isSubmitted && transactions && transactions.length === 0" message='Please search to filter approvals'>
+  <app-empty-state *ngIf="!isSubmitted && transactions && transactions.length === 0"
+    message='Please search to filter approvals'>
   </app-empty-state>
 
 
@@ -263,7 +283,8 @@
       </mat-form-field>
     </div>
     <div class="material-paginator">
-      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+        (page)="paginatorAction($event)">
       </mat-paginator>
     </div>
   </div>

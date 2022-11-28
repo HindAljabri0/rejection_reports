@@ -50,6 +50,9 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
 
         this.initiateModel = model;
         this.sharedServices.loadingChanged.next(false);
+      }, error => {
+        this.sharedServices.loadingChanged.next(false);
+        this.dialogService.openMessageDialog(new MessageDialogData("GSS Query Fail", error.error.message, true));
       });
     } else {
       this.initiateGssReport(this.lossMonth);
@@ -62,6 +65,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
       if (!initiateModel) {
         this.dialogService.openMessageDialog(new MessageDialogData("GSS Initiation Fail", "Could not initiate GSS report, kindly try to regenerate GSS report again later", true)).subscribe(afterClose => {
           this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+
         });
       } else {
         this.initiateModel = initiateModel
