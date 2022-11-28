@@ -168,6 +168,12 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  openVatInfoDialog() {
+    const dialogRef = this.dialog.open(VatInfoDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-lg']
+    })
+  }
+
   private confirm(vatForm) {
     console.log('vatForm', vatForm);
 
