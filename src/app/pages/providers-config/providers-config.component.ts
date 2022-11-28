@@ -7,7 +7,8 @@ import {
   SFDA_RESTRICTION_KEY,
   PBM_RESTRICTION_KEY,
   NPHIES_PBM_RESTRICTION_KEY,
-  NET_AMOUNT_RESTRICTION_KEY
+  NET_AMOUNT_RESTRICTION_KEY,
+  PROVIDER_TYPE_CONFIGURATION_KEY
 } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -62,6 +63,8 @@ export class ProvidersConfigComponent implements OnInit {
     netAmountConfigurationSaveError?: string,
     pollTypeConfigurationError?: string,
     pollTypeConfigurationSaveError?: string,
+    providerTypeConfigurationSaveError?:string
+    providerTypeConfigurationError?:string
   } = {};
   success: {
     serviceCodeSaveSuccess?: string,
@@ -74,8 +77,9 @@ export class ProvidersConfigComponent implements OnInit {
     providerMappingSaveSuccess?: string,
     pbmConfigurationSaveSuccess?: string,
     nphiesPbmConfigurationSaveSuccess?: string,
-    netAmountConfigurationSaveSuccess?: string
-    pollTypeConfigurationSaveSuccess?: string
+    netAmountConfigurationSaveSuccess?: string,
+    pollTypeConfigurationSaveSuccess?: string,
+    providerTypeConfigurationSaveSuccess?: string,
 
   } = {};
   componentLoading = {
@@ -90,7 +94,8 @@ export class ProvidersConfigComponent implements OnInit {
     NphiesPayerMapping: true,
     providerMapping: true,
     netAmount: true,
-    pollType: true
+    pollType: true,
+    providerType: true
   };
 
   selectedProvider: string;
@@ -103,12 +108,14 @@ export class ProvidersConfigComponent implements OnInit {
   sfdaValidationSettings: any[] = [];
   pbmValidationSettings: any[] = [];
   nphiesPbmValidationSettings: any[] = [];
+  providerTypeValidationSettings: any[] = [];
   newServiceValidationSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
   newSFDAValidationSettings: { [key: string]: boolean } = {};
   newPBMValidationSettings: { [key: string]: boolean } = {};
   newNphiesPBMValidationSettings: { [key: string]: boolean } = {};
+  newProvideTypeValidationSettings: { [key: string]: boolean } = {};
 
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
@@ -147,6 +154,7 @@ export class ProvidersConfigComponent implements OnInit {
   pollTypePeriod: number;
   pollTypePeriodUnitController: FormControl = new FormControl('');
   pollTypePeriodUnit: string;
+  
 
   isBothSame = true;
   dbConfigs = [];
@@ -164,6 +172,10 @@ export class ProvidersConfigComponent implements OnInit {
       displayAlt: string
     }[]
   }[] = [];
+
+  providerTypeConfig = new FormGroup({
+    providerTypeController: new FormControl()
+  });
 
   constructor(
     public datepipe: DatePipe,
@@ -393,6 +405,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings, false);
     this.getSetting(PBM_RESTRICTION_KEY, this.pbmValidationSettings, this.newPBMValidationSettings, false);
     this.getSetting(NPHIES_PBM_RESTRICTION_KEY, this.nphiesPbmValidationSettings, this.newNphiesPBMValidationSettings, false);
+    this.getSetting(PROVIDER_TYPE_CONFIGURATION_KEY, this.providerTypeValidationSettings, this.newProvideTypeValidationSettings, false);
     this.getPortalUserSettings();
     // ####### Chages on 02-01-2021 start
     this.getDatabaseConfig();
@@ -408,6 +421,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getNetAmountAccuracy();
 
     this.getPollConfiguration();
+    this.getProviderTypeConfiguration();
   }
 
   save() {
@@ -422,7 +436,7 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.payerMapping ||
       this.componentLoading.NphiesPayerMapping ||
       this.componentLoading.providerMapping ||
-      this.componentLoading.pollType) {
+      this.componentLoading.pollType || this.componentLoading.providerType) {
       return;
     }
 
@@ -443,10 +457,12 @@ export class ProvidersConfigComponent implements OnInit {
     const priceListFlag = this.updatePriceListValidationSetting();
     const netAmountFlag = this.setNetAmountAccuracy();
     const pollConfigFlag = this.savePollConfiguration();
+    const providerTypeFlag = this.saveProviderTypeConfiguration();
+
     // change on 02-01-2021 end
     // && priceUnitFlag && serviceCodeFlag
     if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && nphiesPbmFlag && priceListFlag && netAmountFlag && pollConfigFlag) {
+      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && nphiesPbmFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -596,6 +612,13 @@ export class ProvidersConfigComponent implements OnInit {
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
         break;
+      case PROVIDER_TYPE_CONFIGURATION_KEY:
+        this.providerTypeValidationSettings.push({
+          providerId: this.selectedProvider,
+          payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
     }
   }
 
@@ -618,6 +641,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case NPHIES_PBM_RESTRICTION_KEY:
         this.nphiesPbmValidationSettings[index].value = value;
+        break;
+      case PROVIDER_TYPE_CONFIGURATION_KEY:
+        this.providerTypeValidationSettings[index],value = value;
         break;
     }
   }
@@ -669,6 +695,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.resetSection(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings);
     this.resetSection(PBM_RESTRICTION_KEY, this.newPBMValidationSettings);
     this.resetSection(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings);
+    this.resetSection(PROVIDER_TYPE_CONFIGURATION_KEY, this.newProvideTypeValidationSettings);
     this.resetDbAndMapping();
     this.resetUserMessages();
   }
@@ -702,7 +729,7 @@ export class ProvidersConfigComponent implements OnInit {
           setTimeout(() => this.componentLoading.nphiesPbmConfiguration = false, 100);
           this.newNphiesPBMValidationSettings = {};
           break;
-      }
+        }
     }
 
   }
@@ -778,6 +805,8 @@ export class ProvidersConfigComponent implements OnInit {
       case NET_AMOUNT_RESTRICTION_KEY:
         this.errors.netAmountConfigurationError = message;
         break;
+      case PROVIDER_TYPE_CONFIGURATION_KEY:
+        this.errors.providerTypeConfigurationError = message;
     }
   }
 
@@ -823,6 +852,9 @@ export class ProvidersConfigComponent implements OnInit {
       case NET_AMOUNT_RESTRICTION_KEY:
         this.errors.netAmountConfigurationSaveError = value;
         break;
+      case PROVIDER_TYPE_CONFIGURATION_KEY:
+        this.errors.providerTypeConfigurationSaveError = value;
+        break;
     }
 
   }
@@ -848,6 +880,8 @@ export class ProvidersConfigComponent implements OnInit {
       case NET_AMOUNT_RESTRICTION_KEY:
         this.success.netAmountConfigurationSaveSuccess = value;
         break;
+      case PROVIDER_TYPE_CONFIGURATION_KEY:
+        this.success.providerTypeConfigurationSaveSuccess = value;
     }
   }
 
@@ -1719,4 +1753,70 @@ export class ProvidersConfigComponent implements OnInit {
   // get isNphiesMidTables() {
   //     return this.addDbConfigForm.value.midTablesType != null && this.addDbConfigForm.value.midTablesType == 'NPHIES_MID_TABLES';
   // }
+  getProviderTypeConfiguration() {
+    this.componentLoading.providerType = true;
+    this.errors.providerTypeConfigurationError = null;
+    this.errors.providerTypeConfigurationSaveError = null;
+    this.success.providerTypeConfigurationSaveSuccess = null;
+    this.dbMapping.getProviderTypeConfiguration(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data:any = event.body;
+        if (data.details != null) {
+          this.providerTypeConfig.patchValue({
+            providerTypeController : data.details.claimType ? data.details.claimType : null
+          })
+        } else {
+          this.providerTypeConfig.patchValue({
+            providerTypeController :  null
+          })
+        }
+      }
+      this.componentLoading.providerType = false;
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 404) {
+          this.providerTypeConfig.patchValue({
+            providerTypeController :  null
+          })
+        }
+        if (error.status != 404) {
+          this.errors.providerTypeConfigurationError = 'Could not load provider settings, please try again later.';
+        }
+      }
+      this.componentLoading.providerType = false;
+    });
+  }
+
+  saveProviderTypeConfiguration() {
+    this.errors.providerTypeConfigurationError = null
+    this.errors.providerTypeConfigurationSaveError = null;
+    this.success.providerTypeConfigurationSaveSuccess = null;
+    if (this.providerTypeConfig.controls.providerTypeController.value !== null) {
+      const body = {
+        claimType: this.providerTypeConfig.controls.providerTypeController.value ? this.providerTypeConfig.controls.providerTypeController.value : null,
+        providerId: this.selectedProvider
+      };
+      this.componentLoading.providerType = true;
+      this.dbMapping.saveProviderTypeConfiguration(body, this.selectedProvider).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const data = event.body;
+          if (data != null) {
+            this.success.providerTypeConfigurationSaveSuccess = 'Settings were saved successfully.';
+          } else {
+            this.errors.providerTypeConfigurationSaveError = 'Could not save provider type !';
+          }
+          this.componentLoading.providerType = false;
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status != 404) {
+            this.errors.providerTypeConfigurationSaveError = 'Could not save provider type, please try again later.';
+          }
+        }
+        this.componentLoading.providerType = false;
+      });
+      return false;
+    }
+    return true;
+  }
 }

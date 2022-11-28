@@ -2,6 +2,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { GSSConfirmationRequest } from '../models/confirmation-request.model';
 import { InitiateResponse } from '../models/InitiateResponse.model';
 
 @Injectable({
@@ -35,9 +36,9 @@ export class TawuniyaGssService {
     return this.initiatedResponse;
   }
 
-  gssConfirmReport(gssReferenceNumber: string) {
+  gssConfirmReport(confirmationRequest: FormData) {
     const requestUrl = "/gss/confirm/" + localStorage.getItem('provider_id');
-    return this.http.post<any>(environment.tawuniyaGssReport + requestUrl, { "providerId": localStorage.getItem('provider_id'), "gssReferenceNumber": gssReferenceNumber, "userName": localStorage.getItem('auth_username') });
+    return this.http.post<any>(environment.tawuniyaGssReport + requestUrl, confirmationRequest);
   }
 
   gssQueryDetails(gssReferenceNumber: string) {
@@ -54,5 +55,20 @@ export class TawuniyaGssService {
     const requestUrl = '/gss/download/' + localStorage.getItem('provider_id');
     const request = new HttpRequest('POST', environment.tawuniyaGssReport + requestUrl, data, { responseType: 'text', reportProgress: true });
     return this.http.request(request);
+  }
+
+  getVatRate(lossMonth: string){
+    const requestUrl = '/gss/vat-rate';
+    return this.http.get<{vatRate: number}>(environment.tawuniyaGssReport + requestUrl, {params: {"loss-month": lossMonth}});
+  }
+
+  getVatInfoByProviderId(){
+    const requestUrl = '/gss/vat-info';
+    return this.http.get<any>(environment.tawuniyaGssReport + requestUrl, {params: {"provider-id": localStorage.getItem('provider_id')}});
+  }
+
+  getVatInfoByGssRefNo(gssRefNo: string){
+    const requestUrl = '/gss/vat-info';
+    return this.http.get<any>(environment.tawuniyaGssReport + requestUrl, {params: {"gss-ref-no": gssRefNo}});
   }
 }

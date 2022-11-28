@@ -301,6 +301,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
           this.totalBenefitOfAllClaims = event.body.totalBenefitOfAllClaims
           this.totlaTaxAmountOfAllClaims = event.body.totlaTaxAmountOfAllClaims
           this.totlaNumberOfClaims = body.totalElements
+
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, ApprovalToClaimTransaction);
           this.transactions = this.transactionModel.content;

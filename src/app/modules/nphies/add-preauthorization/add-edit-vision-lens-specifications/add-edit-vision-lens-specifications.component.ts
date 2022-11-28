@@ -14,7 +14,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
 
   FormVisionSpecification: FormGroup = this.formBuilder.group({
     product: ['', Validators.required],
-    eye: [''],
+    eye: ['right'],
     lensColor: [''],
     lensBrand: [''],
     sphere: [''],
