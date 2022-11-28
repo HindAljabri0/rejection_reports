@@ -8,8 +8,7 @@
         <div class="right-block">
             <p *ngIf="data.transactionId" class="title">Transaction Id: {{data.transactionId}}</p>
             <p class="title" [innerHtml]="data.mainMessage"></p>
-            <span class="subtitle" *ngIf="data.subMessage && data.mode!='info_summary_conversion'"
-                [innerHtml]="data.subMessage"></span>
+            <span class="subtitle" *ngIf="data.subMessage && data.mode!='info_summary_conversion'" [innerHtml]="data.subMessage"></span>
             <ng-container
                 *ngIf="data.errors && data.errors.length > 0 && (data.errors[0]=='TYPE-CLAIM-CONVERT-SUCCESS'|| data.errors[0]=='SUMMARY_OF_CONVERSION'); else generalError">
                 <div class="convert-preauth-upload-details">
@@ -28,26 +27,12 @@
                         </div>
                     </div>
                     <div *ngIf="data.errors[0]=='SUMMARY_OF_CONVERSION'">
-
-
-
-                        <p class="name">Total Net: {{ 
-                            data.errors[1].totalNet?data.errors[1].totalNet.toFixed(2):0}}</p>
-                        <p class="name">Total Tax: {{data.errors[1].totalTax?
-                            data.errors[1].totalTax.toFixed(2):0}}</p>
-                        <p class="name">Total Benefit: {{data.errors[1].totalBenefit?
-                            data.errors[1].totalBenefit.toFixed(2):0}}</p>
-                        <div class="count">
-                            <span>
-                                <span>Total No. of Claims: {{data.errors[1].totalofClaims}}</span>
-                            </span>
-                            <span>
-                                <span>Period : {{data.errors[1].startPeriod +" - "+ data.errors[1].endPeriod}} </span>
-                            </span>
-                        </div>
-
+                        <p class="name d-flex">Total Net: <span class="semibold ml-auto">{{data.errors[1].totalNet?data.errors[1].totalNet.toFixed(2):0}}</span></p>
+                        <p class="name d-flex">Total Tax: <span class="semibold ml-auto">{{data.errors[1].totalTax? data.errors[1].totalTax.toFixed(2):0}}</span></p>
+                        <p class="name d-flex">Total Benefit: <span class="semibold ml-auto">{{data.errors[1].totalBenefit? data.errors[1].totalBenefit.toFixed(2):0}}</span></p>
+                        <p class="name d-flex">Total No. of Claims: <span class="semibold ml-auto">{{data.errors[1].totalofClaims}}</span></p>
+                        <p class="name d-flex">Period : <span class="semibold ml-auto">{{data.errors[1].startPeriod +" - "+ data.errors[1].endPeriod}} </span></p>
                     </div>
-
                 </div>
             </ng-container>
             <ng-template #generalError>
