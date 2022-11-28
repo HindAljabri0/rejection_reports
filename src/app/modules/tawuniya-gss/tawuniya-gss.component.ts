@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DownloadStatus } from 'src/app/models/downloadRequest';

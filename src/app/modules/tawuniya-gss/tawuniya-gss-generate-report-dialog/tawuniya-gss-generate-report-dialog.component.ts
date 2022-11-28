@@ -32,6 +32,21 @@ export class TawuniyaGssGenerateReportDialogComponent implements OnInit {
     this.maxDate = new Date(this.maxDate.getFullYear(), this.maxDate.getMonth(), 0);
   }
 
+  // getMinDate(): Date {
+  //   // const current = new Date();
+  //   // current.setd
+  //   var current = new Date();
+  //   current.setMonth(current.getMonth() - 1);
+  //   var firstDay = new Date(current.getFullYear(), current.getMonth() - 1, 1);
+
+  // }
+
+  // getMaxDate(): Date {
+  //   var date = new Date();
+  //   var lastDateOfCurrentMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  //   return lastDateOfCurrentMonth;
+  // }
+
   closeDialog() {
     this.dialogRef.close();
   }
