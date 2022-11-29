@@ -32,6 +32,8 @@ import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attach
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -239,6 +241,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   selectedTab = 0;
   claimType: string;
   isPBMValidationVisible = false;
+  providerType = '';
+  submittionErrors: Map<string, string>;
   //IsResubmitMode = false;
   constructor(
 
@@ -255,6 +259,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private nphiesClaimUploaderService: NphiesClaimUploaderService,
     private adminService: AdminService,
+    private dbMapping: DbMappingService
     // @Inject(MAT_DIALOG_DATA) private data
   ) {
     this.today = new Date();
@@ -328,6 +333,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') ? 9 : 8;
     }
     this.getPBMValidation();
+    this.getProviderTypeConfiguration()
 
   }
 
@@ -900,7 +906,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       payerNphiesId: this.FormNphiesClaim.controls.insurancePayerNphiesId.value,
       IsNewBorn: this.FormNphiesClaim.controls.isNewBorn.value,
       beneficiaryDob: this.FormNphiesClaim.controls.dob.value,
-      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value
+      tpaNphiesId: this.FormNphiesClaim.controls.insurancePlanTpaNphiesId.value,
+      providerType: this.providerType
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1421,8 +1428,13 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
+      if(this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE'){
+        const providerTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.providerType)[0].name;
+        const claimTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.FormNphiesClaim.controls.type.value.value)[0].name;
+        this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+        return;
+      } 
     this.isSubmitted = true;
-
     let hasError = false;
 
     if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
@@ -1883,11 +1895,14 @@ export class CreateClaimNphiesComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.isError) {
-
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
               if (this.pageMode === 'CREATE') {
+                if(body.claimId && body.uploadId){
                 // tslint:disable-next-line:max-line-length
-                this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                }
+                this.reset();
+                this.getProviderTypeConfiguration();
               }
             } else {
               if (this.pageMode === 'CREATE') {
@@ -1945,6 +1960,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.model = {};
     this.detailsModel = {};
     this.FormNphiesClaim.reset();
+    this.FormNphiesClaim.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+    this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     this.FormNphiesClaim.patchValue({
       insurancePlanId: '',
       type: '',
@@ -3258,6 +3275,96 @@ export class CreateClaimNphiesComponent implements OnInit {
     let newDate = new Date(date);
     newDate.setSeconds(0, 0);
     return new Date(newDate);
+  }
+
+  getProviderTypeConfiguration() {
+    this.sharedServices.loadingChanged.next(true);
+    this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data:any = event.body;
+        if (data && data.details) {
+          this.providerType = data.details.claimType;
+            if(data.details.claimType === "vision"){
+              if(this.pageMode === 'CREATE'){
+                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'vision')[0]);
+                this.claimType = "vision";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
+                this.FormNphiesClaim.controls.type.disable();
+                this.FormNphiesClaim.controls.subType.disable();
+              }
+            } else if(data.details.claimType === "oral"){
+              if(this.pageMode === 'CREATE'){
+                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'oral')[0]);
+                this.claimType = "oral";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
+                this.FormNphiesClaim.controls.type.disable();
+                this.FormNphiesClaim.controls.subType.disable();
+              } 
+            }else if(data.details.claimType === "pharmacy"){
+              if(this.pageMode === 'CREATE'){
+                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'pharmacy')[0]);
+                this.claimType = "pharmacy";
+                this.subTypeList = [
+                  { value: 'op', name: 'OutPatient' },
+                ];
+                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
+                this.FormNphiesClaim.controls.type.disable();
+                this.FormNphiesClaim.controls.subType.disable();
+              } 
+            }
+        } 
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 404) {
+        }
+        if (error.status != 404) {
+        }
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
+  }
+
+  createRelatedClaim(){
+    this.sharedService.loadingChanged.next(true);
+    this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString()).subscribe((event) => {
+      if (event instanceof HttpResponse) {
+        if (event.status == 200) {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', event.body['message'], false)
+          ).subscribe(result => {
+            this.close();
+          });
+        }
+        this.sharedService.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      this.sharedService.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if(errorEvent.status == 400 || errorEvent.status == 500){
+          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
+        }
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
+        }
+      }
+    });
   }
 
 }

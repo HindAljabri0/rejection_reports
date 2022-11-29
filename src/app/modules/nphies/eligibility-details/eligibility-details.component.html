@@ -3,8 +3,7 @@
     <div class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Site Eligibility</div>
-        <p class="form-control-static"
-          [ngClass]="eligibilityResponse.siteEligibility === 'eligible' ? 'text-success' : (eligibilityResponse.siteEligibility ? 'text-danger' : '')">
+        <p class="form-control-static" [ngClass]="eligibilityResponse.siteEligibility === 'eligible' ? 'text-success' : (eligibilityResponse.siteEligibility ? 'text-danger' : '')">
           {{eligibilityResponse.siteEligibilityName | titlecase}}</p>
       </div>
     </div>
@@ -170,7 +169,8 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subscriberMemberId}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.network}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subrogation}}</td>
-              <td class="row-click" (click)="toggleRow(i)" [ngClass]="coverage.siteEligibility === 'eligible' ? 'text-success' : (coverage.siteEligibility ? 'text-danger' : '')">{{coverage.siteEligibility | titlecase}}</td>
+              <td class="row-click" (click)="toggleRow(i)" [ngClass]="coverage.siteEligibility === 'eligible' ? 'text-success' : (coverage.siteEligibility ? 'text-danger' : '')">
+                {{coverage.siteEligibility | titlecase}}</td>
             </tr>
             <tr *ngIf="currentOpenCoverage==i || isPrint">
               <td colspan="12">
@@ -228,38 +228,46 @@
                 <div class="box" *ngIf="coverage != null && coverage.items != null">
                   <h5 class="medium">Items</h5>
                   <hr class="hr mt-2 mb-3" />
-                  <ng-container *ngFor="let items of coverage.items | keyvalue">
-                    <p class="pb-3">Benefit Category: <span class="medium">{{items.key}}</span></p>
-                    <div class="table-responsive mb-4">
-                      <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                          <tr>
-                            <td>Item Name</td>
-                            <td>Description</td>
-                            <td>Network</td>
-                            <td>Unit</td>
-                            <td>Term</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <ng-container *ngFor="let item of items.value">
+                  <mat-accordion displayMode="flat" class="primary-accordion" hideToggle="true">
+                    <mat-expansion-panel *ngFor="let items of coverage.items | keyvalue">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <span class="medium">{{items.key}}</span>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="table-responsive">
+                        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                          <thead>
                             <tr>
-                              <td>{{item.name}}</td>
-                              <td>{{item.description}}</td>
-                              <td>{{item.network}}</td>
-                              <td>{{item.unit}}</td>
-                              <td>{{item.term}}</td>
+                              <td>Item Name</td>
+                              <td>Description</td>
+                              <td>Network</td>
+                              <td>Unit</td>
+                              <td>Term</td>
                             </tr>
-                            <tr *ngFor="let benefit of item.benefits" class="item-benefit">
-                              <td colspan="4" [matTooltip]="benefit.typeDisplay">
-                                {{benefit.type}}</td>
-                              <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
-                            </tr>
-                          </ng-container>
-                        </tbody>
-                      </table>
-                    </div>
-                  </ng-container>
+                          </thead>
+                          <tbody>
+                            <ng-container *ngFor="let item of items.value">
+                              <tr>
+                                <td>{{item.name}}</td>
+                                <td>{{item.description}}</td>
+                                <td>{{item.network}}</td>
+                                <td>{{item.unit}}</td>
+                                <td>{{item.term}}</td>
+                              </tr>
+                              <tr *ngFor="let benefit of item.benefits" class="item-benefit">
+                                <td colspan="4" [matTooltip]="benefit.typeDisplay">
+                                  {{benefit.type}}</td>
+                                <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
                 </div>
               </td>
             </tr>

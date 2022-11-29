@@ -114,6 +114,11 @@
                 <span class="text-grey">Generate attachment for claims without attachments</span>
               </span>
             </button>
+            <button mat-menu-item (click)="generateAttachmentAll('FaultyAttachment')">
+              <span class="title">Faulty  -
+                <span class="text-grey">Regenerate Faulty attachments</span>
+              </span>
+            </button>
           </mat-menu>
         </div>
       </div>
@@ -271,6 +276,11 @@
                           <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
+                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId)" *ngIf="claim.status === 'partial'">
+                              <mat-icon class="material-icons-outlined">edit</mat-icon>
+                              <span>Create Related Claim</span>
+                            </button> 
+
                             <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
                               <mat-icon class="material-icons-outlined">close</mat-icon>
                               <span>Cancel</span>
@@ -378,6 +388,10 @@
                     || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0) && (isPBMValidationVisible)">
           <button (click)="applyPBMValidation()" mat-flat-button color="primary">PBM Validate {{selectedClaims.length==0?"
             All":"Selection ("+this.selectedClaims.length+")"}}</button>
+        </ng-container>
+        <ng-container
+          *ngIf="showMoveToReadyState === true && selectedCardKey != 0">
+          <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>
         </ng-container>
       </div>
     </div>

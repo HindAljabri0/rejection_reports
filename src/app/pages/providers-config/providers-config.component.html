@@ -18,6 +18,54 @@
   </div>
 
   <mat-accordion *ngIf="selectedProvider != null && selectedProvider != ''" hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Provider Type Configuration
+          <mat-menu #providerTypeConfiguration xPosition="before">
+            <ng-template matMenuContent>
+              <div class="pt-7 pb-7 pr-14 pl-14">
+                <ng-container *ngIf="errors.providerTypeConfigurationSaveError != null">
+                  {{errors.providerTypeConfigurationSaveError}}</ng-container>
+                <ng-container *ngIf="success.providerTypeConfigurationSaveSuccess != null">
+                  {{success.providerTypeConfigurationSaveSuccess}}</ng-container>
+              </div>
+            </ng-template>
+          </mat-menu>
+          <button type="button" *ngIf="errors.providerTypeConfigurationSaveError != null" class="text-danger"
+            (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="providerTypeConfiguration">
+            <mat-icon>error</mat-icon>
+          </button>
+          <button type="button" *ngIf="success.providerTypeConfigurationSaveSuccess != null" class="text-success"
+            (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="providerTypeConfiguration">
+            <mat-icon>check_circle</mat-icon>
+          </button>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container
+        *ngIf="(errors.providerTypeConfigurationError == null || errors.providerTypeConfigurationError == '') && !componentLoading.providerType">
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-12">
+              <div class="form-group">
+                <form [formGroup]="providerTypeConfig">
+                  <label class="control-label pb-0 text-grey">Select Provider Type</label>
+                  <mat-radio-group class="radio-group inline" formControlName="providerTypeController">
+                    <mat-radio-button color="primary" value="pharmacy">Pharmacy</mat-radio-button>
+                    <mat-radio-button color="primary" value="vision">Optical</mat-radio-button>
+                    <mat-radio-button color="primary" value="oral">Dental</mat-radio-button>
+                    <mat-radio-button color="primary" value="any">Any</mat-radio-button>
+                  </mat-radio-group>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div *ngIf="componentLoading.providerType" class="inline-loader">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+    </mat-expansion-panel>
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -710,6 +758,7 @@
       </div>
     </mat-expansion-panel>
 
+    
 
   </mat-accordion>
 </app-detailscard>
