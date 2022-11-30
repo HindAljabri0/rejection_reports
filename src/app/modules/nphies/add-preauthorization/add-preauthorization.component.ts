@@ -368,7 +368,7 @@ export class AddPreauthorizationComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] : null;
+          this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType && x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType && x.documentId === res.beneficiary.documentId)[0] : null;
           this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
@@ -906,7 +906,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   openAddEditDiagnosis(diagnosis: any = null) {
-    
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -995,7 +995,7 @@ export class AddPreauthorizationComponent implements OnInit {
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
       beneficiaryDob: this.selectedBeneficiary.dob,
       tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
-      providerType : this.providerType
+      providerType: this.providerType
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1577,17 +1577,19 @@ export class AddPreauthorizationComponent implements OnInit {
       return true;
     }
   }
-  
+
   onSubmit() {
-      if(this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType){
-        const providerTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.providerType)[0].name;
-        const claimTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.FormPreAuthorization.controls.type.value.value)[0].name;
-        this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
-        return;
-      }
+    this.providerType = this.providerType == null || this.providerType == ""  ? 'any' : this.providerType;
+      if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
+      const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
+      const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
+      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+      this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+      return;
+    }
     this.isSubmitted = true;
-    
-     let hasError = false;
+
+    let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
@@ -2088,7 +2090,7 @@ export class AddPreauthorizationComponent implements OnInit {
           }
         }
       });
-    }   
+    }
   }
 
   getTransactionDetails(requestId = null, responseId = null) {
@@ -2238,7 +2240,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
-    console.log(nameTPA.display)
+    
     if (nameTPA.display != 'None') {
       return nameTPA.display;
     }
@@ -2269,44 +2271,44 @@ export class AddPreauthorizationComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
       if (event instanceof HttpResponse) {
-        const data:any = event.body;
+        const data: any = event.body;
         if (data && data.details) {
           this.providerType = data.details.claimType;
-            if(data.details.claimType === "vision"){
-              if (!this.claimReuseId) {
-                this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
-                this.claimType = "vision";
-                this.subTypeList = [
-                  { value: 'op', name: 'OutPatient' },
-                ];
-                this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
-                this.FormPreAuthorization.controls.type.disable();
-                this.FormPreAuthorization.controls.subType.disable();
-              }
-            } else if(data.details.claimType === "oral"){
-              if (!this.claimReuseId) {
-                this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
-                this.claimType = "oral";
-                this.subTypeList = [
-                  { value: 'op', name: 'OutPatient' },
-                ];
-                this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
-                this.FormPreAuthorization.controls.type.disable();
-                this.FormPreAuthorization.controls.subType.disable();
-              }
-            } else if(data.details.claimType === "pharmacy"){
-              if (!this.claimReuseId) {
-                this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
-                this.claimType = "pharmacy";
-                this.subTypeList = [
-                  { value: 'op', name: 'OutPatient' },
-                ];
-                this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
-                this.FormPreAuthorization.controls.type.disable();
-                this.FormPreAuthorization.controls.subType.disable();
-              }
+          if (data.details.claimType === "vision") {
+            if (!this.claimReuseId) {
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
+              this.claimType = "vision";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
             }
-        } 
+          } else if (data.details.claimType === "oral") {
+            if (!this.claimReuseId) {
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
+              this.claimType = "oral";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
+            }
+          } else if (data.details.claimType === "pharmacy") {
+            if (!this.claimReuseId) {
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
+              this.claimType = "pharmacy";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
+            }
+          }
+        }
         this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
