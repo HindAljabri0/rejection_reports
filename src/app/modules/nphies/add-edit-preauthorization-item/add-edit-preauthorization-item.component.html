@@ -85,7 +85,7 @@
       </div>
 
 
-      <div class="col-4 col-lg-3" *ngIf="this.data.type !== 'oral'">
+      <div class="col-4 col-lg-3" *ngIf="data.type !== 'oral'" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
@@ -96,7 +96,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-4 col-lg-3" *ngIf="this.data.type === 'oral'">
+      <div class="col-4 col-lg-3" *ngIf="data.type === 'oral'" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <div class="input-group">
@@ -108,7 +108,7 @@
         </div>
       </div>
 
-      <div class="col-4 col-lg-3">
+      <div class="col-4 col-lg-3" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
         <div class="form-group">
           <label class="control-label">Sub Site</label>
           <mat-form-field class="form-control custom-select-control">
@@ -120,7 +120,7 @@
         </div>
       </div>
 
-      <div class="col-4 col-lg-3">
+      <div class="col-4 col-lg-3" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
         <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && (FormItem.get('startDate').hasError('owlDateTimeMax'))}">
         <!-- <div class="form-group"> -->
@@ -214,7 +214,6 @@
       <div class="col-4 col-lg-3">
         <div class="form-group">
           <label class="control-label">Diagnosis</label>
-
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="diagnosisSequence" multiple placeholder="Select Care Team">
               <mat-option>
@@ -392,7 +391,7 @@
               </div>
             </div>
           </div> -->
-          <div class="col-5">
+          <div class="col-5" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
             <div class="form-group">
               <label class="control-label">Discount Amount</label>
               <div class="input-group">
@@ -403,7 +402,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="data.source === 'APPROVAL'" class="col-7">
+          <div *ngIf="data.source === 'APPROVAL' && data.providerType !=='vision'" class="col-7">
             <div class="form-group">
               <label class="control-label">Patient Share (%)</label>
               <div class="input-group">
@@ -419,7 +418,7 @@
       </div>
       <div class="col-6 pl-4">
         <div class="row small-gutter">
-          <div class="col-3">
+          <div class="col-3" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
             <div class="form-group">
               <label class="control-label">
                 <span class="d-flex align-items-center">
@@ -469,7 +468,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-6" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
             <div class="form-group">
               <label class="control-label">
                 <span class="d-flex align-items-center">
@@ -485,7 +484,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-6" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
             <div class="form-group">
               <label class="control-label">Payer Share</label>
               <div class="input-group">
