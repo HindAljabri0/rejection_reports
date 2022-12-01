@@ -157,7 +157,7 @@ const _mainReducer = createReducer(
         RCM: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.0'),
           canAccessRevenueReport: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.1'),
-          canAccessCollectionManagement: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.2')
+          canAccessCollectionManagement: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '24.0')
         },
         NPHIES: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.0'),
