@@ -26,6 +26,7 @@ import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-d
 import { DomSanitizer } from '@angular/platform-browser';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { takeUntil } from 'rxjs/operators';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -201,6 +202,7 @@ export class AddPreauthorizationComponent implements OnInit {
   claimType: string;
   defualtPageMode = "";
   selectedDefaultPlan = null;
+  providerType = "";
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -213,6 +215,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private superAdminService: SuperAdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
+    private dbMapping: DbMappingService
   ) {
     this.today = new Date();
   }
@@ -229,6 +232,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.getRefferalProviders();
       this.defualtPageMode = "CREATE"
     }
+    this.getProviderTypeConfiguration();
   }
 
   setReuseValues() {
@@ -364,7 +368,7 @@ export class AddPreauthorizationComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType &&  x.documentId === res.beneficiary.documentId)[0] : null;
+          this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType && x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType && x.documentId === res.beneficiary.documentId)[0] : null;
           this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
@@ -990,7 +994,8 @@ export class AddPreauthorizationComponent implements OnInit {
       documentId: this.FormPreAuthorization.controls.documentId.value,
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
       beneficiaryDob: this.selectedBeneficiary.dob,
-      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
+      providerType: this.providerType
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1574,7 +1579,16 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.providerType = this.providerType == null || this.providerType == ""  ? 'any' : this.providerType;
+      if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
+      const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
+      const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
+      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+      this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+      return;
+    }
     this.isSubmitted = true;
+
     let hasError = false;
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
@@ -2046,7 +2060,11 @@ export class AddPreauthorizationComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+            //this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+            this.dialogService.showMessageObservable(error.error.message, '', 'alert', true, 'OK', error.error.errors, true).subscribe(res => {
+              this.reset();
+              this.getProviderTypeConfiguration();
+            });
           } else if (error.status === 404) {
             const errors: any[] = [];
             if (error.error.errors) {
@@ -2112,6 +2130,8 @@ export class AddPreauthorizationComponent implements OnInit {
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();
+    this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+    this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
     this.FormPreAuthorization.patchValue({
       insurancePlanId: '',
       type: '',
@@ -2220,7 +2240,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
-    console.log(nameTPA.display)
+    
     if (nameTPA.display != 'None') {
       return nameTPA.display;
     }
@@ -2241,10 +2261,64 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-
   removeSecondsFromDate(date: any) {
     let newDate = new Date(date);
     newDate.setSeconds(0, 0);
     return new Date(newDate);
+  }
+
+  getProviderTypeConfiguration() {
+    this.sharedServices.loadingChanged.next(true);
+    this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data: any = event.body;
+        if (data && data.details) {
+          this.providerType = data.details.claimType;
+          if (data.details.claimType === "vision") {
+            if (!this.claimReuseId) {
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
+              this.claimType = "vision";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
+            }
+          } else if (data.details.claimType === "oral") {
+            if (!this.claimReuseId) {
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
+              this.claimType = "oral";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
+            }
+          } else if (data.details.claimType === "pharmacy") {
+            if (!this.claimReuseId) {
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
+              this.claimType = "pharmacy";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
+            }
+          }
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 404) {
+        }
+        if (error.status != 404) {
+        }
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
   }
 }

@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { ApprovalToClaimTransaction } from 'src/app/models/approval-to-claim-transaction';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-convert-pre-auth-to-claim',
@@ -27,6 +28,18 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   manualPage = null;
   page: number;
   pageSize: number;
+  totlaNetOfAllClaims: number
+  totalBenefitOfAllClaims: number
+  totlaTaxAmountOfAllClaims: number
+  totlaNumberOfClaims: number
+
+  totlaNetOfAllClaimsSlectedApprovals: number
+  totalBenefitOfAllClaimsSlectedApprovals: number
+  totlaTaxAmountOfAllClaimsSlectedApprovals: number
+  totlaNumberOfClaimsSlectedApprovals: number
+  startPeriod: string;
+  endPeriod: string;
+
 
   FormPreAuthTransaction: FormGroup = this.formBuilder.group({
     fromDate: [''],
@@ -246,7 +259,8 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       const model: any = {};
       model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
-
+      this.startPeriod = model.fromDate
+      this.endPeriod = model.toDate;
       if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
         model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
       }
@@ -283,6 +297,11 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.providerNphiesSearchService.getApprovalToClaimConvertCriteria(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body ? event.body.page : {};
+          this.totlaNetOfAllClaims = event.body.totlaNetOfAllClaims
+          this.totalBenefitOfAllClaims = event.body.totalBenefitOfAllClaims
+          this.totlaTaxAmountOfAllClaims = event.body.totlaTaxAmountOfAllClaims
+          this.totlaNumberOfClaims = body.totalElements
+
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, ApprovalToClaimTransaction);
           this.transactions = this.transactionModel.content;
@@ -393,6 +412,68 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
   toggleAdvanceSearch() {
     this.advanceSearchEnable = !this.advanceSearchEnable;
   }
+  isConvertAll() {
+
+    return this.selectedApprovals.length == 0;
+  }
+
+  getCalculateSummaryConversions() {
+    console.log(this.isConvertAll())
+    if (!this.isConvertAll()) {
+      this.totlaNetOfAllClaimsSlectedApprovals = 0
+      this.totalBenefitOfAllClaimsSlectedApprovals = 0
+      this.totlaTaxAmountOfAllClaimsSlectedApprovals = 0
+      this.totlaNumberOfClaimsSlectedApprovals = 0
+      this.transactions.forEach(element => {
+
+        if (this.selectedApprovals.includes(element.convertToClaimEpisodeId)) {
+          this.totlaNetOfAllClaimsSlectedApprovals =  this.totlaNetOfAllClaimsSlectedApprovals+ Number(element.totalNet);
+          this.totalBenefitOfAllClaimsSlectedApprovals = this.totalBenefitOfAllClaimsSlectedApprovals+ Number(element.totalBenefit);
+          this.totlaTaxAmountOfAllClaimsSlectedApprovals =this.totlaTaxAmountOfAllClaimsSlectedApprovals + Number(element.totalTax);
+          this.totlaNumberOfClaimsSlectedApprovals++;
+
+        }
+
+      })
+    }
+
+  }
+
+
+
+  summaryConversion() {
+
+    const messages = [];
+    messages.push('SUMMARY_OF_CONVERSION');
+    if (!this.isConvertAll())
+      this.getCalculateSummaryConversions();
+      
+    messages.push({
+      totalNet:  Number(this.isConvertAll() ? this.totlaNetOfAllClaims : this.totlaNetOfAllClaimsSlectedApprovals),
+      totalTax:  Number(this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals),
+      totalBenefit: Number(this.isConvertAll() ? this.totalBenefitOfAllClaims : this.totalBenefitOfAllClaimsSlectedApprovals),
+      totalofClaims: Number(this.isConvertAll() ? this.totlaNumberOfClaims : this.totlaNumberOfClaimsSlectedApprovals),
+      startPeriod: this.datePipe.transform(this.startPeriod, 'MM-dd-yyyy'),
+      endPeriod: this.datePipe.transform(this.endPeriod, 'MM-dd-yyyy')
+
+
+    });
+    // tslint:disable-next-line:max-line-length
+    this.dialogService.showMessageObservable('Summary of Conversion', messages, 'info_summary_conversion', true, 'OK', messages, true).subscribe(res => {
+
+      if (res == 'convert') {
+        this.convertToClaim()
+        //this.onSubmit();
+        this.selectedApprovals = [];
+      }
+
+      console.log(res)
+
+    });
+    this.sharedServices.loadingChanged.next(false);
+
+  }
+
 
   convertToClaim() {
     // let episodeIds = [];
@@ -408,35 +489,35 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     if (this.selectedApprovals.length > 0) {
       model.episodeIds = this.selectedApprovals;
     }
-    else{
+    else {
       model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
       if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
         model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
       }
-  
+
       if (this.FormPreAuthTransaction.controls.payerId.value) {
         model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
-  
+
       if (this.FormPreAuthTransaction.controls.destinationId.value) {
         model.destinationId = this.FormPreAuthTransaction.controls.destinationId.value;
       }
-  
+
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
         model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
       }
-  
+
       if (this.FormPreAuthTransaction.controls.status.value) {
         model.status = this.FormPreAuthTransaction.controls.status.value;
       }
-  
+
       if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
         model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value;
       }
     }
-   
+
 
     this.sharedServices.loadingChanged.next(true);
 

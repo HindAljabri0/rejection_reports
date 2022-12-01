@@ -23,4 +23,7 @@ export class ConfirmationAlertDialogComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
+  Convert(){
+    this.dialogRef.close("convert");
+  }
 }

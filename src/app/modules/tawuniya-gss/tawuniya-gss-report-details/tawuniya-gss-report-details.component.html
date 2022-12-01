@@ -100,14 +100,6 @@
                             }}</span></span>
                 </div>
             </div>
-            <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
-                <div class="form-group form-group-static">
-                    <button mat-stroked-button color="primary" *ngIf="false" (click)="openVatInfoDialog()">Show VAT Information</button>
-                </div>
-            </div>
-            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
-            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
-            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
         </div>
         <h5 class="form-title no-border pb-3">Policy Details</h5>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
@@ -152,19 +144,11 @@
     </div>
     <div class="block-footer sticky">
         <div class="right-block btn-list">
-            <button type="button" mat-button (click)="generateReport(true)" *ngIf="timeleft <= 0" [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">
-                <span class="d-flex align-items-center">
-                    <mat-icon class="ml-n1 mr-1">refresh</mat-icon>
-                    <span>Reinitiate</span>
-                </span>
-            </button>
-            <button id="confirm-btn" *ngIf="timeleft > 0 || initiateModel?.status?.toLowerCase()?.trim() != 'new'" type="button" mat-flat-button color="primary"
-                (click)="confirmReport()" [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">
-                <span class="d-flex align-items-center">
-                    <mat-icon class="ml-n1 mr-1">done</mat-icon>
-                    <span>{{ initiateModel?.status?.toLowerCase()?.trim() != 'new' ? 'Confirm' : 'Confirm within ' + timeleft + ' second' }}</span>
-                </span>
-            </button>
+            <button mat-flat-button color="primary" (click)="generateReport(true)" *ngIf="timeleft <= 0"
+                [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report</button>
+            <button id="confirm-btn" *ngIf="timeleft > 0 || initiateModel?.status?.toLowerCase()?.trim() != 'new'" mat-flat-button color="primary" (click)="confirmReport()"
+                [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'"> {{ initiateModel?.status?.toLowerCase()?.trim() != 'new' ? 'Confirm' : 'Confirm within ' +
+                timeleft + ' second' }}</button>
         </div>
     </div>
 </div>
