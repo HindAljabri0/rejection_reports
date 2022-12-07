@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { CertificateConfigurationProvider } from 'src/app/models/certificateConfigurationProvider';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
@@ -39,6 +39,7 @@ export class CertificateConfigurationComponent implements OnInit {
   claim: Claim;
   pageType: string;
   constructor(
+    public datepipe: DatePipe,
     private dialog: MatDialog,
     private sharedServices: SharedServices,
     private settingsService: SettingsService,
@@ -92,16 +93,22 @@ export class CertificateConfigurationComponent implements OnInit {
 
   save() {
     // tslint:disable-next-line:max-line-length
-    if (this.certificateConfigurationProvider.password === null || this.certificateConfigurationProvider.password === '' || this.currentFileUplod === null || this.currentFileUplod === undefined) {
-      return this.dialogService.openMessageDialog(new MessageDialogData('', 'Please Make Sure Password is ENTER Or File is Uploded', true));
+    if (this.certificateConfigurationProvider.password === null || this.certificateConfigurationProvider.password === ''
+      || this.currentFileUplod === null || this.currentFileUplod === undefined
+      || this.certificateConfigurationProvider.expiryDate === null || this.certificateConfigurationProvider.expiryDate === '') {
+      return this.dialogService.openMessageDialog(new MessageDialogData('', 'Please Make Sure Password or Expiry Date is Entered Or File is Uploded', true));
+    }
+    var eDate = null;
+    if (this.certificateConfigurationProvider.expiryDate != null && this.certificateConfigurationProvider.expiryDate != '') {
+      eDate = this.datepipe.transform(this.certificateConfigurationProvider.expiryDate, 'yyyy-MM-dd HH:mm:ss');
     }
     this.isEdit = false;
     this.sharedServices.loadingChanged.next(true);
     this.settingsService.getSaveCertificateFileToProvider(
       this.selectedProvider,
       this.currentFileUplod,
-      this.certificateConfigurationProvider.password
-
+      this.certificateConfigurationProvider.password,
+      eDate
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -136,7 +143,8 @@ export class CertificateConfigurationComponent implements OnInit {
           file: event.target.files[0],
           providerId: this.sharedServices.providerId,
           selectedProviderId: this.selectedProvider,
-          password: this.certificateConfigurationProvider.password
+          password: this.certificateConfigurationProvider.password,
+          expiryDate: this.certificateConfigurationProvider.expiryDate
         }
       });
 
@@ -158,6 +166,7 @@ export class CertificateConfigurationComponent implements OnInit {
 
   reset() {
     this.certificateConfigurationProvider.password = '';
+    this.certificateConfigurationProvider.expiryDate = null;
     this.fileName = '';
     this.isFileUploded = false;
     this.currentFileUplod = null;
@@ -168,6 +177,7 @@ export class CertificateConfigurationComponent implements OnInit {
     this.providerController.enable();
     this.providerController.reset();
     this.certificateConfigurationProvider.password = '';
+    this.certificateConfigurationProvider.expiryDate = null;
     this.fileName = '';
     this.isFileUploded = false;
     this.currentFileUplod = null;
@@ -190,6 +200,9 @@ export class CertificateConfigurationComponent implements OnInit {
           this.currentFileUplod = this.dataURLtoFile("data:text/plain;base64," + this.certificateConfigurationRespnse.uploadfile, this.fileName);
           this.isFileUploded = true;
           this.certificateConfigurationProvider.password = this.certificateConfigurationRespnse.password;
+          if (this.certificateConfigurationRespnse.expiryDate != undefined && this.certificateConfigurationRespnse.expiryDate != null) {
+            this.certificateConfigurationProvider.expiryDate = this.datepipe.transform(this.certificateConfigurationRespnse.expiryDate, 'yyyy-MM-ddTHH:mm');
+          }
           this.sharedServices.loadingChanged.next(false);
         }
       }
