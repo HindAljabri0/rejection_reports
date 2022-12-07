@@ -117,7 +117,7 @@
                             <label class="control-label">Patient Share</label>
                             <div class="input-group">
                                 <input formControlName="patientShare" type="number" class="form-control"
-                                    placeholder="Enter Discount" />
+                                    placeholder="Enter Patient Share" />
                                 <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                             </div>
                             <span *ngIf="formIsSubmitted && form?.get('patientShare')?.hasError('required')"
@@ -130,7 +130,7 @@
                             <label class="control-label">Discount</label>
                             <div class="input-group">
                                 <input formControlName="discount" type="number" class="form-control"
-                                    placeholder="Enter patient share" />
+                                    placeholder="Enter Discount" />
                                 <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                             </div>
                             <span *ngIf="formIsSubmitted && form?.get('discount')?.hasError('required')"
