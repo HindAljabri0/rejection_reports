@@ -10,10 +10,15 @@
         </div>
         <div class="right-block">
             <div class="d-flex align-items-center mb-n2 mt-n2">
-                <span class="status-badge size-sm primary" [ngClass]="{'primary': initiateModel?.status?.toLowerCase() === 'new', 
-                'success' : initiateModel?.status?.toLowerCase() === 'signed',
-                'danger' : initiateModel?.status?.toLowerCase() === 'cancelled' }">
-                    {{initiateModel?.status | titlecase}}
+                <span class="status-badge size-sm primary" *ngIf="gssReportResponse?.status" [ngClass]="
+                {
+                'primary': isNew(), 
+                'bg-parrot' : isSigned(),
+                'success' : isConfirmed(), 
+                'danger' : isRejected(), 
+                'bg-warning' : isPending() 
+            }">
+                    {{gssReportResponse?.status | titlecase}}
                 </span>
                 <button type="button" [disabled]="downloaded" mat-icon-button class="text-primary" [ngStyle]="{'cursor': downloaded ? 'default' : 'pointer'}"
                     (click)="downloadData()">
@@ -29,66 +34,68 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Reference No.</label>
-                    <span class="form-control-static">{{ initiateModel?.gssReferenceNumber }}</span>
+                    <span class="form-control-static">{{ gssReportResponse?.gssReferenceNumber }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Loss Month</label>
-                    <span class="form-control-static">{{ initiateModel?.lossMonth }}</span>
+                    <span class="form-control-static">{{ gssReportResponse?.lossMonth }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">No. of Claims</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNumberOfClaim }}</span>
+                    <span class="form-control-static">{{ gssReportResponse?.totalNumberOfClaim }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Provider Name</label>
-                    <span class="form-control-static">{{ initiateModel?.providerName }}</span>
+                    <span class="form-control-static">{{ gssReportResponse?.providerName }}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">CCHI ID</label>
-                    <span class="form-control-static">{{ initiateModel?.cchiId }}</span>
+                    <span class="form-control-static">{{ gssReportResponse?.cchiId }}</span>
                 </div>
             </div>
             <div class="w100 d-none d-xxl-block"></div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Gross</label>
-                    <span class="form-control-static">{{ initiateModel?.totalGross?.value }} <span class="currency">{{
-                            initiateModel?.totalGross?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ gssReportResponse?.totalGross?.value }} <span class="currency">{{
+                            gssReportResponse?.totalGross?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Patient Share</label>
-                    <span class="form-control-static">{{ initiateModel?.totalPatientShare?.value }} <span class="currency">{{ initiateModel?.totalPatientShare?.currencyCode
+                    <span class="form-control-static">{{ gssReportResponse?.totalPatientShare?.value }} <span
+                            class="currency">{{ gssReportResponse?.totalPatientShare?.currencyCode
                             }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Net</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNet?.value }} <span class="currency">{{
-                            initiateModel?.totalNet?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ gssReportResponse?.totalNet?.value }} <span class="currency">{{
+                            gssReportResponse?.totalNet?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Net Vat</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNetVat?.value }} <span class="currency">{{
-                            initiateModel?.totalNetVat?.currencyCode }}</span></span>
+                    <span class="form-control-static">{{ gssReportResponse?.totalNetVat?.value }} <span class="currency">{{
+                            gssReportResponse?.totalNetVat?.currencyCode }}</span></span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Discount</label>
-                    <span class="form-control-static">{{ initiateModel?.totalDiscount?.value }} <span class="currency">{{ initiateModel?.totalDiscount?.currencyCode
+                    <span class="form-control-static">{{ gssReportResponse?.totalDiscount?.value }} <span
+                            class="currency">{{ gssReportResponse?.totalDiscount?.currencyCode
                             }}</span></span>
                 </div>
             </div>
@@ -96,10 +103,24 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Payable</label>
-                    <span class="form-control-static">{{ initiateModel?.totalNetPayable?.value }} <span class="currency">{{ initiateModel?.totalNetPayable?.currencyCode
+                    <span class="form-control-static">{{ gssReportResponse?.totalNetPayable?.value }} <span
+                            class="currency">{{ gssReportResponse?.totalNetPayable?.currencyCode
                             }}</span></span>
                 </div>
             </div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
+                <div class="form-group form-group-static">
+                    <button mat-stroked-button color="primary" (click)="onShowVatInformation()">Show VAT Information</button>
+                </div>
+            </div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
+                <div class="form-group form-group-static" *ngIf="isRejected()">
+                    <label class="control-label">Rejection Reason</label>
+                    <span class="form-control-static">{{ gssReportResponse?.rejectionReason }}</span>
+                </div>
+            </div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
+            <div class="col-xxl col-xl-3 col-lg-4 col-md-6"></div>
         </div>
         <h5 class="form-title no-border pb-3">Policy Details</h5>
         <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
@@ -119,7 +140,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let data of initiateModel?.policyDetails; let i = index">
+                    <ng-container *ngFor="let data of gssReportResponse?.policyDetails; let i = index">
                         <tr>
                             <td>{{ i + 1 }}</td>
                             <td>{{ data.policyNumber }}</td>
@@ -144,11 +165,8 @@
     </div>
     <div class="block-footer sticky">
         <div class="right-block btn-list">
-            <button mat-flat-button color="primary" (click)="generateReport(true)" *ngIf="timeleft <= 0"
-                [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'">Regenerate GSS Report</button>
-            <button id="confirm-btn" *ngIf="timeleft > 0 || initiateModel?.status?.toLowerCase()?.trim() != 'new'" mat-flat-button color="primary" (click)="confirmReport()"
-                [disabled]="initiateModel?.status?.toLowerCase()?.trim() != 'new'"> {{ initiateModel?.status?.toLowerCase()?.trim() != 'new' ? 'Confirm' : 'Confirm within ' +
-                timeleft + ' second' }}</button>
+            <button color="primary" mat-stroked-button (click)="generateReport()" [disabled]="!isGssProcessable">Regenerate GSS Report</button>
+            <button id="confirm-btn" mat-flat-button color="primary" (click)="onConfirm()" [disabled]="!isGssProcessable"> Confirm </button>
         </div>
     </div>
 </div>

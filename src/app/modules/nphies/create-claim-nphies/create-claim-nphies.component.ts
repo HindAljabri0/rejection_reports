@@ -1791,7 +1791,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.patientShare = x.patientShare;
           model.payerShare = x.payerShare;          
           model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
-          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
+          model.endDate =x.startDate ? moment(this.removeSecondsFromDate(x.endDate)).utc() : null;
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
