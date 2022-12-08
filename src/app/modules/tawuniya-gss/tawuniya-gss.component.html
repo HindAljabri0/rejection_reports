@@ -9,32 +9,39 @@
         <div class="block-filter-panel">
             <div class="row small-gutter">
                 <div class="col-4">
-                    <div class="form-group" [ngClass]="{'has-error' : tawuniyaGssForm.submitted && fromDateMonth.invalid}">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : tawuniyaGssForm.submitted && fromDateMonth.invalid}">
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
 
-                            <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                                placeholder="Select from month" [formControl]='fromDateMonth' (bsValueChange)="dateValidation($event)" />
+                            <input autocomplete="off" class="form-control date-picker" bsDatepicker
+                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                placeholder="Select from month" [formControl]='fromDateMonth'
+                                (bsValueChange)="dateValidation($event)" />
 
                         </div>
-                        <mat-error *ngIf="tawuniyaGssForm.submitted && fromDateMonth.invalid && fromDateMonth.hasError('required')">
+                        <mat-error
+                            *ngIf="tawuniyaGssForm.submitted && fromDateMonth.invalid && fromDateMonth.hasError('required')">
                             From Loss Month is required
                         </mat-error>
-                        <mat-error *ngIf="tawuniyaGssForm.submitted && fromDateMonth.invalid && fromDateMonth.hasError('overlapped')">
+                        <mat-error
+                            *ngIf="tawuniyaGssForm.submitted && fromDateMonth.invalid && fromDateMonth.hasError('overlapped')">
                             Date From can not be after Date To
                         </mat-error>
 
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="form-group" [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && toDateMonth.invalid}">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && toDateMonth.invalid}">
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <!--  -->
 
-                            <input autocomplete="off" class="form-control date-picker" placeholder="Select to month" bsDatepicker [bsConfig]="datePickerConfig"
-                                (onShown)="onOpenCalendar($event)" [formControl]='toDateMonth' [minDate]="minDate" />
+                            <input autocomplete="off" class="form-control date-picker" placeholder="Select to month"
+                                bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                [formControl]='toDateMonth' [minDate]="minDate" />
 
                         </div>
                         <mat-error *ngIf="toDateMonth.invalid && tawuniyaGssForm.submitted">To Loss Month is required
@@ -45,24 +52,27 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="control-label">&nbsp;</label>
-                        <button type="submit" mat-flat-button color="primary" (click)="searchQuerySummary()">Search</button>
+                        <button type="submit" mat-flat-button color="primary"
+                            (click)="searchQuerySummary()">Search</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-
+    
     <div class="pt-5 pb-5" *ngIf="!formIsSubmitted">
         <app-empty-state class="pt-5 pb-5" [message]="'Please select criteria to search GSS report'">
         </app-empty-state>
     </div>
 
     <div class="pt-5 pb-5" *ngIf="!resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
-        <app-empty-state class="pt-5 pb-5" [message]="'No GSS reports found with the requested search criteria!'">
+        <app-empty-state class="pt-5 pb-5" [message]="'No GSS reports found with the requested search criteria!'"
+            >
         </app-empty-state>
     </div>
 
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+        *ngIf="resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
         <div class="fixed-height fixed-height-sm">
             <!-- <div  style="min-height: 500px;max-height: 500px;display: flex; justify-content: center;"
             [ngStyle]="{'align-items': !resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted ? 'center' : 'unset'}" > -->
@@ -90,34 +100,31 @@
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.lossMonth }}</td>
                             <td class="row-click" (click)="openDetailView(data)" class="text-center">{{
                                 data?.totalNumberOfClaim }}</td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalGross?.value }} <span class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalGross?.value }} <span
+                                    class="currency">{{
                                     data?.totalGross?.currencyCode }}</span></td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalDiscount?.value }} <span class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalDiscount?.value }} <span
+                                    class="currency">{{
                                     data?.totalDiscount?.currencyCode }}</span></td>
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.totalPatientShare?.value }}
                                 <span class="currency">{{
                                     data?.totalPatientShare?.currencyCode }}</span>
                             </td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span
+                                    class="currency">{{
                                     data?.totalNet?.currencyCode }}</span></td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span
+                                    class="currency">{{
                                     data?.totalNetVat?.currencyCode }}</span></td>
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetPayable?.value }}
                                 <span class="currency">{{
                                     data?.totalNetPayable?.currencyCode }}</span>
                             </td>
                             <td class="row-click" (click)="openDetailView(data)">
-                                <span class="status-badge size-sm primary" 
-                                [ngClass]="{
-                                'primary': data?.status?.toLowerCase() === 'new',
-                                'bg-parrot' : data?.status?.toLowerCase() === 'signed',
-                                'success' : data?.status?.toLowerCase() === 'confirmed',
-                                'danger' : data?.status?.toLowerCase() === 'rejected', 
-                                'bg-warning' : data?.status?.toLowerCase() === 'pending'  
-                            }">{{data?.status |
+                                <span class="status-badge size-sm primary" [ngClass]="{'primary': data?.status?.toLowerCase() === 'new',
+                                'success' : data?.status?.toLowerCase() === 'signed',
+                                'danger' : data?.status?.toLowerCase() === 'cancelled' }">{{data?.status |
                                     titlecase}}</span>
-                                <!-- <span class="status-badge size-sm warning">Pending</span>
-                                    <span class="status-badge size-sm dark-green">Signed</span> -->
                             </td>
                             <td class="actions">
                                 <button type="button" mat-icon-button class="text-primary" (click)="downloadData(data)">
@@ -133,7 +140,7 @@
 
     <div class="block-footer sticky">
         <div class="right-block btn-list">
-            <button mat-flat-button class="animate__animated animate__bounceIn" color="primary" (click)="openGenerateReportDialog()">
+            <button mat-flat-button class="animate__bounceIn" color="primary" (click)="openGenerateReportDialog()">
                 Initiate GSS Report
             </button>
         </div>
