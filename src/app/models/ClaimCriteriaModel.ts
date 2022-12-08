@@ -15,7 +15,7 @@ export class ClaimCriteriaModel {
 
     statuses?: string[];
 
-    casetype?: string[];
+    caseTypes?: string;
 
     claimIds?: string[];
 
@@ -73,8 +73,8 @@ export class ClaimCriteriaModel {
         if(this.statuses != null && this.statuses.length > 0){
             params += `statuses=${this.statuses.join(',')}&`
         }
-        if(this.casetype != null && this.casetype.length > 0){
-            params += `casetype=${this.casetype.join(',')}&`
+        if(this.caseTypes != null && this.caseTypes.length > 0){
+            params += `casetype=${this.caseTypes}&`
         }
         if(this.claimIds != null && this.claimIds.length > 0){
             params += `claimIds=${this.claimIds.join(',')}&`

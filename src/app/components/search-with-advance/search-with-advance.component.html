@@ -7,8 +7,8 @@
         </mat-select>
     </mat-form-field>
     <div class="input-wrapper">
-        <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [readonly]="selectedSearchMode == 'payer&date'"
-            (keyup.enter)="isClaimUser?search(true):search(false)">
+        <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off"
+            [readonly]="selectedSearchMode == 'payer&date'" (keyup.enter)="isClaimUser?search(true):search(false)">
         <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
         </button> -->
@@ -40,21 +40,36 @@
 
         <mat-chip-list #chipList (keyup.enter)="isClaimUser?search(true):search(false)">
             <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'">
-                <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu" *ngIf="selectedSearchMode == 'payer&date'">
-                    <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedPayer != null? selectedPayer.name : 'Select Payer'}}</span>
+                <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu"
+                    *ngIf="selectedSearchMode == 'payer&date'">
+                    <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedPayer != null?
+                        selectedPayer.name : 'Select Payer'}}</span>
                 </mat-chip>
-                <mat-chip matTooltip="Select TPA" [matMenuTriggerFor]="tpasMenu" *ngIf="selectedSearchMode == 'tpa&date'">
-                    <span [ngStyle]="{'color':tpaHasError? '#D84646':'#3A3A3A'}">{{selectedTpa != null? selectedTpa.name : 'Select TPA'}}</span>
+                <mat-chip matTooltip="Select TPA" [matMenuTriggerFor]="tpasMenu"
+                    *ngIf="selectedSearchMode == 'tpa&date'">
+                    <span [ngStyle]="{'color':tpaHasError? '#D84646':'#3A3A3A'}">{{selectedTpa != null? selectedTpa.name
+                        : 'Select TPA'}}</span>
                 </mat-chip>
                 <mat-chip matTooltip="From Date" (click)="fromPicker.open()">
                     <input [matDatepicker]="fromPicker" [formControl]="fromDateControl" class="hidden-input">
-                    <span [ngStyle]="{'color':fromDateHasError? '#D84646':'#3A3A3A'}">{{dateToText(fromDateControl.value) || 'From Date'}}</span>
+                    <span
+                        [ngStyle]="{'color':fromDateHasError? '#D84646':'#3A3A3A'}">{{dateToText(fromDateControl.value)
+                        || 'From'}}</span>
                     <mat-datepicker #fromPicker></mat-datepicker>
                 </mat-chip>
                 <mat-chip matTooltip="To Date" (click)="toPicker.open()">
                     <input [matDatepicker]="toPicker" [formControl]="toDateControl" class="hidden-input">
-                    <span [ngStyle]="{'color':toDateHasError? '#D84646':'#3A3A3A'}">{{dateToText(toDateControl.value) || 'To Date'}}</span>
+                    <span [ngStyle]="{'color':toDateHasError? '#D84646':'#3A3A3A'}">{{dateToText(toDateControl.value) ||
+                        'To'}}</span>
                     <mat-datepicker #toPicker></mat-datepicker>
+                </mat-chip>
+                <mat-chip matTooltip="Select Claim Type" [matMenuTriggerFor]="waseelClaimTypeMenu"
+                    *ngIf="selectedSearchMode == 'payer&date' && selectedPayerType == 'W'">
+                    <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedClaimType != null? selectedClaimType : 'Claim Type'}}</span>
+                </mat-chip>
+                <mat-chip matTooltip="Select Claim Type" [matMenuTriggerFor]="nphiesClaimTypeMenu"
+                    *ngIf="selectedSearchMode == 'payer&date' && selectedPayerType == 'N'">
+                    <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedClaimType != null? selectedClaimType : 'Claim Type'}}</span>
                 </mat-chip>
             </ng-container>
         </mat-chip-list>
@@ -66,15 +81,29 @@
 
 <mat-menu #payersMenu class="header-search-menu">
     <h5 *ngIf="payers.length > 0" class="menu-opt-group">Waseel</h5>
-    <button *ngFor="let payer of payers" (click)="selectedPayer = payer; selectedPayerType = 'W'; selectedTpa = null" mat-menu-item>
+    <button *ngFor="let payer of payers" (click)="selectedPayer = payer; selectedPayerType = 'W'; selectedClaimType=null; selectedTpa = null"
+        mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
     <h5 class="menu-opt-group">NPHIES</h5>
-    <app-nphies-payers-selector (payerSelected)="onNphiesPayerSelected($event)" [isMatSelect]="false"></app-nphies-payers-selector>
+    <app-nphies-payers-selector (payerSelected)="onNphiesPayerSelected($event)" [isMatSelect]="false">
+    </app-nphies-payers-selector>
 </mat-menu>
 
 <mat-menu #tpasMenu class="header-search-menu">
     <button *ngFor="let tpa of tpas" (click)="selectedTpa = tpa" mat-menu-item>
         <span>{{tpa.name}}</span>
+    </button>
+</mat-menu>
+<mat-menu #waseelClaimTypeMenu class="header-search-menu">
+    <button  *ngFor="let type of casetypes" (click)="selectedClaimType = type.value;"
+        mat-menu-item>
+        <span>{{type.name}}</span>
+    </button>
+</mat-menu>
+<mat-menu #nphiesClaimTypeMenu class="header-search-menu">
+    <button *ngFor="let type of claimTypes" (click)="selectedClaimType = type.value;"
+        mat-menu-item>
+        <span>{{type.name}}</span>
     </button>
 </mat-menu>

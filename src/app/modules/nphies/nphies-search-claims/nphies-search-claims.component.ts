@@ -231,6 +231,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         patientFileNo: this.params.patientFileNo,
         policyNo: this.params.policyNo,
         payerId: this.params.payerId,
+        claimTypes : this.params.claimTypes,
         organizationId: this.params.organizationId,
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
@@ -344,6 +345,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.pageSize = this.pageSize;
 
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
+
+    this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
 
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
 
@@ -479,6 +482,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.page = this.pageIndex;
     this.claimSearchCriteriaModel.pageSize = this.pageSize;
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
+    this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;

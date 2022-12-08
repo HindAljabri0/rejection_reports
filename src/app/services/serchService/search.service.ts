@@ -19,7 +19,7 @@ export class SearchService {
         organizationId?: string,
         batchId?: string,
         uploadId?: string,
-        casetype?: string[],
+        casetype?: string,
         claimRefNo?: string,
         memberId?: string,
         invoiceNo?: string,
@@ -31,7 +31,7 @@ export class SearchService {
             requestURL += 'fromDate=' + this.formatDate(fromDate)
                 + '&toDate=' + this.formatDate(toDate) + (payerId != null ? ('&payerId=' + payerId) : ('&organizationId=' + organizationId)) + '&';
             if (casetype != null) {
-                requestURL += 'casetype=' + casetype.join(',') + '&';
+                requestURL += 'casetype=' + casetype + '&';
             }
         }
         if (batchId != null) {
@@ -86,7 +86,7 @@ export class SearchService {
         pageSize?: number,
         batchId?: string,
         uploadId?: string,
-        casetype?: string[],
+        casetype?: string,
         claimRefNo?: string,
         memberId?: string,
         invoiceNo?: string,
@@ -104,7 +104,7 @@ export class SearchService {
             requestURL += 'fromDate=' + this.formatDate(fromDate)
                 + '&toDate=' + this.formatDate(toDate) + (payerId != null ? ('&payerId=' + payerId) : ('&organizationId=' + organizationId)) + '&';
             if (casetype != null) {
-                requestURL += 'casetype=' + casetype.join(',') + '&';
+                requestURL += 'casetype=' + casetype + '&';
             }
         }
         if (batchId != null) {

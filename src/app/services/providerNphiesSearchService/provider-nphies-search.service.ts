@@ -224,6 +224,9 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.payerIds != null) {
       requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
     }
+    if (claimSearchCriteriaModel.claimTypes != null) {
+      requestURL += `&claimTypes=${claimSearchCriteriaModel.claimTypes}`;
+    }
     if (claimSearchCriteriaModel.batchId != null) {
       requestURL += `&batchId=${claimSearchCriteriaModel.batchId}`;
     }
@@ -299,6 +302,9 @@ export class ProviderNphiesSearchService {
     }
     if (claimSearchCriteriaModel.claimSubTypes != null) {
       requestURL += `&claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`;
+    }
+    if (claimSearchCriteriaModel.claimTypes != null) {
+      requestURL += `&claimTypes=${claimSearchCriteriaModel.claimTypes}`;
     }
     if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
       requestURL += `&provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`;

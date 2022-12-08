@@ -18,6 +18,14 @@ export class SharedDataService {
     { value: 'professional', name: 'Professional' },
     { value: 'vision', name: 'Optical' },
   ];
+  searchClaimTypeList = [
+    { value: 'institutional,oral,pharmacy,professional,vision', name: 'Any' },
+    { value: 'institutional', name: 'Institutional' },
+    { value: 'oral', name: 'Dental' },
+    { value: 'pharmacy', name: 'Pharmacy' },
+    { value: 'professional', name: 'Professional' },
+    { value: 'vision', name: 'Optical' },
+  ];
 
   encounterStatusList = [
     { value: 'planned', name: 'Planned' },
