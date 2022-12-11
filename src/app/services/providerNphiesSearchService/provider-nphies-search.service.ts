@@ -294,6 +294,9 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.documentId != null) {
       requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
     }
+    if (claimSearchCriteriaModel.netAmount != null) {
+      requestURL += `&netAmount=${claimSearchCriteriaModel.netAmount}`;
+    }
     if (claimSearchCriteriaModel.organizationId) {
       requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
     }

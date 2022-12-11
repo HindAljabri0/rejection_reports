@@ -137,17 +137,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100, 500, 1000];
   showFirstLastButtons = true;
-  allFilters: any = [
-    { key: 'CLAIMDATE', value: 'claimDate' },
-    { key: 'CLAIMREFNO', value: 'claimRefNO' },
-    { key: 'DR_NAME', value: 'drName' },
-    { key: 'MEMBERID', value: 'memberID' },
-    { key: 'NATIONALID', value: 'nationalId' },
-    { key: 'PATIENTFILENO', value: 'patientFileNO' },
-    { key: 'CLAIMNET', value: 'netAmount' },
-    { key: 'BATCHNUM', value: 'batchNo' },
-  ];
-  appliedFilters: any = [];
+   allFilters: any = [
+        { key: 'CLAIMDATE', value: 'claimDate' },
+        { key: 'CLAIMREFNO', value: 'claimRefNO' },
+        //{ key: 'DR_NAME', value: 'drName' },
+        { key: 'MEMBERID', value: 'memberID' },
+        { key: 'NATIONALID', value: 'nationalId' },
+        { key: 'PATIENTFILENO', value: 'patientFileNO' },
+        { key: 'CLAIMNET', value: 'netAmount' },
+        //{ key: 'BATCHNUM', value: 'batchNo' },
+    ];
+    appliedFilters: any = [];
 
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
@@ -484,20 +484,20 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
     this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
-    this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
-    this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
+    this.claimSearchCriteriaModel.netAmount =this.params.filter_netAmount;
+    this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate ||  this.params.from;
+    this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.filter_claimRefNo ||this.params.claimRefNo;
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
-    this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
+    this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo|| this.params.filter_patientFileNo;
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
-    this.claimSearchCriteriaModel.documentId = this.params.nationalId;
+    this.claimSearchCriteriaModel.documentId = this.params.nationalId || this.params.filter_nationalId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
 
-    this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
-
+    //alert(JSON.stringify(this.claimSearchCriteriaModel));
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
     ).subscribe((event) => {
 
@@ -1082,30 +1082,38 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         switch (findKey.key) {
           case ClaimListFilterSelection.MEMBERID:
             this.params.filter_memberId = this.claimList.memberID;
+            delete this.params.filter_memberId;
             break;
           case ClaimListFilterSelection.PATIENTFILENO:
             this.params.filter_patientFileNo = this.claimList.patientFileNO;
+            delete this.params.filter_patientFileNo;
             break;
           case ClaimListFilterSelection.DR_NAME:
             this.params.filter_drName = this.claimList.drName;
+            delete this.params.filter_drName;
             break;
           case ClaimListFilterSelection.NATIONALID:
             this.params.filter_nationalId = this.claimList.nationalId;
+            delete this.params.filter_nationalId;
             break;
           case ClaimListFilterSelection.CLAIMDATE:
             const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
               this.claimList.claimDate !== '' &&
               typeof this.claimList.claimDate !== 'string' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
             this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
+            delete this.params.filter_claimDate;
             break;
           case ClaimListFilterSelection.CLAIMREFNO:
             this.params.filter_claimRefNo = this.claimList.claimRefNO;
+            delete this.params.filter_claimRefNo;
             break;
           case ClaimListFilterSelection.CLAIMNET:
             this.params.filter_netAmount = this.claimList.netAmount;
+            delete this.params.filter_netAmount;
             break;
           case ClaimListFilterSelection.BATCHNUM:
             this.params.filter_batchNum = this.claimList.batchNo;
+            delete this.params.filter_batchNum;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
