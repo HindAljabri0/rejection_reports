@@ -1,5 +1,4 @@
 import { LoginComponent } from './pages/loginpage/login.component';
-import { LoginWithTokenComponent } from './pages/loginpage-with-token/login-with-token.component';
 import { ReportsComponent } from './pages/reports/reports-page.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -128,7 +127,6 @@ import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-fe
         NotificationsPageComponent,
         AnnouncementsPageComponent,
         LoginComponent,
-        LoginWithTokenComponent,
         ReportsComponent,
         DashboardComponent,
         SearchWithAdvanceComponent,

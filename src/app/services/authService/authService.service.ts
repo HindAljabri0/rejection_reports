@@ -43,19 +43,6 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
-  loginWithToken(iamToken: string) {
-    const requestURL = '/authenticateIdentityToken';
-    // this.amp.setUserContext({
-    //   'username': username,
-    //   'id': username
-    // });
-    const body: {} = {
-      'identityToken': iamToken
-    };
-    const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
-    return this.httpClient.request(request);
-  }
-
 
   logout(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();

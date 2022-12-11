@@ -6,7 +6,6 @@ import { SearchClaimsComponent } from '../pages/searchClaimsPage/search-claims.c
 import { NotificationsPageComponent } from '../pages/notifications-page/notifications-page.component';
 import { AnnouncementsPageComponent } from '../pages/announcements-page/announcements-page.component';
 import { LoginComponent } from '../pages/loginpage/login.component';
-import { LoginWithTokenComponent } from '../pages/loginpage-with-token/login-with-token.component';
 import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.component';
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
@@ -19,7 +18,6 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
     imports: [
         RouterModule.forRoot([
             { path: 'login', component: LoginComponent },
-            { path: 'loginWithToken', component: LoginWithTokenComponent },
             {
                 path: '',
                 component: MainLayoutComponent,
