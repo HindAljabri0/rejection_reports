@@ -97,7 +97,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.data.providerType ==='vision' && !this.data.item) {
+    if (this.data.providerType === 'vision' && !this.data.item) {
       const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
       if (principalDiagnosis.length > 0) {
         this.FormItem.controls.diagnosisSequence.setValue([principalDiagnosis[0]]);
@@ -105,7 +105,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.controls.diagnosisSequence.setValue([this.data.diagnosises[0]]);
       }
     }
-    
+
     if (this.data.source === 'APPROVAL') {
       this.FormItem.controls.invoiceNo.clearValidators();
       this.FormItem.controls.invoiceNo.updateValueAndValidity();
@@ -263,7 +263,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
 
-    if(this.data.providerType ==='vision' && this.data.source === 'APPROVAL'){
+    if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
       this.FormItem.controls.factor.setValue(1);
       this.FormItem.controls.factor.disable();
     }
@@ -359,7 +359,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         factor: type.factor ? type.factor : 1,
         tax: 0
       });
-      if(this.data.providerType ==='vision' && this.data.source === 'APPROVAL'){
+      if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
         this.FormItem.controls.factor.setValue(1);
         this.FormItem.controls.factor.disable();
       }
@@ -695,22 +695,29 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     const claimType = this.data.type;
     const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
     const payerNphiesId = this.data.payerNphiesId;
-    const tpaNphiesId = this.data.tpaNphiesId;
+    const tpaNphiesId = this.data.tpaNphiesId != -1 ? this.data.tpaNphiesId : null;
 
     if (searchStr.length > 2) {
       this.loadSearchItem = true;
       // tslint:disable-next-line:max-line-length
       this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
-          const body = event.body;
-          if (body) {
-            this.typeListSearchResult = body['content'];
+          if (event.status === 200) {
+            const body = event.body;
+            if (body) {
+              this.typeListSearchResult = body['content'];
+            }
+            this.loadSearchItem = false;
+
+          } else if (event.status === 204) {
+            this.loadSearchItem = false;
+            this.typeListSearchResult = [{display:'No Matching found'}];
           }
-          this.loadSearchItem = false;
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
           this.loadSearchItem = false;
+          this.typeListSearchResult = [{display:'No Matching found'}];
         }
       });
     }

@@ -8,6 +8,7 @@ export class ClaimSearchCriteriaModel {
   claimSubTypes?: string[];
   statuses?: string[];
   claimIds?: string;
+  netAmount? : string;
   provderClaimReferenceNumber?: string;
   patientFileNo?: string;
   memberId?: string;
