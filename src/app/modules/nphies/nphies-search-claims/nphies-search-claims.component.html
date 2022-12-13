@@ -155,30 +155,33 @@
                   </th>
                   <th
                     class="column-header-action text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    <span>Claim Ref. No.</span>
-                    <button *ngIf="params.claimRefNo===undefined || params.claimRefNo==='' || params.claimRefNo===null"
-                      type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimRefFilter"
-                      (click)="checkReloadedFilter()">
-                      <mat-icon>filter_list_outline</mat-icon>
-                    </button>
+                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMREFNO)">
+                      <span>Claim Ref. No.</span>
+                      <button
+                        *ngIf="params.claimRefNo===undefined || params.claimRefNo==='' || params.claimRefNo===null"
+                        type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimRefFilter"
+                        (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
+                      </button>
 
-                    <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
-                      <div class="menu-body">
-                        <div (click)="$event.stopPropagation()">
-                          <div class="form-group">
-                            <label class="control-label">Provider Claim Ref.
-                              No.</label>
-                            <input class="form-control" [(ngModel)]="claimList.claimRefNO" #claimRefNO="ngModel"
-                              name="claimRefNO" placeholder="Provider Claim Ref. No.">
+                      <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Provider Claim Ref.
+                                No.</label>
+                              <input class="form-control" [(ngModel)]="claimList.claimRefNO" #claimRefNO="ngModel"
+                                name="claimRefNO" placeholder="Provider Claim Ref. No.">
+                            </div>
+                          </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('claimRefNO')">Clear</button>
+                            <button mat-flat-button color="primary"
+                              (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Filter</button>
                           </div>
                         </div>
-                        <div class="btn-list text-right">
-                          <button mat-flat-button (click)="clearFilters('claimRefNO')">Clear</button>
-                          <button mat-flat-button color="primary"
-                            (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Filter</button>
-                        </div>
-                      </div>
-                    </mat-menu>
+                      </mat-menu>
+                    </div>
                   </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
@@ -188,129 +191,141 @@
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.MEMBERID)">
                       <span>Member ID</span>
-                      <button *ngIf="params.memberId===undefined || params.memberId==='' || params.memberId===null" type="button" class="action-btn" matRipple
-                          [matMenuTriggerFor]="memberIDFilter" (click)="checkReloadedFilter()">
-                          <mat-icon>filter_list_outline</mat-icon>
+                      <button *ngIf="params.memberId===undefined || params.memberId==='' || params.memberId===null"
+                        type="button" class="action-btn" matRipple [matMenuTriggerFor]="memberIDFilter"
+                        (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
                       </button>
                       <mat-menu #memberIDFilter="matMenu" xPosition="before" class="filter-menu">
-                          <div class="menu-body">
-                              <div (click)="$event.stopPropagation()">
-                                  <div class="form-group">
-                                      <label class="control-label">Member ID</label>
-                                      <input class="form-control" placeholder="Member ID" [(ngModel)]="claimList.memberID" #memberID="ngModel"
-                                          name="memberID">
-                                  </div>
-                              </div>
-                              <div class="btn-list text-right">
-                                  <button mat-flat-button (click)="clearFilters('memberID')">Clear</button>
-                                  <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.MEMBERID)">Filter</button>
-                              </div>
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Member ID</label>
+                              <input class="form-control" placeholder="Member ID" [(ngModel)]="claimList.memberID"
+                                #memberID="ngModel" name="memberID">
+                            </div>
                           </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('memberID')">Clear</button>
+                            <button mat-flat-button color="primary"
+                              (click)="searchClaimBased(claimSearchSelection.MEMBERID)">Filter</button>
+                          </div>
+                        </div>
                       </mat-menu>
-                  </div>
+                    </div>
                   </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.NATIONALID)">
                       <span>National ID</span>
-                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="nationalIDFilter" (click)="checkReloadedFilter()">
-                          <mat-icon>filter_list_outline</mat-icon>
+                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="nationalIDFilter"
+                        (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
                       </button>
                       <mat-menu #nationalIDFilter="matMenu" xPosition="before" class="filter-menu">
-                          <div class="menu-body">
-                              <div (click)="$event.stopPropagation()">
-                                  <div class="form-group">
-                                      <label class="control-label">National ID</label>
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">National ID</label>
 
-                                      <input class="form-control" placeholder="National ID" [(ngModel)]="claimList.nationalId" #nationalId="ngModel"
-                                          name="nationalId">
-                                  </div>
-                              </div>
-                              <div class="btn-list text-right">
-                                  <button mat-flat-button (click)="clearFilters('nationalId')">Clear</button>
-                                  <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.NATIONALID)">Filter</button>
-                              </div>
+                              <input class="form-control" placeholder="National ID" [(ngModel)]="claimList.nationalId"
+                                #nationalId="ngModel" name="nationalId">
+                            </div>
                           </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('nationalId')">Clear</button>
+                            <button mat-flat-button color="primary"
+                              (click)="searchClaimBased(claimSearchSelection.NATIONALID)">Filter</button>
+                          </div>
+                        </div>
                       </mat-menu>
-                  </div>
+                    </div>
                   </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.PATIENTFILENO)">
+                    <div class="column-header-action"
+                      [ngClass]="checkAppliedFilter(claimSearchSelection.PATIENTFILENO)">
                       <span>Patient File No.</span>
-                      <button *ngIf="params.patientFileNo===undefined || params.patientFileNo==='' || params.patientFileNo===null" type="button"
-                          class="action-btn" matRipple [matMenuTriggerFor]="patientFileNoFilter" (click)="checkReloadedFilter()">
-                          <mat-icon>filter_list_outline</mat-icon>
+                      <button
+                        *ngIf="params.patientFileNo===undefined || params.patientFileNo==='' || params.patientFileNo===null"
+                        type="button" class="action-btn" matRipple [matMenuTriggerFor]="patientFileNoFilter"
+                        (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
                       </button>
                       <mat-menu #patientFileNoFilter="matMenu" xPosition="before" class="filter-menu">
-                          <div class="menu-body">
-                              <div (click)="$event.stopPropagation()">
-                                  <div class="form-group">
-                                      <label class="control-label">Patient File No.</label>
-                                      <input class="form-control" placeholder="Patient File No." [(ngModel)]="claimList.patientFileNO"
-                                          #patientFileNO="ngModel" name="patientFileNO">
-                                  </div>
-                              </div>
-                              <div class="btn-list text-right">
-                                  <button mat-flat-button (click)="clearFilters('patientFileNO')">Clear</button>
-                                  <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.PATIENTFILENO)">Filter</button>
-                              </div>
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Patient File No.</label>
+                              <input class="form-control" placeholder="Patient File No."
+                                [(ngModel)]="claimList.patientFileNO" #patientFileNO="ngModel" name="patientFileNO">
+                            </div>
                           </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('patientFileNO')">Clear</button>
+                            <button mat-flat-button color="primary"
+                              (click)="searchClaimBased(claimSearchSelection.PATIENTFILENO)">Filter</button>
+                          </div>
+                        </div>
                       </mat-menu>
-                  </div>
+                    </div>
                   </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMDATE)">
                       <span>Claim Date</span>
-                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimDateFilter" (click)="checkReloadedFilter()">
-                          <mat-icon>filter_list_outline</mat-icon>
+                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimDateFilter"
+                        (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
                       </button>
                       <mat-menu #claimDateFilter="matMenu" xPosition="before" class="filter-menu">
-                          <div class="menu-body">
-                              <div (click)="$event.stopPropagation()">
-                                  <div class="form-group">
-                                      <label class="control-label">Claim Date</label>
-                                      <div class="date-picker">
-                                          <input [(ngModel)]="claimList.claimDate" #claimDate="ngModel" name="claimDate" class="form-control"
-                                              placeholder="Claim Date" [matDatepicker]="claimDatePicker">
-                                          <mat-datepicker-toggle [for]="claimDatePicker">
-                                          </mat-datepicker-toggle>
-                                          <mat-datepicker #claimDatePicker></mat-datepicker>
-                                      </div>
-                                  </div>
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Claim Date</label>
+                              <div class="date-picker">
+                                <input [(ngModel)]="claimList.claimDate" #claimDate="ngModel" name="claimDate"
+                                  class="form-control" placeholder="Claim Date" [matDatepicker]="claimDatePicker">
+                                <mat-datepicker-toggle [for]="claimDatePicker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #claimDatePicker></mat-datepicker>
                               </div>
-                              <div class="btn-list text-right">
-                                  <button mat-flat-button (click)="clearFilters('claimDate')">Clear</button>
-                                  <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMDATE)">Filter</button>
-                              </div>
+                            </div>
                           </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('claimDate')">Clear</button>
+                            <button mat-flat-button color="primary"
+                              (click)="searchClaimBased(claimSearchSelection.CLAIMDATE)">Filter</button>
+                          </div>
+                        </div>
                       </mat-menu>
-                  </div>
+                    </div>
                   </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMNET)">
                       <span>Net Amount</span>
-                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimNetFilter" (click)="checkReloadedFilter()">
-                          <mat-icon>filter_list_outline</mat-icon>
+                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimNetFilter"
+                        (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
                       </button>
                       <mat-menu #claimNetFilter="matMenu" xPosition="before" class="filter-menu">
-                          <div class="menu-body">
-                              <div (click)="$event.stopPropagation()">
-                                  <div class="form-group">
-                                      <label class="control-label">Net Amount</label>
-                                      <input class="form-control" placeholder="Claim Net Amount" type="number" [(ngModel)]="claimList.netAmount"
-                                          #claimNet="ngModel" name="claimNet">
-                                  </div>
-                              </div>
-                              <div class="btn-list text-right">
-                                  <button mat-flat-button (click)="clearFilters('netAmount')">Clear</button>
-                                  <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMNET)">Filter</button>
-                              </div>
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Net Amount</label>
+                              <input class="form-control" placeholder="Claim Net Amount" type="number"
+                                [(ngModel)]="claimList.netAmount" #claimNet="ngModel" name="claimNet">
+                            </div>
                           </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('netAmount')">Clear</button>
+                            <button mat-flat-button color="primary"
+                              (click)="searchClaimBased(claimSearchSelection.CLAIMNET)">Filter</button>
+                          </div>
+                        </div>
                       </mat-menu>
-                  </div>
+                    </div>
                   </th>
 
                   <th
