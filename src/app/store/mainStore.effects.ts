@@ -9,6 +9,7 @@ import { interval, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DialogService } from '../services/dialogsService/dialog.service';
 import { SearchService } from '../services/serchService/search.service';
+import { SettingsService } from '../services/settingsService/settings.service';
 import { SharedServices } from '../services/shared.services';
 import { changePageTitle, checkAlerts, showSnackBarMessage } from './mainStore.actions';
 
@@ -22,6 +23,7 @@ export class MainStoreEffects {
     private snackBar: MatSnackBar,
     private dialogService: DialogService,
     private searchService: SearchService,
+    private settingsService: SettingsService,
     private datePipe: DatePipe,
     private commenServices: SharedServices,
     private router: Router
@@ -49,7 +51,7 @@ export class MainStoreEffects {
 
     ofType(checkAlerts),
     tap(() => {
-      const providerId = localStorage.getItem('provider_id');      
+      const providerId = localStorage.getItem('provider_id');
       if (providerId != null && providerId != '101') {
         var stdDate = new Date();
         var endDt = new Date("2022-10-01");
@@ -70,13 +72,27 @@ export class MainStoreEffects {
               if (event.body && event.body[0]) {
                 body.push(event.body[0]);
               }
-
-              this.dialogService.showAlerts(body);
-              localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
-              // if (body instanceof Array) {
-
-              // }
+              this.settingsService.checkCertificateExpiry(providerId).subscribe((event: any) => {
+                if (event instanceof HttpResponse) {
+                  if (event.body && event.body.message) {
+                    body.push(event.body.message);
+                  }
+                  this.dialogService.showAlerts(body);
+                  localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
+                }
+              });
             }
+          }, error => {
+            this.settingsService.checkCertificateExpiry(providerId).subscribe((event: any) => {
+              if (event instanceof HttpResponse) {
+                const body: string[] = [];
+                if (event.body && event.body.message) {
+                  body.push(event.body.message);
+                }
+                this.dialogService.showAlerts(body);
+                localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
+              }
+            });
           });
         } else {
           const lastDateAlertAppeared = localStorage.getItem(`lastDateUpcomingAlertAppeared:${providerId}`);
@@ -87,7 +103,7 @@ export class MainStoreEffects {
           }
 
           this.dialogService.showUpcomingFeatures();
-          localStorage.setItem(`lastDateUpcomingAlertAppeared:${providerId}`, yearMonthDay);          
+          localStorage.setItem(`lastDateUpcomingAlertAppeared:${providerId}`, yearMonthDay);
         }
 
       }
