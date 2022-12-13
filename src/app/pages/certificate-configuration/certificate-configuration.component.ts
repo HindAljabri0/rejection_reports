@@ -38,6 +38,7 @@ export class CertificateConfigurationComponent implements OnInit {
   pageMode = '';
   claim: Claim;
   pageType: string;
+  minDate = '';
   constructor(
     public datepipe: DatePipe,
     private dialog: MatDialog,
@@ -199,6 +200,7 @@ export class CertificateConfigurationComponent implements OnInit {
           this.fileName = this.certificateConfigurationRespnse.fileName;
           this.currentFileUplod = this.dataURLtoFile("data:text/plain;base64," + this.certificateConfigurationRespnse.uploadfile, this.fileName);
           this.isFileUploded = true;
+          this.minDate = this.datepipe.transform(new Date(), 'yyyy-MM-ddTHH:mm');
           this.certificateConfigurationProvider.password = this.certificateConfigurationRespnse.password;
           if (this.certificateConfigurationRespnse.expiryDate != undefined && this.certificateConfigurationRespnse.expiryDate != null) {
             this.certificateConfigurationProvider.expiryDate = this.datepipe.transform(this.certificateConfigurationRespnse.expiryDate, 'yyyy-MM-ddTHH:mm');
