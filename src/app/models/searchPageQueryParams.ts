@@ -35,7 +35,7 @@ export class SearchPageQueryParams {
     status?: number;
     page?: number;
     size?: number;
-
+    netAmount? : string;
     static fromParams(params: Params): SearchPageQueryParams {
         let pageParams: SearchPageQueryParams = new SearchPageQueryParams();
 
@@ -73,7 +73,7 @@ export class SearchPageQueryParams {
         pageParams.filter_memberId = params.filter_memberId;
         pageParams.filter_netAmount = params.filter_netAmount;
         pageParams.filter_patientFileNo = params.filter_patientFileNo;
-
+        
         return pageParams;
     }
 
