@@ -155,6 +155,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
     if (this.data.item) {
+      if (this.data.source === 'APPROVAL') {
+        if (this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
+          this.FormItem.controls.startDate.disable();
+          this.FormItem.controls.endDate.disable();
+        }
+      }
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
@@ -178,7 +184,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         patientShare: this.data.item.patientShare,
         payerShare: this.data.item.payerShare,
         startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
-        endDate: this.data.item.endDate ? new Date(this.data.item.endDate): null,
+        endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
         invoiceNo: this.data.item.invoiceNo,
         drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
 
@@ -711,13 +717,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
           } else if (event.status === 204) {
             this.loadSearchItem = false;
-            this.typeListSearchResult = [{display:'No Matching found'}];
+            this.typeListSearchResult = [{ display: 'No Matching found' }];
           }
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
           this.loadSearchItem = false;
-          this.typeListSearchResult = [{display:'No Matching found'}];
+          this.typeListSearchResult = [{ display: 'No Matching found' }];
         }
       });
     }
