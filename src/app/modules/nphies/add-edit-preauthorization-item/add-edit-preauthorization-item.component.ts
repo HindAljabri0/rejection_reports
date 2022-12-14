@@ -178,7 +178,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         patientShare: this.data.item.patientShare,
         payerShare: this.data.item.payerShare,
         startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
-        endDate: new Date(this.data.item.endDate),
+        endDate: this.data.item.endDate ? new Date(this.data.item.endDate): null,
         invoiceNo: this.data.item.invoiceNo,
         drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
 
