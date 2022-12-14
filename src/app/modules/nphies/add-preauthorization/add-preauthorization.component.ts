@@ -358,6 +358,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
 
     this.Items = this.data.items;
+    console.log(this.Items);
     this.setBeneficiary(this.data);
   }
 
