@@ -1,4 +1,4 @@
-import {  DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
@@ -11,25 +11,25 @@ import { SharedServices } from 'src/app/services/shared.services';
     styles: []
 })
 export class AlertDialogComponent implements OnInit {
-      isHasNphiesPrivileges=false;
-      isOverNphiesdwonTime=false;
+    isHasNphiesPrivileges = false;
+    isOverNphiesdwonTime = false;
 
     constructor(
         private dialogRef: MatDialogRef<AlertDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: string,
+        @Inject(MAT_DIALOG_DATA) public data: string[],
         private commenServices: SharedServices,
-      
+
     ) {
 
-    } 
+    }
 
-    
+
 
     ngOnInit() {
-        this.isHasNphiesPrivileges=this.commenServices.isHasNphiesPrivileges();
-        this.isOverNphiesdwonTime =this.commenServices.isOverNphiesdwonTime();
+        this.isHasNphiesPrivileges = this.commenServices.isHasNphiesPrivileges();
+        this.isOverNphiesdwonTime = this.commenServices.isOverNphiesdwonTime();
     }
-  
+
 
     closeDialog() {
         this.dialogRef.close();
