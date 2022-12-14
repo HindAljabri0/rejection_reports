@@ -106,6 +106,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
     documentId?: string,
     organizationId?: string,
     statuses?: string[],
@@ -154,6 +156,12 @@ export class ProviderNphiesApprovalService {
     }
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
     }
     const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
     return this.http.request(request);
@@ -216,7 +224,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
-    // claimTypes?: string[],
+    claimTypes?: string,
+    netAmount? : string,
     // claimSubTypes?: string[],
     documentId?: string,
     organizationId?: string,
@@ -315,6 +324,12 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
@@ -333,6 +348,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
     documentId?: string,
     statuses?: string[],
     organizationId?: string
@@ -395,6 +412,12 @@ export class ProviderNphiesApprovalService {
     if (organizationId) {
       requestURL += `&organizationId=${organizationId}`;
     }
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
@@ -422,6 +445,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
     documentId?: string,
     statuses?: string[],
     organizationId?: string,
@@ -485,7 +510,12 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
-
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
@@ -535,6 +565,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
     documentId?: string,
     organizationId?: string,
     attachmentStatus?: string,
@@ -596,7 +628,12 @@ export class ProviderNphiesApprovalService {
       if (requestBundleId) {
         requestURL += `&requestBundleId=${requestBundleId}`;
       }
-  
+      if (claimTypes) {
+        requestURL += `&claimTypes=${claimTypes}`;
+      }
+      if (netAmount) {
+        requestURL += `&netAmount=${netAmount}`;
+      }
   
       const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
       return this.http.request(request);
@@ -614,6 +651,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
     documentId?: string,
     organizationId?: string,
     statuses?: string[],
@@ -671,7 +710,12 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
-      
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const httpRequest = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {}, { headers });
     return this.http.request(httpRequest);
@@ -689,6 +733,8 @@ export class ProviderNphiesApprovalService {
     invoiceNo?: string,
     patientFileNo?: string,
     claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
     documentId?: string,
     organizationId?: string,
     statuses?: string[],
@@ -747,7 +793,12 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
-
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }

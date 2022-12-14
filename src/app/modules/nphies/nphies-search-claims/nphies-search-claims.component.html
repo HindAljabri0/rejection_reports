@@ -144,23 +144,23 @@
                         [matMenuTriggerFor]="claimRefFilter" (click)="checkReloadedFilter()">
                         <mat-icon>filter_list_outline</mat-icon>
                       </button>
-                    </div>
 
-                    <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
-                      <div class="menu-body">
-                        <div (click)="$event.stopPropagation()">
-                          <div class="form-group">
-                            <label class="control-label">Provider Claim Ref.
-                              No.</label>
-                            <input class="form-control" [(ngModel)]="claimList.claimRefNO" #claimRefNO="ngModel" name="claimRefNO" placeholder="Provider Claim Ref. No.">
+                      <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Provider Claim Ref.
+                                No.</label>
+                              <input class="form-control" [(ngModel)]="claimList.claimRefNO" #claimRefNO="ngModel" name="claimRefNO" placeholder="Provider Claim Ref. No.">
+                            </div>
+                          </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('claimRefNO')">Clear</button>
+                            <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Filter</button>
                           </div>
                         </div>
-                        <div class="btn-list text-right">
-                          <button mat-flat-button (click)="clearFilters('claimRefNO')">Clear</button>
-                          <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Filter</button>
-                        </div>
-                      </div>
-                    </mat-menu>
+                      </mat-menu>
+                    </div>
                   </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
