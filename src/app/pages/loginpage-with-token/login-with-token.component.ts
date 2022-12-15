@@ -25,6 +25,7 @@ export class LoginWithTokenComponent implements OnInit {
 
   iamToken = new FormControl();
   //password = new FormControl();
+  access_token: string;
 
   isLoading = false;
 
@@ -47,9 +48,11 @@ export class LoginWithTokenComponent implements OnInit {
     @Inject(LOCALE_ID) protected locale: string
   ) {
     this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
+      //filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.routeActive.queryParams.subscribe(value => {
+        //console.log("route Active Event Type :: " typeof(event));
+        console.log("route Active Value :: " +JSON.stringify(value))
         if (value.expired != null && value.expired) {
           this.errors = 'Your session have been expired. Please sign in again.';
         } else if (value.hasClaimPrivileges != null && value.hasClaimPrivileges) {
@@ -68,22 +71,26 @@ export class LoginWithTokenComponent implements OnInit {
       // this.dir = 'rtl';
     }
 
+    if (this.routeActive.snapshot.queryParams.access_token) {
+      this.login(this.routeActive.snapshot.queryParams.access_token);
+    }
+
     this.document.documentElement.lang = this.locale;
   }
 
-  login() {
+  login(access_token) {
     if (this.isLoading) {
       return;
     }
 
     this.isLoading = true;
-    if (this.iamToken.value == undefined || this.iamToken.value == '') {
+    /*if (access_token == undefined || access_token == '') {
       this.errors = 'Please provide a valid Token!';
       this.isLoading = false;
       return;
-    }
+    }*/
 
-    this.authService.loginWithToken(this.iamToken.value).subscribe(event => {
+    this.authService.loginWithToken(access_token).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.authService.isUserNameUpdated.subscribe(updated => {
           if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {

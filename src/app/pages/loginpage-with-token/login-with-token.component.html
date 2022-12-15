@@ -12,11 +12,11 @@
                 <div class="form-group mb-0">
                     <mat-form-field appearance="fill">
                         <mat-label>IAM Token</mat-label>
-                        <input type="text" matInput autofocus placeholder="Enter token here..." [formControl]="iamToken" (keyup.enter)="login()">
+                        <input type="text" matInput autofocus placeholder="Enter token here..." [formControl]="iamToken">
                     </mat-form-field>
                 </div>
                 <p *ngIf="errors != null" class="error-card">{{errors}}</p>
-                <button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
+                <!--<button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>-->
             </div>
             <div class="text-center">
                 <ul class="social-links" *ngIf="!isEidAdha">
