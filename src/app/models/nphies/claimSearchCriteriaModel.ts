@@ -4,10 +4,11 @@ export class ClaimSearchCriteriaModel {
   toDate?: string;
   batchId?: string;
   uploadId?: string;
-  claimTypes?: string[];
+  claimTypes?: string;
   claimSubTypes?: string[];
   statuses?: string[];
   claimIds?: string;
+  netAmount? : string;
   provderClaimReferenceNumber?: string;
   patientFileNo?: string;
   memberId?: string;

@@ -1,0 +1,104 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <app-language-switcher class="login-language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
+    </app-language-switcher>
+    <div class="login-wrapper" [class.eid-fitr]="isEidFitr" [class.eid-adha]="isEidAdha"
+        [ngClass]="{'national-day': isCloseToNationalDay() && !isRamadan  && !isEidFitr && !isEidAdha}">
+        <div class="left-block">
+            <div class="login-card">
+                <div class="login-text">
+                    <h4>Sign in to continue</h4>
+                    <h6>Enter your Token</h6>
+                </div>
+                <div class="form-group mb-0">
+                    <mat-form-field appearance="fill">
+                        <mat-label>IAM Token</mat-label>
+                        <input type="text" matInput autofocus placeholder="Enter token here..." [formControl]="iamToken">
+                    </mat-form-field>
+                </div>
+                <p *ngIf="errors != null" class="error-card">{{errors}}</p>
+                <!--<button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>-->
+            </div>
+            <div class="text-center">
+                <ul class="social-links" *ngIf="!isEidAdha">
+                    <li><a href="https://twitter.com/waseelasp"><img src="./assets/ic-twitter.svg" alt="Twitter"></a></li>
+                    <li><a href="https://www.facebook.com/waseelASP"><img src="./assets/ic-facebook.svg" alt="Facebook"></a></li>
+                    <li><a href="https://instagram.com/waseelasp"><img src="./assets/ic-instagram.svg" alt="Instagram"></a></li>
+                    <li><a href="https://www.youtube.com/channel/UCPf6zNYQmbWxBWEVhgQDD7g"><img src="./assets/ic-youtube.svg" alt="YouTube"></a></li>
+                    <li><a href="https://www.linkedin.com/company/waseel-asp-ltd."><img src="./assets/ic-linkedin.svg" alt="Linkedin"></a></li>
+                </ul>
+                <p class="copyright">&copy; Copyright {{getYear()}} Waseel ASP LTD. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="right-block" [class.ramadan-poster]="isRamadan">
+            <ng-container *ngIf="!isRamadan && !isEidFitr && !isEidAdha && !isCloseToNationalDay()">
+                <img src="./assets/login-upper-art.svg" class="upper-art" alt="Abstract art" />
+                <div class="middle">
+                    <img src="./assets/logo.svg" alt="Waseel" class="logo" />
+                    <ul class="login-contact">
+                        <li>
+                            <span class="icon">
+                                <img src="./assets/ic-call-primary.svg" alt="Call" />
+                            </span>
+                            <span class="text">920012099</span>
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <img src="./assets/ic-mail-primary.svg" alt="Mail" />
+                            </span>
+                            <span class="text">customercare@waseel.com</span>
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <img src="./assets/ic-chat-primary.svg" alt="Chat" />
+                            </span>
+                            <span class="text">Instant Chat</span>
+                        </li>
+                    </ul>
+                </div>
+                <img src="./assets/login-lower-art.svg" class="lower-art" alt="Abstract art" />
+            </ng-container>
+            <ng-container *ngIf="isCloseToNationalDay()">
+                <img src="./assets/national-day-logos.svg" alt="Waseel Celebrating National Day" class="logos" />
+            </ng-container>
+            <ng-container *ngIf="isRamadan">
+                <img src="./assets/ramadan-artwork.svg" alt="Ramadan" class="artwork" />
+                <img src="./assets/logo.svg" alt="Waseel" class="logo" />
+                <p class="contact">customercare@waseel.com<br>9200 12099</p>
+            </ng-container>
+            <ng-container *ngIf="isEidFitr">
+                <img src="./assets/eid-top-artwork.svg" alt="Eid" class="top-artwork" />
+                <img src="./assets/logo-eid.svg" alt="Waseel" class="logo" />
+                <p class="contact">customercare@waseel.com<br>9200 12099</p>
+                <img src="./assets/eid-text-artwork.svg" alt="Eid" class="text-artwork" />
+                <img src="./assets/eid-bottom-artwork.svg" alt="Eid" class="bottom-artwork" />
+            </ng-container>
+            <ng-container *ngIf="isEidAdha">
+                <img src="./assets/eid-adha-left-top-corner.svg" class="left-top-art" alt="abstract art" />
+                <img src="./assets/eid-adha-right-top-corner.svg" class="right-top-art" alt="abstract art" />
+                <img src="./assets/eid-adha-art.svg" class="center-art" alt="abstract art" />
+                <img src="./assets/eid-adha-text.svg" class="text" alt="Eid Adha Mubarak" />
+                <img src="./assets/logo.svg" alt="Waseel" class="logo" />
+                <div class="bottom-section">
+                    <div class="contact">
+                        <span>Contact us</span>
+                        <p>customercare@waseel.com<br>9200 12099</p>
+                    </div>
+                    <div class="social-media">
+                        <span>Follow us on WaseelASP</span>
+                        <ul class="social-links">
+                            <li><a href="https://twitter.com/waseelasp"><img src="./assets/ic-twitter-primary.svg" alt="Twitter"></a></li>
+                            <li><a href="https://www.facebook.com/waseelASP"><img src="./assets/ic-facebook-primary.svg" alt="Facebook"></a></li>
+                            <li><a href="https://instagram.com/waseelasp"><img src="./assets/ic-instagram-primary.svg" alt="Instagram"></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCPf6zNYQmbWxBWEVhgQDD7g"><img src="./assets/ic-youtube-primary.svg" alt="YouTube"></a></li>
+                            <li><a href="https://www.linkedin.com/company/waseel-asp-ltd."><img src="./assets/ic-linkedin-primary.svg" alt="Linkedin"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+    </div>
+</div>
+<div class="global-loader" [class.visible]="isLoading">
+    <mat-spinner diameter="64"></mat-spinner>
+</div>

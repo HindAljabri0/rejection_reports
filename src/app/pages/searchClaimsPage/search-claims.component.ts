@@ -232,10 +232,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 patientFileNo: this.params.patientFileNo,
                 policyNo: this.params.policyNo,
                 payerId: this.params.payerId,
+                claimTypes:this.params.caseTypes,
                 organizationId: this.params.organizationId,
                 provClaimNum: this.params.claimRefNo,
                 toDate: this.params.to,
                 uploadId: this.params.uploadId,
+                casetype:this.params.caseTypes,
                 nationalId: this.params.nationalId,
                 statuses: ['All']
             }));

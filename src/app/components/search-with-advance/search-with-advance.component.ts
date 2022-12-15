@@ -9,6 +9,7 @@ import { Moment } from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Payer } from 'src/app/models/nphies/payer';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 
 
@@ -46,16 +47,16 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   selectedSearchMode = 'claimRefNo';
 
-  payers: { id: number, name: string }[]=[];
-  nphiesPayers: { id: number, name: string }[]=[];
-  tpas: { id: number, name: string }[]=[];
+  payers: { id: number, name: string }[] = [];
+  nphiesPayers: { id: number, name: string }[] = [];
+  tpas: { id: number, name: string }[] = [];
 
   casetypes: { value: string, name: string }[] = [
     { value: 'OUTPATIENT,INPATIENT', name: 'Any' },
     { value: 'OUTPATIENT', name: 'Outpatient' },
     { value: 'INPATIENT', name: 'Inpatient' },
   ];
-
+  claimTypes: { value: string, name: string }[] = this.sharedDataService.searchClaimTypeList;
 
 
   searchMode(isWassel: boolean) {
@@ -78,13 +79,14 @@ export class SearchWithAdvanceComponent implements OnInit {
   toDateHasError = false;
 
   payersList: Payer[] = [];
-
-  selectedPayerType = ''
+  selectedClaimType = null;
+  selectedPayerType = '';
 
   constructor(
     private router: Router,
     private routeActive: ActivatedRoute,
     private commen: SharedServices,
+    private sharedDataService: SharedDataService,
     private authService: AuthService) {
     this.authService.isUserNameUpdated.subscribe((isUpdated) => {
       if (isUpdated) {
@@ -130,6 +132,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   onNphiesPayerSelected(event) {
     this.selectedPayerType = 'N';
+    this.selectedClaimType=null;
     this.selectedPayer = { id: event.payer.code, name: event.payer.display };
     if (event.organization.code != '-1') {
       this.selectedTpa = { id: event.organization.code, name: event.organization.display };
@@ -137,6 +140,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.selectedTpa = this.selectedPayer;
       // this.selectedTpa = null;
     }
+
   }
 
 
@@ -163,17 +167,28 @@ export class SearchWithAdvanceComponent implements OnInit {
       }
       this.toDateHasError = false;
       let routes = [this.commen.providerId, 'claims'];
-
+      let queryParams = {
+        payerId: this.selectedSearchMode == 'tpa&date' ? null : this.selectedPayer.id,
+        organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
+        from: this.fromDateControl.value.format('DD-MM-yyyy'),
+        to: this.toDateControl.value.format('DD-MM-yyyy'),
+        caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
+        claimTypes:null
+      }
       if (!isWassel) {
         routes.push('nphies-search-claim')
-      }
-      this.router.navigate(routes, {
-        queryParams: {
+
+        queryParams = {
           payerId: this.selectedSearchMode == 'tpa&date' ? null : this.selectedPayer.id,
-          organizationId: this.selectedTpa != null? this.selectedTpa.id : null,
+          organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
-        },
+          caseTypes:null,
+          claimTypes: this.selectedClaimType != null ? this.selectedClaimType : null
+        }
+      }
+      this.router.navigate(routes, {
+        queryParams,
         fragment: 'reload'
       });
     } else {

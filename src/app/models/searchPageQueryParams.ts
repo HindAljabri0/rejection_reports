@@ -12,8 +12,9 @@ export class SearchPageQueryParams {
     from?: string;
     to?: string;
     payerId?: string;
+    claimTypes?: string;
     organizationId?: string
-    caseTypes?: string[];
+    caseTypes?: string;
     batchId?: string;
     uploadId?: string;
     claimRefNo?: string;
@@ -22,7 +23,7 @@ export class SearchPageQueryParams {
     patientFileNo?: string;
     policyNo?: string;
     nationalId?: string;
-    requestBundleId?:string
+    requestBundleId?: string
     filter_claimRefNo?: string;
     filter_memberId?: string;
     filter_patientFileNo?: string;
@@ -34,7 +35,7 @@ export class SearchPageQueryParams {
     status?: number;
     page?: number;
     size?: number;
-
+    netAmount? : string;
     static fromParams(params: Params): SearchPageQueryParams {
         let pageParams: SearchPageQueryParams = new SearchPageQueryParams();
 
@@ -48,12 +49,12 @@ export class SearchPageQueryParams {
         pageParams.from = params.from;
         pageParams.to = params.to;
         pageParams.payerId = params.payerId;
+        pageParams.claimTypes = params.claimTypes;
         pageParams.organizationId = params.organizationId;
         pageParams.batchId = params.batchId;
         pageParams.requestBundleId = params.requestBundleId;
         pageParams.uploadId = params.uploadId;
-        if (params.caseTypes != null)
-            pageParams.caseTypes = params.caseTypes.split(',');
+        pageParams.caseTypes = params.caseTypes;
         pageParams.claimId = params.claimId;
         pageParams.claimResponseId = params.claimResponseId;
         pageParams.claimRefNo = params.claimRefNo;
@@ -72,7 +73,7 @@ export class SearchPageQueryParams {
         pageParams.filter_memberId = params.filter_memberId;
         pageParams.filter_netAmount = params.filter_netAmount;
         pageParams.filter_patientFileNo = params.filter_patientFileNo;
-
+        
         return pageParams;
     }
 
@@ -81,12 +82,13 @@ export class SearchPageQueryParams {
 
         criteria.batchId = this.batchId;
         criteria.requestBundleId = this.requestBundleId;
-        criteria.casetype = this.caseTypes;
+        criteria.caseTypes = this.caseTypes;
         criteria.claimRefNo = this.claimRefNo;
         criteria.fromDate = this.from;
         criteria.toDate = this.to;
         criteria.invoiceNo = this.invoiceNo;
         criteria.payerId = this.payerId;
+
         criteria.organizationId = this.organizationId;
         criteria.policyNo = this.policyNo;
         criteria.uploadId = this.uploadId;
