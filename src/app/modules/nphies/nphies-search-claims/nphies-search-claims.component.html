@@ -87,6 +87,10 @@
           <button *ngIf="showInquireAll === true" (click)="inquireClaimByCriteria()" mat-flat-button color="primary">Inquire
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
 
+          <button *ngIf="showRevalidate === true" (click)="revalidateClaimsByCriteria()" mat-flat-button
+            color="primary">Revalidate
+            {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
+
           <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length > 0" (click)="generateAttachmentAll()" mat-flat-button color="primary">
             {{selectedClaims.length==0?"Generate Attachment All":"Generate Attachment ("+this.selectedClaims.length+")"}}
           </button>
