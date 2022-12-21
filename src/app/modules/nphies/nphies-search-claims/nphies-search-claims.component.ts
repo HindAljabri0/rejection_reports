@@ -1458,6 +1458,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['cancelled', 'rejected', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showRevalidate() {
+    return ['notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   openReasonModalMultiClaims() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
@@ -2030,6 +2034,70 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           }
         }
       }
+    });
+  }
+
+  revalidateClaimsByCriteria() {
+
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+
+    const model: any = {};
+    model.providerId = this.providerId;
+    model.selectedClaims = this.selectedClaims;
+    model.uploadId = this.params.uploadId;
+    model.claimRefNo = this.params.claimRefNo;
+    model.to = this.params.to;
+    model.payerIds = payerIds;
+    model.batchId = this.params.batchId;
+    model.memberId = this.params.memberId;
+    model.invoiceNo = this.params.invoiceNo;
+    model.patientFileNo = this.params.patientFileNo;
+    model.from = this.params.from;
+    model.nationalId = this.params.nationalId;
+    model.statuses = [];
+    model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+
+    this.commen.loadingChanged.next(true);
+
+    let action: any;
+    if (this.selectedClaims.length === 0) {
+      action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims,
+        model.uploadId, model.claimRefNo, model.to,
+        model.payerIds, model.batchId, model.memberId, model.invoiceNo,
+        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
+    } else {
+      action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims);
+    }
+
+    action.subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', body.message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status === 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+        } else if(errorEvent.status === 400){
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+        } else if(errorEvent.status === 500){
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+        } else {
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.message, true));
+        }
+      }
+      this.commen.loadingChanged.next(false);
     });
   }
 }
