@@ -72,13 +72,13 @@ export class LoginWithTokenComponent implements OnInit {
     }
 
     if (this.routeActive.snapshot.queryParams.access_token) {
-      this.login(this.routeActive.snapshot.queryParams.access_token);
+      this.login(this.routeActive.snapshot.queryParams.access_token,this.routeActive.snapshot.queryParams.feature);
     }
 
     this.document.documentElement.lang = this.locale;
   }
 
-  login(access_token) {
+  login(access_token, feature) {
     if (this.isLoading) {
       return;
     }
@@ -92,18 +92,25 @@ export class LoginWithTokenComponent implements OnInit {
 
     this.authService.loginWithToken(access_token).subscribe(event => {
       if (event instanceof HttpResponse) {
+        this.authService.setTokens(event.body);
         this.authService.isUserNameUpdated.subscribe(updated => {
+          var providerId=localStorage.getItem('provider_id');
+          console.log("PP :: "+providerId);
           if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {
             const lastVisitedPath = localStorage.getItem('lastVisitedPath');
             if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
               this.router.navigate(lastVisitedPath.split('/'));
-            } else {
+            } else if (feature=='credit') {
+              this.router.navigate(['/reports/creditReports']);
+            }else if (feature=='gss' && providerId!=undefined) {
+              this.router.navigate(['/'+providerId+'/reports/general-summary-statement-report']);
+            }else{
               this.router.navigate(['/']);
             }
             this.isLoading = false;
           }
         });
-        this.authService.setTokens(event.body);
+        
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
