@@ -1461,6 +1461,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       model.patientFileNo = this.params.patientFileNo;
       model.from = this.params.from;
       model.nationalId = this.params.nationalId;
+      model.requestBundleId = this.params.requestBundleId;
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
