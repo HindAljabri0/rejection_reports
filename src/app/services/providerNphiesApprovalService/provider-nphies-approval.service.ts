@@ -335,7 +335,8 @@ export class ProviderNphiesApprovalService {
     claimDate?: string,
     documentId?: string,
     statuses?: string[],
-    organizationId?: string
+    organizationId?: string,
+    requestBundleId?:string
   ) {
 
     let requestURL = `/providers/${providerId}/approval/cancelAll/request?`;
@@ -395,7 +396,9 @@ export class ProviderNphiesApprovalService {
     if (organizationId) {
       requestURL += `&organizationId=${organizationId}`;
     }
-
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
+    }
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
