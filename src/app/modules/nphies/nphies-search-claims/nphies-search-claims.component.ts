@@ -358,8 +358,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
 
-    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
-
+    this.claimSearchCriteriaModel.memberId =  this.params.memberId;
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
@@ -1487,6 +1486,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       model.claimTypes = this.params.claimTypes,
       model.from = this.params.from;
       model.nationalId = this.params.nationalId;
+      model.requestBundleId = this.params.requestBundleId;
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
