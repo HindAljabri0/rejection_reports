@@ -891,5 +891,9 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
-
+  cancelPreviousClaim(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/claim/old/cancel`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
 }
