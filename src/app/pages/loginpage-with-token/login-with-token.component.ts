@@ -61,8 +61,10 @@ export class LoginWithTokenComponent implements OnInit {
       });
     });
     if (this.authService.loggedIn) {
-      this.router.navigate(['/']);
+      //this.router.navigate(['/']);
+      this.authService.logoutWithToken(false, true);
     }
+    
   }
 
   ngOnInit() {
