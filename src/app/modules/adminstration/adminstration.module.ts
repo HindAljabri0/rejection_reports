@@ -17,6 +17,7 @@ import { TransactionsLogComponent } from './transactions-log/transactions-log.co
 import { CertificateConfigurationComponent } from 'src/app/pages/certificate-configuration/certificate-configuration.component';
 import { CreateProviderComponent } from './create-provider/create-provider.component';
 import { NphiesAttachmentConfigurationComponent } from 'src/app/pages/nphies-attachment-configuration/nphies-attachment-configuration.component';
+import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-previous-claim.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NphiesAttachmentConfigurationComponent } from 'src/app/pages/nphies-att
     SwitchProviderComponentComponent,
     TransactionsLogComponent,
     CreateProviderComponent,
-    NphiesAttachmentConfigurationComponent
+    NphiesAttachmentConfigurationComponent,
+    CancelPreviousClaimComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -42,7 +44,8 @@ import { NphiesAttachmentConfigurationComponent } from 'src/app/pages/nphies-att
       { path: 'switch-provider', component: SwitchProviderComponentComponent },
       { path: 'config/providerCertificate', component: CertificateConfigurationComponent },
       { path: 'config/createProvider', component: CreateProviderComponent },
-      { path: 'config/nphies-attachment-configuration', component: NphiesAttachmentConfigurationComponent }
+      { path: 'config/nphies-attachment-configuration', component: NphiesAttachmentConfigurationComponent },
+      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent }
     ]),
     CommonModule,
     MaterialModule,

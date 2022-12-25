@@ -352,7 +352,8 @@ export class ProviderNphiesApprovalService {
     netAmount? : string,
     documentId?: string,
     statuses?: string[],
-    organizationId?: string
+    organizationId?: string,
+    requestBundleId?:string
   ) {
 
     let requestURL = `/providers/${providerId}/approval/cancelAll/request?`;
@@ -418,7 +419,9 @@ export class ProviderNphiesApprovalService {
     if (netAmount) {
       requestURL += `&netAmount=${netAmount}`;
     }
-
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
+    }
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
@@ -891,5 +894,9 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
-
+  cancelPreviousClaim(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/claim/old/cancel`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
 }
