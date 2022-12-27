@@ -137,6 +137,7 @@ export class TawuniyaGssReportDetailsComponent implements OnInit, OnDestroy {
     this.tawuniyaGssService.generateReportInitiate(this.lossMonth).subscribe(data => {
       this.gssReportResponse = data;
       this.sharedServices.loadingChanged.next(false);
+      this.dialogService.openMessageDialog(new MessageDialogData("", "GSS Report Regenerated Successfully!", false));
     }, err => {
       this.sharedServices.loadingChanged.next(false);
       if (err && err.error && err.error.message) {
