@@ -1912,7 +1912,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       payerIds.push(this.params.payerId);
     }
     this.setFilterData();
-    const status =  this.summaries[this.selectedCardKey].statuses;
+    const status =  [...this.summaries[this.selectedCardKey].statuses];
+    if (status.includes('RETURNED')) {
+      const index = status.findIndex(x => x === 'RETURNED');
+      status.splice(index, 1);
+    }
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.moveToReadyState(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
@@ -1948,6 +1952,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           }
         }
+        this.params.claimRefNo = null;
+        this.params.memberId = null;
+        this.params.patientFileNo = null;
       }
     });
   }
@@ -1996,6 +2003,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           }
         }
+        this.params.claimRefNo = null;
+        this.params.memberId = null;
+        this.params.patientFileNo = null;
       }
       this.deSelectAll();
     });
