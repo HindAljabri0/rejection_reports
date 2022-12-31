@@ -358,6 +358,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
 
     this.Items = this.data.items;
+    
     this.setBeneficiary(this.data);
   }
 
@@ -995,9 +996,9 @@ export class AddPreauthorizationComponent implements OnInit {
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
       beneficiaryDob: this.selectedBeneficiary.dob,
       tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
-      providerType: this.providerType
+      providerType: this.providerType,      
     };
-
+    
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {

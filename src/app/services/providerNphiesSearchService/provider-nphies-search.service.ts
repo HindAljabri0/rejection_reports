@@ -224,6 +224,9 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.payerIds != null) {
       requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
     }
+    if (claimSearchCriteriaModel.claimTypes != null) {
+      requestURL += `&claimTypes=${claimSearchCriteriaModel.claimTypes}`;
+    }
     if (claimSearchCriteriaModel.batchId != null) {
       requestURL += `&batchId=${claimSearchCriteriaModel.batchId}`;
     }
@@ -291,6 +294,9 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.documentId != null) {
       requestURL += `&documentId=${claimSearchCriteriaModel.documentId}`;
     }
+    if (claimSearchCriteriaModel.netAmount != null) {
+      requestURL += `&netAmount=${claimSearchCriteriaModel.netAmount}`;
+    }
     if (claimSearchCriteriaModel.organizationId) {
       requestURL += `&organizationId=${claimSearchCriteriaModel.organizationId}`;
     }
@@ -299,6 +305,9 @@ export class ProviderNphiesSearchService {
     }
     if (claimSearchCriteriaModel.claimSubTypes != null) {
       requestURL += `&claimSubTypes=${claimSearchCriteriaModel.claimSubTypes}`;
+    }
+    if (claimSearchCriteriaModel.claimTypes != null) {
+      requestURL += `&claimTypes=${claimSearchCriteriaModel.claimTypes}`;
     }
     if (claimSearchCriteriaModel.provderClaimReferenceNumber != null) {
       requestURL += `&provderClaimReferenceNumber=${claimSearchCriteriaModel.provderClaimReferenceNumber}`;
