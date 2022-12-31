@@ -39,10 +39,10 @@ export class SettingsService {
   }
 
   // getSaveCertificateFileToProvider(providerId: any, file: File, item:CertificateConfigurationProvider) {
-    getSaveCertificateFileToProvider(providerId: any, file: File,password:string) {
+  getSaveCertificateFileToProvider(providerId: any, file: File, password: string, expiryDate) {
     const formdata: FormData = new FormData();
     formdata.append('uploadFile', file, file.name);
-    const requestURL = `/providers/${providerId}/addFile?password=${password}`;
+    const requestURL = `/providers/${providerId}/addFile?password=${password}&expiryDate=${expiryDate}`;
     const req = new HttpRequest('POST', environment.settingsServiceHost + requestURL, formdata, {
       reportProgress: true,
       responseType: 'text'
@@ -51,7 +51,7 @@ export class SettingsService {
 
   }
   getDetails(providerId: any) {
-    const requestURL =`/providers/${providerId}/details`;
+    const requestURL = `/providers/${providerId}/details`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.httpClient.request(request);
   }
@@ -90,9 +90,14 @@ export class SettingsService {
   }
 
   getNphiesAttachmentConfigDetails(providerId: any) {
-    const requestURL =`/providers/${providerId}/nphies/attachment-config`;
+    const requestURL = `/providers/${providerId}/nphies/attachment-config`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.httpClient.request(request);
   }
 
+  checkCertificateExpiry(providerId: any) {
+    const requestURL = `/providers/${providerId}/check/certificate-expiry`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.httpClient.request(request);
+  }
 }

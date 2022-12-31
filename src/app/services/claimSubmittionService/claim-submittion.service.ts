@@ -24,7 +24,7 @@ export class ClaimSubmittionService {
     organizationId?: string,
     batchId?: string,
     uploadId?: string,
-    casetype?: string[],
+    casetype?: string,
     claimIds?: string[],
     claimRefNo?: string,
     memberId?: string,
@@ -69,7 +69,7 @@ export class ClaimSubmittionService {
       requestURL += `&nationalId=${nationalId}`;
     }
     if (casetype != null && casetype.length > 0) {
-      requestURL += `&casetype=${casetype.join(',')}`;
+      requestURL += `&casetype=${casetype}`;
     }
     if (claimIds != null && claimIds.length > 0) {
       requestURL += `&claimIds=${claimIds.join(',')}`;
