@@ -188,7 +188,7 @@
                   <ng-container *ngIf="transaction.status != 'cancelled'">
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item
-                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' || transaction.status === 'pended' || transaction.status === 'not-required'"
+                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial'  || transaction.status === 'not-required'"
                         (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                         <mat-icon class="material-icons-outlined">replay</mat-icon>
                         <span>Follow Up/Add Related</span>

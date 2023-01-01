@@ -58,7 +58,7 @@ export class TawuniyaGssComponent implements OnInit {
   private handleInitRequest(lossMonth) {
     this.sharedServices.loadingChanged.next(true);
     this.tawuniyaGssService.generateReportInitiate(lossMonth).subscribe((gssReportResponse: GssReportResponse) => {
-    this.sharedServices.loadingChanged.next(false);
+      this.sharedServices.loadingChanged.next(false);
       this.handleGssReportResponse(gssReportResponse, false)
     }, err => {
       this.sharedServices.loadingChanged.next(false);
@@ -87,12 +87,11 @@ export class TawuniyaGssComponent implements OnInit {
       })
     } else {
       if (isInquiry) {
-        this.router.navigate([encodeURIComponent(gssReportResponse.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute, queryParams: { inquiry: 'true' } });
+        this.router.navigate([encodeURIComponent(gssReportResponse.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute, queryParams: { inquiry: 'true', lossMonth: encodeURIComponent(gssReportResponse.lossMonth) } });
         this.sharedServices.loadingChanged.next(false);
       } else {
         this.router.navigate([encodeURIComponent(gssReportResponse.gssReferenceNumber), "report-details"], { relativeTo: this.activatedRoute, queryParams: { lossMonth: encodeURIComponent(gssReportResponse.lossMonth) } });
       }
-
     }
   }
 

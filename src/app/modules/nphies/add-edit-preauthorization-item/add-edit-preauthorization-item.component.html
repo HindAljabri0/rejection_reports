@@ -133,7 +133,7 @@
                   <owl-date-time #startDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [owlDateTime]="startDate" class="form-control" placeholder="Select service start date" [max]="FormItem.controls.endDate.value" formControlName="startDate">
+              <input [owlDateTime]="startDate"  class="form-control" placeholder="Select service start date" [max]="FormItem.controls.endDate.value" formControlName="startDate">
                   <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
                   <owl-date-time #startDate ></owl-date-time>
             </ng-container>
@@ -167,9 +167,9 @@
                   <owl-date-time #endDate></owl-date-time>
             </ng-container>
             <ng-container *ngIf="data.source === 'APPROVAL'">
-              <input [owlDateTime]="endDate" class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value">
-              <mat-datepicker-toggle [owlDateTimeTrigger]="endDate"></mat-datepicker-toggle>
-              <owl-date-time #endDate></owl-date-time>
+              <input [owlDateTime]="endDate"  class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value">
+              <mat-datepicker-toggle [owlDateTimeTrigger]="endDate" ></mat-datepicker-toggle>
+              <owl-date-time #endDate ></owl-date-time>
               <!--[max]="today" [min]="data.dateOrdered"-->
             </ng-container>
 
