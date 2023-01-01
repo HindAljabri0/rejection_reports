@@ -358,6 +358,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
 
     this.Items = this.data.items;
+
     this.setBeneficiary(this.data);
   }
 
@@ -995,7 +996,7 @@ export class AddPreauthorizationComponent implements OnInit {
       IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
       beneficiaryDob: this.selectedBeneficiary.dob,
       tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
-      providerType: this.providerType
+      providerType: this.providerType,
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -1579,8 +1580,8 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    this.providerType = this.providerType == null || this.providerType == ""  ? 'any' : this.providerType;
-      if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
+    this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
+    if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
       const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
       const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
       const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
@@ -2042,7 +2043,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 if (body.transactionId) {
                   this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
                 } else {
-                  this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+                  this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null);
                 }
 
               } else {
@@ -2062,7 +2063,9 @@ export class AddPreauthorizationComponent implements OnInit {
           if (error.status === 400) {
             //this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
             this.dialogService.showMessageObservable(error.error.message, '', 'alert', true, 'OK', error.error.errors, true).subscribe(res => {
-              this.reset();
+              if (this.claimReuseId) {
+                this.reset();
+              }
               this.getProviderTypeConfiguration();
             });
           } else if (error.status === 404) {
@@ -2240,7 +2243,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
-    
+
     if (nameTPA.display != 'None') {
       return nameTPA.display;
     }

@@ -137,17 +137,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100, 500, 1000];
   showFirstLastButtons = true;
-  allFilters: any = [
-    { key: 'CLAIMDATE', value: 'claimDate' },
-    { key: 'CLAIMREFNO', value: 'claimRefNO' },
-    { key: 'DR_NAME', value: 'drName' },
-    { key: 'MEMBERID', value: 'memberID' },
-    { key: 'NATIONALID', value: 'nationalId' },
-    { key: 'PATIENTFILENO', value: 'patientFileNO' },
-    { key: 'CLAIMNET', value: 'netAmount' },
-    { key: 'BATCHNUM', value: 'batchNo' },
-  ];
-  appliedFilters: any = [];
+   allFilters: any = [
+        { key: 'CLAIMDATE', value: 'claimDate' },
+        { key: 'CLAIMREFNO', value: 'claimRefNO' },
+        //{ key: 'DR_NAME', value: 'drName' },
+        { key: 'MEMBERID', value: 'memberID' },
+        { key: 'NATIONALID', value: 'nationalId' },
+        { key: 'PATIENTFILENO', value: 'patientFileNO' },
+        { key: 'CLAIMNET', value: 'netAmount' },
+        //{ key: 'BATCHNUM', value: 'batchNo' },
+    ];
+    appliedFilters: any = [];
 
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
@@ -231,6 +231,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         patientFileNo: this.params.patientFileNo,
         policyNo: this.params.policyNo,
         payerId: this.params.payerId,
+        claimTypes : this.params.claimTypes,
         organizationId: this.params.organizationId,
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
@@ -345,6 +346,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
 
+    this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
+
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
 
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
@@ -355,8 +358,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
 
-    this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
-
+    this.claimSearchCriteriaModel.memberId =  this.params.memberId;
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
@@ -479,21 +481,22 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.page = this.pageIndex;
     this.claimSearchCriteriaModel.pageSize = this.pageSize;
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
+    this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
-    this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
-    this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
+    this.claimSearchCriteriaModel.netAmount =this.params.filter_netAmount;
+    this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate ||  this.params.from;
+    this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.filter_claimRefNo ||this.params.claimRefNo;
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
-    this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
+    this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo|| this.params.filter_patientFileNo;
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
-    this.claimSearchCriteriaModel.documentId = this.params.nationalId;
+    this.claimSearchCriteriaModel.documentId = this.params.nationalId || this.params.filter_nationalId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
 
-    this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
-
+    //alert(JSON.stringify(this.claimSearchCriteriaModel));
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
     ).subscribe((event) => {
 
@@ -642,12 +645,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
     }
+    this.setFilterData();
     const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, this.params.requestBundleId,status
+      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId,status
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -678,7 +682,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
   }
-
+  setFilterData(){
+    this.params.claimRefNo = this.params.filter_claimRefNo ? this.params.filter_claimRefNo : this.params.claimRefNo;
+    this.params.memberId = this.params.filter_memberId ? this.params.filter_memberId : this.params.memberId;
+    this.params.patientFileNo = this.params.filter_patientFileNo ? this.params.filter_patientFileNo :this.params.patientFileNo;
+    this.params.nationalId  = this.params.filter_nationalId ? this.params.filter_nationalId : this.params.nationalId;
+    this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate :this.params.from;
+    this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
+  }
   get hasData() {
     this.extraNumbers = new Array();
     this.extraCards = 6 - this.summaries.length;
@@ -1078,30 +1089,38 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         switch (findKey.key) {
           case ClaimListFilterSelection.MEMBERID:
             this.params.filter_memberId = this.claimList.memberID;
+            delete this.params.filter_memberId;
             break;
           case ClaimListFilterSelection.PATIENTFILENO:
             this.params.filter_patientFileNo = this.claimList.patientFileNO;
+            delete this.params.filter_patientFileNo;
             break;
           case ClaimListFilterSelection.DR_NAME:
             this.params.filter_drName = this.claimList.drName;
+            delete this.params.filter_drName;
             break;
           case ClaimListFilterSelection.NATIONALID:
             this.params.filter_nationalId = this.claimList.nationalId;
+            delete this.params.filter_nationalId;
             break;
           case ClaimListFilterSelection.CLAIMDATE:
             const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
               this.claimList.claimDate !== '' &&
               typeof this.claimList.claimDate !== 'string' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
             this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
+            delete this.params.filter_claimDate;
             break;
           case ClaimListFilterSelection.CLAIMREFNO:
             this.params.filter_claimRefNo = this.claimList.claimRefNO;
+            delete this.params.filter_claimRefNo;
             break;
           case ClaimListFilterSelection.CLAIMNET:
             this.params.filter_netAmount = this.claimList.netAmount;
+            delete this.params.filter_netAmount;
             break;
           case ClaimListFilterSelection.BATCHNUM:
             this.params.filter_batchNum = this.claimList.batchNo;
+            delete this.params.filter_batchNum;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1438,6 +1457,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['cancelled', 'rejected', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showRevalidate() {
+    return ['notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   openReasonModalMultiClaims() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
@@ -1447,7 +1470,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       if (this.params.payerId) {
         payerIds.push(this.params.payerId);
       }
-
+      this.setFilterData();
       const model: any = {};
       model.providerId = this.providerId;
       model.selectedClaims = this.selectedClaims;
@@ -1459,8 +1482,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       model.memberId = this.params.memberId;
       model.invoiceNo = this.params.invoiceNo;
       model.patientFileNo = this.params.patientFileNo;
+      model.netAmount = this.params.netAmount,
+      model.claimTypes = this.params.claimTypes,
       model.from = this.params.from;
       model.nationalId = this.params.nationalId;
+      model.requestBundleId = this.params.requestBundleId;
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
@@ -1556,6 +1582,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   deleteClaimByCriteria() {
     // tslint:disable-next-line:max-line-length
+    this.setFilterData();
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Claims?',
         // tslint:disable-next-line:max-line-length
@@ -1570,7 +1597,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-            this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId 
+            this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId 
           ).subscribe(event => {
               if (event instanceof HttpResponse) {
 
@@ -1634,7 +1661,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   inquireClaimByCriteria() {
-
+    this.setFilterData();
     const payerIds: string[] = [];
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
@@ -1653,6 +1680,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     model.patientFileNo = this.params.patientFileNo;
     model.from = this.params.from;
     model.nationalId = this.params.nationalId;
+    model.netAmount = this.params.netAmount;
+    model.claimTypes = this.params.claimTypes;
     model.statuses = [];
     model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
 
@@ -1663,7 +1692,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
+        model.patientFileNo, model.from,model.claimTypes,model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
     } else {
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
     }
@@ -1712,6 +1741,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   allGenerateAttachment(attachmentStatus: string = null) {
+    this.setFilterData();
     if (this.commen.loading) {
       return;
     }
@@ -1723,7 +1753,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
@@ -1813,6 +1843,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   applyPBMValidation() {
+    this.setFilterData();
     this.commen.loadingChanged.next(true);
     const payerIds: string[] = [];
     if (this.params.payerId) {
@@ -1824,7 +1855,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.PBMValidation(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId).subscribe(event => {
+      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
           if (event.body['status'] === 'Success') {
@@ -1880,12 +1911,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     if (this.params.payerId) {
       payerIds.push(this.params.payerId);
     }
-    const status =  this.summaries[this.selectedCardKey].statuses;
+    this.setFilterData();
+    const status =  [...this.summaries[this.selectedCardKey].statuses];
+    if (status.includes('RETURNED')) {
+      const index = status.findIndex(x => x === 'RETURNED');
+      status.splice(index, 1);
+    }
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.moveToReadyState(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -1916,6 +1952,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           }
         }
+        this.params.claimRefNo = null;
+        this.params.memberId = null;
+        this.params.patientFileNo = null;
       }
     });
   }
@@ -1964,6 +2003,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           }
         }
+        this.params.claimRefNo = null;
+        this.params.memberId = null;
+        this.params.patientFileNo = null;
       }
       this.deSelectAll();
     });
@@ -2002,6 +2044,70 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           }
         }
       }
+    });
+  }
+
+  revalidateClaimsByCriteria() {
+
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+
+    const model: any = {};
+    model.providerId = this.providerId;
+    model.selectedClaims = this.selectedClaims;
+    model.uploadId = this.params.uploadId;
+    model.claimRefNo = this.params.claimRefNo;
+    model.to = this.params.to;
+    model.payerIds = payerIds;
+    model.batchId = this.params.batchId;
+    model.memberId = this.params.memberId;
+    model.invoiceNo = this.params.invoiceNo;
+    model.patientFileNo = this.params.patientFileNo;
+    model.from = this.params.from;
+    model.nationalId = this.params.nationalId;
+    model.statuses = [];
+    model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+
+    this.commen.loadingChanged.next(true);
+
+    let action: any;
+    if (this.selectedClaims.length === 0) {
+      action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims,
+        model.uploadId, model.claimRefNo, model.to,
+        model.payerIds, model.batchId, model.memberId, model.invoiceNo,
+        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
+    } else {
+      action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims);
+    }
+
+    action.subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', body.message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status === 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+        } else if(errorEvent.status === 400){
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+        } else if(errorEvent.status === 500){
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+        } else {
+          this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.message, true));
+        }
+      }
+      this.commen.loadingChanged.next(false);
     });
   }
 }

@@ -20,15 +20,26 @@
           </mat-option>
         </mat-autocomplete>
       </div>
-      <h5 class="medium pb-2">Step 2: Enter Password</h5>
-      <div class="form-group">
-        <input type="password" class="form-control ltr auto-complete-off" placeholder="Enter Password" [(ngModel)]="certificateConfigurationProvider.password"
-          name="certificateConfigurationProvider.password" autocomplete="new-password" [disabled]="(!notEditMode && !isEdit)" />
-
+      <div class="row">
+        <div class="col-6">
+          <h5 class="medium pb-2">Step 2: Enter Password</h5>
+          <div class="form-group">
+            <input type="password" class="form-control ltr auto-complete-off" placeholder="Enter Password" [(ngModel)]="certificateConfigurationProvider.password"
+              name="certificateConfigurationProvider.password" autocomplete="new-password" [disabled]="(!notEditMode && !isEdit)" />
+          </div>
+        </div>
+        <div class="col-6">
+          <h5 class="medium pb-2">Step 3: Enter Expiry Date</h5>
+          <div class="form-group">
+            <div class="date-picker">
+              <input type="datetime-local" class="form-control" placeholder="Select Expiry date" [min]="minDate"
+                [(ngModel)]="certificateConfigurationProvider.expiryDate" [disabled]="(!notEditMode && !isEdit)">
+            </div>
+          </div>
+        </div>
       </div>
 
-
-      <h5 class="medium pb-2 pt-2">Step 3: Upload P12 File</h5>
+      <h5 class="medium pb-2 pt-2">Step 4: Upload P12 File</h5>
       <div class="custom-file-upload" [class.disabled]="selectedProvider===undefined  || (!notEditMode && !isEdit)">
         <div class="content" *ngIf="!isFileUploded">
           <img src="./assets/ic-upload.svg" alt="Upload" />
