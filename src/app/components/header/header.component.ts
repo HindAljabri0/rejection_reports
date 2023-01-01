@@ -86,9 +86,9 @@ export class HeaderComponent implements OnInit {
 
         this.getUserData();
 
-        if (!this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin &&
+        if (//!this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin &&
             !this.userPrivileges.ProviderPrivileges.RCM.isAdmin &&
-            !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin &&
+            //!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin &&
             !this.userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin &&
             !this.userPrivileges.WaseelPrivileges.RCM.isAdmin) {
             this.sharedServices.getProcessedCount();

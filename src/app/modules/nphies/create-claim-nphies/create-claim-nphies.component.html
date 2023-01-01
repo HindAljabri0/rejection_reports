@@ -1399,7 +1399,7 @@
     </mat-tab>
 
     <mat-tab
-      *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled'"
+      *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled' || otherDataModel.statusCode === 'error'"
       [label]="'JSON'">
       <ng-template matTabContent>
         <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
@@ -3117,7 +3117,7 @@
         </mat-tab>
 
         <mat-tab
-          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled'"
+          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled' || otherDataModel.statusCode === 'error'" 
           [label]="'JSON'">
           <ng-template matTabContent>
             <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
