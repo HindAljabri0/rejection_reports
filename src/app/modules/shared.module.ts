@@ -14,6 +14,7 @@ import { ManageSupportingInfoComponent } from './nphies/add-preauthorization/man
 import { ManageDiagnosisComponent } from './nphies/manage-diagnosis/manage-diagnosis.component';
 import { ManageCareTeamComponent } from './nphies/manage-care-team/manage-care-team.component';
 import { DragdropDirective } from '../pages/claimUploadignPage/claimfileupload/dragdrop.directive';
+import { FeedbackRatingComponent } from '../components/reusables/feedback-rating/feedback-rating.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DragdropDirective } from '../pages/claimUploadignPage/claimfileupload/d
     ManageSupportingInfoComponent,
     ManageDiagnosisComponent,
     ManageCareTeamComponent,
-    DragdropDirective
+    DragdropDirective,
+    FeedbackRatingComponent
   ],
   imports: [
     MaterialModule,
@@ -47,7 +49,8 @@ import { DragdropDirective } from '../pages/claimUploadignPage/claimfileupload/d
     ManageSupportingInfoComponent,
     ManageDiagnosisComponent,
     ManageCareTeamComponent,
-    DragdropDirective
+    DragdropDirective,
+    FeedbackRatingComponent
   ]
 })
 export class SharedModule { }
