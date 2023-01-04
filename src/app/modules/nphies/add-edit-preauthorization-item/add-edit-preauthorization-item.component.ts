@@ -664,7 +664,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.payerShare.setValue(0);
     }
   }
-
   Calculate(value) {
 
     switch (value) {

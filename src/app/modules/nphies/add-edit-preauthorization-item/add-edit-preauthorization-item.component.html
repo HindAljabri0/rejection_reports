@@ -332,7 +332,7 @@
               <label class="control-label">Quantity <span class="asterisk">*</span></label>
               <div class="row extra-small-gutter">
                 <div class="col">
-                  <input type="number" class="form-control"  placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Quantity')" appTwoDigitDecimaNumber>
+                  <input type="text" class="form-control"  placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Quantity')" appTwoDigitDecimaNumber>
                 </div>
                 <div *ngIf="showQuantityCode" class="col-auto">
                   <mat-form-field class="form-control custom-select-control">
@@ -359,7 +359,7 @@
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('unitPrice').touched) && FormItem.get('unitPrice').hasError('required')}">
               <label class="control-label">Unit Price<span class="asterisk">*</span></label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter unit price" formControlName="unitPrice" (blur)="Calculate('UitPrice')" appTwoDigitDecimaNumber>
+                <input type="text" class="form-control" placeholder="Enter unit price" formControlName="unitPrice" (blur)="Calculate('UitPrice')" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -395,7 +395,7 @@
             <div class="form-group">
               <label class="control-label">Discount Amount</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter discount" formControlName="discount" (blur)="Calculate('Discount')" appTwoDigitDecimaNumber>
+                <input type="text" class="form-control" placeholder="Enter discount" formControlName="discount" (blur)="Calculate('Discount')" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -406,7 +406,7 @@
             <div class="form-group">
               <label class="control-label">Patient Share (%)</label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientSharePercent" (blur)="Calculate('PatientShare')" appTwoDigitDecimaNumber>
+                <input type="text" class="form-control" placeholder="Enter patient share" formControlName="patientSharePercent" (blur)="Calculate('PatientShare')" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
                   <span class="input-group-text">%</span>
                 </span>
@@ -427,7 +427,7 @@
                 </span>
               </label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('Tax')" appTwoDigitDecimaNumber>
+                <input type="text" class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('Tax')" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -443,7 +443,7 @@
                   <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info</mat-icon>
                 </span>
               </label>
-              <input class="form-control" placeholder="Enter factor" formControlName="factor" (blur)="Calculate('Factor')" appTwoDigitDecimaNumber>
+              <input class="form-control" placeholder="Enter factor" formControlName="factor" (blur)="Calculate('Factor')">
               <div *ngIf="(isSubmitted || FormItem.get('factor').touched) && FormItem.get('factor').hasError('min')">
                 <span class="error-text">Factor must be greater than or equal to 0</span>
               </div>
@@ -477,7 +477,7 @@
                 </span>
               </label>
               <div class="input-group">
-                <input type="number" class="form-control" placeholder="Enter patient share" formControlName="patientShare" appTwoDigitDecimaNumber>
+                <input type="text" class="form-control" placeholder="Enter patient share" formControlName="patientShare" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
@@ -488,7 +488,7 @@
             <div class="form-group">
               <label class="control-label">Payer Share</label>
               <div class="input-group">
-                <input class="form-control" type="number" placeholder="Enter payer share" formControlName="payerShare" appTwoDigitDecimaNumber>
+                <input class="form-control" type="text" placeholder="Enter payer share" formControlName="payerShare" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
                   <span class="input-group-text">SR</span>
                 </span>
