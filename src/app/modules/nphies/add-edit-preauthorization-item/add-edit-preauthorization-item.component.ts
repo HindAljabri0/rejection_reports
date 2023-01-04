@@ -87,6 +87,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   today: Date;
   loadSearchItem = false;
+
   constructor(
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
@@ -95,6 +96,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.today = new Date();
     this.today.setSeconds(0, 0);
   }
+  
 
   ngOnInit() {
     if (this.data.providerType === 'vision' && !this.data.item) {
@@ -156,7 +158,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     if (this.data.item) {
       if (this.data.source === 'APPROVAL') {
-        if (this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
+        if (this.data.item.itemDecision && this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
           this.FormItem.controls.startDate.disable();
           this.FormItem.controls.endDate.disable();
         }

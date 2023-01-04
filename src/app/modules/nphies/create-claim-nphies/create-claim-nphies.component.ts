@@ -1223,7 +1223,13 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     }
   }
-
+  SetToMax(data) {
+    const ChosenDate= new Date(data);
+    const OrderDate= new Date(this.FormNphiesClaim.controls.dateOrdered.value);
+    if (ChosenDate > OrderDate) {
+      this.FormNphiesClaim.controls.dateWritten.setValue(this.FormNphiesClaim.controls.dateOrdered.value);
+    }
+  }
   // checkItemsCodeForSupportingInfo() {
   //   // tslint:disable-next-line:max-line-length
   //   if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {

@@ -2095,7 +2095,13 @@ export class AddPreauthorizationComponent implements OnInit {
       });
     }
   }
-
+  SetToMax(data) {
+    const ChosenDate= new Date(data);
+    const OrderDate= new Date(this.FormPreAuthorization.controls.dateOrdered.value);
+    if (ChosenDate > OrderDate) {
+      this.FormPreAuthorization.controls.dateWritten.setValue(this.FormPreAuthorization.controls.dateOrdered.value);
+    }
+  }
   getTransactionDetails(requestId = null, responseId = null) {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
