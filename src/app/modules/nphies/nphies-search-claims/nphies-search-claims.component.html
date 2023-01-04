@@ -391,7 +391,7 @@
                     </td>
 
                     <td *ngIf="showInquireAll === true" class="actions text-center">
-                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'not_done' ? 'theme-primary' : (claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : ''))"
+                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'not_done' ? 'theme-inquiry-delay' : (claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : ''))"
                         [matTooltip]="claim.inquiryStatus === 'not_done' ? claim.inquiryDesc : (claim.inquiryStatus === 'failed' ? 'Failed' : (claim.inquiryStatus === 'passed' ? 'Passed' : 'Get latest claim response from NPHIES queue'))">I</span>
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
