@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ofType } from '@ngrx/effects';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -13,7 +14,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class CancelPreviousClaimComponent implements OnInit {
   submitted = false;
-  probiderCCHI = '';
+  providerCHHI = '';
   providers: any[] = [];
   filteredProviders: any[] = [];
   selectedProvider: string;
@@ -25,7 +26,8 @@ export class CancelPreviousClaimComponent implements OnInit {
 
   CancellClaimForm: FormGroup;
 
-  constructor(private sharedServices: SharedServices, private superAdmin: SuperAdminService, private formBuilder: FormBuilder, private providerNphiesApprovalService: ProviderNphiesApprovalService) { }
+  constructor(private sharedServices: SharedServices, private superAdmin: SuperAdminService, private formBuilder: FormBuilder, 
+    private providerNphiesApprovalService: ProviderNphiesApprovalService,   private dialogService: DialogService,) { }
 
   ngOnInit() {
 
@@ -70,14 +72,14 @@ export class CancelPreviousClaimComponent implements OnInit {
   selectProvider(providerId: string = null, cchi_ID: string = null) {
     if (providerId !== null) {
       this.selectedProvider = providerId;
-      this.probiderCCHI = cchi_ID;
+      this.providerCHHI = cchi_ID;
     } else {
       // tslint:disable-next-line:no-shadowed-variable
       const providerId = this.CancellClaimForm.controls.providerId.value.split('|')[0].trim();
-      this.probiderCCHI = this.CancellClaimForm.controls.providerId.value.split('|')[3].trim();
+      this.providerCHHI = this.CancellClaimForm.controls.providerId.value.split('|')[3].trim();
       this.selectedProvider = providerId;
 
-      console.log(this.probiderCCHI);
+      console.log(this.providerCHHI);
     }
   }
 
@@ -85,9 +87,12 @@ export class CancelPreviousClaimComponent implements OnInit {
     return this.sharedServices.loading;
   }
   cancellClaim() {
-    console.log(this.probiderCCHI)
+    console.log(this.providerCHHI)
     this.submitted = true
     if (this.CancellClaimForm.valid && this.selectedPayer != null) {
+      this.sharedServices.loadingChanged.next(true);
+     
+    this.providerLoader = true;
       const body = {
 
         "claimIdentifier": this.CancellClaimForm.controls.claimIdentifier.value,
@@ -96,16 +101,27 @@ export class CancelPreviousClaimComponent implements OnInit {
         "destinationId": this.selectedDestination,
         "cancelReason": "TAS",
         "claimIdentifierUrl": null,
-        "probiderCCHI": this.probiderCCHI
+        "providerCHHI": this.providerCHHI 
+
       }
 
    
       this.providerNphiesApprovalService.cancelPreviousClaim(this.selectedProvider, body).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
-          console.log(event + "resp")
+          this.sharedServices.loadingChanged.next(false);
+         // this.providerLoader = false;
+         console.log(event.body['message'])
+          this.dialogService.showMessage('Success', event.body['message'] , 'success', true, 'OK');
+       
 
         }
+
+      },error=>{
+        this.sharedServices.loadingChanged.next(false);
+     //  this.providerLoader = false;
+        this.dialogService.showMessage('Error', error['errors'][0], 'alert', true, 'OK');
+      
 
       });
       //   console.log(  this.CancellClaimForm.controls.claimIdentifier.value)
