@@ -1,0 +1,15 @@
+<ul class="feedback-rating">
+    <li class="label">Very Unlikely</li>
+    <li><button type="button" [class.active]="rating>-1" (click)="rating=0">0</button></li>
+    <li><button type="button" [class.active]="rating>0" (click)="rating=1">1</button></li>
+    <li><button type="button" [class.active]="rating>1" (click)="rating=2">2</button></li>
+    <li><button type="button" [class.active]="rating>2" (click)="rating=3">3</button></li>
+    <li><button type="button" [class.active]="rating>3" (click)="rating=4">4</button></li>
+    <li><button type="button" [class.active]="rating>4" (click)="rating=5">5</button></li>
+    <li><button type="button" [class.active]="rating>5" (click)="rating=6">6</button></li>
+    <li><button type="button" [class.active]="rating>6" (click)="rating=7">7</button></li>
+    <li><button type="button" [class.active]="rating>7" (click)="rating=8">8</button></li>
+    <li><button type="button" [class.active]="rating>8" (click)="rating=9">9</button></li>
+    <li><button type="button" [class.active]="rating>9" (click)="rating=10">10</button></li>
+    <li class="label">Very Likely</li>
+</ul>

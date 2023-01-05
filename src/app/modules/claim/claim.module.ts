@@ -48,7 +48,8 @@ import { CancelReasonModalComponent } from '../nphies/preauthorization-transacti
 import { ClaimTransactionsComponent } from '../nphies/claim-transactions/claim-transactions.component';
 import { BeneficiaryTabComponent } from '../nphies/create-claim-nphies/beneficiary-tab/beneficiary-tab.component';
 import { JsonResponseComponent } from '../nphies/create-claim-nphies/json-response/json-response.component';
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE  } from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 
 
 @NgModule({
@@ -91,8 +92,10 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE  } fro
     MatButtonToggleModule,
     TagInputModule,
     FormsModule,
-    OwlDateTimeModule, 
-    OwlNativeDateTimeModule    
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    NgScrollbarModule,
+    SmoothScrollModule
   ],
   exports: [
     CreateByApprovalFormComponent,
@@ -129,8 +132,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE  } fro
   ],
   providers: [
     DatePipe,
-    {provide: OWL_DATE_TIME_LOCALE , useValue: 'en-IN'},
-    
+    { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-IN' },
+
   ]
 })
 
