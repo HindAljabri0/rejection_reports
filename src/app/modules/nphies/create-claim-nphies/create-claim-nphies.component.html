@@ -127,9 +127,16 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Eligibility Response Identifier</div>
+            <div class="control-label">Eligibility Response Identifier (Value)</div>
             <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseId.value ?
               FormNphiesClaim.controls.eligibilityResponseId.value : "-"}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Eligibility Response Identifier (URL)</div>
+            <p class="form-control-static">{{FormNphiesClaim.controls.eligibilityResponseUrl.value ?
+              FormNphiesClaim.controls.eligibilityResponseUrl.value : "-"}}</p>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -1668,9 +1675,16 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Eligibility Response Identifier</label>
-                <input class="form-control" placeholder="Eligibility Response Identifier"
+                <label class="control-label">Eligibility Response Identifier (Value)</label>
+                <input class="form-control" placeholder="Eligibility Response Identifier (Value)"
                   formControlName="eligibilityResponseId">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Eligibility Response Identifier (URL)</label>
+                <input class="form-control" placeholder="Eligibility Response Identifier (URL)"
+                  formControlName="eligibilityResponseUrl">
               </div>
             </div>
             <!-- <div class="col-4 col-xxl-3">
