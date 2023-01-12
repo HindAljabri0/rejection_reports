@@ -68,6 +68,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     eligibilityOfflineId: [''],
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
+    eligibilityResponseUrl: [''],
     preAuthOfflineDate: [''],
     episodeId: ['', Validators.required],
     // preAuthResponseId: [''],
@@ -577,6 +578,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.eligibilityOfflineId.disable();
     this.FormNphiesClaim.controls.eligibilityOfflineDate.disable();
     this.FormNphiesClaim.controls.eligibilityResponseId.disable();
+    this.FormNphiesClaim.controls.eligibilityResponseUrl.disable();
     this.FormNphiesClaim.controls.preAuthOfflineDate.disable();
     // this.FormNphiesClaim.controls.preAuthResponseId.disable();
   }
@@ -614,6 +616,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.eligibilityOfflineId.enable();
     this.FormNphiesClaim.controls.eligibilityOfflineDate.enable();
     this.FormNphiesClaim.controls.eligibilityResponseId.enable();
+    this.FormNphiesClaim.controls.eligibilityResponseUrl.enable();
     this.FormNphiesClaim.controls.preAuthOfflineDate.enable();
     // this.FormNphiesClaim.controls.preAuthResponseId.disable();
     /*if (this.pageMode == 'RESUBMIT') {
@@ -1223,7 +1226,13 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     }
   }
-
+  SetToMax(data) {
+    const ChosenDate= new Date(data);
+    const OrderDate= new Date(this.FormNphiesClaim.controls.dateOrdered.value);
+    if (ChosenDate > OrderDate) {
+      this.FormNphiesClaim.controls.dateWritten.setValue(this.FormNphiesClaim.controls.dateOrdered.value);
+    }
+  }
   // checkItemsCodeForSupportingInfo() {
   //   // tslint:disable-next-line:max-line-length
   //   if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
@@ -1674,6 +1683,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
       preAuthorizationModel.eligibilityOfflineId = this.FormNphiesClaim.controls.eligibilityOfflineId.value;
       preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
+      preAuthorizationModel.eligibilityResponseUrl = this.FormNphiesClaim.controls.eligibilityResponseUrl.value;
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.preAuthOfflineDate.value, 'yyyy-MM-dd');
       // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
@@ -2495,6 +2505,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (response.preAuthorizationInfo.eligibilityResponseId != null) {
       // tslint:disable-next-line:max-line-length
       this.FormNphiesClaim.controls.eligibilityResponseId.setValue(response.preAuthorizationInfo.eligibilityResponseId);
+    }
+
+    if (response.preAuthorizationInfo.eligibilityResponseUrl != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.eligibilityResponseUrl.setValue(response.preAuthorizationInfo.eligibilityResponseUrl);
     }
 
     if (response.preAuthorizationInfo.preAuthOfflineDate != null) {

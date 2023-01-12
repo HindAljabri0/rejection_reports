@@ -85,10 +85,10 @@ export class HeaderComponent implements OnInit {
         }
 
         this.getUserData();
-
-        if (!this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin &&
+        //to check why they put this in here
+        /*if (//!this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin &&
             !this.userPrivileges.ProviderPrivileges.RCM.isAdmin &&
-            !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin &&
+            //!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin &&
             !this.userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin &&
             !this.userPrivileges.WaseelPrivileges.RCM.isAdmin) {
             this.sharedServices.getProcessedCount();
@@ -96,8 +96,12 @@ export class HeaderComponent implements OnInit {
             this.sharedServices.getRecentReconciliationCount();
             this.sharedServices.getClaimProcessedCount();
             this.sharedServices.getClaimCommunicationRequestCount();
-        }
-
+        }*/
+        this.sharedServices.getProcessedCount();
+        this.sharedServices.getCommunicationRequestCount();
+        this.sharedServices.getRecentReconciliationCount();
+        this.sharedServices.getClaimProcessedCount();
+        this.sharedServices.getClaimCommunicationRequestCount();
         // this.watchPreAuthorizationChanges();
 
         this.downloadService.providerDownloads.subscribe(downloads => {

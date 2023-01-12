@@ -387,7 +387,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       if ((event.status / 100).toFixed() == '2') {
         // debugger;
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
-        console.log("Summary =" + JSON.stringify(summary));
         if (summary.totalClaims > 0) {
           if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
@@ -509,7 +508,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
-            console.log('this.length:' + this.length + 'this.pageSize:' + this.pageSize + 'this.pageIndex:' + this.pageIndex);
             this.storeSearchResultsForClaimViewPagination();
             this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
             this.store.dispatch(storeClaims({
@@ -1022,7 +1020,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     localStorage.setItem('pagesize', event.pageSize + '');
-    console.log(event);
     if (this.summaries[this.selectedCardKey] != null) {
       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
     }
@@ -1594,6 +1591,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.commen.loadingChanged.next(true);
           const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
           const payerIds: string[] = [];
+          if (this.params.payerId) {
+            payerIds.push(this.params.payerId);
+          }
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,

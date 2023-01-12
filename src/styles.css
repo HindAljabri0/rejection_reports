@@ -1487,6 +1487,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .action-letter-btn.theme-danger{border-color:#D03131;color:#D03131;}
 .action-letter-btn.theme-warning{border-color:#D0A029;color: #D0A029;}
 .action-letter-btn.theme-primary{border-color:#3060aa;color:#3060aa;}
+.action-letter-btn.theme-inquiry-delay{border-color:#ffb8b8;color:#ffb8b8;}
 
 /* confirmation dialog body
 --------------------------------------------------------------------------------------------------------*/

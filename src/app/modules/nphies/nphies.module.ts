@@ -81,6 +81,7 @@ import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-templa
 import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
+import { TwoDigitDecimaNumberDirective } from './two-digit-decima-number';
 
 @NgModule({
   declarations: [
@@ -138,7 +139,8 @@ import { SwitchGroupProviderComponent } from './switch-group-provider/switch-gro
     UcafFormTemplateComponent,
     DcafFormTemplateComponent,
     OcafFormTemplateComponent,
-    SwitchGroupProviderComponent
+    SwitchGroupProviderComponent,
+    TwoDigitDecimaNumberDirective
   ],
   imports: [
     CommonModule,
