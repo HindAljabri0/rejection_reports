@@ -589,16 +589,17 @@
                   <!--span >{{item.reasonCodes}}</span-->
 
                 </td>
-                <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
-                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
-                      matTooltip="Approved">check_circle</mat-icon>
-                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
-                      matTooltip="Partially Approved">report
+                <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click"
+                  *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'"
+                    class="material-icons-outlined size-21 text-success" matTooltip="Approved">check_circle</mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'"
+                    class="material-icons-outlined size-21 text-warning" matTooltip="Partially Approved">report
                   </mat-icon>
                   <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger"
-                      matTooltip="Invalid">error_outline</mat-icon>
-                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
-                      matTooltip="Rejected">dangerous</mat-icon>
+                    matTooltip="Invalid">error_outline</mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'"
+                    class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
                 </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -630,8 +631,11 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
-                    <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span></h5>
+                  <div class="box mb-2"
+                    *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
+                    <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
+                        [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span>
+                    </h5>
                     <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                     <div class="table-responsive">
                       <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -812,7 +816,7 @@
                 </td>
               </tr>
               <tr>
-                
+
               </tr>
             </ng-container>
           </tbody>
@@ -990,7 +994,8 @@
       <div class="communication-wrapper">
         <h5 class="form-title px-14 py-0 mb-0">
           <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-            (click)="openAddCommunicationDialog()" *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
+            (click)="openAddCommunicationDialog()"
+            *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
@@ -1301,12 +1306,16 @@
             <tr>
               <th class="light-bg-danger text-danger">Code</th>
               <th class="light-bg-danger text-danger">Message</th>
+              <th class="light-bg-danger text-danger">Field Name</th>
+              <th class="light-bg-danger text-danger">Sequence</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let err of otherDataModel.errors">
               <td>{{err.code}}</td>
               <td>{{err.error}}</td>
+              <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+              <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
             </tr>
           </tbody>
         </table>
@@ -1321,12 +1330,16 @@
             <tr>
               <th class="light-bg-danger text-danger">Code</th>
               <th class="light-bg-danger text-danger">Message</th>
+              <th class="light-bg-danger text-danger">Field Name</th>
+              <th class="light-bg-danger text-danger">Sequence</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let err of otherDataModel.cancelErrors">
               <td>{{err.code}}</td>
               <td>{{err.error}}</td>
+              <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+              <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
             </tr>
           </tbody>
         </table>
@@ -1340,12 +1353,16 @@
             <tr>
               <th class="light-bg-danger text-danger">Code</th>
               <th class="light-bg-danger text-danger">Message</th>
+              <th class="light-bg-danger text-danger">Field Name</th>
+              <th class="light-bg-danger text-danger">Sequence</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let err of otherDataModel.inquiryErrors">
               <td>{{err.code}}</td>
               <td>{{err.error}}</td>
+              <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+              <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
             </tr>
           </tbody>
         </table>
@@ -1413,12 +1430,16 @@
       </ng-template>
     </mat-tab>
 
-    <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
-    [label]="'PBM Comments'">
-    <div class="table-responsive">
-      <div class="d-flex justify-content-end pb-2 align-items-center">
-        PBM Status: <span class="status ml-2" [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span></div>
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+    <mat-tab
+      *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
+      [label]="'PBM Comments'">
+      <div class="table-responsive">
+        <div class="d-flex justify-content-end pb-2 align-items-center">
+          PBM Status: <span class="status ml-2"
+            [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span>
+        </div>
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0"
+          *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
           <thead>
             <tr>
               <th class="light-bg-danger text-danger">Comments</th>
@@ -1432,8 +1453,8 @@
         </table>
         <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
         </app-empty-state>
-    </div>
-  </mat-tab>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 
   <div class="block-footer sticky" *ngIf="!isLoading">
@@ -1462,7 +1483,8 @@
       <button mat-flat-button (click)="close()">Close</button>
       <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
         Edit</button>
-        <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'" (click)="createRelatedClaim()">Create Related Claim</button>
+      <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'"
+        (click)="createRelatedClaim()">Create Related Claim</button>
     </div>
   </div>
 </div>
@@ -1568,7 +1590,8 @@
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
                 <label class="control-label">Date Ordered<span cngClasslass="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"  formControlName="dateOrdered">
+                  <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                    formControlName="dateOrdered">
                   <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
                   <owl-date-time #dateOrderedCtrl></owl-date-time>
                 </div>
@@ -1905,7 +1928,9 @@
                 <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                     class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten" [max]="FormNphiesClaim.controls.dateOrdered.value">
+                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                    (ngModelChange)="SetToMax($event)" formControlName="dateWritten"
+                    [max]="FormNphiesClaim.controls.dateOrdered.value">
                   <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate"></mat-datepicker-toggle>
                   <owl-date-time #visionWrittenDate></owl-date-time>
 
@@ -2182,16 +2207,18 @@
                       <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
                       <span *ngIf="!item.reasonCodes">-</span>
                     </td>
-                    <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
-                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
-                          matTooltip="Approved">check_circle</mat-icon>
-                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
-                          matTooltip="Partially Approved">report
+                    <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click"
+                      *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'"
+                        class="material-icons-outlined size-21 text-success"
+                        matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'"
+                        class="material-icons-outlined size-21 text-warning" matTooltip="Partially Approved">report
                       </mat-icon>
                       <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger"
-                      matTooltip="Invalid">error_outline</mat-icon>
-                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
-                          matTooltip="Rejected">dangerous</mat-icon>
+                        matTooltip="Invalid">error_outline</mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'"
+                        class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
@@ -2243,17 +2270,21 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
-    
+
                               <td class="text-capitalize">{{res.category}}</td>
                               <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'"
                                   class="currency">SR</span></td>
-                              <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
+                              <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
-                        <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span></h5>
+                      <div class="box mb-2"
+                        *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
+                        <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
+                            [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span>
+                        </h5>
                         <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                         <div class="table-responsive">
                           <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -2456,7 +2487,7 @@
                       </div>
                     </td>
                   </tr>
-                  
+
                   <tr *ngIf="item.careTeamSequenceRequired || item.detailsRequired">
                     <td colspan="10">
                       <p class="error-card" *ngIf="item.careTeamSequenceRequired">Item must have atleast one Care Team
@@ -2739,7 +2770,8 @@
           <div class="communication-wrapper">
             <h5 class="form-title px-14 py-0 mb-0">
               <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-                (click)="openAddCommunicationDialog()" *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
+                (click)="openAddCommunicationDialog()"
+                *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
                 <mat-icon>add_circle_outline</mat-icon>
                 <span class="pl-1">Add Communication</span>
               </button>
@@ -3056,12 +3088,16 @@
                 <tr>
                   <th class="light-bg-danger text-danger">Code</th>
                   <th class="light-bg-danger text-danger">Message</th>
+                  <th class="light-bg-danger text-danger">Field Name</th>
+                  <th class="light-bg-danger text-danger">Sequence</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let err of otherDataModel.errors">
                   <td>{{err.code}}</td>
                   <td>{{err.error}}</td>
+                  <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+                  <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -3076,12 +3112,16 @@
                 <tr>
                   <th class="light-bg-danger text-danger">Code</th>
                   <th class="light-bg-danger text-danger">Message</th>
+                  <th class="light-bg-danger text-danger">Field Name</th>
+                  <th class="light-bg-danger text-danger">Sequence</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let err of otherDataModel.cancelErrors">
                   <td>{{err.code}}</td>
                   <td>{{err.error}}</td>
+                  <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+                  <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -3096,12 +3136,16 @@
                 <tr>
                   <th class="light-bg-danger text-danger">Code</th>
                   <th class="light-bg-danger text-danger">Message</th>
+                  <th class="light-bg-danger text-danger">Field Name</th>
+                  <th class="light-bg-danger text-danger">Sequence</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let err of otherDataModel.inquiryErrors">
                   <td>{{err.code}}</td>
                   <td>{{err.error}}</td>
+                  <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+                  <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -3131,7 +3175,7 @@
         </mat-tab>
 
         <mat-tab
-          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled' || otherDataModel.statusCode === 'error'" 
+          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled' || otherDataModel.statusCode === 'error'"
           [label]="'JSON'">
           <ng-template matTabContent>
             <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
@@ -3169,12 +3213,16 @@
             </table>
           </div>
         </mat-tab>
-        <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
-        [label]="'PBM Comments'">
-        <div class="table-responsive">
-          <div class="d-flex justify-content-end pb-2 align-items-center">
-            PBM Status: <span class="status ml-2" [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span></div>
-            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+        <mat-tab
+          *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
+          [label]="'PBM Comments'">
+          <div class="table-responsive">
+            <div class="d-flex justify-content-end pb-2 align-items-center">
+              PBM Status: <span class="status ml-2"
+                [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span>
+            </div>
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0"
+              *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
               <thead>
                 <tr>
                   <th class="light-bg-danger text-danger">Comments</th>
@@ -3186,10 +3234,11 @@
                 </tr>
               </tbody>
             </table>
-            <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
+            <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0"
+              message='No Comments found!'>
             </app-empty-state>
-        </div>
-      </mat-tab>
+          </div>
+        </mat-tab>
 
       </mat-tab-group>
 

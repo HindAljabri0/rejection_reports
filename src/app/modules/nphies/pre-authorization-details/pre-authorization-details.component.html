@@ -223,12 +223,16 @@
       <tr>
         <th class="light-bg-danger text-danger">Code</th>
         <th class="light-bg-danger text-danger">Message</th>
+        <th class="light-bg-danger text-danger">Field Name</th>
+        <th class="light-bg-danger text-danger">Sequence</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let err of data.errors">
         <td>{{err.code}}</td>
         <td>{{err.error}}</td>
+        <td>{{err.fieldName ? err.fieldName : '-'}}</td>
+        <td>{{err.sequenceNumber ? err.sequenceNumber : '-'}}</td>
       </tr>
     </tbody>
   </table>
