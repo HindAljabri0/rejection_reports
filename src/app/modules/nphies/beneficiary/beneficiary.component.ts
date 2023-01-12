@@ -28,6 +28,8 @@ export class BeneficiaryComponent implements OnInit {
   editMode = false;
   viewMode = false;
 
+  currentOpenInsuranceDetails = -1;
+
 
   selectedNationality = '';
   selectedMaritalStatus = '';
@@ -806,6 +808,14 @@ export class BeneficiaryComponent implements OnInit {
         });
       }
     });
+  }
+
+  toggleInsuranceRecord(i) {
+    if (this.currentOpenInsuranceDetails == i) {
+      this.currentOpenInsuranceDetails = -1;
+    } else {
+      this.currentOpenInsuranceDetails = i;
+    }
   }
 
 }
