@@ -81,6 +81,7 @@ import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-templa
 import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
+import { AdvancePreauthTransactionsComponent } from './advance-preauth-transactions/advance-preauth-transactions.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +139,8 @@ import { SwitchGroupProviderComponent } from './switch-group-provider/switch-gro
     UcafFormTemplateComponent,
     DcafFormTemplateComponent,
     OcafFormTemplateComponent,
-    SwitchGroupProviderComponent
+    SwitchGroupProviderComponent,
+    AdvancePreauthTransactionsComponent
   ],
   imports: [
     CommonModule,

@@ -1284,7 +1284,7 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
+            <ng-container *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans; let i = index">
               <tr>
                 <td class="text-primary text-center row-click align-middle" (click)="toggleInsuranceRecord(i)">
                   <mat-icon *ngIf="currentOpenInsuranceDetails != i" class="size-21">add_circle_outline</mat-icon>
