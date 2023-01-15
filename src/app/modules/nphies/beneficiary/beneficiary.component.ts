@@ -44,6 +44,7 @@ export class BeneficiaryComponent implements OnInit {
   setPrimary = '0';
   fullName = '';
   providerId = '';
+  IdPlaceholder = "Enter national ID or Iqama";
 
   beneficiaryId: string;
   nationalities = nationalities;
@@ -55,6 +56,7 @@ export class BeneficiaryComponent implements OnInit {
   dobFormControl: FormControl = new FormControl();
   documentIdFormControl: FormControl = new FormControl();
   documentIdCCHIFormControl: FormControl = new FormControl();
+  systemTypeFormControl: FormControl = new FormControl('');
   nationalityFilterCtrl: FormControl = new FormControl();
   countryFilterCtrl: FormControl = new FormControl();
   firstNameController: FormControl = new FormControl();
@@ -139,7 +141,8 @@ export class BeneficiaryComponent implements OnInit {
     documentId: '',
     gender: '',
     fullName: '',
-    documentIdCCHI: ''
+    documentIdCCHI: '',
+    SystemTypeCchi : ''
   };
 
   beneficiaryModel = new BeneficiaryModel();
@@ -761,22 +764,40 @@ export class BeneficiaryComponent implements OnInit {
       return null;
     }
   }
-
+  upadatePlaceHolder(){
+    if(this.systemTypeFormControl.value == 'HIDP'){
+      this.IdPlaceholder="Enter national ID or Iqama";
+    }else if(this.systemTypeFormControl.value == 'VIDP'){
+      this.IdPlaceholder="Enter Visa number, Passport Number or Border Number";
+    }else if(this.systemTypeFormControl.value == 'SCTH' || this.systemTypeFormControl.value == 'UIDP'){
+      this.IdPlaceholder="Enter Visa number or Passport Number";
+    }else if(this.systemTypeFormControl.value == 'HUIDP'){
+      this.IdPlaceholder="Enter Passport Number";
+    }else{
+      this.IdPlaceholder="Enter national ID or Iqama";
+    }
+  }
   getInfoFromCCHI() {
     this.isCCHID = true;
     let thereIsError = false;
 
+    if (this.systemTypeFormControl.value == null || this.systemTypeFormControl.value.trim().length <= 0) {
+      this.errors.SystemTypeCchi = 'System Type must be specified';
+      thereIsError = true;
+      return;
+    }
     if (this.documentIdCCHIFormControl.value == null || this.documentIdCCHIFormControl.value.trim().length <= 0) {
       this.errors.documentIdCCHI = 'Document ID must be specified';
       thereIsError = true;
       return;
     }
-
+    
     this.sharedServices.loadingChanged.next(true);
 
     this.providersBeneficiariesService.getBeneficiaryFromCCHI(
       this.providerId,
-      this.documentIdCCHIFormControl.value
+      this.documentIdCCHIFormControl.value,
+      this.systemTypeFormControl.value
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
