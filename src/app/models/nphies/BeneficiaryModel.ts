@@ -29,4 +29,9 @@ export class BeneficiaryModel {
   isNewBorn: boolean;
   insurancePlans: Array<InsurancePlan>;
   documentTypeName: string;
+  passportNumber:string;
+  borderNumber:string;
+  visaType: string;
+  visitTitle: string;
+  visaExpiryDate: Date;
 }

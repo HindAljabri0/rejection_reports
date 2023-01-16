@@ -17,11 +17,11 @@
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select value="" [formControl]="systemTypeFormControl"  (selectionChange)="upadatePlaceHolder();">
                     <mat-option value="">Select System Type</mat-option>
-                    <mat-option value="HIDP">HIDP</mat-option>
-                    <mat-option value="VIDP">VIDP</mat-option>
-                    <mat-option value="SCTH">SCTH</mat-option>
-                    <mat-option value="UIDP">UIDP</mat-option>
-                    <mat-option value="HUIDP">HUIDP </mat-option>
+                    <mat-option value="1">HIDP</mat-option>
+                    <mat-option value="2">VIDP</mat-option>
+                    <mat-option value="3">SCTH</mat-option>
+                    <mat-option value="4">UIDP</mat-option>
+                    <mat-option value="5">HUIDP </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -162,19 +162,19 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Passport Number</label>
-            <input placeholder="Enter passport number" class="form-control">
+            <input placeholder="Enter passport number" class="form-control" [formControl]="PassportControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Visa Type</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select value="">
+              <mat-select value="" [formControl]="VisaTypeControl" [value]="selectedVisaType" (selectionChange)="selectedVisaType = $event.value;">
                 <mat-option value="">Select Visa Type</mat-option>
-                <mat-option value="Visa Type 1">Visa Type 1</mat-option>
-                <mat-option value="Visa Type 2">Visa Type 2</mat-option>
-                <mat-option value="Visa Type 3">Visa Type 3</mat-option>
-                <mat-option value="Visa Type 4">Visa Type 4</mat-option>
+                <mat-option *ngFor="let type of VisaTypes"
+                [value]="type.Code">
+                {{type.Name}}</mat-option>
+               
               </mat-select>
             </mat-form-field>
           </div>
@@ -182,14 +182,14 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Visa Title</label>
-            <input placeholder="Enter visa title" class="form-control">
+            <input placeholder="Enter visa title" class="form-control"  [formControl]="VisaTitleControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Visa Expiry Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select visa expiry date">
+              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select visa expiry date"  [formControl]="VisaExpiryControl">
               <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #visaExpiryDatePicker></mat-datepicker>
             </div>
@@ -198,7 +198,7 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Border Number</label>
-            <input placeholder="Enter border number" class="form-control">
+            <input placeholder="Enter border number" class="form-control"  [formControl]="BorderNoControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">

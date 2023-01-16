@@ -70,11 +70,18 @@ export class BeneficiaryComponent implements OnInit {
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
+  BorderNoControl: FormControl = new FormControl();
+  VisaExpiryControl: FormControl = new FormControl();
+  VisaTitleControl: FormControl = new FormControl();
+  VisaTypeControl:FormControl = new FormControl();
+  PassportControl: FormControl = new FormControl();
+
   houseNumberController = new FormControl();
   streetNameController = new FormControl();
   cityNameController = new FormControl();
   stateController = new FormControl();
   selectedCountry = '';
+  selectedVisaType = '';
   postalCodeController = new FormControl();
 
   insurancePlans: {
@@ -114,7 +121,18 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'AB+', Name: 'AB+' },
     { Code: 'AB-', Name: 'AB-' },
   ];
-
+  VisaTypes: { Code: number, Name: string }[] = [
+    { Code: 6, Name: 'Transit - مرور' },
+    { Code: 10, Name: 'Tourism - سياحية' },
+    { Code: 14, Name: 'Goods delivery - توصيل بضائع' },
+    { Code: 23, Name: 'Commercial visit - زيارة تجارية' },
+    { Code: 24, Name: 'Family Visit - زيارة عائلية' },
+    { Code: 21, Name: 'Business Man - رجال اعمال' },
+    { Code: 22, Name: 'ًWork Visit - زيارة عمل' },
+    { Code: 27, Name: 'Personal Visit - زيارة شخصية' },
+    { Code: 40, Name: 'Dependent - مرافق' },
+    { Code: 30, Name: 'ُEvent Visit - زيارة فعالية' },
+  ];
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },
     { Code: 'PARENT', Name: 'Parent' },
@@ -355,6 +373,12 @@ export class BeneficiaryComponent implements OnInit {
     this.stateController.setValue(beneficiaryinfo.state);
     this.selectedCountry = beneficiaryinfo.country;
     this.postalCodeController.setValue(beneficiaryinfo.postalCode);
+    this.BorderNoControl.setValue(beneficiaryinfo.borderNumber);
+    this.VisaExpiryControl.setValue(beneficiaryinfo.visaExpiryDate);
+    this.VisaTitleControl.setValue(beneficiaryinfo.visitTitle);
+    this.VisaTypeControl.setValue(beneficiaryinfo.visaType);
+    this.PassportControl.setValue(beneficiaryinfo.passportNumber);
+    this.selectedVisaType = beneficiaryinfo.visaType;
 
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
       this.insurancePlans.push(
@@ -547,6 +571,11 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.documentId = this.documentIdFormControl.value;
     this.beneficiaryModel.country = this.selectedCountry == '' ? null : this.selectedCountry;
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
+    this.beneficiaryModel.borderNumber = this.BorderNoControl.value;
+    this.beneficiaryModel.visaExpiryDate = this.VisaExpiryControl.value ? new Date(moment(this.VisaExpiryControl.value).format('YYYY-MM-DD')): null;
+    this.beneficiaryModel.visitTitle = this.VisaTitleControl.value;
+    this.beneficiaryModel.passportNumber = this.PassportControl.value;
+    this.beneficiaryModel.visaType = this.selectedVisaType;
 
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
       payerNphiesId: (insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer,
@@ -765,13 +794,13 @@ export class BeneficiaryComponent implements OnInit {
     }
   }
   upadatePlaceHolder(){
-    if(this.systemTypeFormControl.value == 'HIDP'){
+    if(this.systemTypeFormControl.value == '1'){
       this.IdPlaceholder="Enter national ID or Iqama";
-    }else if(this.systemTypeFormControl.value == 'VIDP'){
+    }else if(this.systemTypeFormControl.value == '2'){
       this.IdPlaceholder="Enter Visa number, Passport Number or Border Number";
-    }else if(this.systemTypeFormControl.value == 'SCTH' || this.systemTypeFormControl.value == 'UIDP'){
+    }else if(this.systemTypeFormControl.value == '3' || this.systemTypeFormControl.value == '4'){
       this.IdPlaceholder="Enter Visa number or Passport Number";
-    }else if(this.systemTypeFormControl.value == 'HUIDP'){
+    }else if(this.systemTypeFormControl.value == '5'){
       this.IdPlaceholder="Enter Passport Number";
     }else{
       this.IdPlaceholder="Enter national ID or Iqama";
