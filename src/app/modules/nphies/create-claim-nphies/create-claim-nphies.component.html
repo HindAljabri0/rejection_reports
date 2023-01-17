@@ -1481,7 +1481,7 @@
     </div>
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
+      <button mat-flat-button *ngIf="claimIsEditable" color="primary"  (click)="toEditMode()">
         Edit</button>
       <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'"
         (click)="createRelatedClaim()">Create Related Claim</button>
@@ -3249,7 +3249,7 @@
         </div>
         <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
           <button mat-flat-button (click)="cancelEdit()">Cancel</button>
-          <button mat-flat-button color="primary"> Save </button>
+          <button mat-flat-button color="primary" [disabled]="this.FormNphiesClaim.controls.destinationId.value!=null ? false : true"> Save </button>
         </div>
       </div>
     </div>
