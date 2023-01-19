@@ -830,7 +830,8 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     statuses?: string[],
     organizationId?: string,
-    requestBundleId?:string
+    requestBundleId?:string,
+    filter_netAmount?: string,
   ) {
 
     let requestURL = `/providers/${providerId}/claims/validate?`;
@@ -889,6 +890,10 @@ export class ProviderNphiesApprovalService {
 
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+
+    if (filter_netAmount) {
+      requestURL += `&netAmount=${filter_netAmount}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
