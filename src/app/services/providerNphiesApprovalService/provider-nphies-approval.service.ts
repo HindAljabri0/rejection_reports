@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -19,7 +19,24 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
-
+  replicateClaimById(providerId: string, claimId: string) {
+    let requestUrl = `/providers/${providerId}/claim/replicate?`;
+    if (claimId != null) {
+      requestUrl += `claimId=${claimId}&`;
+    }
+    
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl ,{});
+    return this.http.request(request);
+  }
+  inActiveClaimById(providerId: string, claimId: string) {
+    let requestUrl = `/providers/${providerId}/claim/inactive?`;
+    if (claimId != null) {
+      requestUrl += `claimId=${claimId}&`;
+    }
+    
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl ,{});
+    return this.http.request(request);
+  }
   /* deleteClaimByCriteria(
     providerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,

@@ -329,7 +329,7 @@
               </thead>
               <tbody>
                 <ng-container *ngIf='claims.length > 0'>
-                  <tr *ngFor="let claim of claims">
+                  <tr *ngFor="let claim of claims" class="{{ claim.isActive == null || claim.isActive ? '' : 'bg-off-white' }}">
                     <td>
                       <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)">
                       </mat-checkbox>
@@ -396,10 +396,9 @@
                       <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
                                       <mat-spinner diameter="20"></mat-spinner> -->
                     </td>
-
                     <td class="actions">
                       <ng-container
-                        *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  || claimIsDeletable(claim.status,claim.canDelete))">
+                        *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status) || claimIsReplicable(claim.status) || claimIsDeletable(claim.status,claim.canDelete))">
                         <mat-menu #moreMenu="matMenu" xPosition="before">
                           <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
@@ -424,6 +423,14 @@
                           <button mat-menu-item *ngIf="claimIsEditable(claim.status)" (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
                             <mat-icon class="material-icons-outlined">edit</mat-icon>
                             <span>Edit Claim</span>
+                          </button>
+                          <button mat-menu-item *ngIf="claimIsReplicable(claim.status) && (claim.isActive || claim.isActive == null)" (click)="replicateClaim(claim.claimId, claim.providerClaimNumber,claim.isActive)">
+                            <mat-icon class="material-icons-outlined">copy</mat-icon>
+                            <span>Replicate Claim</span>
+                          </button>
+                          <button mat-menu-item *ngIf="claimIsReplicable(claim.status)" (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
+                            <mat-icon class="material-icons-outlined">{{ (claim.isActive || claim.isActive == null) ? 'lock' : 'lock_open'}}</mat-icon>
+                            <span>{{ (claim.isActive || claim.isActive == null) ? 'DeActivate Claim' : 'Activate Claim'}}</span>
                           </button>
                         </mat-menu>
 
