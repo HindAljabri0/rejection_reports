@@ -39,6 +39,7 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+import { ChooseAttachmentUploadDialogComponent } from '../choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -158,7 +159,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   isGenerateAttachment = false;
   userPrivileges: UserPrivileges = initState.userPrivileges;
-  
+
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -1373,7 +1374,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
   }
-  replicateClaim(claimId: string, refNumber: string,isActive:boolean) {
+  replicateClaim(claimId: string, refNumber: string, isActive: boolean) {
     this.dialogService.openMessageDialog(
       new MessageDialogData('Replicate this Claim?',
         `This will replicate claim with reference: ${refNumber}. Are you sure you want to replicate it?`,
@@ -1424,7 +1425,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (result === true) {
           this.commen.loadingChanged.next(true);
           this.providerNphiesApprovalService.inActiveClaimById(this.providerId, claimId).subscribe(event => {
-            
+
             /*if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               this.dialogService.openMessageDialog(new MessageDialogData('',
@@ -1437,7 +1438,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
               if (errorEvent.status === 500 || errorEvent.status === 404) {
                 this.commen.loadingChanged.next(false);
                 this.dialogService.showMessage("Claim Cannot Be InActive", '', 'alert', true, 'OK', errorEvent.message);
-              } else if(errorEvent.status === 200 ){
+              } else if (errorEvent.status === 200) {
                 this.commen.loadingChanged.next(false);
                 this.dialogService.openMessageDialog(new MessageDialogData('',
                   `Claim with reference ${refNumber} was InActivated successfully.`,
@@ -2194,6 +2195,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
       }
       this.commen.loadingChanged.next(false);
+    });
+  }
+  openChooseAttachmentDialog() {
+    const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent, {
+      panelClass: ['primary-dialog'],
+      autoFocus: false
     });
   }
 }
