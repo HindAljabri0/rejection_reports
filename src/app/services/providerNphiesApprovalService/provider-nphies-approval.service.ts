@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { folder } from 'jszip';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,14 @@ export class ProviderNphiesApprovalService {
   sendApprovalRequest(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/request`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+  LinkAttachments(providerId: string, folderName: string , isReplace:boolean) {
+    let requestUrl = `/providers/${providerId}/claims/link/attachment?isReplace=${isReplace}`;
+    if (folderName) {
+      requestUrl += `&folderName=${folderName}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
     return this.http.request(request);
   }
   deleteClaimById(providerId: string, claimId: string) {
