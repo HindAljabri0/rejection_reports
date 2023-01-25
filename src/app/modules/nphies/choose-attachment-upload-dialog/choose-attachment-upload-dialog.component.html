@@ -1,0 +1,60 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Choose folder to attach</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <h5 class="medium pb-8">Claim Summary</h5>
+    <div class="box mb-14 pb-0">
+        <div class="row small-gutter">
+            <div class="col-6">
+                <div class="form-group form-group-static">
+                    <label class="control-label">No. of Claims</label>
+                    <span class="form-control-static">240 Claims</span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Duration</label>
+                    <span class="form-control-static">01/01/2023 - 31/01/2023</span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Claim Type</label>
+                    <span class="form-control-static">Institutional</span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group form-group-static">
+                    <label class="control-label">Payer</label>
+                    <span class="form-control-static">Bupa Arabia for Cooperative Insurance</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5 class="medium pb-8">Select Attachment Folder</h5>
+    <div class="form-group">
+        <mat-form-field class="form-control custom-select-control">
+            <mat-select value="-1">
+                <mat-option value="-1">Select</mat-option>
+                <mat-option value="Folder 1">Folder 1</mat-option>
+                <mat-option value="Folder 2">Folder 2</mat-option>
+                <mat-option value="Folder 3">Folder 3</mat-option>
+                <mat-option value="Folder 4">Folder 4</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="d-flex align-items-center">
+        <button mat-icon-button class="text-primary">
+            <mat-icon class="material-icons-outlined"
+                matTooltip="Replace action will delete old attachments from the claim and it will place new attachments. Add New action will keep old attachments as it is, and will append new attachments.">info</mat-icon>
+        </button>
+        <div class="btn-list text-right ml-auto">
+            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button mat-flat-button color="primary">Replace</button>
+            <button mat-flat-button color="primary">Add new</button>
+        </div>
+    </div>
+</div>

@@ -108,6 +108,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .pr-7{padding-right: 7px !important;}
 .pt-7{padding-top: 7px !important;}
 .pb-7{padding-bottom: 7px !important;}
+.pb-8{padding-bottom: 8px !important;}
 .p-14{padding: 14px !important;}
 .pb-6{padding-bottom: 6px !important;}
 .pb-14{padding-bottom: 14px !important;}
@@ -315,6 +316,17 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .mat-option-loader{display: flex; align-items: center; justify-content: center; min-height: 40px;}
 .mat-option-loader span{padding-left: 12px;}
 .abbr{text-decoration: underline;text-decoration-style: dashed;text-underline-offset: 4px;color: #3060aa;}
+
+/* attachment count
+--------------------------------------------------------------------------------------------------------*/
+.attachment-count{align-items: center;color: #3060aa;font-size: 16px;line-height: 20px;background: transparent;border:0;padding: 0;box-shadow: none;display: inline-flex;padding: 6px 8px 6px 12px;border-radius: 8px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);margin: -6px -8px;}
+.attachment-count:focus,.attachment-count:hover,.attachment-count:active{background-color: rgba(48, 96, 170,0.08);}
+.attachment-count .mat-icon{margin-left: 2px;}
+.attachment-card{background: #F7F9FD;border: 1px solid rgba(48, 97, 171, 0.16);border-radius: 8px;padding: 14px;margin-bottom: 14px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);cursor: pointer;}
+.attachment-card:hover,.attachment-card:focus,.attachment-card:active{border-color:rgba(48,96,170,0.6);}
+.attachment-card .title{font-weight: 500;font-size: 14px;line-height: 22px;color: #3060aa;padding-bottom: 8px;border-bottom: 1px solid #E1E1E1;}
+.attachment-card .card-info{display: flex;align-items: flex-start;border-top: 1px solid #E1E1E1;padding-top: 8px;color: #707070;}
+.attachment-card .count{font-size: 16px;}
 
 /* chat buttons
 --------------------------------------------------------------------------------------------------------*/

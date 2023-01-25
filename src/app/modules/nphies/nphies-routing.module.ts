@@ -23,6 +23,7 @@ import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-sup
 import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
 import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
 import { AdvancePreauthTransactionsComponent } from './advance-preauth-transactions/advance-preauth-transactions.component';
+import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -50,8 +51,8 @@ const routes: Routes = [
   { path: 'convert-pre-auth-to-claim', component: ConvertPreAuthToClaimComponent },
   { path: 'days-of-supply-upload', component: DaysOfSupplyUploadComponent },
   { path: 'medication-days-upload', component: MedicationDaysUploadComponent },
-  { path: 'switch-group-provider', component: SwitchGroupProviderComponent }
-
+  { path: 'switch-group-provider', component: SwitchGroupProviderComponent },
+  { path: 'attachments-report', component: AttachmentsReportComponent }
 ];
 
 @NgModule({

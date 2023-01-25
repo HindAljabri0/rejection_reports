@@ -82,6 +82,8 @@ import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-templa
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
 import { AdvancePreauthTransactionsComponent } from './advance-preauth-transactions/advance-preauth-transactions.component';
+import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
+import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 
 @NgModule({
   declarations: [
@@ -140,7 +142,8 @@ import { AdvancePreauthTransactionsComponent } from './advance-preauth-transacti
     DcafFormTemplateComponent,
     OcafFormTemplateComponent,
     SwitchGroupProviderComponent,
-    AdvancePreauthTransactionsComponent
+    AdvancePreauthTransactionsComponent,
+    AttachmentsReportComponent
   ],
   imports: [
     CommonModule,
@@ -157,7 +160,7 @@ import { AdvancePreauthTransactionsComponent } from './advance-preauth-transacti
     StoreModule.forFeature('nphiesConfigurationState', configurationReducer),
     EffectsModule.forFeature([ConfigurationsEffects]),
     TagInputModule,
-    OwlDateTimeModule, 
+    OwlDateTimeModule,
     OwlNativeDateTimeModule,
   ],
   entryComponents: [
