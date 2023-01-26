@@ -34,6 +34,7 @@ export class SearchedClaim extends Paginateable {
   inquiryStatus: string;
   attachmentStatus: string;
   inquiryDesc: string;
+  attachmentCount:number;
 
   constructor(body: {}) {
     super(body);
@@ -71,6 +72,7 @@ export class SearchedClaim extends Paginateable {
       this.attachmentStatus = body['attachmentStatus'];
       this.inquiryDesc = body['inquiryDesc'];
       this.isActive = body['isActive'];
+      this.attachmentCount=body['attachmentCount'];
     }
   }
 }

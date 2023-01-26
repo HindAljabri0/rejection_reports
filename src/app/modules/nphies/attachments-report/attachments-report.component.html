@@ -2,114 +2,47 @@
     <div class="block-header">
         <p>Attachments Report</p>
     </div>
-    <div class="block-body">
-        <div class="row small-gutter">
-            <div class="col-lg-6">
-                <div class="attachment-card" (click)="showJobSummary=true">
-                    <p class="title">upload-20-12-2022.zip</p>
+    <div class="block-body" *ngIf="summary.length>0" scrollable (scrollPosition)="scrollHandler($event)">
+        <div class="row small-gutter" >
+            <div class="col-lg-6" *ngFor="let row of summary">
+                <div class="attachment-card" (click)="ShowDetails(row)">
+                    <p class="title">{{ row.folderName }}</p>
                     <div class="row small-gutter mt-14">
                         <div class="col-xxl-3 col-md-6">
                             <div class="form-group form-group-static">
                                 <label class="control-label">Total Attachments</label>
-                                <span class="form-control-static count">60</span>
+                                <span class="form-control-static count">{{ row.totalAttachments }}</span>
                             </div>
                         </div>
                         <div class="col-xxl-3 col-md-6">
                             <div class="form-group form-group-static">
                                 <label class="control-label">Successful</label>
-                                <span class="form-control-static count">54</span>
+                                <span class="form-control-static count">{{row.totalSuccess}}</span>
                             </div>
                         </div>
                         <div class="col-xxl-3 col-md-6">
                             <div class="form-group form-group-static">
                                 <label class="control-label">Failed</label>
-                                <span class="form-control-static count">4</span>
+                                <span class="form-control-static count">{{row.totalFailed}}</span>
                             </div>
                         </div>
                         <div class="col-xxl-3 col-md-6">
                             <div class="form-group form-group-static">
                                 <label class="control-label">Unused</label>
-                                <span class="form-control-static count">2</span>
+                                <span class="form-control-static count">????</span>
                             </div>
                         </div>
                     </div>
                     <div class="card-info">
-                        <p>Job ID: 654</p>
-                        <p class="ml-auto text-right">Job Date: 30/12/2022</p>
+                        <p>Job ID: {{ row.attachmentLinkId }}</p>
+                        <p class="ml-auto text-right">Job Date: {{ row.linkedDate | date : 'yyyy/MM/dd hh:mm:ss aa' }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="attachment-card" (click)="showJobSummary=true">
-                    <p class="title">upload-26-12-2022.zip</p>
-                    <div class="row small-gutter mt-14">
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Total Attachments</label>
-                                <span class="form-control-static count">104</span>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Successful</label>
-                                <span class="form-control-static count">80</span>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Failed</label>
-                                <span class="form-control-static count">19</span>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Unused</label>
-                                <span class="form-control-static count">5</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <p>Job ID: 854</p>
-                        <p class="ml-auto text-right">Job Date: 28/12/2022</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="attachment-card" (click)="showJobSummary=true">
-                    <p class="title">upload-03-12-2022.zip</p>
-                    <div class="row small-gutter mt-14">
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Total Attachments</label>
-                                <span class="form-control-static count">584</span>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Successful</label>
-                                <span class="form-control-static count">580</span>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Failed</label>
-                                <span class="form-control-static count">2</span>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="form-group form-group-static">
-                                <label class="control-label">Unused</label>
-                                <span class="form-control-static count">2</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <p>Job ID: 745</p>
-                        <p class="ml-auto text-right">Job Date: 20/12/2022</p>
-                    </div>
-                </div>
-            </div>
+            
         </div>
+        <app-empty-state *ngIf="!loading && currentPage == 0"></app-empty-state>
+        <p class="info-block" *ngIf="currentPage >= maxPages">There is no more data</p>
     </div>
 </div>
 
@@ -131,43 +64,43 @@
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Source File</label>
-                    <span class="form-control-static">upload-20-12-2022.zip</span>
+                    <span class="form-control-static">{{folderName}}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Job ID</label>
-                    <span class="form-control-static">745</span>
+                    <span class="form-control-static">{{jobId}}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Job Date</label>
-                    <span class="form-control-static">20/12/2022</span>
+                    <span class="form-control-static">{{jobDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Total Attachments</label>
-                    <span class="form-control-static">584</span>
+                    <span class="form-control-static">{{totalCount}}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Successful</label>
-                    <span class="form-control-static">580</span>
+                    <span class="form-control-static">{{successCount}}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Failed</label>
-                    <span class="form-control-static">2</span>
+                    <span class="form-control-static">{{failCount}}</span>
                 </div>
             </div>
             <div class="col-xxl col-xl-3 col-lg-4 col-md-6">
                 <div class="form-group form-group-static">
                     <label class="control-label">Unused</label>
-                    <span class="form-control-static">2</span>
+                    <span class="form-control-static">????</span>
                 </div>
             </div>
         </div>
@@ -176,7 +109,7 @@
         <mat-tab [label]="'Successful Attachments'">
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
                 <div class="fixed-height fixed-height-sm">
-                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0" *ngIf='successList.length>0'>
                         <thead>
                             <tr>
                                 <th>Attachment Name</th>
@@ -184,23 +117,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>NPCL_ABH_1000_00_998_doctor_report.pdf</td>
-                                <td>NPCL_ABH_1000_00_998</td>
+                            <tr  *ngFor="let successRow of successList">
+                                <td>{{successRow.fileName}}</td>
+                                <td>{{successRow.provClaimNo}}</td>
                             </tr>
-                            <tr>
-                                <td>NPCL_ABH_1000_00_998_ecg.pdf</td>
-                                <td>NPCL_ABH_1000_00_998</td>
-                            </tr>
+                            
                         </tbody>
                     </table>
+                    <ng-container *ngIf='successList.length===0 && !sharedService.loading'>
+                        <td [colSpan]='11' class="p-0">
+                            <app-empty-state class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
+                        </td>
+                    </ng-container>
                 </div>
             </ng-scrollbar>
         </mat-tab>
         <mat-tab [label]="'Failed Attachments'">
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
                 <div class="fixed-height fixed-height-sm">
-                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0" *ngIf='failureList.length>0'>
                         <thead>
                             <tr>
                                 <th class="light-bg-danger text-danger">Attachment Name</th>
@@ -209,18 +145,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>NPCL_ABH_1000_00_998_doctor_report.pdf</td>
-                                <td>Attachment file corrupted</td>
-                                <td>NPCL_ABH_1000_00_998</td>
-                            </tr>
-                            <tr>
-                                <td>NPCL_ABH_1000_00_998_ecg.pdf</td>
-                                <td>File size exceed limits</td>
-                                <td>NPCL_ABH_1000_00_998</td>
+                            <tr  *ngFor="let failRow of failureList">
+                                <td>{{failRow.fileName}}</td>
+                                <td>{{failRow.error}}</td>
+                                <td>{{failRow.provClaimNo}}</td>
                             </tr>
                         </tbody>
                     </table>
+                    <ng-container *ngIf='failureList.length===0 && !sharedService.loading'>
+                        <td [colSpan]='11' class="p-0">
+                            <app-empty-state class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
+                        </td>
+                    </ng-container>
                 </div>
             </ng-scrollbar>
         </mat-tab>
