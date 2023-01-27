@@ -512,7 +512,10 @@
 
                                         <td class="actions">
                                             <ng-container
-                                                *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  || claimIsDeletable(claim.status,claim.canDelete))">
+                                                *ngIf="claim.claimId && 
+                                                ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  
+                                                || claimIsDeletable(claim.status,claim.canDelete) 
+                                                || (claimIsReplicable(claim.status) && (claim.isActive || claim.isActive == null)))">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <ng-container
                                                         *ngIf="claim.claimResponseId && showCancelAll === true">
