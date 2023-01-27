@@ -5,27 +5,50 @@
 
     </div>
     <div class="block-filter-panel">
-      <h5 class="form-title pt-0">Personal Information</h5>
+      
 
       <div class="row small-gutter justify-content-center">
-        <div class="col-xl-6">
-          <div class="form-group" [matTooltip]="errors.documentIdCCHI"
-            [class.has-error]="errors.documentIdCCHI!=null&&errors.documentIdCCHI.trim().length>0">
-            <label class="control-label">Search for Patient Details</label>
+        <div class="col-xl-2">
+          <div class="form-group"  [matTooltip]="errors.SystemTypeCchi"
+          [class.has-error]="errors.SystemTypeCchi!=null&&errors.SystemTypeCchi.trim().length>0">
+            <label class="control-label">System Type</label>
             <div class="row small-gutter">
               <div class="col">
-                <input placeholder="Enter national ID or Iqama" class="form-control"
-                  [formControl]="documentIdCCHIFormControl">
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select value="" [formControl]="systemTypeFormControl"  (selectionChange)="upadatePlaceHolder();">
+                    <mat-option value="">Select System Type</mat-option>
+                    <mat-option value="1">HIDP</mat-option>
+                    <mat-option value="2">VIDP</mat-option>
+                    <mat-option value="3">SCTH</mat-option>
+                    <mat-option value="4">UIDP</mat-option>
+                    <mat-option value="5">HUIDP </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
-              <div class="col-auto">
-                <button type="button" mat-flat-button color="primary" *ngIf="addMode"
-                  (click)="getInfoFromCCHI()">Inquire CCHI</button>
-              </div>
+
             </div>
           </div>
         </div>
-      </div>
+        <div class="col-xl-4">
+          <div class="form-group" [matTooltip]="errors.documentIdCCHI"
+            [class.has-error]="errors.documentIdCCHI!=null&&errors.documentIdCCHI.trim().length>0">
+            <label class="control-label">Search for Patient Details</label>
+            <input placeholder="{{IdPlaceholder}}" class="form-control"
+              [formControl]="documentIdCCHIFormControl">
+          </div>
+        </div>
+        <div class="col-xl-2">
+          <label class="control-label"><br></label>
+          <div class="row small-gutter">
+            <div class="col-auto">
+              <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="getInfoFromCCHI()">Inquire
+                CCHI</button>
+            </div>
+          </div>
 
+        </div>
+      </div>
+      <h5 class="form-title pt-0">Personal Information</h5>
       <div class="row small-gutter">
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
@@ -134,6 +157,48 @@
           <div class="form-group">
             <label class="control-label">E-Health ID</label>
             <input placeholder="Enter E-Health ID" class="form-control" [formControl]="EHealthIdNameController">
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Passport Number</label>
+            <input placeholder="Enter passport number" class="form-control" [formControl]="PassportControl">
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Visa Type</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select value="" [formControl]="VisaTypeControl" [value]="selectedVisaType" (selectionChange)="selectedVisaType = $event.value;">
+                <mat-option value="">Select Visa Type</mat-option>
+                <mat-option *ngFor="let type of VisaTypes"
+                [value]="type.Code">
+                {{type.Name}}</mat-option>
+               
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Visa Title</label>
+            <input placeholder="Enter visa title" class="form-control"  [formControl]="VisaTitleControl">
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Visa Expiry Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select visa expiry date"  [formControl]="VisaExpiryControl">
+              <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #visaExpiryDatePicker></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Border Number</label>
+            <input placeholder="Enter border number" class="form-control"  [formControl]="BorderNoControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -318,136 +383,203 @@
           <table class="primary-grid claim-view-table">
             <thead>
               <tr>
-                <th class="text-center">Set Primary?</th>
-                <th>Payer<span class="asterisk">*</span></th>
+                <th width="10"></th>
+                <th class="text-center" width="10">Set Primary?</th>
+                <th width="10">Payer<span class="asterisk">*</span></th>
                 <th>Expiry Date</th>
                 <th>Member Card ID<span class="asterisk">*</span></th>
                 <th>Policy Number</th>
-                <th>Patient Share</th>
-                <th>MaxLimit</th>
-                <th>Relation with Subscriber<span class="asterisk">*</span></th>
-                <th>Coverage Type<span class="asterisk">*</span></th>
+                <th width="10">Relation with Subscriber<span class="asterisk">*</span></th>
+                <th width="10">Coverage Type<span class="asterisk">*</span></th>
                 <th width="10"></th>
               </tr>
             </thead>
             <tbody>
 
-              <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
-                <td class="text-center">
-                  <mat-radio-button color="primary" class="grid-radio" [value]="i"
-                    [checked]="(i+''==setPrimary && addMode)|| insurancePlan.isPrimary">
-                  </mat-radio-button>
-                </td>
-
-
-                <td>
-                  <div class="form-group m-0 w-260"
-                    [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-
-                    <app-nphies-payers-selector
-                      (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId ? (($event.value.payerNphiesId.indexOf(':') > -1) ? $event.value.payerNphiesId : $event.value.organizationNphiesId +':'+ $event.value.payerNphiesId) : $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId"
-                      [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"
-                      [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
-
-                    <!-- <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="selectedPayer2($event.value); insurancePlan.selectePayer = $event.value;" #Payer>
-                        <mat-option [value]="insurancePlan.selectePayer">{{addMode?
-                          selectedPayer(insurancePlan.selectePayer):"Select payer"}}
-                        </mat-option>
-                        <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
-                          {{payer.englistName}}({{payer.arabicName}})</mat-option>
-                      </mat-select>
-                    </mat-form-field> -->
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group m-0 w-130">
-                    <div class="date-picker">
-                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
-                        [formControl]="insurancePlan.expiryDateController">
-                      <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
-                      <mat-datepicker #expiryDate></mat-datepicker>
+              <ng-container *ngFor="let insurancePlan  of insurancePlans , let i = index">
+                <tr class="align-middle">
+                  <td class="text-primary text-center row-click align-middle" (click)="toggleInsuranceRecord(i)">
+                    <mat-icon *ngIf="currentOpenInsuranceDetails != i" class="size-21">add_circle_outline</mat-icon>
+                    <mat-icon *ngIf="currentOpenInsuranceDetails == i" class="size-21">remove_circle_outline</mat-icon>
+                  </td>
+                  <td class="text-center">
+                    <mat-radio-button color="primary" class="grid-radio" [value]="i"
+                      [checked]="(i+''==setPrimary && addMode)|| insurancePlan.isPrimary">
+                    </mat-radio-button>
+                  </td>
+                  <td>
+                    <div class="form-group m-0 w-260"
+                      [class.has-error]="IsPayerErorr(i) === true || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
+                      <app-nphies-payers-selector
+                        (selectionChange)="insurancePlan.selectePayer = $event.value.payerNphiesId ? (($event.value.payerNphiesId.indexOf(':') > -1) ? $event.value.payerNphiesId : $event.value.organizationNphiesId +':'+ $event.value.payerNphiesId) : $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId"
+                        [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"
+                        [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
+                      <!-- <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="selectedPayer2($event.value); insurancePlan.selectePayer = $event.value;" #Payer>
+                          <mat-option [value]="insurancePlan.selectePayer">{{addMode?
+                            selectedPayer(insurancePlan.selectePayer):"Select payer"}}
+                          </mat-option>
+                          <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
+                            {{payer.englistName}}({{payer.arabicName}})</mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
-                    [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter member card ID"
-                      [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.policyNumberErorr"
-                    [class.has-error]="insurancePlan.policyNumberErorr!=null && insurancePlan.policyNumberErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="New Policy Number"
-                      [formControl]="insurancePlan.policyNumber" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.patientShareErorr"
-                    [class.has-error]="insurancePlan.patientShareErorr!=null && insurancePlan.patientShareErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter Patient Share"
-                      [formControl]="insurancePlan.patientShare" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.maxLimitErorr"
-                    [class.has-error]="insurancePlan.maxLimitErorr!=null && insurancePlan.maxLimitErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter MaxLimit"
-                      [formControl]="insurancePlan.maxLimit" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160"
-                    [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
-                        (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
-                        #selecteSubscriberRelationship>
-                        <mat-option value="">Select Relation with Subscriber</mat-option>
-                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship"
-                          [value]="subscriberRelationship.Code">
-                          {{subscriberRelationship.Name}}</mat-option>
-
-                      </mat-select>
-
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group m-0 w-160"
-                    [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteCoverageType"
-                        (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
-                        <mat-option value="">Select Coverage Type</mat-option>
-                        <mat-option value="EHCPOL">Extended healthcare</mat-option>
-                        <mat-option value="PUBLICPOL">Public healthcare</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td class="actions">
-                  <button type="button" mat-icon-button class="text-primary" (click)="deleteInsurancePlan(i)">
-                    <mat-icon class="material-icons-outlined">delete</mat-icon>
-                  </button>
-                  <!-- <mat-menu #insurancePlanActionsMenu xPosition="before">
-                    <ng-template matMenuContent>
-                      <button mat-menu-item type="button" (click)="deleteInsurancePlan(i)">
-                        <mat-icon class="material-icons-outlined">delete</mat-icon>
-                        <span>Delete</span>
-                      </button>
-                    </ng-template>
-                  </mat-menu>
-                  <button type="button" mat-icon-button [matMenuTriggerFor]="insurancePlanActionsMenu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button> -->
-                </td>
-              </tr>
+                  </td>
+                  <td>
+                    <div class="form-group m-0">
+                      <div class="date-picker">
+                        <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
+                          [formControl]="insurancePlan.expiryDateController">
+                        <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                        <mat-datepicker #expiryDate></mat-datepicker>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0" [matTooltip]="insurancePlan.memberCardIdErorr"
+                      [class.has-error]="insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0">
+                      <input type="text" class="form-control" placeholder="Enter member card ID"
+                        [formControl]="insurancePlan.memberCardId" (blur)="IsMemberCardIdErorr(i)" />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0" [matTooltip]="insurancePlan.policyNumberErorr"
+                      [class.has-error]="insurancePlan.policyNumberErorr!=null && insurancePlan.policyNumberErorr.trim().length>0">
+                      <input type="text" class="form-control" placeholder="New Policy Number"
+                        [formControl]="insurancePlan.policyNumber" />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0 w-160"
+                      [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
+                      <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
+                          (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
+                          #selecteSubscriberRelationship>
+                          <mat-option value="">Select Relation with Subscriber</mat-option>
+                          <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship"
+                            [value]="subscriberRelationship.Code">
+                            {{subscriberRelationship.Name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0 w-160"
+                      [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
+                      <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="insurancePlan.selecteCoverageType"
+                          (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                          <mat-option value="">Select Coverage Type</mat-option>
+                          <mat-option value="EHCPOL">Extended healthcare</mat-option>
+                          <mat-option value="PUBLICPOL">Public healthcare</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </td>
+                  <td class="actions">
+                    <button type="button" mat-icon-button class="text-primary" (click)="deleteInsurancePlan(i)">
+                      <mat-icon class="material-icons-outlined">delete</mat-icon>
+                    </button>
+                    <!-- <mat-menu #insurancePlanActionsMenu xPosition="before">
+                      <ng-template matMenuContent>
+                        <button mat-menu-item type="button" (click)="deleteInsurancePlan(i)">
+                          <mat-icon class="material-icons-outlined">delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                      </ng-template>
+                    </mat-menu>
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="insurancePlanActionsMenu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button> -->
+                  </td>
+                </tr>
+                <tr *ngIf="currentOpenInsuranceDetails == i">
+                  <td colspan="9">
+                    <div class="box pb-0">
+                      <div class="row small-gutter">
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group" [matTooltip]="insurancePlan.patientShareErorr"
+                            [class.has-error]="insurancePlan.patientShareErorr!=null && insurancePlan.patientShareErorr.trim().length>0">
+                            <label class="control-label">Patient Share</label>
+                            <input type="text" class="form-control" placeholder="Enter Patient Share"
+                              [formControl]="insurancePlan.patientShare" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group" [matTooltip]="insurancePlan.maxLimitErorr"
+                            [class.has-error]="insurancePlan.maxLimitErorr!=null && insurancePlan.maxLimitErorr.trim().length>0">
+                            <label class="control-label">Max Limit</label>
+                            <input type="text" class="form-control" placeholder="Enter Max Limit"
+                              [formControl]="insurancePlan.maxLimit" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Issue Date</label>
+                            <div class="date-picker">
+                              <input [matDatepicker]="insuranceIssueDatePicker" class="form-control"
+                                placeholder="Select issue date">
+                              <mat-datepicker-toggle [for]="insuranceIssueDatePicker"></mat-datepicker-toggle>
+                              <mat-datepicker #insuranceIssueDatePicker></mat-datepicker>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Network ID</label>
+                            <input type="text" class="form-control" placeholder="Enter network ID" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Sponsor Number</label>
+                            <input type="text" class="form-control" placeholder="Enter sponsor number" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Policy Class Name</label>
+                            <input type="text" class="form-control" placeholder="Enter policy class name" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Policy Holder</label>
+                            <input type="text" class="form-control" placeholder="Enter policy holder" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Insurance Status</label>
+                            <input type="text" class="form-control" placeholder="Enter insurance status" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Insurance Duration</label>
+                            <input type="text" class="form-control" placeholder="Enter insurance duration" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Insurance Type</label>
+                            <mat-form-field class="form-control custom-select-control">
+                              <mat-select value="">
+                                <mat-option value="">Select Insurance Type</mat-option>
+                                <mat-option value="Insurance Type 1">Insurance Type 1</mat-option>
+                                <mat-option value="Insurance Type 2">Insurance Type 2</mat-option>
+                                <mat-option value="Insurance Type 3">Insurance Type 3</mat-option>
+                                <mat-option value="Insurance Type 4">Insurance Type 4</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
 
             </tbody>
 
@@ -496,35 +628,35 @@
       <h5 class="form-title pt-0">Personal Information</h5>
 
       <div class="row small-gutter">
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">First Name</label>
             <input placeholder="Enter first name" class="form-control" (change)=" isFullNameDisabled()"
               [formControl]="firstNameController" [(ngModel)]="fullName">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Second Name</label>
             <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()"
               [formControl]="secondNameController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Third Name</label>
             <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()"
               [formControl]="thirdNameController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Family Name</label>
             <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()"
               [formControl]="familyNameController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group" [matTooltip]="errors.fullName"
             [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
@@ -532,14 +664,14 @@
               [formControl]="fullNameController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Beneficiary File ID</label>
             <input placeholder="Enter beneficiary file ID" class="form-control"
               [formControl]="beneficiaryFileIdController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group" [matTooltip]="errors.dob"
             [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
             <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
@@ -551,7 +683,7 @@
             </div>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group" [matTooltip]="errors.gender"
             [class.has-error]="errors.gender!=null&&errors.gender.trim().length>0">
             <label class="control-label">Gender<span class="asterisk">*</span></label>
@@ -573,7 +705,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group" [matTooltip]="errors.documentType"
             [class.has-error]="errors.documentType!=null&&errors.documentType.trim().length>0">
             <label class="control-label">Document Type<span class="asterisk">*</span></label>
@@ -601,20 +733,62 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group" [matTooltip]="errors.documentId"
             [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
             <label class="control-label">Document ID<span class="asterisk">*</span></label>
             <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">E-Health ID</label>
             <input placeholder="Enter E-Health ID" class="form-control" [formControl]="EHealthIdNameController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Passport Number</label>
+            <input placeholder="Enter passport number" class="form-control">
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Visa Type</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select value="">
+                <mat-option value="">Select Visa Type</mat-option>
+                <mat-option value="Visa Type 1">Visa Type 1</mat-option>
+                <mat-option value="Visa Type 2">Visa Type 2</mat-option>
+                <mat-option value="Visa Type 3">Visa Type 3</mat-option>
+                <mat-option value="Visa Type 4">Visa Type 4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Visa Title</label>
+            <input placeholder="Enter visa title" class="form-control">
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Visa Expiry Date</label>
+            <div class="date-picker">
+              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select visa expiry date">
+              <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #visaExpiryDatePicker></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group">
+            <label class="control-label">Border Number</label>
+            <input placeholder="Enter border number" class="form-control">
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Nationality</label>
             <mat-form-field class="form-control custom-select-control">
@@ -633,7 +807,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Residency Type</label>
             <mat-form-field class="form-control custom-select-control">
@@ -650,13 +824,13 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Contact Number</label>
             <input placeholder="Enter contact number" class="form-control" [formControl]="contactNumberController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Marital Status</label>
             <mat-form-field class="form-control custom-select-control">
@@ -671,7 +845,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Blood Group</label>
             <mat-form-field class="form-control custom-select-control">
@@ -684,7 +858,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Preferred Language</label>
             <mat-form-field class="form-control custom-select-control">
@@ -696,14 +870,14 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Emergency Phone Number</label>
             <input placeholder="Enter emergency phone number" class="form-control"
               [formControl]="emergencyPhoneNumberController">
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Email</label>
             <input placeholder="Enter email" class="form-control" [formControl]="emailController">
@@ -713,7 +887,6 @@
 
       <h5 class="form-title">
         <span>Address</span>
-
       </h5>
 
       <div class="table-responsive ">
@@ -726,7 +899,6 @@
               <th>State/Province</th>
               <th>Country</th>
               <th>Postal Code</th>
-              <th width="10"></th>
             </tr>
           </thead>
           <tbody>
@@ -789,138 +961,204 @@
           <table class="primary-grid claim-view-table">
             <thead>
               <tr>
-                <th class="text-center">Set Primary?</th>
-                <th>Payer<span class="asterisk">*</span></th>
+                <th width="10"></th>
+                <th class="text-center" width="10">Set Primary?</th>
+                <th width="10">Payer<span class="asterisk">*</span></th>
                 <th>Expiry Date</th>
                 <th>Member Card ID<span class="asterisk">*</span></th>
                 <th>Policy Number</th>
-                <th>Patient Share</th>
-                <th>MaxLimit</th>
-                <th>Relation with Subscriber<span class="asterisk">*</span></th>
-                <th>Coverage Type<span class="asterisk">*</span></th>
+                <th width="10">Relation with Subscriber<span class="asterisk">*</span></th>
+                <th width="10">Coverage Type<span class="asterisk">*</span></th>
                 <th width="10"></th>
               </tr>
             </thead>
             <tbody>
 
-              <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
-                <td class="text-center">
-                  <mat-radio-button color="primary" class="grid-radio" [value]="i"
-                    [checked]="(i+''==setPrimary && addMode) || (insurancePlan.isPrimary)">
-                  </mat-radio-button>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-260"
-                    [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
-                    <app-nphies-payers-selector
-                      (selectionChange)="insurancePlan.selectePayer = ($event.value.payerNphiesId.indexOf(':') > -1) ? $event.value.payerNphiesId : $event.value.organizationNphiesId +':'+ $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId"
-                      [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"
-                      [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
-
-                    <!-- <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
-                        <mat-option [value]="insurancePlan.selectePayer">{{editMode &&
-                          selectedPayer(insurancePlan.selectePayer)!=null?
-                          selectedPayer(insurancePlan.selectePayer):"Select payer"}}
-                        </mat-option>
-                        <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
-                          {{payer.englistName}}({{payer.arabicName}})</mat-option>
-
-                      </mat-select>
-                    </mat-form-field> -->
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group m-0 w-130">
-                    <div class="date-picker">
-                      <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
-                        [formControl]="insurancePlan.expiryDateController">
-                      <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
-                      <mat-datepicker #expiryDate></mat-datepicker>
+              <ng-container *ngFor="let insurancePlan  of insurancePlans , let i = index">
+                <tr class="align-middle">
+                  <td class="text-primary text-center row-click align-middle" (click)="toggleInsuranceRecord(i)">
+                    <mat-icon *ngIf="currentOpenInsuranceDetails != i" class="size-21">add_circle_outline</mat-icon>
+                    <mat-icon *ngIf="currentOpenInsuranceDetails == i" class="size-21">remove_circle_outline</mat-icon>
+                  </td>
+                  <td class="text-center">
+                    <mat-radio-button color="primary" class="grid-radio" [value]="i"
+                      [checked]="(i+''==setPrimary && addMode) || (insurancePlan.isPrimary)">
+                    </mat-radio-button>
+                  </td>
+                  <td>
+                    <div class="form-group m-0 w-260"
+                      [class.has-error]="IsPayerErorr(i) || (insurancePlan.payerErorr!=null && insurancePlan.payerErorr.trim().length>0)">
+                      <app-nphies-payers-selector
+                        (selectionChange)="insurancePlan.selectePayer = ($event.value.payerNphiesId.indexOf(':') > -1) ? $event.value.payerNphiesId : $event.value.organizationNphiesId +':'+ $event.value.payerNphiesId; insurancePlan.tpaNphiesId = $event.value.organizationNphiesId"
+                        [tpaNphiesId]="insurancePlan.tpaNphiesId" [insurancePayer]="insurancePlan.selectePayer"
+                        [toolTip]="insurancePlan.payerErorr || getSelectedPayerName(i)"></app-nphies-payers-selector>
+                      <!-- <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                          <mat-option [value]="insurancePlan.selectePayer">{{editMode &&
+                            selectedPayer(insurancePlan.selectePayer)!=null?
+                            selectedPayer(insurancePlan.selectePayer):"Select payer"}}
+                          </mat-option>
+                          <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
+                            {{payer.englistName}}({{payer.arabicName}})</mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
                     </div>
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.memberCardIdErorr"
-                    [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
-                    <input type="text" class="form-control" placeholder="Enter member card ID"
-                      [formControl]="insurancePlan.memberCardId" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.policyNumberErorr"
-                    [class.has-error]="insurancePlan.policyNumberErorr!=null && insurancePlan.policyNumberErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter member card ID"
-                      [formControl]="insurancePlan.policyNumber" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.patientShareErorr"
-                    [class.has-error]="insurancePlan.patientShareErorr!=null && insurancePlan.patientShareErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter Patient Share"
-                      [formControl]="insurancePlan.patientShare" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160" [matTooltip]="insurancePlan.maxLimitErorr"
-                    [class.has-error]="insurancePlan.maxLimitErorr!=null && insurancePlan.maxLimitErorr.trim().length>0">
-                    <input type="text" class="form-control" placeholder="Enter MaxLimit"
-                      [formControl]="insurancePlan.maxLimit" />
-                  </div>
-                </td>
-
-                <td>
-                  <div class="form-group m-0 w-160"
-                    [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
-                        (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
-                        #selecteSubscriberRelationship>
-                        <mat-option value="">Select Relation with Subscriber</mat-option>
-                        <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship"
-                          [value]="subscriberRelationship.Code">
-                          {{subscriberRelationship.Name}}</mat-option>
-
-                      </mat-select>
-
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td>
-                  <div class="form-group m-0 w-160"
-                    [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select [value]="insurancePlan.selecteCoverageType"
-                        (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
-                        <mat-option value="">Select Coverage Type</mat-option>
-                        <mat-option value="EHCPOL">Extended healthcare</mat-option>
-                        <mat-option value="PUBLICPOL">Public healthcare</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td class="actions">
-                  <button type="button" mat-icon-button class="text-primary" (click)="deleteInsurancePlan(i)">
-                    <mat-icon class="material-icons-outlined">delete</mat-icon>
-                  </button>
-                  <!-- <mat-menu #insurancePlanEditActionsMenu xPosition="before">
-                    <ng-template matMenuContent>
-                      <button mat-menu-item type="button" (click)="deleteInsurancePlan(i)">
-                        <mat-icon class="material-icons-outlined">delete</mat-icon>
-                        <span>Delete</span>
-                      </button>
-                    </ng-template>
-                  </mat-menu>
-                  <button type="button" mat-icon-button [matMenuTriggerFor]="insurancePlanEditActionsMenu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button> -->
-                </td>
-              </tr>
+                  </td>
+                  <td>
+                    <div class="form-group m-0">
+                      <div class="date-picker">
+                        <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
+                          [formControl]="insurancePlan.expiryDateController">
+                        <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                        <mat-datepicker #expiryDate></mat-datepicker>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0" [matTooltip]="insurancePlan.memberCardIdErorr"
+                      [class.has-error]="IsMemberCardIdErorr(i) || (insurancePlan.memberCardIdErorr!=null && insurancePlan.memberCardIdErorr.trim().length>0)">
+                      <input type="text" class="form-control" placeholder="Enter member card ID"
+                        [formControl]="insurancePlan.memberCardId" />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0" [matTooltip]="insurancePlan.policyNumberErorr"
+                      [class.has-error]="insurancePlan.policyNumberErorr!=null && insurancePlan.policyNumberErorr.trim().length>0">
+                      <input type="text" class="form-control" placeholder="Enter member card ID"
+                        [formControl]="insurancePlan.policyNumber" />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0 w-160"
+                      [class.has-error]="IsSelecteSubscriberRelationshipErorr(i) || (insurancePlan.selecteSubscriberRelationshipErorr!=null && insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0)">
+                      <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
+                          (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;"
+                          #selecteSubscriberRelationship>
+                          <mat-option value="">Select Relation with Subscriber</mat-option>
+                          <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship"
+                            [value]="subscriberRelationship.Code">
+                            {{subscriberRelationship.Name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group m-0 w-160"
+                      [class.has-error]="IsSelecteCoverageTypeErorr(i) || (insurancePlan.selecteCoverageTypeErorr!=null && insurancePlan.selecteCoverageTypeErorr.trim().length>0)">
+                      <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="insurancePlan.selecteCoverageType"
+                          (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                          <mat-option value="">Select Coverage Type</mat-option>
+                          <mat-option value="EHCPOL">Extended healthcare</mat-option>
+                          <mat-option value="PUBLICPOL">Public healthcare</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </td>
+                  <td class="actions">
+                    <button type="button" mat-icon-button class="text-primary" (click)="deleteInsurancePlan(i)">
+                      <mat-icon class="material-icons-outlined">delete</mat-icon>
+                    </button>
+                    <!-- <mat-menu #insurancePlanEditActionsMenu xPosition="before">
+                      <ng-template matMenuContent>
+                        <button mat-menu-item type="button" (click)="deleteInsurancePlan(i)">
+                          <mat-icon class="material-icons-outlined">delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                      </ng-template>
+                    </mat-menu>
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="insurancePlanEditActionsMenu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button> -->
+                  </td>
+                </tr>
+                <tr *ngIf="currentOpenInsuranceDetails == i">
+                  <td colspan="9">
+                    <div class="box pb-0">
+                      <div class="row small-gutter">
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group" [matTooltip]="insurancePlan.patientShareErorr"
+                            [class.has-error]="insurancePlan.patientShareErorr!=null && insurancePlan.patientShareErorr.trim().length>0">
+                            <label class="control-label">Patient Share</label>
+                            <input type="text" class="form-control" placeholder="Enter Patient Share"
+                              [formControl]="insurancePlan.patientShare" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group" [matTooltip]="insurancePlan.maxLimitErorr"
+                            [class.has-error]="insurancePlan.maxLimitErorr!=null && insurancePlan.maxLimitErorr.trim().length>0">
+                            <label class="control-label">Max Limit</label>
+                            <input type="text" class="form-control" placeholder="Enter Max Limit"
+                              [formControl]="insurancePlan.maxLimit" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Issue Date</label>
+                            <div class="date-picker">
+                              <input [matDatepicker]="insuranceIssueDatePicker" class="form-control"
+                                placeholder="Select issue date">
+                              <mat-datepicker-toggle [for]="insuranceIssueDatePicker"></mat-datepicker-toggle>
+                              <mat-datepicker #insuranceIssueDatePicker></mat-datepicker>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Network ID</label>
+                            <input type="text" class="form-control" placeholder="Enter network ID" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Sponsor Number</label>
+                            <input type="text" class="form-control" placeholder="Enter sponsor number" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Policy Class Name</label>
+                            <input type="text" class="form-control" placeholder="Enter policy class name" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Policy Holder</label>
+                            <input type="text" class="form-control" placeholder="Enter policy holder" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Insurance Status</label>
+                            <input type="text" class="form-control" placeholder="Enter insurance status" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Insurance Duration</label>
+                            <input type="text" class="form-control" placeholder="Enter insurance duration" />
+                          </div>
+                        </div>
+                        <div class="col-6 col-lg-4 col-xl-3">
+                          <div class="form-group">
+                            <label class="control-label">Insurance Type</label>
+                            <mat-form-field class="form-control custom-select-control">
+                              <mat-select value="">
+                                <mat-option value="">Select Insurance Type</mat-option>
+                                <mat-option value="Insurance Type 1">Insurance Type 1</mat-option>
+                                <mat-option value="Insurance Type 2">Insurance Type 2</mat-option>
+                                <mat-option value="Insurance Type 3">Insurance Type 3</mat-option>
+                                <mat-option value="Insurance Type 4">Insurance Type 4</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
 
             </tbody>
 
@@ -940,117 +1178,147 @@
     <div *ngIf="viewMode" class="block-filter-panel">
       <h5 class="semibold pb-2 mb-3 border-bottom">Personal Information</h5>
       <div class="row small-gutter">
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">First Name</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.firstName)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Second Name</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.middleName)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Third Name</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.lastName)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Family Name</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.familyName)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Full Name</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.fullName)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Beneficiary File ID</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.beneficiaryFileId)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Date of Birth</label>
             <span class="form-control-static">{{beneficiaryinfo.dob}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">E-Health ID</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.eHealthId)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Passport Number</label>
+            <span class="form-control-static">temp data</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Visa Type</label>
+            <span class="form-control-static">temp data</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Visa Title</label>
+            <span class="form-control-static">temp data</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Visa Expiry Date</label>
+            <span class="form-control-static">temp data</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
+          <div class="form-group form-group-static">
+            <label class="control-label">Border Number</label>
+            <span class="form-control-static">temp data</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Nationality</label>
             <span class="form-control-static">{{isNull(getNationalitiesName(beneficiaryinfo.nationality))}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Residency Type</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.residencyType)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Document Type</label>
             <!-- <span class="form-control-static">{{isNull(beneficiaryinfo.documentType)}}</span> -->
             <span class="form-control-static">{{isNull(beneficiaryinfo.documentTypeName)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Document ID</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.documentId)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Contact Number</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.contactNumber)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Marital Status</label>
             <span class="form-control-static">{{isNull(getMaritalStatusName(beneficiaryinfo.martialStatus))}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Gender</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.gender)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Blood Group</label>
             <span class="form-control-static">{{isNull(getBloodTypeName(beneficiaryinfo.bloodGroup))}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Preferred Language</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.preferredLanguage) =='EN' ? 'English'
               :'Arabic'}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Emergency Phone Number</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.emergencyNumber)}}</span>
           </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Email</label>
             <span class="form-control-static">{{isNull(beneficiaryinfo.email)}}</span>
@@ -1090,32 +1358,103 @@
         <table class="primary-grid claim-view-table">
           <thead>
             <tr>
-              <th class="text-center text-nowrap" width="10">Set Primary?</th>
+              <th width="10"></th>
+              <th class="text-center" width="10">Set Primary?</th>
               <th>Payer</th>
               <th>Expiry Date</th>
               <th>Member Card ID</th>
               <th>Policy Number</th>
-              <th>Patient Share</th>
-              <th>MaxLimit</th>
               <th>Relation with Subscriber</th>
               <th>Coverage Type</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
-              <td class="text-center align-middle">
-                <mat-icon class="text-primary">{{insurancePlans.isPrimary ? 'done':''}}
-                </mat-icon>
-              </td>
-              <td>{{getPayerName(insurancePlans.payerId)}}</td>
-              <td>{{isNull(insurancePlans.expiryDate)}}</td>
-              <td>{{insurancePlans.memberCardId}}</td>
-              <td>{{isNull(insurancePlans.policyNumber)}}</td>
-              <td>{{isNull(insurancePlans.patientShare)}}</td>
-              <td>{{isNull(insurancePlans.maxLimit)}}</td>
-              <td>{{isNull(getSubscriberRelationshipName(insurancePlans.relationWithSubscriber))}}</td>
-              <td>{{isNull(getCoverageTypeName(insurancePlans.coverageType))}}</td>
-            </tr>
+            <ng-container *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans; let i = index">
+              <tr>
+                <td class="text-primary text-center row-click align-middle" (click)="toggleInsuranceRecord(i)">
+                  <mat-icon *ngIf="currentOpenInsuranceDetails != i" class="size-21">add_circle_outline</mat-icon>
+                  <mat-icon *ngIf="currentOpenInsuranceDetails == i" class="size-21">remove_circle_outline</mat-icon>
+                </td>
+                <td class="text-center align-middle">
+                  <mat-icon class="text-primary">{{insurancePlans.isPrimary ? 'done':''}}
+                  </mat-icon>
+                </td>
+                <td>{{getPayerName(insurancePlans.payerId)}}</td>
+                <td>{{isNull(insurancePlans.expiryDate)}}</td>
+                <td>{{insurancePlans.memberCardId}}</td>
+                <td>{{isNull(insurancePlans.policyNumber)}}</td>
+                <td>{{isNull(getSubscriberRelationshipName(insurancePlans.relationWithSubscriber))}}</td>
+                <td>{{isNull(getCoverageTypeName(insurancePlans.coverageType))}}</td>
+              </tr>
+              <tr *ngIf="currentOpenInsuranceDetails == i">
+                <td colspan="9">
+                  <div class="box pb-0">
+                    <div class="row small-gutter">
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Patient Share</label>
+                          <span class="form-control-static">{{isNull(insurancePlans.patientShare)}}</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Max Limit</label>
+                          <span class="form-control-static">{{isNull(insurancePlans.maxLimit)}}</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Issue Date</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Network ID</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Sponsor Number</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Policy Class Name</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Policy Holder</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Insurance Status</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Insurance Duration</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                      <div class="col-6 col-lg-4 col-xl-3">
+                        <div class="form-group form-group-static">
+                          <label class="control-label">Insurance Type</label>
+                          <span class="form-control-static">temp data</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>

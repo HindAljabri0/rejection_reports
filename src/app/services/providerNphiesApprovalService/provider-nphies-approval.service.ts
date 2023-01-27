@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { folder } from 'jszip';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,37 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+  LinkAttachments(providerId: string, folderName: string , isReplace:boolean) {
+    let requestUrl = `/providers/${providerId}/claims/link/attachment?isReplace=${isReplace}`;
+    if (folderName) {
+      requestUrl += `&folderName=${folderName}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
+    return this.http.request(request);
+  }
   deleteClaimById(providerId: string, claimId: string) {
     const requestUrl = `/providers/${providerId}/remove/${claimId}`;
     const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
-
+  replicateClaimById(providerId: string, claimId: string) {
+    let requestUrl = `/providers/${providerId}/claim/replicate?`;
+    if (claimId != null) {
+      requestUrl += `claimId=${claimId}&`;
+    }
+    
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl ,{});
+    return this.http.request(request);
+  }
+  inActiveClaimById(providerId: string, claimId: string) {
+    let requestUrl = `/providers/${providerId}/claim/inactive?`;
+    if (claimId != null) {
+      requestUrl += `claimId=${claimId}&`;
+    }
+    
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl ,{});
+    return this.http.request(request);
+  }
   /* deleteClaimByCriteria(
     providerId: string, organizationId: string, uploadId: string, batchId: string, caseTypes: string[],
     claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
@@ -830,7 +856,8 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     statuses?: string[],
     organizationId?: string,
-    requestBundleId?:string
+    requestBundleId?:string,
+    filter_netAmount?: string,
   ) {
 
     let requestURL = `/providers/${providerId}/claims/validate?`;
@@ -889,6 +916,10 @@ export class ProviderNphiesApprovalService {
 
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+
+    if (filter_netAmount) {
+      requestURL += `&netAmount=${filter_netAmount}`;
     }
 
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});

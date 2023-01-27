@@ -38,6 +38,8 @@ import { couldStartTrivia } from 'typescript';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
+import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+import { ChooseAttachmentUploadDialogComponent } from '../choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -137,17 +139,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100, 500, 1000];
   showFirstLastButtons = true;
-   allFilters: any = [
-        { key: 'CLAIMDATE', value: 'claimDate' },
-        { key: 'CLAIMREFNO', value: 'claimRefNO' },
-        //{ key: 'DR_NAME', value: 'drName' },
-        { key: 'MEMBERID', value: 'memberID' },
-        { key: 'NATIONALID', value: 'nationalId' },
-        { key: 'PATIENTFILENO', value: 'patientFileNO' },
-        { key: 'CLAIMNET', value: 'netAmount' },
-        //{ key: 'BATCHNUM', value: 'batchNo' },
-    ];
-    appliedFilters: any = [];
+  allFilters: any = [
+    { key: 'CLAIMDATE', value: 'claimDate' },
+    { key: 'CLAIMREFNO', value: 'claimRefNO' },
+    //{ key: 'DR_NAME', value: 'drName' },
+    { key: 'MEMBERID', value: 'memberID' },
+    { key: 'NATIONALID', value: 'nationalId' },
+    { key: 'PATIENTFILENO', value: 'patientFileNO' },
+    { key: 'CLAIMNET', value: 'netAmount' },
+    //{ key: 'BATCHNUM', value: 'batchNo' },
+  ];
+  appliedFilters: any = [];
 
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
@@ -156,6 +158,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   claimDialogRef: MatDialogRef<any, any>;
 
   isGenerateAttachment = false;
+  userPrivileges: UserPrivileges = initState.userPrivileges;
+
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -231,7 +235,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         patientFileNo: this.params.patientFileNo,
         policyNo: this.params.policyNo,
         payerId: this.params.payerId,
-        claimTypes : this.params.claimTypes,
+        claimTypes: this.params.claimTypes,
         organizationId: this.params.organizationId,
         provClaimNum: this.params.claimRefNo,
         toDate: this.params.to,
@@ -358,7 +362,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
 
-    this.claimSearchCriteriaModel.memberId =  this.params.memberId;
+    this.claimSearchCriteriaModel.memberId = this.params.memberId;
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
@@ -483,11 +487,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
     this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
-    this.claimSearchCriteriaModel.netAmount =this.params.filter_netAmount;
-    this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate ||  this.params.from;
-    this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.filter_claimRefNo ||this.params.claimRefNo;
+    this.claimSearchCriteriaModel.netAmount = this.params.filter_netAmount;
+    this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate || this.params.from;
+    this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.filter_claimRefNo || this.params.claimRefNo;
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
-    this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo|| this.params.filter_patientFileNo;
+    this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo || this.params.filter_patientFileNo;
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId || this.params.filter_nationalId;
@@ -505,7 +509,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           if (this.searchResult.content.length > 0) {
             this.claims = this.searchResult.content;
-
+            console.log(this.claims);
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
@@ -651,7 +655,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId,status
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId, status
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -682,12 +686,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
   }
-  setFilterData(){
+  setFilterData() {
     this.params.claimRefNo = this.params.filter_claimRefNo ? this.params.filter_claimRefNo : this.params.claimRefNo;
     this.params.memberId = this.params.filter_memberId ? this.params.filter_memberId : this.params.memberId;
-    this.params.patientFileNo = this.params.filter_patientFileNo ? this.params.filter_patientFileNo :this.params.patientFileNo;
-    this.params.nationalId  = this.params.filter_nationalId ? this.params.filter_nationalId : this.params.nationalId;
-    this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate :this.params.from;
+    this.params.patientFileNo = this.params.filter_patientFileNo ? this.params.filter_patientFileNo : this.params.patientFileNo;
+    this.params.nationalId = this.params.filter_nationalId ? this.params.filter_nationalId : this.params.nationalId;
+    this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate : this.params.from;
     this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
   }
   get hasData() {
@@ -1228,7 +1232,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   getPBMValidation() {
     this.adminService.checkIfNphiesPBMValidationIsEnabled(this.commen.providerId, '101').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {        
+      if (event instanceof HttpResponse) {
         const body = event['body'];
         this.apiPBMValidationEnabled = body.value === '1' ? true : false;
         //  this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0]
@@ -1370,6 +1374,83 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     });
   }
+  replicateClaim(claimId: string, refNumber: string, isActive: boolean) {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Replicate this Claim?',
+        `This will replicate claim with reference: ${refNumber}. Are you sure you want to replicate it?`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.providerNphiesApprovalService.replicateClaimById(this.providerId, claimId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('',
+                `Claim with reference ${refNumber} was replicated successfully.`,
+                false))
+                .subscribe(afterColse => this.fetchData());
+
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              if (errorEvent.status === 500 || errorEvent.status === 404) {
+                this.commen.loadingChanged.next(false);
+
+                this.dialogService.showMessage("Claim Cannot Be replicated", '', 'alert', true, 'OK', errorEvent.message);
+              } else {
+                if (errorEvent.status == 400) {
+                  this.dialogService.openMessageDialog(new MessageDialogData('',
+                    `Claim with reference ${refNumber} was replicated successfully.`,
+                    false))
+                    .subscribe(afterColse => this.fetchData());
+                } else {
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                }
+                this.commen.loadingChanged.next(false);
+
+              }
+            }
+          });
+        }
+      });
+  }
+  inActiveClaim(claimId: string, refNumber: string) {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('InActivate this Claim?',
+        `This will InActivate claim with reference: ${refNumber}. Are you sure you want to do it?`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.providerNphiesApprovalService.inActiveClaimById(this.providerId, claimId).subscribe(event => {
+
+            /*if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('',
+                `Claim with reference ${refNumber} was InActivated successfully.`,
+                false))
+                .subscribe(afterColse => this.fetchData());
+            }*/
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              if (errorEvent.status === 500 || errorEvent.status === 404) {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.showMessage("Claim Cannot Be InActive", '', 'alert', true, 'OK', errorEvent.message);
+              } else if (errorEvent.status === 200) {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.openMessageDialog(new MessageDialogData('',
+                  `Claim with reference ${refNumber} was InActivated successfully.`,
+                  false))
+                  .subscribe(afterColse => this.fetchData());
+
+              }
+            }
+          });
+        }
+      });
+  }
   deleteClaim(claimId: string, refNumber: string) {
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Claim?',
@@ -1425,7 +1506,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   /*claimIsCancelled(status: string) {
     return ['cancelled'].includes(status.trim().toLowerCase());
   }*/
-
+  claimIsReplicable(status: string) {
+    return ['queued'].includes(status.trim().toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM;
+  }
+  /*claimIsActivable(status: string) {
+    return ['accepted','notaccepted'].includes(status.trim().toLowerCase());
+  }*/
   get showCancelAll() {
     return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
@@ -1483,8 +1569,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       model.invoiceNo = this.params.invoiceNo;
       model.patientFileNo = this.params.patientFileNo;
       model.netAmount = this.params.netAmount,
-      model.claimTypes = this.params.claimTypes,
-      model.from = this.params.from;
+        model.claimTypes = this.params.claimTypes,
+        model.from = this.params.from;
       model.nationalId = this.params.nationalId;
       model.requestBundleId = this.params.requestBundleId;
       model.statuses = [];
@@ -1597,65 +1683,65 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-            this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId 
+            this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId
           ).subscribe(event => {
-              if (event instanceof HttpResponse) {
+            if (event instanceof HttpResponse) {
 
-                this.commen.loadingChanged.next(false);
-                const status = event.body['status'];
-                if (status === 'Deleted') {
-                  this.dialogService.openMessageDialog(
-                    new MessageDialogData('',
-                      event.body['message'],
-                      false))
-                    .subscribe(afterColse => {
-                      const uploadId = this.params.uploadId;
+              this.commen.loadingChanged.next(false);
+              const status = event.body['status'];
+              if (status === 'Deleted') {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    event.body['message'],
+                    false))
+                  .subscribe(afterColse => {
+                    const uploadId = this.params.uploadId;
 
-                      if (this.selectedClaims.length == this.summaries[0].totalClaims) {
-                        this.router.navigate(['/nphies/uploads']);
-                      } else {
-                        this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
-                          queryParams: { uploadId }
-                        }).then(() => {
-                          window.location.reload();
-                        });
-                        /*this.selectedCardKey=0;
-                        this.resetURL();
-                        location.reload();*/
-                      }
-                    });
-                } else if (status === 'AlreadySumitted') {
-                  this.dialogService.openMessageDialog(
-                    // tslint:disable-next-line:max-line-length
-                    new MessageDialogData('',
-                      // `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
-                      event.body['message'],
-                      false))
-                    .subscribe(afterColse => {
+                    if (this.selectedClaims.length == this.summaries[0].totalClaims) {
                       this.router.navigate(['/nphies/uploads']);
-                    });
-                } else {
+                    } else {
+                      this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
+                        queryParams: { uploadId }
+                      }).then(() => {
+                        window.location.reload();
+                      });
+                      /*this.selectedCardKey=0;
+                      this.resetURL();
+                      location.reload();*/
+                    }
+                  });
+              } else if (status === 'AlreadySumitted') {
+                this.dialogService.openMessageDialog(
+                  // tslint:disable-next-line:max-line-length
+                  new MessageDialogData('',
+                    // `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                    event.body['message'],
+                    false))
+                  .subscribe(afterColse => {
+                    this.router.navigate(['/nphies/uploads']);
+                  });
+              } else {
 
-                  this.dialogService.openMessageDialog(
-                    new MessageDialogData('',
-                      event.body['message'],
-                      false));
-                }
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    event.body['message'],
+                    false));
               }
-            }, errorEvent => {
+            }
+          }, errorEvent => {
 
-              if (errorEvent instanceof HttpErrorResponse) {
-                const status = errorEvent.status;
-                if (status === 500 || status === 404) {
-                  this.commen.loadingChanged.next(false);
-                  // this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
-                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
-                } else {
-                  this.commen.loadingChanged.next(false);
-                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-                }
+            if (errorEvent instanceof HttpErrorResponse) {
+              const status = errorEvent.status;
+              if (status === 500 || status === 404) {
+                this.commen.loadingChanged.next(false);
+                // this.dialogService.showMessage("Claim Cannot Be Deleted", '', 'alert', true, 'OK', []);
+                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
+              } else {
+                this.commen.loadingChanged.next(false);
+                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
               }
-            });
+            }
+          });
         }
       });
   }
@@ -1692,7 +1778,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from,model.claimTypes,model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
+        model.patientFileNo, model.from, model.claimTypes, model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
     } else {
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
     }
@@ -1753,7 +1839,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
@@ -1833,7 +1919,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   getNphiesAttachmentConfiguration() {
     this.settingsServices.getNphiesAttachmentConfigDetails(this.commen.providerId).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {        
+      if (event instanceof HttpResponse) {
         if (event.body.attachment) {
           this.isGenerateAttachment = event.body.attachment.isEnabled;
         }
@@ -1855,7 +1941,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.PBMValidation(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId).subscribe(event => {
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
           if (event.body['status'] === 'Success') {
@@ -1881,9 +1967,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (errorEvent instanceof HttpErrorResponse) {
           if (errorEvent.status === 404) {
             this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
-          } else if(errorEvent.status === 400){
+          } else if (errorEvent.status === 400) {
             this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
-          } else if(errorEvent.status === 500){
+          } else if (errorEvent.status === 500) {
             this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.message, true));
@@ -1895,7 +1981,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     // });
   }
 
-  moveToReadyState(){
+  moveToReadyState() {
     if (this.selectedClaims.length == 0) {
       this.moveAllToReadyState();
     } else {
@@ -1903,7 +1989,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
   }
 
-  moveAllToReadyState(){
+  moveAllToReadyState() {
     if (this.commen.loading) {
       return;
     }
@@ -1912,7 +1998,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       payerIds.push(this.params.payerId);
     }
     this.setFilterData();
-    const status =  [...this.summaries[this.selectedCardKey].statuses];
+    const status = [...this.summaries[this.selectedCardKey].statuses];
     if (status.includes('RETURNED')) {
       const index = status.findIndex(x => x === 'RETURNED');
       status.splice(index, 1);
@@ -1921,12 +2007,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.moveToReadyState(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from,this.params.claimTypes,this.params.netAmount, this.params.nationalId, this.params.organizationId,status, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
           this.dialogService.openMessageDialog(
-            new MessageDialogData('Success',  event.body['message'], false)
+            new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
             this.resetURL();
             this.fetchData();
@@ -1944,7 +2030,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         }
-        if(errorEvent.status == 400 || errorEvent.status == 500){
+        if (errorEvent.status == 400 || errorEvent.status == 500) {
           this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
         }
         if (errorEvent.error['errors'] != null) {
@@ -1959,7 +2045,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-  moveSelectedToReadyState(){
+  moveSelectedToReadyState() {
     if (this.commen.loading) {
       return;
     } else if (this.selectedClaims.length == 0) {
@@ -1995,7 +2081,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         }
-        if(errorEvent.status == 400 || errorEvent.status == 500){
+        if (errorEvent.status == 400 || errorEvent.status == 500) {
           this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
         }
         if (errorEvent.error['errors'] != null) {
@@ -2011,7 +2097,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-  createRelatedClaim(claimId:string){
+  createRelatedClaim(claimId: string) {
     this.commen.loadingChanged.next(true);
     this.providerNphiesApprovalService.relatedClaim(this.commen.providerId, claimId).subscribe((event) => {
       if (event instanceof HttpResponse) {
@@ -2035,7 +2121,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         }
-        if(errorEvent.status == 400 || errorEvent.status == 500){
+        if (errorEvent.status == 400 || errorEvent.status == 500) {
           this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
         }
         if (errorEvent.error['errors'] != null) {
@@ -2077,7 +2163,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
+        model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId
+        , this.params.filter_netAmount);
     } else {
       action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims);
     }
@@ -2099,15 +2186,21 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status === 404) {
           this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
-        } else if(errorEvent.status === 400){
+        } else if (errorEvent.status === 400) {
           this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
-        } else if(errorEvent.status === 500){
+        } else if (errorEvent.status === 500) {
           this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
         } else {
           this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.message, true));
         }
       }
       this.commen.loadingChanged.next(false);
+    });
+  }
+  openChooseAttachmentDialog() {
+    const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent, {
+      panelClass: ['primary-dialog'],
+      autoFocus: false
     });
   }
 }
