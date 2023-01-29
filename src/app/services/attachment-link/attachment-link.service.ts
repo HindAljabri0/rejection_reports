@@ -20,7 +20,7 @@ export class AttachmentLinkService {
     return this.http.request(request);
   }
   uploadAttachFilesDetails(providerID: string,summaryId:number,status:string, page?: number, pageSize?: number) {
-    let requestUrl = `/provider/${providerID}/claims/attachment/files/details?page=${page}&pageSize=${pageSize}`;
+    let requestUrl = `/provider/${providerID}/claims/attachment/files/details?page=${page}&size=${pageSize}`;
     if (summaryId != null) {
       requestUrl += `&summaryId=${summaryId}`;
     }

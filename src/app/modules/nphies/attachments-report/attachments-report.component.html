@@ -3,7 +3,7 @@
         <p>Attachments Report</p>
     </div>
     <div class="block-body" *ngIf="summary.length>0" scrollable (scrollPosition)="scrollHandler($event)">
-        <div class="row small-gutter" >
+        <div class="row small-gutter">
             <div class="col-lg-6" *ngFor="let row of summary">
                 <div class="attachment-card" (click)="ShowDetails(row)">
                     <p class="title">{{ row.folderName }}</p>
@@ -35,15 +35,17 @@
                     </div>
                     <div class="card-info">
                         <p>Job ID: {{ row.attachmentLinkId }}</p>
-                        <p class="ml-auto text-right">Job Date: {{ row.linkedDate | date : 'yyyy/MM/dd hh:mm:ss aa' }}</p>
+                        <p class="ml-auto text-right">Job Date: {{ row.linkedDate | date : 'yyyy/MM/dd hh:mm:ss aa' }}
+                        </p>
                     </div>
                 </div>
             </div>
-            
+
         </div>
-        <app-empty-state *ngIf="!loading && currentPage == 0"></app-empty-state>
+        <app-empty-state *ngIf="!loading && currentPage == 0 "></app-empty-state>
         <p class="info-block" *ngIf="currentPage >= maxPages">There is no more data</p>
     </div>
+    <app-empty-state *ngIf="!loading && summary.length == 0"></app-empty-state>
 </div>
 
 
@@ -105,38 +107,49 @@
             </div>
         </div>
     </div>
+    
     <mat-tab-group class="primary-tab no-body-padding">
         <mat-tab [label]="'Successful Attachments'">
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
                 <div class="fixed-height fixed-height-sm">
-                    <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0" *ngIf='successList.length>0'>
+                    <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0"
+                        >
                         <thead>
                             <tr>
                                 <th>Attachment Name</th>
                                 <th>Claim Ref. No.</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr  *ngFor="let successRow of successList">
+                        <tbody *ngIf='successList.length>0'>
+                            <tr *ngFor="let successRow of successList">
                                 <td>{{successRow.fileName}}</td>
                                 <td>{{successRow.provClaimNo}}</td>
                             </tr>
-                            
+
+                        </tbody>
+                        <tbody *ngIf='successList.length===0'>
+                            <tr>
+                                <td colspan="2" class="text-center">No Data Found</td>
+                            </tr>
                         </tbody>
                     </table>
-                    <ng-container *ngIf='successList.length===0 && !sharedService.loading'>
-                        <td [colSpan]='11' class="p-0">
-                            <app-empty-state class="claim-list-empty-state" message='No records found!'>
-                            </app-empty-state>
-                        </td>
-                    </ng-container>
+                   
                 </div>
             </ng-scrollbar>
+            <div class="block-footer sticky">
+                <div class="left-block">
+                    <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
+                        [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons" [pageSizeOptions]="pageSizeOptions"
+                        [pageIndex]="pageIndex">
+                    </mat-paginator>
+                </div>
+            </div>
         </mat-tab>
         <mat-tab [label]="'Failed Attachments'">
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
                 <div class="fixed-height fixed-height-sm">
-                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0" *ngIf='failureList.length>0'>
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0"
+                        >
                         <thead>
                             <tr>
                                 <th class="light-bg-danger text-danger">Attachment Name</th>
@@ -144,22 +157,30 @@
                                 <th class="light-bg-danger text-danger">Claim Ref. No.</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr  *ngFor="let failRow of failureList">
+                        <tbody *ngIf='failureList.length>0'>
+                            <tr *ngFor="let failRow of failureList">
                                 <td>{{failRow.fileName}}</td>
                                 <td>{{failRow.error}}</td>
                                 <td>{{failRow.provClaimNo}}</td>
                             </tr>
                         </tbody>
+                        <tbody *ngIf='failureList.length===0'>
+                            <tr>
+                                <td colspan="3" class="text-center">No Data Found</td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <ng-container *ngIf='failureList.length===0 && !sharedService.loading'>
-                        <td [colSpan]='11' class="p-0">
-                            <app-empty-state class="claim-list-empty-state" message='No records found!'>
-                            </app-empty-state>
-                        </td>
-                    </ng-container>
+                    
                 </div>
             </ng-scrollbar>
+            <div class="block-footer sticky">
+                <div class="left-block">
+                    <mat-paginator #paginator class="primary-paginator" (page)="f_handlePageEvent($event)" [length]="f_length"
+                        [pageSize]="f_pageSize" [showFirstLastButtons]="showFirstLastButtons" [pageSizeOptions]="pageSizeOptions"
+                        [pageIndex]="f_pageIndex">
+                    </mat-paginator>
+                </div>
+            </div>
         </mat-tab>
     </mat-tab-group>
 </div>

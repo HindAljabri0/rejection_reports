@@ -5,23 +5,20 @@
 
     </div>
     <div class="block-filter-panel">
-      
+
 
       <div class="row small-gutter justify-content-center">
         <div class="col-xl-2">
-          <div class="form-group"  [matTooltip]="errors.SystemTypeCchi"
-          [class.has-error]="errors.SystemTypeCchi!=null&&errors.SystemTypeCchi.trim().length>0">
+          <div class="form-group" [matTooltip]="errors.SystemTypeCchi"
+            [class.has-error]="errors.SystemTypeCchi!=null&&errors.SystemTypeCchi.trim().length>0">
             <label class="control-label">System Type</label>
             <div class="row small-gutter">
               <div class="col">
                 <mat-form-field class="form-control custom-select-control">
-                  <mat-select value="" [formControl]="systemTypeFormControl"  (selectionChange)="upadatePlaceHolder();">
+                  <mat-select value="" [formControl]="systemTypeFormControl" (selectionChange)="upadatePlaceHolder();">
                     <mat-option value="">Select System Type</mat-option>
-                    <mat-option value="1">HIDP</mat-option>
-                    <mat-option value="2">VIDP</mat-option>
-                    <mat-option value="3">SCTH</mat-option>
-                    <mat-option value="4">UIDP</mat-option>
-                    <mat-option value="5">HUIDP </mat-option>
+                    <mat-option *ngFor="let type of SystemTypes" value="{{type.Code}}" [matTooltip]="type.tooltip">
+                      {{type.Name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -33,8 +30,7 @@
           <div class="form-group" [matTooltip]="errors.documentIdCCHI"
             [class.has-error]="errors.documentIdCCHI!=null&&errors.documentIdCCHI.trim().length>0">
             <label class="control-label">Search for Patient Details</label>
-            <input placeholder="{{IdPlaceholder}}" class="form-control"
-              [formControl]="documentIdCCHIFormControl">
+            <input placeholder="{{IdPlaceholder}}" class="form-control" [formControl]="documentIdCCHIFormControl">
           </div>
         </div>
         <div class="col-xl-2">
@@ -139,7 +135,7 @@
                                 <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option> -->
                 <mat-option value="PRC">Resident Card</mat-option>
                 <mat-option value="PPN">Passport</mat-option>
-                <mat-option value="VP">Visa</mat-option>
+                <mat-option value="VP">VISA</mat-option>
                 <mat-option value="NI">National Card</mat-option>
                 <mat-option value="MR">Medical Record Number</mat-option>
               </mat-select>
@@ -167,29 +163,29 @@
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
-            <label class="control-label">Visa Type</label>
+            <label class="control-label">VISA Type</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select value="" [formControl]="VisaTypeControl" [value]="selectedVisaType" (selectionChange)="selectedVisaType = $event.value;">
-                <mat-option value="">Select Visa Type</mat-option>
-                <mat-option *ngFor="let type of VisaTypes"
-                [value]="type.Code">
-                {{type.Name}}</mat-option>
-               
+              <mat-select [value]="selectedVisaType" (selectionChange)="selectedVisaType = $event.value;">
+                <mat-option value="">Select VISA Type</mat-option>
+                <mat-option *ngFor="let type of VisaTypes" [value]="type.Code">
+                  {{type.Name}}</mat-option>
+
               </mat-select>
             </mat-form-field>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
-            <label class="control-label">Visa Title</label>
-            <input placeholder="Enter visa title" class="form-control"  [formControl]="VisaTitleControl">
+            <label class="control-label">VISA Title</label>
+            <input placeholder="Enter VISA title" class="form-control" [formControl]="VisaTitleControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
-            <label class="control-label">Visa Expiry Date</label>
+            <label class="control-label">VISA Expiry Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select visa expiry date"  [formControl]="VisaExpiryControl">
+              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select VISA expiry date"
+                [formControl]="VisaExpiryControl">
               <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #visaExpiryDatePicker></mat-datepicker>
             </div>
@@ -198,7 +194,7 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Border Number</label>
-            <input placeholder="Enter border number" class="form-control"  [formControl]="BorderNoControl">
+            <input placeholder="Enter border number" class="form-control" [formControl]="BorderNoControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -726,7 +722,7 @@
 
                 <mat-option value="PRC">Resident Card</mat-option>
                 <mat-option value="PPN">Passport</mat-option>
-                <mat-option value="VP">Visa</mat-option>
+                <mat-option value="VP">VISA</mat-option>
                 <mat-option value="NI">National Card</mat-option>
                 <mat-option value="MR">Medical Record Number</mat-option>
               </mat-select>
@@ -749,34 +745,34 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Passport Number</label>
-            <input placeholder="Enter passport number" class="form-control">
+            <input placeholder="Enter passport number" class="form-control" [formControl]="PassportControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
-            <label class="control-label">Visa Type</label>
+            <label class="control-label">VISA Type</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select value="">
-                <mat-option value="">Select Visa Type</mat-option>
-                <mat-option value="Visa Type 1">Visa Type 1</mat-option>
-                <mat-option value="Visa Type 2">Visa Type 2</mat-option>
-                <mat-option value="Visa Type 3">Visa Type 3</mat-option>
-                <mat-option value="Visa Type 4">Visa Type 4</mat-option>
+              <mat-select [value]="selectedVisaType" (selectionChange)="selectedVisaType = $event.value;">
+                <mat-option value="">Select VISA Type</mat-option>
+                <mat-option *ngFor="let type of VisaTypes" [value]="type.Code">
+                  {{type.Name}}</mat-option>
+
               </mat-select>
             </mat-form-field>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
-            <label class="control-label">Visa Title</label>
-            <input placeholder="Enter visa title" class="form-control">
+            <label class="control-label">VISA Title</label>
+            <input placeholder="Enter VISA title" class="form-control" [formControl]="VisaTitleControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
-            <label class="control-label">Visa Expiry Date</label>
+            <label class="control-label">VISA Expiry Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select visa expiry date">
+              <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select VISA expiry date"
+                [formControl]="VisaExpiryControl">
               <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #visaExpiryDatePicker></mat-datepicker>
             </div>
@@ -785,7 +781,7 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Border Number</label>
-            <input placeholder="Enter border number" class="form-control">
+            <input placeholder="Enter border number" class="form-control" [formControl]="BorderNoControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -1229,31 +1225,31 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Passport Number</label>
-            <span class="form-control-static">temp data</span>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.passportNumber)}}</span>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
-            <label class="control-label">Visa Type</label>
-            <span class="form-control-static">temp data</span>
+            <label class="control-label">VISA Type</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.visaType)}}</span>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
-            <label class="control-label">Visa Title</label>
-            <span class="form-control-static">temp data</span>
+            <label class="control-label">VISA Title</label>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.visitTitle)}}</span>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
-            <label class="control-label">Visa Expiry Date</label>
-            <span class="form-control-static">temp data</span>
+            <label class="control-label">VISA Expiry Date</label>
+            <span class="form-control-static">{{beneficiaryinfo.visaExpiryDate}}</span>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group form-group-static">
             <label class="control-label">Border Number</label>
-            <span class="form-control-static">temp data</span>
+            <span class="form-control-static">{{isNull(beneficiaryinfo.borderNumber)}}</span>
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">

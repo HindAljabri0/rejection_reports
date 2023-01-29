@@ -2198,9 +2198,39 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
   openChooseAttachmentDialog() {
-    const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent, {
-      panelClass: ['primary-dialog'],
-      autoFocus: false
-    });
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    
+    const payerIds: string[] = [];
+      if (this.params.payerId) {
+        payerIds.push(this.params.payerId);
+      }
+      this.setFilterData();
+      const model: any = {};
+      model.providerId = this.providerId;
+      model.selectedClaims = this.selectedClaims;
+      model.uploadId = this.params.uploadId;
+      model.claimRefNo = this.params.claimRefNo;
+      model.to = this.params.to;
+      model.payerIds = payerIds;
+      model.batchId = this.params.batchId;
+      model.memberId = this.params.memberId;
+      model.invoiceNo = this.params.invoiceNo;
+      model.patientFileNo = this.params.patientFileNo;
+      model.netAmount = this.params.netAmount,
+        model.claimTypes = this.params.claimTypes,
+        model.from = this.params.from;
+      model.nationalId = this.params.nationalId;
+      model.requestBundleId = this.params.requestBundleId;
+      model.statuses = [];
+      model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+      model.organizationId = this.params.organizationId;
+
+      dialogConfig.data = {
+        uploadData: model,
+        type: 'uploadAttach'
+      };
+    const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent,dialogConfig);
+
   }
 }
