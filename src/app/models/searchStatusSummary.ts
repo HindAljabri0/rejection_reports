@@ -13,7 +13,7 @@ export class SearchStatusSummary {
   discount = 0;
   actualPaid = 0;
   actualDeducted = 0;
-
+  inActiveClaimCount=0;
 
   constructor(body: {}) {
     if (body != null) {
@@ -31,7 +31,7 @@ export class SearchStatusSummary {
       this.discount - body['discount'];
       this.actualPaid = body['actualPaid'];
       this.actualDeducted = body['actualDeducted'];
-
+      this.inActiveClaimCount = body['inActiveClaimCount'];
     } else {
       this.statuses = ['-'];
     }
@@ -52,7 +52,8 @@ export class SearchStatusSummary {
       patientShare: 0,
       discount: 0,
       actualPaid: 0,
-      actualDeducted: 0
+      actualDeducted: 0,
+      inActiveClaimCount:0
     };
   }
 }

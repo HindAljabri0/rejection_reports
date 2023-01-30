@@ -73,7 +73,8 @@ export class BeneficiaryComponent implements OnInit {
   BorderNoControl: FormControl = new FormControl();
   VisaExpiryControl: FormControl = new FormControl();
   VisaTitleControl: FormControl = new FormControl();
-  VisaTypeControl:FormControl = new FormControl();
+  VisaNumberControl: FormControl = new FormControl();
+  VisaTypeControl: FormControl = new FormControl();
   PassportControl: FormControl = new FormControl();
 
   houseNumberController = new FormControl();
@@ -95,6 +96,14 @@ export class BeneficiaryComponent implements OnInit {
     payerErorr: string,
     patientShare: FormControl,
     maxLimit: FormControl,
+    issueDate: FormControl,
+    networkId: FormControl,
+    sponsorNumber: FormControl,
+    policyClassName: FormControl,
+    policyHolder: FormControl,
+    insuranceStatus: FormControl,
+    insuranceDuration: FormControl,
+    insuranceType: FormControl,
     memberCardIdErorr: string,
     policyNumberErorr: string,
     patientShareErorr: string,
@@ -133,12 +142,12 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 40, Name: 'Dependent - مرافق' },
     { Code: 30, Name: 'ُEvent Visit - زيارة فعالية' },
   ];
-  SystemTypes: { Code: number, Name: string,tooltip:string }[] = [
-    { Code: 1, Name: 'HIDP' , tooltip:'Health Insurance for Nationals and Residents'},
-    { Code: 2, Name: 'VIDP' , tooltip:'Health Insurance for Visitors'},
-    { Code: 3, Name: 'SCTH' , tooltip:'Health Insurance for Tourists'},
-    { Code: 4, Name: 'UIDP' , tooltip:'Health Insurance for Tourists'},
-    { Code: 5, Name: 'HUIDP' , tooltip:'Health Insurance for Hajj & Umrah Visitors'}
+  SystemTypes: { Code: number, Name: string, tooltip: string }[] = [
+    { Code: 1, Name: 'HIDP', tooltip: 'Health Insurance for Nationals and Residents' },
+    { Code: 2, Name: 'VIDP', tooltip: 'Health Insurance for Visitors' },
+    { Code: 3, Name: 'SCTH', tooltip: 'Health Insurance for Tourists' },
+    { Code: 4, Name: 'UIDP', tooltip: 'Health Insurance for Premium Residency' },
+    { Code: 5, Name: 'HUIDP', tooltip: 'Health Insurance for Hajj & Umrah Visitors' }
   ];
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },
@@ -167,7 +176,7 @@ export class BeneficiaryComponent implements OnInit {
     gender: '',
     fullName: '',
     documentIdCCHI: '',
-    SystemTypeCchi : ''
+    SystemTypeCchi: ''
   };
 
   beneficiaryModel = new BeneficiaryModel();
@@ -383,6 +392,7 @@ export class BeneficiaryComponent implements OnInit {
     this.BorderNoControl.setValue(beneficiaryinfo.borderNumber);
     this.VisaExpiryControl.setValue(beneficiaryinfo.visaExpiryDate);
     this.VisaTitleControl.setValue(beneficiaryinfo.visitTitle);
+    this.VisaNumberControl.setValue(beneficiaryinfo.visaNumber);
     this.VisaTypeControl.setValue(beneficiaryinfo.visaType);
     this.PassportControl.setValue(beneficiaryinfo.passportNumber);
     this.selectedVisaType = beneficiaryinfo.visaType;
@@ -404,6 +414,14 @@ export class BeneficiaryComponent implements OnInit {
           patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) : new FormControl(),
           // tslint:disable-next-line:max-line-length
           payerErorr: null, policyNumberErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
+          issueDate: new FormControl(insurancePlans.issueDate),
+          networkId: new FormControl(insurancePlans.networkId),
+          sponsorNumber: new FormControl(insurancePlans.sponsorNumber),
+          policyClassName: new FormControl(insurancePlans.policyClassName),
+          policyHolder: new FormControl(insurancePlans.policyHolder),
+          insuranceStatus: new FormControl(insurancePlans.insuranceStatus),
+          insuranceDuration: new FormControl(insurancePlans.insuranceDuration),
+          insuranceType: new FormControl(insurancePlans.insuranceType),
           tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : (this.isCCHID ? null : '-1')
         }
       );
@@ -468,6 +486,14 @@ export class BeneficiaryComponent implements OnInit {
         policyNumberErorr: null,
         patientShareErorr: null,
         maxLimitErorr: null,
+        issueDate: new FormControl(),
+        networkId: new FormControl(),
+        sponsorNumber: new FormControl(),
+        policyClassName: new FormControl(),
+        policyHolder: new FormControl(),
+        insuranceStatus: new FormControl(),
+        insuranceDuration: new FormControl(),
+        insuranceType: new FormControl(),
         selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null,
         tpaNphiesId: ''
       });
@@ -579,8 +605,9 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.country = this.selectedCountry == '' ? null : this.selectedCountry;
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
     this.beneficiaryModel.borderNumber = this.BorderNoControl.value;
-    this.beneficiaryModel.visaExpiryDate = this.VisaExpiryControl.value ? new Date(moment(this.VisaExpiryControl.value).format('YYYY-MM-DD')): null;
+    this.beneficiaryModel.visaExpiryDate = this.VisaExpiryControl.value ? new Date(moment(this.VisaExpiryControl.value).format('YYYY-MM-DD')) : null;
     this.beneficiaryModel.visitTitle = this.VisaTitleControl.value;
+    this.beneficiaryModel.visaNumber = this.VisaNumberControl.value;
     this.beneficiaryModel.passportNumber = this.PassportControl.value;
     this.beneficiaryModel.visaType = this.selectedVisaType;
 
@@ -596,6 +623,14 @@ export class BeneficiaryComponent implements OnInit {
       isPrimary: insurancePlan.isPrimary,
       maxLimit: insurancePlan.maxLimit.value,
       patientShare: insurancePlan.patientShare.value,
+      issueDate: insurancePlan.issueDate.value,
+      networkId: insurancePlan.networkId.value,
+      sponsorNumber: insurancePlan.sponsorNumber.value,
+      policyClassName: insurancePlan.policyClassName.value,
+      policyHolder: insurancePlan.policyHolder.value,
+      insuranceStatus: insurancePlan.insuranceStatus.value,
+      insuranceDuration: insurancePlan.insuranceDuration.value,
+      insuranceType: insurancePlan.insuranceType.value,
       // tslint:disable-next-line:max-line-length
       tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
@@ -800,17 +835,17 @@ export class BeneficiaryComponent implements OnInit {
       return null;
     }
   }
-  upadatePlaceHolder(){
-    if(this.systemTypeFormControl.value == '1'){
-      this.IdPlaceholder="Enter national ID or Iqama";
-    }else if(this.systemTypeFormControl.value == '2'){
-      this.IdPlaceholder="Enter Visa number, Passport Number or Border Number";
-    }else if(this.systemTypeFormControl.value == '3' || this.systemTypeFormControl.value == '4'){
-      this.IdPlaceholder="Enter Visa number or Passport Number";
-    }else if(this.systemTypeFormControl.value == '5'){
-      this.IdPlaceholder="Enter Passport Number";
-    }else{
-      this.IdPlaceholder="Enter national ID or Iqama";
+  upadatePlaceHolder() {
+    if (this.systemTypeFormControl.value == '1') {
+      this.IdPlaceholder = "Enter national ID or Iqama";
+    } else if (this.systemTypeFormControl.value == '2') {
+      this.IdPlaceholder = "Enter Visa number, Passport Number or Border Number";
+    } else if (this.systemTypeFormControl.value == '3' || this.systemTypeFormControl.value == '4') {
+      this.IdPlaceholder = "Enter Visa number or Passport Number";
+    } else if (this.systemTypeFormControl.value == '5') {
+      this.IdPlaceholder = "Enter Passport Number";
+    } else {
+      this.IdPlaceholder = "Enter national ID or Iqama";
     }
   }
   getInfoFromCCHI() {
@@ -827,7 +862,7 @@ export class BeneficiaryComponent implements OnInit {
       thereIsError = true;
       return;
     }
-    
+
     this.sharedServices.loadingChanged.next(true);
 
     this.providersBeneficiariesService.getBeneficiaryFromCCHI(

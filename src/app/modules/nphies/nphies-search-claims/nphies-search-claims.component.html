@@ -81,6 +81,10 @@
 
                                 </tr>
                             </table>
+                            <hr>
+                            <div class="card-info">
+                                <p>InActive : <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}"> {{summary.value.inActiveClaimCount ? summary.value.inActiveClaimCount : 0}} </span></p>
+                            </div>
                         </app-abstractcard>
                     </ng-template>
                 </ng-container>
@@ -136,7 +140,7 @@
                         color="primary">Revalidate
                         {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
 
-                    <button mat-flat-button color="primary" (click)="openChooseAttachmentDialog()">Upload
+                    <button *ngIf="showUploadAttachment === true" mat-flat-button color="primary" (click)="openChooseAttachmentDialog()">Upload
                         Attachments {{selectedClaims.length==0?"":" ("+this.selectedClaims.length+")"}}</button>
 
                     <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length > 0"
@@ -503,7 +507,7 @@
                                       <mat-spinner diameter="20"></mat-spinner> -->
                                         </td>
 
-                                        <td class="text-center">
+                                        <td class="text-center" *ngIf="claim.attachmentCount && claim.attachmentCount>0">
                                             <button type="button" class="attachment-count">
                                                 <span>{{claim.attachmentCount}}</span>
                                                 <mat-icon class="size-21">attach_file</mat-icon>
@@ -515,7 +519,7 @@
                                                 *ngIf="claim.claimId && 
                                                 ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  
                                                 || claimIsDeletable(claim.status,claim.canDelete) 
-                                                || (claimIsReplicable(claim.status) && (claim.isActive || claim.isActive == null)))">
+                                                || claimIsReplicable(claim.status))">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <ng-container
                                                         *ngIf="claim.claimResponseId && showCancelAll === true">
@@ -549,10 +553,10 @@
                                                         <span>Edit Claim</span>
                                                     </button>
                                                     <button mat-menu-item
-                                                        *ngIf="claimIsReplicable(claim.status) && (claim.isActive || claim.isActive == null)"
+                                                        *ngIf="claimIsReplicable(claim.status) && (claim.isActive || claim.isActive == null) "
                                                         (click)="replicateClaim(claim.claimId, claim.providerClaimNumber,claim.isActive)">
                                                         <mat-icon class="material-icons-outlined">copy</mat-icon>
-                                                        <span>Replicate Claim</span>
+                                                        <span>Replicate Claim </span>
                                                     </button>
                                                     <button mat-menu-item *ngIf="claimIsReplicable(claim.status)"
                                                         (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">

@@ -33,5 +33,6 @@ export class BeneficiaryModel {
   borderNumber:string;
   visaType: string;
   visitTitle: string;
+  visaNumber:string;
   visaExpiryDate: Date;
 }
