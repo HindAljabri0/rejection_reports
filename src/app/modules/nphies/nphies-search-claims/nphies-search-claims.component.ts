@@ -38,7 +38,7 @@ import { couldStartTrivia } from 'typescript';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
-import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { ChooseAttachmentUploadDialogComponent } from '../choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 
@@ -179,13 +179,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private settingsServices: SettingsService,) { }
 
   ngOnDestroy(): void {
-
+    
     localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
     localStorage.removeItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY);
     this.routerSubscription.unsubscribe();
   }
 
   ngOnInit() {
+    this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
     this.getNphiesAttachmentConfiguration();
     this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
     this.fetchData();
@@ -837,7 +838,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         patientShare: this.summaries[oldSummaryIndex].patientShare - claim.patientShare,
         discount: this.summaries[oldSummaryIndex].discount - claim.discount,
         actualPaid: this.summaries[oldSummaryIndex].actualPaid,
-        actualDeducted: this.summaries[oldSummaryIndex].actualDeducted
+        actualDeducted: this.summaries[oldSummaryIndex].actualDeducted,
+        inActiveClaimCount:this.summaries[oldSummaryIndex].inActiveClaimCount
       };
       this.claims[index].status = claim.status;
       const newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
@@ -855,7 +857,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare,
           discount: this.summaries[oldSummaryIndex].discount + claim.discount,
           actualPaid: this.summaries[newSummaryIndex].actualPaid,
-          actualDeducted: this.summaries[newSummaryIndex].actualDeducted
+          actualDeducted: this.summaries[newSummaryIndex].actualDeducted,
+          inActiveClaimCount:this.summaries[newSummaryIndex].inActiveClaimCount
         };
         window.setTimeout(() => {
           this.summaries = summaries;
@@ -1514,7 +1517,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['cancelled'].includes(status.trim().toLowerCase());
   }*/
   claimIsReplicable(status: string) {
-    return ['queued'].includes(status.trim().toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM;
+    return ['queued'].includes(status.trim().toLowerCase())&& this.userPrivileges.WaseelPrivileges.isPAM;
   }
   /*claimIsActivable(status: string) {
     return ['accepted','notaccepted'].includes(status.trim().toLowerCase());
@@ -1531,7 +1534,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   get showGenerateAttachment() {
     return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
-
+  get showUploadAttachment() {
+    // tslint:disable-next-line:max-line-length
+    return ['accepted', 'notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
   get showDeleteAll() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted', 'error', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());

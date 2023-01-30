@@ -24,6 +24,7 @@ export class AttachmentsReportComponent implements OnInit {
   totalCount = 0;
   successCount = 0;
   failCount = 0;
+  totalUnUsed=0;
   //success page options
   length = 0;
   pageSize = 10;
@@ -91,6 +92,7 @@ export class AttachmentsReportComponent implements OnInit {
       this.totalCount = obj.totalAttachments;
       this.successCount = obj.totalSuccess;
       this.failCount = obj.totalFailed;
+      this.totalUnUsed=obj.totalUnUsed;
     }
     this.callSuccess(this.jobId, this.pageIndex);
     this. callFailed(this.jobId, this.pageIndex);
