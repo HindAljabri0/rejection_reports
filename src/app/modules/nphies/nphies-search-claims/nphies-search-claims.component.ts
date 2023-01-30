@@ -40,6 +40,7 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { ChooseAttachmentUploadDialogComponent } from '../choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -159,6 +160,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   isGenerateAttachment = false;
   userPrivileges: UserPrivileges = initState.userPrivileges;
+  payersList = [];
+  filterpayer: any;
 
   constructor(
     public dialog: MatDialog,
@@ -170,6 +173,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     private store: Store,
     private downloadService: DownloadService,
     private adminService: AdminService,
+    private beneficiaryServices: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private settingsServices: SettingsService,) { }
@@ -208,6 +212,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.resetURL();
     });
     this.submittionErrors = new Map();
+
   }
 
   ngAfterViewChecked() {
@@ -263,7 +268,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       });
       await this.loadStatues(statuses.filter(status => status != null && status.toUpperCase() != 'ALL'));
     }
-
+    if (this.params.payerId) {
+      this.getPayerList();
+    }
     // this.getResultsOfStatus(this.params.status, this.params.page);
 
     if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
@@ -2197,40 +2204,60 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.commen.loadingChanged.next(false);
     });
   }
+  getPayerList() {
+    this.commen.loadingChanged.next(true);
+    this.beneficiaryServices.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        if (body instanceof Array) {
+          this.payersList = body;
+          this.filterpayer = this.payersList.filter(s => s.nphiesId == (this.params.payerId));
+          console.log("payers filter = " + JSON.stringify(this.filterpayer));
+          this.commen.loadingChanged.next(false);
+        }
+      }
+    }, errorEvent => {
+      this.commen.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
+  }
   openChooseAttachmentDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
-    
-    const payerIds: string[] = [];
-      if (this.params.payerId) {
-        payerIds.push(this.params.payerId);
-      }
-      this.setFilterData();
-      const model: any = {};
-      model.providerId = this.providerId;
-      model.selectedClaims = this.selectedClaims;
-      model.uploadId = this.params.uploadId;
-      model.claimRefNo = this.params.claimRefNo;
-      model.to = this.params.to;
-      model.payerIds = payerIds;
-      model.batchId = this.params.batchId;
-      model.memberId = this.params.memberId;
-      model.invoiceNo = this.params.invoiceNo;
-      model.patientFileNo = this.params.patientFileNo;
-      model.netAmount = this.params.netAmount,
-        model.claimTypes = this.params.claimTypes,
-        model.from = this.params.from;
-      model.nationalId = this.params.nationalId;
-      model.requestBundleId = this.params.requestBundleId;
-      model.statuses = [];
-      model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
-      model.organizationId = this.params.organizationId;
 
-      dialogConfig.data = {
-        uploadData: model,
-        type: 'uploadAttach'
-      };
-    const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent,dialogConfig);
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+    this.setFilterData();
+    const model: any = {};
+    model.providerId = this.providerId;
+    model.selectedClaims = this.selectedClaims;
+    model.uploadId = this.params.uploadId;
+    model.claimRefNo = this.params.claimRefNo;
+    model.to = this.params.to;
+    model.payerIds = payerIds;
+    model.payer = this.filterpayer;
+    model.batchId = this.params.batchId;
+    model.memberId = this.params.memberId;
+    model.invoiceNo = this.params.invoiceNo;
+    model.patientFileNo = this.params.patientFileNo;
+    model.netAmount = this.params.netAmount,
+      model.claimTypes = this.params.claimTypes,
+      model.from = this.params.from;
+    model.nationalId = this.params.nationalId;
+    model.requestBundleId = this.params.requestBundleId;
+    model.statuses = [];
+    model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    model.organizationId = this.params.organizationId;
+
+    dialogConfig.data = {
+      uploadData: model,
+      type: 'uploadAttach'
+    };
+    const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent, dialogConfig);
 
   }
 }

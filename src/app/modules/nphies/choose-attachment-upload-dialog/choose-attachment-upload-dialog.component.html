@@ -8,7 +8,7 @@
         <div class="row small-gutter">
             <div class="col-6" *ngIf="this.data.uploadData.statuses">
                 <div class="form-group">
-                    <label class="control-label">Status {{this.data.uploadData.statuses}}</label>
+                    <label class="control-label">Status</label>
                     <span class="form-control-static">{{this.data.uploadData.statuses == 'accepted' ? 'Ready For Submission' : (this.data.uploadData.statuses == 'notaccepted' ? 'Validation Error' : '-')}}</span>
                 </div>
             </div>
@@ -31,10 +31,10 @@
                 </div>
             </div>
             
-            <div class="col-6" *ngIf=" this.data.uploadData.payerIds!='' ">
+            <div class="col-12" *ngIf="this.data.uploadData.payerIds!=''">
                 <div class="form-group">
                     <label class="control-label">Payer</label>
-                    <span class="form-control-static">{{this.data.uploadData.payerIds}}</span>
+                    <span class="form-control-static">{{this.data.uploadData.payer[0].englistName}} - {{this.data.uploadData.payer[0].arabicName}}</span>
                 </div>
             </div>
             <div class="col-6" *ngIf="this.data.uploadData.claimRefNo">
