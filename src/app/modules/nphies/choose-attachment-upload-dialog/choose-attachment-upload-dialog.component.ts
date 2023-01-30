@@ -1,10 +1,11 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AttachmentLinkService } from 'src/app/services/attachment-link/attachment-link.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
@@ -13,23 +14,26 @@ import { SharedServices } from 'src/app/services/shared.services';
   styles: []
 })
 export class ChooseAttachmentUploadDialogComponent implements OnInit {
-  folders=[];
-  folderNameControl:FormControl = new FormControl();
-  folderNamerror='';
-  folderName:string;
+  folders = [];
+  folderNameControl: FormControl = new FormControl();
+  folderNamerror = '';
+  folderName: string;
+
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<ChooseAttachmentUploadDialogComponent>,
-    private sharedService: SharedServices, 
-    private attachmentLinkService:AttachmentLinkService,
+    private sharedService: SharedServices,
+    private attachmentLinkService: AttachmentLinkService,
     private dialogService: DialogService,
-    private dialog: MatDialog,
-    private providerNphiesApprovalService:ProviderNphiesApprovalService
+    private providerNphiesApprovalService: ProviderNphiesApprovalService
   ) { }
 
   ngOnInit() {
     this.loadFolders();
+    console.log("payer = "+JSON.stringify(this.data.uploadData.payer));
   }
-  loadFolders(){
+  
+  loadFolders() {
     this.attachmentLinkService.getFoldersName(this.sharedService.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         this.folders = event.body;
@@ -40,19 +44,25 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
       console.log(err);
     });
   }
- 
-  StartJob(isReplace:boolean) {
-    
-    console.log("this.folderName = "+this.folderName);
 
-    if (this.folderName == null || this.folderName =='') {
+  StartJob(isReplace: boolean) {
+
+    console.log("this.folderName = " + this.folderName);
+
+    if (this.folderName == null || this.folderName == '') {
       this.folderNamerror = "Select at least one purpose for this request."
       return false;
     }
-    
+
     this.sharedService.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.LinkAttachments(this.sharedService.providerId, this.folderName, isReplace).subscribe((event: any) => {
+    this.providerNphiesApprovalService.LinkAttachments(
+      this.sharedService.providerId, this.folderName, isReplace,
+      this.data.uploadData.selectedClaims, this.data.uploadData.uploadId, this.data.uploadData.claimRefNo, this.data.uploadData.to,
+      this.data.uploadData.payerIds, this.data.uploadData.batchId, this.data.uploadData.memberId, this.data.uploadData.invoiceNo,
+      this.data.uploadData.patientFileNo, this.data.uploadData.from, this.data.uploadData.claimTypes, this.data.uploadData.netAmount,
+      this.data.uploadData.nationalId, this.data.uploadData.statuses, this.data.uploadData.organizationId, this.data.uploadData.requestBundleId
+    ).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -71,9 +81,9 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
             this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
           }
         } else if (error.status === 404) {
-          this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {
-          this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
         }
         this.sharedService.loadingChanged.next(false);
       }

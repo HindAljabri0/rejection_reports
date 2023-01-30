@@ -137,7 +137,7 @@
                         {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
 
                     <button mat-flat-button color="primary" (click)="openChooseAttachmentDialog()">Upload
-                        Attachments</button>
+                        Attachments {{selectedClaims.length==0?"":" ("+this.selectedClaims.length+")"}}</button>
 
                     <button *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedClaims.length > 0"
                         (click)="generateAttachmentAll()" mat-flat-button color="primary">

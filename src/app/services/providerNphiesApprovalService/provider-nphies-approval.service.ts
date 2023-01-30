@@ -15,12 +15,91 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
-  LinkAttachments(providerId: string, folderName: string , isReplace:boolean) {
-    let requestUrl = `/providers/${providerId}/claims/link/attachment?isReplace=${isReplace}`;
+  LinkAttachments(providerId: string,
+    folderName: string, 
+    isReplace:boolean,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    claimTypes?: string,
+    netAmount? : string,
+    documentId?: string,
+    statuses?: string[],
+    organizationId?: string,
+    requestBundleId?:string
+    ) {
+    let requestURL = `/providers/${providerId}/claims/link/attachment?isReplace=${isReplace}`;
     if (folderName) {
-      requestUrl += `&folderName=${folderName}`;
+      requestURL += `&folderName=${folderName}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
+    if (provderClaimReferenceNumber) {
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
+    }
+
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    if (uploadId) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+
+    if (claimDate) {
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+    }
+
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+
+    if (statuses && statuses.length > 0) {
+      requestURL += `&statuses=${statuses.join(',')}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
+    }
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
     return this.http.request(request);
   }
   deleteClaimById(providerId: string, claimId: string) {

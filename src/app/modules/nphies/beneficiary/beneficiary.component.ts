@@ -56,7 +56,7 @@ export class BeneficiaryComponent implements OnInit {
   dobFormControl: FormControl = new FormControl();
   documentIdFormControl: FormControl = new FormControl();
   documentIdCCHIFormControl: FormControl = new FormControl();
-  systemTypeFormControl: FormControl = new FormControl('');
+  systemTypeFormControl: FormControl = new FormControl('1');
   nationalityFilterCtrl: FormControl = new FormControl();
   countryFilterCtrl: FormControl = new FormControl();
   firstNameController: FormControl = new FormControl();
@@ -132,6 +132,13 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 27, Name: 'Personal Visit - زيارة شخصية' },
     { Code: 40, Name: 'Dependent - مرافق' },
     { Code: 30, Name: 'ُEvent Visit - زيارة فعالية' },
+  ];
+  SystemTypes: { Code: number, Name: string,tooltip:string }[] = [
+    { Code: 1, Name: 'HIDP' , tooltip:'Health Insurance for Nationals and Residents'},
+    { Code: 2, Name: 'VIDP' , tooltip:'Health Insurance for Visitors'},
+    { Code: 3, Name: 'SCTH' , tooltip:'Health Insurance for Tourists'},
+    { Code: 4, Name: 'UIDP' , tooltip:'Health Insurance for Tourists'},
+    { Code: 5, Name: 'HUIDP' , tooltip:'Health Insurance for Hajj & Umrah Visitors'}
   ];
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },

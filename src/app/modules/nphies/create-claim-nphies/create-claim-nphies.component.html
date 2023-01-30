@@ -235,7 +235,7 @@
         </div>
         <div class="col-4 col-xxl-3">
           <div class="form-group form-group-static">
-            <div class="control-label">Is Referral?.</div>
+            <div class="control-label">Has referred Preauthorization?.</div>
             <p class="form-control-static">
               {{FormNphiesClaim.controls.isReferral.value == true ? 'Yes' : 'No'}}</p>
           </div>
@@ -1582,7 +1582,7 @@
           </ng-template>
           <br>
           <div class="checkbox-group inline">
-            <mat-checkbox color="primary" formControlName="isReferral">Referral?</mat-checkbox>
+            <mat-slide-toggle color="primary" formControlName="isReferral">Has referred Preauthorization?</mat-slide-toggle>
           </div>
           <hr>
           <div class="row small-gutter">

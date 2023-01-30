@@ -6,39 +6,83 @@
     <h5 class="medium pb-8">Claim Summary</h5>
     <div class="box mb-14 pb-0">
         <div class="row small-gutter">
-            <div class="col-6">
-                <div class="form-group form-group-static">
+            <div class="col-6" *ngIf="this.data.uploadData.statuses">
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    <span class="form-control-static">{{this.data.uploadData.statuses == 'accepted' ? 'Ready For Submission' : (this.data.uploadData.statuses == 'notaccepted' ? 'Validation Error' : '-')}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf="this.data.uploadData.selectedClaims.length > 0">
+                <div class="form-group">
                     <label class="control-label">No. of Claims</label>
-                    <span class="form-control-static">240 Claims</span>
+                    <span class="form-control-static">{{this.data.uploadData.selectedClaims.length}}</span>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="form-group form-group-static">
+            <div class="col-12" *ngIf="this.data.uploadData.claimTypes">
+                <div class="form-group">
+                    <label class="control-label">Claim Type/s</label>
+                    <span class="form-control-static">{{this.data.uploadData.claimTypes}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf="this.data.uploadData.from && this.data.uploadData.to">
+                <div class="form-group">
                     <label class="control-label">Duration</label>
-                    <span class="form-control-static">01/01/2023 - 31/01/2023</span>
+                    <span class="form-control-static">{{this.data.uploadData.from}} / {{this.data.uploadData.to}}</span>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="form-group form-group-static">
-                    <label class="control-label">Claim Type</label>
-                    <span class="form-control-static">Institutional</span>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group form-group-static">
+            
+            <div class="col-12" *ngIf="this.data.uploadData.payerIds!=''">
+                <div class="form-group">
                     <label class="control-label">Payer</label>
-                    <span class="form-control-static">Bupa Arabia for Cooperative Insurance</span>
+                    <span class="form-control-static">{{this.data.uploadData.payer[0].englistName}} - {{this.data.uploadData.payer[0].arabicName}}</span>
                 </div>
             </div>
+            <div class="col-6" *ngIf="this.data.uploadData.claimRefNo">
+                <div class="form-group">
+                    <label class="control-label">Provider Claim No</label>
+                    <span class="form-control-static">{{this.data.uploadData.claimRefNo}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf="this.data.uploadData.memberId">
+                <div class="form-group">
+                    <label class="control-label">Claims For Member Id</label>
+                    <span class="form-control-static">{{this.data.uploadData.memberId}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf="this.data.uploadData.patientFileNo">
+                <div class="form-group">
+                    <label class="control-label">Claims For Patient File No </label>
+                    <span class="form-control-static">{{this.data.uploadData.patientFileNo}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf="this.data.uploadData.invoiceNo">
+                <div class="form-group">
+                    <label class="control-label">Claims For Invoice No</label>
+                    <span class="form-control-static">{{this.data.uploadData.invoiceNo}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf=" this.data.uploadData.nationalId">
+                <div class="form-group">
+                    <label class="control-label">Claims For National</label>
+                    <span class="form-control-static">{{ this.data.uploadData.nationalId}}</span>
+                </div>
+            </div>
+            <div class="col-6" *ngIf="this.data.uploadData.netAmount">
+                <div class="form-group">
+                    <label class="control-label">Claims Having Net Amount</label>
+                    <span class="form-control-static">{{this.data.uploadData.netAmount}}</span>
+                </div>
+            </div>
+
         </div>
     </div>
     <h5 class="medium pb-8">Select Attachment Folder</h5>
     <div class="form-group">
         <mat-form-field class="form-control custom-select-control">
-            <mat-select (selectionChange)="folderName = $event.value" [class.has-error]="folderNamerror?.trim().length > 0"
+            <mat-select value="" (selectionChange)="folderName = $event.value" [class.has-error]="folderNamerror?.trim().length > 0"
                 [matTooltip]="folderNamerror">
                 <mat-option value="" >Select Folder Name</mat-option>
-                <mat-option *ngFor="let folder of folders" [value]="folder">{{folder}}</mat-option>
+                <mat-option *ngFor="let folder of folders" value="{{folder}}">{{folder}}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
