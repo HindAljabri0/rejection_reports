@@ -507,8 +507,8 @@
                                       <mat-spinner diameter="20"></mat-spinner> -->
                                         </td>
 
-                                        <td class="text-center" *ngIf="claim.attachmentCount && claim.attachmentCount>0">
-                                            <button type="button" class="attachment-count">
+                                        <td class="text-center" >
+                                            <button type="button" class="attachment-count" *ngIf="claim.attachmentCount && claim.attachmentCount>0">
                                                 <span>{{claim.attachmentCount}}</span>
                                                 <mat-icon class="size-21">attach_file</mat-icon>
                                             </button>

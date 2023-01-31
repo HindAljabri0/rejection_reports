@@ -1678,7 +1678,28 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     }
   }
-
+  handleUploadErrors(error) {
+    console.log(JSON.stringify(error));
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 400) {
+        this.dialogService.showMessage(error.error, '', 'alert', true, 'OK', error.error.errors);
+      } else if (error.status === 404) {
+        this.dialogService.showMessage(error.error, '', 'alert', true, 'OK');
+      } else if (error.status === 500) {
+        this.dialogService.showMessage(error.message, '', 'alert', true, 'OK');
+      } else if (error.status === 503) {
+        const errors: any[] = [];
+        if (error.error.errors) {
+          error.error.errors.forEach(x => {
+            errors.push(x);
+          });
+          this.dialogService.showMessage(error.message, '', 'alert', true, 'OK', errors);
+        } else {
+          this.dialogService.showMessage(error.message, '', 'alert', true, 'OK');
+        }
+      }
+    }
+  }
   deleteClaimByCriteria() {
     // tslint:disable-next-line:max-line-length
     this.setFilterData();
@@ -2264,6 +2285,26 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       type: 'uploadAttach'
     };
     const dialogRef = this.dialog.open(ChooseAttachmentUploadDialogComponent, dialogConfig);
-
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.Success) {
+        this.deSelectAll();
+        if (result.Errors && result.Errors.length > 0) {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessageObservable(result.Message, '', 'alert', true, 'OK', result.Errors, true).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        } else {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', result.Message, false)
+          ).subscribe(res => {
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+      } else if ((result && !result.Success && result.Error)) {
+        this.handleUploadErrors(result.Error);
+      }
+    });
   }
 }
