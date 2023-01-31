@@ -66,31 +66,24 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          this.dialogService.showMessage('Success:', body.message, 'success', true, 'OK');
+          const resModel: any = {};
+          resModel.Success = true;
+          resModel.queuedStatus = body.queuedStatus;
+          resModel.Message = body.message;
+          resModel.Errors = body.errors;
+          this.dialogRef.close(resModel);
         }
         this.sharedService.loadingChanged.next(false);
       }
     }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          if (error.error && error.error.errors) {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
-          } else {
-            // tslint:disable-next-line:max-line-length
-            this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
-          }
-        } else if (error.status === 404) {
-          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
-        }
-        this.sharedService.loadingChanged.next(false);
-      }
+      this.sharedService.loadingChanged.next(false);
+      const resModel: any = {};
+      resModel.Success = false;
+      resModel.Error = error;
+      this.dialogRef.close(resModel);
     });
   }
   closeDialog() {
     this.dialogRef.close();
   }
-
 }
