@@ -11,6 +11,7 @@ export class AbstractcardComponent {
 
   @Input() title: string;
   @Input() totalCount: string;
+  @Input() inactiveCount?: string;
   @Input() actionText: string;
   @Input() accentColor: string;
   @Input() clickable = true;
