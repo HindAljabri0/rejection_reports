@@ -1,7 +1,7 @@
 <button type="button" *ngIf="clickable" class="click-trigger" matRipple (click)="action.emit()"></button>
 <div class="primary-card-title text-{{accentColor}}">
     <span class="title bg-{{accentColor}}">{{title}}</span>
-    <span class="total-count" *ngIf="totalCount">{{totalCount}}<span>Claims</span></span>
+    <span class="total-count">{{totalCount}}<span>Claims</span></span>
 </div>
 <div class="primary-card-content">
     <ng-content></ng-content>

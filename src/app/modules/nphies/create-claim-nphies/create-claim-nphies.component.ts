@@ -2277,7 +2277,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.totalPatientShare = response.totalPatientShare;
     this.otherDataModel.totalPayerShare = response.totalPayerShare;
     this.otherDataModel.totalTax = response.totalTax;
-
+    this.otherDataModel.previousClaimIdentifiers = response.previousClaimIdentifiers;
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.FormNphiesClaim.controls.isReferral.setValue(response.isReferral);
     this.FormNphiesClaim.controls.ReferralName.setValue(response.referralName);
