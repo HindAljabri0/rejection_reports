@@ -278,12 +278,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   async loadStatues(statuses: string[]) {
+    
     if (this.summaries != null && this.summaries.length > 1) {
       if (statuses.includes('all')) {
         this.summaries.splice(0, 1);
       }
       this.summaries = this.summaries.filter(summary => !summary.statuses.some(status => statuses.includes(status)));
     }
+    
     let underProcessingIsDone = false;
     let rejectedByPayerIsDone = false;
     let readyForSubmissionIsDone = false;
@@ -292,6 +294,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     let invalidIsDone = false;
     let isAllDone = false;
     for (let status of statuses) {
+      
       if (this.isUnderProcessingStatus(status)) {
         if (!underProcessingIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
@@ -334,6 +337,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }
     }
     this.summaries.sort((a, b) => b.statuses.length - a.statuses.length);
+    
     if (this.params.status != null)
       this.getResultsOfStatus(this.params.status, this.params.page);
     else
@@ -344,7 +348,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
 
-    console.log(this.params.requestBundleId + 'test')
+    
     this.commen.loadingChanged.next(true);
     let event;
 
@@ -399,8 +403,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       if ((event.status / 100).toFixed() == '2') {
         // debugger;
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
-        console.log("Summary =" + JSON.stringify(summary));
-        if (summary.totalClaims > 0) {
+        
+        if (summary.totalClaims > 0 || summary.inActiveClaimCount>0) {
           if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
             summary.statuses.push('All');
@@ -417,6 +421,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
   getResultsOfStatus(key: number, page?: number) {
+    
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
@@ -487,7 +492,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   getClaimTransactions(key?: number, page?: number) {
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
-    console.log("getClaimTransactions" + this.commen.providerId);
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
     this.claimSearchCriteriaModel.statuses = key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
     this.claimSearchCriteriaModel.page = this.pageIndex;
@@ -517,11 +521,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           if (this.searchResult.content.length > 0) {
             this.claims = this.searchResult.content;
-            console.log(this.claims);
+           
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
-            console.log('this.length:' + this.length + 'this.pageSize:' + this.pageSize + 'this.pageIndex:' + this.pageIndex);
+            //console.log('this.length:' + this.length + 'this.pageSize:' + this.pageSize + 'this.pageIndex:' + this.pageIndex);
             this.storeSearchResultsForClaimViewPagination();
             this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
             this.store.dispatch(storeClaims({
@@ -559,11 +563,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             });
 
           } else if ((event.status / 100).toFixed() == '4') {
-            console.log('400');
+            
           } else if ((event.status / 100).toFixed() == '5') {
-            console.log('500');
+           
           } else {
-            console.log('000');
+            
           }
 
         }
@@ -1036,7 +1040,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     localStorage.setItem('pagesize', event.pageSize + '');
-    console.log(event);
     if (this.summaries[this.selectedCardKey] != null) {
       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
     }
@@ -1092,7 +1095,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
-    console.log(this.setParamsValueSummary.toString);
+    
   }
 
   clearFilters(name: string, key = false) {
@@ -1679,7 +1682,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
   }
   handleUploadErrors(error) {
-    console.log(JSON.stringify(error));
+    
     if (error instanceof HttpErrorResponse) {
       if (error.status === 400) {
         this.dialogService.showMessage(error.error, '', 'alert', true, 'OK', error.error.errors);
@@ -2239,7 +2242,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (body instanceof Array) {
           this.payersList = body;
           this.filterpayer = this.payersList.filter(s => s.nphiesId == (this.params.payerId));
-          console.log("payers filter = " + JSON.stringify(this.filterpayer));
+          
           this.commen.loadingChanged.next(false);
         }
       }

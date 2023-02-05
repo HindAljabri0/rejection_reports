@@ -20,8 +20,9 @@
                 <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
-                            [totalCount]="summary.value.totalClaims" [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])"
-                            (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
+                            [totalCount]="summary.value.totalClaims" [inactiveCount]="summary.value.inActiveClaimCount"
+                            [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
+                            class="primary-card abstract-card">
                             <span class="label total">Totals</span>
                             <table>
                                 <tr>
@@ -66,11 +67,6 @@
 
                                 </tr>
                             </table>
-                            <hr>
-                            <div class="card-info">
-                                <p>InActive : <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}"> {{summary.value.inActiveClaimCount ?
-                                        summary.value.inActiveClaimCount : 0}} </span></p>
-                            </div>
                         </app-abstractcard>
                     </ng-template>
                 </ng-container>

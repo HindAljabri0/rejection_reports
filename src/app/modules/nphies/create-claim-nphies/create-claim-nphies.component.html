@@ -10,9 +10,12 @@
           :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
       <p *ngIf="otherDataModel.claimRelatedIdentifiers">
-        <span>Related Claim Request Identifier:</span>&nbsp;<strong>
+        <span>Related Claim Identifier:</span>&nbsp;<strong>
           <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
         </strong>
+      </p>
+      <p *ngIf="otherDataModel.previousClaimIdentifiers"><span>Previous Claim Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.previousClaimIdentifiers}}</strong>
       </p>
       <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
           :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
@@ -494,7 +497,7 @@
                 <span *ngIf="s.category=='attachment'">
                   <!-- {{s.attachment}} -->
                   <a href="javascript:void(0);" title="View" class="primary-link"
-                    (click)="viewAttachment($event,s)">View</a>
+                    (click)="viewAttachment($event,s)">{{s.attachmentName? s.attachmentName : 'View'}}</a>
                 </span>
                 <span *ngIf="s.category!='attachment'">
                   {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
@@ -1497,7 +1500,7 @@
     </div>
     <div *ngIf="pageMode == 'EDIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
       <p *ngIf="pageMode == 'EDIT'" class="title">Edit Claim</p>
-      
+
 
       <div class="summary">
         <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
@@ -1510,6 +1513,9 @@
             <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
           </strong>
         </p>
+        <p *ngIf="otherDataModel.previousClaimIdentifiers"><span>Previous Claim Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.previousClaimIdentifiers}}</strong>
+      </p>
         <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
             :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
         <p *ngIf="otherDataModel.providertransactionlogId"><span>Transaction
@@ -1582,11 +1588,12 @@
           </ng-template>
           <br>
           <div class="checkbox-group inline">
-            <mat-slide-toggle color="primary" formControlName="isReferral">Has referred Preauthorization?</mat-slide-toggle>
+            <mat-slide-toggle color="primary" formControlName="isReferral">Has referred
+              Preauthorization?</mat-slide-toggle>
           </div>
           <hr>
           <div class="row small-gutter">
-            
+
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">

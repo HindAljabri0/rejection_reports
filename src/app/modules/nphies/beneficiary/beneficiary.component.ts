@@ -143,11 +143,11 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 30, Name: 'ُEvent Visit - زيارة فعالية' },
   ];
   SystemTypes: { Code: number, Name: string, tooltip: string }[] = [
-    { Code: 1, Name: 'HIDP', tooltip: 'Health Insurance for Nationals and Residents' },
-    { Code: 2, Name: 'VIDP', tooltip: 'Health Insurance for Visitors' },
-    { Code: 3, Name: 'SCTH', tooltip: 'Health Insurance for Tourists' },
-    { Code: 4, Name: 'UIDP', tooltip: 'Health Insurance for Premium Residency' },
-    { Code: 5, Name: 'HUIDP', tooltip: 'Health Insurance for Hajj & Umrah Visitors' }
+    { Code: 1, Name: 'Nationals and Residents (HIDP)', tooltip: 'Health Insurance for Nationals and Residents' },
+    { Code: 2, Name: 'Visitors (VIDP)', tooltip: 'Health Insurance for Visitors' },
+    { Code: 3, Name: 'Tourists (SCTH)', tooltip: 'Health Insurance for Tourists' },
+    { Code: 4, Name: 'Premium Residents (UIDP)', tooltip: 'Health Insurance for Premium Residency' },
+    { Code: 5, Name: 'Hajj & Umrah Visitors (HUIDP)', tooltip: 'Health Insurance for Hajj & Umrah Visitors' }
   ];
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },
