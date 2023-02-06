@@ -113,7 +113,7 @@ export class ProviderNphiesApprovalService {
       requestUrl += `claimId=${claimId}&`;
     }
     
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl ,{});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl ,{});
     return this.http.request(request);
   }
   inActiveClaimById(providerId: string, claimId: string) {
@@ -122,7 +122,7 @@ export class ProviderNphiesApprovalService {
       requestUrl += `claimId=${claimId}&`;
     }
     
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl ,{});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl ,{});
     return this.http.request(request);
   }
   /* deleteClaimByCriteria(
