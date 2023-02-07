@@ -916,7 +916,7 @@ export class ProviderNphiesApprovalService {
     if (claimId) {
       requestUrl += `claimId=${claimId}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, {});
     return this.http.request(request);
   }
 
