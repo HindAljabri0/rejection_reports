@@ -13,6 +13,9 @@ export class TwoDigitDecimaNumberDirective {
 
   constructor(private el: ElementRef) {
   }
+  @HostListener('paste', ['$event']) blockPaste(e: KeyboardEvent) {
+    e.preventDefault();
+  }
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     console.log(this.el.nativeElement.value);
