@@ -113,9 +113,9 @@ export class CancelReasonModalComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+            this.dialogService.showMessage(error.error['errors'][0], '', 'alert', true, 'OK', error.error.errors);
           } else if (error.status === 404) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            this.dialogService.showMessage(error.error['errors'][0], '', 'alert', true, 'OK');
           } else if (error.status === 500) {
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
           } else if (error.status === 503) {
