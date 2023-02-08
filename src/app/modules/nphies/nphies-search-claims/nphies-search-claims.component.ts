@@ -671,6 +671,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
+        }else if (errorEvent.status === 400 || errorEvent.status === 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error, true));
         }
         if (errorEvent.error['errors'] != null) {
           for (const error of errorEvent.error['errors']) {
@@ -1710,7 +1712,19 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
         this.commen.loadingChanged.next(false);
       }
-    }, error => {
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if (errorEvent.status === 400 ||errorEvent.status === 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData('',errorEvent.error['errors'] , true));
+        }
+      }
       this.commen.loadingChanged.next(false);
     });
   }
