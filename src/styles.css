@@ -1642,7 +1642,8 @@ tag tag-ripple{display:none;}
 .status-badge.danger{background-color: #D03131;}
 .status-badge.success{background-color: #29bf24;}
 .status-badge.dark-green{background-color: #36793D;}
-.status-badge.size-sm{letter-spacing: 0;text-transform: none;font-size: 12px;line-height: 18px;padding: 3px 8px;}
+.status-badge.inactive{background-color: #707070;}
+.status-badge.size-sm{font-size: 12px;line-height: 18px;padding: 2px 8px;}
 .primary-grid .status-badge.size-sm{margin: -2px 0;}
 
 /* doctor review tab
