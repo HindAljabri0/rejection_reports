@@ -2278,6 +2278,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.totalPayerShare = response.totalPayerShare;
     this.otherDataModel.totalTax = response.totalTax;
     this.otherDataModel.previousClaimIdentifiers = response.previousClaimIdentifiers;
+    this.otherDataModel.isActive = response.isActive;
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.FormNphiesClaim.controls.isReferral.setValue(response.isReferral);
     this.FormNphiesClaim.controls.ReferralName.setValue(response.referralName);
@@ -3374,6 +3375,14 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }
     });
+  }
+
+  get isActive() {
+    if (this.otherDataModel.isActive != null && !this.otherDataModel.isActive) {
+      return 'InActive';
+    } else {
+      return 'Active';
+    }
   }
 
 }

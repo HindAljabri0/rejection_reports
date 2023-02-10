@@ -1,8 +1,7 @@
 <div class="uploaded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
     <div class="d-flex">
         <span class="medium text-primary align-self-center">{{data.uploadName}}</span>
-        <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
-            (click)="$event.stopPropagation(); deleteUpload()"
+        <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted" (click)="$event.stopPropagation(); deleteUpload()"
             matTooltip="Delete All Not Submitted Claims (Ready For Submission, Validation Errors, Falid, and Error)">
             <mat-icon class="d-block">delete_outline</mat-icon>
         </span>
@@ -12,6 +11,16 @@
         <div class="col">
             <p class="small-label">Total Claims</p>
             <h4 class="semibold">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
+        </div>
+        <div class="col">
+            <p class="small-label">Active Claims</p>
+            <h4 class="semibold">{{activeClaims}} <span class="smaller-label">Claims</span></h4>
+        </div>
+        <div class="col">
+            <p class="small-label">Inactive Claims</p>
+            <h4 class="semibold">{{inactiveClaim}} <span class="smaller-label">Claims</span></h4>
+        </div>
+        <div class="col">
         </div>
         <!-- <div class="col-auto">
           <button mat-stroked-button color="primary" *ngIf="!data.isManualUpload" routerLink="/summary"
@@ -45,9 +54,9 @@
             <p class="dashboard-numbers">&ensp;{{data.underProcessing}}</p>
         </div> -->
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
-          <p class="smaller-label short-text-height"><span class="bg-cancelled"></span>Cancelled</p>
-          <p class="dashboard-numbers">&ensp;{{data.cancelled}}</p>
-      </div>
+            <p class="smaller-label short-text-height"><span class="bg-cancelled"></span>Cancelled</p>
+            <p class="dashboard-numbers">&ensp;{{data.cancelled}}</p>
+        </div>
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
             <p class="smaller-label short-text-height"><span class="bg-partially-paid"></span>Partially Paid</p>
             <p class="dashboard-numbers">&ensp;{{data.partiallyPaid}}</p>
@@ -88,9 +97,9 @@
             <p class="dashboard-numbers">&ensp;{{data.failed}}</p>
         </div>
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
-          <p class="smaller-label short-text-height"><span class="bg-failed"></span>Failed By NPHIES</p>
-          <p class="dashboard-numbers">&ensp;{{data.failedNphies}}</p>
-      </div>
+            <p class="smaller-label short-text-height"><span class="bg-failed"></span>Failed By NPHIES</p>
+            <p class="dashboard-numbers">&ensp;{{data.failedNphies}}</p>
+        </div>
 
     </div>
 
