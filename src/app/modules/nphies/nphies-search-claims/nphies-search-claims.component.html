@@ -427,7 +427,9 @@
                                             <ng-container *ngIf="claim.claimId && 
                                                 ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  
                                                 || claimIsDeletable(claim.status,claim.canDelete) 
-                                                || claimIsReplicable(claim.status))">
+                                                || claimIsReplicable(claim.status)
+                                                || claimIsActivable(claim.status)
+                                                )">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
                                                     <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
                                                         <!--button mat-menu-item><span>Re-Use</span></button-->
@@ -460,7 +462,7 @@
                                                         <mat-icon class="material-icons-outlined">copy</mat-icon>
                                                         <span>Replicate Claim </span>
                                                     </button>
-                                                    <button mat-menu-item *ngIf="claimIsReplicable(claim.status)" (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
+                                                    <button mat-menu-item *ngIf="claimIsActivable(claim.status)" (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
                                                         <mat-icon class="material-icons-outlined">{{ (claim.isActive ||
                                                             claim.isActive == null) ? 'lock' : 'lock_open'}}</mat-icon>
                                                         <span>{{ (claim.isActive || claim.isActive == null) ?
