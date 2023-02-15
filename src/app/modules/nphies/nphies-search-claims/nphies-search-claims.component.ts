@@ -1522,9 +1522,12 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   claimIsReplicable(status: string) {
     return ['queued'].includes(status.trim().toLowerCase())&& this.userPrivileges.WaseelPrivileges.isPAM;
   }
-  /*claimIsActivable(status: string) {
-    return ['accepted','notaccepted'].includes(status.trim().toLowerCase());
-  }*/
+  claimIsActivable(status: string,isActive:boolean) {
+    return ['queued','pended','approved','rejected', 'partial'].includes(status.trim().toLowerCase())&& isActive!=null && !isActive && this.userPrivileges.WaseelPrivileges.isPAM;;
+  }
+  claimIsInActivable(status: string,isActive:boolean) {
+    return ['queued','pended','rejected'].includes(status.trim().toLowerCase())  && (isActive==null || isActive) && this.userPrivileges.WaseelPrivileges.isPAM;;
+  }
   get showCancelAll() {
     return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }

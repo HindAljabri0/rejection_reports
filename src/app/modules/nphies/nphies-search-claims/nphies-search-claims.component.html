@@ -425,11 +425,14 @@
 
                                         <td class="actions">
                                             <ng-container *ngIf="claim.claimId && 
-                                                ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  
+                                                ((claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)) || claimIsEditable(claim.status)  
                                                 || claimIsDeletable(claim.status,claim.canDelete) 
-                                                || claimIsReplicable(claim.status))">
+                                                || claimIsReplicable(claim.status)
+                                                || claimIsActivable(claim.status,claim.isActive)
+                                                || claimIsInActivable(claim.status,claim.isActive)
+                                                )">
                                                 <mat-menu #moreMenu="matMenu" xPosition="before">
-                                                    <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
+                                                    <ng-container *ngIf="claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)">
                                                         <!--button mat-menu-item><span>Re-Use</span></button-->
 
                                                         <button mat-menu-item (click)="createRelatedClaim(claim.claimId)" *ngIf="claim.status === 'partial'">
@@ -437,7 +440,7 @@
                                                             <span>Create Related Claim</span>
                                                         </button>
 
-                                                        <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
+                                                        <button mat-menu-item *ngIf="(claim.isActive || claim.isActive == null)" (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
                                                             <mat-icon class="material-icons-outlined">close</mat-icon>
                                                             <span>Cancel</span>
                                                         </button>
@@ -460,12 +463,14 @@
                                                         <mat-icon class="material-icons-outlined">copy</mat-icon>
                                                         <span>Replicate Claim </span>
                                                     </button>
-                                                    <button mat-menu-item *ngIf="claimIsReplicable(claim.status)" (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
-                                                        <mat-icon class="material-icons-outlined">{{ (claim.isActive ||
-                                                            claim.isActive == null) ? 'lock' : 'lock_open'}}</mat-icon>
-                                                        <span>{{ (claim.isActive || claim.isActive == null) ?
-                                                            'DeActivate Claim' : 'Activate Claim'}}</span>
+                                                    <button mat-menu-item *ngIf="claimIsActivable(claim.status,claim.isActive)" (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
+                                                      <mat-icon class="material-icons-outlined">lock_open</mat-icon>
+                                                      <span>Activate Claim</span>
                                                     </button>
+                                                    <button mat-menu-item *ngIf="claimIsInActivable(claim.status,claim.isActive)" (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
+                                                      <mat-icon class="material-icons-outlined"> lock </mat-icon>
+                                                        <span> DeActivate Claim {{claim.isActive}}</span>
+                                                  </button>
                                                 </mat-menu>
 
                                                 <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
