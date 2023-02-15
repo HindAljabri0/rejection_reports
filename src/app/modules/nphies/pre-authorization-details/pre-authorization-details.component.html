@@ -107,9 +107,16 @@
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
-      <div class="control-label">Eligibility Response Identifier</div>
+      <div class="control-label">Eligibility Response Identifier (Value)</div>
       <p class="form-control-static text-primary">
         {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
+    </div>
+  </div>
+  <div class="col-4 col-xxl-3">
+    <div class="form-group form-group-static">
+      <div class="control-label">Eligibility Response Identifier (URL)</div>
+      <p class="form-control-static text-primary">
+        {{data.preAuthorizationInfo.eligibilityResponseUrl?data.preAuthorizationInfo.eligibilityResponseUrl:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">

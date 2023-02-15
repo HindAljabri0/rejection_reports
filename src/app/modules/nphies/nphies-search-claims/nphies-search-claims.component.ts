@@ -403,8 +403,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       if ((event.status / 100).toFixed() == '2') {
         // debugger;
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
-        
+ 
         if (summary.totalClaims > 0 || summary.inActiveClaimCount>0) {
+
           if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
             summary.statuses.push('All');
@@ -525,7 +526,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
-            //console.log('this.length:' + this.length + 'this.pageSize:' + this.pageSize + 'this.pageIndex:' + this.pageIndex);
             this.storeSearchResultsForClaimViewPagination();
             this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
             this.store.dispatch(storeClaims({
@@ -642,6 +642,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
+        }else if (errorEvent.status == 400 || errorEvent.status == 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error.message, errorEvent.error.error, true));
         }
         if (errorEvent.error['errors'] != null) {
           for (const error of errorEvent.error['errors']) {
@@ -681,6 +683,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.commen.loadingChanged.next(false);
       }
     }, errorEvent => {
+      
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status >= 500 || errorEvent.status == 0) {
@@ -689,6 +692,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
+        }else if (errorEvent.status === 400 || errorEvent.status === 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error, true));
         }
         if (errorEvent.error['errors'] != null) {
           for (const error of errorEvent.error['errors']) {
@@ -1720,6 +1725,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           this.commen.loadingChanged.next(true);
           const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
           const payerIds: string[] = [];
+          if (this.params.payerId) {
+            payerIds.push(this.params.payerId);
+          }
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
@@ -1836,7 +1844,19 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
         this.commen.loadingChanged.next(false);
       }
-    }, error => {
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        }
+        if (errorEvent.status === 400 ||errorEvent.status === 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData('',errorEvent.error['errors'] , true));
+        }
+      }
       this.commen.loadingChanged.next(false);
     });
   }

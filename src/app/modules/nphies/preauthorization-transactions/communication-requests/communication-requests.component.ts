@@ -63,9 +63,9 @@ export class CommunicationRequestsComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400) {
-          this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK', error.error.errors);
         } else if (error.status === 404) {
-          this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {
           this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK');
         }

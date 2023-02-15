@@ -90,10 +90,76 @@
                             </span>
 
                         </button>
-                        <button mat-menu-item (click)="generateAttachmentAll('failed')">
+                        <span *ngIf="!claim.processingStatus" class="pl-1">Check Status</span>
+                        <span *ngIf="claim.processingStatus" class="pl-1">{{claim.processingStatus}}</span>
+                      </div>
+                    </td>
+
+                    <td *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0"
+                      (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click">
+                      <mat-icon *ngIf="claim.attachmentStatus === 'Success'" class="material-icons-outlined text-success">check_circle</mat-icon>
+                      <mat-icon *ngIf="claim.attachmentStatus === 'FaultyAttachment'" matTooltip="Faulty (Claim was edited after generating attachment)"
+                        class="material-icons-outlined text-danger">broken_image
+                      </mat-icon>
+                      <mat-icon *ngIf="claim.attachmentStatus === 'Failed'" matTooltip="Failed" class="text-danger">error_outline</mat-icon>
+                    </td>
+
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="text-center row-click" *ngIf="isPBMValidationVisible && selectedCardKey != 0">
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                        matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                        matTooltip="Partially Approved">report
+                      </mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
+                      <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                        matTooltip="Rejected">dangerous</mat-icon>
+                    </td>
+
+                    <td *ngIf="showInquireAll === true" class="actions text-center">
+                      <span class="action-letter-btn" [ngClass]="claim.inquiryStatus === 'not_done' ? 'theme-inquiry-delay' : (claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : ''))"
+                        [matTooltip]="claim.inquiryStatus === 'not_done' ? claim.inquiryDesc : (claim.inquiryStatus === 'failed' ? 'Failed' : (claim.inquiryStatus === 'passed' ? 'Passed' : 'Get latest claim response from NPHIES queue'))">I</span>
+                      <!-- <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
+                                      <mat-spinner diameter="20"></mat-spinner> -->
+                    </td>
+
+                    <td class="actions">
+                      <ng-container
+                        *ngIf="claim.claimId && ((claim.claimResponseId && showCancelAll === true) || claimIsEditable(claim.status)  || claimIsDeletable(claim.status,claim.canDelete))">
+                        <mat-menu #moreMenu="matMenu" xPosition="before">
+                          <ng-container *ngIf="claim.claimResponseId && showCancelAll === true">
+                            <!--button mat-menu-item><span>Re-Use</span></button-->
+
+                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId)" *ngIf="claim.status === 'partial'">
+                              <mat-icon class="material-icons-outlined">edit</mat-icon>
+                              <span>Create Related Claim</span>
+                            </button>
+
+                            <button mat-menu-item (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
+                              <mat-icon class="material-icons-outlined">close</mat-icon>
+                              <span>Cancel</span>
+                            </button>
+
+                            <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
+                          </ng-container>
+                          <button mat-menu-item *ngIf="claimIsDeletable(claim.status,claim.canDelete)" (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
+                            <mat-icon class="material-icons-outlined">delete </mat-icon>
+                            <span>Delete</span>
+                          </button>
+
+                          <button mat-menu-item *ngIf="claimIsEditable(claim.status)" (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
+                            <mat-icon class="material-icons-outlined">edit</mat-icon>
+                            <span>Edit Claim</span>
+                          </button>
+                        </mat-menu>
+
+                        <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
+                          <mat-icon>more_vert</mat-icon>
+
+                        <!--button mat-menu-item (click)="generateAttachmentAll('failed')">
                             <span class="title">Failed -
                                 <span class="text-grey">Regenerate Failed attachments</span>
-                            </span>
+                            </span-->
+
                         </button>
                         <button mat-menu-item (click)="generateAttachmentAll('remaining')">
                             <span class="title">Remaining -
