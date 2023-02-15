@@ -86,6 +86,7 @@ export class AddPreauthorizationComponent implements OnInit {
     eligibilityOfflineDate: [''],
     eligibilityOfflineId: [''],
     eligibilityResponseId: [''],
+    eligibilityResponseUrl: [''],
 
     firstName: [''],
     middleName: [''],
@@ -300,6 +301,9 @@ export class AddPreauthorizationComponent implements OnInit {
     if (this.data.preAuthorizationInfo.eligibilityResponseId != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.eligibilityResponseId.setValue(this.data.preAuthorizationInfo.eligibilityResponseId);
+    }
+    if (this.data.preAuthorizationInfo.eligibilityResponseUrl != null) {
+      this.FormPreAuthorization.controls.eligibilityResponseUrl.setValue(this.data.preAuthorizationInfo.eligibilityResponseUrl);
     }
     if (this.data.accident) {
       if (this.data.accident.accidentType) {
@@ -1817,6 +1821,7 @@ export class AddPreauthorizationComponent implements OnInit {
       preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
       preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
       preAuthorizationModel.eligibilityResponseId = this.FormPreAuthorization.controls.eligibilityResponseId.value;
+      preAuthorizationModel.eligibilityResponseUrl = this.FormPreAuthorization.controls.eligibilityResponseUrl.value;
       preAuthorizationModel.episodeId = null;
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
@@ -2095,7 +2100,13 @@ export class AddPreauthorizationComponent implements OnInit {
       });
     }
   }
-
+  SetToMax(data) {
+    const ChosenDate= new Date(data);
+    const OrderDate= new Date(this.FormPreAuthorization.controls.dateOrdered.value);
+    if (ChosenDate > OrderDate) {
+      this.FormPreAuthorization.controls.dateWritten.setValue(this.FormPreAuthorization.controls.dateOrdered.value);
+    }
+  }
   getTransactionDetails(requestId = null, responseId = null) {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length

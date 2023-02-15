@@ -81,6 +81,7 @@ import { DcafFormTemplateComponent } from './dcaf-form-template/dcaf-form-templa
 import { OcafFormTemplateComponent } from './ocaf-form-template/ocaf-form-template.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
+import { TwoDigitDecimaNumberDirective } from './two-digit-decima-number';
 import { AdvancePreauthTransactionsComponent } from './advance-preauth-transactions/advance-preauth-transactions.component';
 import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
 import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
@@ -142,6 +143,7 @@ import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-uploa
     DcafFormTemplateComponent,
     OcafFormTemplateComponent,
     SwitchGroupProviderComponent,
+    TwoDigitDecimaNumberDirective,
     AdvancePreauthTransactionsComponent,
     AttachmentsReportComponent
   ],
