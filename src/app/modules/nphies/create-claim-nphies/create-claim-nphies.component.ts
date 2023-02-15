@@ -3379,9 +3379,9 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   get isActive() {
     if (this.otherDataModel.isActive != null && !this.otherDataModel.isActive) {
-      return 'InActive';
+      return false;
     } else {
-      return 'Active';
+      return true;
     }
   }
 
