@@ -729,7 +729,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
             this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
           } else {
             // tslint:disable-next-line:max-line-length
-            this.showMessage('Error', error.error , 'alert', true, 'OK');
+            this.showMessage(error.error.error ? error.error.error : 'Error', error.error.message , 'alert', true, 'OK');
           }
         } /*else if (error.status === 404) {
           this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');

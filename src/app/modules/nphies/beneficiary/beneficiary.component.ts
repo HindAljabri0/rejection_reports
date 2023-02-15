@@ -803,7 +803,7 @@ export class BeneficiaryComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400 || error.status === 404) {
-          this.showMessage('Error', error.error.error , 'alert', true, 'OK');
+          this.showMessage('Error', error.error , 'alert', true, 'OK');
         } /*else if (error.status === 404) {
           this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
         }*/ else if (error.status === 500) {

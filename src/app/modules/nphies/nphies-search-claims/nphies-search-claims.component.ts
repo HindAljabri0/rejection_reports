@@ -624,6 +624,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
+        }else if (errorEvent.status == 400 || errorEvent.status == 404) {
+          this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error.message, errorEvent.error.error, true));
         }
         if (errorEvent.error['errors'] != null) {
           for (const error of errorEvent.error['errors']) {
@@ -663,6 +665,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.commen.loadingChanged.next(false);
       }
     }, errorEvent => {
+      
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status >= 500 || errorEvent.status == 0) {
