@@ -479,6 +479,8 @@ export class SharedServices {
         return 'Creating Attachment';
       case ClaimStatus.UNDER_PBM_VALIDATION.toLowerCase():
         return 'Under PBM Validation';
+      case ClaimStatus.Under_Attachment_Linking.toLowerCase():
+          return 'Linking Attachments';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }

@@ -2,7 +2,10 @@
   *ngIf="pageMode && pageMode == 'VIEW' && otherDataModel && otherDataModel.claimId"
   [class.block-card]="routeMode.routeMode=='page'">
   <div class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
-    <p class="title">View Claim</p>
+    <p class="title">
+      View Claim
+      <span *ngIf="otherDataModel.isActive != null && !otherDataModel.isActive" class="status-badge size-sm inactive ml-1">InActive</span>
+    </p>
     <div class="summary">
       <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
           No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong></p>
@@ -10,9 +13,12 @@
           :</span>&nbsp;<strong>{{otherDataModel.claimResourceId}}</strong>
       </p>
       <p *ngIf="otherDataModel.claimRelatedIdentifiers">
-        <span>Related Claim Request Identifier:</span>&nbsp;<strong>
+        <span>Related Claim Identifier:</span>&nbsp;<strong>
           <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
         </strong>
+      </p>
+      <p *ngIf="otherDataModel.previousClaimIdentifiers"><span>Previous Claim Identifier
+          :</span>&nbsp;<strong>{{otherDataModel.previousClaimIdentifiers}}</strong>
       </p>
       <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
           :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
@@ -238,6 +244,20 @@
             <p class="form-control-static">{{FormNphiesClaim.controls.accountingPeriod.value ?
               (FormNphiesClaim.controls.accountingPeriod.value | date: 'dd-MM-yyyy') : '-'}}
             </p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Has referred Preauthorization?.</div>
+            <p class="form-control-static">
+              {{FormNphiesClaim.controls.isReferral.value == true ? 'Yes' : 'No'}}</p>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group form-group-static">
+            <div class="control-label">Referral Provider Name.</div>
+            <p class="form-control-static">
+              {{FormNphiesClaim.controls.ReferralName.value ? FormNphiesClaim.controls.ReferralName.value : '-'}}</p>
           </div>
         </div>
       </div>
@@ -487,7 +507,7 @@
                 <span *ngIf="s.category=='attachment'">
                   <!-- {{s.attachment}} -->
                   <a href="javascript:void(0);" title="View" class="primary-link"
-                    (click)="viewAttachment($event,s)">View</a>
+                    (click)="viewAttachment($event,s)">{{s.attachmentName? s.attachmentName : 'View'}}</a>
                 </span>
                 <span *ngIf="s.category!='attachment'">
                   {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
@@ -589,16 +609,17 @@
                   <!--span >{{item.reasonCodes}}</span-->
 
                 </td>
-                <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
-                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
-                      matTooltip="Approved">check_circle</mat-icon>
-                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
-                      matTooltip="Partially Approved">report
+                <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click"
+                  *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'"
+                    class="material-icons-outlined size-21 text-success" matTooltip="Approved">check_circle</mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'"
+                    class="material-icons-outlined size-21 text-warning" matTooltip="Partially Approved">report
                   </mat-icon>
                   <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger"
-                      matTooltip="Invalid">error_outline</mat-icon>
-                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
-                      matTooltip="Rejected">dangerous</mat-icon>
+                    matTooltip="Invalid">error_outline</mat-icon>
+                  <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'"
+                    class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
                 </td>
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
@@ -630,8 +651,11 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
-                    <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span></h5>
+                  <div class="box mb-2"
+                    *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
+                    <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
+                        [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span>
+                    </h5>
                     <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                     <div class="table-responsive">
                       <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -812,7 +836,7 @@
                 </td>
               </tr>
               <tr>
-                
+
               </tr>
             </ng-container>
           </tbody>
@@ -990,11 +1014,18 @@
       <div class="communication-wrapper">
         <h5 class="form-title px-14 py-0 mb-0">
           <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-            (click)="openAddCommunicationDialog()" *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
+            (click)="openAddCommunicationDialog()"
+            *ngIf="(otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial') && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)"
+            >
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
+          
         </h5>
+        <div class="alert danger text-center" *ngIf="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)">
+          <mat-icon class="material-icons-outlined">not_interested</mat-icon>
+          <span>Communication cannot be performed in Inactive claim</span>
+      </div>
         <ul class="communication" *ngIf="communications.length > 0">
           <li *ngFor="let communication of communications">
             <ng-container *ngIf="communication.communicationRequestId">
@@ -1413,12 +1444,16 @@
       </ng-template>
     </mat-tab>
 
-    <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
-    [label]="'PBM Comments'">
-    <div class="table-responsive">
-      <div class="d-flex justify-content-end pb-2 align-items-center">
-        PBM Status: <span class="status ml-2" [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span></div>
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+    <mat-tab
+      *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
+      [label]="'PBM Comments'">
+      <div class="table-responsive">
+        <div class="d-flex justify-content-end pb-2 align-items-center">
+          PBM Status: <span class="status ml-2"
+            [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span>
+        </div>
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0"
+          *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
           <thead>
             <tr>
               <th class="light-bg-danger text-danger">Comments</th>
@@ -1432,8 +1467,8 @@
         </table>
         <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
         </app-empty-state>
-    </div>
-  </mat-tab>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 
   <div class="block-footer sticky" *ngIf="!isLoading">
@@ -1462,7 +1497,8 @@
       <button mat-flat-button (click)="close()">Close</button>
       <button mat-flat-button *ngIf="claimIsEditable" color="primary"  (click)="toEditMode()">
         Edit</button>
-        <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'" (click)="createRelatedClaim()">Create Related Claim</button>
+      <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'"
+        (click)="createRelatedClaim()">Create Related Claim</button>
     </div>
   </div>
 </div>
@@ -1481,6 +1517,7 @@
     <div *ngIf="pageMode == 'EDIT'" class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
       <p *ngIf="pageMode == 'EDIT'" class="title">Edit Claim</p>
 
+
       <div class="summary">
         <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
             No.:</span>&nbsp;<strong>{{otherDataModel.provClaimNo}}</strong></p>
@@ -1491,6 +1528,9 @@
           <span>Related Claim Request Identifier:</span>&nbsp;<strong>
             <span> <strong>{{otherDataModel.claimRelatedIdentifiers}} </strong></span>
           </strong>
+        </p>
+        <p *ngIf="otherDataModel.previousClaimIdentifiers"><span>Previous Claim Identifier
+            :</span>&nbsp;<strong>{{otherDataModel.previousClaimIdentifiers}}</strong>
         </p>
         <p *ngIf="otherDataModel.claimRefNo"><span>Claim Response Identifier
             :</span>&nbsp;<strong>{{otherDataModel.claimRefNo}}</strong></p>
@@ -1562,13 +1602,21 @@
               error</mat-icon>
             <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
           </ng-template>
+          <br>
+          <div class="checkbox-group inline">
+            <mat-slide-toggle color="primary" formControlName="isReferral">Has referred
+              Preauthorization?</mat-slide-toggle>
+          </div>
+          <hr>
           <div class="row small-gutter">
+
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
                 <label class="control-label">Date Ordered<span cngClasslass="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"  formControlName="dateOrdered">
+                  <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                    formControlName="dateOrdered">
                   <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
                   <owl-date-time #dateOrderedCtrl></owl-date-time>
                 </div>
@@ -1770,6 +1818,12 @@
                 </div>
               </div>
             </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Referral Provider Name</label>
+                <input class="form-control" placeholder="Referral Provider Name" formControlName="ReferralName">
+              </div>
+            </div>
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
@@ -1906,6 +1960,7 @@
                     class="asterisk">*</span></label>
                 <div class="date-picker">
                   <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten" [max]="FormNphiesClaim.controls.dateOrdered.value">
+
                   <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate"></mat-datepicker-toggle>
                   <owl-date-time #visionWrittenDate></owl-date-time>
 
@@ -2182,16 +2237,18 @@
                       <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
                       <span *ngIf="!item.reasonCodes">-</span>
                     </td>
-                    <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
-                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
-                          matTooltip="Approved">check_circle</mat-icon>
-                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
-                          matTooltip="Partially Approved">report
+                    <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click"
+                      *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='approved'"
+                        class="material-icons-outlined size-21 text-success"
+                        matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='partial_approved'"
+                        class="material-icons-outlined size-21 text-warning" matTooltip="Partially Approved">report
                       </mat-icon>
                       <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger"
-                      matTooltip="Invalid">error_outline</mat-icon>
-                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
-                          matTooltip="Rejected">dangerous</mat-icon>
+                        matTooltip="Invalid">error_outline</mat-icon>
+                      <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'"
+                        class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
                     </td>
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
@@ -2243,17 +2300,21 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
-    
+
                               <td class="text-capitalize">{{res.category}}</td>
                               <td>{{res.categoryValue}} <span *ngIf="res.category !== 'approved-quantity'"
                                   class="currency">SR</span></td>
-                              <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
+                              <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <div class="box mb-2" *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
-                        <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"  [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span></h5>
+                      <div class="box mb-2"
+                        *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
+                        <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
+                            [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span>
+                        </h5>
                         <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                         <div class="table-responsive">
                           <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -2456,7 +2517,7 @@
                       </div>
                     </td>
                   </tr>
-                  
+
                   <tr *ngIf="item.careTeamSequenceRequired || item.detailsRequired">
                     <td colspan="10">
                       <p class="error-card" *ngIf="item.careTeamSequenceRequired">Item must have atleast one Care Team
@@ -2739,11 +2800,17 @@
           <div class="communication-wrapper">
             <h5 class="form-title px-14 py-0 mb-0">
               <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-                (click)="openAddCommunicationDialog()" *ngIf="otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial'">
+                (click)="openAddCommunicationDialog()"
+                *ngIf="(otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial') && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)">
                 <mat-icon>add_circle_outline</mat-icon>
                 <span class="pl-1">Add Communication</span>
               </button>
+              
             </h5>
+            <div class="alert danger" *ngIf="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)">
+              <mat-icon class="material-icons-outlined">not_interested</mat-icon>
+              <span>Communication cannot be performed in Inactive claim</span>
+          </div>
             <ul class="communication" *ngIf="communications.length > 0">
               <li *ngFor="let communication of communications">
                 <ng-container *ngIf="communication.communicationRequestId">
@@ -2834,8 +2901,9 @@
                         <mat-icon class="text-primary">text_snippet</mat-icon>
                         <span>Notes</span>
                       </button>
-                      <button type="button" class="action-btn"
-                        (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                      <button type="button"
+                        [disabled]="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)"
+                        class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                         <mat-icon class="text-primary">reply</mat-icon>
                         <span>Reply</span>
                       </button>
@@ -3131,7 +3199,7 @@
         </mat-tab>
 
         <mat-tab
-          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled' || otherDataModel.statusCode === 'error'" 
+          *ngIf="otherDataModel.statusCode === 'rejected' || otherDataModel.statusCode === 'failednphies' || otherDataModel.statusCode === 'pended' || otherDataModel.statusCode === 'queued' || otherDataModel.statusCode === 'partial' || otherDataModel.statusCode === 'approved' || otherDataModel.statusCode === 'invalid' || otherDataModel.statusCode === 'cancelled' || otherDataModel.statusCode === 'error'"
           [label]="'JSON'">
           <ng-template matTabContent>
             <app-json-response [otherDataModel]="otherDataModel"></app-json-response>
@@ -3169,12 +3237,16 @@
             </table>
           </div>
         </mat-tab>
-        <mat-tab *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"    
-        [label]="'PBM Comments'">
-        <div class="table-responsive">
-          <div class="d-flex justify-content-end pb-2 align-items-center">
-            PBM Status: <span class="status ml-2" [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span></div>
-            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+        <mat-tab
+          *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
+          [label]="'PBM Comments'">
+          <div class="table-responsive">
+            <div class="d-flex justify-content-end pb-2 align-items-center">
+              PBM Status: <span class="status ml-2"
+                [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span>
+            </div>
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0"
+              *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
               <thead>
                 <tr>
                   <th class="light-bg-danger text-danger">Comments</th>
@@ -3186,10 +3258,11 @@
                 </tr>
               </tbody>
             </table>
-            <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
+            <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0"
+              message='No Comments found!'>
             </app-empty-state>
-        </div>
-      </mat-tab>
+          </div>
+        </mat-tab>
 
       </mat-tab-group>
 

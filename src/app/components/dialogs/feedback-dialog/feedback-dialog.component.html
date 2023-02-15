@@ -1,0 +1,15 @@
+<div class="feedback-dialog">
+    <img src="./assets/ic-feedback-chat.svg" alt="Feedback" class="dialog-icon" />
+    <p class="question">How would you rate your overall satisfaction with Waseel service?</p>
+    <app-feedback-rating></app-feedback-rating>
+    <p class="question">How likely would you recommend Waseel to a friend or colleague?</p>
+    <app-feedback-rating></app-feedback-rating>
+    <p class="question">Please add any additional comments/suggestions <span>(Optional)</span></p>
+    <div class="form-group multiline-answer">
+        <textarea class="form-control" placeholder="Type here..." rows="5"></textarea>
+    </div>
+    <div class="btn-list">
+        <button mat-flat-button>Cancel</button>
+        <button mat-flat-button color="primary">Submit Feedback</button>
+    </div>
+</div>

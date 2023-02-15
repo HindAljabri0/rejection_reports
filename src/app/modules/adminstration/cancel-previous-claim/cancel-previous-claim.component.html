@@ -12,9 +12,9 @@
               <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto" formControlName="providerId" (input)="updateFilter()"
                 (keyup.enter)="selectProvider()" placeholder="Select provider">
               <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
-                  (click)="selectProvider(provider.switchAccountId)">
-                  {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName + ' | ' + provider.cchi_ID"
+                  (click)="selectProvider(provider.providerId ,provider.cchi_ID, provider.providerCode)">
+                  {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}} | {{provider.cchi_ID}}
                 </mat-option>
               </mat-autocomplete>
               <div *ngIf="submitted && CancellClaimForm.get('providerId').hasError('required')">
@@ -44,8 +44,16 @@
           </div>
           </div>
         </div>
-       
-        <div class="form-group">
-          <button type="submit" mat-flat-button color="primary">Cancel</button>
+        <div class="row small-gutter">
+          <div class="col-lg-4">
+            <div class="form-group"  >
+              <label class="control-label">Claim Identifier Url - System</label>
+              <input placeholder="Enter Claim Identifier Url" class="form-control" formControlName='claimIdentifierUrl'>
+          </div>
+          <div class="form-group">
+            <button type="submit" mat-flat-button color="primary">Cancel</button>
+          </div>
+          </div>
+      
         </div>
           </form>

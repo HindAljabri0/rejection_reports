@@ -135,7 +135,9 @@ export class CreateClaimNphiesComponent implements OnInit {
     preAuthResponseId: [''],
     preAuthResponseUrl: [''],
     accountingPeriod: [''],
-    insurancePlanPolicyNumber: ['']
+    insurancePlanPolicyNumber: [''],
+    isReferral: [false],
+    ReferralName: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -384,7 +386,8 @@ export class CreateClaimNphiesComponent implements OnInit {
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
         maxLimit: null,
-        patientShare: null
+        patientShare: null,
+        issueDate:null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder:null, insuranceStatus:null, insuranceDuration:null, insuranceType: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -1546,7 +1549,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.sharedServices.loadingChanged.next(true);
 
       this.model.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
-
+      this.model.transfer = this.FormNphiesClaim.controls.isReferral.value;
+      this.model.referralName = this.FormNphiesClaim.controls.ReferralName.value;
+      
       this.model.beneficiary = {};
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
@@ -2282,8 +2287,12 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.totalPatientShare = response.totalPatientShare;
     this.otherDataModel.totalPayerShare = response.totalPayerShare;
     this.otherDataModel.totalTax = response.totalTax;
-
+    this.otherDataModel.previousClaimIdentifiers = response.previousClaimIdentifiers;
+    this.otherDataModel.isActive = response.isActive;
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
+    this.FormNphiesClaim.controls.isReferral.setValue(response.isReferral);
+    this.FormNphiesClaim.controls.ReferralName.setValue(response.referralName);
+    
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;
 
     this.otherDataModel.beneficiary = response.beneficiary;
@@ -3381,6 +3390,14 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }
     });
+  }
+
+  get isActive() {
+    if (this.otherDataModel.isActive != null && !this.otherDataModel.isActive) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

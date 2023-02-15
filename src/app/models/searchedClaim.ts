@@ -19,6 +19,7 @@ export class SearchedClaim extends Paginateable {
   unitOfNetVatAmount: string;
   status: string;
   canDelete:boolean;
+  isActive:boolean;
   statusDetail: string;
   payerId: string;
   eligibilitycheck: string;
@@ -33,6 +34,7 @@ export class SearchedClaim extends Paginateable {
   inquiryStatus: string;
   attachmentStatus: string;
   inquiryDesc: string;
+  attachmentCount:number;
 
   constructor(body: {}) {
     super(body);
@@ -69,6 +71,8 @@ export class SearchedClaim extends Paginateable {
       this.inquiryStatus = body['inquiryStatus'];
       this.attachmentStatus = body['attachmentStatus'];
       this.inquiryDesc = body['inquiryDesc'];
+      this.isActive = body['isActive'];
+      this.attachmentCount=body['attachmentCount'];
     }
   }
 }

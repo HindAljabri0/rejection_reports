@@ -10,4 +10,12 @@ export class InsurancePlan {
   maxLimit: number;
   patientShare: number;
   tpaNphiesId: string;
+  issueDate:Date; 
+  networkId: string;
+  sponsorNumber: string;
+  policyClassName: string;
+  policyHolder:string;
+  insuranceStatus: string;
+  insuranceDuration:string;
+  insuranceType: string;
 }

@@ -30,6 +30,8 @@ export class BeneficiaryComponent implements OnInit {
   editMode = false;
   viewMode = false;
 
+  currentOpenInsuranceDetails = -1;
+
 
   selectedNationality = '';
   selectedMaritalStatus = '';
@@ -44,6 +46,7 @@ export class BeneficiaryComponent implements OnInit {
   setPrimary = '0';
   fullName = '';
   providerId = '';
+  IdPlaceholder = "Enter national ID or Iqama";
 
   beneficiaryId: string;
   nationalities = nationalities;
@@ -55,6 +58,7 @@ export class BeneficiaryComponent implements OnInit {
   dobFormControl: FormControl = new FormControl();
   documentIdFormControl: FormControl = new FormControl();
   documentIdCCHIFormControl: FormControl = new FormControl();
+  systemTypeFormControl: FormControl = new FormControl('1');
   nationalityFilterCtrl: FormControl = new FormControl();
   countryFilterCtrl: FormControl = new FormControl();
   firstNameController: FormControl = new FormControl();
@@ -68,11 +72,19 @@ export class BeneficiaryComponent implements OnInit {
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
+  BorderNoControl: FormControl = new FormControl();
+  VisaExpiryControl: FormControl = new FormControl();
+  VisaTitleControl: FormControl = new FormControl();
+  VisaNumberControl: FormControl = new FormControl();
+  VisaTypeControl: FormControl = new FormControl();
+  PassportControl: FormControl = new FormControl();
+
   houseNumberController = new FormControl();
   streetNameController = new FormControl();
   cityNameController = new FormControl();
   stateController = new FormControl();
   selectedCountry = '';
+  selectedVisaType = '';
   postalCodeController = new FormControl();
 
   insurancePlans: {
@@ -86,6 +98,14 @@ export class BeneficiaryComponent implements OnInit {
     payerErorr: string,
     patientShare: FormControl,
     maxLimit: FormControl,
+    issueDate: FormControl,
+    networkId: FormControl,
+    sponsorNumber: FormControl,
+    policyClassName: FormControl,
+    policyHolder: FormControl,
+    insuranceStatus: FormControl,
+    insuranceDuration: FormControl,
+    insuranceType: FormControl,
     memberCardIdErorr: string,
     policyNumberErorr: string,
     patientShareErorr: string,
@@ -112,7 +132,25 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'AB+', Name: 'AB+' },
     { Code: 'AB-', Name: 'AB-' },
   ];
-
+  VisaTypes: { Code: number, Name: string }[] = [
+    { Code: 6, Name: 'Transit - مرور' },
+    { Code: 10, Name: 'Tourism - سياحية' },
+    { Code: 14, Name: 'Goods delivery - توصيل بضائع' },
+    { Code: 23, Name: 'Commercial visit - زيارة تجارية' },
+    { Code: 24, Name: 'Family Visit - زيارة عائلية' },
+    { Code: 21, Name: 'Business Man - رجال اعمال' },
+    { Code: 22, Name: 'ًWork Visit - زيارة عمل' },
+    { Code: 27, Name: 'Personal Visit - زيارة شخصية' },
+    { Code: 40, Name: 'Dependent - مرافق' },
+    { Code: 30, Name: 'ُEvent Visit - زيارة فعالية' },
+  ];
+  SystemTypes: { Code: number, Name: string, tooltip: string }[] = [
+    { Code: 1, Name: 'Nationals and Residents (HIDP)', tooltip: 'Health Insurance for Nationals and Residents' },
+    { Code: 2, Name: 'Visitors (VIDP)', tooltip: 'Health Insurance for Visitors' },
+    { Code: 3, Name: 'Tourists (SCTH)', tooltip: 'Health Insurance for Tourists' },
+    { Code: 4, Name: 'Premium Residents (UIDP)', tooltip: 'Health Insurance for Premium Residency' },
+    { Code: 5, Name: 'Hajj & Umrah Visitors (HUIDP)', tooltip: 'Health Insurance for Hajj & Umrah Visitors' }
+  ];
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },
     { Code: 'PARENT', Name: 'Parent' },
@@ -139,7 +177,8 @@ export class BeneficiaryComponent implements OnInit {
     documentId: '',
     gender: '',
     fullName: '',
-    documentIdCCHI: ''
+    documentIdCCHI: '',
+    SystemTypeCchi: ''
   };
 
   beneficiaryModel = new BeneficiaryModel();
@@ -353,6 +392,13 @@ export class BeneficiaryComponent implements OnInit {
     this.stateController.setValue(beneficiaryinfo.state);
     this.selectedCountry = beneficiaryinfo.country;
     this.postalCodeController.setValue(beneficiaryinfo.postalCode);
+    this.BorderNoControl.setValue(beneficiaryinfo.borderNumber);
+    this.VisaExpiryControl.setValue(beneficiaryinfo.visaExpiryDate);
+    this.VisaTitleControl.setValue(beneficiaryinfo.visitTitle);
+    this.VisaNumberControl.setValue(beneficiaryinfo.visaNumber);
+    this.VisaTypeControl.setValue(beneficiaryinfo.visaType);
+    this.PassportControl.setValue(beneficiaryinfo.passportNumber);
+    this.selectedVisaType = beneficiaryinfo.visaType;
 
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
       this.insurancePlans.push(
@@ -371,6 +417,14 @@ export class BeneficiaryComponent implements OnInit {
           patientShare: insurancePlans.patientShare ? new FormControl(insurancePlans.patientShare) : new FormControl(),
           // tslint:disable-next-line:max-line-length
           payerErorr: null, policyNumberErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null, maxLimitErorr: null, patientShareErorr: null,
+          issueDate: new FormControl(insurancePlans.issueDate),
+          networkId: new FormControl(insurancePlans.networkId),
+          sponsorNumber: new FormControl(insurancePlans.sponsorNumber),
+          policyClassName: new FormControl(insurancePlans.policyClassName),
+          policyHolder: new FormControl(insurancePlans.policyHolder),
+          insuranceStatus: new FormControl(insurancePlans.insuranceStatus),
+          insuranceDuration: new FormControl(insurancePlans.insuranceDuration),
+          insuranceType: new FormControl(insurancePlans.insuranceType),
           tpaNphiesId: insurancePlans.tpaNphiesId ? insurancePlans.tpaNphiesId : (this.isCCHID ? null : '-1')
         }
       );
@@ -435,6 +489,14 @@ export class BeneficiaryComponent implements OnInit {
         policyNumberErorr: null,
         patientShareErorr: null,
         maxLimitErorr: null,
+        issueDate: new FormControl(),
+        networkId: new FormControl(),
+        sponsorNumber: new FormControl(),
+        policyClassName: new FormControl(),
+        policyHolder: new FormControl(),
+        insuranceStatus: new FormControl(),
+        insuranceDuration: new FormControl(),
+        insuranceType: new FormControl(),
         selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null,
         tpaNphiesId: ''
       });
@@ -545,6 +607,12 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.documentId = this.documentIdFormControl.value;
     this.beneficiaryModel.country = this.selectedCountry == '' ? null : this.selectedCountry;
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
+    this.beneficiaryModel.borderNumber = this.BorderNoControl.value;
+    this.beneficiaryModel.visaExpiryDate = this.VisaExpiryControl.value ? new Date(moment(this.VisaExpiryControl.value).format('YYYY-MM-DD')) : null;
+    this.beneficiaryModel.visitTitle = this.VisaTitleControl.value;
+    this.beneficiaryModel.visaNumber = this.VisaNumberControl.value;
+    this.beneficiaryModel.passportNumber = this.PassportControl.value;
+    this.beneficiaryModel.visaType = this.selectedVisaType;
 
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
       payerNphiesId: (insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer,
@@ -558,6 +626,14 @@ export class BeneficiaryComponent implements OnInit {
       isPrimary: insurancePlan.isPrimary,
       maxLimit: insurancePlan.maxLimit.value,
       patientShare: insurancePlan.patientShare.value,
+      issueDate: insurancePlan.issueDate.value,
+      networkId: insurancePlan.networkId.value,
+      sponsorNumber: insurancePlan.sponsorNumber.value,
+      policyClassName: insurancePlan.policyClassName.value,
+      policyHolder: insurancePlan.policyHolder.value,
+      insuranceStatus: insurancePlan.insuranceStatus.value,
+      insuranceDuration: insurancePlan.insuranceDuration.value,
+      insuranceType: insurancePlan.insuranceType.value,
       // tslint:disable-next-line:max-line-length
       tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
@@ -762,11 +838,28 @@ export class BeneficiaryComponent implements OnInit {
       return null;
     }
   }
-
+  upadatePlaceHolder() {
+    if (this.systemTypeFormControl.value == '1') {
+      this.IdPlaceholder = "Enter national ID or Iqama";
+    } else if (this.systemTypeFormControl.value == '2') {
+      this.IdPlaceholder = "Enter Visa number, Passport Number or Border Number";
+    } else if (this.systemTypeFormControl.value == '3' || this.systemTypeFormControl.value == '4') {
+      this.IdPlaceholder = "Enter Visa number or Passport Number";
+    } else if (this.systemTypeFormControl.value == '5') {
+      this.IdPlaceholder = "Enter Passport Number";
+    } else {
+      this.IdPlaceholder = "Enter national ID or Iqama";
+    }
+  }
   getInfoFromCCHI() {
     this.isCCHID = true;
     let thereIsError = false;
 
+    if (this.systemTypeFormControl.value == null || this.systemTypeFormControl.value.trim().length <= 0) {
+      this.errors.SystemTypeCchi = 'System Type must be specified';
+      thereIsError = true;
+      return;
+    }
     if (this.documentIdCCHIFormControl.value == null || this.documentIdCCHIFormControl.value.trim().length <= 0) {
       this.errors.documentIdCCHI = 'Document ID must be specified';
       thereIsError = true;
@@ -777,7 +870,8 @@ export class BeneficiaryComponent implements OnInit {
 
     this.providersBeneficiariesService.getBeneficiaryFromCCHI(
       this.providerId,
-      this.documentIdCCHIFormControl.value
+      this.documentIdCCHIFormControl.value,
+      this.systemTypeFormControl.value
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
@@ -825,6 +919,14 @@ export class BeneficiaryComponent implements OnInit {
       errors: _errors
     };
     const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+  }
+
+  toggleInsuranceRecord(i) {
+    if (this.currentOpenInsuranceDetails == i) {
+      this.currentOpenInsuranceDetails = -1;
+    } else {
+      this.currentOpenInsuranceDetails = i;
+    }
   }
 
 }
