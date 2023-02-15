@@ -10,15 +10,15 @@
     <div class="row small-gutter align-items-center">
         <div class="col">
             <p class="small-label">Total Claims</p>
-            <h4 class="semibold">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
+            <h4 class="semibold">{{totalClaims}}</h4>
         </div>
         <div class="col">
             <p class="small-label">Active Claims</p>
-            <h4 class="semibold">{{activeClaims}} <span class="smaller-label">Claims</span></h4>
+            <h4 class="semibold">{{activeClaims}}</h4>
         </div>
         <div class="col">
             <p class="small-label">Inactive Claims</p>
-            <h4 class="semibold">{{inactiveClaim}} <span class="smaller-label">Claims</span></h4>
+            <h4 class="semibold">{{inactiveClaim}}</h4>
         </div>
         <div class="col">
         </div>
@@ -27,7 +27,8 @@
               [queryParams]="{id: data.uploadId}">View Summary</button>
       </div> -->
     </div>
-    <div class="row small-gutter pt-3">
+    <hr class="hr separator mb-3">
+    <div class="row small-gutter">
         <div class="col-6 col-lg-4 col-xl-3 pb-2">
             <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Ready for Submission</p>
             <p class="dashboard-numbers">&ensp;{{data.readyForSubmission}}</p>
