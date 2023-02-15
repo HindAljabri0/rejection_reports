@@ -4,7 +4,7 @@
   <div class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
     <p class="title">
       View Claim
-      <span class="status-badge size-sm inactive ml-1">{{isActive}}</span>
+      <span *ngIf="otherDataModel.isActive != null && !otherDataModel.isActive" class="status-badge size-sm inactive ml-1">InActive</span>
     </p>
     <div class="summary">
       <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
