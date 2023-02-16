@@ -1433,13 +1433,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
       });
   }
-  inActiveClaim(claimId: string, refNumber: string) {
+  inActiveClaim(claimId: string, refNumber: string, isActive: boolean) {
     this.dialogService.openMessageDialog(
       new MessageDialogData('InActivate this Claim?',
         `This will InActivate claim with reference: ${refNumber}. Are you sure you want to do it?`,
         false,
         true))
-      .subscribe(result => {
+      .subscribe(result => { 
         if (result === true) {
           this.commen.loadingChanged.next(true);
           this.providerNphiesApprovalService.inActiveClaimById(this.providerId, claimId).subscribe(event => {
@@ -1458,8 +1458,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 this.dialogService.showMessage("Claim Cannot Be InActive", '', 'alert', true, 'OK', errorEvent.message);
               } else if (errorEvent.status === 200) {
                 this.commen.loadingChanged.next(false);
+                var msg = isActive ? 'DeActiveated' : 'Activated';
                 this.dialogService.openMessageDialog(new MessageDialogData('',
-                  `Claim with reference ${refNumber} was InActivated successfully.`,
+                  `Claim with reference ${refNumber} was ${msg} successfully.`,
                   false))
                   .subscribe(afterColse => this.fetchData());
 

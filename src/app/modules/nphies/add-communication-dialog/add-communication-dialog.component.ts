@@ -248,7 +248,7 @@ export class AddCommunicationDialogComponent implements OnInit {
             this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
           }
         } else if (error.status === 404) {
-          this.dialogService.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {
           this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK');
         } else if (error.status === 503) {
