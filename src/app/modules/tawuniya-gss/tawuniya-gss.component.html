@@ -59,15 +59,14 @@
             </div>
         </div>
     </form>
-    
+
     <div class="pt-5 pb-5" *ngIf="!formIsSubmitted">
         <app-empty-state class="pt-5 pb-5" [message]="'Please select criteria to search GSS report'">
         </app-empty-state>
     </div>
 
     <div class="pt-5 pb-5" *ngIf="!resultHasValue() && tawuniyaGssForm?.valid && formIsSubmitted">
-        <app-empty-state class="pt-5 pb-5" [message]="'No GSS reports found with the requested search criteria!'"
-            >
+        <app-empty-state class="pt-5 pb-5" [message]="'No GSS reports found with the requested search criteria!'">
         </app-empty-state>
     </div>
 
@@ -110,9 +109,12 @@
                                 <span class="currency">{{
                                     data?.totalPatientShare?.currencyCode }}</span>
                             </td>
-                            <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNet?.value }} <span
-                                    class="currency">{{
+                            <td class="row-click" (click)="openDetailView(data)"
+                                *ngIf="!(data?.status?.toLowerCase() === 'new')">{{ data?.totalNet?.value }} <span
+                                    class="currency" *ngIf="!(data?.status?.toLowerCase() === 'new')">{{
                                     data?.totalNet?.currencyCode }}</span></td>
+                            <td class="row-click" (click)="openDetailView(data)"
+                                *ngIf="data?.status?.toLowerCase() === 'new'">-  </td>
                             <td class="row-click" (click)="openDetailView(data)">{{ data?.totalNetVat?.value }} <span
                                     class="currency">{{
                                     data?.totalNetVat?.currencyCode }}</span></td>
@@ -127,7 +129,8 @@
                                     titlecase}}</span>
                             </td>
                             <td class="actions">
-                                <button type="button" mat-icon-button class="text-primary" (click)="downloadData(data)">
+                                <button type="button" mat-icon-button class="text-primary"
+                                    *ngIf="!(data?.status?.toLowerCase() === 'new')" (click)="downloadData(data)">
                                     <mat-icon>file_download</mat-icon>
                                 </button>
                             </td>
