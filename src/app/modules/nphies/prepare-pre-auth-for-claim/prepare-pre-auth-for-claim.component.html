@@ -206,7 +206,7 @@
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
                               <input type="text" class="form-control" placeholder="Enter Patient Share"
-                                [(ngModel)]="item.patientShare" [disabled]="item.status === 'rejected'"/>
+                                [(ngModel)]="item.patientShare" [disabled]="item.status === 'rejected'" appTwoDigitDecimaNumber/>
                             </span>
                           </span>
                           <div
@@ -221,7 +221,7 @@
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
                               <input type="text" class="form-control" placeholder="Enter Payer Share"
-                                [(ngModel)]="item.payerShare" [disabled]="item.status === 'rejected'"/>
+                                [(ngModel)]="item.payerShare" [disabled]="item.status === 'rejected'" appTwoDigitDecimaNumber/>
                             </span>
                           </span>
                           <div
@@ -240,7 +240,7 @@
                           <span class="d-flex align-items-center">
                             <span class="pr-1">
                               <input type="text" class="form-control" placeholder="Enter Discount"  [disabled]="item.status === 'rejected'"
-                                [(ngModel)]="item.discount" (blur)="calculateShares(i, j)" />
+                                [(ngModel)]="item.discount" (blur)="calculateShares(i, j)" appTwoDigitDecimaNumber/>
                             </span>
                           </span>
                           <div

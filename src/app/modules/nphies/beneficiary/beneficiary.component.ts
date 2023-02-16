@@ -17,6 +17,8 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 @Component({
   selector: 'app-beneficiary',
@@ -189,6 +191,7 @@ export class BeneficiaryComponent implements OnInit {
     private sharedServices: SharedServices,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private dialogService: DialogService,
+    private dialog: MatDialog,
     private sharedDataService: SharedDataService
   ) {
     this.beneficiaryinfo = new BeneficiaryModel();
@@ -890,16 +893,32 @@ export class BeneficiaryComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       }
 
-    }, errorEvent => {
+    }, error => {
       this.sharedServices.loadingChanged.next(false);
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog({
-          title: '',
-          message: `No Data Returned from CCHI`,
-          isError: true
-        });
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400 || error.status === 404) {
+          this.showMessage('Error', error.error , 'alert', true, 'OK');
+        } /*else if (error.status === 404) {
+          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+        }*/ else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
       }
     });
+  }
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      mainMessage: _mainMessage,
+      subMessage: _subMessage,
+      mode: _mode,
+      hideNoButton: _hideNoButton,
+      yesButtonText: _yesButtonText,
+      errors: _errors
+    };
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
   }
 
   toggleInsuranceRecord(i) {
