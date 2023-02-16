@@ -498,14 +498,14 @@
                           <span>Replicate Claim </span>
                         </button>
                         <button mat-menu-item *ngIf="claimIsActivable(claim.status,claim.isActive)"
-                          (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
+                          (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber, claim.isActive)">
                           <mat-icon class="material-icons-outlined">lock_open</mat-icon>
                           <span>Activate Claim</span>
                         </button>
                         <button mat-menu-item *ngIf="claimIsInActivable(claim.status,claim.isActive)"
-                          (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber)">
+                          (click)="inActiveClaim(claim.claimId, claim.providerClaimNumber, claim.isActive)">
                           <mat-icon class="material-icons-outlined"> lock </mat-icon>
-                          <span> DeActivate Claim {{claim.isActive}}</span>
+                          <span> DeActivate Claim</span>
                         </button>
                       </mat-menu>
 
