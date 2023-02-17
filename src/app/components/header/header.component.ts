@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
     authUsername: string;
     providerName: string;
     providerId: string;
+    globalNotificationVisible = false;
 
     @Input() activeLanguageLabel: string;
 
@@ -55,7 +56,7 @@ export class HeaderComponent implements OnInit {
         });
         this.authService.isUserNameUpdated.subscribe((isUpdated) => {
             if (isUpdated) {
-                this.getUserData();                
+                this.getUserData();
                 this.sharedServices.getNotifications();
                 this.sharedServices.getUploads();
                 this.sharedServices.getAnnouncements();
@@ -105,7 +106,7 @@ export class HeaderComponent implements OnInit {
         this.sharedServices.getClaimProcessedCount();
         this.sharedServices.getClaimCommunicationRequestCount();
         //}
-       
+
         // this.watchPreAuthorizationChanges();
 
         this.downloadService.providerDownloads.subscribe(downloads => {
@@ -229,5 +230,15 @@ export class HeaderComponent implements OnInit {
 
     get hasNewAdminDownload() {
         return this.adminDownloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
+    }
+
+    showGlobalNotificationVisible() {
+        this.globalNotificationVisible = true;
+        document.body.classList.add('global-notification-on');
+    }
+
+    hideGlobalNotificationVisible() {
+        this.globalNotificationVisible = false;
+        document.body.classList.remove('global-notification-on');
     }
 }
