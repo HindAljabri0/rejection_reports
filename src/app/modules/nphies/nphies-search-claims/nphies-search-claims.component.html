@@ -486,7 +486,7 @@
                           <span>Delete</span>
                         </button>
 
-                        <button mat-menu-item *ngIf="claimIsEditable(claim.status)"
+                        <button mat-menu-item *ngIf="claimIsEditable(claim.status) && (claim.isActive == null || claim.isActive)"
                           (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
                           <mat-icon class="material-icons-outlined">edit</mat-icon>
                           <span>Edit Claim</span>

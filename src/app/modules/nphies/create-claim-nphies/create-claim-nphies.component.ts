@@ -3119,6 +3119,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   get claimIsEditable() {
     return this.otherDataModel != null
       && this.otherDataModel.status != null
+      && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)
       && ['accepted', 'cancelled', 'notaccepted', 'error', 'invalid', 'rejected', 'failed'].includes(this.otherDataModel.status.trim().toLowerCase());
   }
 
