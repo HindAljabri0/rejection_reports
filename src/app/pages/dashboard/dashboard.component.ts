@@ -9,6 +9,12 @@ import { ViewportScroller } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ChangeLogDialogComponent } from 'src/app/components/change-log-dialog/change-log-dialog.component';
+import { FeedbackDialogComponent } from 'src/app/components/dialogs/feedback-dialog/feedback-dialog.component';
+import { AuthService } from 'src/app/services/authService/authService.service';
+import { FeedbackService } from 'src/app/components/dialogs/feedback-dialog/feedback.service.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { FeedbackClass } from 'src/app/components/dialogs/feedback-dialog/feedback.model.component';
+import { BOOL_TYPE } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: 'app-dashboard',
@@ -17,10 +23,11 @@ import { ChangeLogDialogComponent } from 'src/app/components/change-log-dialog/c
 })
 export class DashboardComponent implements OnInit {
 
+    submitted: boolean = false;
     dashboardTour: GuidedTour = {
         tourId: '1',
         skipCallback: (stepNumber) => {
-            window.localStorage.setItem('onboarding-demo-done', 'true');            
+            window.localStorage.setItem('onboarding-demo-done', 'true');
         },
         completeCallback: () => {
             document.body.classList.remove('guided-tour-active');
@@ -28,7 +35,7 @@ export class DashboardComponent implements OnInit {
             this.commen.showUploadsCenterChange.next(false);
             this.commen.showNotificationCenterChange.next(false);
             this.commen.showAnnouncementCenterChange.next(false);
-            window.localStorage.setItem('onboarding-demo-done', 'true');            
+            window.localStorage.setItem('onboarding-demo-done', 'true');
         },
         steps: [
             {
@@ -149,7 +156,10 @@ export class DashboardComponent implements OnInit {
         private tourService: GuidedTourService,
         private commen: SharedServices,
         private viewportScroller: ViewportScroller,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private authService: AuthService,
+        private _feedbackservice: FeedbackService,
+
     ) { }
 
     dashboardSections: { label: string, key: Type<any>, index: string }[] = [
@@ -158,7 +168,7 @@ export class DashboardComponent implements OnInit {
         { label: 'Top 5 Rejections', key: TopFiveRejectionsComponent, index: '2' },
     ];
 
-    ngOnInit() {
+    async ngOnInit() {
         const order = localStorage.getItem('defaultDashboardSectionsOrder');
         const newOrderedDashboard = [];
         if (order != null) {
@@ -177,24 +187,60 @@ export class DashboardComponent implements OnInit {
                 }
             }
         }
-        if (!window.localStorage.getItem('onboarding-demo-done') && (environment.name == 'dev' || environment.name == 'oci_qa')) {
+
+
+        let pId = this.authService.getProviderId();
+        let uName = this.commen.authService.getAuthUsername();
+        let isSubmitted = await this.feedbackIsSubmitted(pId, uName);
+        let isValidDate = await this.isValidDate();
+        
+        console.log(`date is: ${isValidDate}`);
+        console.log(`feedbacks is: ${!isSubmitted}`);
+        if (!isSubmitted && isValidDate) {
+            
             const dialogConfig = new MatDialogConfig();
-            dialogConfig.panelClass = ['primary-dialog'];
+            dialogConfig.panelClass = ['dialog-lg'];
             dialogConfig.autoFocus = false;
-            const dialogRef = this.dialog.open(ChangeLogDialogComponent, dialogConfig);
-            dialogRef.afterClosed().subscribe(
-                data => {
-                    document.body.classList.add('guided-tour-active');
-                    document.getElementsByTagName('html')[0].classList.add('guided-tour-active');
-                    this.tourService.startTour(this.dashboardTour);
-                }
-            );
+            const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
         }
     }
 
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.dashboardSections, event.previousIndex, event.currentIndex);
         localStorage.setItem('defaultDashboardSectionsOrder', this.dashboardSections.map(section => section.index).toString());
+    }
+
+    async feedbackIsSubmitted(providerId: string, userName: string) {
+
+        let data: any;
+
+        //get all feedbacks with by the pId and the uName
+        const event = await this._feedbackservice.getFeedback(providerId, userName).toPromise();
+        if (event instanceof HttpResponse) {
+
+            const body = event.body;
+            data = body;
+        } else if (event instanceof HttpErrorResponse) {
+            console.log("httpErrorResponse: " + event.error);
+        }
+
+        return data;
+    }
+
+    async isValidDate(){
+
+        let data: any;
+
+        const event = await this._feedbackservice.IsValidDate().toPromise();
+        if (event instanceof HttpResponse) {
+            const body = event.body;
+            data = body;
+        } else if (event instanceof HttpErrorResponse) {
+
+            console.log("httpErrorResponse: " + event.error);
+        }
+
+        return data;
     }
 
 }
