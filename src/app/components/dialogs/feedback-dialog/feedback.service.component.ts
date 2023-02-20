@@ -14,8 +14,8 @@ import { FeedbackClass } from "./feedback.model.component";
 })
 export class FeedbackService{
 
-    feedbackServiceUrl = `${environment.notificationFeedbackService}/feedback`;
-    applicationSettingsUrl = `${environment.notificationFeedbackService}/service/settings`;
+    feedbackServiceUrl = `${environment.NotificationServiceHost}/feedback`;
+    applicationSettingsUrl = `${environment.NotificationServiceHost}/service/settings`;
     createFeedbackUrl = this.feedbackServiceUrl+'/create';
     
     constructor(private http: HttpClient){}
