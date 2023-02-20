@@ -462,7 +462,8 @@
 
                     <td class="actions">
                       <ng-container *ngIf="claim.claimId && 
-                                                ((claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)) || claimIsEditable(claim.status)  
+                                                ((claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)) 
+                                                || (claimIsEditable(claim.status)  && (claim.isActive==null || claim.isActive))
                                                 || claimIsDeletable(claim.status,claim.canDelete) 
                                                 || claimIsReplicable(claim.status)
                                                 || claimIsActivable(claim.status,claim.isActive)
