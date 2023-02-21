@@ -23,26 +23,17 @@ export class FeedbackService{
 
     addFeedback(feedback:FeedbackClass): Observable<FeedbackClass>{
             const headers = { 'content-type': 'application/json'};  
-           
+            
             const body=JSON.stringify(feedback);
-           
-            return this.http.post<FeedbackClass>(this.createFeedbackUrl, feedback)
+            return this.http.post<FeedbackClass>(this.feedbackServiceUrl +`/${feedback.providerId}/create`, feedback)
     }
 
-    getFeedback(providerId, userName){
-        
+    UserFeedbackable(providerId, userName){
         let requestUrl =  this.feedbackServiceUrl+`/${providerId}/${userName}/feedback`;
         const httpRequest = new HttpRequest('GET', requestUrl);
         return this.http.request(httpRequest);
     }
 
-    IsValidDate(){
-        let startDateDBFieldName = 'start_date';
-        let endDateDBFieldName = 'end_date';
-        let requestUrl =  this.applicationSettingsUrl+`/application/${startDateDBFieldName}/${endDateDBFieldName}`;
-       
-        const httpRequest = new HttpRequest('GET', requestUrl);
-        return this.http.request(httpRequest);
-    }
+    
       
     }
