@@ -189,14 +189,12 @@ export class DashboardComponent implements OnInit {
         }
 
 
-        let pId = this.authService.getProviderId();
-        let uName = this.commen.authService.getAuthUsername();
-        let isSubmitted = await this.feedbackIsSubmitted(pId, uName);
-        let isValidDate = await this.isValidDate();
-        
-        console.log(`date is: ${isValidDate}`);
-        console.log(`feedbacks is: ${!isSubmitted}`);
-        if (!isSubmitted && isValidDate) {
+        let ProviderId = this.authService.getProviderId();
+        let userName = this.commen.authService.getAuthUsername();
+
+        let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
+
+        if (feedbackable) {
             
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['dialog-lg'];
@@ -210,37 +208,51 @@ export class DashboardComponent implements OnInit {
         localStorage.setItem('defaultDashboardSectionsOrder', this.dashboardSections.map(section => section.index).toString());
     }
 
-    async feedbackIsSubmitted(providerId: string, userName: string) {
+    // async feedbackIsSubmitted(providerId: string, userName: string) {
 
-        let data: any;
+    //     let data: any;
 
-        //get all feedbacks with by the pId and the uName
-        const event = await this._feedbackservice.getFeedback(providerId, userName).toPromise();
-        if (event instanceof HttpResponse) {
+    //     //get all feedbacks with by the pId and the uName
+    //     const event = await this._feedbackservice.getFeedback(providerId, userName).toPromise();
+    //     if (event instanceof HttpResponse) {
 
-            const body = event.body;
-            data = body;
-        } else if (event instanceof HttpErrorResponse) {
-            console.log("httpErrorResponse: " + event.error);
-        }
+    //         const body = event.body;
+    //         data = body;
+    //     } else if (event instanceof HttpErrorResponse) {
+    //         console.log("httpErrorResponse: " + event.error);
+    //     }
 
-        return data;
-    }
+    //     return data;
+    // }
 
-    async isValidDate(){
+    // async isValidDate(){
 
-        let data: any;
+    //     let data: any;
 
-        const event = await this._feedbackservice.IsValidDate().toPromise();
-        if (event instanceof HttpResponse) {
-            const body = event.body;
-            data = body;
-        } else if (event instanceof HttpErrorResponse) {
+    //     const event = await this._feedbackservice.isValidDate().toPromise();
+    //     if (event instanceof HttpResponse) {
+    //         const body = event.body;
+    //         data = body;
+    //     } else if (event instanceof HttpErrorResponse) {
 
-            console.log("httpErrorResponse: " + event.error);
-        }
+    //         console.log("httpErrorResponse: " + event.error);
+    //     }
 
-        return data;
+    //     return data;
+    // }
+
+    async userCanSubmitFeedback(privderId: string, userName:string){
+        let feedbackable: any;
+
+       const event = await this._feedbackservice.UserFeedbackable(privderId, userName).toPromise();
+       if (event instanceof HttpResponse) {
+        const body = event.body;
+        feedbackable = body;
+        if (body instanceof Boolean) {
+            feedbackable = body;
+      }}
+      console.log("\nFeedback validation api response is:\n" + feedbackable+"\n");
+            return feedbackable;
     }
 
 }

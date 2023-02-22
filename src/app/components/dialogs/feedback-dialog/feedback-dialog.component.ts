@@ -80,8 +80,7 @@ constructor(
 }
 
  setSuggestion(): void{
-  if(this.feedback.suggestion.length > 5000){
-
+  if(this.feedback.suggestion != null && this.feedback.suggestion.length > 5000 ){
     this.suggetionIsNotValidSnackBar();
     this.feedback.valid = false;
   }
@@ -89,17 +88,14 @@ constructor(
 
 
 submit(){
-
-
    this.setSuggestion();
+   console.log("\nFeedback is: " + this.feedback.valid);
    if(this.feedback.valid){
-    
+    console.log(`PID: ${this.feedback.providerId}`);
        this._feedbackservice.addFeedback(this.feedback).subscribe({
          next: data=>{
-           console.log(`q1: ${data.overallSatisfactionQ}`);
-           console.log(`q2: ${this.feedback.RecommendToFriend}`);
-           console.log(`q3: ${data.suggestion}`);
-           console.log(`ProviderId: ${data.providerId}`);
+           console.log(`feedback: ${data}`);
+
            catchError(error => {
             let errorMsg: string;
             if (error.error instanceof ErrorEvent) {
@@ -114,7 +110,6 @@ submit(){
        })
        this.dialogRef.close();
       //  this.successSnackbar(); //requires design touch.
-       
    }else{
      this.required = false;
      this.requiredSnackbar();
@@ -153,46 +148,29 @@ submit(){
 
 
 
-// --------------------------Validation section--------------------------
- isRating(num:number):boolean{
+//--------------------------Validation section--------------------------
+ isRating(num:number):Boolean{
    if (num == null){
      return false;
    }
    return true
  }
 
- isSubmitted(providerId: string, userName: string): boolean{
-
-  let date: Boolean = false;
-  let submitted = true;
-  let feedbackResponse: FeedbackClass[];
-  console.log(`ProviderId:${providerId}\nUserName:${userName}`);
+ isSubmitted(providerId: string, userName: string): Boolean{
 
 
-  this._feedbackservice.IsValidDate().subscribe((event:any)=>{
-    console.log("event: " + event);
+  let submitted: Boolean = true;
+
+  
+  this._feedbackservice.UserFeedbackable(providerId, userName).subscribe((event:any) => {
     if (event instanceof HttpResponse) {
-      console.log(`body: ${event.body}`);
-      const body = event.body;
-      if (body instanceof Boolean) {
-          date = body;
-          console.log("\n\nDate is set, Date: " + date);
-    }}
+            const body = event.body;
+            if (body instanceof Boolean) {
+                submitted = body;
+          }}
   });
-  this._feedbackservice.getFeedback(providerId, userName).subscribe((event: any) => {
-   
-    if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Array) {
-            feedbackResponse = body;
-            feedbackResponse.forEach(x=> {
-              if(x.providerId == providerId && x.userName == userName && date == true){
-                submitted = false;
-                console.log('submitted!!')
-              }
-          });
-      }}
-  });
+
+
 
   console.log(`feedback submisstion status: `+ submitted);
   return submitted;
