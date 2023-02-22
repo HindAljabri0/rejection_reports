@@ -1,0 +1,15 @@
+<ul class="feedback-rating">
+    <li class="label">Very Unlikely</li>
+    <li><button class="rating-button" type="button" [class.active]="rating>-1" [ngClass]="{'rated':rating >- 1}" (click)="setRating(0)">0</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>0" [ngClass]="{'rated':rating > 0}" (click)="setRating(1)">1</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>1" [ngClass]="{'rated':rating > 1}" (click)="setRating(2)">2</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>2" [ngClass]="{'rated':rating > 2}" (click)="setRating(3)">3</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>3" [ngClass]="{'rated':rating > 3}" (click)="setRating(4)">4</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>4" [ngClass]="{'rated':rating > 4}" (click)="setRating(5)">5</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>5" [ngClass]="{'rated':rating > 5}" (click)="setRating(6)">6</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>6" [ngClass]="{'rated':rating > 6}" (click)="setRating(7)">7</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>7" [ngClass]="{'rated':rating > 7}" (click)="setRating(8)">8</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>8" [ngClass]="{'rated':rating > 8}" (click)="setRating(9)">9</button></li>
+    <li><button class="rating-button" type="button" [class.active]="rating>9" [ngClass]="{'rated':rating > 9}" (click)="setRating(10)">10</button></li>
+    <li class="label-likely">Very Likely</li>
+</ul>

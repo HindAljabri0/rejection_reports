@@ -1,10 +1,10 @@
-const host = 'https://api.qa-eclaims.waseel.com';
+const host = 'https://api.dr-eclaims.waseel.com';
 export const environment = {
     name: 'oci_qa',
     production: true,
     GA_TRACKING_ID: 'G-J17HY3QXBF',
     showFreshChat: true,
-    versionCheckURL: `https://qa-eclaims.waseel.com`,
+    versionCheckURL: `https://dr-eclaims.waseel.com`,
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
@@ -33,5 +33,7 @@ export const environment = {
     tawuniyaGssReport: `${host}/gss-report`,
     nphiesClaimDownload: `${host}/nphiesDownloads`,
     nphiesApprovalInquiry: `${host}/nphies-approval-inquiry`,
-    nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`
+    nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`,
+    providerNphiesClaim:`${host}/nphies-claim`,
+    nphiesClaimLinkAttachment: `${host}/nphies-claim-attachment-link`
 };

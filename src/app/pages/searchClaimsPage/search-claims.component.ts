@@ -840,7 +840,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 patientShare: this.summaries[oldSummaryIndex].patientShare - claim.patientShare,
                 discount: this.summaries[oldSummaryIndex].discount - claim.discount,
                 actualPaid: this.summaries[oldSummaryIndex].actualPaid,
-                actualDeducted: this.summaries[oldSummaryIndex].actualDeducted
+                actualDeducted: this.summaries[oldSummaryIndex].actualDeducted,
+                inActiveClaimCount:this.summaries[oldSummaryIndex].inActiveClaimCount
             };
             this.claims[index].status = claim.status;
             const newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
@@ -858,7 +859,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare,
                     discount: this.summaries[oldSummaryIndex].discount + claim.discount,
                     actualPaid: this.summaries[newSummaryIndex].actualPaid,
-                    actualDeducted: this.summaries[newSummaryIndex].actualDeducted
+                    actualDeducted: this.summaries[newSummaryIndex].actualDeducted,
+                    inActiveClaimCount:this.summaries[newSummaryIndex].inActiveClaimCount
                 };
                 window.setTimeout(() => {
                     this.summaries = summaries;
