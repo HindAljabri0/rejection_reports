@@ -1433,36 +1433,33 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
       });
   }
-  inActiveClaim(claimId: string, refNumber: string) {
+  inActiveClaim(claimId: string, refNumber: string, isActive: boolean) {
+    var title = isActive ? 'InActivate this Claim?' : 'Activate this Claim?';
+    var message = isActive ? `This will InActivate claim with reference: ${refNumber}. Are you sure you want to do it?` : 
+    `This will Activate claim with reference: ${refNumber}. Are you sure you want to do it?`;
     this.dialogService.openMessageDialog(
-      new MessageDialogData('InActivate this Claim?',
-        `This will InActivate claim with reference: ${refNumber}. Are you sure you want to do it?`,
-        false,
-        true))
-      .subscribe(result => {
+      new MessageDialogData(title, message, false, true))
+      .subscribe(result => { 
         if (result === true) {
           this.commen.loadingChanged.next(true);
           this.providerNphiesApprovalService.inActiveClaimById(this.providerId, claimId).subscribe(event => {
 
-            /*if (event instanceof HttpResponse) {
-              this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('',
-                `Claim with reference ${refNumber} was InActivated successfully.`,
-                false))
-                .subscribe(afterColse => this.fetchData());
-            }*/
+            if (event instanceof HttpResponse) {
+              if (event.status === 200) {
+                const body: any = event.body;
+                this.commen.loadingChanged.next(false);
+                var msg = body.status === 'activated' ? 'Activated' : 'DeActiveated';
+                this.dialogService.openMessageDialog(new MessageDialogData('',
+                  `Claim with reference ${refNumber} was ${msg} successfully.`,
+                  false))
+                  .subscribe(afterColse => this.fetchData());
+              }
+            }
           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
               if (errorEvent.status === 500 || errorEvent.status === 404) {
                 this.commen.loadingChanged.next(false);
-                this.dialogService.showMessage("Claim Cannot Be InActive", '', 'alert', true, 'OK', errorEvent.message);
-              } else if (errorEvent.status === 200) {
-                this.commen.loadingChanged.next(false);
-                this.dialogService.openMessageDialog(new MessageDialogData('',
-                  `Claim with reference ${refNumber} was InActivated successfully.`,
-                  false))
-                  .subscribe(afterColse => this.fetchData());
-
+                this.dialogService.showMessage("Claim Cannot Be InActive", '', 'alert', true, 'OK', errorEvent.error.errors);
               }
             }
           });
@@ -1528,7 +1525,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['queued'].includes(status.trim().toLowerCase())&& this.userPrivileges.WaseelPrivileges.isPAM;
   }
   claimIsActivable(status: string,isActive:boolean) {
-    return ['queued','pended','approved','rejected', 'partial'].includes(status.trim().toLowerCase())&& isActive!=null && !isActive && this.userPrivileges.WaseelPrivileges.isPAM;;
+    return ['queued','pended','approved','rejected', 'partial', 'invalid'].includes(status.trim().toLowerCase())&& isActive!=null && !isActive && this.userPrivileges.WaseelPrivileges.isPAM;;
   }
   claimIsInActivable(status: string,isActive:boolean) {
     return ['queued','pended','rejected'].includes(status.trim().toLowerCase())  && (isActive==null || isActive) && this.userPrivileges.WaseelPrivileges.isPAM;;

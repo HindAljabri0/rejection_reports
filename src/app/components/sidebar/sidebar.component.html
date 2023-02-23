@@ -332,7 +332,7 @@
                 <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">{{NewAuthTransactions}}</span>
               </a>
             </li>
-            <li>
+            <li *ngIf="!envStaging && !envProd">
               <a routerLink="/nphies/advance-preauth-transactions" routerLinkActive="is-active">
                 <span class="text">Advance Pre-Auth Transactions</span>
               </a>
