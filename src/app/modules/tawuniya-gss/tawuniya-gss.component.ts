@@ -188,6 +188,4 @@ export class TawuniyaGssComponent implements OnInit {
   resultHasValue() {
     return this.gssReportResponses && this.gssReportResponses.length > 0 && !this.gssReportResponses.every(element => !element)
   }
-
-
 }

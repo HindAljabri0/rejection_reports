@@ -48,5 +48,13 @@ export class BeneficiariesSearchResult {
     relationWithSubscriber: string;
     maxLimit: number;
     patientShare: number;
+    issueDate: Date;
+    networkId: string;
+    sponsorNumber: string;
+    policyClassName: string;
+    policyHolder: string;
+    insuranceStatus: string;
+    insuranceDuration: string;
+    insuranceType: string;
   }[];
 }

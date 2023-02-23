@@ -103,8 +103,8 @@ import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderServic
 import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
 import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-dialog.component';
 import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
-
-
+import { FeedbackDialogComponent } from './components/dialogs/feedback-dialog/feedback-dialog.component';
+import { ChooseAttachmentUploadDialogComponent } from './modules/nphies/choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 
 
 @NgModule({
@@ -173,7 +173,9 @@ import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-fe
         MultiSheetFileUploadComponent,
         NphiesClaimSummaryComponent,
         AlertDialogComponent,
-        UpcomingFeatureDialogComponent
+        UpcomingFeatureDialogComponent,
+        FeedbackDialogComponent,
+        ChooseAttachmentUploadDialogComponent
     ],
     imports: [
         AppRoutingModule,
@@ -251,7 +253,9 @@ import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-fe
         EditClaimComponent,
         ConfirmationAlertDialogComponent,
         CertificateConfigurationModelComponent,
-        UpcomingFeatureDialogComponent
+        UpcomingFeatureDialogComponent,
+        FeedbackDialogComponent,
+        ChooseAttachmentUploadDialogComponent
     ],
 })
 export class AppModule { }

@@ -78,11 +78,20 @@ export class NphiesUploadCardComponent implements OnInit {
       });
   }
   get totalClaims() {
-    return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
-      + this.data.cancelled + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
-      + this.data.rejectedByNphies + this.data.approved + this.data.partialApproved
-      + this.data.queuedByNphies + this.data.pended + this.data.failed + this.data.invalid + this.data.failedNphies;
+    return this.activeClaims + this.inactiveClaim;
   }
+
+  get activeClaims() {
+    return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
+    + this.data.cancelled + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer
+    + this.data.rejectedByNphies + this.data.approved + this.data.partialApproved
+    + this.data.queuedByNphies + this.data.pended + this.data.failed + this.data.invalid + this.data.failedNphies;
+  }
+
+  get inactiveClaim(){
+    return this.data.inactiveCount;
+  }
+
 
   get canBeDeleted() {
     return ((this.sharedServices.userPrivileges.ProviderPrivileges.NPHIES.isAdmin
