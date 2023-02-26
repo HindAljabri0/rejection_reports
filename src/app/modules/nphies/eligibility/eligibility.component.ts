@@ -56,8 +56,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   purposeError: string;
   payerNphiesId: string;
   eligibilityResponseModel: EligibilityResponseModel;
-
   showDetails = false;
+  plans =[];
+
   constructor(
     private dialog: MatDialog,
     private dialogService: DialogService,
@@ -74,13 +75,16 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       const beneficiaryId = params.beneficiary;
+      
       if (beneficiaryId != null && beneficiaryId.trim().length > 0) {
         this.sharedServices.loadingChanged.next(true);
         this.beneficiaryService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId, true).subscribe(event => {
           if (event instanceof HttpResponse) {
             this.sharedServices.loadingChanged.next(false);
             try {
+              this.plans = event.body['insurancePlans'];
               this.selectBeneficiary(event.body as BeneficiariesSearchResult);
+              
             } catch (e) {
               console.log(e);
             }
@@ -96,6 +100,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
+   
     this.sharedServices.loadingChanged.next(true);
     this.beneficiaryService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -112,8 +117,6 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       }
     })
 
-    console.log("test")
-    console.log(this.transfer);
   }
 
   onChangeState(transfer) {
@@ -188,9 +191,12 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     this.beneficiarySearchController.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
+    beneficiary.plans = beneficiary.plans !=null? beneficiary.plans : this.plans;
+    console.log("plans = " + JSON.stringify(beneficiary.plans));
     if (beneficiary.plans != null && beneficiary.plans instanceof Array && beneficiary.plans.length > 0) {
       this.purposeRadioButton = '1';
-      const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
+      let primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
+      primaryPlanIndex = primaryPlanIndex == -1 ? beneficiary.plans.findIndex(plan => plan.payerNphiesId == localStorage.getItem('primary_plan')) : -1;
       if (primaryPlanIndex != -1) {
         this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
       }

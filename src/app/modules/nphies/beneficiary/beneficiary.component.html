@@ -583,8 +583,10 @@
       <hr class="hr spaced">
       <div class="form-group btn-list text-right">
         <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
-        <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save()">Add
+        <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save(false)">Add
           Beneficiary</button>
+          <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save(true)">Add
+             & Apply Eligibility</button>
         <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="updateDate()">Save</button>
       </div>
     </div>
