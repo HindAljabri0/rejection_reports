@@ -57,7 +57,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   payerNphiesId: string;
   eligibilityResponseModel: EligibilityResponseModel;
   showDetails = false;
-  plans =[];
+  plans = [];
 
   constructor(
     private dialog: MatDialog,
@@ -75,7 +75,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       const beneficiaryId = params.beneficiary;
-      
+
       if (beneficiaryId != null && beneficiaryId.trim().length > 0) {
         this.sharedServices.loadingChanged.next(true);
         this.beneficiaryService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId, true).subscribe(event => {
@@ -83,8 +83,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
             this.sharedServices.loadingChanged.next(false);
             try {
               this.plans = event.body['insurancePlans'];
-              this.selectBeneficiary(event.body as BeneficiariesSearchResult);
-              
+              //this.selectBeneficiary(event.body as BeneficiariesSearchResult);
+              this.beneficiarySearchController.setValue(event.body['documentId']);
+              this.searchBeneficiaries(null,true);
+
             } catch (e) {
               console.log(e);
             }
@@ -100,7 +102,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-   
+
     this.sharedServices.loadingChanged.next(true);
     this.beneficiaryService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -160,7 +162,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId;
   }
 
-  searchBeneficiaries(IsSubscriber = null) {
+  searchBeneficiaries(IsSubscriber = null, FormUrl = null) {
     let searchStr = '';
     if (!IsSubscriber) {
       searchStr = this.beneficiarySearchController.value;
@@ -176,6 +178,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
             if (!IsSubscriber) {
               this.beneficiariesSearchResult = body;
+              if (FormUrl)
+                this.selectBeneficiary(this.beneficiariesSearchResult[0]);
             } else {
               this.subscriberSearchResult = body;
             }
@@ -190,9 +194,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
+    console.log("beneficiary = " + JSON.stringify(beneficiary));
     this.beneficiarySearchController.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
-    beneficiary.plans = beneficiary.plans !=null? beneficiary.plans : this.plans;
-    console.log("plans = " + JSON.stringify(beneficiary.plans));
+    beneficiary.plans = beneficiary.plans != null ? beneficiary.plans : this.plans;
     if (beneficiary.plans != null && beneficiary.plans instanceof Array && beneficiary.plans.length > 0) {
       this.purposeRadioButton = '1';
       let primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
@@ -360,7 +364,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       beneficiary: this.selectedBeneficiary,
       subscriber: this.isNewBorn ? this.selectedSubscriber : null,
       // tslint:disable-next-line:max-line-length
-      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, policyNumber: null, relationWithSubscriber: null, maxLimit: null, patientShare: null, payerNphiesId: null, tpaNphiesId: null, issueDate:null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder:null, insuranceStatus:null, insuranceDuration:null, insuranceType: null },
+      insurancePlan: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId) : { payerId: this.selectedPayer, coverageType: null, expiryDate: null, memberCardId: null, policyNumber: null, relationWithSubscriber: null, maxLimit: null, patientShare: null, payerNphiesId: null, tpaNphiesId: null, issueDate: null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder: null, insuranceStatus: null, insuranceDuration: null, insuranceType: null },
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       benefits: this.isBenefits,

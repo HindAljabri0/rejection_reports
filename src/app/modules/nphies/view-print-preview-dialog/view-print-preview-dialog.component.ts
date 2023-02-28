@@ -14,9 +14,11 @@ export class ViewPrintPreviewDialogComponent implements OnInit {
 
   preAuthId :number;
   type:string;
+  printFor:string;
   ngOnInit() {
     this.preAuthId = this.data.preAuthId;
     this.type = this.data.type;
+    this.printFor=this.data.printFor;
   }
 
   closeDialog() {
