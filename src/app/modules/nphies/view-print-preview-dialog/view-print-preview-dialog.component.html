@@ -6,13 +6,13 @@
     <div class="print-dialog-body">
         <div class="print-preview-wrapper">
             <ng-container *ngIf="!(type === 'vision' || type === 'oral')">
-                <app-ucaf-form-template [preAuthId]="preAuthId"></app-ucaf-form-template>
+                <app-ucaf-form-template [preAuthId]="preAuthId"  [printFor]="printFor"></app-ucaf-form-template>
             </ng-container>
             <ng-container *ngIf="type === 'oral'">
-                <app-dcaf-form-template [preAuthId]="preAuthId"></app-dcaf-form-template>
+                <app-dcaf-form-template [preAuthId]="preAuthId"  [printFor]="printFor"></app-dcaf-form-template>
             </ng-container>
             <ng-container *ngIf="type === 'vision'">
-                <app-ocaf-form-template [preAuthId]="preAuthId"></app-ocaf-form-template>
+                <app-ocaf-form-template [preAuthId]="preAuthId"  [printFor]="printFor"></app-ocaf-form-template>
             </ng-container>
             
         </div>

@@ -12,11 +12,12 @@ export class DcafFormTemplateComponent implements OnInit {
 
   DCAF : any;
   @Input() preAuthId: any;
+  @Input() printFor:any;
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService,private sharedServices: SharedServices,) { }
 
   ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId).subscribe((res:any)=>{
+    this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId,this.printFor).subscribe((res:any)=>{
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {

@@ -106,6 +106,7 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     dialogConfig.data = {
       preAuthId: this.data.detailsModel.approvalRequestId,
       type: this.data.detailsModel.preAuthorizationInfo.type,
+      printFor:"preAuth"
     };
     const dialogRef = this.dialog.open(ViewPrintPreviewDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
@@ -116,7 +117,7 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
   }
 
   getType(){
-    const {type} = this. data.detailsModel.preAuthorizationInfo;
+    const {type} = this.data.detailsModel.preAuthorizationInfo;
     if( type === 'oral') return "DCAF Form"
     else if (type === 'vision') return "OCAF Form"
     else return "UCAF Form"

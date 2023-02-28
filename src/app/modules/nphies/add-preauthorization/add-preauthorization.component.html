@@ -278,7 +278,7 @@
         </div>
 
 
-        <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams">
+        <app-manage-care-team [(isSubmitted)]="isSubmitted" (PrescriberDefault)="selectedDefualtPrescriberChange($event)" [(CareTeams)]="CareTeams">
         </app-manage-care-team>
 
         <app-manage-diagnosis class="pt-4 d-block" [(isSubmitted)]="isSubmitted"
@@ -314,10 +314,10 @@
                 <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
                     class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="prescriber">
-                    <mat-option value="">Select Prescriber</mat-option>
+                  <mat-select formControlName="prescriber" [(value)]="PrescriberDefault">
+                    <mat-option [value]=0>Select Prescriber</mat-option>
                     <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
-                      {{pre.practitionerName}}
+                      {{pre.practitionerName}} -> {{PrescriberDefault}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

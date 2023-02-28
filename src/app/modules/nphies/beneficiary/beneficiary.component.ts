@@ -668,7 +668,8 @@ export class BeneficiaryComponent implements OnInit {
         }).subscribe(childEvent => {
           if (redirect) {
             const path = `/nphies/eligibility?beneficiary=${beneficiaryId}`;
-            localStorage.setItem('primary_plan',this.beneficiaryModel.insurancePlans.filter(f=>f.isPrimary)[0].payerId);
+            let plan=this.beneficiaryModel.insurancePlans.filter(f=>f.isPrimary)[0];
+            localStorage.setItem('primary_plan', plan ? plan.payerId:"");
             this.location.go(path);
             window.location.reload();
           } else {
