@@ -44,7 +44,7 @@ export const environment = {
     nphiesApprovalInquiry: `${host}:8101`,
     nphiesDownloadApprovleEligibility: `${host}:8055/nphiesApprovalEligibilityDownloads`,
     nphiesClaimLinkAttachment: `${host}:8094`,
-    //notificationFeedbackService: `${host}:8222`
+
 };
 
 /*
