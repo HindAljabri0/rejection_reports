@@ -1,5 +1,5 @@
 <ul class="feedback-rating">
-    <li class="label">Very Unlikely</li>
+    <li class="label-likely">Very Unlikely</li>
     <li><button class="rating-button" type="button" [class.active]="rating>-1" [ngClass]="{'rated':rating >- 1}" (click)="setRating(0)">0</button></li>
     <li><button class="rating-button" type="button" [class.active]="rating>0" [ngClass]="{'rated':rating > 0}" (click)="setRating(1)">1</button></li>
     <li><button class="rating-button" type="button" [class.active]="rating>1" [ngClass]="{'rated':rating > 1}" (click)="setRating(2)">2</button></li>

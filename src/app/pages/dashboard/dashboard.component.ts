@@ -15,6 +15,8 @@ import { FeedbackService } from 'src/app/components/dialogs/feedback-dialog/feed
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { FeedbackClass } from 'src/app/components/dialogs/feedback-dialog/feedback.model.component';
 import { BOOL_TYPE } from '@angular/compiler/src/output/output_ast';
+import { Store } from '@ngrx/store';
+import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 
 @Component({
     selector: 'app-dashboard',
@@ -151,6 +153,7 @@ export class DashboardComponent implements OnInit {
         ]
     };
 
+    userPrivileges: UserPrivileges = initState.userPrivileges;
 
     constructor(
         private tourService: GuidedTourService,
@@ -159,6 +162,7 @@ export class DashboardComponent implements OnInit {
         private dialog: MatDialog,
         private authService: AuthService,
         private _feedbackservice: FeedbackService,
+        private store: Store,
 
     ) { }
 
@@ -189,17 +193,21 @@ export class DashboardComponent implements OnInit {
         }
 
 
+        this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
+
         let ProviderId = this.authService.getProviderId();
         let userName = this.commen.authService.getAuthUsername();
 
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
 
-        if (feedbackable) {
+        if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM) {
             
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['dialog-lg'];
             dialogConfig.autoFocus = false;
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
+        }else if (this.userPrivileges.WaseelPrivileges.isPAM){
+            console.debug("The feedback is not enabled for admins!");
         }
     }
 
@@ -207,39 +215,6 @@ export class DashboardComponent implements OnInit {
         moveItemInArray(this.dashboardSections, event.previousIndex, event.currentIndex);
         localStorage.setItem('defaultDashboardSectionsOrder', this.dashboardSections.map(section => section.index).toString());
     }
-
-    // async feedbackIsSubmitted(providerId: string, userName: string) {
-
-    //     let data: any;
-
-    //     //get all feedbacks with by the pId and the uName
-    //     const event = await this._feedbackservice.getFeedback(providerId, userName).toPromise();
-    //     if (event instanceof HttpResponse) {
-
-    //         const body = event.body;
-    //         data = body;
-    //     } else if (event instanceof HttpErrorResponse) {
-    //         console.log("httpErrorResponse: " + event.error);
-    //     }
-
-    //     return data;
-    // }
-
-    // async isValidDate(){
-
-    //     let data: any;
-
-    //     const event = await this._feedbackservice.isValidDate().toPromise();
-    //     if (event instanceof HttpResponse) {
-    //         const body = event.body;
-    //         data = body;
-    //     } else if (event instanceof HttpErrorResponse) {
-
-    //         console.log("httpErrorResponse: " + event.error);
-    //     }
-
-    //     return data;
-    // }
 
     async userCanSubmitFeedback(privderId: string, userName:string){
         let feedbackable: any;
