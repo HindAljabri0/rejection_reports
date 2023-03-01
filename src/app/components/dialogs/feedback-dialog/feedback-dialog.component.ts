@@ -22,17 +22,16 @@ export class FeedbackDialogComponent implements OnInit {
    /**
     * To-do:
     * - Warning message(Snackbar)[Done]
-    * - Pop-up timing?!           [In-Progress]
+    * - Pop-up timing?!           [Done]
     * - Inject the component with the Waseel-GUI app [Done]
     * - 
     */
  feedback = new FeedbackClass();
- //  common: SharedServices = new SharedServices();
     providerId:string;
     userName:string;
     authUsername: string;
     providerName: string;
-    required:boolean = true;
+    required:boolean = true
 
 
 constructor(
@@ -40,7 +39,7 @@ constructor(
       private snackBarService: SnackBarService,
       private matSnackBar: MatSnackBar,
       private authService: AuthService,
-      public dialogRef: MatDialogRef<DashboardComponent>,
+      public dialogRef: MatDialogRef<FeedbackDialogComponent>,
      
       @Inject(MAT_DIALOG_DATA) public data: any
       ){}
@@ -61,13 +60,13 @@ constructor(
   this.providerName = this.authService.getProviderName();
   this.feedback.providerId = this.authService.getProviderId();
 
-  console.log(`userName: ${this.feedback.userName},\n providerId: ${this.feedback.providerId}`);
+  console.debug(`userName: ${this.feedback.userName},\n providerId: ${this.feedback.providerId}`);
 }
 
 
  setOverallQRating(newRating: number):void{
    this.feedback.overallSatisfactionQ = newRating;
-   console.log("Overall"+newRating);
+   console.info("Overall"+newRating);
 }
 
 
@@ -89,31 +88,31 @@ constructor(
 
 submit(){
    this.setSuggestion();
-   console.log("\nFeedback is: " + this.feedback.valid);
+   console.info("\nFeedback is: " + this.feedback.valid);
    if(this.feedback.valid){
     console.log(`PID: ${this.feedback.providerId}`);
        this._feedbackservice.addFeedback(this.feedback).subscribe({
-         next: data=>{
-           console.log(`feedback: ${data}`);
+              next: data=>{
+                console.log(`feedback: ${data}`);
 
-           catchError(error => {
-            let errorMsg: string;
-            if (error.error instanceof ErrorEvent) {
-                errorMsg = `Error: ${error.error.message}`;
-            } else {
-                errorMsg = this.getServerErrorMessage(error);
-            }
+                catchError(error => {
+                  let errorMsg: string;
+                  if (error.error instanceof ErrorEvent) {
+                      errorMsg = `Error: ${error.error.message}`;
+                  } else {
+                      errorMsg = this.getServerErrorMessage(error);
+                  }
 
-            return throwError(errorMsg);
-        })
-         }
+                  return throwError(errorMsg);
+                })
+              }
        })
        this.dialogRef.close();
-      //  this.successSnackbar(); //requires design touch.
+       
    }else{
      this.required = false;
      this.requiredSnackbar();
-     console.log('feedback is not valid');
+     console.error('feedback is not valid\n required = ', this.required);
   }
  }
  close(){
