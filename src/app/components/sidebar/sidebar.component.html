@@ -654,49 +654,41 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
+      <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM ||
+      userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider ||
+      userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin ||
+      userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder">
         <div class="list-title">
           <hr>
         </div>
         <ul class="nav-list">
-          <li>
-            <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
+          <li *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
+            <a routerLink="/administration/switch-provider" routerLinkActive="is-active">
               <span class="text">Switch Provider</span>
             </a>
           </li>
-        </ul>
-      </ng-container>
-      <ng-container *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider">
-        <div class="list-title">
-          <hr>
-        </div>
-        <ul class="nav-list">
-          <li>
-            <a routerLink="/nphies/switch-group-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
+          <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider">
+            <a routerLink="/nphies/switch-group-provider" routerLinkActive="is-active">
               <span class="text">Switch Group Provider</span>
             </a>
           </li>
-        </ul>
-      </ng-container>
-      <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin">
-        <div class="list-title">
-          <hr>
-        </div>
-        <ul class="nav-list">
-          <li>
-            <a routerLink="/review/scrubbing/admin" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
+          <li *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin">
+            <a routerLink="/review/scrubbing/admin" routerLinkActive="is-active">
               <span class="text">Claims Scrubbing - Admin</span>
+            </a>
+          </li>
+          <li *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder">
+            <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active">
+              <span class="text">Claims Scrubbing - Auditing</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/ticket-management" routerLinkActive="is-active">
+              <span class="text">Ticket Management</span>
             </a>
           </li>
         </ul>
       </ng-container>
-      <ul class="nav-list" *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder">
-        <li>
-          <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
-            <span class="text">Claims Scrubbing - Auditing</span>
-          </a>
-        </li>
-      </ul>
     </div>
   </div>
 </div>
