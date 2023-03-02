@@ -94,8 +94,8 @@ export class ViewEligibilityDetailsComponent implements OnInit {
 
   getType(){
     const type = this.providerType;
-    if( type === 'oral') return "Print DCAF "
-    else if (type === 'vision') return "Print OCAF"
-    else return "Print UCAF"
+    if( type === 'oral') return "DCAF Form"
+    else if (type === 'vision') return "OCAF Form"
+    else return "UCAF Form"
   } 
 }

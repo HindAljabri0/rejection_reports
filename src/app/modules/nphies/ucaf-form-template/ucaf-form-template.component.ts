@@ -125,7 +125,7 @@ export class UcafFormTemplateComponent implements OnInit {
 
   getDeptName(){
     if(this.UCAFData.careTeam.length > 0) return `${this.UCAFData.type} - ${this.UCAFData.careTeam[0].specialityCode} - ${this.specialityName}`;
-    else return `${this.UCAFData.type}`;
+    else return `${this.UCAFData.type ? this.UCAFData.type : ''}`;
     
   }
 getPeriodDays(){
