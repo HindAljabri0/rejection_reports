@@ -691,6 +691,7 @@
                                     UCAFData.preAuthEndDate ? "-":""}} {{UCAFData.preAuthEndDate |
                                     date:'dd/MM/yyyy'}} </p>
                                     </span>
+                                    <span *ngIf="printFor ==='eligibility'"><p class="value-holder"></p></span>
                             </td>
                             <td width="10">
                                 <p> {{getPeriodDays()}} <strong>Days</strong></p>

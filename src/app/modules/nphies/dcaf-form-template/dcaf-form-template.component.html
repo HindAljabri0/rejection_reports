@@ -572,6 +572,7 @@
                                         DCAF.preAuthEndDate ? "-":""}} {{DCAF.preAuthEndDate |
                                         date:'dd/MM/yyyy'}}
                                     </span>
+                                    <span *ngIf="printFor ==='eligibility'"><p class="value-holder"></p></span>
                                 </p>
                             </td>
                             <td>
