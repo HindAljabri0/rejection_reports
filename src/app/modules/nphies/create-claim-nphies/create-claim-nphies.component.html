@@ -1113,11 +1113,12 @@
                     <mat-icon class="text-primary">text_snippet</mat-icon>
                     <span>Notes</span>
                   </button>
-                  <!-- <button type="button" class="action-btn"
+                  <button type="button" class="action-btn"
+                    [disabled]="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)"
                     (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
-                  </button> -->
+                  </button>
                 </div>
                 <mat-menu #notesMenu="matMenu" class="communication-notes">
                   <ul *ngIf="communication.communicationRequestNotesList" class="notes">

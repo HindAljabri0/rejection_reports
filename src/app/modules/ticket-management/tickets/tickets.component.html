@@ -1,0 +1,85 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p class="align-self-center">Ticket Management</p>
+        <div class="ml-auto my-n2 mr-n2 d-flex align-items-center">
+            <div class="w-320">
+                <input type="text" class="form-control search-box" placeholder="Search subject, ticket ID">
+            </div>
+            <button type="button" routerLink="/ticket-management/create" mat-flat-button color="primary" class="ml-8">Create New</button>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Subject</th>
+                        <th>Created on</th>
+                        <th>Type</th>
+                        <th>Payer</th>
+                        <th>Product</th>
+                        <th width="120">
+                            <div class="column-header-action">
+                                <span>Status</span>
+                                <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="statusFilter">
+                                    <mat-icon>filter_list_outline</mat-icon>
+                                </button>
+                                <mat-menu #statusFilter="matMenu" xPosition="before" class="filter-menu">
+                                    <div class="menu-body">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label class="control-label">Status</label>
+                                                <mat-form-field class="form-control custom-select-control">
+                                                    <mat-select value="">
+                                                        <mat-option value="">Select status</mat-option>
+                                                        <mat-option value="Open">Open</mat-option>
+                                                        <mat-option value="Resolved">Resolved</mat-option>
+                                                        <mat-option value="Closed">Closed</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="btn-list text-right">
+                                            <button mat-flat-button>Clear</button>
+                                            <button mat-flat-button color="primary">Filter</button>
+                                        </div>
+                                    </div>
+                                </mat-menu>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">66918</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Fw: MRN 678833 BABY RAYAN</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">01/02/2023</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Enhancement</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Tawuniya</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">NPHIES</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details"><span class="status-badge size-sm primary normal-text">Open</span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">66917</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Payment Copy</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">21/01/2023</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Issue</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">BUPA</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Waseel</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details"><span class="status-badge size-sm success normal-text">Resolved</span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">66914</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Fwd: Payment Notification</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">12/01/2023</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Issue</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Al-Sagr</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details">Waseel</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details"><span class="status-badge size-sm inactive normal-text">Closed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+</div>

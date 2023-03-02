@@ -35,7 +35,7 @@ import { FeedbackRatingComponent } from '../components/reusables/feedback-rating
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     DetailscardComponent,

@@ -3,7 +3,6 @@ import { LoginWithTokenComponent } from './pages/loginpage-with-token/login-with
 import { ReportsComponent } from './pages/reports/reports-page.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -38,7 +37,6 @@ import {
 } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadsCenterComponent } from './components/uploads-center/uploads-center.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
-import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { MaterialModule } from './modules/material/material.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
@@ -63,7 +61,6 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
-import { ConfigurationsComponent } from './pages/configurationsPage/configurations.component';
 
 import { SummaryComponent } from './pages/reports/globmed/summary/summary.component';
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
@@ -92,7 +89,6 @@ import { EditClaimComponent } from './pages/edit-claim/edit-claim.component';
 import { ClaimModule } from './modules/claim/claim.module';
 import { ConfirmationAlertDialogComponent } from './components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { GeneralSummaryStatementReportComponent } from './pages/reports/general-summary-statement-report/general-summary-statement-report.component';
-import { NphiesModule } from './modules/nphies/nphies.module';
 import { NphiesSearchClaimsComponent } from './modules/nphies/nphies-search-claims/nphies-search-claims.component';
 import { CertificateConfigurationComponent } from './pages/certificate-configuration/certificate-configuration.component';
 import { CertificateConfigurationModelComponent } from './pages/certificate-configuration-model/certificate-configuration-model.component';
@@ -100,7 +96,6 @@ import { UploadClaimComponent } from './modules/nphies/upload-claim/upload-claim
 import { NphiesClaimSummaryComponent } from './modules/nphies/upload-claim/nphies-claim-summary/nphies-claim-summary.component';
 import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/multi-sheet-file-upload/multi-sheet-file-upload.component';
 import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
-import { NphiesUploadsComponent } from './modules/nphies/nphies-uploads/nphies-uploads.component';
 import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-dialog.component';
 import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
 import { FeedbackDialogComponent } from './components/dialogs/feedback-dialog/feedback-dialog.component';
