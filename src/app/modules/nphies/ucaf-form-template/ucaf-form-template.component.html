@@ -23,6 +23,10 @@
                             <td>
                                 <p class="value-holder">{{UCAFData.beneficiary.payerName}}</p>
                             </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
                             <td width="10">
                                 <p>TPA Company Name:&nbsp;</p>
                             </td>
@@ -50,11 +54,13 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>Single (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.beneficiary.maritalStatus === 'U' "/>)</p>
+                                <p>Single (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="UCAFData.beneficiary.maritalStatus === 'U' " />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Married (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.beneficiary.maritalStatus === 'M' "/>)</p>
+                                <p>Married (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="UCAFData.beneficiary.maritalStatus === 'M' " />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
@@ -66,27 +72,33 @@
                             <td></td>
                         </tr>
                     </table>
-                    <p>Date of visit:&nbsp; <span class="value-holder">{{UCAFData.dateOrdered | date: 'dd / MM / yyyy'}} </span></p>
+                    <p>Date of visit:&nbsp; <span class="value-holder">{{UCAFData.dateOrdered | date: 'dd / MM / yyyy'}}
+                        </span></p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('new-visit')"/>)</p>
+                                <p>New visit (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="getVisitReason('new-visit')" />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('follow-up')"/>)</p>
+                                <p>Follow Up (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="getVisitReason('follow-up')" />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Refill (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('refill')"/>)</p>
+                                <p>Refill (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="getVisitReason('refill')" />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Walk In (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('walk-in')"/>)</p>
+                                <p>Walk In (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="getVisitReason('walk-in')" />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Referral (<img src="./assets/form-check.svg" class="check" [class.cheked] ="getVisitReason('referral')"/>)</p>
+                                <p>Referral (<img src="./assets/form-check.svg" class="check"
+                                        [class.cheked]="getVisitReason('referral')" />)</p>
                             </td>
                             <td></td>
                         </tr>
@@ -197,7 +209,7 @@
                                 <p>Approval Status:</p>
                             </td>
                             <td>
-                                <p class="value-holder"> {{UCAFData.status}}</p>
+                                <p class="value-holder"> {{printFor !=='eligibility' ? UCAFData.status : ''}}</p>
                             </td>
                         </tr>
                     </table>
@@ -207,15 +219,18 @@
         <tr>
             <td colspan="2">
                 <div class="form-container-group">
-                    <h3><strong>To be Completed by the Attending PHYSICIAN:&nbsp; Please tick (<img src="./assets/form-check.svg" class="check checked" />)</strong></h3>
+                    <h3><strong>To be Completed by the Attending PHYSICIAN:&nbsp; Please tick (<img
+                                src="./assets/form-check.svg" class="check checked" />)</strong></h3>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>Inpatient (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.subType === 'ip' "/>)</p>
+                                <p>Inpatient (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="UCAFData.subType === 'ip' " />)</p>
                             </td>
                             <td width="16"></td>
                             <td width="10">
-                                <p>Outpatient (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.subType === 'op' "/>)</p>
+                                <p>Outpatient (<img src="./assets/form-check.svg" class="check"
+                                        [class.checked]="UCAFData.subType === 'op' " />)</p>
                             </td>
                             <td></td>
                             <td width="10">
@@ -224,11 +239,15 @@
                                         <tr>
                                             <td width="10">&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td>
-                                                <p><strong>Emergency Case (<img src="./assets/form-check.svg" class="check" [class.checked]="UCAFData.subType === 'emr' " />)</strong></p>
+                                                <p><strong>Emergency Case (<img src="./assets/form-check.svg"
+                                                            class="check"
+                                                            [class.checked]="UCAFData.subType === 'emr' " />)</strong>
+                                                </p>
                                             </td>
                                             <td width="6">&nbsp;&nbsp;&nbsp;</td>
                                             <td width="10">
-                                                <p>Emergency Care Level:&nbsp; 1 (<img src="./assets/form-check.svg" class="check" />)</p>
+                                                <p>Emergency Care Level:&nbsp; 1 (<img src="./assets/form-check.svg"
+                                                        class="check" />)</p>
                                             </td>
                                             <td width="6">&nbsp;&nbsp;&nbsp;</td>
                                             <td width="10">
@@ -315,7 +334,8 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p class="text-wrap">Chief Complaints and Main Symptoms:&nbsp;&nbsp; {{ getSupportingInfoForChiefComplaints() }}<br><br></p>
+                                <p class="text-wrap">Chief Complaints and Main Symptoms:&nbsp;&nbsp; {{
+                                    getSupportingInfoForChiefComplaints() }}<br><br></p>
                             </td>
                         </tr>
                     </table>
@@ -381,7 +401,8 @@
                         </tr>
                     </table>
                     <hr>
-                    <h3><strong>Please tick (<img src="./assets/form-check.svg" class="check" />) where appropriate:&nbsp;</strong></h3>
+                    <h3><strong>Please tick (<img src="./assets/form-check.svg" class="check" />) where
+                            appropriate:&nbsp;</strong></h3>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -432,7 +453,8 @@
                             </td>
                         </tr>
                     </table>
-                    <p>Suggestive line(s) of Management:&nbsp; Kindly, enumerate the recommended investigations, and/or procedures <strong>For outpatient approvals
+                    <p>Suggestive line(s) of Management:&nbsp; Kindly, enumerate the recommended investigations, and/or
+                        procedures <strong>For outpatient approvals
                             only:&nbsp;</strong></p>
                     <table class="data-table">
                         <thead>
@@ -454,7 +476,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p>Providers Approval/Coding Staff must review/code the recommended service(s) and allocate cost and complete the following:&nbsp;</p>
+                    <p>Providers Approval/Coding Staff must review/code the recommended service(s) and allocate cost and
+                        complete the following:&nbsp;</p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -475,7 +498,9 @@
                                 <p>Date:&nbsp;</p>
                             </td>
                             <td width="10">
-                                <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p class="value-holder">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </p>
                             </td>
                         </tr>
                     </table>
@@ -503,7 +528,8 @@
                         </tbody>
                     </table>
                     <p>In Case management Form (CMF 1.0) included &nbsp;&nbsp;&nbsp; <strong>
-                            Yes (<img src="./assets/form-check.svg" class="check" />) &nbsp;&nbsp; No (<img src="./assets/form-check.svg" class="check" />)
+                            Yes (<img src="./assets/form-check.svg" class="check" />) &nbsp;&nbsp; No (<img
+                                src="./assets/form-check.svg" class="check" />)
                         </strong></p>
                     <table class="internal-table">
                         <tr>
@@ -531,7 +557,9 @@
                                 <p><strong>Expected date of admission:&nbsp;</strong></p>
                             </td>
                             <td width="10">
-                                <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p class="value-holder">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </p>
                             </td>
                         </tr>
                     </table>
@@ -544,7 +572,9 @@
                     <table class="internal-table">
                         <tr>
                             <td class="text-wrap">
-                                <p>I hereby certify that ALL information mentioned are correct and that the medical services shown on this form were medically indicated and
+                                <p>I hereby certify that ALL information mentioned are correct and that the medical
+                                    services
+                                    shown on this form were medically indicated and
                                     necessary for the management of this case.</p>
                                 <table class="internal-table text-center">
                                     <tr>
@@ -566,7 +596,8 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p class="value-holder">{{UCAFData.careTeam.length > 0 ? UCAFData.careTeam[0].practitionerName : '-'}}</p>
+                                            <p class="value-holder">{{UCAFData.careTeam.length > 0 ?
+                                                UCAFData.careTeam[0].practitionerName : '-'}}</p>
                                         </td>
                                         <td width="10"></td>
                                         <td>
@@ -578,7 +609,9 @@
                                         </td>
                                         <td width="10"></td>
                                         <td>
-                                            <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                            <p class="value-holder">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </p>
                                         </td>
                                     </tr>
                                 </table>
@@ -587,7 +620,8 @@
                             <td class="border-right"></td>
                             <td width="10"></td>
                             <td class="text-wrap">
-                                <p>I hereby certify that ALL statements and information provided concerning patient identification and the present illness or injury are TRUE.</p>
+                                <p>I hereby certify that ALL statements and information provided concerning patient
+                                    identification and the present illness or injury are TRUE.</p>
                                 <table class="internal-table">
                                     <tr>
                                         <td width="10">
@@ -611,7 +645,9 @@
                                             <p>Date:&nbsp;</p>
                                         </td>
                                         <td width="10">
-                                            <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                            <p class="value-holder">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </p>
                                         </td>
                                     </tr>
                                 </table>
@@ -635,7 +671,8 @@
                             </td>
                             <td width="12"></td>
                             <td width="10">
-                                <p><strong>Not Approved (<img src="./assets/form-check.svg" class="check" />)</strong></p>
+                                <p><strong>Not Approved (<img src="./assets/form-check.svg" class="check" />)</strong>
+                                </p>
                             </td>
                             <td width="12"></td>
                             <td width="10">
@@ -648,20 +685,23 @@
                                 <p><strong>Approval validity:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <p class="value-holder">  {{UCAFData.preAuthStartDate | date:'dd/MM/yyyy'}} {{UCAFData.preAuthStartDate
+                                <span *ngIf="printFor !=='eligibility'"><p class="value-holder"> {{UCAFData.preAuthStartDate | date:'dd/MM/yyyy'}}
+                                    {{UCAFData.preAuthStartDate
                                     &&
                                     UCAFData.preAuthEndDate ? "-":""}} {{UCAFData.preAuthEndDate |
                                     date:'dd/MM/yyyy'}} </p>
+                                    </span>
                             </td>
                             <td width="10">
-                                <p>  {{getPeriodDays()}} <strong>Days</strong></p>
+                                <p> {{getPeriodDays()}} <strong>Days</strong></p>
                             </td>
                         </tr>
                     </table>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p><strong>Comments (include approved days/services if different from the requested):&nbsp;</strong></p>
+                                <p><strong>Comments (include approved days/services if different from the
+                                        requested):&nbsp;</strong></p>
                             </td>
                             <td>
                                 <p class="value-holder"></p>
@@ -688,7 +728,9 @@
                                 <p><strong>Date:&nbsp;</strong></p>
                             </td>
                             <td width="10">
-                                <p class="value-holder">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p class="value-holder">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </p>
                             </td>
                         </tr>
                     </table>
