@@ -1,0 +1,138 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" routerLink="/ticket-management" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p>Create New Ticket</p>
+        </div>
+    </div>
+    <form [formGroup]="formTicket" (ngSubmit)="onSubmit()">
+
+    <div class="block-body">
+        <div class="row small-gutter">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Subject</label>
+                    <input type="text" class="form-control" placeholder="Enter subject here" formControlName="subject">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Email Address</label>
+                    <input required type="email" class="form-control" placeholder="Enter email address" formControlName="email">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Phone</label>
+                    <input type="number" class="form-control" placeholder="Enter phone number here" formControlName="phoneNumber">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="" formControlName="type">
+                            <mat-option value="">Select type</mat-option>
+                            <mat-option *ngFor="let t of type" value="{{t}}">{{t}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="" formControlName="payer">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option *ngFor="let payer of payers" value="{{payer}}">{{payer}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Product</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="" formControlName="product">
+                            <mat-option value="">Select Product</mat-option>
+                            <mat-option *ngFor="let product of products" value="{{product}}">{{product}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Description</label>
+            <angular-editor formControlName="description" [placeholder]="'Enter description here'" [config]="editorConfig" [(ngModel)]="htmlContent"></angular-editor>
+        </div>
+
+
+        <!-- <ng-container *ngIf="supportingInfo.category === 'attachment'">
+            <div class="form-group mb-n1 mt-n1">
+              <div class="file-upload-wrapper">
+                <div class="content">
+                  <button mat-flat-button color="primary" type="button" *ngIf="!supportingInfo.attachment">
+                    Choose File
+                  </button>
+                  <div class="uploaded-file-name" *ngIf="supportingInfo.attachment">
+                    <span>{{supportingInfo.attachmentName}}</span>
+                    <button type="button" class="icon" (click)="deleteFile(i)" matRipple title="Delete File?">
+                      <mat-icon class="size-20">close</mat-icon>
+                    </button>
+                  </div>
+                  <p class="error-text pt-1" *ngIf="supportingInfo.fileError">{{supportingInfo.fileError}}</p>
+                </div>
+                <ng-container *ngIf="!supportingInfo.attachment">
+                  <input type="file" accept="application/pdf,image/jpeg,image/jpg" name="attachmentFile"
+                    class="file-upload-control" (change)="selectFile($event, i)" required />
+                  <div *ngIf="isSubmitted && supportingInfo.IsAttachmentRequired && !supportingInfo.attachment">
+                    <span class="error-text">Please select a file</span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        <div class="form-group mb-0">
+            <label class="control-label">Attachments</label>
+            <ul class="attachment-list lg">
+                <li matTooltip="Report-4594.pdf">
+                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                    <span>Report-4594.pdf</span>
+                    <button class="close-btn">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </li>
+                <li matTooltip="Report-4594.xls">
+                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                    <span>Report-4594.xls</span>
+                    <button class="close-btn">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </li>
+                <li matTooltip="Add Attachments" class="add-block">
+                    <div class="file-upload-wrapper">
+                        <div class="content">
+                            <mat-icon>add</mat-icon>
+                        </div>
+                        <input type="file" class="file-upload-control" />
+                    </div>
+                </li>
+            </ul>
+        </div> -->
+    </div>
+    <div class="block-footer">
+        <div class="right-block">
+            <div class="btn-list">
+                <button mat-flat-button routerLink="/ticket-management">Cancel</button>
+                <button mat-flat-button type="submit" color="primary">Create</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+</div>
