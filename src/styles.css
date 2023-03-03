@@ -535,6 +535,13 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 .advance-search .search-mode-select .mat-select-value{display: flex;align-items: center;padding: 11px 28px 11px 10px;color: #315FAA;max-width: none;height:auto;background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;}
 .header-search-menu .mat-menu-item{height: auto;line-height: inherit;white-space: normal;overflow: visible;padding: 11px 16px;}
 
+/* Set Button inside Input tag
+--------------------------------------------------------------------------------------------------------*/
+.inline-button {display: flex;}
+.inline-button .input-wrapper{flex-grow:1;position: relative;}
+.inline-button .input-wrapper>input{height: 100%;padding: 4px 4px 4px 12px;background: #fff;margin:0;color:black;}
+.inline-button .search-btn{color: #3060aa;background: none;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);border:0;padding: 4px 8px 4px 4px;border-radius: 8px;display: flex;align-items: center;font-weight: 500;}
+
 /* form
 --------------------------------------------------------------------------------------------------------*/
 .control-label{display: block;padding-bottom: 4px;font-size:14px;line-height:20px;font-weight:400;}
