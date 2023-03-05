@@ -6,20 +6,15 @@ import { TopFiveRejectionsComponent } from './components/top-five-rejections/top
 import { GuidedTourService, GuidedTour } from 'ngx-guided-tour';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ViewportScroller } from '@angular/common';
-import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ChangeLogDialogComponent } from 'src/app/components/change-log-dialog/change-log-dialog.component';
 import { FeedbackDialogComponent } from 'src/app/components/dialogs/feedback-dialog/feedback-dialog.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { BOOL_TYPE } from '@angular/compiler/src/output/output_ast';
 import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { catchError, filter } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-import { setLoading, setError } from 'src/app/claim-module-components/store/claim.actions';
-import {HttpRequestExceptionHandler} from 'src/app/components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
+import { HttpRequestExceptionHandler } from 'src/app/components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
@@ -165,7 +160,7 @@ export class DashboardComponent implements OnInit {
         private authService: AuthService,
         private _feedbackservice: FeedbackService,
         private store: Store,
-        private requestExceptionHandler: HttpRequestExceptionHandler, 
+        private requestExceptionHandler: HttpRequestExceptionHandler,
 
     ) { }
 
@@ -204,12 +199,12 @@ export class DashboardComponent implements OnInit {
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
 
         if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM) {
-            
+
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['dialog-lg'];
             dialogConfig.autoFocus = false;
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
-        }else if (this.userPrivileges.WaseelPrivileges.isPAM){
+        } else if (this.userPrivileges.WaseelPrivileges.isPAM) {
             console.debug("The feedback is not enabled for admins!");
         }
     }
@@ -219,38 +214,39 @@ export class DashboardComponent implements OnInit {
         localStorage.setItem('defaultDashboardSectionsOrder', this.dashboardSections.map(section => section.index).toString());
     }
 
-    async userCanSubmitFeedback(privderId: string, userName:string) {
+    async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
 
-       const event = await this._feedbackservice.UserFeedbackable(privderId, userName).pipe(
-        filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
-        catchError(error => {
-            let errorMsg: string;
-            
-            if (error.error instanceof ErrorEvent) {
-                try {
-                    errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
-                    console.error('Add feedback service error message:\n' + errorMsg);
-                   } catch(error) { }
-              
-            } else {
-                try{
-                    errorMsg = this.requestExceptionHandler.getErrorMessage(error);
-                    console.error('Add feedback service error message:\n' + errorMsg);
-                }catch(error) { }
-            }
+        const event = await this._feedbackservice.UserFeedbackable(privderId, userName).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+            catchError(error => {
+                let errorMsg: string;
 
-            return errorMsg;
-          })
-       ).toPromise();
-       if (event instanceof HttpResponse) {
-        const body = event.body;
-        feedbackable = body;
-        if (body instanceof Boolean) {
+                if (error.error instanceof ErrorEvent) {
+                    try {
+                        errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
+                        console.error('Add feedback service error message:\n' + errorMsg);
+                    } catch (error) { }
+
+                } else {
+                    try {
+                        errorMsg = this.requestExceptionHandler.getErrorMessage(error);
+                        console.error('Add feedback service error message:\n' + errorMsg);
+                    } catch (error) { }
+                }
+
+                return errorMsg;
+            })
+        ).toPromise();
+        if (event instanceof HttpResponse) {
+            const body = event.body;
             feedbackable = body;
-      }}
-      console.debug("\nFeedback validation api response is:\n" + feedbackable+"\n");
-            return feedbackable;
+            if (body instanceof Boolean) {
+                feedbackable = body;
+            }
+        }
+        console.debug("\nFeedback validation api response is:\n" + feedbackable + "\n");
+        return feedbackable;
     }
 
 }
