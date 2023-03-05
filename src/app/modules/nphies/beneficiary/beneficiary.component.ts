@@ -641,7 +641,7 @@ export class BeneficiaryComponent implements OnInit {
     console.log(this.beneficiaryModel);
   }
 
-  save() {
+  save(redirect: boolean) {
 
     if (this.insurancePlans != null && this.insurancePlans.length != 0) {
       for (const plan of this.insurancePlans) {
@@ -666,9 +666,17 @@ export class BeneficiaryComponent implements OnInit {
           message: `Beneficiary added successfully`,
           isError: false
         }).subscribe(childEvent => {
-          const path = `/nphies/beneficiary/${beneficiaryId}`;
-          this.location.go(path);
-          window.location.reload();
+          if (redirect) {
+            const path = `/nphies/eligibility?beneficiary=${beneficiaryId}`;
+            let plan=this.beneficiaryModel.insurancePlans.filter(f=>f.isPrimary)[0];
+            localStorage.setItem('primary_plan', plan ? plan.payerId:"");
+            this.location.go(path);
+            window.location.reload();
+          } else {
+            const path = `/nphies/beneficiary/${beneficiaryId}`;
+            this.location.go(path);
+            window.location.reload();
+          }
         });
         this.sharedServices.loadingChanged.next(false);
       }
@@ -897,7 +905,7 @@ export class BeneficiaryComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400 || error.status === 404) {
-          this.showMessage('Error', error.error , 'alert', true, 'OK');
+          this.showMessage('Error', error.error, 'alert', true, 'OK');
         } /*else if (error.status === 404) {
           this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
         }*/ else if (error.status === 500) {

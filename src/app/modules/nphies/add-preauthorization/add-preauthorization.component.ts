@@ -64,6 +64,8 @@ export class AddPreauthorizationComponent implements OnInit {
   beneficiaryPatientShare = 0;
   beneficiaryMaxLimit = 0;
 
+  PrescriberDefault = '';
+
   FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
@@ -235,7 +237,9 @@ export class AddPreauthorizationComponent implements OnInit {
     }
     this.getProviderTypeConfiguration();
   }
-
+  selectedDefualtPrescriberChange($event) {
+    this.PrescriberDefault = $event;
+  }
   setReuseValues() {
 
     this.FormPreAuthorization.controls.isNewBorn.setValue(this.data.isNewBorn);

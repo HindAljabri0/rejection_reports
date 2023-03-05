@@ -15,6 +15,7 @@ export class UcafFormTemplateComponent implements OnInit {
   supportingInfo: any;
   Diagnosis: string;
   @Input() preAuthId: any;
+  @Input() printFor: any;
   MedicationCode: any;
   specialityList : any = [];
   specialityName : string;
@@ -22,7 +23,7 @@ export class UcafFormTemplateComponent implements OnInit {
     private sharedServices: SharedServices,) { }
   ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId, this.preAuthId).subscribe((res: any) => {
+    this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId, this.preAuthId,this.printFor).subscribe((res: any) => {
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {
@@ -124,7 +125,7 @@ export class UcafFormTemplateComponent implements OnInit {
 
   getDeptName(){
     if(this.UCAFData.careTeam.length > 0) return `${this.UCAFData.type} - ${this.UCAFData.careTeam[0].specialityCode} - ${this.specialityName}`;
-    else return `${this.UCAFData.type}`;
+    else return `${this.UCAFData.type ? this.UCAFData.type : ''}`;
     
   }
 getPeriodDays(){
