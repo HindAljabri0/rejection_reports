@@ -2,12 +2,9 @@
     <div class="block-header">
         <p class="align-self-center">Ticket Management</p>
         <div class="ml-auto my-n2 mr-n2 d-flex align-items-center">
-            <div class="inline-button">
-                <div class="w-320 input-wrapper">
-                    <input type="text" [formControl]="searchControl" autocomplete="off" class="form-control"
-                        placeholder="Search subject, ticket ID" (keyup.enter)="searchByQuery()">
-                </div>
-                <button mat-icon-button (click)="searchByQuery()" class="search-btn">
+            <div class="w-320 search-box-wrapper">
+                <input type="text" [formControl]="searchControl" autocomplete="off" class="form-control" placeholder="Search subject, ticket ID" (keyup.enter)="searchByQuery()">
+                <button mat-icon-button (click)="searchByQuery()" matTooltip="Search">
                     <mat-icon>search</mat-icon>
                 </button>
             </div>
@@ -28,8 +25,7 @@
                         <th width="120">
                             <div class="column-header-action">
                                 <span>Status</span>
-                                <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="statusFilter"
-                                    (click)="checkReloadedFilter()">
+                                <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="statusFilter" (click)="checkReloadedFilter()">
                                     <mat-icon>filter_list_outline</mat-icon>
                                 </button>
                                 <mat-menu #statusFilter="matMenu" xPosition="before" class="filter-menu">
@@ -50,8 +46,7 @@
                                         </div>
                                         <div class="btn-list text-right">
                                             <button mat-flat-button (click)="clearStatusFilter()">Clear</button>
-                                            <button mat-flat-button color="primary"
-                                            (click)="searchTicketBased()">Filter</button>
+                                            <button mat-flat-button color="primary" (click)="searchTicketBased()">Filter</button>
                                         </div>
                                     </div>
                                 </mat-menu>

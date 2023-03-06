@@ -201,7 +201,7 @@ export class DashboardComponent implements OnInit {
         if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM) {
 
             const dialogConfig = new MatDialogConfig();
-            dialogConfig.panelClass = ['dialog-lg'];
+            dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
             dialogConfig.autoFocus = false;
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
         } else if (this.userPrivileges.WaseelPrivileges.isPAM) {
