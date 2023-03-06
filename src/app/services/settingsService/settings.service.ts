@@ -100,4 +100,10 @@ export class SettingsService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.httpClient.request(request);
   }
+
+  getAlert(providerId: any) {
+    const requestURL = `/providers/${providerId}/alert`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.httpClient.request(request);
+  }
 }
