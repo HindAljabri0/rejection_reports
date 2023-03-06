@@ -49,6 +49,7 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
 strong,.bold{font-weight: 700;}
 .semibold{font-weight: 600!important;}
 .medium{font-weight: 500!important;}
+.text-regular{font-weight: 400!important;}
 .text-sm{font-size: 12px;line-height: 16px;}
 .text-monospace{font-family: 'Courier Prime', monospace!important;font-size: 16px!important;letter-spacing: -0.6px;line-height: 22px!important;}
 input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allowed;}
@@ -130,6 +131,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .mb-n14{margin-bottom: -14px !important;}
 .mt-n14{margin-top: -14px !important;}
 .mr-n14{margin-right: -14px !important;}
+.mr-12{margin-right: 12px !important;}
 .ml-n16{margin-left: -16px !important;}
 .mr-n16{margin-right: -16px !important;}
 .minw90{min-width: 90px;}
@@ -319,6 +321,9 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .mat-option-loader span{padding-left: 12px;}
 .abbr{text-decoration: underline;text-decoration-style: dashed;text-underline-offset: 4px;color: #3060aa;}
 .word-break{word-break: break-all;}
+.search-box-wrapper{position: relative;}
+.search-box-wrapper .form-control{padding-right: 40px;}
+.search-box-wrapper .mat-icon-button{position: absolute;right: 0;top: 0;}
 
 /* attachment count
 --------------------------------------------------------------------------------------------------------*/
@@ -643,6 +648,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* block
 --------------------------------------------------------------------------------------------------------*/
 .block-header{display: flex;color: #3060AA;background-color: #fff;padding: 14px;font-size: 16px;line-height: 22px;font-weight: 600;border-bottom:1px solid #e1e1e1;}
+.block-header.sticky{position:sticky;top:68px;z-index: 7;background: #fff;border-radius: 8px 8px 0 0;}
 .block-header>.title-btn.mat-button{font-size:inherit;font-weight:inherit;margin: -14px 0;padding: 0 14px;line-height:50px;border-radius:0;position: relative;color:currentColor;}
 .block-header>.title-btn.mat-button:after{background-color: currentColor;content:'';display: block;height: 2px;left: 0;right: 0;bottom: 0;position: absolute;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: scaleX(0.4);opacity: 0;}
 .block-header>.title-btn.mat-button.active:after{opacity: 1;transform:scaleX(1);}
@@ -669,7 +675,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-footer>.middle-block{margin-left: auto;}
 .block-footer>.left-block{padding-right: 12px;flex-grow:1;}
 .block-card{background: #fff;border-radius: 8px;box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
-.block-card .block-header,.block-card .block-body,.block-card .block-filter-panel, .block-card .block-footer:not(.sticky){background: none;}
+.block-card .block-header:not(.sticky),.block-card .block-body,.block-card .block-filter-panel, .block-card .block-footer:not(.sticky){background: none;}
 .block-card .claim-status-header{border-top-left-radius: 8px;}
 .block-card .block-footer.sticky{border-radius: 0 0 8px 8px;}
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}
@@ -1347,6 +1353,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .attachment-list.lg>li>img{height: 48px;width: 48px;flex-basis:48px;max-width:48px;}
 .attachment-list.lg .add-block{color: #909090;}
 .attachment-list.lg .add-block .mat-icon{line-height: 48px;height: 48px;width: 48px;font-size: 48px;}
+.attachment-list.sm>li{flex-direction: row;flex-basis: auto;max-width: none;height: auto;border-color:#bebebe;border-radius: 8px;font-size: 14px;line-height: 20px;font-weight: 400;padding: 8px 14px 8px 10px;}
+.attachment-list.sm>li>img{height: 24px;width: 24px;max-width: 24px;flex-basis: 24px;flex-shrink: 0;margin-bottom: 0;margin-right: 8px;}
 
 /* animations
 --------------------------------------------------------------------------------------------------------*/
@@ -1912,6 +1920,15 @@ angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item{font-
 angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:hover,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:focus,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:active,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item:hover,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item:focus,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item:active{background: #f2f2f2!important;}
 angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:hover,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:focus,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:active{color: #3060aa!important;}
 angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-heading:hover,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-font:hover,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-font-size:hover{background: none!important;}
+
+/* ticket chat
+--------------------------------------------------------------------------------------------------------*/
+.ticket-chat-header{background: rgba(48, 96, 170, 0.06);padding: 14px;display: flex;align-items: center;font-size: 14px;}
+.ticket-chat-header .initial{border:2px solid rgba(48, 96, 170, 0.4);display: flex;align-items: center;justify-content: center;font-size: 20px;text-align: center;line-height: 24px;height: 40px;width: 40px;border-radius: 8px;color: #3060aa;margin-right: 12px;font-weight: 600;line-height: 22px;}
+.ticket-chat-header .name{font-weight: 600;}
+.ticket-chat-header .date{line-height: 20px;color: #707070;}
+.ticket-chat-body{padding: 14px 14px 14px 66px;}
+.ticket-chat-body .attachment-list{margin-top: 24px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

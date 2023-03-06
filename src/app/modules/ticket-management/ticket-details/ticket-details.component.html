@@ -1,1 +1,136 @@
-<p>ticket-details works!</p>
+<div class="animate__animated animate__faster animate__fadeIn block-card" *ngIf="!replyVisible">
+    <div class="block-header align-items-center sticky">
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" routerLink="/ticket-management/tickets" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p class="mr-12">Fw: MRN 678833 BABY RAYAN - <span class="text-regular">#66918</span></p>
+            <span class="status-badge size-sm primary normal-text">Open</span>
+        </div>
+        <div class="ml-auto my-n2 mr-n2">
+            <button type="button" (click)="replyVisible=true" mat-flat-button color="primary">Reply</button>
+        </div>
+    </div>
+    <ul class="ticket-chat">
+        <li>
+            <div class="ticket-chat-header">
+                <span class="initial">D</span>
+                <div>
+                    <p class="name">DR KAMEL - AL-QUDS POLYCLINIC</p>
+                    <span class="date">01/02/2023 12:05 PM</span>
+                </div>
+            </div>
+            <div class="ticket-chat-body">
+                <pre>
+Dear Waseel
+
+we are AL QUDS POLYCLINIC JEDDAH CCHI:18441 and here is our information:
+
+Waseel ID: aqp
+Waseel Code : 1174
+Provider Name : AL QUDS POLYCLINIC JEDDAH
+CCHI : 18441
+Contact person information:
+Name: Dr kamel Samir
+Email : alqudsply@gmail.com
+Mobile : 0551627057
+
+
+WE EXPERIENCED A PROBLEM WHILE SUBMISSION OUR CLAIMS IN WASEEL PLEASE ADVISE AND HELP
+
+For your kind care
+
+regards
+
+Dr Kamel</pre>
+                <ul class="attachment-list sm">
+                    <li matTooltip="Report-4594.pdf">
+                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                        <span>Report-4594.pdf</span>
+                    </li>
+                    <li matTooltip="Report-4594.xls">
+                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                        <span>Report-4594.xls</span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <div class="ticket-chat-header">
+                <span class="initial">A</span>
+                <div>
+                    <p class="name">Areej Al qahtani</p>
+                    <span class="date">01/02/2023 5:22 PM</span>
+                </div>
+            </div>
+            <div class="ticket-chat-body">
+                <pre>
+Dear Valuable Provider,
+We would like to inform you that we have received your request and we forwarded it to our integration team to complete the process.
+For more information, please contact our Engineer from the integration Team:
+Eng. Jawad AlSaeed
+Contact No. 55 582 8085
+Rest assured that we would work on your request until it is completed
+Thank you,
+
+Thank you,
+Areej Alqahtani | Account Management Representative | E mail: customercare@waseel.com | Phone and WhatsApp: 920012099 | Waseel ASP Ltd.</pre>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="animate__animated animate__faster animate__fadeIn block-card" *ngIf="replyVisible">
+    <div class="block-header align-items-center sticky">
+        <div class="actions mr-2 my-n2 ml-n1">
+            <button matRipple type="button" (click)="replyVisible=false" class="action-btn">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+        <p class="mr-12">Fw: MRN 678833 BABY RAYAN - <span class="text-regular">#66918</span></p>
+        <span class="status-badge size-sm primary normal-text">Open</span>
+    </div>
+    <div class="block-body">
+        <div class="form-group">
+            <label class="control-label">Reply Message</label>
+            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig" [(ngModel)]="htmlContent"></angular-editor>
+        </div>
+        <div class="form-group mb-0">
+            <label class="control-label">Attachments</label>
+            <ul class="attachment-list lg">
+                <li matTooltip="Report-4594.pdf">
+                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                    <span>Report-4594.pdf</span>
+                    <button class="close-btn">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </li>
+                <li matTooltip="Report-4594.xls">
+                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                    <span>Report-4594.xls</span>
+                    <button class="close-btn">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </li>
+                <li matTooltip="Add Attachments" class="add-block">
+                    <div class="file-upload-wrapper">
+                        <div class="content">
+                            <mat-icon>add</mat-icon>
+                        </div>
+                        <input type="file" class="file-upload-control" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="block-footer">
+        <div class="right-block">
+            <div class="btn-list">
+                <button mat-flat-button type="button" (click)="replyVisible=false">Cancel</button>
+                <button mat-flat-button type="button" (click)="replyVisible=false" color="primary">Send Reply</button>
+            </div>
+        </div>
+    </div>
+</div>
