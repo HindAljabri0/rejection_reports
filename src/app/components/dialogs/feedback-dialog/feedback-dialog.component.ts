@@ -55,35 +55,43 @@ export class FeedbackDialogComponent implements OnInit {
     console.debug(`userName: ${this.feedback.userName},\n providerId: ${this.feedback.providerId}`);
   }
 
-
   setOverallQRating(newRating: number): void {
-    this.feedback.overallSatisfactionQ = newRating;
-    console.debug("Overall" + newRating);
+    
+    if (this.isRating(newRating)) {
+        this.feedback.overallSatisfaction = newRating;
+        console.debug("Overall" + newRating);
+        this.feedback.isOverallSatisfactionValid = true;
+    }else{
+      this.feedback.isOverallSatisfactionValid = false;
+    }
   }
-
 
   setRecommendQRating(newRating: number): void {
     if (this.isRating(newRating)) {
-      this.feedback.RecommendToFriend = newRating;
+      this.feedback.recommendToFriend = newRating;
       console.debug("Recommmend" + newRating);
-      this.feedback.valid = true;
-      
+      this.feedback.isRecommendToFriend = true;
+    }else{
+      this.feedback.isRecommendToFriend = false;
     }
   }
 
   setSuggestion(): void {
     if (this.feedback.suggestion != null && this.feedback.suggestion.length > 5000) {
+      
       this.dialogService.showMessage('Suggestion is to long', 'The suggestion should not exceed 5000 characters.', 'alert', true, 'OK', null, true);
-
-      this.feedback.valid = false;
+      this.feedback.isSuggestionValid = false;
+    }else{
+      this.feedback.isSuggestionValid = true;
     }
   }
 
 
   submit() {
     this.setSuggestion();
-    console.debug("\nFeedback is: " + this.feedback.valid);
-    if (this.feedback.valid) {
+   
+
+    if (this.feedback.isSuggestionValid && this.feedback.isOverallSatisfactionValid && this.feedback.isRecommendToFriend) {
       console.debug(`PID: ${this.feedback.providerId}`);
       this._feedbackservice.addFeedback(this.feedback).subscribe({
         next: data => {
@@ -110,13 +118,19 @@ export class FeedbackDialogComponent implements OnInit {
       //Feedback submitted Successfully
       this.dialogService.showMessage('Thank you for your feedback', 'We appreciate your feedback and will take it into consideration.', 'success', true, 'OK', null, true);
       this.dialogRef.close();
-    } else {
+
+    }else if(!this.feedback.isOverallSatisfactionValid || !this.feedback.isRecommendToFriend){
       //one of the required fields not filled.
-      this.required = false;
-      this.dialogService.showMessage('Required Fields', 'The first two fields are required, please give your feedback out of 10.', 'alert', true, 'OK', null, true);
-      console.debug('feedback is not valid\n required = ', this.required);
+      this.dialogService.showMessage('Required Fields', 'The first two questions are mendatory', 'alert', true, 'OK', null, true);
     }
+    // else {
+    //   //one of the required fields not filled.
+    //   this.required = false;
+    //   this.dialogService.showMessage('Required Fields', 'The first two fields are required, please give your feedback out of 10.', 'alert', true, 'OK', null, true);
+    //   console.debug('feedback is not valid\n required = ', this.required);
+    // }
   }
+  
   close() {
     this.dialogRef.close();
   }
