@@ -15,8 +15,6 @@ spec:
       labels:
         app: gui
     spec:
-      nodeSelector:
-        environment: development
       containers:
         - name: gui
           image: me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:latest

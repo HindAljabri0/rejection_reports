@@ -3,7 +3,7 @@
 .feedback-dialog{  
     display: block;
     justify-content: center;
-    
+    overflow:scroll;
 }
 .dialog-icon{
     margin-top:7vh ;
@@ -35,9 +35,11 @@
     overflow: hidden;
 }
 .rating-component{
+    position: relative;
+    width: fit-content;
     left: 50%;
     transform: translate(-50%);
-    height: fit-content;
+    height: 100%;
     padding: 0 0 1vh;
 } 
 .sugg-container{

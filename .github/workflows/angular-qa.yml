@@ -51,7 +51,7 @@ jobs:
     - name: Deploy to K8S
       uses: waseel-asp/kubectl@v1.17.9
       env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBE_CONFIG: ${{ secrets.ECLAIMS_KUBE_CONFIG_QA }}
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       with:
         args: set image --record deployment/gui gui=me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:${{ github.sha }} -n qa
@@ -59,7 +59,7 @@ jobs:
     - name: Verify Deployment
       uses: waseel-asp/kubectl@v1.17.9
       env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBE_CONFIG: ${{ secrets.ECLAIMS_KUBE_CONFIG_QA }}
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       with:
         args: '"rollout status deployment/gui -n qa"'

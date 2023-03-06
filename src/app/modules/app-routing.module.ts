@@ -103,6 +103,11 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
                         loadChildren: () => import('./claim-review/claim-review.module').then(m => m.ClaimReviewModule),
                         canActivate: [RouteCanActiveService]
                     },
+                    {
+                        path: 'ticket-management',
+                        loadChildren: () => import('./ticket-management/ticket-management.module').then(m => m.TicketManagementModule),
+                        canActivate: [RouteCanActiveService]
+                    },
                     { path: '**', component: DashboardComponent, canActivate: [RouteCanActiveService] },
                 ]
             }

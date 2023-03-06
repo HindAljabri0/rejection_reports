@@ -57,6 +57,7 @@ input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allo
 .w-190{width: 190px;}
 .w-200{width: 200px;}
 .w-260{width: 260px;}
+.w-320{width: 320px;}
 .maxw260{max-width: 260px;}
 .col{min-width: 0;}
 .inline-text{display: inline-block;vertical-align: middle;}
@@ -124,6 +125,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .mb-14{margin-bottom: 14px !important;}
 .mb-16{margin-bottom: 16px !important;}
 .my-14{margin-top: 14px!important;margin-bottom: 14px!important;}
+.ml-8{margin-left: 8px !important;}
 .ml-n14{margin-left: -14px !important;}
 .mb-n14{margin-bottom: -14px !important;}
 .mt-n14{margin-top: -14px !important;}
@@ -532,6 +534,13 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 .advance-search .search-mode-select .mat-select-trigger{display: block;max-width: none;height:auto;}
 .advance-search .search-mode-select .mat-select-value{display: flex;align-items: center;padding: 11px 28px 11px 10px;color: #315FAA;max-width: none;height:auto;background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;}
 .header-search-menu .mat-menu-item{height: auto;line-height: inherit;white-space: normal;overflow: visible;padding: 11px 16px;}
+
+/* Set Button inside Input tag
+--------------------------------------------------------------------------------------------------------*/
+.inline-button {display: flex;}
+.inline-button .input-wrapper{flex-grow:1;position: relative;}
+.inline-button .input-wrapper>input{height: 100%;padding: 4px 4px 4px 12px;background: #fff;margin:0;color:black;}
+.inline-button .search-btn{color: #3060aa;background: none;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);border:0;padding: 4px 8px 4px 4px;border-radius: 8px;display: flex;align-items: center;font-weight: 500;}
 
 /* form
 --------------------------------------------------------------------------------------------------------*/
@@ -1326,11 +1335,18 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* attachment list
 --------------------------------------------------------------------------------------------------------*/
 .attachment-list{display: flex;flex-wrap:wrap;}
-.attachment-list>li{flex-grow:0;flex-shrink:0;flex-basis:80px;max-width:80px;margin-right: 12px;margin-bottom: 12px;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:14px 10px 8px;border:1px solid #e1e1e1;font-size:12px;line-height:16px;font-weight:500;background-color: #fff;}
+.attachment-list>li{flex-grow:0;flex-shrink:0;flex-basis:80px;max-width:80px;margin-right: 12px;margin-bottom: 12px;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:14px 10px 8px;border:1px solid #e1e1e1;font-size:12px;line-height:16px;font-weight:500;background-color: #fff;text-align: center;position: relative;}
+.attachment-list>li .close-btn {background: #e4e4e4;border-radius: 50px;border:none;box-shadow:none;padding: 4px;color: #333;position: absolute;right: -8px;top: -8px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.attachment-list>li .close-btn .mat-icon{height: 18px;width: 18px;font-size: 18px;line-height: 18px;display: block;}
+.attachment-list>li .close-btn:hover,.attachment-list>li .close-btn:focus,.attachment-list>li .close-btn:active{background-color: #cdcdcd;}
 .attachment-list>li>img{height: 32px;width:32px;display:flex;margin-bottom:8px;flex-grow:0;flex-basis:0;flex-basis:32px;max-width:32px;}
 .attachment-list>li>span{white-space:nowrap;overflow:hidden;display:block;max-width:100%;text-overflow:ellipsis;}
 .attachment-list .file-upload-wrapper{height:100%;width:100%;display:flex;align-items:center;justify-content:center;}
 .attachment-list .add-block{padding:0;}
+.attachment-list.lg>li{flex-basis: 180px;max-width: 180px;margin-right: 16px;height: 112px;border-color:#bebebe;border-radius: 8px;font-size: 14px;line-height: 20px;font-weight: 400;}
+.attachment-list.lg>li>img{height: 48px;width: 48px;flex-basis:48px;max-width:48px;}
+.attachment-list.lg .add-block{color: #909090;}
+.attachment-list.lg .add-block .mat-icon{line-height: 48px;height: 48px;width: 48px;font-size: 48px;}
 
 /* animations
 --------------------------------------------------------------------------------------------------------*/
@@ -1650,6 +1666,7 @@ tag tag-ripple{display:none;}
 .status-badge.dark-green{background-color: #36793D;}
 .status-badge.inactive{background-color: #707070;}
 .status-badge.size-sm{font-size: 12px;line-height: 18px;padding: 2px 8px;}
+.status-badge.normal-text{text-transform: none;letter-spacing: 0;}
 .primary-grid .status-badge.size-sm{margin: -2px 0;}
 
 /* doctor review tab
@@ -1843,6 +1860,58 @@ html.print-document.cdk-global-scrollblock{position: static;overflow-x:hidden;}
 .feedback-rating .label{margin-right: 16px;color: #707070;}
 .feedback-rating li:last-child{margin-right: 0;}
 .feedback-rating .label:last-child{margin-left: 8px;}
+
+/* angular editor
+--------------------------------------------------------------------------------------------------------*/
+.angular-editor b{font-weight: 700;}
+.angular-editor i{font-style: italic;}
+.angular-editor sub,.angular-editor sup{font-size: 75%;line-height: 0;vertical-align: baseline;}
+.angular-editor ul{padding-left: 24px;list-style: disc;}
+.angular-editor ol{padding-left: 24px;list-style: decimal;}
+angular-editor .angular-editor .angular-editor-wrapper .angular-editor-textarea{margin: 0;background-color: #EEF4FE!important;border:1px solid #D3E0F5!important;border-radius: 8px 8px 0 0;padding: 10px !important;}
+angular-editor .angular-editor .angular-editor-wrapper .angular-editor-placeholder { color: rgba(48, 96, 170,0.6)!important; padding: 10px!important;opacity: 1!important;}
+angular-editor .angular-editor .angular-editor-toolbar{background-color: #EEF4FE;border:1px solid #D3E0F5;border-radius: 0 0 8px 8px;border-top:0;padding: 0;display: flex;flex-wrap: wrap;font-family: inherit!important;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set{display: flex!important;align-items: center;margin-right: 0!important;border-right:1px solid rgba(48, 96, 170, 0.24);}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button{padding: 8px 7px!important;float:none!important;background-color: transparent!important;border:0!important;border-radius: 0 !important;min-width: auto!important;display: block;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.72;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button:hover,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button:focus,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button:active{opacity: 1;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button.active{background-color: rgba(48, 96, 170, 0.12)!important;opacity: 1;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button:disabled{opacity: 0.5;cursor: not-allowed;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button i{height: 24px;width: 24px;display: block;background-position: center;background-repeat: no-repeat;background-size: 24px 24px;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button i:before,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button i:after{display: none;}
+angular-editor .angular-editor .angular-editor-button .fa.fa-undo{background-image: url('./assets/undo.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-repeat{background-image: url('./assets/redo.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-bold{background-image: url('./assets/bold.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-italic{background-image: url('./assets/italic.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-underline{background-image: url('./assets/underline.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-strikethrough{background-image: url('./assets/strikethrough.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-subscript{background-image: url('./assets/subscript.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-superscript{background-image: url('./assets/superscript.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-align-left{background-image: url('./assets/align-left.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-align-center{background-image: url('./assets/align-center.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-align-right{background-image: url('./assets/align-right.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-align-justify{background-image: url('./assets/align-justify.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-indent{background-image: url('./assets/indent-increase.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-outdent{background-image: url('./assets/indent-decrease.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-list-ul{background-image: url('./assets/list-unordered.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-list-ol{background-image: url('./assets/list-ordered.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-link{background-image: url('./assets/link.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-chain-broken{background-image: url('./assets/unlink.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-minus{background-image: url('./assets/horizontal-rule.svg');}
+angular-editor .angular-editor .angular-editor-button .fa.fa-remove{background-image: url('./assets/clear.svg');}
+angular-editor .angular-editor .angular-editor-button .foreground .fa.fa-font{background-image: url('./assets/text-color.svg');}
+angular-editor .angular-editor .angular-editor-button .background .fa.fa-font{background-image: url('./assets/fill-color.svg');}
+angular-editor .angular-editor .angular-editor-button .background{padding: 0 !important;background: none!important;font-size:0!important;display: block;}
+angular-editor .angular-editor .ae-font .ae-picker-label{font-size: 14px;border:0;line-height: 38px;background: none;color: #3060aa;padding-left: 12px;padding-right: 26px;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-heading{width: 115px!important;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-font{width: 160px!important;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-font-size{width: 56px!important;}
+angular-editor .angular-editor .ae-font .ae-picker-label:before{background:url('./assets/ic-unfold.svg') no-repeat;background-size: 18px 18px;background-position: right center;background-color: #eef4fe;width: 26px;}
+angular-editor .angular-editor .ae-font .ae-picker-label svg{display: none;}
+angular-editor .angular-editor .ae-font.ae-expanded .ae-picker-options{border:0;margin: 0;}
+angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item{font-size: 14px;padding: 8px 12px;}
+angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:hover,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:focus,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:active,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item:hover,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item:focus,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item:active{background: #f2f2f2!important;}
+angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:hover,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:focus,angular-editor .angular-editor .ae-font .ae-picker-options .ae-picker-item.focused:active{color: #3060aa!important;}
+angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-heading:hover,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-font:hover,angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-set .select-font-size:hover{background: none!important;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
