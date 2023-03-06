@@ -197,6 +197,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           ? this.sharedDataService.baseList.filter(x => x.value === i.prismBase)[0].name
           : '';
       });
+      this.data.visionPrescription.lensSpecifications = this.ChangeVisiontoView(this.data.visionPrescription.lensSpecifications);
     }
 
     if (this.data.supportingInfo && this.data.supportingInfo.length > 0) {
@@ -415,7 +416,39 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       });
     }
   }
+  ChangeVisiontoView(lensSpecifications) {
 
+    if (lensSpecifications) {
+      let leftList = lensSpecifications.filter(f => f.eye == 'left');
+      let rightList = lensSpecifications.filter(f => f.eye == 'right');
+      for (var i = 0; i < leftList.length; i++) {
+        
+        let row = rightList.filter(f => f.product == leftList[i].product)[0];
+        row = row == null ? {} : row;
+        //console.log("Row = " + JSON.stringify(row));
+        let result = leftList[i];
+        
+        if (result!=null) {
+          //console.log("result = " + JSON.stringify(result));
+          row.left_sphere = result.sphere;
+          row.left_cylinder = result.cylinder;
+          row.left_axis = result.axis;
+          row.left_prismAmount = result.prismAmount;
+          row.left_prismBase = result.prismBase;
+          row.left_multifocalPower = result.multifocalPower;
+          row.left_lensPower = result.lensPower;
+          row.left_lensBackCurve = result.lensBackCurve;
+          row.left_lensDiameter = result.lensDiameter;
+          row.left_lensDuration = result.lensDuration;
+          row.left_lensDurationUnit = result.lensDurationUnit;
+          row.left_lensDurationUnitName = result.lensDurationUnitName;
+          row.left_prismBaseName = result.prismBaseName;
+        }
+        //console.log("Row after adding left= " + JSON.stringify(row));
+      }
+      return rightList;
+    }
+  }
   getImageOfBlob(attachmentName, attachment) {
     const fileExt = attachmentName.split('.').pop();
     if (fileExt.toLowerCase() === 'pdf') {

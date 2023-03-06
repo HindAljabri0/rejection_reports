@@ -239,6 +239,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
+    console.log("$event = " + $event);
   }
   setReuseValues() {
 
@@ -362,14 +363,46 @@ export class AddPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.dateWritten.setValue(this.removeSecondsFromDate(date));
       //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
       this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
-      this.VisionSpecifications = this.data.visionPrescription.lensSpecifications;
+      this.VisionSpecifications = this.ChangeVisiontoView(this.data.visionPrescription.lensSpecifications);//this.data.visionPrescription.lensSpecifications;
     }
 
     this.Items = this.data.items;
 
     this.setBeneficiary(this.data);
   }
+  ChangeVisiontoView(lensSpecifications) {
 
+    if (lensSpecifications) {
+      let leftList = lensSpecifications.filter(f => f.eye == 'left');
+      let rightList = lensSpecifications.filter(f => f.eye == 'right');
+      for (var i = 0; i < leftList.length; i++) {
+        
+        let row = rightList.filter(f => f.product == leftList[i].product)[0];
+        row = row == null ? {} : row;
+        //console.log("Row = " + JSON.stringify(row));
+        let result = leftList[i];
+        
+        if (result!=null) {
+          //console.log("result = " + JSON.stringify(result));
+          row.left_sphere = result.sphere;
+          row.left_cylinder = result.cylinder;
+          row.left_axis = result.axis;
+          row.left_prismAmount = result.prismAmount;
+          row.left_prismBase = result.prismBase;
+          row.left_multifocalPower = result.multifocalPower;
+          row.left_lensPower = result.lensPower;
+          row.left_lensBackCurve = result.lensBackCurve;
+          row.left_lensDiameter = result.lensDiameter;
+          row.left_lensDuration = result.lensDuration;
+          row.left_lensDurationUnit = result.lensDurationUnit;
+          row.left_lensDurationUnitName = result.lensDurationUnitName;
+          row.left_prismBaseName = result.prismBaseName;
+        }
+        //console.log("Row after adding left= " + JSON.stringify(row));
+      }
+      return rightList;
+    }
+  }
   setBeneficiary(res) {
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
@@ -814,7 +847,10 @@ export class AddPreauthorizationComponent implements OnInit {
             if (x.sequence === result.sequence) {
               x.product = result.product;
               x.productName = result.productName;
-              x.eye = result.eye;
+              x.lensColor = result.lensColor;
+              x.lensBrand = result.lensBrand;
+              x.lensNote = result.lensNote;
+              x.eye = '';//result.eye;
               x.sphere = result.sphere;
               x.cylinder = result.cylinder;
               x.axis = result.axis;
@@ -827,10 +863,21 @@ export class AddPreauthorizationComponent implements OnInit {
               x.lensDuration = result.lensDuration;
               x.lensDurationUnit = result.lensDurationUnit;
               x.lensDurationUnitName = result.lensDurationUnitName;
-              x.lensColor = result.lensColor;
-              x.lensBrand = result.lensBrand;
               x.prismBaseName = result.prismBaseName;
-              x.lensNote = result.lensNote;
+              //new Fields
+              x.left_sphere = result.left_sphere;
+              x.left_cylinder = result.left_cylinder;
+              x.left_axis = result.left_axis;
+              x.left_prismAmount = result.left_prismAmount;
+              x.left_prismBase = result.left_prismBase;
+              x.left_multifocalPower = result.left_multifocalPower;
+              x.left_lensPower = result.left_lensPower;
+              x.left_lensBackCurve = result.left_lensBackCurve;
+              x.left_lensDiameter = result.left_lensDiameter;
+              x.left_lensDuration = result.left_lensDuration;
+              x.left_lensDurationUnit = result.left_lensDurationUnit;
+              x.left_lensDurationUnitName = result.left_lensDurationUnitName;
+              x.left_prismBaseName = result.left_prismBaseName;
             }
           });
         } else {
@@ -1907,27 +1954,51 @@ export class AddPreauthorizationComponent implements OnInit {
           // tslint:disable-next-line:max-line-length
           this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateWritten.value)).utc();
           this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
-          this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
-            const model: any = {};
-            model.sequence = x.sequence;
-            model.product = x.product;
-            model.eye = x.eye;
-            model.sphere = x.sphere;
-            model.cylinder = x.cylinder;
-            model.axis = x.axis;
-            model.prismAmount = x.prismAmount;
-            model.prismBase = x.prismBase;
-            model.multifocalPower = x.multifocalPower;
-            model.lensPower = x.lensPower;
-            model.lensBackCurve = x.lensBackCurve;
-            model.lensDiameter = x.lensDiameter;
-            model.lensDuration = x.lensDuration;
-            model.lensDurationUnit = x.lensDurationUnit;
-            model.lensColor = x.lensColor;
-            model.lensBrand = x.lensBrand;
-            model.lensNote = x.lensNote;
-            return model;
+          let sequence = 1; let index = 0;
+          let lens_model: any = [];
+          this.VisionSpecifications.forEach(x => {
+            lens_model[index] = {};
+            lens_model[index].sequence = sequence;
+            lens_model[index].product = x.product;
+            lens_model[index].lensColor = x.lensColor;
+            lens_model[index].lensBrand = x.lensBrand;
+            lens_model[index].lensNote = x.lensNote;
+            lens_model[index].eye = 'right';
+            lens_model[index].sphere = x.sphere;
+            lens_model[index].cylinder = x.cylinder;
+            lens_model[index].axis = x.axis;
+            lens_model[index].prismAmount = x.prismAmount;
+            lens_model[index].prismBase = x.prismBase;
+            lens_model[index].multifocalPower = x.multifocalPower;
+            lens_model[index].lensPower = x.lensPower;
+            lens_model[index].lensBackCurve = x.lensBackCurve;
+            lens_model[index].lensDiameter = x.lensDiameter;
+            lens_model[index].lensDuration = x.lensDuration;
+            lens_model[index].lensDurationUnit = x.lensDurationUnit;
+            //new Fieldindex      
+            ++sequence;
+            ++index;
+            lens_model[index] = {};
+            lens_model[index].sequence = sequence;
+            lens_model[index].product = x.product;
+            lens_model[index].lensColor = x.lensColor;
+            lens_model[index].lensBrand = x.lensBrand;
+            lens_model[index].lensNote = x.lensNote;
+            lens_model[index].eye = 'left';
+            lens_model[index].sphere = x.left_sphere;
+            lens_model[index].cylinder = x.left_cylinder;
+            lens_model[index].axis = x.left_axis;
+            lens_model[index].prismAmount = x.left_prismAmount;
+            lens_model[index].prismBase = x.left_prismBase;
+            lens_model[index].multifocalPower = x.left_multifocalPower;
+            lens_model[index].lensPower = x.left_lensPower;
+            lens_model[index].lensBackCurve = x.left_lensBackCurve;
+            lens_model[index].lensDiameter = x.left_lensDiameter;
+            lens_model[index].lensDuration = x.left_lensDuration;
+            lens_model[index].lensDurationUnit = x.left_lensDurationUnit;
           });
+          this.model.visionPrescription.lensSpecifications = lens_model;
+          console.log("on save - > " + JSON.stringify(lens_model));
         }
       }
 
@@ -2105,8 +2176,8 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
   SetToMax(data) {
-    const ChosenDate= new Date(data);
-    const OrderDate= new Date(this.FormPreAuthorization.controls.dateOrdered.value);
+    const ChosenDate = new Date(data);
+    const OrderDate = new Date(this.FormPreAuthorization.controls.dateOrdered.value);
     if (ChosenDate > OrderDate) {
       this.FormPreAuthorization.controls.dateWritten.setValue(this.FormPreAuthorization.controls.dateOrdered.value);
     }

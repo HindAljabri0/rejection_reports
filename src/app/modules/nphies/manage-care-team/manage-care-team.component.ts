@@ -18,7 +18,7 @@ export class ManageCareTeamComponent implements OnInit {
   @Input() CareTeams = [];
   @Input() IsCareTeamRequired = false;
   @Input() pageMode = null;
-  @Output() PrescriberDefault = new EventEmitter();
+  @Output() PrescriberDefault : EventEmitter<any> = new EventEmitter();
   providerId;
   @ViewChild('practitionerSelect', { static: true }) practitionerSelect: MatSelect;
   practitionerList: any = [];
@@ -89,9 +89,10 @@ export class ManageCareTeamComponent implements OnInit {
     this.CareTeams[i].specialityCode = code ? code : null;
     this.CareTeams[i].qualificationCode = code ? code : null;
     this.CareTeams[i].speciality = code ? this.specialityList.filter(x => +x.speciallityCode === code || x.speciallityCode === code)[0].speciallityName : null;
-    this.PrescriberDefault.emit(this.CareTeams.length  == 1? this.CareTeams[0].sequence : '');
 
-    console.log("PrescriberDefault = "+this.PrescriberDefault);
+    this.PrescriberDefault.emit(this.CareTeams.length  == 1? this.CareTeams[0].sequence : '0');
+
+    console.log("PrescriberDefault = "+(this.CareTeams.length  == 1));
   }
   SpecialtyChange(newSpec: any, i: number) {
     //console.log("values changed = " + JSON.stringify(newSpec));
@@ -150,6 +151,8 @@ export class ManageCareTeamComponent implements OnInit {
   }
   removeCareTeam(i) {
     this.CareTeams.splice(i, 1);
+    this.PrescriberDefault.emit(this.CareTeams.length  == 1? this.CareTeams[0].sequence : '0');
+    console.log("PrescriberDefault = "+(this.CareTeams.length  == 1));
   }
 
 }
