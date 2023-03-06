@@ -195,12 +195,13 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     console.log("beneficiary = " + JSON.stringify(beneficiary));
+    console.log("NphiesId = "+localStorage.getItem('primary_plan'));
     this.beneficiarySearchController.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
     beneficiary.plans = beneficiary.plans != null ? beneficiary.plans : this.plans;
     if (beneficiary.plans != null && beneficiary.plans instanceof Array && beneficiary.plans.length > 0) {
       this.purposeRadioButton = '1';
       let primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
-      primaryPlanIndex = primaryPlanIndex == -1 ? beneficiary.plans.findIndex(plan => plan.payerNphiesId == localStorage.getItem('primary_plan')) : -1;
+      primaryPlanIndex = primaryPlanIndex == -1 ? beneficiary.plans.findIndex(plan => plan.payerNphiesId == localStorage.getItem('primary_plan')) : primaryPlanIndex;
       if (primaryPlanIndex != -1) {
         this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
       }

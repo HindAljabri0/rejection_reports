@@ -158,7 +158,8 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Passport Number</label>
-            <input placeholder="Enter passport number" class="form-control" [readonly]="true" [formControl]="PassportControl">
+            <input placeholder="Enter passport number" class="form-control" [readonly]="true"
+              [formControl]="PassportControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -177,7 +178,8 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">VISA Number</label>
-            <input placeholder="Enter VISA Number" class="form-control" [readonly]="true" [formControl]="VisaNumberControl">
+            <input placeholder="Enter VISA Number" class="form-control" [readonly]="true"
+              [formControl]="VisaNumberControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -521,7 +523,7 @@
                             <label class="control-label">Issue Date</label>
                             <div class="date-picker">
                               <input [matDatepicker]="insuranceIssueDatePicker" class="form-control"
-                                placeholder="Select issue date"  [formControl]="insurancePlan.issueDate">
+                                placeholder="Select issue date" [formControl]="insurancePlan.issueDate">
                               <mat-datepicker-toggle [for]="insuranceIssueDatePicker"></mat-datepicker-toggle>
                               <mat-datepicker #insuranceIssueDatePicker></mat-datepicker>
                             </div>
@@ -530,43 +532,50 @@
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Network ID</label>
-                            <input type="text" class="form-control" placeholder="Enter network ID" [formControl]="insurancePlan.networkId"/>
+                            <input type="text" class="form-control" placeholder="Enter network ID"
+                              [formControl]="insurancePlan.networkId" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Sponsor Number</label>
-                            <input type="text" class="form-control" placeholder="Enter sponsor number" [formControl]="insurancePlan.sponsorNumber"/>
+                            <input type="text" class="form-control" placeholder="Enter sponsor number"
+                              [formControl]="insurancePlan.sponsorNumber" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Policy Class Name</label>
-                            <input type="text" class="form-control" placeholder="Enter policy class name" [formControl]="insurancePlan.policyClassName"/>
+                            <input type="text" class="form-control" placeholder="Enter policy class name"
+                              [formControl]="insurancePlan.policyClassName" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Policy Holder</label>
-                            <input type="text" class="form-control" placeholder="Enter policy holder" [formControl]="insurancePlan.policyHolder"/>
+                            <input type="text" class="form-control" placeholder="Enter policy holder"
+                              [formControl]="insurancePlan.policyHolder" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Insurance Status</label>
-                            <input type="text" class="form-control" placeholder="Enter insurance status" [formControl]="insurancePlan.insuranceStatus"/>
+                            <input type="text" class="form-control" placeholder="Enter insurance status"
+                              [formControl]="insurancePlan.insuranceStatus" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Insurance Duration</label>
-                            <input type="text" class="form-control" placeholder="Enter insurance duration" [formControl]="insurancePlan.insuranceDuration"/>
+                            <input type="text" class="form-control" placeholder="Enter insurance duration"
+                              [formControl]="insurancePlan.insuranceDuration" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Insurance Type</label>
-                            <input type="text" class="form-control" placeholder="Enter insurance type" [formControl]="insurancePlan.insuranceType"/>
+                            <input type="text" class="form-control" placeholder="Enter insurance type"
+                              [formControl]="insurancePlan.insuranceType" />
                           </div>
                         </div>
                       </div>
@@ -585,8 +594,8 @@
         <button type="button" mat-flat-button routerLink="/nphies/beneficiary">Cancel</button>
         <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save(false)">Add
           Beneficiary</button>
-          <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save(true)">Add
-             & Apply Eligibility</button>
+        <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save(true)">Add
+          & Apply Eligibility</button>
         <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="updateDate()">Save</button>
       </div>
     </div>
@@ -610,12 +619,15 @@
 
       </div>
 
-      <div *ngIf="viewMode" class="right-block">
+      <div *ngIf="viewMode" class="btn-list right-block">
         <button type="button" class="size-sm mt-n1 mb-n1" mat-flat-button color="primary"
           (click)="changeMode()">Edit</button>
-
+          <button type="button" class="size-sm mt-n1 mb-n1" mat-flat-button color="primary"
+          (click)="applyeligibility()">Apply Eligibility</button>
       </div>
-
+      
+        
+      
     </div>
 
 
@@ -745,7 +757,8 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">Passport Number</label>
-            <input placeholder="Enter passport number" class="form-control" [readonly]="true" [formControl]="PassportControl">
+            <input placeholder="Enter passport number" class="form-control" [readonly]="true"
+              [formControl]="PassportControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -764,7 +777,8 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">VISA Number</label>
-            <input placeholder="Enter VISA Number" class="form-control" [readonly]="true" [formControl]="VisaNumberControl">
+            <input placeholder="Enter VISA Number" class="form-control" [readonly]="true"
+              [formControl]="VisaNumberControl">
           </div>
         </div>
         <div class="col-6 col-lg-4 col-xl-3">
@@ -1100,7 +1114,7 @@
                             <label class="control-label">Issue Date</label>
                             <div class="date-picker">
                               <input [matDatepicker]="insuranceIssueDatePicker" class="form-control"
-                                placeholder="Select issue date"  [formControl]="insurancePlan.issueDate">
+                                placeholder="Select issue date" [formControl]="insurancePlan.issueDate">
                               <mat-datepicker-toggle [for]="insuranceIssueDatePicker"></mat-datepicker-toggle>
                               <mat-datepicker #insuranceIssueDatePicker></mat-datepicker>
                             </div>
@@ -1109,43 +1123,50 @@
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Network ID</label>
-                            <input type="text" class="form-control" placeholder="Enter network ID" [formControl]="insurancePlan.networkId"/>
+                            <input type="text" class="form-control" placeholder="Enter network ID"
+                              [formControl]="insurancePlan.networkId" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Sponsor Number</label>
-                            <input type="text" class="form-control" placeholder="Enter sponsor number" [formControl]="insurancePlan.sponsorNumber"/>
+                            <input type="text" class="form-control" placeholder="Enter sponsor number"
+                              [formControl]="insurancePlan.sponsorNumber" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Policy Class Name</label>
-                            <input type="text" class="form-control" placeholder="Enter policy class name" [formControl]="insurancePlan.policyClassName"/>
+                            <input type="text" class="form-control" placeholder="Enter policy class name"
+                              [formControl]="insurancePlan.policyClassName" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Policy Holder</label>
-                            <input type="text" class="form-control" placeholder="Enter policy holder" [formControl]="insurancePlan.policyHolder"/>
+                            <input type="text" class="form-control" placeholder="Enter policy holder"
+                              [formControl]="insurancePlan.policyHolder" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Insurance Status</label>
-                            <input type="text" class="form-control" placeholder="Enter insurance status" [formControl]="insurancePlan.insuranceStatus"/>
+                            <input type="text" class="form-control" placeholder="Enter insurance status"
+                              [formControl]="insurancePlan.insuranceStatus" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Insurance Duration</label>
-                            <input type="text" class="form-control" placeholder="Enter insurance duration" [formControl]="insurancePlan.insuranceDuration"/>
+                            <input type="text" class="form-control" placeholder="Enter insurance duration"
+                              [formControl]="insurancePlan.insuranceDuration" />
                           </div>
                         </div>
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Insurance Type</label>
-                            <input type="text" class="form-control" placeholder="Enter insurance type" [formControl]="insurancePlan.insuranceType"/>
+                            <input type="text" class="form-control" placeholder="Enter insurance type"
+                              [formControl]="insurancePlan.insuranceType" />
                           </div>
                         </div>
                       </div>

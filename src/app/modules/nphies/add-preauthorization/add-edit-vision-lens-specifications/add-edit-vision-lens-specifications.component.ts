@@ -28,6 +28,18 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     lensDurationUnit: [''],
     prismAmount: [''],
     prismBase: [''],
+    //new fields
+    left_sphere: [''],
+    left_cylinder: [''],
+    left_axis: [''],
+    left_multifocalPower: [''],
+    left_lensPower: [''],
+    left_lensBackCurve: [''],
+    left_lensDiameter: [''],
+    left_lensDuration: [''],
+    left_lensDurationUnit: [''],
+    left_prismAmount: [''],
+    left_prismBase: [''],
     lensNote: ['']
   });
 
@@ -61,6 +73,12 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
   prismAmountError = '';
   axisError = '';
 
+  left_sphereError = '';
+  left_powerError = '';
+  left_cylinderError = '';
+  left_addError = '';
+  left_prismAmountError = '';
+  left_axisError = '';
   IsCylinderRequired = false;
   IsAxisRequired = false;
 
@@ -87,12 +105,29 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
         lensDurationUnit: this.data.item.lensDurationUnit ? this.data.item.lensDurationUnit : '',
         prismAmount: this.data.item.prismAmount,
         prismBase: this.data.item.prismBase ? this.data.item.prismBase : '',
+        //new fields
+        left_sphere: this.data.item.left_sphere,
+        left_cylinder: this.data.item.left_cylinder,
+        left_axis: this.data.item.left_axis,
+        left_multifocalPower: this.data.item.left_multifocalPower,
+        left_lensPower: this.data.item.left_lensPower,
+        left_lensBackCurve: this.data.item.left_lensBackCurve,
+        left_lensDiameter: this.data.item.left_lensDiameter,
+        left_lensDuration: this.data.item.left_lensDuration,
+        left_lensDurationUnit: this.data.item.left_lensDurationUnit ? this.data.item.left_lensDurationUnit : '',
+        left_prismAmount: this.data.item.left_prismAmount,
+        left_prismBase: this.data.item.left_prismBase ? this.data.item.left_prismBase : '',
         lensNote: this.data.item.lensNote,
       });
-
+      //new Feilds
       if (this.data.item.prismBase) {
         this.FormVisionSpecification.patchValue({
           prismBase: this.baseList.filter(x => x.value === this.data.item.prismBase)[0]
+        });
+      }
+      if (this.data.item.left_prismBase) {
+        this.FormVisionSpecification.patchValue({
+          left_prismBase: this.baseList.filter(x => x.value === this.data.item.left_prismBase)[0]
         });
       }
 
@@ -101,112 +136,148 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
           lensDurationUnit: this.durationUnitList.filter(x => x.value === this.data.item.lensDurationUnit)[0]
         });
       }
+
+      if (this.data.item.left_lensDurationUnit) {
+        this.FormVisionSpecification.patchValue({
+          left_lensDurationUnit: this.durationUnitList.filter(x => x.value === this.data.item.left_lensDurationUnit)[0]
+        });
+      }
     }
   }
 
-  checkSphere() {
-    const value = this.FormVisionSpecification.controls.sphere.value;
-
+  checkSphere(eye = "Right") {
+    const value = eye &&  eye =="Right" ? this.FormVisionSpecification.controls.sphere.value :this.FormVisionSpecification.controls.left_sphere.value;
+    let error='';
     if (value) {
       if (value < -30) {
-        this.sphereError = 'Value can not be less than -30';
+        error = 'Value can not be less than -30';
       } else if (value > 30) {
-        this.sphereError = 'Value can not be greater than 30';
+        error = 'Value can not be greater than 30';
       } else if (value % 0.25 !== 0) {
-        this.sphereError = 'Value should be the multiple of 0.25';
+        error = 'Value should be the multiple of 0.25';
       } else {
-        this.sphereError = '';
+        error = '';
       }
     } else {
-      this.sphereError = '';
+      error = '';
+    }
+    if(eye &&  eye =="Left"){
+      this.left_sphereError = error;
+    }else{
+      this.sphereError = error;
     }
   }
 
-  checkPower() {
-    const value = this.FormVisionSpecification.controls.lensPower.value;
-
+  checkPower(eye = "Right") {
+    const value = eye &&  eye =="Right" ? this.FormVisionSpecification.controls.lensPower.value : this.FormVisionSpecification.controls.left_lensPower.value;
+    let error='';
     if (value) {
       if (value < -12) {
-        this.powerError = 'Value can not be less than -12';
+        error = 'Value can not be less than -12';
       } else if (value > 12) {
-        this.powerError = 'Value can not be greater than 12';
+        error = 'Value can not be greater than 12';
       } else if (value % 0.25 !== 0) {
-        this.powerError = 'Value should be the multiple of 0.25';
+        error = 'Value should be the multiple of 0.25';
       } else {
-        this.powerError = '';
+        error = '';
       }
     } else {
-      this.powerError = '';
+      error = '';
+    }
+    if(eye &&  eye =="Left"){
+      this.left_powerError=error;
+    }else{
+      this.powerError = error;
     }
   }
 
-  checkCylinder() {
-    const value = this.FormVisionSpecification.controls.cylinder.value;
-
+  checkCylinder(eye = "Right") {
+    const value = eye &&  eye =="Right" ? this.FormVisionSpecification.controls.cylinder.value : this.FormVisionSpecification.controls.left_cylinder.value;
+    let error='';
     if (value) {
       if (value < -12) {
-        this.cylinderError = 'Value can not be less than -12';
+        error= 'Value can not be less than -12';
       } else if (value > 12) {
-        this.cylinderError = 'Value can not be greater than 12';
+        error= 'Value can not be greater than 12';
       } else if (value % 0.25 !== 0) {
-        this.cylinderError = 'Value should be the multiple of 0.25';
+        error = 'Value should be the multiple of 0.25';
       } else {
-        this.cylinderError = '';
+        error = '';
       }
     } else {
-      this.cylinderError = '';
+      error = '';
+    }
+    if(eye &&  eye == "Left"){
+      this.left_cylinderError = error;
+    }else{
+      this.cylinderError = error;
     }
   }
 
-  checkAdd() {
-    const value = this.FormVisionSpecification.controls.multifocalPower.value;
-
+  checkAdd(eye = "Right") {
+    const value = eye &&  eye =="Right" ? this.FormVisionSpecification.controls.multifocalPower.value : this.FormVisionSpecification.controls.left_multifocalPower.value;
+    let error='';
     if (value) {
       if (value < -12) {
-        this.addError = 'Value can not be less than -12';
+        error = 'Value can not be less than -12';
       } else if (value > 12) {
-        this.addError = 'Value can not be greater than 12';
+        error = 'Value can not be greater than 12';
       } else if (value % 0.25 !== 0) {
-        this.addError = 'Value should be the multiple of 0.25';
+        error = 'Value should be the multiple of 0.25';
       } else {
-        this.addError = '';
+        error = '';
       }
     } else {
-      this.addError = '';
+      error = '';
+    }
+    if(eye &&  eye =="Left"){
+      this.left_addError =error;
+    }else{
+      this.addError = error;
     }
   }
 
-  checkPrismAmount() {
-    const value = this.FormVisionSpecification.controls.prismAmount.value;
-
+  checkPrismAmount(eye = "Right") {
+    const value = eye &&  eye =="Right" ? this.FormVisionSpecification.controls.prismAmount.value : this.FormVisionSpecification.controls.left_prismAmount.value;
+    let error='';
     if (value != undefined || value != null) {
       if (value < 0.25) {
-        this.prismAmountError = 'Value can not be less than 0.25';
+        error = 'Value can not be less than 0.25';
       } else if (value > 30) {
-        this.prismAmountError = 'Value can not be greater than 30';
+        error = 'Value can not be greater than 30';
       } else if (value % 0.25 !== 0) {
-        this.prismAmountError = 'Value should be the multiple of 0.25';
+        error = 'Value should be the multiple of 0.25';
       } else {
-        this.prismAmountError = '';
+        error = '';
       }
     } else {
-      this.prismAmountError = '';
+      error = '';
+    }
+    if(eye &&  eye =="Left"){
+      this.left_prismAmountError = error;
+    }else{
+      this.prismAmountError = error;
     }
   }
 
-  checkAxis() {
-    const value = this.FormVisionSpecification.controls.axis.value;
-
+  checkAxis(eye = "Right") {
+    const value = eye &&  eye =="Right" ? this.FormVisionSpecification.controls.axis.value : this.FormVisionSpecification.controls.left_axis.value;
+    let error='';
     if (value !== null && value !== undefined && value !== '') {
       if (value < 1) {
-        this.axisError = 'Value can not be less than 1';
+        error = 'Value can not be less than 1';
       } else if (value > 180) {
-        this.axisError = 'Value can not be greater than 180';
+        error = 'Value can not be greater than 180';
       } else {
-        this.axisError = '';
+        error = '';
       }
     } else {
-      this.axisError = '';
+      error = '';
+    }
+    if(eye &&  eye =="Left"){
+      this.left_axisError =error;
+    }else{
+      this.axisError =error;
     }
   }
 
@@ -223,6 +294,15 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     this.FormVisionSpecification.controls.lensDiameter.reset();
     this.FormVisionSpecification.controls.lensDuration.reset();
     this.FormVisionSpecification.controls.lensDurationUnit.setValue('');
+    //new Fields
+    this.FormVisionSpecification.controls.left_sphere.reset();
+    this.FormVisionSpecification.controls.left_prismAmount.reset();
+    this.FormVisionSpecification.controls.left_prismBase.setValue('');
+    this.FormVisionSpecification.controls.left_lensPower.reset();
+    this.FormVisionSpecification.controls.left_lensBackCurve.reset();
+    this.FormVisionSpecification.controls.left_lensDiameter.reset();
+    this.FormVisionSpecification.controls.left_lensDuration.reset();
+    this.FormVisionSpecification.controls.left_lensDurationUnit.setValue('');
 
   }
 
@@ -312,7 +392,13 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       this.cylinderError !== '' ||
       this.addError !== '' ||
       this.prismAmountError !== '' ||
-      this.axisError !== '') {
+      this.axisError !== '' ||
+      this.left_sphereError !== '' ||
+      this.left_powerError !== '' ||
+      this.left_cylinderError !== '' ||
+      this.left_addError !== '' ||
+      this.left_prismAmountError !== '' ||
+      this.left_axisError !== '') {
       return;
     }
 
@@ -321,12 +407,17 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       model.sequence = this.data.Sequence;
       model.product = this.FormVisionSpecification.controls.product.value.value;
       model.productName = this.FormVisionSpecification.controls.product.value.name;
-      model.eye = this.FormVisionSpecification.controls.eye.value;
+      //model.eye = this.FormVisionSpecification.controls.eye.value;
       model.lensColor = this.FormVisionSpecification.controls.lensColor.value;
       model.lensBrand = this.FormVisionSpecification.controls.lensBrand.value;
       model.cylinder = this.FormVisionSpecification.controls.cylinder.value;
       model.axis = this.FormVisionSpecification.controls.axis.value;
       model.multifocalPower = this.FormVisionSpecification.controls.multifocalPower.value;
+      //new Fields
+      model.left_cylinder = this.FormVisionSpecification.controls.left_cylinder.value;
+      model.left_axis = this.FormVisionSpecification.controls.left_axis.value;
+      model.left_multifocalPower = this.FormVisionSpecification.controls.left_multifocalPower.value;
+      
       model.lensNote = this.FormVisionSpecification.controls.lensNote.value;
 
       if (this.FormVisionSpecification.controls.product.value &&
@@ -335,10 +426,20 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
 
         model.sphere = this.FormVisionSpecification.controls.sphere.value;
         model.prismAmount = this.FormVisionSpecification.controls.prismAmount.value;
+        //new Fields
+        model.left_sphere = this.FormVisionSpecification.controls.left_sphere.value;
+        model.left_prismAmount = this.FormVisionSpecification.controls.left_prismAmount.value;
+
         if (this.FormVisionSpecification.controls.prismBase.value) {
           model.prismBase = this.FormVisionSpecification.controls.prismBase.value.value;
           model.prismBaseName = this.FormVisionSpecification.controls.prismBase.value.name;
         }
+        //new Fields
+        if (this.FormVisionSpecification.controls.left_prismBase.value) {
+          model.left_prismBase = this.FormVisionSpecification.controls.left_prismBase.value.value;
+          model.left_prismBaseName = this.FormVisionSpecification.controls.left_prismBase.value.name;
+        }
+
 
       } else if (this.FormVisionSpecification.controls.product.value &&
         this.FormVisionSpecification.controls.product.value.value &&
@@ -348,13 +449,23 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
         model.lensBackCurve = this.FormVisionSpecification.controls.lensBackCurve.value;
         model.lensDiameter = this.FormVisionSpecification.controls.lensDiameter.value;
         model.lensDuration = this.FormVisionSpecification.controls.lensDuration.value;
+        //new Fields
+        model.left_lensPower = this.FormVisionSpecification.controls.left_lensPower.value;
+        model.left_lensBackCurve = this.FormVisionSpecification.controls.left_lensBackCurve.value;
+        model.left_lensDiameter = this.FormVisionSpecification.controls.left_lensDiameter.value;
+        model.left_lensDuration = this.FormVisionSpecification.controls.left_lensDuration.value; 
         if (this.FormVisionSpecification.controls.lensDuration.value) {
           model.lensDurationUnit = this.FormVisionSpecification.controls.lensDurationUnit.value.value;
           model.lensDurationUnitName = this.FormVisionSpecification.controls.lensDurationUnit.value.name;
         }
+        //new Fields
+        if (this.FormVisionSpecification.controls.left_lensDuration.value) {
+          model.left_lensDurationUnit = this.FormVisionSpecification.controls.left_lensDurationUnit.value.value;
+          model.left_lensDurationUnitName = this.FormVisionSpecification.controls.left_lensDurationUnit.value.name;
+        }
 
       }
-
+      console.log(model);
       this.dialogRef.close(model);
     }
   }
