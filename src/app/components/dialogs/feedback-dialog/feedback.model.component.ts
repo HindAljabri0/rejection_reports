@@ -2,8 +2,11 @@ export class FeedbackClass{
 
     providerId:string;
     userName:string;
-    overallSatisfactionQ:number;
-    RecommendToFriend:number;
+    overallSatisfaction:number;
+    recommendToFriend:number;
     suggestion:string;
-    valid:boolean = false;
+
+    isOverallSatisfactionValid: boolean = false;
+    isRecommendToFriend:boolean = false;
+    isSuggestionValid:boolean = true;
 }

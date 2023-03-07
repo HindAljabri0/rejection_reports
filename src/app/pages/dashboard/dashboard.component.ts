@@ -201,9 +201,11 @@ export class DashboardComponent implements OnInit {
         if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM) {
 
             const dialogConfig = new MatDialogConfig();
-            dialogConfig.panelClass = ['dialog-lg'];
+            dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
             dialogConfig.autoFocus = false;
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
+
+            
         } else if (this.userPrivileges.WaseelPrivileges.isPAM) {
             console.debug("The feedback is not enabled for admins!");
         }
@@ -245,7 +247,7 @@ export class DashboardComponent implements OnInit {
                 feedbackable = body;
             }
         }
-        console.debug("\nFeedback validation api response is:\n" + feedbackable + "\n");
+        console.debug("\nFeedback validation api response is:\n Not Feedbackable\n");
         return feedbackable;
     }
 

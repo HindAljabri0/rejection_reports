@@ -17,7 +17,7 @@ export class FeedbackRatingComponent implements OnInit {
   
 
     ngOnInit() {
-      console.debug('we are in the rating component!')
+     
     }
   
     setRating(newRating:number): void{
