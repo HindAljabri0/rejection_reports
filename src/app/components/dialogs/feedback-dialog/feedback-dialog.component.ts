@@ -45,7 +45,7 @@ export class FeedbackDialogComponent implements OnInit {
     /**
      * Get the authorized user data and set it to the local variables.
      */
-    this.authService.evaluateUserPrivileges();
+    
     this.userName = this.authService.getUserName();
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
