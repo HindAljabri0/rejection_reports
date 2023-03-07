@@ -25,7 +25,6 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required: boolean = true
 
-
   constructor(
     private _feedbackservice: FeedbackService,
     private authService: AuthService,
@@ -130,7 +129,7 @@ export class FeedbackDialogComponent implements OnInit {
     //   console.debug('feedback is not valid\n required = ', this.required);
     // }
   }
-  
+
   close() {
     this.dialogRef.close();
   }
