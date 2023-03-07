@@ -4,7 +4,8 @@
   <div class="claim-status-header {{'text-' +getClaimStatusColor(otherDataModel.status)}}">
     <p class="title">
       View Claim
-      <span *ngIf="otherDataModel.isActive != null && !otherDataModel.isActive" class="status-badge size-sm inactive ml-1">InActive</span>
+      <span *ngIf="otherDataModel.isActive != null && !otherDataModel.isActive"
+        class="status-badge size-sm inactive ml-1">InActive</span>
     </p>
     <div class="summary">
       <p *ngIf="otherDataModel.provClaimNo"><span>Provider Reference
@@ -429,32 +430,37 @@
                 <th>Sequence No.</th>
                 <th>Product</th>
                 <th>Eye</th>
-                <th>Sphere</th>
-                <th>Cylinder</th>
+                <th>SPH</th>
+                <th>Power</th>
+                <th>CYL</th>
                 <th>Axis</th>
                 <th>Add</th>
+
+                <th class="border-left">Eye</th>
+                <th>SPH</th>
                 <th>Power</th>
-                <th>Back Curve</th>
-                <th>Diameter</th>
-                <th>Prism</th>
+                <th>CYL</th>
+                <th>Axis</th>
+                <th>Add</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
                 <td>{{visionSpecification.sequence}}</td>
                 <td>{{visionSpecification.productName}}</td>
-                <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span>
-                </td>
+                <td>Right Eye</td>
                 <td>{{visionSpecification.sphere}}</td>
+                <td>{{visionSpecification.lensPower}}</td>
                 <td>{{visionSpecification.cylinder}}</td>
                 <td>{{visionSpecification.axis}}</td>
                 <td>{{visionSpecification.multifocalPower}}</td>
-                <td>{{visionSpecification.lensPower}}</td>
-                <td>{{visionSpecification.lensBackCurve}}</td>
-                <td>{{visionSpecification.lensDiameter}}</td>
-                <td>{{visionSpecification.prismAmount}}<span
-                    *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
-                </td>
+
+                <td class="border-left">Left Eye</td>
+                <td>{{visionSpecification.left_sphere}}</td>
+                <td>{{visionSpecification.left_lensPower}}</td>
+                <td>{{visionSpecification.left_cylinder}}</td>
+                <td>{{visionSpecification.left_axis}}</td>
+                <td>{{visionSpecification.left_multifocalPower}}</td>
               </tr>
             </tbody>
           </table>
@@ -1015,17 +1021,17 @@
         <h5 class="form-title px-14 py-0 mb-0">
           <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
             (click)="openAddCommunicationDialog()"
-            *ngIf="(otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial') && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)"
-            >
+            *ngIf="(otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial') && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
-          
+
         </h5>
-        <div class="alert danger text-center" *ngIf="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)">
+        <div class="alert danger text-center"
+          *ngIf="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)">
           <mat-icon class="material-icons-outlined">not_interested</mat-icon>
           <span>Communication cannot be performed in Inactive claim</span>
-      </div>
+        </div>
         <ul class="communication" *ngIf="communications.length > 0">
           <li *ngFor="let communication of communications">
             <ng-container *ngIf="communication.communicationRequestId">
@@ -1495,7 +1501,7 @@
     </div>
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button *ngIf="claimIsEditable" color="primary"  (click)="toEditMode()">
+      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
         Edit</button>
       <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'"
         (click)="createRelatedClaim()">Create Related Claim</button>
@@ -1959,7 +1965,9 @@
                 <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                     class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten" [max]="FormNphiesClaim.controls.dateOrdered.value">
+                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                    (ngModelChange)="SetToMax($event)" formControlName="dateWritten"
+                    [max]="FormNphiesClaim.controls.dateOrdered.value">
 
                   <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate"></mat-datepicker-toggle>
                   <owl-date-time #visionWrittenDate></owl-date-time>
@@ -2007,14 +2015,18 @@
                     <th>Sequence No.</th>
                     <th>Product</th>
                     <th>Eye</th>
-                    <th>Sphere</th>
-                    <th>Cylinder</th>
+                    <th>SPH</th>
+                    <th>Power</th>
+                    <th>CYL</th>
                     <th>Axis</th>
                     <th>Add</th>
+
+                    <th class="border-left">Eye</th>
+                    <th>SPH</th>
                     <th>Power</th>
-                    <th>Back Curve</th>
-                    <th>Diameter</th>
-                    <th>Prism</th>
+                    <th>CYL</th>
+                    <th>Axis</th>
+                    <th>Add</th>
                     <th width="10"></th>
                   </tr>
                 </thead>
@@ -2022,18 +2034,19 @@
                   <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
                     <td>{{visionSpecification.sequence}}</td>
                     <td>{{visionSpecification.productName}}</td>
-                    <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span>
-                    </td>
+                    <td>Right Eye</td>
                     <td>{{visionSpecification.sphere}}</td>
+                    <td>{{visionSpecification.lensPower}}</td>
                     <td>{{visionSpecification.cylinder}}</td>
                     <td>{{visionSpecification.axis}}</td>
                     <td>{{visionSpecification.multifocalPower}}</td>
-                    <td>{{visionSpecification.lensPower}}</td>
-                    <td>{{visionSpecification.lensBackCurve}}</td>
-                    <td>{{visionSpecification.lensDiameter}}</td>
-                    <td>{{visionSpecification.prismAmount}}<span
-                        *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
-                    </td>
+
+                    <td class="border-left">Left Eye</td>
+                    <td>{{visionSpecification.left_sphere}}</td>
+                    <td>{{visionSpecification.left_lensPower}}</td>
+                    <td>{{visionSpecification.left_cylinder}}</td>
+                    <td>{{visionSpecification.left_axis}}</td>
+                    <td>{{visionSpecification.left_multifocalPower}}</td>
                     <td class="actions">
                       <mat-menu #lensSpecificationActionsMenu xPosition="before">
                         <ng-template matMenuContent>
@@ -2805,12 +2818,12 @@
                 <mat-icon>add_circle_outline</mat-icon>
                 <span class="pl-1">Add Communication</span>
               </button>
-              
+
             </h5>
             <div class="alert danger" *ngIf="(this.otherDataModel.isActive != null && !this.otherDataModel.isActive)">
               <mat-icon class="material-icons-outlined">not_interested</mat-icon>
               <span>Communication cannot be performed in Inactive claim</span>
-          </div>
+            </div>
             <ul class="communication" *ngIf="communications.length > 0">
               <li *ngFor="let communication of communications">
                 <ng-container *ngIf="communication.communicationRequestId">
@@ -3273,7 +3286,8 @@
         </div>
         <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
           <button mat-flat-button (click)="cancelEdit()">Cancel</button>
-          <button mat-flat-button color="primary" [disabled]="this.FormNphiesClaim.controls.destinationId.value!=null ? false : true"> Save </button>
+          <button mat-flat-button color="primary"
+            [disabled]="this.FormNphiesClaim.controls.destinationId.value!=null ? false : true"> Save </button>
         </div>
       </div>
     </div>
