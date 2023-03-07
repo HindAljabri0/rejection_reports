@@ -1,7 +1,6 @@
-import { DatePipe } from '@angular/common';
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Store } from '@ngrx/store';
 import { SharedServices } from 'src/app/services/shared.services';
 
 

@@ -247,7 +247,9 @@ export class DashboardComponent implements OnInit {
                 feedbackable = body;
             }
         }
-        console.debug("\nFeedback validation api response is:\n Not Feedbackable\n");
+
+        let feedbackableinfo = feedbackable == true ? "Feedbackable" : "Not Feedbackable";
+        console.debug(`\nFeedback validation api response is:\n ${feedbackableinfo}\n`);
         return feedbackable;
     }
 
