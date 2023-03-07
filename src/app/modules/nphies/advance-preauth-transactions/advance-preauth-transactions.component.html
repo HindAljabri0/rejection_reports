@@ -3,13 +3,14 @@
         <p>Advance Preauthorization Transactions</p>
     </div>
     <div class="block-filter-panel">
-        <form>
+        <form [formGroup]="FormAdvancePreAuthTransaction" (ngSubmit)="onSubmit()">
             <div class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">From Date</label>
                         <div class="date-picker">
-                            <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                            <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
+                                formControlName="fromDate">
                             <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                             <mat-datepicker #filterFromDate></mat-datepicker>
                         </div>
@@ -19,7 +20,8 @@
                     <div class="form-group">
                         <label class="control-label">To Date</label>
                         <div class="date-picker">
-                            <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                            <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
+                                [min]="FormAdvancePreAuthTransaction.controls.fromDate.value" formControlName="toDate">
                             <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                             <mat-datepicker #filterToDate></mat-datepicker>
                         </div>
@@ -28,42 +30,52 @@
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Payer</label>
-                        <app-nphies-payers-selector></app-nphies-payers-selector>
+                        <app-nphies-payers-selector
+                            (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Type</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select>
+                            <mat-select formControlName="type">
                                 <mat-option value="">Select Type</mat-option>
-                                <mat-option value="Type">Type</mat-option>
+                                <mat-option *ngFor="let type of typeList"
+                                    [value]="type.value">{{type.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
-                        <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
-                        <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." [matAutocomplete]="auto">
+                        <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a
+                            Beneficiary</label>
+                        <input type="text" class="form-control search-box"
+                            placeholder="Search for beneficiary by name or document ID..."
+                            formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
                         <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option>Option</mat-option>
+                            <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                                (click)="selectBeneficiary(beneficiary)">
+                                {{beneficiary.name}} ({{beneficiary.documentId}})
+                            </mat-option>
                         </mat-autocomplete>
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Pre Authorization ID</label>
-                        <input placeholder="Enter pre authorization ID" class="form-control">
+                        <input placeholder="Enter pre authorization ID" class="form-control"
+                            formControlName="nphiesRequestId">
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Status</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select>
+                            <mat-select formControlName="status">
                                 <mat-option value="">Select Status</mat-option>
-                                <mat-option value="Status">Status</mat-option>
+                                <mat-option *ngFor="let status of statusList"
+                                    [value]="status.value">{{status.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -71,13 +83,14 @@
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Pre Auth Reference No</label>
-                        <input placeholder="Enter Preauth Ref No" class="form-control">
+                        <input placeholder="Enter Preauth Ref No" class="form-control" formControlName="preAuthRefNo">
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Request Bundle ID</label>
-                        <input placeholder="Enter Request Bundle ID" class="form-control">
+                        <input placeholder="Enter Request Bundle ID" class="form-control"
+                            formControlName="RequestBundleId">
                     </div>
                 </div>
                 <div class="col-4 col-xxl-3">
@@ -108,58 +121,40 @@
                         <th>Date Ordered</th>
                         <th>Pre Authorization ID</th>
                         <th>Pre Auth Ref No</th>
-                        <th>Provider Claim No</th>
+                        <!-- <th>Provider Claim No</th> -->
                         <th>Status</th>
-                        <th class="text-center text-nowrap"><span class="inline-text pr-1">Inquiry</span>
-                            <mat-icon matTooltip="This will send the same preauth request again to NPHIES to fetch latest response from NPHIES queue"
-                                class="material-icons-outlined size-20 inline-text">info</mat-icon>
-                        </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">temp data</td>
-                        <td class="row-click">
-                            code commented
-                            <!-- <span
-                    [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
-                    | titlecase}}</span> -->
-                        </td>
-                        <td class="actions text-center">
-                            code commented
-                            <!-- <button
-                    *ngIf="transaction.status === 'not-required' || transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
-                    (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn"
-                    [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')"
-                    [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : 'Get latest preauth response from NPHIES queue')">I</button> -->
-                        </td>
-                        <td class="actions">
-                            code commented
-                            <!-- <ng-container *ngIf="transaction.status != 'cancelled'">
-                    <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <button mat-menu-item
-                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial'  || transaction.status === 'not-required'"
-                        (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
-                        <mat-icon class="material-icons-outlined">replay</mat-icon>
-                        <span>Follow Up/Add Related</span>
-                      </button>
-                      <button mat-menu-item
-                        (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')">
-                        <mat-icon class="material-icons-outlined">close</mat-icon>
-                        <span>Cancel</span>
-                      </button>
-                    </mat-menu>
-                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" *ngIf="transaction.status !== 'Error'">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </ng-container> -->
+                    <tr *ngFor="let transaction of transactions">
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.payerName}}</td>
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.claimType}}</td>
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.transactionDate | date:
+                            'dd-MM-yyyy hh:mm aa'}}</td>
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.nphiesRequestId}}</td>
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
+                        <!-- <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            {{transaction.provClaimNo ? transaction.provClaimNo : '-'}}</td> -->
+                        <td class="row-click"
+                            (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                            <span
+                                [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
+                                | titlecase}}</span>
                         </td>
                     </tr>
                 </tbody>
@@ -167,14 +162,11 @@
         </div>
     </ng-scrollbar>
 
-    code commented
-    <!-- <app-empty-state *ngIf="transactionModel && transactions.length === 0"
+    <app-empty-state *ngIf="transactionModel && transactions.length === 0"
         message='No Pre Authorization transactions found!'>
-      </app-empty-state> -->
+    </app-empty-state>
 
-
-    code commented
-    <!-- <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
+    <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
         <div class="form-group page-select">
           <label class="control-label">Go to page: </label>
           <mat-form-field class="form-control custom-select-control">
@@ -188,5 +180,5 @@
             (page)="paginatorAction($event)">
           </mat-paginator>
         </div>
-      </div> -->
+      </div>
 </div>
