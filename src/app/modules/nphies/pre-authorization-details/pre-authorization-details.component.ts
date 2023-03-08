@@ -417,13 +417,16 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     }
   }
   ChangeVisiontoView(lensSpecifications) {
-
+    lensSpecifications = lensSpecifications.sort((a, b) => a.sequence - b.sequence);
     if (lensSpecifications) {
       let leftList = lensSpecifications.filter(f => f.eye == 'left');
       let rightList = lensSpecifications.filter(f => f.eye == 'right');
+      let SequenceList=rightList.map(x=>x.sequence);
+      //console.log("Left List - > "+JSON.stringify(leftList));
+      //console.log("Right List - > "+JSON.stringify(rightList));
       for (var i = 0; i < leftList.length; i++) {
         
-        let row = rightList.filter(f => f.product == leftList[i].product)[0];
+        let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
         row = row == null ? {} : row;
         //console.log("Row = " + JSON.stringify(row));
         let result = leftList[i];

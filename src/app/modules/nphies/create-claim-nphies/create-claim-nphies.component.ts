@@ -242,6 +242,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   routeMode;
   selectedTab = 0;
+  PrescriberDefault = 0;
   claimType: string;
   isPBMValidationVisible = false;
   providerType = '';
@@ -507,7 +508,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.pageMode = 'VIEW';
     this.disableControls();
   }
-
+  selectedDefualtPrescriberChange($event) {
+    this.PrescriberDefault = $event;
+    console.log("$event = " + $event);
+  }
   getPayees() {
     this.sharedServices.loadingChanged.next(true);
     this.providersBeneficiariesService.getPayees().subscribe(event => {
@@ -1775,6 +1779,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         let sequence = 1; let index = 0;
         let lens_model: any = [];
         this.VisionSpecifications.forEach(x => {
+          
           lens_model[index] = {};
           lens_model[index].sequence = sequence;
           lens_model[index].product = x.product;
@@ -1796,6 +1801,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           //new Fieldindex      
           ++sequence;
           ++index;
+          
           lens_model[index] = {};
           lens_model[index].sequence = sequence;
           lens_model[index].product = x.product;
@@ -1814,6 +1820,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           lens_model[index].lensDiameter = x.left_lensDiameter;
           lens_model[index].lensDuration = x.left_lensDuration;
           lens_model[index].lensDurationUnit = x.left_lensDurationUnit;
+          ++sequence;
+          ++index;
         });
         this.model.visionPrescription.lensSpecifications = lens_model;
         console.log("on save - > " + JSON.stringify(lens_model));
@@ -2879,7 +2887,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (response.visionPrescription) {
       this.FormNphiesClaim.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
       this.FormNphiesClaim.controls.prescriber.setValue(response.visionPrescription.prescriber);
-
+      this.PrescriberDefault = response.visionPrescription.prescriber;
       if (response.visionPrescription.lensSpecifications) {
         
         this.VisionSpecifications = response.visionPrescription.lensSpecifications.map(x => {
@@ -3021,15 +3029,18 @@ export class CreateClaimNphiesComponent implements OnInit {
     // this.setBeneficiary(response);
   }
   ChangeVisiontoView(lensSpecifications) {
-
+    lensSpecifications = lensSpecifications.sort((a, b) => a.sequence - b.sequence);
     if (lensSpecifications) {
       let leftList = lensSpecifications.filter(f => f.eye == 'left');
       let rightList = lensSpecifications.filter(f => f.eye == 'right');
+      let SequenceList=rightList.map(x=>x.sequence);
+      //console.log("Left List - > "+JSON.stringify(leftList));
+      //console.log("Right List - > "+JSON.stringify(rightList));
       for (var i = 0; i < leftList.length; i++) {
         
-        let row = rightList.filter(f => f.product == leftList[i].product)[0];
+        let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
         row = row == null ? {} : row;
-        //console.log("Row = " + JSON.stringify(row));
+        console.log("Row = " + JSON.stringify(row));
         let result = leftList[i];
         
         if (result!=null) {
@@ -3094,7 +3105,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         } else {
           isthereFiledEmpty = false;
           this.CareTeams.forEach(x => {
-            console.log(x.speciality)
+           // console.log(x.speciality)
             if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
               x.speciality === null || x.speciality === undefined) {
               isthereFiledEmpty = true;
