@@ -427,18 +427,30 @@
           <table class="primary-grid">
             <thead>
               <tr>
-                <th>Sequence No.</th>
+                <th class="border-bottom" colspan="2" width="10%"></th>
+                <th class="border-left border-right border-bottom text-center" colspan="9">Right</th>
+                <th class="border-left border-right border-bottom text-center" colspan="9">Left</th>
+
+              </tr>
+              <tr>
+                <th>No.</th>
                 <th>Product</th>
-                <th>Eye</th>
-                <th>SPH</th>
+                <th class="border-left">SPH</th>
                 <th>Power</th>
+                <th>B. Curve</th>
+                <th>Diameter</th>
+                <th>Duration</th>
+                <th>Prism</th>
                 <th>CYL</th>
                 <th>Axis</th>
                 <th>Add</th>
 
-                <th class="border-left">Eye</th>
-                <th>SPH</th>
+                <th class="border-left">SPH</th>
                 <th>Power</th>
+                <th>B. Curve</th>
+                <th>Diameter</th>
+                <th>Duration</th>
+                <th>Prism</th>
                 <th>CYL</th>
                 <th>Axis</th>
                 <th>Add</th>
@@ -446,18 +458,29 @@
             </thead>
             <tbody>
               <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
-                <td>{{visionSpecification.sequence}}</td>
-                <td>{{visionSpecification.productName}}</td>
-                <td>Right Eye</td>
+                <td width="5%">{{visionSpecification.sequence}}</td>
+                <td width="5%">{{visionSpecification.productName}}</td>
                 <td>{{visionSpecification.sphere}}</td>
                 <td>{{visionSpecification.lensPower}}</td>
+                <td>{{visionSpecification.lensBackCurve}}</td>
+                <td>{{visionSpecification.lensDiameter}}</td>
+                <td>{{visionSpecification.lensDuration}}<span
+                    *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}
+                </td>
+                <td>{{visionSpecification.prismAmount}}<span
+                    *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                 <td>{{visionSpecification.cylinder}}</td>
                 <td>{{visionSpecification.axis}}</td>
                 <td>{{visionSpecification.multifocalPower}}</td>
-
-                <td class="border-left">Left Eye</td>
-                <td>{{visionSpecification.left_sphere}}</td>
+                <td class="border-left">{{visionSpecification.left_sphere}}</td>
                 <td>{{visionSpecification.left_lensPower}}</td>
+                <td>{{visionSpecification.left_lensBackCurve}}</td>
+                <td>{{visionSpecification.left_lensDiameter}}</td>
+                <td>{{visionSpecification.left_lensDuration}}<span
+                    *ngIf="visionSpecification.left_lensDuration">/</span>{{visionSpecification.left_lensDurationUnitName}}
+                </td>
+                <td>{{visionSpecification.left_prismAmount}}<span
+                    *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}</td>
                 <td>{{visionSpecification.left_cylinder}}</td>
                 <td>{{visionSpecification.left_axis}}</td>
                 <td>{{visionSpecification.left_multifocalPower}}</td>
@@ -1931,7 +1954,8 @@
           </app-empty-state>
           <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}" *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
           </app-empty-state-->
-          <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams" [pageMode]="pageMode">
+          <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams"
+            (PrescriberDefault)="selectedDefualtPrescriberChange($event)" [pageMode]="pageMode">
           </app-manage-care-team>
         </mat-tab>
 
@@ -1985,8 +2009,8 @@
                 <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
                     class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="prescriber">
-                    <mat-option value="">Select Prescriber</mat-option>
+                  <mat-select formControlName="prescriber" [(ngModel)]="PrescriberDefault">
+                    <mat-option [value]="">Select Prescriber</mat-option>
                     <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">
                       {{pre.physicianCode}} -
                       {{pre.practitionerName}}
@@ -2012,18 +2036,30 @@
               <table class="primary-grid">
                 <thead>
                   <tr>
-                    <th>Sequence No.</th>
+                    <th class="border-bottom" colspan="2" width="10%"></th>
+                    <th class="border-left border-right border-bottom text-center" colspan="9">Right</th>
+                    <th class="border-left border-right border-bottom text-center" colspan="9">Left</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>No.</th>
                     <th>Product</th>
-                    <th>Eye</th>
-                    <th>SPH</th>
+                    <th class="border-left">SPH</th>
                     <th>Power</th>
+                    <th>B. Curve</th>
+                    <th>Diameter</th>
+                    <th>Duration</th>
+                    <th>Prism</th>
                     <th>CYL</th>
                     <th>Axis</th>
                     <th>Add</th>
 
-                    <th class="border-left">Eye</th>
-                    <th>SPH</th>
+                    <th class="border-left">SPH</th>
                     <th>Power</th>
+                    <th>B. Curve</th>
+                    <th>Diameter</th>
+                    <th>Duration</th>
+                    <th>Prism</th>
                     <th>CYL</th>
                     <th>Axis</th>
                     <th>Add</th>
@@ -2032,18 +2068,30 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
-                    <td>{{visionSpecification.sequence}}</td>
-                    <td>{{visionSpecification.productName}}</td>
-                    <td>Right Eye</td>
+                    <td width="5%">{{visionSpecification.sequence}}</td>
+                    <td width="5%">{{visionSpecification.productName}}</td>
                     <td>{{visionSpecification.sphere}}</td>
                     <td>{{visionSpecification.lensPower}}</td>
+                    <td>{{visionSpecification.lensBackCurve}}</td>
+                    <td>{{visionSpecification.lensDiameter}}</td>
+                    <td>{{visionSpecification.lensDuration}}<span
+                        *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}
+                    </td>
+                    <td>{{visionSpecification.prismAmount}}<span
+                        *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td>{{visionSpecification.cylinder}}</td>
                     <td>{{visionSpecification.axis}}</td>
                     <td>{{visionSpecification.multifocalPower}}</td>
-
-                    <td class="border-left">Left Eye</td>
-                    <td>{{visionSpecification.left_sphere}}</td>
+                    <td class="border-left">{{visionSpecification.left_sphere}}</td>
                     <td>{{visionSpecification.left_lensPower}}</td>
+                    <td>{{visionSpecification.left_lensBackCurve}}</td>
+                    <td>{{visionSpecification.left_lensDiameter}}</td>
+                    <td>{{visionSpecification.left_lensDuration}}<span
+                        *ngIf="visionSpecification.left_lensDuration">/</span>{{visionSpecification.left_lensDurationUnitName}}
+                    </td>
+                    <td>{{visionSpecification.left_prismAmount}}<span
+                        *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}
+                    </td>
                     <td>{{visionSpecification.left_cylinder}}</td>
                     <td>{{visionSpecification.left_axis}}</td>
                     <td>{{visionSpecification.left_multifocalPower}}</td>

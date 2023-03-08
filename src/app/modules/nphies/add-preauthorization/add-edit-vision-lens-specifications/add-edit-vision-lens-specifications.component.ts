@@ -339,6 +339,17 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       this.FormVisionSpecification.controls.sphere.clearValidators();
       this.FormVisionSpecification.controls.sphere.updateValueAndValidity();
     }
+    //left validation
+    if (this.FormVisionSpecification.controls.product.value &&
+      this.FormVisionSpecification.controls.product.value.value &&
+      this.FormVisionSpecification.controls.product.value.value === 'lens') {
+      this.FormVisionSpecification.controls.left_sphere.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.left_sphere.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.left_sphere.clearValidators();
+      this.FormVisionSpecification.controls.left_sphere.updateValueAndValidity();
+    }
+
 
     if (this.FormVisionSpecification.controls.product.value &&
       this.FormVisionSpecification.controls.product.value.value &&
@@ -349,13 +360,30 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       this.FormVisionSpecification.controls.lensPower.clearValidators();
       this.FormVisionSpecification.controls.lensPower.updateValueAndValidity();
     }
-
+    //left validation
+    if (this.FormVisionSpecification.controls.product.value &&
+      this.FormVisionSpecification.controls.product.value.value &&
+      this.FormVisionSpecification.controls.product.value.value === 'contact') {
+      this.FormVisionSpecification.controls.left_lensPower.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.left_lensPower.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.left_lensPower.clearValidators();
+      this.FormVisionSpecification.controls.left_lensPower.updateValueAndValidity();
+    }
     if (this.FormVisionSpecification.controls.prismAmount.value) {
       this.FormVisionSpecification.controls.prismBase.setValidators([Validators.required]);
       this.FormVisionSpecification.controls.prismBase.updateValueAndValidity();
     } else {
       this.FormVisionSpecification.controls.prismBase.clearValidators();
       this.FormVisionSpecification.controls.prismBase.updateValueAndValidity();
+    }
+    //left validation
+    if (this.FormVisionSpecification.controls.left_prismAmount.value) {
+      this.FormVisionSpecification.controls.left_prismBase.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.left_prismBase.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.left_prismBase.clearValidators();
+      this.FormVisionSpecification.controls.left_prismBase.updateValueAndValidity();
     }
 
     if (this.FormVisionSpecification.controls.lensDuration.value) {
@@ -364,6 +392,14 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     } else {
       this.FormVisionSpecification.controls.lensDurationUnit.clearValidators();
       this.FormVisionSpecification.controls.lensDurationUnit.updateValueAndValidity();
+    }
+    //left validation
+    if (this.FormVisionSpecification.controls.left_lensDuration.value) {
+      this.FormVisionSpecification.controls.left_lensDurationUnit.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.left_lensDurationUnit.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.left_lensDurationUnit.clearValidators();
+      this.FormVisionSpecification.controls.left_lensDurationUnit.updateValueAndValidity();
     }
 
     if (this.FormVisionSpecification.controls.axis.value) {
@@ -375,6 +411,16 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       this.FormVisionSpecification.controls.cylinder.updateValueAndValidity();
       this.IsCylinderRequired = false;
     }
+    //left validation
+    if (this.FormVisionSpecification.controls.left_axis.value) {
+      this.FormVisionSpecification.controls.left_cylinder.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.left_cylinder.updateValueAndValidity();
+      this.IsCylinderRequired = true;
+    } else {
+      this.FormVisionSpecification.controls.left_cylinder.clearValidators();
+      this.FormVisionSpecification.controls.left_cylinder.updateValueAndValidity();
+      this.IsCylinderRequired = false;
+    }
 
     if (this.FormVisionSpecification.controls.cylinder.value) {
       this.FormVisionSpecification.controls.axis.setValidators([Validators.required]);
@@ -383,6 +429,16 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     } else {
       this.FormVisionSpecification.controls.axis.clearValidators();
       this.FormVisionSpecification.controls.axis.updateValueAndValidity();
+      this.IsAxisRequired = false;
+    }
+    //left validation
+    if (this.FormVisionSpecification.controls.left_cylinder.value) {
+      this.FormVisionSpecification.controls.left_axis.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.left_axis.updateValueAndValidity();
+      this.IsAxisRequired = true;
+    } else {
+      this.FormVisionSpecification.controls.left_axis.clearValidators();
+      this.FormVisionSpecification.controls.left_axis.updateValueAndValidity();
       this.IsAxisRequired = false;
     }
 
