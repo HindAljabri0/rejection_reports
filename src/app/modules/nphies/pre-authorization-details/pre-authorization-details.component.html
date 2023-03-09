@@ -777,8 +777,8 @@
       <thead>
         <tr>
           <th class="border-bottom" colspan="2" width="10%"></th>
-          <th class="border-left border-right border-bottom text-center" colspan="9">Right</th>
-          <th class="border-left border-right border-bottom text-center" colspan="9">Left</th>
+          <th class="border-left border-right border-bottom text-center" colspan="9">Right Eye</th>
+          <th class="border-left border-right border-bottom text-center" colspan="9">Left Eye</th>
           <th></th>
         </tr>
         <tr>
@@ -786,23 +786,23 @@
           <th>Product</th>
           <th class="border-left">SPH</th>
           <th>Power</th>
-          <th>B. Curve</th>
-          <th>Diameter</th>
-          <th>Duration</th>
-          <th>Prism</th>
           <th>CYL</th>
           <th>Axis</th>
           <th>Add</th>
+          <th>Prism</th>
+          <th>B. Curve</th>
+          <th>Diameter</th>
+          <th>Duration</th>
 
           <th class="border-left">SPH</th>
           <th>Power</th>
-          <th>B. Curve</th>
-          <th>Diameter</th>
-          <th>Duration</th>
-          <th>Prism</th>
           <th>CYL</th>
           <th>Axis</th>
           <th>Add</th>
+          <th>Prism</th>
+          <th>B. Curve</th>
+          <th>Diameter</th>
+          <th>Duration</th>
           <th width="10">Notes</th>
         </tr>
       </thead>
@@ -813,33 +813,37 @@
           </td>
         </tr>
         <ng-container *ngIf="data.visionPrescription.lensSpecifications.length > 0">
-          <tr *ngFor="let visionSpecification of data.visionPrescription.lensSpecifications">
-            <td width="5%">{{visionSpecification.sequence}}</td>
+          <tr *ngFor="let visionSpecification of data.visionPrescription.lensSpecifications;let i=index;">
+            <td width="5%">{{i+1}}</td>
             <td width="5%">{{visionSpecification.productName}}</td>
             <td>{{visionSpecification.sphere}}</td>
             <td>{{visionSpecification.lensPower}}</td>
-            <td>{{visionSpecification.lensBackCurve}}</td>
-            <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}<span
-                *ngIf="visionSpecification.lensDuration">/</span>{{visionSpecification.lensDurationUnitName}}
-            </td>
-            <td>{{visionSpecification.prismAmount}}<span
-                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
             <td>{{visionSpecification.cylinder}}</td>
             <td>{{visionSpecification.axis}}</td>
             <td>{{visionSpecification.multifocalPower}}</td>
+            <td>{{visionSpecification.prismAmount}}<span
+                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+            <td>{{visionSpecification.lensBackCurve}}</td>
+            <td>{{visionSpecification.lensDiameter}}</td>
+            <td>{{visionSpecification.lensDuration}}
+              <span *ngIf="visionSpecification.lensDuration">
+                {{visionSpecification.lensDurationUnitName}}(s)</span>
+            </td>
+
             <td class="border-left">{{visionSpecification.left_sphere}}</td>
             <td>{{visionSpecification.left_lensPower}}</td>
-            <td>{{visionSpecification.left_lensBackCurve}}</td>
-            <td>{{visionSpecification.left_lensDiameter}}</td>
-            <td>{{visionSpecification.left_lensDuration}}<span
-                *ngIf="visionSpecification.left_lensDuration">/</span>{{visionSpecification.left_lensDurationUnitName}}
-            </td>
-            <td>{{visionSpecification.left_prismAmount}}<span
-                *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}</td>
             <td>{{visionSpecification.left_cylinder}}</td>
             <td>{{visionSpecification.left_axis}}</td>
             <td>{{visionSpecification.left_multifocalPower}}</td>
+            <td>{{visionSpecification.left_prismAmount}}<span
+                *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}
+            </td>
+            <td>{{visionSpecification.left_lensBackCurve}}</td>
+            <td>{{visionSpecification.left_lensDiameter}}</td>
+            <td>{{visionSpecification.left_lensDuration}}
+              <span *ngIf="visionSpecification.left_lensDuration">
+                {{visionSpecification.left_lensDurationUnitName}}(s)</span>
+            </td>
             <td class="actions text-center">
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
