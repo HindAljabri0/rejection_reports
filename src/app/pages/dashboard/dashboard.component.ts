@@ -202,7 +202,8 @@ export class DashboardComponent implements OnInit {
 
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
-            dialogConfig.autoFocus = false;
+            dialogConfig.autoFocus = true;
+            dialogConfig.disableClose= true;
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
 
             
