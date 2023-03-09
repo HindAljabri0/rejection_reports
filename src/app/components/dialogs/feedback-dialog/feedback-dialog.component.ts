@@ -25,7 +25,6 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required: boolean = true
 
-
   constructor(
     private _feedbackservice: FeedbackService,
     private authService: AuthService,
@@ -46,13 +45,11 @@ export class FeedbackDialogComponent implements OnInit {
     /**
      * Get the authorized user data and set it to the local variables.
      */
-    this.authService.evaluateUserPrivileges();
+    
     this.userName = this.authService.getUserName();
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
     this.feedback.providerId = this.authService.getProviderId();
-
-    console.debug(`userName: ${this.feedback.userName},\n providerId: ${this.feedback.providerId}`);
   }
 
   setOverallQRating(newRating: number): void {
@@ -95,8 +92,6 @@ export class FeedbackDialogComponent implements OnInit {
       console.debug(`PID: ${this.feedback.providerId}`);
       this._feedbackservice.addFeedback(this.feedback).subscribe({
         next: data => {
-          console.debug(`feedback: ${data}`);
-
           catchError(error => {
             let errorMsg: string;
             if (error.error instanceof ErrorEvent) {
@@ -123,14 +118,8 @@ export class FeedbackDialogComponent implements OnInit {
       //one of the required fields not filled.
       this.dialogService.showMessage('Required Fields', 'The first two questions are mendatory', 'alert', true, 'OK', null, true);
     }
-    // else {
-    //   //one of the required fields not filled.
-    //   this.required = false;
-    //   this.dialogService.showMessage('Required Fields', 'The first two fields are required, please give your feedback out of 10.', 'alert', true, 'OK', null, true);
-    //   console.debug('feedback is not valid\n required = ', this.required);
-    // }
   }
-  
+
   close() {
     this.dialogRef.close();
   }

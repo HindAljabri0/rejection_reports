@@ -202,7 +202,8 @@ export class DashboardComponent implements OnInit {
 
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
-            dialogConfig.autoFocus = false;
+            dialogConfig.autoFocus = true;
+            dialogConfig.disableClose= true;
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
 
             
@@ -247,7 +248,9 @@ export class DashboardComponent implements OnInit {
                 feedbackable = body;
             }
         }
-        console.debug("\nFeedback validation api response is:\n Not Feedbackable\n");
+
+        let feedbackableinfo = feedbackable == true ? "Feedbackable" : "Not Feedbackable";
+        console.debug(`\nFeedback validation api response is:\n ${feedbackableinfo}\n`);
         return feedbackable;
     }
 
