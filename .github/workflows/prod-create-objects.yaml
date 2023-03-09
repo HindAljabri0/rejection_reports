@@ -17,6 +17,6 @@ jobs:
     - name: Create on K8S
       uses: waseel-asp/kubectl@v1.17.9
       env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBE_CONFIG: ${{ secrets.ECLAIMS_KUBE_CONFIG_PROD }}
       with:
         args: apply -f .k8s/prod
