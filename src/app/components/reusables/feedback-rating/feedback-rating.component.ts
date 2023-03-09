@@ -40,12 +40,10 @@ export class FeedbackRatingComponent implements OnInit {
     }}
   
     addRating(): void{
-      this.newRating.emit(this.rating);
-      console.debug(`Rating emitted successfuly!\n Rating:${this.newRating}`);
+      this.newRating.emit(this.rating); 
     }
     addSugg(): void{
       this.newSuggestion.emit(this.suggestion);
-      console.debug(`Suggestion emitted successfuly!\n Suggestion:${this.newSuggestion}`);
     }
   
 }
