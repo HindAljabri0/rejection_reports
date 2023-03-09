@@ -72,6 +72,7 @@ export class MainStoreEffects {
               if (event.body && event.body[0]) {
                 body.push(event.body[0]);
               }
+              body.push("<span class='bold text-danger'>Public IP is changed to 141.147.136.15 from 10th March 12:00 AM. Please whitelist this IP to allow outgoing traffic from Desktop Application for Waseel and Waseel-Connect, in case if you have any firewalls configured.</span>");
               this.settingsService.checkCertificateExpiry(providerId).subscribe((event: any) => {
                 if (event instanceof HttpResponse) {
                   if (event.body && event.body.message) {
