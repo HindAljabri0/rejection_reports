@@ -242,6 +242,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   routeMode;
   selectedTab = 0;
+  PrescriberDefault = 0;
   claimType: string;
   isPBMValidationVisible = false;
   providerType = '';
@@ -328,7 +329,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     //   this.disableControls();
     //   this.getClaimDetails();
     // }    
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));    
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.fragment === 'CommunicationRequest') {
@@ -387,7 +388,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
         maxLimit: null,
         patientShare: null,
-        issueDate:null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder:null, insuranceStatus:null, insuranceDuration:null, insuranceType: null
+        issueDate: null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder: null, insuranceStatus: null, insuranceDuration: null, insuranceType: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -507,7 +508,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.pageMode = 'VIEW';
     this.disableControls();
   }
-
+  selectedDefualtPrescriberChange($event) {
+    this.PrescriberDefault = $event;
+    console.log("$event = " + $event);
+  }
   getPayees() {
     this.sharedServices.loadingChanged.next(true);
     this.providersBeneficiariesService.getPayees().subscribe(event => {
@@ -718,7 +722,10 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (x.sequence === result.sequence) {
               x.product = result.product;
               x.productName = result.productName;
-              x.eye = result.eye;
+              x.lensColor = result.lensColor;
+              x.lensBrand = result.lensBrand;
+              x.lensNote = result.lensNote;
+              x.eye = '';//result.eye;
               x.sphere = result.sphere;
               x.cylinder = result.cylinder;
               x.axis = result.axis;
@@ -731,10 +738,21 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.lensDuration = result.lensDuration;
               x.lensDurationUnit = result.lensDurationUnit;
               x.lensDurationUnitName = result.lensDurationUnitName;
-              x.lensColor = result.lensColor;
-              x.lensBrand = result.lensBrand;
               x.prismBaseName = result.prismBaseName;
-              x.lensNote = result.lensNote;
+              //new Fields
+              x.left_sphere = result.left_sphere;
+              x.left_cylinder = result.left_cylinder;
+              x.left_axis = result.left_axis;
+              x.left_prismAmount = result.left_prismAmount;
+              x.left_prismBase = result.left_prismBase;
+              x.left_multifocalPower = result.left_multifocalPower;
+              x.left_lensPower = result.left_lensPower;
+              x.left_lensBackCurve = result.left_lensBackCurve;
+              x.left_lensDiameter = result.left_lensDiameter;
+              x.left_lensDuration = result.left_lensDuration;
+              x.left_lensDurationUnit = result.left_lensDurationUnit;
+              x.left_lensDurationUnitName = result.left_lensDurationUnitName;
+              x.left_prismBaseName = result.left_prismBaseName;
             }
           });
         } else {
@@ -1230,8 +1248,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
   SetToMax(data) {
-    const ChosenDate= new Date(data);
-    const OrderDate= new Date(this.FormNphiesClaim.controls.dateOrdered.value);
+    const ChosenDate = new Date(data);
+    const OrderDate = new Date(this.FormNphiesClaim.controls.dateOrdered.value);
     if (ChosenDate > OrderDate) {
       this.FormNphiesClaim.controls.dateWritten.setValue(this.FormNphiesClaim.controls.dateOrdered.value);
     }
@@ -1440,13 +1458,13 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
-    this.providerType = this.providerType == null || this.providerType == ""  ? 'any' : this.providerType;
-      if(this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE'){
-        const providerTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.providerType)[0].name;
-        const claimTypeName = this.sharedDataService.claimTypeList.filter(x=>x.value  === this.FormNphiesClaim.controls.type.value.value)[0].name;
-        this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
-        return;
-      } 
+    this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
+    if (this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE') {
+      const providerTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0].name;
+      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormNphiesClaim.controls.type.value.value)[0].name;
+      this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+      return;
+    }
     this.isSubmitted = true;
     let hasError = false;
 
@@ -1551,7 +1569,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
       this.model.transfer = this.FormNphiesClaim.controls.isReferral.value;
       this.model.referralName = this.FormNphiesClaim.controls.ReferralName.value;
-      
+
       this.model.beneficiary = {};
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
@@ -1668,8 +1686,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value ? this.FormNphiesClaim.controls.preAuthResponseId.value : null;
       // tslint:disable-next-line:max-line-length
-      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;      
-      
+      preAuthorizationModel.preAuthResponseUrl = this.FormNphiesClaim.controls.preAuthResponseUrl.value ? this.FormNphiesClaim.controls.preAuthResponseUrl.value : null;
+
       preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateOrdered.value)).utc();
       if (this.FormNphiesClaim.controls.accountingPeriod.value) {
         // tslint:disable-next-line:max-line-length
@@ -1753,32 +1771,60 @@ export class CreateClaimNphiesComponent implements OnInit {
         return model;
       });
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
-        this.model.visionPrescription = {};     
-          
+        this.model.visionPrescription = {};
+
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc();
         this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
-        this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.product = x.product;
-          model.eye = x.eye;
-          model.sphere = x.sphere;
-          model.cylinder = x.cylinder;
-          model.axis = x.axis;
-          model.prismAmount = x.prismAmount;
-          model.prismBase = x.prismBase;
-          model.multifocalPower = x.multifocalPower;
-          model.lensPower = x.lensPower;
-          model.lensBackCurve = x.lensBackCurve;
-          model.lensDiameter = x.lensDiameter;
-          model.lensDuration = x.lensDuration;
-          model.lensDurationUnit = x.lensDurationUnit;
-          model.lensColor = x.lensColor;
-          model.lensBrand = x.lensBrand;
-          model.lensNote = x.lensNote;
-          return model;
+        let sequence = 1; let index = 0;
+        let lens_model: any = [];
+        this.VisionSpecifications.forEach(x => {
+          
+          lens_model[index] = {};
+          lens_model[index].sequence = sequence;
+          lens_model[index].product = x.product;
+          lens_model[index].lensColor = x.lensColor;
+          lens_model[index].lensBrand = x.lensBrand;
+          lens_model[index].lensNote = x.lensNote;
+          lens_model[index].eye = 'right';
+          lens_model[index].sphere = x.sphere;
+          lens_model[index].cylinder = x.cylinder;
+          lens_model[index].axis = x.axis;
+          lens_model[index].prismAmount = x.prismAmount;
+          lens_model[index].prismBase = x.prismBase;
+          lens_model[index].multifocalPower = x.multifocalPower;
+          lens_model[index].lensPower = x.lensPower;
+          lens_model[index].lensBackCurve = x.lensBackCurve;
+          lens_model[index].lensDiameter = x.lensDiameter;
+          lens_model[index].lensDuration = x.lensDuration;
+          lens_model[index].lensDurationUnit = x.lensDurationUnit;
+          //new Fieldindex      
+          ++sequence;
+          ++index;
+          
+          lens_model[index] = {};
+          lens_model[index].sequence = sequence;
+          lens_model[index].product = x.product;
+          lens_model[index].lensColor = x.lensColor;
+          lens_model[index].lensBrand = x.lensBrand;
+          lens_model[index].lensNote = x.lensNote;
+          lens_model[index].eye = 'left';
+          lens_model[index].sphere = x.left_sphere;
+          lens_model[index].cylinder = x.left_cylinder;
+          lens_model[index].axis = x.left_axis;
+          lens_model[index].prismAmount = x.left_prismAmount;
+          lens_model[index].prismBase = x.left_prismBase;
+          lens_model[index].multifocalPower = x.left_multifocalPower;
+          lens_model[index].lensPower = x.left_lensPower;
+          lens_model[index].lensBackCurve = x.left_lensBackCurve;
+          lens_model[index].lensDiameter = x.left_lensDiameter;
+          lens_model[index].lensDuration = x.left_lensDuration;
+          lens_model[index].lensDurationUnit = x.left_lensDurationUnit;
+          ++sequence;
+          ++index;
         });
+        this.model.visionPrescription.lensSpecifications = lens_model;
+        console.log("on save - > " + JSON.stringify(lens_model));
       }
 
       this.model.items = this.Items.map(x => {
@@ -1804,9 +1850,9 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.tax = x.tax;
           model.net = x.net;
           model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;          
+          model.payerShare = x.payerShare;
           model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
-          model.endDate =x.endDate ? moment(this.removeSecondsFromDate(x.endDate)).utc() : null;
+          model.endDate = x.endDate ? moment(this.removeSecondsFromDate(x.endDate)).utc() : null;
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
@@ -1846,7 +1892,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.tax = x.tax;
           model.net = x.net;
           model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;          
+          model.payerShare = x.payerShare;
           model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
           model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
@@ -1913,9 +1959,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (body.isError) {
               this.dialogService.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
               if (this.pageMode === 'CREATE') {
-                if(body.claimId && body.uploadId){
-                // tslint:disable-next-line:max-line-length
-                 this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
+                if (body.claimId && body.uploadId) {
+                  // tslint:disable-next-line:max-line-length
+                  this.router.navigateByUrl(`/${this.sharedServices.providerId}/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
                 }
                 this.reset();
                 this.getProviderTypeConfiguration();
@@ -2292,7 +2338,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.FormNphiesClaim.controls.isReferral.setValue(response.isReferral);
     this.FormNphiesClaim.controls.ReferralName.setValue(response.referralName);
-    
+
     this.uploadId = this.uploadId == null ? response.uploadId : this.uploadId;
 
     this.otherDataModel.beneficiary = response.beneficiary;
@@ -2465,7 +2511,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
     this.FormNphiesClaim.controls.preAuthResponseUrl.setValue(response.preAuthorizationInfo.preAuthResponseUrl);
-    this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);    
+    this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
     if (response.preAuthorizationInfo.accountingPeriod) {
       this.FormNphiesClaim.controls.accountingPeriod.setValue(response.preAuthorizationInfo.accountingPeriod);
@@ -2838,11 +2884,12 @@ export class CreateClaimNphiesComponent implements OnInit {
       }).sort((a, b) => a.sequence - b.sequence);
     }
 
-    if (response.visionPrescription) {      
+    if (response.visionPrescription) {
       this.FormNphiesClaim.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
       this.FormNphiesClaim.controls.prescriber.setValue(response.visionPrescription.prescriber);
-
+      this.PrescriberDefault = response.visionPrescription.prescriber;
       if (response.visionPrescription.lensSpecifications) {
+        
         this.VisionSpecifications = response.visionPrescription.lensSpecifications.map(x => {
 
           const model: any = {};
@@ -2872,6 +2919,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           return model;
 
         }).sort((a, b) => a.sequence - b.sequence);
+        this.VisionSpecifications = this.ChangeVisiontoView(this.VisionSpecifications);
       }
 
     }
@@ -2920,7 +2968,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.tax = x.tax;
       model.net = x.net;
       model.patientShare = x.patientShare;
-      model.payerShare = x.payerShare;      
+      model.payerShare = x.payerShare;
       if (x.startDate) {
         model.startDate = x.startDate;
         model.startDateStr = moment(x.startDate).format('DD/MM/YYYY hh:mm a');
@@ -2980,7 +3028,42 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.sharedServices.loadingChanged.next(false);
     // this.setBeneficiary(response);
   }
-
+  ChangeVisiontoView(lensSpecifications) {
+    lensSpecifications = lensSpecifications.sort((a, b) => a.sequence - b.sequence);
+    if (lensSpecifications) {
+      let leftList = lensSpecifications.filter(f => f.eye == 'left');
+      let rightList = lensSpecifications.filter(f => f.eye == 'right');
+      let SequenceList=rightList.map(x=>x.sequence);
+      //console.log("Left List - > "+JSON.stringify(leftList));
+      //console.log("Right List - > "+JSON.stringify(rightList));
+      for (var i = 0; i < leftList.length; i++) {
+        
+        let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
+        row = row == null ? {} : row;
+        console.log("Row = " + JSON.stringify(row));
+        let result = leftList[i];
+        
+        if (result!=null) {
+          //console.log("result = " + JSON.stringify(result));
+          row.left_sphere = result.sphere;
+          row.left_cylinder = result.cylinder;
+          row.left_axis = result.axis;
+          row.left_prismAmount = result.prismAmount;
+          row.left_prismBase = result.prismBase;
+          row.left_multifocalPower = result.multifocalPower;
+          row.left_lensPower = result.lensPower;
+          row.left_lensBackCurve = result.lensBackCurve;
+          row.left_lensDiameter = result.lensDiameter;
+          row.left_lensDuration = result.lensDuration;
+          row.left_lensDurationUnit = result.lensDurationUnit;
+          row.left_lensDurationUnitName = result.lensDurationUnitName;
+          row.left_prismBaseName = result.prismBaseName;
+        }
+        //console.log("Row after adding left= " + JSON.stringify(row));
+      }
+      return rightList;
+    }
+  }
   // setBeneficiary(res) {
   //   // tslint:disable-next-line:max-line-length
   //   this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
@@ -3022,7 +3105,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         } else {
           isthereFiledEmpty = false;
           this.CareTeams.forEach(x => {
-            console.log(x.speciality)
+           // console.log(x.speciality)
             if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
               x.speciality === null || x.speciality === undefined) {
               isthereFiledEmpty = true;
@@ -3307,44 +3390,44 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
       if (event instanceof HttpResponse) {
-        const data:any = event.body;
+        const data: any = event.body;
         if (data && data.details) {
           this.providerType = data.details.claimType;
-            if(data.details.claimType === "vision"){
-              if(this.pageMode === 'CREATE'){
-                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'vision')[0]);
-                this.claimType = "vision";
-                this.subTypeList = [
-                  { value: 'op', name: 'OutPatient' },
-                ];
-                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
-                this.FormNphiesClaim.controls.type.disable();
-                this.FormNphiesClaim.controls.subType.disable();
-              }
-            } else if(data.details.claimType === "oral"){
-              if(this.pageMode === 'CREATE'){
-                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'oral')[0]);
-                this.claimType = "oral";
-                this.subTypeList = [
-                  { value: 'op', name: 'OutPatient' },
-                ];
-                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
-                this.FormNphiesClaim.controls.type.disable();
-                this.FormNphiesClaim.controls.subType.disable();
-              } 
-            }else if(data.details.claimType === "pharmacy"){
-              if(this.pageMode === 'CREATE'){
-                this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x=>x.value === 'pharmacy')[0]);
-                this.claimType = "pharmacy";
-                this.subTypeList = [
-                  { value: 'op', name: 'OutPatient' },
-                ];
-                this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x=>x.value === 'op')[0]);
-                this.FormNphiesClaim.controls.type.disable();
-                this.FormNphiesClaim.controls.subType.disable();
-              } 
+          if (data.details.claimType === "vision") {
+            if (this.pageMode === 'CREATE') {
+              this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
+              this.claimType = "vision";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormNphiesClaim.controls.type.disable();
+              this.FormNphiesClaim.controls.subType.disable();
             }
-        } 
+          } else if (data.details.claimType === "oral") {
+            if (this.pageMode === 'CREATE') {
+              this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
+              this.claimType = "oral";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormNphiesClaim.controls.type.disable();
+              this.FormNphiesClaim.controls.subType.disable();
+            }
+          } else if (data.details.claimType === "pharmacy") {
+            if (this.pageMode === 'CREATE') {
+              this.FormNphiesClaim.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
+              this.claimType = "pharmacy";
+              this.subTypeList = [
+                { value: 'op', name: 'OutPatient' },
+              ];
+              this.FormNphiesClaim.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormNphiesClaim.controls.type.disable();
+              this.FormNphiesClaim.controls.subType.disable();
+            }
+          }
+        }
         this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
@@ -3358,7 +3441,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     });
   }
 
-  createRelatedClaim(){
+  createRelatedClaim() {
     this.sharedService.loadingChanged.next(true);
     this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString()).subscribe((event) => {
       if (event instanceof HttpResponse) {
@@ -3381,7 +3464,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         }
-        if(errorEvent.status == 400 || errorEvent.status == 500){
+        if (errorEvent.status == 400 || errorEvent.status == 500) {
           this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
         }
         if (errorEvent.error['errors'] != null) {

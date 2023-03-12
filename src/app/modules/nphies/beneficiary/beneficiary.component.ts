@@ -253,7 +253,14 @@ export class BeneficiaryComponent implements OnInit {
     this.editMode = !this.editMode;
     this.getBeneficiary(this.beneficiaryId);
   }
-
+  applyeligibility() {
+    const path = `/nphies/eligibility?beneficiary=${this.beneficiaryId}`;
+    let plan = this.beneficiaryinfo.insurancePlans ? this.beneficiaryinfo.insurancePlans.filter(f => f.isPrimary)[0]:null;
+    console.log("plan ="+plan.payerNphiesId);
+    localStorage.setItem('primary_plan', plan ? plan.payerNphiesId : "");
+    this.location.go(path);
+    window.location.reload();
+  }
 
   getCoverageTypeName(CoverageTypeCode: string) {
 
@@ -668,8 +675,8 @@ export class BeneficiaryComponent implements OnInit {
         }).subscribe(childEvent => {
           if (redirect) {
             const path = `/nphies/eligibility?beneficiary=${beneficiaryId}`;
-            let plan=this.beneficiaryModel.insurancePlans.filter(f=>f.isPrimary)[0];
-            localStorage.setItem('primary_plan', plan ? plan.payerId:"");
+            let plan = this.beneficiaryModel.insurancePlans.filter(f => f.isPrimary)[0];
+            localStorage.setItem('primary_plan', plan ? plan.payerNphiesId : "");
             this.location.go(path);
             window.location.reload();
           } else {
