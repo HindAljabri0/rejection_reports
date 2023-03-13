@@ -26,4 +26,16 @@ export class EclaimsTicketManagementService {
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
     return this.http.request(request);
   }
+
+  fetchPayerList(providerId: string) {
+    const requestUrl = `/providers/${providerId}/lov/payers`;
+    const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
+    return this.http.request(request);
+  }
+
+  fetchProductList(providerId: string) {
+    const requestUrl = `/providers/${providerId}/lov/products`;
+    const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
+    return this.http.request(request);
+  }
 }

@@ -51,7 +51,7 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="" formControlName="payer">
                                 <mat-option value="">Select Payer</mat-option>
-                                <mat-option *ngFor="let payer of payers" value="{{payer}}">{{payer}}</mat-option>
+                                <mat-option *ngFor="let payer of payers" value="{{payer.payerName}}">{{payer.payerName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -63,7 +63,7 @@
                             <mat-select value="" formControlName="product">
                                 <mat-option value="">Select Product</mat-option>
                                 <mat-option *ngFor="let product of products"
-                                    value="{{product}}">{{product}}</mat-option>
+                                    value="{{product.productName}}">{{product.productName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
