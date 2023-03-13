@@ -6,8 +6,9 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p class="mr-12">Fw: MRN 678833 BABY RAYAN - <span class="text-regular">#66918</span></p>
-            <span class="status-badge size-sm primary normal-text">Open</span>
+            <p class="mr-12">{{ ticket.subject ? ticket.subject : 'No Subject' }} <span
+                    class="text-regular">#{{ticket.freshdeskTicketId}}</span></p>
+            <span class="status-badge size-sm primary normal-text">{{ ticket.status ? ticket.status : 'Unkown' }}</span>
         </div>
         <div class="ml-auto my-n2 mr-n2">
             <button type="button" (click)="replyVisible=true" mat-flat-button color="primary">Reply</button>
@@ -19,7 +20,7 @@
                 <span class="initial">D</span>
                 <div>
                     <p class="name">DR KAMEL - AL-QUDS POLYCLINIC</p>
-                    <span class="date">01/02/2023 12:05 PM</span>
+                    <span class="date">{{ticket.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
             </div>
             <div class="ticket-chat-body">
@@ -29,22 +30,25 @@ Dear Waseel
 we are AL QUDS POLYCLINIC JEDDAH CCHI:18441 and here is our information:
 
 Waseel ID: aqp
-Waseel Code : 1174
+User Name : {{ticket.ticketUsername}}
+Waseel Code : {{ ticket.providerId }}
 Provider Name : AL QUDS POLYCLINIC JEDDAH
 CCHI : 18441
+
 Contact person information:
 Name: Dr kamel Samir
-Email : alqudsply@gmail.com
-Mobile : 0551627057
+Email : {{ticket.email ? ticket.email : '-'}}
+Mobile : {{ticket.phoneNumber ? ticket.phoneNumber : '-' }}
 
+Ticket Info :
+Ticket Type : {{ticket.type ? ticket.type : '-'}}
+Ticket Product :{{ticket.cfProduct ? ticket.cfProduct : '-'}}
+Ticket Payer :{{ticket.cfPayer ? ticket.cfPayer : '-'}}
+Ticket Due Date : {{ticket.dueBy | date : 'dd/MM/yyyy hh:mm aa'}} 
+Description :
+<span [innerHTML]="ticket.description"></span>
 
-WE EXPERIENCED A PROBLEM WHILE SUBMISSION OUR CLAIMS IN WASEEL PLEASE ADVISE AND HELP
-
-For your kind care
-
-regards
-
-Dr Kamel</pre>
+</pre>
                 <ul class="attachment-list sm">
                     <li matTooltip="Report-4594.pdf">
                         <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
@@ -57,7 +61,7 @@ Dr Kamel</pre>
                 </ul>
             </div>
         </li>
-        <li>
+        <!--li>
             <div class="ticket-chat-header">
                 <span class="initial">A</span>
                 <div>
@@ -78,7 +82,7 @@ Thank you,
 Thank you,
 Areej Alqahtani | Account Management Representative | E mail: customercare@waseel.com | Phone and WhatsApp: 920012099 | Waseel ASP Ltd.</pre>
             </div>
-        </li>
+        </li-->
     </ul>
 </div>
 
@@ -95,7 +99,8 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
     <div class="block-body">
         <div class="form-group">
             <label class="control-label">Reply Message</label>
-            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig" [(ngModel)]="htmlContent"></angular-editor>
+            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig"
+                [(ngModel)]="htmlContent"></angular-editor>
         </div>
         <div class="form-group mb-0">
             <label class="control-label">Attachments</label>

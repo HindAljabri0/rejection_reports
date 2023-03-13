@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor/public-api';
-import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
-import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { EclaimsTicketManagementService } from 'src/app/services/eclaimsTicketManagementService/eclaims-ticket-management.service';
@@ -55,11 +53,12 @@ export class CreateTicketComponent implements OnInit {
     'Waseel Down', 'Reports', 'Service Task', 'New Provider Request', 'Error', 'F-Other',
     'Netsuite Issue', 'Sadad Payment'];
 
-  payers: string[] = ['Tawunyia', 'MedGulf', 'GIG', 'Malath', 'AlRajhi Takaful', 'NextCare', 'Saico', 'MedNet',
-    'Waseel', 'BUPA', 'Sehati', 'GLOBEMED', 'Nphies'];
+  // payers = 'Tawunyia', 'MedGulf', 'GIG', 'Malath', 'AlRajhi Takaful', 'NextCare', 'Saico', 'MedNet',
+  //   'Waseel', 'BUPA', 'Sehati', 'GLOBEMED', 'Nphies'
+  payers = [];
 
-  products: string[] = ['Portal Switch', 'Waseel Connect', 'PBM', 'Waseele Claim', 'RCM', 'Netsuite', 'Communication portal',
-    'BI', 'LMS'];
+  // products = 'Portal Switch', 'Waseel Connect', 'PBM', 'Waseele Claim', 'RCM', 'Netsuite', 'Communication portal', 'BI', 'LMS';
+  products = [];
 
   formTicket: FormGroup = this.formBuilder.group({
     subject: ['', Validators.required],
@@ -87,6 +86,27 @@ export class CreateTicketComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.fetchPayers();
+    this.fetchProducts();
+  }
+
+  fetchPayers() {
+    this.eclaimsTicketManagementService.fetchPayerList(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.payers = event.body;
+        }
+      }
+    });
+  }
+  fetchProducts() {
+    this.eclaimsTicketManagementService.fetchProductList(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.products = event.body;
+        }
+      }
+    });
   }
 
   onSubmit() {

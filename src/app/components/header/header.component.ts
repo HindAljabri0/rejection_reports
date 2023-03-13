@@ -249,6 +249,7 @@ export class HeaderComponent implements OnInit {
     }
 
     getAlertMessage() {
+        this.providerId = this.authService.getProviderId();
         this.settingsService.getAlert(this.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 this.alertMessage = event.body['message'] as String;

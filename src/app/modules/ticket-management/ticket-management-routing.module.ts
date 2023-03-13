@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'tickets', component: TicketsComponent },
   { path: 'create', component: CreateTicketComponent },
   { path: 'ticket-details', component: TicketDetailsComponent },
-  { path: 'ticket-details/:ticketId', component: TicketDetailsComponent }
+  { path: 'tickets/details/:ticketId', component: TicketDetailsComponent }
 ];
 
 @NgModule({

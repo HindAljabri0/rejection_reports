@@ -64,8 +64,9 @@ export class TicketDetailsComponent implements OnInit {
   getTicketDetails(ticketId: string) {
     this.eclaimsTicketManagementService.fetchEclaimsTicketDetails(this.sharedServices.providerId, ticketId).subscribe(event => {
       if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array)
+        //if (event.body != null && event.body instanceof Array)
           this.ticket = event.body;
+          console.log("ticket - "+this.ticket);
       }
     });
   }
