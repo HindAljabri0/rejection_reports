@@ -48,13 +48,13 @@ export class TicketsComponent implements OnInit {
   fetchEclaimsTicket(queryString: string, status: string) {
     this.sharedServices.loadingChanged.next(true);
     this.eclaimsTicketManagementService.fetchEclaimsTicketSummary(this.sharedServices.providerId, queryString, status, this.pageIndex, this.pageSize).subscribe(event => {
-      this.sharedServices.loadingChanged.next(false);
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
-          this.ticketsSummary = [];
+        this.ticketsSummary = [];
         this.ticketsSummary = event.body["content"] as TicketSummaryResponse[];
         this.length = event.body["totalElements"];
         console.log(this.ticketsSummary);
+        this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
       this.ticketsSummary = [];

@@ -6,8 +6,7 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p class="mr-12">{{ ticket.subject ? ticket.subject : 'No Subject' }} <span
-                    class="text-regular">#{{ticket.freshdeskTicketId}}</span></p>
+            <p class="mr-12">{{ ticket.subject ? ticket.subject : 'No Subject' }} <span class="text-regular">#{{ticket.freshdeskTicketId}}</span></p>
             <span class="status-badge size-sm primary normal-text">{{ ticket.status ? ticket.status : 'Unkown' }}</span>
         </div>
         <div class="ml-auto my-n2 mr-n2">
@@ -84,6 +83,33 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
             </div>
         </li-->
     </ul>
+    <div class="block-body">
+        <h5 class="form-title">Errors</h5>
+        <div class="table-responsive">
+            <table class="primary-grid">
+                <thead>
+                    <tr>
+                        <th class="light-bg-danger text-danger">Error Code</th>
+                        <th class="light-bg-danger text-danger">Error Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>66918</td>
+                        <td>Way. In when most the and perfected succeeding, to their at that went to a be quite.</td>
+                    </tr>
+                    <tr>
+                        <td>66917</td>
+                        <td>For working the and of bits origin an human the to wild of but a that coffee derided definitely.</td>
+                    </tr>
+                    <tr>
+                        <td>66914</td>
+                        <td>Dins too. Is hung display of chief.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <div class="animate__animated animate__faster animate__fadeIn block-card" *ngIf="replyVisible">
@@ -99,8 +125,7 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
     <div class="block-body">
         <div class="form-group">
             <label class="control-label">Reply Message</label>
-            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig"
-                [(ngModel)]="htmlContent"></angular-editor>
+            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig" [(ngModel)]="htmlContent"></angular-editor>
         </div>
         <div class="form-group mb-0">
             <label class="control-label">Attachments</label>
