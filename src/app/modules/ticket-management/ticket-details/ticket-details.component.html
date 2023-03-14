@@ -50,14 +50,14 @@ Description :
 
 </pre>
                 <ul class="attachment-list sm">
-                    <li matTooltip="Report-4594.pdf">
-                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                        <span>Report-4594.pdf</span>
+                    <li  *ngFor="let s of ticket.attachmentModels; let i = index" matTooltip={{s.attachmentName}}  (click)="viewAttachment($event,s? s:null )">
+                        <img [src]='getFileIcon(s.attachmentName)'  />
+                        <span>{{s.attachmentName}} </span>
                     </li>
-                    <li matTooltip="Report-4594.xls">
+                    <!--li matTooltip="Report-4594.xls">
                         <img src="./assets/file-types/ic-xls.svg" alt="xls" />
                         <span>Report-4594.xls</span>
-                    </li>
+                    </li-->
                 </ul>
             </div>
         </li>
