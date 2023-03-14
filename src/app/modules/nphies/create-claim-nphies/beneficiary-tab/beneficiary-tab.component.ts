@@ -145,6 +145,8 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
         model.payerId = this.FormNphiesClaim.controls.insurancePlanPayerId.value;
         model.primary = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
         model.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
+        model.maxLimit = this.FormNphiesClaim.controls.insurancePlanPrimary.value;
+        model.patientShare = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
         this.insurancePlans.push(model);
       }
 
@@ -468,6 +470,10 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
       // this.FormNphiesClaim.controls.insurancePlanPayerId.disable();
       this.FormNphiesClaim.controls.insurancePlanPolicyNumber.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].policyNumber);
+      this.FormNphiesClaim.controls.maxLimit.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit);
+      this.FormNphiesClaim.controls.patientShare.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare);
     }
   }
 

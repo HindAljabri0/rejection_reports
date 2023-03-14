@@ -27,14 +27,14 @@ export class EclaimsTicketManagementService {
     return this.http.request(request);
   }
 
-  fetchPayerList(providerId: string) {
-    const requestUrl = `/providers/${providerId}/lov/payers`;
+  fetchPayerList() {
+    const requestUrl = `/providers/lov/payers`;
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
     return this.http.request(request);
   }
 
-  fetchProductList(providerId: string) {
-    const requestUrl = `/providers/${providerId}/lov/products`;
+  fetchProductList() {
+    const requestUrl = `/providers/lov/products`;
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
     return this.http.request(request);
   }

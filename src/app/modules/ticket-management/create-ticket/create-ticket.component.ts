@@ -91,7 +91,7 @@ export class CreateTicketComponent implements OnInit {
   }
 
   fetchPayers() {
-    this.eclaimsTicketManagementService.fetchPayerList(this.sharedServices.providerId).subscribe(event => {
+    this.eclaimsTicketManagementService.fetchPayerList().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
           this.payers = event.body;
@@ -100,7 +100,7 @@ export class CreateTicketComponent implements OnInit {
     });
   }
   fetchProducts() {
-    this.eclaimsTicketManagementService.fetchProductList(this.sharedServices.providerId).subscribe(event => {
+    this.eclaimsTicketManagementService.fetchProductList().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
           this.products = event.body;
