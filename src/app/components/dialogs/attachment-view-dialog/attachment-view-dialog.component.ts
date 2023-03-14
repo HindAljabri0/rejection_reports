@@ -56,10 +56,10 @@ export class AttachmentViewDialogComponent implements OnInit {
         let data = event.target.result as string;
         base64_data = data.substring(data.indexOf(',') + 1);
         //this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(this.attachmentSource, 'application/pdf')))
-        console.log("File in Base64: ", base64_data);
+        //console.log("File in Base64: ", base64_data);
         if (this.fileExt.toLowerCase() === 'pdf') {
           let _blob = this.b64toBlob(base64_data,'application/pdf')
-          console.log(_blob);
+          //console.log(_blob);
           //const objectURL = `data:application/pdf;base64,` + blob;
           this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/pdf')));
         } else if (this.fileExt.toLowerCase() === 'xls' || this.fileExt.toLowerCase() === 'xlsx') {
