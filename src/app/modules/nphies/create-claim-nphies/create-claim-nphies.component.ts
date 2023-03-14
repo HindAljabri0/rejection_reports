@@ -3102,7 +3102,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: item.attachmentName, attachment: item.byteArray
+        filename: item.attachmentName, attachment: item.byteArray 
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }
@@ -3111,7 +3111,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: attachmentName, attachment: byteArray
+        filename: attachmentName, attachment: byteArray 
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }

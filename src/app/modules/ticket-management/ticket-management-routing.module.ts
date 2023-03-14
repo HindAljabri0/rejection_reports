@@ -8,7 +8,6 @@ const routes: Routes = [
   { path: '', redirectTo: 'tickets' },
   { path: 'tickets', component: TicketsComponent },
   { path: 'create', component: CreateTicketComponent },
-  { path: 'ticket-details', component: TicketDetailsComponent },
   { path: 'tickets/details/:ticketId', component: TicketDetailsComponent }
 ];
 

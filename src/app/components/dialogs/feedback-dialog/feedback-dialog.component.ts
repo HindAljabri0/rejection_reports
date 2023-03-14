@@ -56,7 +56,7 @@ export class FeedbackDialogComponent implements OnInit {
     
     if (this.isRating(newRating)) {
         this.feedback.overallSatisfaction = newRating;
-        console.debug("Overall" + newRating);
+        
         this.feedback.isOverallSatisfactionValid = true;
     }else{
       this.feedback.isOverallSatisfactionValid = false;
@@ -66,7 +66,7 @@ export class FeedbackDialogComponent implements OnInit {
   setRecommendQRating(newRating: number): void {
     if (this.isRating(newRating)) {
       this.feedback.recommendToFriend = newRating;
-      console.debug("Recommmend" + newRating);
+     
       this.feedback.isRecommendToFriend = true;
     }else{
       this.feedback.isRecommendToFriend = false;
@@ -145,7 +145,6 @@ export class FeedbackDialogComponent implements OnInit {
       }
     });
 
-    console.debug(`feedback submisstion status: ` + submitted);
     return submitted;
   }
 }
