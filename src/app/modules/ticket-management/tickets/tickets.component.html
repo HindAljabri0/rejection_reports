@@ -39,6 +39,7 @@
                                                         <mat-option value="">Select status</mat-option>
                                                         <mat-option value="Open">Open</mat-option>
                                                         <mat-option value="Pending">Pending</mat-option>
+                                                        <mat-option value="Fixed">Fixed</mat-option>
                                                         <mat-option value="Resolved">Resolved</mat-option>
                                                         <mat-option value="Closed">Closed</mat-option>
                                                     </mat-select>
@@ -56,22 +57,22 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="ticketsSummary && ticketsSummary.length>0">
-                    <tr *ngFor="let ticket of ticketsSummary; let i = index">
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
-                            {{i+1}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                    <tr *ngFor="let ticket of ticketsSummary;let j=index;">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.statuss}}">
+                            {{(j+1) + (pageIndex * pageSize) }}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             {{ticket.freshdeskTicketId}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             {{ticket.subject}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             {{ticket.createdDate | date: 'dd/MM/yyyy'}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             {{ticket.type}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             {{ticket.payer}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             {{ticket.product}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}/{{ticket.status}}">
                             <span *ngIf="ticket.status === 'Open'" class="status-badge size-sm primary normal-text">{{ticket.status}}</span>
                             <span *ngIf="ticket.status === 'Pending'" class="status-badge size-sm warning normal-text">{{ticket.status}}</span>
                             <span *ngIf="ticket.status === 'Resolved'" class="status-badge size-sm success normal-text">{{ticket.status}}</span>

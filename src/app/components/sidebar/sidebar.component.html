@@ -450,8 +450,7 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <ul class="nav-list">
-            <li
-              *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
+            <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
               <a routerLink="/nphies/configurations" routerLinkActive="is-active">
                 <!-- <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
               <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" /> -->
@@ -685,6 +684,11 @@
           <li>
             <a routerLink="/ticket-management" routerLinkActive="is-active">
               <span class="text">Ticket Management</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/notification-management" routerLinkActive="is-active">
+              <span class="text">Notifications</span>
             </a>
           </li>
         </ul>

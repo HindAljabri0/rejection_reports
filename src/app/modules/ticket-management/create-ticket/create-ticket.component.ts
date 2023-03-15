@@ -49,9 +49,9 @@ export class CreateTicketComponent implements OnInit {
     ]
   };
 
-  type: string[] = ['Payer Down', 'Question', 'Problem', 'Enhancement', 'Request', 'Payers Request', 'integration',
-    'Waseel Down', 'Reports', 'Service Task', 'New Provider Request', 'Error', 'F-Other',
-    'Netsuite Issue', 'Sadad Payment'];
+  // type = 'Payer Down', 'Question', 'Problem', 'Enhancement', 'Request', 'Payers Request', 'integration', 'Waseel Down', 
+  //   'Reports', 'Service Task', 'New Provider Request', 'Error', 'F-Other', 'Netsuite Issue', 'Sadad Payment';
+  types = [];
 
   // payers = 'Tawunyia', 'MedGulf', 'GIG', 'Malath', 'AlRajhi Takaful', 'NextCare', 'Saico', 'MedNet',
   //   'Waseel', 'BUPA', 'Sehati', 'GLOBEMED', 'Nphies'
@@ -88,6 +88,7 @@ export class CreateTicketComponent implements OnInit {
   ngOnInit() {
     this.fetchPayers();
     this.fetchProducts();
+    this.fetchTypes();
   }
 
   fetchPayers() {
@@ -104,6 +105,15 @@ export class CreateTicketComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
           this.products = event.body;
+        }
+      }
+    });
+  }
+  fetchTypes() {
+    this.eclaimsTicketManagementService.fetchTypeList().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.types = event.body;
         }
       }
     });
@@ -155,8 +165,8 @@ export class CreateTicketComponent implements OnInit {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
-            if (event.body['ticketId'] != null) {
-              this.loadTicket(event.body['ticketId']);
+            if (event.body['id'] != null) {
+              this.loadTicket(event.body['id']);
             }
           });
         }
@@ -169,13 +179,13 @@ export class CreateTicketComponent implements OnInit {
           if (error.error['message'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                this.loadTicket(error.error['ticketId']);
+                //this.loadTicket(error.error['ticketId']);
               }
             });
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                this.loadTicket(error.error['ticketId']);
+                //this.loadTicket(error.error['ticketId']);
               }
             });
           }
@@ -183,20 +193,20 @@ export class CreateTicketComponent implements OnInit {
           if (error.error['errors'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                this.loadTicket(error.error['ticketId']);
+                //this.loadTicket(error.error['ticketId']);
               }
             });
           }
           this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
             if (error.error['ticketId'] != null) {
-              this.loadTicket(error.error['ticketId']);
+              //this.loadTicket(error.error['ticketId']);
             }
           });
         }
         if (error.error['message'] != null) {
           this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
             if (error.error['ticketId'] != null) {
-              this.loadTicket(error.error['ticketId']);
+              //.loadTicket(error.error['ticketId']);
             }
           });
         }
@@ -206,7 +216,8 @@ export class CreateTicketComponent implements OnInit {
   }
 
   loadTicket(ticketId: number) {
-    this.router.navigate(['/ticket-management/tickets/details/', ticketId]);
+    //this.router.navigate(['/ticket-management/tickets/details/', ticketId]);
+    this.router.navigateByUrl(`/ticket-management/tickets/details/${ticketId}/open`);
   }
 
   addAttachment(event) {

@@ -38,4 +38,10 @@ export class EclaimsTicketManagementService {
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
     return this.http.request(request);
   }
+
+  fetchTypeList() {
+    const requestUrl = `/providers/lov/types`;
+    const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
+    return this.http.request(request);
+  }
 }
