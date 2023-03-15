@@ -785,6 +785,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .column-header-action.action-active .action-btn{opacity: 1;background: rgba(48, 96, 170,0.16);}
 .primary-grid th .sort-btn,.primary-grid td .sort-btn{background: none;border:0;color:inherit;font-size: inherit;line-height: inherit;display: flex;font-weight: inherit;text-align: inherit;padding: 11px 6px;margin: -11px -6px;width: calc(100% + 12px);}
 .primary-grid th .sort-btn  .mat-icon,.primary-grid td .sort-btn .mat-icon{height: 18px;width: 18px;line-height: 18px;font-size: 18px;}
+.primary-grid .text-clip{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;min-width: 0;max-width: 360px;}
+.primary-grid .long-text{min-width: 240px;}
+
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 .grid-radio .mat-radio-label-content{display: none;}
@@ -1442,6 +1445,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .mat-checkbox .mat-checkbox-frame{border-color:#909090;border-width:1px;}
 .mat-checkbox .mat-checkbox-frame,.mat-checkbox .mat-checkbox-background{border-radius: 4px;}
 .mat-checkbox.mat-checkbox-disabled{cursor: not-allowed;}
+.checkbox-list{display: flex;flex-direction: column;}
+.checkbox-list .mat-checkbox{display: block;border-bottom: 1px solid #e1e1e1;}
+.checkbox-list .mat-checkbox-layout{display: flex;padding: 10px 16px 10px 8px;}
+.checkbox-list .mat-checkbox .mat-checkbox-inner-container{margin-left: 8px;}
+.checkbox-list p{padding: 13px 16px;border-bottom: 1px solid #e1e1e1;}
+.checkbox-list .mat-checkbox:last-child,.checkbox-list p:last-child{border-bottom: 0;}
 
 /* bootstrap tabs
 --------------------------------------------------------------------------------------------------------*/
