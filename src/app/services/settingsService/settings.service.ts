@@ -101,8 +101,8 @@ export class SettingsService {
     return this.httpClient.request(request);
   }
 
-  getAlert(providerId: any) {
-    const requestURL = `/providers/${providerId}/alert`;
+  getAlert() {
+    const requestURL = `/providers/alert`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.httpClient.request(request);
   }

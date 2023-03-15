@@ -130,7 +130,9 @@ export class AddPreauthorizationComponent implements OnInit {
     referral: [''],
     referralFilter: [''],
     otherReferral: [''],
-    insurancePlanPolicyNumber: ['']
+    insurancePlanPolicyNumber: [''],
+    insurancePlanMaxLimit: [''],
+    insurancePlanPatientShare: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -395,7 +397,9 @@ export class AddPreauthorizationComponent implements OnInit {
 
             // tslint:disable-next-line:max-line-length
             // insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
-            insurancePlanTpaNphiesId: res.beneficiary.insurancePlan.tpaNphiesId
+            insurancePlanTpaNphiesId: res.beneficiary.insurancePlan.tpaNphiesId,
+            insurancePlanMaxLimit: res.beneficiary.insurancePlan.maxLimit,
+            insurancePlanPatientShare: res.beneficiary.insurancePlan.patientShare,
           });
 
           if (res.subscriber) {
@@ -788,6 +792,10 @@ export class AddPreauthorizationComponent implements OnInit {
 
       this.FormPreAuthorization.controls.insurancePlanPolicyNumber.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].policyNumber);
+      this.FormPreAuthorization.controls.maxLimit.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit);
+      this.FormPreAuthorization.controls.patientShare.setValue(
+        this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare);
     }
   }
 
@@ -1776,6 +1784,8 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
       this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.policyNumber = this.FormPreAuthorization.controls.insurancePlanPolicyNumber.value;
+      this.model.insurancePlan.maxLimit = this.FormPreAuthorization.controls.insurancePlanMaxLimit.value;
+      this.model.insurancePlan.patientShare = this.FormPreAuthorization.controls.insurancePlanPatientShare.value;
       this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
       if (this.FormPreAuthorization.controls.insurancePlanExpiryDate.value) {
@@ -2101,8 +2111,8 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
   SetToMax(data) {
-    const ChosenDate= new Date(data);
-    const OrderDate= new Date(this.FormPreAuthorization.controls.dateOrdered.value);
+    const ChosenDate = new Date(data);
+    const OrderDate = new Date(this.FormPreAuthorization.controls.dateOrdered.value);
     if (ChosenDate > OrderDate) {
       this.FormPreAuthorization.controls.dateWritten.setValue(this.FormPreAuthorization.controls.dateOrdered.value);
     }
