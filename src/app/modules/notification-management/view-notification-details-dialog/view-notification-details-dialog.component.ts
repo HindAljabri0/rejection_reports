@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-view-notification-details-dialog',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewNotificationDetailsDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialogRef:MatDialogRef<ViewNotificationDetailsDialogComponent>) { }
 
   ngOnInit() {
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
 }
