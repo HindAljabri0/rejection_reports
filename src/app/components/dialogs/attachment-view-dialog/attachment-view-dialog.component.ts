@@ -11,9 +11,9 @@ import { AttachmentViewData } from './attachment-view-data';
 })
 export class AttachmentViewDialogComponent implements OnInit {
 
-  fileExt: string="";
+  fileExt: string = "";
   attachmentSource: SafeResourceUrl;
-
+  base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
   constructor(
     private dialogRef: MatDialogRef<AttachmentViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AttachmentViewData,
@@ -29,7 +29,7 @@ export class AttachmentViewDialogComponent implements OnInit {
   }
   setAttachmentSource() {
     this.fileExt = this.data.filename.split('.').pop();
-    console.log("on for ticket " + this.fileExt);
+    console.log("on for ticket " + (this.data.attachment instanceof File));
 
     if (this.data.attachment instanceof File) {
       console.log("in the file section");
@@ -41,7 +41,13 @@ export class AttachmentViewDialogComponent implements OnInit {
         this.attachmentSource = data;
       };
     } else {
-      this.convertToBase64(this.data.attachment);
+      console.log("on Else");
+      let result = this.base64regex.test(this.data.attachment);   // TRUE
+      if (result) {
+        this.viewAttach(this.data.attachment);
+      } else {
+        this.convertToBase64(this.data.attachment);
+      }
       //console.log("this.data.attachment " + blob);
 
     }
@@ -57,31 +63,34 @@ export class AttachmentViewDialogComponent implements OnInit {
         base64_data = data.substring(data.indexOf(',') + 1);
         //this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(this.attachmentSource, 'application/pdf')))
         //console.log("File in Base64: ", base64_data);
-        if (this.fileExt.toLowerCase() === 'pdf') {
-          let _blob = this.b64toBlob(base64_data,'application/pdf')
-          //console.log(_blob);
-          //const objectURL = `data:application/pdf;base64,` + blob;
-          this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/pdf')));
-        } else if (this.fileExt.toLowerCase() === 'xls' || this.fileExt.toLowerCase() === 'xlsx') {
-          //var blob = this.b64toBlob(this.data.attachment,'application/pdf')
-          //const objectURL = `data:application/pdf;base64,` + blob;
-          this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
-        } else if (this.fileExt.toLowerCase() === 'mp4' || this.fileExt.toLowerCase() === 'webm') {
-          this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
-        } else if (this.fileExt.toLowerCase() === 'mov') {
-          this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/quicktime')));
-        } else {
-          const objectURL = `data:image/${this.fileExt};base64,` + base64_data;
-          this.attachmentSource = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-        }
+        this.viewAttach(base64_data);
       };
 
       reader.onerror = (event: any) => {
         console.log("File could not be read: " + event.target.error.code);
-        base64_data = null;
+        base64_data = this.data.attachment;
       };
     });
     //return base64_data;
+  }
+  viewAttach(base64_data: string) {
+    if (this.fileExt.toLowerCase() === 'pdf') {
+      let _blob = this.b64toBlob(base64_data, 'application/pdf')
+      //console.log(_blob);
+      //const objectURL = `data:application/pdf;base64,` + blob;
+      this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/pdf')));
+    } else if (this.fileExt.toLowerCase() === 'xls' || this.fileExt.toLowerCase() === 'xlsx') {
+      //var blob = this.b64toBlob(this.data.attachment,'application/pdf')
+      //const objectURL = `data:application/pdf;base64,` + blob;
+      this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
+    } else if (this.fileExt.toLowerCase() === 'mp4' || this.fileExt.toLowerCase() === 'webm') {
+      this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
+    } else if (this.fileExt.toLowerCase() === 'mov') {
+      this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/quicktime')));
+    } else {
+      const objectURL = `data:image/${this.fileExt};base64,` + base64_data;
+      this.attachmentSource = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
   }
   b64toBlob(b64Data, contentType) {
     var byteCharacters = atob(b64Data);
