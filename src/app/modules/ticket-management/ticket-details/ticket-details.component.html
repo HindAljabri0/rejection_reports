@@ -46,9 +46,9 @@ Ticket Payer :{{ticket.cfPayer ? ticket.cfPayer : '-'}}
 Ticket Due Date : {{ticket.dueBy | date : 'dd/MM/yyyy hh:mm aa'}} 
 
 
-
-</pre-->
 Description :
+</pre-->
+
 <span [innerHTML]="ticket.description"></span>
                 <ul class="attachment-list sm" *ngIf="ticket.attachmentModels">
                     <li  *ngFor="let s of ticket.attachmentModels; let i = index" matTooltip={{s.attachmentName}}  (click)="viewAttachment($event,s? s:null )">
@@ -85,7 +85,7 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
             </div>
         </li-->
     </ul>
-    <div class="block-body">
+    <div class="block-body" *ngIf="ticket.errors.length > 0">
         <h5 class="form-title">Errors</h5>
         <div class="table-responsive">
             <table class="primary-grid">

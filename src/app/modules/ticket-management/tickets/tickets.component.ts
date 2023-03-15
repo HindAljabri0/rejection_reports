@@ -20,7 +20,6 @@ export class TicketsComponent implements OnInit {
   status: string = '';
   ticketList: any;
   searchControl: FormControl = new FormControl();
-  index = 1;
   length = 100;
   pageSize = 10;
   pageIndex = 0;
