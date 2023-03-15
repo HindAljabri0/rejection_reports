@@ -24,9 +24,9 @@ export class FeedbackRatingComponent implements OnInit {
       if(newRating !== null){
         this.rating = newRating;
         this.addRating();
-        console.debug(`the new rating is ${this.rating}`);
+  
       }else if(newRating == null){
-        console.debug(`Rating cannot be null!`);
+       
       }
     }
   
@@ -34,9 +34,9 @@ export class FeedbackRatingComponent implements OnInit {
       if(newSugg !== null){
         this.suggestion = newSugg;
         this.addSugg();
-        console.debug(`the new rating is ${this.rating}`);
+       
       }else if(newSugg == null){
-        console.debug(`Rating cannot be null!`);
+       
     }}
   
     addRating(): void{

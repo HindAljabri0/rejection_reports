@@ -1,7 +1,10 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { EclaimsTicketManagementService } from 'src/app/services/eclaimsTicketManagementService/eclaims-ticket-management.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -53,6 +56,7 @@ export class TicketDetailsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private sharedServices: SharedServices,
+    private dialog: MatDialog,
     private eclaimsTicketManagementService: EclaimsTicketManagementService
   ) { }
 
@@ -60,7 +64,14 @@ export class TicketDetailsComponent implements OnInit {
     this.ticketId = this.activatedRoute.snapshot.paramMap.get('ticketId');
     this.getTicketDetails(this.ticketId);
   }
-
+  viewAttachment(e, item) {
+    e.preventDefault();
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: {
+        filename: item.attachmentName, attachment: item.url
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
+  }
   getTicketDetails(ticketId: string) {
     this.eclaimsTicketManagementService.fetchEclaimsTicketDetails(this.sharedServices.providerId, ticketId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -70,7 +81,20 @@ export class TicketDetailsComponent implements OnInit {
       }
     });
   }
-
+  getFileIcon(name:string){
+    const type = name.split('.').pop();
+    if(type && type.includes("pdf")){
+      return "./assets/file-types/ic-pdf.svg";
+    }else if(type && (type.includes("jpg") || type.includes("png"))){
+      return "./assets/file-types/ic-jpg.svg";
+    }else if(type && (type.includes("xls") || type.includes("xlsx"))){
+      return "./assets/file-types/ic-xls.svg";
+    }else if(type && (type.includes("zip") || type.includes("rar"))){
+      return "./assets/file-types/ic-zip.svg";
+    }else{
+      return "./assets/file-types/ic-other-file.svg";
+    }
+  }
   isNull(value: string) {
     return value == null ? '_' : value;
   }

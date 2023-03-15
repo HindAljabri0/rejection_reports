@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { ClaimSummaryError } from 'src/app/models/claimSummaryError';
 import { ClaimfileuploadComponent } from 'src/app/pages/claimUploadignPage/claimfileupload/claimfileupload.component';
@@ -345,9 +345,10 @@ export class NphiesClaimSummaryComponent implements OnInit {
             }
           });
         }
-      }, err => {
-        if (err.status) {
-          //this.authService.logout();
+      }, errorEvent => {
+        this.commen.loadingChanged.next(false);
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.dialogService.showMessage(errorEvent.error.message, '', 'alert', true, 'OK', errorEvent.error.errors);
         }
       }), eventError => {
         this.commen.loadingChanged.next(false);
