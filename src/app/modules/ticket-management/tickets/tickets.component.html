@@ -56,22 +56,22 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="ticketsSummary && ticketsSummary.length>0">
-                    <tr *ngFor="let ticket of ticketsSummary; let i = index">
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
-                            {{i+1}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
-                            {{ticket.freshdeskTicketId}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                    <tr *ngFor="let ticket of ticketsSummary;">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.statuss}}">
+                            {{index+1}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.ticketId}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
                             {{ticket.subject}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
                             {{ticket.createdDate | date: 'dd/MM/yyyy'}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
                             {{ticket.type}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
                             {{ticket.payer}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
                             {{ticket.product}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.freshdeskTicketId}}">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
                             <span *ngIf="ticket.status === 'Open'" class="status-badge size-sm primary normal-text">{{ticket.status}}</span>
                             <span *ngIf="ticket.status === 'Pending'" class="status-badge size-sm warning normal-text">{{ticket.status}}</span>
                             <span *ngIf="ticket.status === 'Resolved'" class="status-badge size-sm success normal-text">{{ticket.status}}</span>

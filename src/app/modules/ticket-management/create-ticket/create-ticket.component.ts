@@ -206,7 +206,8 @@ export class CreateTicketComponent implements OnInit {
   }
 
   loadTicket(ticketId: number) {
-    this.router.navigate(['/ticket-management/tickets/details/', ticketId]);
+    //this.router.navigate(['/ticket-management/tickets/details/', ticketId]);
+    this.router.navigateByUrl(`/ticket-management/tickets/details/${ticketId}/open`);
   }
 
   addAttachment(event) {
