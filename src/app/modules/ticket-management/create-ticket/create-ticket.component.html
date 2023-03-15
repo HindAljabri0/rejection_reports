@@ -40,7 +40,7 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="" formControlName="type">
                                 <mat-option value="">Select type</mat-option>
-                                <mat-option *ngFor="let t of type" value="{{t}}">{{t}}</mat-option>
+                                <mat-option *ngFor="let type of types" value="{{type.typeName}}">{{type.typeName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
