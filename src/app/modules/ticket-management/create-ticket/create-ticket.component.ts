@@ -49,9 +49,9 @@ export class CreateTicketComponent implements OnInit {
     ]
   };
 
-  type: string[] = ['Payer Down', 'Question', 'Problem', 'Enhancement', 'Request', 'Payers Request', 'integration',
-    'Waseel Down', 'Reports', 'Service Task', 'New Provider Request', 'Error', 'F-Other',
-    'Netsuite Issue', 'Sadad Payment'];
+  // type = 'Payer Down', 'Question', 'Problem', 'Enhancement', 'Request', 'Payers Request', 'integration', 'Waseel Down', 
+  //   'Reports', 'Service Task', 'New Provider Request', 'Error', 'F-Other', 'Netsuite Issue', 'Sadad Payment';
+  types = [];
 
   // payers = 'Tawunyia', 'MedGulf', 'GIG', 'Malath', 'AlRajhi Takaful', 'NextCare', 'Saico', 'MedNet',
   //   'Waseel', 'BUPA', 'Sehati', 'GLOBEMED', 'Nphies'
@@ -88,6 +88,7 @@ export class CreateTicketComponent implements OnInit {
   ngOnInit() {
     this.fetchPayers();
     this.fetchProducts();
+    this.fetchTypes();
   }
 
   fetchPayers() {
@@ -104,6 +105,15 @@ export class CreateTicketComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
           this.products = event.body;
+        }
+      }
+    });
+  }
+  fetchTypes() {
+    this.eclaimsTicketManagementService.fetchTypeList().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array) {
+          this.types = event.body;
         }
       }
     });
