@@ -155,8 +155,8 @@ export class CreateTicketComponent implements OnInit {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
-            if (event.body['freshdeskTicketId'] != null) {
-              this.loadTicket(event.body['freshdeskTicketId']);
+            if (event.body['id'] != null) {
+              this.loadTicket(event.body['id']);
             }
           });
         }
