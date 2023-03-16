@@ -1,0 +1,141 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" routerLink="/ticket-management" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p>Create New Ticket</p>
+        </div>
+    </div>
+    <form [formGroup]="formTicket" (ngSubmit)="onSubmit()">
+
+        <div class="block-body">
+            <div class="row small-gutter">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <input type="text" class="form-control" placeholder="Enter subject here"
+                            formControlName="subject">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Email Address</label>
+                        <input required type="email" class="form-control" placeholder="Enter email address"
+                            formControlName="email">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Phone</label>
+                        <input type="number" class="form-control" placeholder="Enter phone number here"
+                            formControlName="phoneNumber">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Type</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="type">
+                                <mat-option value="">Select type</mat-option>
+                                <mat-option *ngFor="let type of types" value="{{type.typeName}}">{{type.typeName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="payer">
+                                <mat-option value="">Select Payer</mat-option>
+                                <mat-option *ngFor="let payer of payers" value="{{payer.payerName}}">{{payer.payerName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Product</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="product">
+                                <mat-option value="">Select Product</mat-option>
+                                <mat-option *ngFor="let product of products"
+                                    value="{{product.productName}}">{{product.productName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <angular-editor formControlName="description" [placeholder]="'Enter description here'"
+                    [config]="editorConfig" [(ngModel)]="htmlContent"></angular-editor>
+            </div>
+
+            <div class="form-group mb-0">
+                <label class="control-label">Attachments</label>
+                <div class="alert info">
+                    <mat-icon class="material-icons-outlined">info</mat-icon>
+                    <span>Files can have maximum 20 MB size.</span>
+                </div>
+                <ul class="attachment-list lg">
+                    <ng-container *ngFor="let attach of attachments; let i = index">
+                        <li matTooltip="{{attach.attachmentName}}">
+                            <img *ngIf="!isPdf(attach) && !isVideo(attach) && !isDicom(attach) && !isXls(attach)
+                                    && !isCsv(attach) && !isExe(attach) && !isZip(attach) && !isWord(attach)
+                                    && !isText(attach) && !isImage(attach)" src="./assets/file-types/ic-other-file.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isPdf(attach)" src="./assets/file-types/ic-pdf.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isVideo(attach)" src="./assets/file-types/ic-video.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isDicom(attach)" src="./assets/file-types/ic-dicom.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isXls(attach)" src="./assets/file-types/ic-xls.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isCsv(attach)" src="./assets/file-types/ic-csv.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isExe(attach)" src="./assets/file-types/ic-exe.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isZip(attach)" src="./assets/file-types/ic-zip.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isWord(attach)" src="./assets/file-types/ic-word-file.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isText(attach)" src="./assets/file-types/ic-txt.svg"
+                                [alt]="attach.attachmentType" />
+                            <img *ngIf="isImage(attach)" [src]="getImageOfBlob(attach)" [alt]="attach.attachmentType" />
+                            <!-- <img src="./assets/file-types/ic-pdfd.svg" alt="{{attach.attachmentType}}" /> -->
+                            <span>{{attach.attachmentName}}</span>
+                            <button type="button" class="close-btn" (click)="removeAttachment(attach)" matRipple
+                                title="Remove File?">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </li>
+                    </ng-container>
+                    <li matTooltip="Add Attachments" class="add-block">
+                        <div class="file-upload-wrapper">
+                            <div class="content">
+                                <mat-icon>add</mat-icon>
+                            </div>
+                            <span *ngIf="this.fileError" class="text-danger">{{this.fileError}}</span>
+                            <input type="file" class="file-upload-control" (change)="addAttachment($event)" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="block-footer">
+            <div class="right-block">
+                <div class="btn-list">
+                    <button mat-flat-button routerLink="/ticket-management">Cancel</button>
+                    <button mat-flat-button type="submit" color="primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

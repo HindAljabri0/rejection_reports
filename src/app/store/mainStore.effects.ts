@@ -67,7 +67,7 @@ export class MainStoreEffects {
             if (event instanceof HttpResponse) {
               const body: string[] = [];
               if (event.body && event.body[0] && event.body[0].indexOf('been a while since your') > -1) {
-                //body.push('Rejected By Waseel is now Validation Errors');
+                
               }
               if (event.body && event.body[0]) {
                 body.push(event.body[0]);

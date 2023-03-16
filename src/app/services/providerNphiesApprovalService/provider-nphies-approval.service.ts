@@ -317,6 +317,12 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+  getAdvanceApprovalRequestTransactions(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/advance/preauth/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
   submitClaims(
     providerId: string,
     claimIds?: string[],

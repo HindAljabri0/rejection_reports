@@ -2,23 +2,23 @@
     <div class="feedback-dialog" >
         <div class="icon-container">
             <img src="./assets/ic-feedback-dialog.svg" alt="Feedback" class="dialog-icon" />
-            <h4 style="font-weight: 600;">Your opinion helps us to improve your experiance<br><br></h4>
+            <h4 style="font-weight: 800; font-size: 20px;" class="text-primary">Your Voice Matters<br><br></h4>
         </div>
         <div class="question-container">
             <!-- Q1 -->
-            <p class="question" >How would you rate your overall satisfaction with Waseel services?*</p>
+            <p class="question" style=" font-weight: 600;" >How would you rate your overall satisfaction with Waseel services?*</p>
             <app-feedback-rating class="rating-component" (newRating)="setOverallQRating($event)" ></app-feedback-rating>
         </div>
         <div class="question-container">
-                <!-- Q2 -->
-            <p class="question">How likely would you recommend Waseel to a friend or colleague?*</p>
+            <!-- Q2 -->
+            <p class="question" style="font-weight: 600;" >How likely are you to recommend Waseel to a friend or colleague?*</p>
             <app-feedback-rating class="rating-component" (newRating)="setRecommendQRating($event)"></app-feedback-rating>
         </div>
         <div class="sugg-container">
-                <!-- Suggestion -->
-            <p class="sugg" style="margin: 0 0 10px;">Please add any additional comments/suggestions</p>
+            <!-- Suggestion -->
+            <p class="sugg" style="margin: 0 0 10px;" style="font-weight: 600;" >Additional comments/suggestions</p>
             <div class="form-group multiline-answer">
-                <textarea class="form-control feedback-area" id="exampleFormControlTextarea1" placeholder="Tell us what you think . . ." rows="5"[(ngModel)]="feedback.suggestion" ></textarea>
+                <textarea class="form-control feedback-area" id="exampleFormControlTextarea1" placeholder="Tell us what you think . . ." rows="5" [(ngModel)]="feedback.suggestion" ></textarea>
             </div>
             
         </div>
