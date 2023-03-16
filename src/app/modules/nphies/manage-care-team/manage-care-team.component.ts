@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material';
 import { Subject, ReplaySubject } from 'rxjs';
@@ -18,7 +18,7 @@ export class ManageCareTeamComponent implements OnInit {
   @Input() CareTeams = [];
   @Input() IsCareTeamRequired = false;
   @Input() pageMode = null;
-
+  @Output() PrescriberDefault : EventEmitter<any> = new EventEmitter();
   providerId;
   @ViewChild('practitionerSelect', { static: true }) practitionerSelect: MatSelect;
   practitionerList: any = [];
@@ -90,8 +90,9 @@ export class ManageCareTeamComponent implements OnInit {
     this.CareTeams[i].qualificationCode = code ? code : null;
     this.CareTeams[i].speciality = code ? this.specialityList.filter(x => +x.speciallityCode === code || x.speciallityCode === code)[0].speciallityName : null;
 
-    console.log(this.CareTeams[i]);
+    this.PrescriberDefault.emit(this.CareTeams.length  == 1? this.CareTeams[0].sequence : '0');
 
+    console.log("PrescriberDefault = "+(this.CareTeams.length  == 1));
   }
   SpecialtyChange(newSpec: any, i: number) {
     //console.log("values changed = " + JSON.stringify(newSpec));
@@ -146,10 +147,12 @@ export class ManageCareTeamComponent implements OnInit {
     model.practitionerRoleSelect = this.practitionerRoleList.filter(role => role.value === 'doctor')[0];
     model.specialitySelect = '';
     this.CareTeams.push(model);
-    console.log(model);
+    //console.log(model);
   }
   removeCareTeam(i) {
     this.CareTeams.splice(i, 1);
+    this.PrescriberDefault.emit(this.CareTeams.length  == 1? this.CareTeams[0].sequence : '0');
+    console.log("PrescriberDefault = "+(this.CareTeams.length  == 1));
   }
 
 }

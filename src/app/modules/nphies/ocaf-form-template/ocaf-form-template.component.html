@@ -408,7 +408,7 @@
                                 <p><strong>Please specify # of pairs:</strong></p>
                             </td>
                             <td width="80">
-                                <p class="value-holder"> {{OCAF.items[0].quantity}}</p>
+                                <p class="value-holder"> {{OCAF.items[0] ? OCAF.items[0].quantity : 0 }}</p>
                             </td>
                             <td></td>
                         </tr>
@@ -466,7 +466,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p class="value-holder">{{OCAF.careTeam[0].practitionerName}}</p>
+                                            <p class="value-holder">{{OCAF.careTeam[0] ? OCAF.careTeam[0].practitionerName : ""}}</p>
                                         </td>
                                         <td width="10"></td>
                                         <td>
