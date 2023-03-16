@@ -15,7 +15,7 @@ import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { catchError, filter } from 'rxjs/operators';
 import { HttpRequestExceptionHandler } from 'src/app/components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
-import { convertCompilerOptionsFromJson } from 'typescript';
+
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
@@ -253,7 +253,7 @@ export class DashboardComponent implements OnInit {
         this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
         let feedbackableinfo = feedbackable == true && !this.userPrivileges.WaseelPrivileges.isPAM ? "Feedbackable" : "Not Feedbackable";
         
-        return feedbackable;
+        return feedbackableinfo;
     }
 
 }
