@@ -60,18 +60,18 @@ export class TicketsComponent implements OnInit {
       if (error instanceof HttpErrorResponse) {
         if (error.status >= 500 || error.status == 0) {
           if (error.error['message'] != null) {
-            this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true));
+            //this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true));
           } else {
-            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+            //this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         } else if (error.status === 400 || error.status === 404) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true));
+          //this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true));
           // for (const error of error.error['errors']) {
           //   this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           // }
         }
         if (error.error['message'] != null) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true));
+          //this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true));
         }
       }
       this.sharedServices.loadingChanged.next(false);

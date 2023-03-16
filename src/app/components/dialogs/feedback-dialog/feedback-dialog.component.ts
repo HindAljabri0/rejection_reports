@@ -9,13 +9,19 @@ import { FeedbackService } from '../../../services/feedback/feedback.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 
-@Component({
-  selector: 'app-feedback-dialog',
-  templateUrl: './feedback-dialog.component.html',
-  styles: [
-    '.\feedback-dialog.component.css',
-  ]
-})
+@Component(
+  {
+    selector: 'app-feedback-dialog',
+    templateUrl:'./feedback-dialog.component.html',
+    styles: [
+             '.\feedback-dialog.component.css',
+           ]
+  }
+)
+// templateUrl: './feedback-dialog.component.html',
+//     styles: [
+//       '.\feedback-dialog.component.css',
+//     ]
 export class FeedbackDialogComponent implements OnInit {
 
   feedback = new FeedbackClass();

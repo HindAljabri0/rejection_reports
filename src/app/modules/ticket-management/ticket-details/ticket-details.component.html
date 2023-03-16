@@ -6,7 +6,8 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p class="mr-12">{{ ticket.subject !=null ? ticket.subject : 'No Subject' }} <span class="text-regular">#{{ticketId}}</span></p>
+            <p class="mr-12">{{ ticket.subject !=null ? ticket.subject : 'No Subject' }} <span
+                    class="text-regular">#{{ticketId}}</span></p>
             <span class="status-badge size-sm primary normal-text">{{ status}}</span>
         </div>
         <div class="ml-auto my-n2 mr-n2">
@@ -18,7 +19,7 @@
             <div class="ticket-chat-header">
                 <span class="initial">D</span>
                 <div>
-                    <p class="name">{{providerName}}</p>
+                    <p class="name">{{UserName}} - {{providerName}}</p>
                     <span class="date">{{ticket.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
             </div>
@@ -49,10 +50,11 @@ Ticket Due Date : {{ticket.dueBy | date : 'dd/MM/yyyy hh:mm aa'}}
 Description :
 </pre-->
 
-<span [innerHTML]="ticket.description"></span>
+                <span [innerHTML]="ticket.description"></span>
                 <ul class="attachment-list sm" *ngIf="ticket.attachmentModels">
-                    <li  *ngFor="let s of ticket.attachmentModels; let i = index" matTooltip={{s.attachmentName}}  (click)="viewAttachment($event,s? s:null )">
-                        <img [src]='getFileIcon(s.attachmentName)'  />
+                    <li *ngFor="let s of ticket.attachmentModels; let i = index" matTooltip={{s.attachmentName}}
+                        (click)="viewAttachment($event,s? s:null )">
+                        <img [src]='getFileIcon(s.attachmentName)' />
                         <span>{{s.attachmentName}} </span>
                     </li>
                     <!--li matTooltip="Report-4594.xls">
@@ -91,22 +93,16 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
             <table class="primary-grid">
                 <thead>
                     <tr>
+                        <th class="light-bg-danger text-danger">No.</th>
                         <th class="light-bg-danger text-danger">Error Code</th>
                         <th class="light-bg-danger text-danger">Error Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>66918</td>
-                        <td>Way. In when most the and perfected succeeding, to their at that went to a be quite.</td>
-                    </tr>
-                    <tr>
-                        <td>66917</td>
-                        <td>For working the and of bits origin an human the to wild of but a that coffee derided definitely.</td>
-                    </tr>
-                    <tr>
-                        <td>66914</td>
-                        <td>Dins too. Is hung display of chief.</td>
+                    <tr *ngFor="let error of ticket.errors;let j=index;">
+                        <td>{{j+1}}</td>
+                        <td>{{error.code}}</td>
+                        <td>{{error.message}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -127,7 +123,8 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
     <div class="block-body">
         <div class="form-group">
             <label class="control-label">Reply Message</label>
-            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig" [(ngModel)]="htmlContent"></angular-editor>
+            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig"
+                [(ngModel)]="htmlContent"></angular-editor>
         </div>
         <div class="form-group mb-0">
             <label class="control-label">Attachments</label>
