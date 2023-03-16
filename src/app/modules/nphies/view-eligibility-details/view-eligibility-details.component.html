@@ -7,7 +7,8 @@
 <div class="primary-dialog-body p-0">
   <mat-tab-group class="primary-tab nphies-eligibility-tab">
     <mat-tab [label]="'Details'">
-      <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel" [isPrint]="isPrint"></app-eligibility-details>
+      <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"
+        [isPrint]="isPrint"></app-eligibility-details>
     </mat-tab>
     <mat-tab [label]="'JSON'">
       <ng-template matTabContent>
@@ -16,8 +17,14 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+
 <div class="primary-dialog-footer has-border text-right">
-  <button mat-flat-button color="primary" (click)="print()">Print</button>
+  <div class="btn-list text-right">
+    <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="detailsModel && detailsModel.outcome !== 'Error'">
+      {{getType()}}
+    </button>
+    <button mat-flat-button color="primary" (click)="print()">Print</button>
+  </div>
 </div>
 <!-- <div class="primary-dialog-footer has-border">
   <div class="d-flex">
