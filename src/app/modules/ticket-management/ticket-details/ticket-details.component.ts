@@ -19,6 +19,7 @@ export class TicketDetailsComponent implements OnInit {
   ticketId: string;
   status : string;
   providerName :string;
+  UserName
   ticket: any;
 
   replyVisible=false;
@@ -69,6 +70,7 @@ export class TicketDetailsComponent implements OnInit {
     this.status = this.activatedRoute.snapshot.paramMap.get('status');
     this.sharedServices.provider;
     this.providerName = this.authService.getProviderName();
+    this.UserName = this.authService.getUserName();
     this.getTicketDetails(this.ticketId);
   }
   viewAttachment(e, item) {
@@ -94,10 +96,16 @@ export class TicketDetailsComponent implements OnInit {
       return "./assets/file-types/ic-pdf.svg";
     }else if(type && (type.includes("jpg") || type.includes("png"))){
       return "./assets/file-types/ic-jpg.svg";
-    }else if(type && (type.includes("xls") || type.includes("xlsx"))){
+    }else if(type && (type.includes("xls") || type.includes("xlsx") || type.includes("csv"))){
       return "./assets/file-types/ic-xls.svg";
     }else if(type && (type.includes("zip") || type.includes("rar"))){
       return "./assets/file-types/ic-zip.svg";
+    }else if(type && (type.includes("doc") || type.includes("docx"))){
+      return "./assets/file-types/ic-word-file.svg";
+    }else if(type && type.includes("txt")){
+      return "./assets/file-types/ic-txt.svg";
+    }else if(type && type.includes("json")){
+      return "./assets/file-types/ic-js.svg";
     }else{
       return "./assets/file-types/ic-other-file.svg";
     }
