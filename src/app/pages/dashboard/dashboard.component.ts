@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { catchError, filter } from 'rxjs/operators';
 import { HttpRequestExceptionHandler } from 'src/app/components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
+import { convertCompilerOptionsFromJson } from 'typescript';
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
@@ -197,8 +198,8 @@ export class DashboardComponent implements OnInit {
         let userName = this.commen.authService.getAuthUsername();
 
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
-
-        if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM) {
+        
+        if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM ) {
 
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
@@ -219,7 +220,7 @@ export class DashboardComponent implements OnInit {
 
     async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
-
+        
         const event = await this._feedbackservice.UserFeedbackable(privderId, userName).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             catchError(error => {
@@ -244,13 +245,14 @@ export class DashboardComponent implements OnInit {
         if (event instanceof HttpResponse) {
             const body = event.body;
             feedbackable = body;
-            if (body instanceof Boolean) {
+            if (body instanceof Boolean && this.userPrivileges.WaseelPrivileges.isPAM) {
                 feedbackable = body;
             }
         }
-
-        let feedbackableinfo = feedbackable == true ? "Feedbackable" : "Not Feedbackable";
-        console.debug(`\nFeedback validation api response is:\n ${feedbackableinfo}\n`);
+        
+        this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
+        let feedbackableinfo = feedbackable == true && !this.userPrivileges.WaseelPrivileges.isPAM ? "Feedbackable" : "Not Feedbackable";
+        
         return feedbackable;
     }
 
