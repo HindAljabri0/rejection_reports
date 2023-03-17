@@ -128,11 +128,16 @@ export class SearchWithAdvanceComponent implements OnInit {
   onSearchModeChange(e) {
     this.selectedSearchMode = e.value;
     this.searchControl.setValue('');
+    this.selectedPayer = null;
+    this.selectedTpa = null;
+    this.fromDateControl = new FormControl();
+    this.toDateControl = new FormControl();
+    this.selectedClaimType = null;
   }
 
   onNphiesPayerSelected(event) {
     this.selectedPayerType = 'N';
-    this.selectedClaimType=null;
+    this.selectedClaimType = null;
     this.selectedPayer = { id: event.payer.code, name: event.payer.display };
     if (event.organization.code != '-1') {
       this.selectedTpa = { id: event.organization.code, name: event.organization.display };
@@ -173,7 +178,7 @@ export class SearchWithAdvanceComponent implements OnInit {
         from: this.fromDateControl.value.format('DD-MM-yyyy'),
         to: this.toDateControl.value.format('DD-MM-yyyy'),
         caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
-        claimTypes:null
+        claimTypes: null
       }
       if (!isWassel) {
         routes.push('nphies-search-claim')
@@ -183,7 +188,7 @@ export class SearchWithAdvanceComponent implements OnInit {
           organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
-          caseTypes:null,
+          caseTypes: null,
           claimTypes: this.selectedClaimType != null ? this.selectedClaimType : null
         }
       }

@@ -1109,7 +1109,7 @@
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
                 <div class="ml-auto action-btns">
-                  <button type="button" class="action-btn mr-1">
+                  <button *ngIf="communication.error" type="button" class="action-btn mr-1" matTooltip="{{communication.communicationErrors}}">
                     <mat-icon class="text-danger">error_outline</mat-icon>
                   </button>
                   <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
@@ -1292,7 +1292,7 @@
                     aa'}}</span>
                 </div>
                 <div class="ml-auto action-btns">
-                  <button type="button" class="action-btn mr-1">
+                  <button *ngIf="communication.error" type="button" class="action-btn mr-1" matTooltip="{{communication.communicationErrors}}">
                     <mat-icon class="text-danger">error_outline</mat-icon>
                   </button>
                   <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
@@ -2839,7 +2839,7 @@
                         Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                     </div>
                     <div class="ml-auto action-btns">
-                      <button type="button" class="action-btn mr-1">
+                      <button *ngIf="communication.error" type="button" class="action-btn mr-1" matTooltip="{{communication.communicationErrors}}">
                         <mat-icon class="text-danger">error_outline</mat-icon>
                       </button>
                       <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
@@ -3025,7 +3025,7 @@
                         aa'}}</span>
                     </div>
                     <div class="ml-auto action-btns">
-                      <button type="button" class="action-btn mr-1">
+                      <button *ngIf="communication.error" type="button" class="action-btn mr-1" matTooltip="{{communication.communicationErrors}}">
                         <mat-icon class="text-danger">error_outline</mat-icon>
                       </button>
                       <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
