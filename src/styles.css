@@ -1578,6 +1578,7 @@ table.inline-label-table{width: 100%;}
 .communication .action-btns{margin-top: -6px;margin-right: -10px;white-space: nowrap;}
 .communication .action-btn{display: inline-flex;align-items: center;font-weight: 500;padding: 6px 10px;border:0;background:none;color:inherit;}
 .communication .action-btn .mat-icon{display: block;margin-right: 6px;}
+.communication .action-btn .mat-icon:last-child{margin-right: 0;}
 .communication .body-block{padding: 14px;margin-top: 14px;border: 1px solid #e1e1e1;border-radius: 8px;margin-left: 48px;position: relative;}
 .communication .body-block:after{position: absolute;content:'';width: 24px;left: -24px;bottom: 14px;background: #d2d2d2;height: 1px;}
 .communication .sent{background: #f4f7fb;border-color:rgba(48, 96, 170,0.24);}
