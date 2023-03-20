@@ -48,6 +48,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Document Type</th>
                         <th>Document ID</th>
                         <th>Contact No.</th>
                         <th>File ID</th>
@@ -58,6 +59,8 @@
                     <tr *ngFor="let Beneficiary of beneficiaries">
                         <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
                             {{Beneficiary.fullName}}</td>
+                        <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
+                            {{getDocumentTypeValue(Beneficiary.documentType)}}</td>
                         <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">
                             {{Beneficiary.documentId}}</td>
                         <td class="row-click" routerLink="/nphies/beneficiary/{{Beneficiary.beneficiaryId}}">

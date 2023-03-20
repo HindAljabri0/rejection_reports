@@ -1,0 +1,96 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p class="align-self-center">Ticket Management</p>
+        <div class="ml-auto my-n2 mr-n2 d-flex align-items-center">
+            <div class="w-320 search-box-wrapper">
+                <input type="text" [formControl]="searchControl" autocomplete="off" class="form-control" placeholder="Search subject, ticket ID" (keyup.enter)="searchByQuery()">
+                <button mat-icon-button (click)="searchByQuery()" matTooltip="Search">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
+            <button type="button" routerLink="/ticket-management/create" mat-flat-button color="primary" class="ml-8">Create New</button>
+        </div>
+    </div>
+    <ng-scrollbar *ngIf="ticketsSummary && ticketsSummary.length > 0" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Freshdesk Ticket ID</th>
+                        <th>Subject</th>
+                        <th>Created on</th>
+                        <th>Type</th>
+                        <th>Payer</th>
+                        <th>Product</th>
+                        <th width="120">
+                            <div class="column-header-action">
+                                <span>Status</span>
+                                <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="statusFilter" (click)="checkReloadedFilter()">
+                                    <mat-icon>filter_list_outline</mat-icon>
+                                </button>
+                                <mat-menu #statusFilter="matMenu" xPosition="before" class="filter-menu">
+                                    <div class="menu-body">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label class="control-label">Status</label>
+                                                <mat-form-field class="form-control custom-select-control">
+                                                    <mat-select value="" (selectionChange)="selectStatus($event)">
+                                                        <mat-option value="">Select status</mat-option>
+                                                        <mat-option value="Open">Open</mat-option>
+                                                        <mat-option value="Pending">Pending</mat-option>
+                                                        <mat-option value="Fixed">Fixed</mat-option>
+                                                        <mat-option value="Resolved">Resolved</mat-option>
+                                                        <mat-option value="Closed">Closed</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="btn-list text-right">
+                                            <button mat-flat-button (click)="clearStatusFilter()">Clear</button>
+                                            <button mat-flat-button color="primary" (click)="searchTicketBased()">Filter</button>
+                                        </div>
+                                    </div>
+                                </mat-menu>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="ticketsSummary && ticketsSummary.length>0">
+                    <tr *ngFor="let ticket of ticketsSummary;let j=index;">
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.statuss}}">
+                            {{(j+1) + (pageIndex * pageSize) }}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.freshdeskTicketId}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.subject}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.createdDate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.type}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.payer}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            {{ticket.product}}</td>
+                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                            <span *ngIf="ticket.status === 'Open'" class="status-badge size-sm primary normal-text">{{ticket.status}}</span>
+                            <span *ngIf="ticket.status === 'Pending'" class="status-badge size-sm warning normal-text">{{ticket.status}}</span>
+                            <span *ngIf="ticket.status === 'Resolved'" class="status-badge size-sm success normal-text">{{ticket.status}}</span>
+                            <span *ngIf="ticket.status === 'Closed'" class="status-badge size-sm inactive normal-text">{{ticket.status}}</span>
+                            <span *ngIf="ticket.status === 'Error'" class="status-badge size-sm danger normal-text">{{ticket.status}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <app-empty-state *ngIf="ticketsSummary && ticketsSummary.length === 0" message='No Tickets found!'>
+    </app-empty-state>
+    <div class="block-footer sticky" *ngIf="ticketsSummary && ticketsSummary.length>0">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [pageIndex]="pageIndex" aria-label="Select page">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

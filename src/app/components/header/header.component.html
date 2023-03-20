@@ -39,9 +39,9 @@
     <mat-spinner diameter="64"></mat-spinner>
   </div> -->
   <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
-  <div class="notification" [class.visible]="globalNotificationVisible">
+  <div class="notification" [class.visible]="isShowAlert">
     <marquee direction="left">
-      NPHIES servers will be down on 18 February 2023.
+      {{alertMessage}}
     </marquee>
   </div>
 </header>

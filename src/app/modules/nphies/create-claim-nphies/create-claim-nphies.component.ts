@@ -138,6 +138,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanPolicyNumber: [''],
     isReferral: [false],
     ReferralName: [''],
+    insurancePlanMaxLimit: [''],
+    insurancePlanPatientShare: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
@@ -386,9 +388,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         primary: null,
         tpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
         relationWithSubscriber: this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber,
-        maxLimit: null,
-        patientShare: null,
-        issueDate: null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder: null, insuranceStatus: null, insuranceDuration: null, insuranceType: null
+
+        maxLimit: this.otherDataModel.beneficiary.insurancePlan.maxLimit,
+        patientShare: this.otherDataModel.beneficiary.insurancePlan.patientShare,
+        issueDate:null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder:null, insuranceStatus:null, insuranceDuration:null, insuranceType: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -412,7 +415,9 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       // insurancePlanTpaNphiesId: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== null && this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId !== undefined ? (this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].tpaNphiesId) : null
-      insurancePlanTpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId
+      insurancePlanTpaNphiesId: this.otherDataModel.beneficiary.insurancePlan.tpaNphiesId,
+      insurancePlanMaxLimit: this.otherDataModel.beneficiary.insurancePlan.maxLimit,
+      insurancePlanPatientShare: this.otherDataModel.beneficiary.insurancePlan.patientShare,
     });
 
     if (this.otherDataModel.subscriber) {
@@ -1648,6 +1653,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.insurancePlan.memberCardId = this.FormNphiesClaim.controls.insurancePlanMemberCardId.value;
       this.model.insurancePlan.policyNumber = this.FormNphiesClaim.controls.insurancePlanPolicyNumber.value;
       this.model.insurancePlan.coverageType = this.FormNphiesClaim.controls.insurancePlanCoverageType.value;
+      this.model.insurancePlan.maxLimit = this.FormNphiesClaim.controls.insurancePlanMaxLimit.value;
+      this.model.insurancePlan.patientShare = this.FormNphiesClaim.controls.insurancePlanPatientShare.value;
       this.model.insurancePlan.relationWithSubscriber = this.FormNphiesClaim.controls.insurancePlanRelationWithSubscriber.value;
 
       if (this.FormNphiesClaim.controls.insurancePlanExpiryDate.value) {
@@ -2410,6 +2417,14 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       if (this.otherDataModel.beneficiary.insurancePlan.policyNumber) {
         this.FormNphiesClaim.controls.insurancePlanPolicyNumber.setValue(this.otherDataModel.beneficiary.insurancePlan.policyNumber);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.maxLimit) {
+        this.FormNphiesClaim.controls.insurancePlanMaxLimit.setValue(this.otherDataModel.beneficiary.insurancePlan.maxLimit);
+      }
+
+      if (this.otherDataModel.beneficiary.insurancePlan.patientShare) {
+        this.FormNphiesClaim.controls.insurancePlanPatientShare.setValue(this.otherDataModel.beneficiary.insurancePlan.patientShare);
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
@@ -3185,7 +3200,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: item.attachmentName, attachment: item.byteArray
+        filename: item.attachmentName, attachment: item.byteArray 
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }
@@ -3194,7 +3209,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: attachmentName, attachment: byteArray
+        filename: attachmentName, attachment: byteArray 
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }

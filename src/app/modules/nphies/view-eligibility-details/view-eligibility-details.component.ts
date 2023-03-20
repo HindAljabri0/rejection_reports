@@ -76,7 +76,11 @@ export class ViewEligibilityDetailsComponent implements OnInit {
     this.dialogRef.close();
   }
   openPreviewDialog(){
-    this.dialogRef.close();
+    this.isPrint = false;
+    
+    document.body.querySelector('#detailsDiv').classList.add('view-preauth-eligibility');
+
+    //this.dialogRef.close();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -86,8 +90,10 @@ export class ViewEligibilityDetailsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(ViewPrintPreviewDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
+      document.body.querySelector('#detailsDiv').classList.remove('view-preauth-eligibility');
       if (result) {
         console.log(result);
+        
       }
     }, error => { });
   }

@@ -90,6 +90,23 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   }
 
+  getDocumentTypeValue(documentType: string) {
+    switch (documentType) {
+      case 'PRC':
+        return 'Resident Card';
+      case 'PPN':
+        return 'Passport';
+      case 'VP':
+        return 'Visa';
+      case 'NI':
+        return 'National Card';
+      case 'MR':
+        return 'Medical Record Number';
+      default:
+        return "";
+    }
+  }
+
 }
 
 
