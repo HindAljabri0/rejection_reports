@@ -29,7 +29,6 @@ export class AttachmentViewDialogComponent implements OnInit {
   }
   setAttachmentSource() {
     this.fileExt = this.data.filename.split('.').pop();
-    console.log("on for ticket " + (this.data.attachment instanceof File));
 
     if (this.data.attachment instanceof File) {
       console.log("in the file section");
@@ -41,8 +40,9 @@ export class AttachmentViewDialogComponent implements OnInit {
         this.attachmentSource = data;
       };
     } else {
-      console.log("on Else");
-      let result = this.base64regex.test(this.data.attachment);   // TRUE
+
+      let result = this.base64regex.test(this.data.attachment);
+      console.log("Base64 test result = " + result);   // TRUE
       if (result) {
         this.viewAttach(this.data.attachment);
       } else {
@@ -79,17 +79,27 @@ export class AttachmentViewDialogComponent implements OnInit {
       //console.log(_blob);
       //const objectURL = `data:application/pdf;base64,` + blob;
       this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/pdf')));
-    } else if (this.fileExt.toLowerCase() === 'xls' || this.fileExt.toLowerCase() === 'xlsx') {
+    } /*else if (this.fileExt.toLowerCase() === 'xls' || this.fileExt.toLowerCase() === 'xlsx' || this.fileExt.toLowerCase() === 'csv') {
       //var blob = this.b64toBlob(this.data.attachment,'application/pdf')
       //const objectURL = `data:application/pdf;base64,` + blob;
       this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
-    } else if (this.fileExt.toLowerCase() === 'mp4' || this.fileExt.toLowerCase() === 'webm') {
+    }*/ else if (this.fileExt.toLowerCase() === 'mp4' || this.fileExt.toLowerCase() === 'webm') {
       this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
     } else if (this.fileExt.toLowerCase() === 'mov') {
       this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/quicktime')));
-    } else {
+    } else if (this.fileExt.toLowerCase() === 'png' || this.fileExt.toLowerCase() === 'jpg' || this.fileExt.toLowerCase() === 'gif') {
       const objectURL = `data:image/${this.fileExt};base64,` + base64_data;
       this.attachmentSource = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    } else {
+      console.log("on the else");
+      const downloadURL = URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt))
+      //window.open(downloadURL);
+      var link = document.createElement('a');
+      link.href = downloadURL;
+      link.download =this.data.filename;
+      link.click();
+      this.closeDialog();
+      //this.attachmentSource = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.b64toBlob(base64_data, 'application/' + this.fileExt)));
     }
   }
   b64toBlob(b64Data, contentType) {

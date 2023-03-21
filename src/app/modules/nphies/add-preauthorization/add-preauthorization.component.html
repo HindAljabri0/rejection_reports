@@ -112,9 +112,10 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
               <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"  formControlName="dateOrdered">
-                  <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl" ></mat-datepicker-toggle>
-                  <owl-date-time #dateOrderedCtrl></owl-date-time>
+                <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                  formControlName="dateOrdered">
+                <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
+                <owl-date-time #dateOrderedCtrl></owl-date-time>
               </div>
               <div
                 *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
@@ -230,10 +231,12 @@
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Related Preauthorization Reference No(s).
-              <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
-                info</mat-icon>
+                <mat-icon class="material-icons-outlined size-20"
+                  matTooltip="Useful for extending a transferred preauthorization">
+                  info</mat-icon>
               </label>
-              <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Related Preauthorization Reference No(s)'" [addOnBlur]="true">
+              <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Related Preauthorization Reference No(s)'"
+                [addOnBlur]="true">
               </tag-input>
               <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
                 <span class="error-text">Please enter Related Preauthorization Reference No(s).</span>
@@ -278,7 +281,8 @@
         </div>
 
 
-        <app-manage-care-team [(isSubmitted)]="isSubmitted" [(CareTeams)]="CareTeams">
+        <app-manage-care-team [(isSubmitted)]="isSubmitted"
+          (PrescriberDefault)="selectedDefualtPrescriberChange($event)" [(CareTeams)]="CareTeams">
         </app-manage-care-team>
 
         <app-manage-diagnosis class="pt-4 d-block" [(isSubmitted)]="isSubmitted"
@@ -298,8 +302,10 @@
                 <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                     class="asterisk">*</span></label>
                 <div class="date-picker">
-                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten" [max]="FormPreAuthorization.controls.dateOrdered.value">
-                  <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate" ></mat-datepicker-toggle>
+                  <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                    (ngModelChange)="SetToMax($event)" formControlName="dateWritten"
+                    [max]="FormPreAuthorization.controls.dateOrdered.value">
+                  <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate"></mat-datepicker-toggle>
                   <owl-date-time #visionWrittenDate></owl-date-time>
                 </div>
                 <div
@@ -314,8 +320,8 @@
                 <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
                     class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
-                  <mat-select formControlName="prescriber">
-                    <mat-option value="">Select Prescriber</mat-option>
+                  <mat-select formControlName="prescriber" [(ngModel)]="PrescriberDefault">
+                    <mat-option [value]='0'>Select Prescriber</mat-option>
                     <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
                       {{pre.practitionerName}}
                     </mat-option>
@@ -340,32 +346,68 @@
               <table class="primary-grid">
                 <thead>
                   <tr>
+                    <th class="border-bottom" colspan="2" width="10%"></th>
+                    <th class="border-left border-right border-bottom text-center" colspan="9">Right Eye</th>
+                    <th class="border-left border-right border-bottom text-center" colspan="9">Left Eye</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>No.</th>
                     <th>Product</th>
-                    <th>Eye</th>
-                    <th>Sphere</th>
-                    <th>Cylinder</th>
+                    <th class="border-left">SPH</th>
+                    <th>Power</th>
+                    <th>CYL</th>
                     <th>Axis</th>
                     <th>Add</th>
-                    <th>Power</th>
-                    <th>Back Curve</th>
-                    <th>Diameter</th>
                     <th>Prism</th>
+                    <th>B. Curve</th>
+                    <th>Diameter</th>
+                    <th>Duration</th>
+
+                    <th class="border-left">SPH</th>
+                    <th>Power</th>
+                    <th>CYL</th>
+                    <th>Axis</th>
+                    <th>Add</th>
+                    <th>Prism</th>
+                    <th>B. Curve</th>
+                    <th>Diameter</th>
+                    <th>Duration</th>
                     <th *ngIf="!claimReuseId" width="10"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
-                    <td>{{visionSpecification.productName}}</td>
-                    <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span></td>
+                    <td width="5%">{{i+1}}</td>
+                    <td width="5%">{{visionSpecification.productName}}</td>
                     <td>{{visionSpecification.sphere}}</td>
+                    <td>{{visionSpecification.lensPower}}</td>
                     <td>{{visionSpecification.cylinder}}</td>
                     <td>{{visionSpecification.axis}}</td>
                     <td>{{visionSpecification.multifocalPower}}</td>
-                    <td>{{visionSpecification.lensPower}}</td>
+                    <td>{{visionSpecification.prismAmount}}<span
+                      *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td>{{visionSpecification.lensBackCurve}}</td>
                     <td>{{visionSpecification.lensDiameter}}</td>
-                    <td>{{visionSpecification.prismAmount}}<span
-                        *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
+                    <td>{{visionSpecification.lensDuration}}
+                      <span *ngIf="visionSpecification.lensDuration">
+                        {{visionSpecification.lensDurationUnitName}}(s)</span>
+                    </td>
+
+                    <td class="border-left">{{visionSpecification.left_sphere}}</td>
+                    <td>{{visionSpecification.left_lensPower}}</td>
+                    <td>{{visionSpecification.left_cylinder}}</td>
+                    <td>{{visionSpecification.left_axis}}</td>
+                    <td>{{visionSpecification.left_multifocalPower}}</td>
+                    <td>{{visionSpecification.left_prismAmount}}<span
+                      *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}
+                  </td>
+                    <td>{{visionSpecification.left_lensBackCurve}}</td>
+                    <td>{{visionSpecification.left_lensDiameter}}</td>
+                    <td>{{visionSpecification.left_lensDuration}}
+                      <span *ngIf="visionSpecification.left_lensDuration">
+                        {{visionSpecification.left_lensDurationUnitName}}(s)</span>
+                    </td>
                     <td *ngIf="!claimReuseId" class="actions">
                       <mat-menu #lensSpecificationActionsMenu xPosition="before">
                         <ng-template matMenuContent>
@@ -568,7 +610,7 @@
                     <span class="pr-1">Net</span>
                     <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
                       info</mat-icon>
-                      <span class="pr-1">/Tax</span>
+                    <span class="pr-1">/Tax</span>
                     <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
                       info</mat-icon>
                   </div>
@@ -721,7 +763,8 @@
                                       matTooltip="Patient share without TAX">info</mat-icon>
                                   </div>
                                 </td>
-                                <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span class="currency">%</span>)</td>
+                                <td>{{item.patientShare}} <span class="currency">SR</span>
+                                  ({{item.patientSharePercent}}<span class="currency">%</span>)</td>
                               </tr>
                               <tr>
                                 <td class="label">Payer Share</td>

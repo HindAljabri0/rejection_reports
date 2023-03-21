@@ -409,7 +409,7 @@
                 <span *ngIf="NewClaimTransactions > 0" class="alert-marker ml-auto alert-count">{{NewClaimTransactions}}</span>
               </a>
             </li>
-            <li>
+            <li *ngIf="!envProd && !envStaging">
               <a routerLink="/nphies/attachments-report" routerLinkActive="is-active" #claimHistory="routerLinkActive">
                 <img src="assets/ic-attachment.svg" alt="Attachment" class="default-icon" />
                 <img src="assets/ic-attachment.svg" alt="Attachment" class="active-icon" />
@@ -681,12 +681,12 @@
               <span class="text">Claims Scrubbing - Auditing</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="!envProd && !envStaging">
             <a routerLink="/ticket-management" routerLinkActive="is-active">
               <span class="text">Ticket Management</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="!envProd && !envStaging">
             <a routerLink="/notification-management" routerLinkActive="is-active">
               <span class="text">Notifications</span>
             </a>
