@@ -57,22 +57,22 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="ticketsSummary && ticketsSummary.length>0">
-                    <tr *ngFor="let ticket of ticketsSummary;let j=index;">
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.statuss}}">
+                    <tr *ngFor="let ticket of ticketsSummary;let j=index;" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click" >
                             {{(j+1) + (pageIndex * pageSize) }}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click" >
                             {{ticket.freshdeskTicketId}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click">
                             {{ticket.subject}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click" >
                             {{ticket.createdDate | date: 'dd/MM/yyyy'}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click">
                             {{ticket.type}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click">
                             {{ticket.payer}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click">
                             {{ticket.product}}</td>
-                        <td class="row-click" routerLink="/ticket-management/tickets/details/{{ticket.ticketId}}/{{ticket.status}}">
+                        <td class="row-click">
                             <span *ngIf="ticket.status === 'Open'" class="status-badge size-sm primary normal-text">{{ticket.status}}</span>
                             <span *ngIf="ticket.status === 'Pending'" class="status-badge size-sm warning normal-text">{{ticket.status}}</span>
                             <span *ngIf="ticket.status === 'Resolved'" class="status-badge size-sm success normal-text">{{ticket.status}}</span>
