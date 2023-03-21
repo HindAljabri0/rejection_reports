@@ -250,10 +250,7 @@ export class DashboardComponent implements OnInit {
             }
         }
         
-        this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
-        let feedbackableinfo = feedbackable == true && !this.userPrivileges.WaseelPrivileges.isPAM ? "Feedbackable" : "Not Feedbackable";
-        
-        return feedbackableinfo;
+        return feedbackable;
     }
 
 }
