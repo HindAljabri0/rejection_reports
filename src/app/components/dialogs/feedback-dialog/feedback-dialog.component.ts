@@ -18,10 +18,7 @@ import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHa
            ]
   }
 )
-// templateUrl: './feedback-dialog.component.html',
-//     styles: [
-//       '.\feedback-dialog.component.css',
-//     ]
+
 export class FeedbackDialogComponent implements OnInit {
 
   feedback = new FeedbackClass();
