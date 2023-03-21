@@ -245,7 +245,7 @@ export class DashboardComponent implements OnInit {
         if (event instanceof HttpResponse) {
             const body = event.body;
             feedbackable = body;
-            if (body instanceof Boolean && this.userPrivileges.WaseelPrivileges.isPAM) {
+            if (body instanceof Boolean ) {
                 feedbackable = body;
             }
         }
