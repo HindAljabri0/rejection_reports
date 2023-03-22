@@ -7,10 +7,11 @@ import { DownloadRequest } from 'src/app/models/downloadRequest';
 import { MatMenuTrigger } from '@angular/material';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
+import { SettingsService } from 'src/app/services/settingsService/settings.service';
 
 
 @Component({
@@ -24,7 +25,11 @@ export class HeaderComponent implements OnInit {
     authUsername: string;
     providerName: string;
     providerId: string;
-    globalNotificationVisible = false;
+    globalNotificationVisible = true;
+    alertMessage = null;
+    startDateAlert = null;
+    endDateAlert = null;
+
 
     @Input() activeLanguageLabel: string;
 
@@ -46,6 +51,7 @@ export class HeaderComponent implements OnInit {
         private sharedServices: SharedServices,
         public router: Router,
         public authService: AuthService,
+        private settingsService: SettingsService,
         private downloadService: DownloadService,
         private notificationService: NotificationsService,
         private reportsService: ReportsService,
@@ -79,7 +85,7 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.getAlertMessage();
         if (environment.showFreshChat) {
             this.showWhatsAppSupport = true;
             this.showFreshChatBox();
@@ -240,5 +246,35 @@ export class HeaderComponent implements OnInit {
     hideGlobalNotificationVisible() {
         this.globalNotificationVisible = false;
         document.body.classList.remove('global-notification-on');
+    }
+
+    getAlertMessage() {
+        this.settingsService.getAlert().subscribe(event => {
+            if (event instanceof HttpResponse) {
+                    this.alertMessage = event.body['message'] as String;
+                    this.startDateAlert = new Date(event.body['startDate']).getTime();
+                    this.endDateAlert = new Date(event.body['endDate']).getTime();
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+                console.log(errorEvent.error);
+            }
+          });
+    }
+
+    get isShowAlert() {
+        var dateToday = new Date().getTime();
+        // console.log(new Date());
+        //    console.log(this.alertMessage);
+        //  console.log(this.startDateAlert);
+        //console.log(this.endDateAlert);
+        let alert = this.startDateAlert <= dateToday && this.endDateAlert >= dateToday;
+        if(alert){
+            this.showGlobalNotificationVisible();
+        }else{
+            this.hideGlobalNotificationVisible();
+        }
+
+        return alert;
     }
 }

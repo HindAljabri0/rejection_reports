@@ -3,9 +3,11 @@
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="attachment-view-body">
-    <img *ngIf="!isPdf() && !isVideo() && !isDicom()" [src]="attachmentSource" class="attachment-view-img" [alt]="data.filename" />
+    <img *ngIf="!isPdf() && !isVideo() && !isDicom() && !isExcel()" [src]="attachmentSource" class="attachment-view-img" [alt]="data.filename" />
 
     <iframe class="attachment-view-frame" *ngIf="isPdf()" [src]="attachmentSource"></iframe>
+
+    <iframe class="attachment-view-frame" *ngIf="isExcel()" [src]="attachmentSource"></iframe>
 
     <video class="attachment-view-video" *ngIf="isVideo()" [src]="attachmentSource" style="width: 100%;height: 99%;" autoplay controls></video>
 

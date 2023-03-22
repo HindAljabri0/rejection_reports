@@ -52,6 +52,7 @@
     "@angular/router": "^8.2.12",
     "@auth0/angular-jwt": "^3.0.1",
     "@elastic/apm-rum-angular": "^0.4.3",
+    "@kolkov/angular-editor": "^1.2.0",
     "@material-git/grid-list": "^2.0.0-git.20160919",
     "@material/card": "^3.2.0",
     "@ngrx/effects": "^9.2.0",
