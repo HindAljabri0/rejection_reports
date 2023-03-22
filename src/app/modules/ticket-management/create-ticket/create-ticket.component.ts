@@ -165,8 +165,8 @@ export class CreateTicketComponent implements OnInit {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
-            if (event.body['id'] != null) {
-              this.loadTicket(event.body['id']);
+            if (event.body['ticketId'] != null) {
+              this.loadTicket(event.body['ticketId']);
             }
           });
         }
@@ -179,13 +179,13 @@ export class CreateTicketComponent implements OnInit {
           if (error.error['message'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                //this.loadTicket(error.error['ticketId']);
+                this.loadTicket(error.error['ticketId']);
               }
             });
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                //this.loadTicket(error.error['ticketId']);
+              //this.loadTicket(error.error['ticketId']);
               }
             });
           }
@@ -193,13 +193,13 @@ export class CreateTicketComponent implements OnInit {
           if (error.error['errors'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                //this.loadTicket(error.error['ticketId']);
+                this.loadTicket(error.error['ticketId']);
               }
             });
           }
           this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
             if (error.error['ticketId'] != null) {
-              //this.loadTicket(error.error['ticketId']);
+              this.loadTicket(error.error['ticketId']);
             }
           });
         }

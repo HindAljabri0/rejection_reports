@@ -245,15 +245,12 @@ export class DashboardComponent implements OnInit {
         if (event instanceof HttpResponse) {
             const body = event.body;
             feedbackable = body;
-            if (body instanceof Boolean && this.userPrivileges.WaseelPrivileges.isPAM) {
+            if (body instanceof Boolean ) {
                 feedbackable = body;
             }
         }
         
-        this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
-        let feedbackableinfo = feedbackable == true && !this.userPrivileges.WaseelPrivileges.isPAM ? "Feedbackable" : "Not Feedbackable";
-        
-        return feedbackableinfo;
+        return feedbackable;
     }
 
 }
