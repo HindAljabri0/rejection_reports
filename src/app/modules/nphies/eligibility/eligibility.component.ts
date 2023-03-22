@@ -378,9 +378,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.sharedServices.loadingChanged.next(false);
-        this.eligibilityResponseModel = event.body as EligibilityResponseModel;
-        this.showDetails = true;
+        /*this.sharedServices.loadingChanged.next(false);
+        this.showDetails = true;*/
+        let response = event.body as EligibilityResponseModel;
+        this.getDetails(response.nphiesResponseId);
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -394,7 +395,23 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       }
     });
   }
-
+getDetails(responseId) {
+    this.sharedServices.loadingChanged.next(true);
+    this.eligibilityService.getEligibilityTransactionDetails(this.sharedServices.providerId, responseId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          this.eligibilityResponseModel = event.body as EligibilityResponseModel;
+          this.showDetails = true;
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error.error.message);
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
 
   private _isValidDate(date): boolean {
     return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
