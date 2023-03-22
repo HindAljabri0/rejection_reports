@@ -381,7 +381,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
         /*this.sharedServices.loadingChanged.next(false);
         this.showDetails = true;*/
         let response = event.body as EligibilityResponseModel;
-        this.getDetails(response.nphiesResponseId);
+        this.getDetails(response.responseId);
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
