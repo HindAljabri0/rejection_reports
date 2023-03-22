@@ -1,5 +1,6 @@
 export class TicketSummaryResponse {
     ticketId: number;
+    freshdeskTicketId: number;
     subject: string;
     createdDate: Date;
     type: string;
