@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
 
   expired: boolean;
 
-  isRamadan = false;
+  isRamadan = true;
 
 
   isEidFitr = false;
