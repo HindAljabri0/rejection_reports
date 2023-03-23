@@ -165,6 +165,12 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
+  refreshTokenForSSO() {
+    const requestURL = '/sso/refresh';
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
   getCurrentUserToken() {
     const requestURL = '/users/current';
     const request = new HttpRequest('GET', environment.authenticationHost + requestURL);

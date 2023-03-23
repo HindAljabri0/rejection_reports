@@ -801,6 +801,12 @@ export class SharedServices {
       return colorGroup.slice(startPosition, startPosition + numberOfColors);
     }
   }
+
+  getRefreshToken() {
+    if(!this.authService.loggedIn){
+      return this.authService.refreshTokenForSSO();
+    }
+  }
 }
 
 export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
