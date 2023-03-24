@@ -228,7 +228,7 @@
                   </div>
                 </div>
                 <div class="box" *ngIf="coverage != null && coverage.items != null">
-                  <h5 class="medium">Items </h5>
+                  <h5 class="medium">Items</h5>
                   <hr class="hr mt-2 mb-3" />
                   <mat-accordion displayMode="flat" class="primary-accordion" hideToggle="true">
                     <mat-expansion-panel *ngFor="let items of coverage.items | keyvalue">
@@ -264,17 +264,17 @@
                                 <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
                               </tr>
                             </ng-container>
-
                           </tbody>
                         </table>
                       </div>
                     </mat-expansion-panel>
                   </mat-accordion>
-                  <div  *ngIf="coverage != null && !coverage.items.key" class="claim-list-empty-state">
+                  <!--div *ngIf="coverage != null && !coverage.items.items"
+                    class="claim-list-empty-state">
                     No {{providerType}} benefits found
-                  </div>
+                  </div-->
                 </div>
-                
+
               </td>
             </tr>
           </ng-container>
