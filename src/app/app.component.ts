@@ -46,39 +46,35 @@ export class AppComponent implements OnInit, OnDestroy {
       document.body.classList.remove('nav-open');
       document.getElementsByTagName('html')[0].classList.remove('nav-open');
     });
-
-    router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        console.log("Reached to Navigation", authService.loggedIn);
-        if (authService.loggedIn == false) {
-          authService.refreshTokenForSSO().subscribe(event => {
-            if (event instanceof HttpResponse) {
-              this.authService.isUserNameUpdated.subscribe(updated => {
-                if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {
-                  const lastVisitedPath = localStorage.getItem('lastVisitedPath');
-                  if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
-                    this.router.navigate(lastVisitedPath.split('/'));
-                  } else {
-                    this.router.navigate(['/']);
-                  }
-                }
-              });
-              this.authService.setTokens(event.body);
-            }
-          }, errorEvent => {
-            if (errorEvent instanceof HttpErrorResponse) {
-
-            }
-          });;
-        }
-      }
-    });
   }
 
   ngOnInit() {
     localStorage.setItem('lastVisitedPath', location.pathname.replace('/en/', '').replace('/ar/', ''));
     this.versionCheckService.initVersionCheck(environment.versionCheckURL + (location.pathname.includes('/en') ? '/en' : '/ar'));
     setInterval(() => this.authService.loggedIn, 1000 * 60);
+    
+    this.authService.refreshTokenForSSO().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.authService.isUserNameUpdated.subscribe(updated => {
+          if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {
+            const lastVisitedPath = localStorage.getItem('lastVisitedPath');
+            if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
+              this.router.navigate(lastVisitedPath.split('/'));
+            } else {
+              this.router.navigate(['/']);
+            }
+          }
+        });
+        this.authService.setTokens(event.body);
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (this.authService.loggedIn && errorEvent.status == 400)
+          this.authService.logout();
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
   }
 
   /** Add Google Analytics Script Dynamically */
