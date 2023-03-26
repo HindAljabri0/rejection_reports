@@ -55,7 +55,10 @@ export class EligibilityDetailsComponent implements OnInit {
   toggleRow(index) {
     this.currentOpenCoverage = (index == this.currentOpenCoverage) ? -1 : index;
   }
-
+  getContainsItems(items){
+    //console.log(Object.keys(items).length);
+    return Object.keys(items).length > 0;
+  }
   getNamePayer(payerNphiesId: string) {
     const payer = this.payers.find(val => val.nphiesId === payerNphiesId);
     if (payer && payer.englistName) {
