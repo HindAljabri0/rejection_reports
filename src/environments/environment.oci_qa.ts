@@ -1,4 +1,4 @@
-const host = 'https://api.dr-eclaims.waseel.com/api';
+const host = 'https://dr-eclaims.waseel.com/api';
 export const environment = {
     name: 'oci_qa',
     production: true,
