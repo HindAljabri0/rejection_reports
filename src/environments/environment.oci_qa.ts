@@ -1,10 +1,10 @@
-const host = 'https://api.dr-eclaims.waseel.com';
+const host = 'https://api.dr-eclaims.waseel.com/api';
 export const environment = {
     name: 'oci_qa',
     production: true,
     GA_TRACKING_ID: 'G-J17HY3QXBF',
     showFreshChat: true,
-    versionCheckURL: `https://dr-eclaims.waseel.com`,
+    versionCheckURL: `https://dr-eclaims.waseel.com/api`,
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
