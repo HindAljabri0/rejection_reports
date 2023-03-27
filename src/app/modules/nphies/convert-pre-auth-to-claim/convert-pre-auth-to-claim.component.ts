@@ -427,9 +427,9 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.transactions.forEach(element => {
 
         if (this.selectedApprovals.includes(element.convertToClaimEpisodeId)) {
-          this.totlaNetOfAllClaimsSlectedApprovals =  this.totlaNetOfAllClaimsSlectedApprovals+ Number(element.totalNet);
-          this.totalBenefitOfAllClaimsSlectedApprovals = this.totalBenefitOfAllClaimsSlectedApprovals+ Number(element.totalBenefit);
-          this.totlaTaxAmountOfAllClaimsSlectedApprovals =this.totlaTaxAmountOfAllClaimsSlectedApprovals + Number(element.totalTax);
+          this.totlaNetOfAllClaimsSlectedApprovals = this.totlaNetOfAllClaimsSlectedApprovals + Number(element.totalNet);
+          this.totalBenefitOfAllClaimsSlectedApprovals = this.totalBenefitOfAllClaimsSlectedApprovals + Number(element.totalBenefit);
+          this.totlaTaxAmountOfAllClaimsSlectedApprovals = this.totlaTaxAmountOfAllClaimsSlectedApprovals + Number(element.totalTax);
           this.totlaNumberOfClaimsSlectedApprovals++;
 
         }
@@ -447,10 +447,10 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
     messages.push('SUMMARY_OF_CONVERSION');
     if (!this.isConvertAll())
       this.getCalculateSummaryConversions();
-      
+
     messages.push({
-      totalNet:  Number(this.isConvertAll() ? this.totlaNetOfAllClaims : this.totlaNetOfAllClaimsSlectedApprovals),
-      totalTax:  Number(this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals),
+      totalNet: Number(this.isConvertAll() ? this.totlaNetOfAllClaims : this.totlaNetOfAllClaimsSlectedApprovals),
+      totalTax: Number(this.isConvertAll() ? this.totlaTaxAmountOfAllClaims : this.totlaTaxAmountOfAllClaimsSlectedApprovals),
       totalBenefit: Number(this.isConvertAll() ? this.totalBenefitOfAllClaims : this.totalBenefitOfAllClaimsSlectedApprovals),
       totalofClaims: Number(this.isConvertAll() ? this.totlaNumberOfClaims : this.totlaNumberOfClaimsSlectedApprovals),
       startPeriod: this.datePipe.transform(this.startPeriod, 'MM-dd-yyyy'),
@@ -591,5 +591,237 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.selectedApprovalsCountOfPage--;
     }
   }
+  activateEdit(transaction) {
+    transaction.isEdit = true;
+  }
+  EditConvertedClaim(transaction) {
 
+    this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0].submitted = true;
+    let hasError = false;
+
+    if (transaction.items && transaction.items.length > 0) {
+      transaction.items.filter(x => x.status === 'approved' || x.status === 'partial').forEach(x => {
+        if (!x.patientInvoiceNo) {
+          hasError = true;
+        }
+      });
+    }
+
+    if (!hasError) {
+      // tslint:disable-next-line:max-line-length
+      const data = this.transactions.filter(x => x.nphiesRequestId === transaction.nphiesRequestId && x.requestId === transaction.requestId && x.responseId === transaction.responseId)[0];
+      if (data.maxLimit > 0 && data.totalPatientShare > data.maxLimit) {
+        this.dialogService.showMessageObservable('Exceed Max Copay Limit ', '', 'alert', true, 'OK', ['Total Patient Share must not exceed Max Copay Limit [' + data.maxLimit + ' SR]. Please adjust item Discounts.'], true).subscribe(res => { });
+        return;
+      }
+      console.log("No Error");
+      const model: any = {
+        authItems: [
+          {
+            approvalRequestId: data.requestId,
+            items: data.items.filter(x => x.status && x.status.toLowerCase() !== 'rejected').map(x => {
+              const itemModel: any = {};
+              itemModel.itemId = x.itemId;
+              itemModel.invoiceNo = x.patientInvoiceNo;
+              itemModel.itemStatus = x.status;
+              itemModel.patientShare = parseFloat(x.patientShare);
+              itemModel.payerShare = parseFloat(x.payerShare);
+              itemModel.grossOrBenefit = parseFloat(x.approvedNet > 0 ? x.approvedNet : x.grossAmount);
+              itemModel.discount = parseFloat(x.discount);
+              itemModel.payerShareWithVat = parseFloat(x.payerShareWithVat);
+              itemModel.taxAmount = parseFloat(x.tax);
+              return itemModel;
+            })
+          }
+        ],
+        episodeNo: data.episodeNo,
+        convertToClaimEpisodeId: data.convertToClaimEpisodeId,
+        payerNphiesId: data.payerId,
+        destinationId: data.destinationId,
+        beneficiaryName: data.beneficiaryName,
+        documentId: data.documentId
+      };
+      this.sharedServices.loadingChanged.next(true);
+      this.providerNphiesApprovalService.editPreparedClaim(this.sharedServices.providerId, model).subscribe((event: any) => {
+        if (event instanceof HttpResponse) {
+          const body = event.body;
+          if (body.errors) {
+            if (body.transactionId) {
+              // tslint:disable-next-line:max-line-length
+              this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true, body.transactionId).subscribe(res => {
+                this.onSubmit();
+              });
+            } else {
+              this.dialogService.showMessageObservable(body.message, '', 'alert', true, 'OK', body.Errors, true).subscribe(res => {
+                this.onSubmit();
+              });
+            }
+          } else {
+            this.dialogService.showMessageObservable('Success', body.message, 'success', true, 'OK', null, true).subscribe(res => {
+              this.onSubmit();
+            });
+          }
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, error => {
+        this.sharedServices.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 400) {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
+          } else if (error.status === 500) {
+            // tslint:disable-next-line:max-line-length
+            this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+            } else {
+              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            }
+          }
+        }
+      });
+
+
+    }
+  }
+
+  calculateShares(transactionIndex: number, itemIndex: number) {
+
+    //this.transactions[transactionIndex]=this.transactions[transactionIndex].body;
+    let maxLimit = this.transactions[transactionIndex].body.maxLimit;
+
+    let amount = 0;
+
+    if (this.transactions[transactionIndex].body.items[itemIndex].approvedNet === 0) {
+      amount = this.transactions[transactionIndex].body.items[itemIndex].grossAmount;
+    } else {
+      amount = this.transactions[transactionIndex].body.items[itemIndex].approvedNet;
+    }
+
+    let discount = !this.transactions[transactionIndex].body.items[itemIndex].discount ? 0 : parseFloat(this.transactions[transactionIndex].body.items[itemIndex].discount);
+
+    if (maxLimit === 0) {
+
+      this.transactions[transactionIndex].body.items[itemIndex].patientShare = 0;
+
+      this.transactions[transactionIndex].body.items[itemIndex].payerShare = amount - discount - this.transactions[transactionIndex].body.items[itemIndex].patientShare;
+      this.transactions[transactionIndex].body.items[itemIndex].payerShare = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].payerShare).toFixed(2);
+
+      if (this.transactions[transactionIndex].body.claimType === 'vision') {
+        this.transactions[transactionIndex].body.items[itemIndex].tax = 0;
+      } else {
+        if (this.transactions[transactionIndex].body.claimType === 'oral' && this.transactions[transactionIndex].body.items[itemIndex].itemType === 'medication-codes') {
+          this.transactions[transactionIndex].body.items[itemIndex].tax = 0;
+        } else {
+          this.transactions[transactionIndex].body.items[itemIndex].tax = this.transactions[transactionIndex].body.items[itemIndex].payerShare * 0.15;
+        }
+      }
+
+      this.transactions[transactionIndex].body.items[itemIndex].tax = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].tax).toFixed(2);
+
+      this.transactions[transactionIndex].body.items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].payerShare) + parseFloat(this.transactions[transactionIndex].body.items[itemIndex].tax);
+      this.transactions[transactionIndex].body.items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].payerShareWithVat).toFixed(2);
+    } else {
+
+      let patientShareAmt = amount - discount;
+      patientShareAmt = (patientShareAmt * this.transactions[transactionIndex].body.maxPercent) / 100;
+
+      if (patientShareAmt < maxLimit) {
+        this.transactions[transactionIndex].body.items[itemIndex].patientShare = patientShareAmt;
+      } else {
+        this.transactions[transactionIndex].body.items[itemIndex].patientShare = maxLimit;
+      }
+
+      this.transactions[transactionIndex].body.items[itemIndex].patientShare = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].patientShare).toFixed(2);
+
+      maxLimit = maxLimit - this.transactions[transactionIndex].body.items[itemIndex].patientShare;
+
+      this.transactions[transactionIndex].body.items[itemIndex].payerShare = amount - discount - this.transactions[transactionIndex].body.items[itemIndex].patientShare;
+      this.transactions[transactionIndex].body.items[itemIndex].payerShare = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].payerShare).toFixed(2);
+
+      if (this.transactions[transactionIndex].body.claimType === 'vision') {
+        this.transactions[transactionIndex].body.items[itemIndex].tax = 0;
+      } else {
+        if (this.transactions[transactionIndex].body.claimType === 'oral' && this.transactions[transactionIndex].body.items[itemIndex].itemType === 'medication-codes') {
+          this.transactions[transactionIndex].body.items[itemIndex].tax = 0;
+        } else {
+          this.transactions[transactionIndex].body.items[itemIndex].tax = this.transactions[transactionIndex].body.items[itemIndex].payerShare * 0.15;
+        }
+      }
+
+      this.transactions[transactionIndex].body.items[itemIndex].tax = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].tax).toFixed(2);
+
+      this.transactions[transactionIndex].body.items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].payerShare) + parseFloat(this.transactions[transactionIndex].body.items[itemIndex].tax);
+      this.transactions[transactionIndex].body.items[itemIndex].payerShareWithVat = parseFloat(this.transactions[transactionIndex].body.items[itemIndex].payerShareWithVat).toFixed(2);
+
+      this.transactions[transactionIndex].body.items.filter((x, index) => index != itemIndex && x.status && x.status.toLowerCase() !== 'rejected').forEach((x, index) => {
+
+        let amount = 0;
+
+        if (x.approvedNet === 0) {
+          amount = x.grossAmount;
+        } else {
+          amount = x.approvedNet;
+        }
+
+        let discount = !x.discount ? 0 : parseFloat(x.discount);
+
+        let patientShareAmt = amount - discount;
+        patientShareAmt = (patientShareAmt * this.transactions[transactionIndex].body.maxPercent) / 100;
+
+        if (patientShareAmt < maxLimit) {
+          x.patientShare = patientShareAmt;
+        } else {
+          x.patientShare = maxLimit;
+        }
+
+        x.patientShare = parseFloat(x.patientShare).toFixed(2);
+
+        maxLimit = maxLimit - x.patientShare;
+
+        x.payerShare = amount - discount - x.patientShare;
+        x.payerShare = parseFloat(x.payerShare).toFixed(2);
+
+        if (this.transactions[transactionIndex].body.claimType === 'vision') {
+          x.tax = 0;
+        } else {
+          if (this.transactions[transactionIndex].body.claimType === 'oral' && x.itemType === 'medication-codes') {
+            x.tax = 0;
+          } else {
+            x.tax = x.payerShare * 0.15;
+          }
+        }
+
+        x.tax = parseFloat(x.tax).toFixed(2);
+
+        x.payerShareWithVat = parseFloat(x.payerShare) + parseFloat(x.tax);
+        x.payerShareWithVat = parseFloat(x.payerShareWithVat).toFixed(2);
+      });
+
+    }
+
+    this.transactions[transactionIndex].body.totalPatientShare = 0;
+    this.transactions[transactionIndex].body.totalPayerShare = 0;
+    this.transactions[transactionIndex].body.totalPayerShareWithVat = 0;
+
+    this.transactions[transactionIndex].body.totalPatientShare = this.transactions[transactionIndex].body.items.map(item => item.patientShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].body.totalPayerShare = this.transactions[transactionIndex].body.items.map(item => item.payerShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].body.totalDiscount = this.transactions[transactionIndex].body.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].body.totalPayerShareWithVat = this.transactions[transactionIndex].body.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+
+  }
 }
