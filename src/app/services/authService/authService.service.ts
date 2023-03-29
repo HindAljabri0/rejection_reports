@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { checkAlerts, evaluateUserPrivileges } from 'src/app/store/mainStore.actions';
@@ -56,46 +56,60 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
+  logoutAPI(): Observable<any> {
+    const requestURL = '/signout';
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
 
   logout(expired?: boolean, hasClaimPrivileges?: boolean) {
-    this.onCancelPendingHttpRequests$.next();
-    let demoDoneValue;
-    if (window.localStorage.getItem('onboarding-demo-done')) {
-      demoDoneValue = window.localStorage.getItem('onboarding-demo-done');
-    }
-    let upcomingFeatureDoneValue;
-    if (window.localStorage.getItem('upcoming-feature-done')) {
-      upcomingFeatureDoneValue = window.localStorage.getItem('upcoming-feature-done');
-    }
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('expires_in');
-    localStorage.removeItem('organizationId');
-    const providerId = localStorage.getItem('provider_id');
-    localStorage.removeItem('provider_id');
-    this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
-    localStorage.clear();
-    this.toKeepStorageValues.filter(storageValue =>
-      storageValue.value != null).forEach((storageValue) =>
-        localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
-    let promise: Promise<boolean>;
-    if (expired != null && expired) {
-      promise = this.router.navigate(['login'], { queryParams: { expired } });
-    } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
-      promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges } });
-    } else {
-      promise = this.router.navigate(['login']);
-    }
+    this.logoutAPI().subscribe(event => {
+      if(event.status === 200){
+        this.onCancelPendingHttpRequests$.next();
+        let demoDoneValue;
+        if (window.localStorage.getItem('onboarding-demo-done')) {
+          demoDoneValue = window.localStorage.getItem('onboarding-demo-done');
+        }
+        let upcomingFeatureDoneValue;
+        if (window.localStorage.getItem('upcoming-feature-done')) {
+          upcomingFeatureDoneValue = window.localStorage.getItem('upcoming-feature-done');
+        }
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('expires_in');
+        localStorage.removeItem('organizationId');
+        const providerId = localStorage.getItem('provider_id');
+        localStorage.removeItem('provider_id');
+        this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
+        localStorage.clear();
+        this.toKeepStorageValues.filter(storageValue =>
+          storageValue.value != null).forEach((storageValue) =>
+            localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
+        let promise: Promise<boolean>;
+        if (expired != null && expired) {
+          promise = this.router.navigate(['login'], { queryParams: { expired } });
+        } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
+          promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges } });
+        } else {
+          promise = this.router.navigate(['login']);
+        }
+    
+        if (demoDoneValue) {
+          window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
+        }
+    
+        if (upcomingFeatureDoneValue) {
+          window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
+        }
+      }
+    },err => {
+      if (err instanceof HttpErrorResponse) {
 
-    if (demoDoneValue) {
-      window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
-    }
-
-    if (upcomingFeatureDoneValue) {
-      window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
-    }
-    promise.then(() => location.reload());
-  }
+          console.log(err);
+      }
+  });
+}
 
   logoutWithToken(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
