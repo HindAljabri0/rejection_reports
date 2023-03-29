@@ -117,38 +117,63 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
                 <mat-icon>arrow_back</mat-icon>
             </button>
         </div>
-        <p class="mr-12">Fw: MRN 678833 BABY RAYAN - <span class="text-regular">#66918</span></p>
-        <span class="status-badge size-sm primary normal-text">Open</span>
+        <p class="mr-12">{{ ticket.subject !=null ? ticket.subject : 'No Subject' }} <span
+            class="text-regular">#{{ticketId}}</span></p>
+        <span class="status-badge size-sm primary normal-text">{{ status }}</span>
     </div>
     <div class="block-body">
         <div class="form-group">
             <label class="control-label">Reply Message</label>
-            <angular-editor [placeholder]="'Enter description here'" [config]="editorConfig"
+            <angular-editor [placeholder]="'Enter description here'" [formControl]="description" [config]="editorConfig"
                 [(ngModel)]="htmlContent"></angular-editor>
         </div>
         <div class="form-group mb-0">
             <label class="control-label">Attachments</label>
+            <div class="alert info">
+                <mat-icon class="material-icons-outlined">info</mat-icon>
+                <span>Files can have maximum 20 MB size.</span>
+            </div>
             <ul class="attachment-list lg">
-                <li matTooltip="Report-4594.pdf">
-                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                    <span>Report-4594.pdf</span>
-                    <button class="close-btn">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </li>
-                <li matTooltip="Report-4594.xls">
-                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
-                    <span>Report-4594.xls</span>
-                    <button class="close-btn">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </li>
+                <ng-container *ngFor="let attach of attachments; let i = index">
+                    <li matTooltip="{{attach.attachmentName}}">
+                        <img *ngIf="!isPdf(attach) && !isVideo(attach) && !isDicom(attach) && !isXls(attach)
+                                && !isCsv(attach) && !isExe(attach) && !isZip(attach) && !isWord(attach)
+                                && !isText(attach) && !isImage(attach)" src="./assets/file-types/ic-other-file.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isPdf(attach)" src="./assets/file-types/ic-pdf.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isVideo(attach)" src="./assets/file-types/ic-video.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isDicom(attach)" src="./assets/file-types/ic-dicom.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isXls(attach)" src="./assets/file-types/ic-xls.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isCsv(attach)" src="./assets/file-types/ic-csv.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isExe(attach)" src="./assets/file-types/ic-exe.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isZip(attach)" src="./assets/file-types/ic-zip.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isWord(attach)" src="./assets/file-types/ic-word-file.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isText(attach)" src="./assets/file-types/ic-txt.svg"
+                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isImage(attach)" [src]="getImageOfBlob(attach)" [alt]="attach.attachmentType" />
+                        <!-- <img src="./assets/file-types/ic-pdfd.svg" alt="{{attach.attachmentType}}" /> -->
+                        <span>{{attach.attachmentName}}</span>
+                        <button type="button" class="close-btn" (click)="removeAttachment(attach)" matRipple
+                            title="Remove File?">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </li>
+                </ng-container>
                 <li matTooltip="Add Attachments" class="add-block">
                     <div class="file-upload-wrapper">
                         <div class="content">
                             <mat-icon>add</mat-icon>
                         </div>
-                        <input type="file" class="file-upload-control" />
+                        <span *ngIf="this.fileError" class="text-danger">{{this.fileError}}</span>
+                        <input type="file" class="file-upload-control" (change)="addAttachment($event)" />
                     </div>
                 </li>
             </ul>
@@ -158,7 +183,7 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
         <div class="right-block">
             <div class="btn-list">
                 <button mat-flat-button type="button" (click)="replyVisible=false">Cancel</button>
-                <button mat-flat-button type="button" (click)="replyVisible=false" color="primary">Send Reply</button>
+                <button mat-flat-button type="button" (click)="onSubmit()" color="primary">Send Reply</button>
             </div>
         </div>
     </div>
