@@ -107,7 +107,7 @@
             <th>Payer / TPA</th>
             <th>Total Patient Share</th>
             <th>Total Payer Share</th>
-            <th>Total Net</th>
+            <th>Total Gross</th>
             <th>Total Tax <mat-icon class="material-icons-outlined" matTooltip="Payer Share Tax only">info</mat-icon></th>
             <th>Total Payer Share with Tax</th>
             <th>Total Benefit</th>
@@ -130,7 +130,7 @@
               <td (click)="toggleRow(i)">{{transaction.payerName}}</td>
               <td (click)="toggleRow(i)">{{transaction.totalPatientShare}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShare}} <span class="currency">SR</span></td>
-              <td (click)="toggleRow(i)">{{transaction.totalNet}} <span class="currency">SR</span></td>
+              <td (click)="toggleRow(i)">{{transaction.totalGrossAmount}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalTax}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalPayerShareWithVat}} <span class="currency">SR</span></td>
               <td (click)="toggleRow(i)">{{transaction.totalBenefit}} <span class="currency">SR</span></td>
@@ -167,7 +167,7 @@
                       <th>Code - Description</th>
                       <th>Patient Share <span class="asterisk">*</span></th>
                       <th>Payer Share <span class="asterisk">*</span></th>
-                      <th>Net</th>
+                      <th>Gross</th>
                       <th>Tax <mat-icon class="material-icons-outlined" matTooltip="Payer Share Tax only">info</mat-icon></th>
                       <th>Payer Share with Tax</th>
                       <th>Benefit</th>
@@ -230,7 +230,7 @@
                           </div>
                         </div>
                       </td>
-                      <td>{{item.net}} <span class="currency">SR</span></td>
+                      <td>{{item.grossAmount}} <span class="currency">SR</span></td>
                       <td>{{item.tax}} <span class="currency">SR</span></td>
                       <td>{{item.payerShareWithVat}} <span class="currency">SR</span></td>    
                       <td>{{item.approvedNet}} <span class="currency">SR</span></td>    

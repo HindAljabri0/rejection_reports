@@ -317,13 +317,15 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
             x.totalBenefit = 0;
             x.totalBenefitTax = 0;
             x.totalDiscount = 0;
-
+            x.totalGrossAmount = 0;
             if (x.items && x.items.length > 0) {
               x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.totalBenefit = x.items.map(item => item.approvedNet).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+              x.totalGrossAmount = x.items.map(item => item.grossAmount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+
               x.items.forEach(y => {
                 y.invoceNo = '';
               });
@@ -814,14 +816,16 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
 
     }
 
-    this.transactions[transactionIndex].body.totalPatientShare = 0;
-    this.transactions[transactionIndex].body.totalPayerShare = 0;
-    this.transactions[transactionIndex].body.totalPayerShareWithVat = 0;
+    this.transactions[transactionIndex].totalPatientShare = 0;
+    this.transactions[transactionIndex].totalPayerShare = 0;
+    this.transactions[transactionIndex].totalPayerShareWithVat = 0;
 
-    this.transactions[transactionIndex].body.totalPatientShare = this.transactions[transactionIndex].body.items.map(item => item.patientShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
-    this.transactions[transactionIndex].body.totalPayerShare = this.transactions[transactionIndex].body.items.map(item => item.payerShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
-    this.transactions[transactionIndex].body.totalDiscount = this.transactions[transactionIndex].body.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
-    this.transactions[transactionIndex].body.totalPayerShareWithVat = this.transactions[transactionIndex].body.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
-
+    this.transactions[transactionIndex].totalPatientShare = this.transactions[transactionIndex].body.items.map(item => item.patientShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].totalPayerShare = this.transactions[transactionIndex].body.items.map(item => item.payerShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].totalDiscount = this.transactions[transactionIndex].body.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].totalPayerShareWithVat = this.transactions[transactionIndex].body.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].totalTax = this.transactions[transactionIndex].body.items.map(item => item.tax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    
+    this.transactions[transactionIndex].totalGrossAmount = this.transactions[transactionIndex].body.items.map(item => item.grossAmount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
   }
 }
