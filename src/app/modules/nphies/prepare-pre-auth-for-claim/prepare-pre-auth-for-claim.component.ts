@@ -295,6 +295,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
             x.totalBenefit = 0;
             x.totalBenefitTax = 0;
             x.totalDiscount = 0;
+            x.totalGrossAmount = 0;
 
             if (x.items && x.items.length > 0) {
               x.totalTax = x.items.map(item => item.tax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
@@ -302,7 +303,7 @@ export class PreparePreAuthForClaimComponent implements OnInit {
               x.totalBenefitTax = x.items.map(item => item.benefitTax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.totalDiscount = x.items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.totalPayerShareWithVat = x.items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
-
+              x.totalGrossAmount = x.items.map(item => item.grossAmount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
               x.items.forEach(y => {
                 y.invoiceNo = '';
               });
@@ -617,7 +618,8 @@ export class PreparePreAuthForClaimComponent implements OnInit {
     this.transactions[transactionIndex].totalPayerShare = this.transactions[transactionIndex].items.map(item => item.payerShare).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
     this.transactions[transactionIndex].totalDiscount = this.transactions[transactionIndex].items.map(item => item.discount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
     this.transactions[transactionIndex].totalPayerShareWithVat = this.transactions[transactionIndex].items.map(item => item.payerShareWithVat).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
-
+    this.transactions[transactionIndex].totalTax = this.transactions[transactionIndex].body.items.map(item => item.tax).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
+    this.transactions[transactionIndex].totalGrossAmount = this.transactions[transactionIndex].body.items.map(item => item.grossAmount).reduce((prev, next) => (parseFloat(prev) + parseFloat(next)).toFixed(2));
   }
 
 }

@@ -256,7 +256,7 @@ export class BeneficiaryComponent implements OnInit {
   applyeligibility() {
     const path = `/nphies/eligibility?beneficiary=${this.beneficiaryId}`;
     let plan = this.beneficiaryinfo.insurancePlans ? this.beneficiaryinfo.insurancePlans.filter(f => f.isPrimary)[0]:null;
-    console.log("plan ="+plan.payerNphiesId);
+    
     localStorage.setItem('primary_plan', plan ? plan.payerNphiesId : "");
     this.location.go(path);
     window.location.reload();

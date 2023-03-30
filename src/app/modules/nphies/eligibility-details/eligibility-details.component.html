@@ -3,7 +3,8 @@
     <div class="col-4">
       <div class="form-group form-group-static">
         <div class="control-label">Site Eligibility</div>
-        <p class="form-control-static" [ngClass]="eligibilityResponse.siteEligibility === 'eligible' ? 'text-success' : (eligibilityResponse.siteEligibility ? 'text-danger' : '')">
+        <p class="form-control-static"
+          [ngClass]="eligibilityResponse.siteEligibility === 'eligible' ? 'text-success' : (eligibilityResponse.siteEligibility ? 'text-danger' : '')">
           {{eligibilityResponse.siteEligibilityName | titlecase}}</p>
       </div>
     </div>
@@ -169,7 +170,8 @@
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subscriberMemberId}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.network}}</td>
               <td class="row-click" (click)="toggleRow(i)">{{coverage.subrogation}}</td>
-              <td class="row-click" (click)="toggleRow(i)" [ngClass]="coverage.siteEligibility === 'eligible' ? 'text-success' : (coverage.siteEligibility ? 'text-danger' : '')">
+              <td class="row-click" (click)="toggleRow(i)"
+                [ngClass]="coverage.siteEligibility === 'eligible' ? 'text-success' : (coverage.siteEligibility ? 'text-danger' : '')">
                 {{coverage.siteEligibility | titlecase}}</td>
             </tr>
             <tr *ngIf="currentOpenCoverage==i || isPrint">
@@ -226,7 +228,7 @@
                   </div>
                 </div>
                 <div class="box" *ngIf="coverage != null && coverage.items != null">
-                  <h5 class="medium">Items</h5>
+                  <h5 class="medium">Items </h5>
                   <hr class="hr mt-2 mb-3" />
                   <mat-accordion displayMode="flat" class="primary-accordion" hideToggle="true">
                     <mat-expansion-panel *ngFor="let items of coverage.items | keyvalue">
@@ -265,10 +267,13 @@
                           </tbody>
                         </table>
                       </div>
-
                     </mat-expansion-panel>
                   </mat-accordion>
+                  <div *ngIf="coverage != null && !getContainsItems(coverage.items)" class="claim-list-empty-state">
+                    No {{providerType}} benefits found
+                  </div>
                 </div>
+
               </td>
             </tr>
           </ng-container>
