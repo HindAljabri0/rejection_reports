@@ -64,28 +64,20 @@ Description :
                 </ul>
             </div>
         </li>
-        <!--li>
+        <li *ngFor="let reply of ticket.replies; let i = index">
             <div class="ticket-chat-header">
                 <span class="initial">A</span>
                 <div>
                     <p class="name">Areej Al qahtani</p>
-                    <span class="date">01/02/2023 5:22 PM</span>
+                    <span class="date">{{reply.replyDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
             </div>
             <div class="ticket-chat-body">
                 <pre>
-Dear Valuable Provider,
-We would like to inform you that we have received your request and we forwarded it to our integration team to complete the process.
-For more information, please contact our Engineer from the integration Team:
-Eng. Jawad AlSaeed
-Contact No. 55 582 8085
-Rest assured that we would work on your request until it is completed
-Thank you,
-
-Thank you,
-Areej Alqahtani | Account Management Representative | E mail: customercare@waseel.com | Phone and WhatsApp: 920012099 | Waseel ASP Ltd.</pre>
+                    <span [innerHTML]="reply.description"></span>
+                    </pre>
             </div>
-        </li-->
+        </li>
     </ul>
     <div class="block-body" *ngIf="ticket.errors.length > 0">
         <h5 class="form-title">Errors</h5>
@@ -118,7 +110,7 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
             </button>
         </div>
         <p class="mr-12">{{ ticket.subject !=null ? ticket.subject : 'No Subject' }} <span
-            class="text-regular">#{{ticketId}}</span></p>
+                class="text-regular">#{{ticketId}}</span></p>
         <span class="status-badge size-sm primary normal-text">{{ status }}</span>
     </div>
     <div class="block-body">
@@ -140,20 +132,15 @@ Areej Alqahtani | Account Management Representative | E mail: customercare@wasee
                                 && !isCsv(attach) && !isExe(attach) && !isZip(attach) && !isWord(attach)
                                 && !isText(attach) && !isImage(attach)" src="./assets/file-types/ic-other-file.svg"
                             [alt]="attach.attachmentType" />
-                        <img *ngIf="isPdf(attach)" src="./assets/file-types/ic-pdf.svg"
-                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isPdf(attach)" src="./assets/file-types/ic-pdf.svg" [alt]="attach.attachmentType" />
                         <img *ngIf="isVideo(attach)" src="./assets/file-types/ic-video.svg"
                             [alt]="attach.attachmentType" />
                         <img *ngIf="isDicom(attach)" src="./assets/file-types/ic-dicom.svg"
                             [alt]="attach.attachmentType" />
-                        <img *ngIf="isXls(attach)" src="./assets/file-types/ic-xls.svg"
-                            [alt]="attach.attachmentType" />
-                        <img *ngIf="isCsv(attach)" src="./assets/file-types/ic-csv.svg"
-                            [alt]="attach.attachmentType" />
-                        <img *ngIf="isExe(attach)" src="./assets/file-types/ic-exe.svg"
-                            [alt]="attach.attachmentType" />
-                        <img *ngIf="isZip(attach)" src="./assets/file-types/ic-zip.svg"
-                            [alt]="attach.attachmentType" />
+                        <img *ngIf="isXls(attach)" src="./assets/file-types/ic-xls.svg" [alt]="attach.attachmentType" />
+                        <img *ngIf="isCsv(attach)" src="./assets/file-types/ic-csv.svg" [alt]="attach.attachmentType" />
+                        <img *ngIf="isExe(attach)" src="./assets/file-types/ic-exe.svg" [alt]="attach.attachmentType" />
+                        <img *ngIf="isZip(attach)" src="./assets/file-types/ic-zip.svg" [alt]="attach.attachmentType" />
                         <img *ngIf="isWord(attach)" src="./assets/file-types/ic-word-file.svg"
                             [alt]="attach.attachmentType" />
                         <img *ngIf="isText(attach)" src="./assets/file-types/ic-txt.svg"

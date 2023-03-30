@@ -99,7 +99,7 @@ export class TicketDetailsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         //if (event.body != null && event.body instanceof Array)
           this.ticket = event.body;
-          console.log("ticket - "+this.ticket);
+          //console.log("ticket - "+this.ticket);
       }
     });
   }
@@ -246,6 +246,8 @@ export class TicketDetailsComponent implements OnInit {
           ).subscribe(result => {
             if (event.body['ticketId'] != null) {
               this.replyVisible=false;
+              this.description.setValue('');
+              this.attachments = [];
               //this.loadTicket(event.body['ticketId']);
             }
           });
