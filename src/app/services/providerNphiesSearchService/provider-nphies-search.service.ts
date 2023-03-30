@@ -169,7 +169,7 @@ export class ProviderNphiesSearchService {
       requestUrl += `&size=${size}`;
     }
 
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestUrl);
     return this.http.request(request);
   }
 
@@ -217,6 +217,11 @@ export class ProviderNphiesSearchService {
   getCommunications(providerId: string, responseId: number) {
     const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+  getClaimCommunications(providerId: string, responseId: number) {
+    const requestUrl = `/providers/${providerId}/claims/communications?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestUrl);
     return this.http.request(request);
   }
   getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
@@ -269,7 +274,7 @@ export class ProviderNphiesSearchService {
 
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);
   }
 
@@ -333,7 +338,7 @@ export class ProviderNphiesSearchService {
 
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);
   }
 
@@ -362,7 +367,7 @@ export class ProviderNphiesSearchService {
 
     requestUrl = requestUrl.slice(0, requestUrl.length - 1);
 
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestUrl, body);
     return this.http.request(request);
   }
 
@@ -378,13 +383,13 @@ export class ProviderNphiesSearchService {
 
     requestUrl = requestUrl.slice(0, requestUrl.length - 1);
 
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl, body);
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestUrl, body);
     return this.http.request(request);
   }
 
   getPaymentReconciliationDetails(providerId: string, reconciliationId: number) {
     const requestUrl = `/providers/${providerId}/reconciliationDetails/fetch?reconciliationId=${reconciliationId}`;
-    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestUrl);
     return this.http.request(request);
   }
 

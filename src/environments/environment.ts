@@ -45,6 +45,7 @@ export const environment = {
     nphiesDownloadApprovleEligibility: `${host}:8055/nphiesApprovalEligibilityDownloads`,
     nphiesClaimLinkAttachment: `${host}:8094`,
     eclaimsTicketManagement: `${host}:8100`,
+    providerNphiesClaimsSearch: `${host}:8091`,
 
 };
 
