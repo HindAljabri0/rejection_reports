@@ -660,7 +660,11 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
-
+  editPreparedClaim(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/prepare/edit`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
   convertToClaim(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/convert/claim`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);

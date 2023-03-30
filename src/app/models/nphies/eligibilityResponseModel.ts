@@ -4,6 +4,7 @@ import { ResponseItemModel } from "./responseItemModel";
 export class EligibilityResponseModel {
 
   transactionId: string;
+  responseId:number;
   outgoingTransactionId: string;
   eligibilityRequestId: string;
   beneficiaryName: string;

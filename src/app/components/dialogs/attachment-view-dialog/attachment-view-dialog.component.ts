@@ -13,7 +13,7 @@ export class AttachmentViewDialogComponent implements OnInit {
 
   fileExt: string = "";
   attachmentSource: SafeResourceUrl;
-  base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+  //base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
   constructor(
     private dialogRef: MatDialogRef<AttachmentViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AttachmentViewData,
@@ -23,7 +23,15 @@ export class AttachmentViewDialogComponent implements OnInit {
   ngOnInit() {
     this.setAttachmentSource();
   }
-
+  isValidHttpUrl(string) {
+    let url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
   closeDialog() {
     this.dialogRef.close();
   }
@@ -41,9 +49,9 @@ export class AttachmentViewDialogComponent implements OnInit {
       };
     } else {
 
-      let result = this.base64regex.test(this.data.attachment);
+      let result =this.isValidHttpUrl(this.data.attachment);
       console.log("Base64 test result = " + result);   // TRUE
-      if (result) {
+      if (!result) {
         this.viewAttach(this.data.attachment);
       } else {
         this.convertToBase64(this.data.attachment);
