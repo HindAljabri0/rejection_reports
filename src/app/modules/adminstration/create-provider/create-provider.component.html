@@ -63,10 +63,23 @@
                                     formControlName="providerNphiesIdControl" required>
                             </div>
                         </div>
+                        <div class="col-2 col-xxl-2">
+                            <div class="form-group"
+                                [class.has-error]="submitted && providerInfoForm.get('certificateTypeControl').hasError('required')">
+                                <label class="control-label">Certificate Type <span class="asterisk">*</span></label>
+                                <mat-form-field class="form-control custom-select-control">
+                                    <mat-select placeholder="Select Certificate Type" formControlName="certificateTypeControl" >
+                                        <mat-option *ngFor="let type of certificateTypes" [value]="type.value">
+                                            {{type.text}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
                         <div class="col-lg-auto" >
                             <div class="form-group">
                                 <label class="control-label d-lg-block d-none" >&nbsp;</label>
-                                <button type="button"   mat-flat-button color="primary" (click)='addProvider()'>Save</button>
+                                <button type="button"   mat-flat-button color="primary" (click)='addProvider()' >Save</button>
                             </div>
                         </div>
                    
