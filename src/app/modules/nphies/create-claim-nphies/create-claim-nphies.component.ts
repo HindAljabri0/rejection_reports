@@ -1728,11 +1728,11 @@ export class CreateClaimNphiesComponent implements OnInit {
         if (x.fromDate) {
           x.fromDate = this.datePipe.transform(x.fromDate, 'yyyy-MM-dd');
         }
-        model.fromDate = x.fromDate;
+        model.fromDate = moment(this.removeSecondsFromDate(x.fromDate)).utc();
         if (x.toDate) {
           x.toDate = this.datePipe.transform(x.toDate, 'yyyy-MM-dd');
         }
-        model.toDate = x.toDate;
+        model.toDate =moment(this.removeSecondsFromDate( x.toDate)).utc();
         model.value = x.value;
         model.reason = x.reason;
         model.attachment = x.attachment;
