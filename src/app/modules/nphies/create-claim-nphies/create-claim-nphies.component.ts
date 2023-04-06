@@ -391,7 +391,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
         maxLimit: this.otherDataModel.beneficiary.insurancePlan.maxLimit,
         patientShare: this.otherDataModel.beneficiary.insurancePlan.patientShare,
-        issueDate:null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder:null, insuranceStatus:null, insuranceDuration:null, insuranceType: null
+        issueDate: null, networkId: null, sponsorNumber: null, policyClassName: null, policyHolder: null, insuranceStatus: null, insuranceDuration: null, insuranceType: null
       }]
     };
     this.FormNphiesClaim.patchValue({
@@ -1710,12 +1710,16 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
       preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
       // tslint:disable-next-line:max-line-length
-      preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
+      if (this.FormNphiesClaim.controls.eligibilityOfflineDate.value) {
+        preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.eligibilityOfflineDate.value)).utc(), 'yyyy-MM-dd');
+      }
       preAuthorizationModel.eligibilityOfflineId = this.FormNphiesClaim.controls.eligibilityOfflineId.value;
       preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
       preAuthorizationModel.eligibilityResponseUrl = this.FormNphiesClaim.controls.eligibilityResponseUrl.value;
       // tslint:disable-next-line:max-line-length
-      preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(this.FormNphiesClaim.controls.preAuthOfflineDate.value, 'yyyy-MM-dd');
+      if (this.FormNphiesClaim.controls.preAuthOfflineDate.value) {
+        preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc(), 'yyyy-MM-dd');
+      }
       // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
       preAuthorizationModel.episodeId = this.FormNphiesClaim.controls.episodeId.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
@@ -1726,13 +1730,13 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.category = x.category;
         model.code = x.code;
         if (x.fromDate) {
-          x.fromDate = this.datePipe.transform(x.fromDate, 'yyyy-MM-dd');
+          x.fromDate = this.datePipe.transform(moment(this.removeSecondsFromDate(x.fromDate)).utc(), 'yyyy-MM-dd');
         }
-        model.fromDate = moment(this.removeSecondsFromDate(x.fromDate)).utc();
+        model.fromDate = x.fromDate;
         if (x.toDate) {
-          x.toDate = this.datePipe.transform(x.toDate, 'yyyy-MM-dd');
+          x.toDate = this.datePipe.transform(moment(this.removeSecondsFromDate(x.toDate)).utc(), 'yyyy-MM-dd');
         }
-        model.toDate =moment(this.removeSecondsFromDate( x.toDate)).utc();
+        model.toDate = x.toDate;
         model.value = x.value;
         model.reason = x.reason;
         model.attachment = x.attachment;
@@ -1762,7 +1766,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.city = this.FormNphiesClaim.controls.city.value;
         accidentModel.state = this.FormNphiesClaim.controls.state.value;
         accidentModel.country = this.FormNphiesClaim.controls.country.value;
-        accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
+        accidentModel.date = this.FormNphiesClaim.controls.date.value? this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.date.value)).utc(), 'yyyy-MM-dd') : null;
         this.model.accident = accidentModel;
       }
       this.model.careTeam = this.CareTeams.map(x => {
@@ -1786,7 +1790,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         let sequence = 1; let index = 0;
         let lens_model: any = [];
         this.VisionSpecifications.forEach(x => {
-          
+
           lens_model[index] = {};
           lens_model[index].sequence = sequence;
           lens_model[index].product = x.product;
@@ -1808,7 +1812,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           //new Fieldindex      
           ++sequence;
           ++index;
-          
+
           lens_model[index] = {};
           lens_model[index].sequence = sequence;
           lens_model[index].product = x.product;
@@ -2904,7 +2908,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.FormNphiesClaim.controls.prescriber.setValue(response.visionPrescription.prescriber);
       this.PrescriberDefault = response.visionPrescription.prescriber;
       if (response.visionPrescription.lensSpecifications) {
-        
+
         this.VisionSpecifications = response.visionPrescription.lensSpecifications.map(x => {
 
           const model: any = {};
@@ -3048,17 +3052,17 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (lensSpecifications) {
       let leftList = lensSpecifications.filter(f => f.eye == 'left');
       let rightList = lensSpecifications.filter(f => f.eye == 'right');
-      let SequenceList=rightList.map(x=>x.sequence);
+      let SequenceList = rightList.map(x => x.sequence);
       //console.log("Left List - > "+JSON.stringify(leftList));
       //console.log("Right List - > "+JSON.stringify(rightList));
       for (var i = 0; i < leftList.length; i++) {
-        
+
         let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
         row = row == null ? {} : row;
         console.log("Row = " + JSON.stringify(row));
         let result = leftList[i];
-        
-        if (result!=null) {
+
+        if (result != null) {
           //console.log("result = " + JSON.stringify(result));
           row.left_sphere = result.sphere;
           row.left_cylinder = result.cylinder;
@@ -3120,7 +3124,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         } else {
           isthereFiledEmpty = false;
           this.CareTeams.forEach(x => {
-           // console.log(x.speciality)
+            // console.log(x.speciality)
             if (x.practitionerName.length === 0 || x.practitionerRole === undefined || x.careTeamRole === undefined ||
               x.speciality === null || x.speciality === undefined) {
               isthereFiledEmpty = true;
@@ -3200,7 +3204,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: item.attachmentName, attachment: item.byteArray 
+        filename: item.attachmentName, attachment: item.byteArray
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }
@@ -3209,7 +3213,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: attachmentName, attachment: byteArray 
+        filename: attachmentName, attachment: byteArray
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }
