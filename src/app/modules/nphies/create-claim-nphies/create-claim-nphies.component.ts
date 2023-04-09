@@ -1711,7 +1711,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
       // tslint:disable-next-line:max-line-length
       if (this.FormNphiesClaim.controls.eligibilityOfflineDate.value) {
-        preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.eligibilityOfflineDate.value)).utc(), 'yyyy-MM-dd');
+        preAuthorizationModel.eligibilityOfflineDate = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.eligibilityOfflineDate.value)).utc();
       }
       preAuthorizationModel.eligibilityOfflineId = this.FormNphiesClaim.controls.eligibilityOfflineId.value;
       preAuthorizationModel.eligibilityResponseId = this.FormNphiesClaim.controls.eligibilityResponseId.value;
@@ -1719,6 +1719,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       if (this.FormNphiesClaim.controls.preAuthOfflineDate.value) {
         preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc(), 'yyyy-MM-dd');
+        preAuthorizationModel.eligibilityOfflineDate = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc();
       }
       // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
       preAuthorizationModel.episodeId = this.FormNphiesClaim.controls.episodeId.value;
@@ -1730,11 +1731,11 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.category = x.category;
         model.code = x.code;
         if (x.fromDate) {
-          x.fromDate = this.datePipe.transform(moment(this.removeSecondsFromDate(x.fromDate)).utc(), 'yyyy-MM-dd');
+          x.fromDate = moment(x.fromDate).utc();
         }
         model.fromDate = x.fromDate;
         if (x.toDate) {
-          x.toDate = this.datePipe.transform(moment(this.removeSecondsFromDate(x.toDate)).utc(), 'yyyy-MM-dd');
+          x.toDate = moment(x.toDate).utc();
         }
         model.toDate = x.toDate;
         model.value = x.value;
