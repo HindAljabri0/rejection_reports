@@ -1718,7 +1718,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       preAuthorizationModel.eligibilityResponseUrl = this.FormNphiesClaim.controls.eligibilityResponseUrl.value;
       // tslint:disable-next-line:max-line-length
       if (this.FormNphiesClaim.controls.preAuthOfflineDate.value) {
-        preAuthorizationModel.preAuthOfflineDate = this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc(), 'yyyy-MM-dd');
+        preAuthorizationModel.preAuthOfflineDate = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc();
         preAuthorizationModel.eligibilityOfflineDate = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc();
       }
       // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
