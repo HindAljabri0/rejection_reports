@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ClaimSearchCriteriaModel } from 'src/app/models/nphies/claimSearchCriteriaModel';
 import { NumericLiteral } from 'typescript';
 import { Provider } from 'src/app/models/nphies/provider';
+import { AuthService } from '../authService/authService.service';
 
 @Injectable({
   providedIn: 'root'
@@ -225,7 +226,11 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
   getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
+    const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims?`;
+    if (isHeadOffice) {
+      requestURL = `/head-office/${claimSearchCriteriaModel.providerId}/claims?`;
+    }
     if (claimSearchCriteriaModel.payerIds != null) {
       requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
     }
@@ -279,8 +284,11 @@ export class ProviderNphiesSearchService {
   }
 
   getClaimResults(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
+    const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims/details?`;
-
+    if (isHeadOffice) {
+      requestURL = `/head-office/${claimSearchCriteriaModel.providerId}/claims/details?`;
+    }
     if (claimSearchCriteriaModel.page == null) {
       claimSearchCriteriaModel.page = 0;
     }
@@ -503,13 +511,13 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
-  getJsonFormData(providerId, preAuthId,printFor) {
-    const requestURL = '/providers/' + providerId + '/json/' + preAuthId + '/'+printFor;
+  getJsonFormData(providerId, preAuthId, printFor) {
+    const requestURL = '/providers/' + providerId + '/json/' + preAuthId + '/' + printFor;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
 
- 
+
 
   /* getSupptingInfoPrintingFom(key: string, data:any) {
     const { supportingInfo } = data;
