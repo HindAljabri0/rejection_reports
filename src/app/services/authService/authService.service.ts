@@ -253,6 +253,7 @@ export class AuthService {
           localStorage.setItem('auth_username', event.body['username']);
           localStorage.setItem('provider_name', event.body['providerName']);
           localStorage.setItem('organizationId', event.body['organizationId']);
+          localStorage.setItem('isHeadOffice',event.body['isHeadOffice']);
           const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
@@ -350,4 +351,15 @@ export class AuthService {
     }
   } 
 
+  static isProviderHeadOffice(){
+    const isHeadOfficeData = localStorage.getItem("isHeadOffice");
+    const providerId = localStorage.getItem('provider_id');
+    let headOfficePrivileges = this.hasPrivilegeSubString(providerId, '101', '33.0');
+    let hasClaimPrivileges = this.hasPrivilegeSubString(providerId, '101', '25.3') || this.hasPrivilegeSubString(providerId, '101', '25.0');
+    let isHeadOffice = false;
+    if(isHeadOfficeData === "1" && headOfficePrivileges && hasClaimPrivileges){
+      isHeadOffice = true;
+    }
+    return isHeadOffice;
+  }
 }
