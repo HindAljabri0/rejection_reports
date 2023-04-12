@@ -4,4 +4,5 @@ export class Provider {
     nphiesId: number;
     englistName: string;
     arabicName: string;
+    waseel_associated_provider:any;
 }

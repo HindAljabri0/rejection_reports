@@ -363,7 +363,7 @@
             </li>
           </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim ">
+        <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isHeadOffice ">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <span class="d-flex align-items-center">

@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpErrorResponse
 import { environment } from 'src/environments/environment';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Subject } from 'rxjs';
+import { AuthService } from '../authService/authService.service';
 
 @Injectable({
   providedIn: 'root'
@@ -78,7 +79,11 @@ export class NphiesClaimUploaderService {
     if (size == null) {
       size = 10;
     }
-    const requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
+    if(isHeadOffice){
+      requestUrl = `/head-office/${providerId}/uploads?page=${page}&size=${size}`;
+    }
     const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
     return this.http.request(request);
   }

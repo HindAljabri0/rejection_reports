@@ -2,10 +2,18 @@
   <ng-container *ngIf="!showDetails">
     <div class="block-header">
       <p>Request Eligibility</p>
+
       <mat-slide-toggle *ngIf="!claimReuseId" color="primary"
-        [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto"
+      [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto"
+      (change)="onChangeIsEmergencyState(isEmergency)" [checked]="isEmergency">Emergency</mat-slide-toggle>
+      
+      <mat-slide-toggle *ngIf="!claimReuseId" color="primary"
+        [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-3"
         (change)="onChangeState(transfer)" [checked]="transfer">Referral</mat-slide-toggle>
+
+
     </div>
+
     <div class="block-filter-panel">
       <div class="form-group">
         <div class="checkbox-group inline">
