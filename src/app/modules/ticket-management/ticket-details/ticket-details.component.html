@@ -6,18 +6,19 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
             </div>
-            <p class="mr-12">{{ ticket.subject !=null ? ticket.subject : 'No Subject' }} <span
-                    class="text-regular">#{{ticketId}}</span></p>
+            <p class="mr-12">{{ ticket.subject !=null ? ticket.subject : 'No Subject' }} <span class="text-regular"> -
+                    #{{ticketId}}</span></p>
             <span class="status-badge size-sm primary normal-text">{{ status}}</span>
         </div>
         <div class="ml-auto my-n2 mr-n2">
-            <button type="button" (click)="replyVisible=true" mat-flat-button color="primary">Reply</button>
+            <button type="button" *ngIf="status !== 'Error' && status !== 'Closed'" (click)="replyVisible=true" mat-flat-button
+                color="primary">Reply</button>
         </div>
     </div>
     <ul class="ticket-chat">
         <li>
             <div class="ticket-chat-header">
-                <span class="initial">D</span>
+                <span class="initial">T</span>
                 <div>
                     <p class="name">{{UserName}} - {{providerName}}</p>
                     <span class="date">{{ticket.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
@@ -66,20 +67,18 @@ Description :
         </li>
         <li *ngFor="let reply of ticket.replies; let i = index">
             <div class="ticket-chat-header">
-                <span class="initial">A</span>
+                <span class="initial">R</span>
                 <div>
-                    <p class="name">Areej Al qahtani</p>
+                    <p class="name">{{reply.userName}}</p>
                     <span class="date">{{reply.replyDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
             </div>
             <div class="ticket-chat-body">
-                <pre>
-                    <span [innerHTML]="reply.description"></span>
-                    </pre>
+                <span [innerHTML]="reply.description"></span>
             </div>
         </li>
     </ul>
-    <div class="block-body" *ngIf="ticket.errors.length > 0">
+    <div class="block-body" *ngIf="ticket.errors && ticket.errors.length > 0">
         <h5 class="form-title">Errors</h5>
         <div class="table-responsive">
             <table class="primary-grid">

@@ -14,6 +14,7 @@ import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNph
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DatePipe } from '@angular/common';
+import { log } from 'console';
 
 @Component({
   selector: 'app-eligibility',
@@ -26,6 +27,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   subscriberSearchController = new FormControl();
   transfer = false;
   isNewBorn = false;
+  isEmergency = false;
+
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   subscriberSearchResult: BeneficiariesSearchResult[] = [];
@@ -58,6 +61,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   eligibilityResponseModel: EligibilityResponseModel;
   showDetails = false;
   plans = [];
+  
 
   constructor(
     private dialog: MatDialog,
@@ -125,6 +129,12 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.transfer = !transfer;
     console.log(this.transfer);
   }
+
+  onChangeIsEmergencyState(isEmergency) {
+    this.isEmergency = !isEmergency;
+    console.log(this.isEmergency);
+  }
+
   onNewBornChangeState(isNewBorn) {
     this.isNewBorn = !isNewBorn;
 
@@ -372,6 +382,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       discovery: this.isDiscovery,
       validation: this.isValidation,
       transfer: this.transfer,
+      isEmergency:this.isEmergency,
       // tslint:disable-next-line:max-line-length
       destinationId: this.purposeRadioButton == '1' ? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).tpaNphiesId : this.selectedDestination
     };
@@ -382,6 +393,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
         this.showDetails = true;*/
         let response = event.body as EligibilityResponseModel;
         this.getDetails(response.responseId);
+        console.log(response);
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -402,6 +414,8 @@ getDetails(responseId) {
         if (event.status === 200) {
           this.eligibilityResponseModel = event.body as EligibilityResponseModel;
           this.showDetails = true;
+        console.log(EligibilityResponseModel);
+        
         }
         this.sharedServices.loadingChanged.next(false);
       }
