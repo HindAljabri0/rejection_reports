@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { forEach } from 'jszip';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
@@ -21,12 +22,12 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class TicketDetailsComponent implements OnInit {
 
   ticketId: string;
-  status : string;
-  providerName :string;
+  status: string;
+  providerName: string;
   UserName
   ticket: any;
 
-  replyVisible=false;
+  replyVisible = false;
 
   attachments = [];
   fileError: string = '';
@@ -86,6 +87,7 @@ export class TicketDetailsComponent implements OnInit {
     this.UserName = this.authService.getUserName();
     this.getTicketDetails(this.ticketId);
   }
+
   viewAttachment(e, item) {
     e.preventDefault();
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
@@ -98,28 +100,29 @@ export class TicketDetailsComponent implements OnInit {
     this.eclaimsTicketManagementService.fetchEclaimsTicketDetails(this.sharedServices.providerId, ticketId).subscribe(event => {
       if (event instanceof HttpResponse) {
         //if (event.body != null && event.body instanceof Array)
-          this.ticket = event.body;
-          //console.log("ticket - "+this.ticket);
+        this.ticket = event.body;
+        
+        //console.log("ticket - "+this.ticket);
       }
     });
   }
-  getFileIcon(name:string){
+  getFileIcon(name: string) {
     const type = name.split('.').pop();
-    if(type && type.includes("pdf")){
+    if (type && type.includes("pdf")) {
       return "./assets/file-types/ic-pdf.svg";
-    }else if(type && (type.includes("jpg") || type.includes("png"))){
+    } else if (type && (type.includes("jpg") || type.includes("png"))) {
       return "./assets/file-types/ic-jpg.svg";
-    }else if(type && (type.includes("xls") || type.includes("xlsx") || type.includes("csv"))){
+    } else if (type && (type.includes("xls") || type.includes("xlsx") || type.includes("csv"))) {
       return "./assets/file-types/ic-xls.svg";
-    }else if(type && (type.includes("zip") || type.includes("rar"))){
+    } else if (type && (type.includes("zip") || type.includes("rar"))) {
       return "./assets/file-types/ic-zip.svg";
-    }else if(type && (type.includes("doc") || type.includes("docx"))){
+    } else if (type && (type.includes("doc") || type.includes("docx"))) {
       return "./assets/file-types/ic-word-file.svg";
-    }else if(type && type.includes("txt")){
+    } else if (type && type.includes("txt")) {
       return "./assets/file-types/ic-txt.svg";
-    }else if(type && type.includes("json")){
+    } else if (type && type.includes("json")) {
       return "./assets/file-types/ic-js.svg";
-    }else{
+    } else {
       return "./assets/file-types/ic-other-file.svg";
     }
   }
@@ -233,7 +236,7 @@ export class TicketDetailsComponent implements OnInit {
     }
     var ticket_reply = {
       'description': this.description.value,
-      'ticketId':this.ticketId,
+      'ticketId': this.ticketId,
       'attachmentModels': this.attachments
     };
     console.log(JSON.stringify(ticket_reply));
@@ -245,9 +248,10 @@ export class TicketDetailsComponent implements OnInit {
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
             if (event.body['ticketId'] != null) {
-              this.replyVisible=false;
+              this.replyVisible = false;
               this.description.setValue('');
               this.attachments = [];
+              location.reload();
               //this.loadTicket(event.body['ticketId']);
             }
           });
@@ -261,14 +265,14 @@ export class TicketDetailsComponent implements OnInit {
           if (error.error['message'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                this.replyVisible=false;
+                this.replyVisible = false;
                 //this.loadTicket(error.error['ticketId']);
               }
             });
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-              //this.loadTicket(error.error['ticketId']);
+                //this.loadTicket(error.error['ticketId']);
               }
             });
           }
@@ -276,14 +280,14 @@ export class TicketDetailsComponent implements OnInit {
           if (error.error['errors'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-                this.replyVisible=false;
+                this.replyVisible = false;
                 //this.loadTicket(error.error['ticketId']);
               }
             });
           }
           this.dialogService.openMessageDialog(new MessageDialogData('', error.error['message'], true)).subscribe(result => {
             if (error.error['ticketId'] != null) {
-              this.replyVisible=false;
+              this.replyVisible = false;
               //this.loadTicket(error.error['ticketId']);
             }
           });
