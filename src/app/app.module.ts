@@ -101,7 +101,7 @@ import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-fe
 import { FeedbackDialogComponent } from './components/dialogs/feedback-dialog/feedback-dialog.component';
 import { ChooseAttachmentUploadDialogComponent } from './modules/nphies/choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { HttpRequestExceptionHandler } from './components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
-import { SafeHTMLPipe } from './safe-html.pipe';
+
 
 
 @NgModule({
@@ -172,8 +172,7 @@ import { SafeHTMLPipe } from './safe-html.pipe';
         AlertDialogComponent,
         UpcomingFeatureDialogComponent,
         FeedbackDialogComponent,
-        ChooseAttachmentUploadDialogComponent,
-        SafeHTMLPipe
+        ChooseAttachmentUploadDialogComponent
     ],
     imports: [
         AppRoutingModule,
