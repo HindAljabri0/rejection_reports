@@ -3166,6 +3166,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   getCommunications() {
+    
     // this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.responseId).subscribe((event: any) => {
