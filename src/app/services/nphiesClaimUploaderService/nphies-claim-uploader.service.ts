@@ -92,7 +92,11 @@ export class NphiesClaimUploaderService {
 
     if (page == null) { page = 0; }
     if (size == null) { size = 10; }
+    const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestUrl = `/providers/${providerId}/uploads?`;
+    if(isHeadOffice){
+      requestUrl = `/head-office/${providerId}/uploads?`;
+    }
 
     if (query != null) {
       requestUrl += `query=${query}`;
