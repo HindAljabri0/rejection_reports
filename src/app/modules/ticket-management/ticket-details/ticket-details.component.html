@@ -11,8 +11,8 @@
             <span class="status-badge size-sm primary normal-text">{{ status}}</span>
         </div>
         <div class="ml-auto my-n2 mr-n2">
-            <button type="button" *ngIf="status !== 'Error' && status !== 'Closed'" (click)="replyVisible=true" mat-flat-button
-                color="primary">Reply</button>
+            <button type="button" *ngIf="status !== 'Error' && status !== 'Resolved'" (click)="replyVisible=true"
+                mat-flat-button color="primary">Reply</button>
         </div>
     </div>
     <ul class="ticket-chat">
@@ -75,8 +75,21 @@ Description :
             </div>
             <div class="ticket-chat-body">
                 <span [innerHTML]="reply.description"></span>
+
+                <ul class="attachment-list sm" *ngIf="reply.attachmentModels">
+                    <li *ngFor="let s of reply.attachmentModels; let i = index" matTooltip={{s.attachmentName}}
+                        (click)="viewAttachment($event,s? s:null )">
+                        <img [src]='getFileIcon(s.attachmentName)' />
+                        <span>{{s.attachmentName}} </span>
+                    </li>
+                    <!--li matTooltip="Report-4594.xls">
+                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                    <span>Report-4594.xls</span>
+                </li-->
+                </ul>
             </div>
         </li>
+        
     </ul>
     <div class="block-body" *ngIf="ticket.errors && ticket.errors.length > 0">
         <h5 class="form-title">Errors</h5>
