@@ -135,15 +135,18 @@ export class NphiesPayersSelectorComponent implements OnInit {
         } else {
           this.duplicatePayer = false;
           console.log(event.value + 'duplicatePayer')
-          payerNphiesIdValue = event.value;
+          if (event.value.split(':').length > 1) {
+            organizationNphiesIdValue = event.value.split(':')[0];
+            payerNphiesIdValue = event.value.split(':')[1];
           console.log(payerNphiesIdValue + 'payerNphiesIdValue')
-          this.organizations.forEach(x => {
-            if (x.subList.find(y => y.code === payerNphiesIdValue)) {
-              organizationNphiesIdValue = x.code;
-            }
-          });
-        }
-      }
+          console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
+          // this.organizations.forEach(x => {
+          //   if (x.subList.find(y => y.code === payerNphiesIdValue)) {
+          //     organizationNphiesIdValue = x.code;
+          //   }
+          // });
+        }}
+     }
 
       this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
     } else {
