@@ -113,6 +113,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
     if (event.value) {
       let payerNphiesIdValue = '';
       let organizationNphiesIdValue = '';
+      console.log("omat "+this.Form.controls.insurancePlanPayerId.value)
       if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
         if (event.value.split(':').length > 1) {
           organizationNphiesIdValue = event.value.split(':')[0];
