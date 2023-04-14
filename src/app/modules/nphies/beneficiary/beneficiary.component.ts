@@ -647,9 +647,11 @@ export class BeneficiaryComponent implements OnInit {
     
       tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
-    this.beneficiaryModel.insurancePlans.forEach(valus=>{
+    this.insurancePlans.forEach(valus=>{
       console.log(valus.tpaNphiesId +" valus.tpaNphiesId");
-    //  console.log(valus.selectePayer +"insurancePlan.selectePayer");
+      console.log((valus.selectePayer.indexOf(':') > -1) ? valus.selectePayer.split(':')[1] : valus.selectePayer +"insurancePlan.selectePayer");
+      console.log( valus.selectePayer +"insurancePlan.selectePayer 2");
+      console.log( (valus.selectePayer.indexOf(':') > -1) ? valus.selectePayer.split(':')[0] : valus.selectePayer  +"insurancePlan.selectePayer 3");
      
 
     })
