@@ -112,24 +112,31 @@ export class NphiesPayersSelectorComponent implements OnInit {
   }
 
   selectPayer(event) {
+  
     if (event.value) {
       let payerNphiesIdValue = '';
       let organizationNphiesIdValue = '';
-      console.log("omat "+this.Form.controls.insurancePlanPayerId.value)
+    
       if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
+        console.log(this.Form.controls.insurancePlanPayerId.value + ' 1');
+        console.log(event.value + '3');
         if (event.value.split(':').length > 1) {
           organizationNphiesIdValue = event.value.split(':')[0];
           payerNphiesIdValue = event.value;
         }
       } else {
         if (this.tpaNphiesId) {
+          console.log(event.value + 'tpaNphiesId');
           if (event.value.split(':').length > 1) {
             organizationNphiesIdValue = event.value.split(':')[0];
             payerNphiesIdValue = event.value;
+            console.log(organizationNphiesIdValue + 'organizationNphiesIdValue');
           }
         } else {
           this.duplicatePayer = false;
+          console.log(event.value + 'duplicatePayer')
           payerNphiesIdValue = event.value;
+          console.log(payerNphiesIdValue + 'payerNphiesIdValue')
           this.organizations.forEach(x => {
             if (x.subList.find(y => y.code === payerNphiesIdValue)) {
               organizationNphiesIdValue = x.code;
