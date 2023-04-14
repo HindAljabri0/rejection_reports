@@ -649,9 +649,11 @@ export class BeneficiaryComponent implements OnInit {
     }));
     this.beneficiaryModel.insurancePlans.forEach(valus=>{
       console.log(valus.tpaNphiesId +" valus.tpaNphiesId");
-      
+    //  console.log(valus.selectePayer +"insurancePlan.selectePayer");
+     
 
     })
+    console.log()
 
     console.log(this.beneficiaryModel);
   }

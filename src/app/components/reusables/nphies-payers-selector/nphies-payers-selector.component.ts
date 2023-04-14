@@ -93,6 +93,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
     } else if (this.insurancePayer) {
       if (this.tpaNphiesId) {
         this.insurancePayer = this.tpaNphiesId + ':' + this.insurancePayer;
+        console.log(this.insurancePayer + "this.tpaNphiesId + ':' + this.insurancePayer;");
+        
       } else {
         if (this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).length > 1) {
           this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).forEach(x => {
