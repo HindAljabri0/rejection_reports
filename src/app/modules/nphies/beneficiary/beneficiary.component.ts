@@ -408,11 +408,10 @@ export class BeneficiaryComponent implements OnInit {
     this.selectedVisaType = beneficiaryinfo.visaType;
 
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
-      console.log(insurancePlans.tpaNphiesId +" insurancePlans.tpaNphiesId")
       this.insurancePlans.push(
         {
           isPrimary: insurancePlans.isPrimary,
-          selectePayer: `-1:${insurancePlans.payerNphiesId}`,
+          selectePayer: insurancePlans.payerNphiesId,
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
           policyNumber: new FormControl(insurancePlans.policyNumber),
@@ -623,7 +622,6 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.visaType = this.selectedVisaType;
 
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
-      
       payerNphiesId: (insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer,
       expiryDate: new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
       // tslint:disable-next-line:max-line-length
@@ -644,18 +642,8 @@ export class BeneficiaryComponent implements OnInit {
       insuranceDuration: insurancePlan.insuranceDuration.value,
       insuranceType: insurancePlan.insuranceType.value,
       // tslint:disable-next-line:max-line-length
-    
       tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
-    this.insurancePlans.forEach(valus=>{
-      console.log(valus.tpaNphiesId +" valus.tpaNphiesId");
-      console.log((valus.selectePayer.indexOf(':') > -1) ? valus.selectePayer.split(':')[1] : valus.selectePayer +"insurancePlan.selectePayer");
-      console.log( valus.selectePayer +"insurancePlan.selectePayer 2");
-      console.log( (valus.selectePayer.indexOf(':') > -1) ? valus.selectePayer.split(':')[0] : valus.selectePayer  +"insurancePlan.selectePayer 3");
-     
-
-    })
-    console.log()
 
     console.log(this.beneficiaryModel);
   }
