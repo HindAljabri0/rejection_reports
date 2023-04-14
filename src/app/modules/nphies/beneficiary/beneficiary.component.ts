@@ -408,6 +408,7 @@ export class BeneficiaryComponent implements OnInit {
     this.selectedVisaType = beneficiaryinfo.visaType;
 
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
+      console.log(insurancePlans.tpaNphiesId +" insurancePlans.tpaNphiesId")
       this.insurancePlans.push(
         {
           isPrimary: insurancePlans.isPrimary,
@@ -622,6 +623,7 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.visaType = this.selectedVisaType;
 
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
+      
       payerNphiesId: (insurancePlan.selectePayer.indexOf(':') > -1) ? insurancePlan.selectePayer.split(':')[1] : insurancePlan.selectePayer,
       expiryDate: new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
       // tslint:disable-next-line:max-line-length
@@ -642,8 +644,14 @@ export class BeneficiaryComponent implements OnInit {
       insuranceDuration: insurancePlan.insuranceDuration.value,
       insuranceType: insurancePlan.insuranceType.value,
       // tslint:disable-next-line:max-line-length
+    
       tpaNphiesId: (insurancePlan.tpaNphiesId === '-1' || insurancePlan.tpaNphiesId === '' || insurancePlan.tpaNphiesId === undefined) ? null : insurancePlan.tpaNphiesId
     }));
+    this.beneficiaryModel.insurancePlans.forEach(valus=>{
+      console.log(valus.tpaNphiesId +" valus.tpaNphiesId");
+      
+
+    })
 
     console.log(this.beneficiaryModel);
   }
