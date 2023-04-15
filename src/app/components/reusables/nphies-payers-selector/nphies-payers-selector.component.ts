@@ -120,15 +120,12 @@ export class NphiesPayersSelectorComponent implements OnInit {
       let organizationNphiesIdValue = '';
     
       if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
-        console.log(this.Form.controls.insurancePlanPayerId.value + ' 1');
-        console.log(event.value + '3');
         if (event.value.split(':').length > 1) {
           organizationNphiesIdValue = event.value.split(':')[0];
           payerNphiesIdValue = event.value;
         }
       } else {
         if (this.tpaNphiesId) {
-          console.log(event.value + 'tpaNphiesId');
           if (event.value.split(':').length > 1) {
             organizationNphiesIdValue = event.value.split(':')[0];
             payerNphiesIdValue = event.value;
@@ -136,20 +133,12 @@ export class NphiesPayersSelectorComponent implements OnInit {
           }
         } else {
           this.duplicatePayer = false;
-          console.log(event.value + 'duplicatePayer')
-         //   payerNphiesIdValue = event.value;
             if (event.value.split(':').length > 1) {
               organizationNphiesIdValue = event.value.split(':')[0];
               payerNphiesIdValue =event.value.split(':')[1];
             }
             console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
             console.log(payerNphiesIdValue + 'payerNphiesIdValue')
-      //  if( this.duplicatePayer){
-      //   console.log(event.value + 'duplicatePayer')
-      //  this.duplicatePayer = false;
-      //  this.selectPayer(event)
-      //  }
-          // console.log(payerNphiesIdValue + 'payerNphiesIdValue')
           // console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
           // this.organizations.forEach(x => {
           //   if (x.subList.find(y => y.code === payerNphiesIdValue)) {
