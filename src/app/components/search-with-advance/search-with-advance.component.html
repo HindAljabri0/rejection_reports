@@ -14,7 +14,7 @@
         </button> -->
         <div class="search-btns">
             <button
-                *ngIf="((isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date') )&& selectedSearchMode!='requestBundleId'"
+                *ngIf="((isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date') )&& selectedSearchMode!='requestBundleId' &&   selectedSearchMode!='status&date'"
                 type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
@@ -22,7 +22,7 @@
             <span class="separator"
                 *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && (selectedSearchMode == 'payer&date' && selectedPayerType !== 'N'))"></span>
             <button
-                *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date') || selectedSearchMode=='requestBundleId'"
+                *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date') || selectedSearchMode=='requestBundleId'||  selectedSearchMode=='status&date'"
                 type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(false)">
                 <mat-icon>search</mat-icon>
                 <span>NPHIES</span>
@@ -39,7 +39,7 @@
         </ng-template> -->
 
         <mat-chip-list #chipList (keyup.enter)="isClaimUser?search(true):search(false)">
-            <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'">
+            <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'|| selectedSearchMode == 'status&date'">
                 <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu"
                     *ngIf="selectedSearchMode == 'payer&date'">
                     <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedPayer != null?
@@ -50,6 +50,11 @@
                     <span [ngStyle]="{'color':tpaHasError? '#D84646':'#3A3A3A'}">{{selectedTpa != null? selectedTpa.name
                         : 'Select TPA'}}</span>
                 </mat-chip>
+                <mat-chip matTooltip="Select Status" [matMenuTriggerFor]="StatusMenu"
+                *ngIf="selectedSearchMode == 'status&date'">
+                <span [ngStyle]="{'color':statusesHasError? '#D84646':'#3A3A3A'}">{{selectedStatus != null? selectedStatus.name
+                    : 'Select Status'}}</span>
+            </mat-chip>
                 <mat-chip matTooltip="From Date" (click)="fromPicker.open()">
                     <input [matDatepicker]="fromPicker" [formControl]="fromDateControl" class="hidden-input">
                     <span
@@ -105,5 +110,11 @@
     <button *ngFor="let type of claimTypes" (click)="selectedClaimType = type.value;"
         mat-menu-item>
         <span>{{type.name}}</span>
+    </button>
+</mat-menu>
+<mat-menu #StatusMenu class="header-search-menu">
+    <button *ngFor="let status of statusList" (click)="this.selectedStatus=status;"
+        mat-menu-item>
+        <span>{{status.name}}</span>
     </button>
 </mat-menu>

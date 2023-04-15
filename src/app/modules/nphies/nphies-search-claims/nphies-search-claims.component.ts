@@ -85,7 +85,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   progressChange: Subject<{ percentage: number }> = new Subject();
 
-
+ isSearchByStatues=false;
   placeholder = '-';
   cardsClickAble = true;
   extraCards = 3;
@@ -248,15 +248,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
-        statuses: ['All']
+        statuses: this.params.statuses!=undefined?this.params.statuses: null
+        //['All']
       }));
     }).unsubscribe();
     if (this.params.hasNoQueryParams()) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+    this.isSearchByStatues=this.params.statuses!=null;
     this.showValidationTab = false;
-    const statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
+    const statusCode = await this.getSummaryOfStatus(this.params.statuses!=null?this.params.statuses:[ClaimStatus.ALL] , this.isSearchByStatues);
     if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
       const statuses = this.summaries[0].statuses;
       statuses.sort((s1, s2) => {
@@ -346,7 +348,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     // if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
 
-  async getSummaryOfStatus(statuses: string[]): Promise<number> {
+  async getSummaryOfStatus(statuses: string[], isearchByStatus?:boolean): Promise<number> {
 
     
     this.commen.loadingChanged.next(true);
@@ -384,7 +386,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
 
-    event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
+    event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel, isearchByStatus
 
     ).toPromise().catch(error => {
       this.commen.loadingChanged.next(false);
@@ -404,7 +406,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         // debugger;
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
  
-        if (summary.totalClaims > 0 || summary.inActiveClaimCount>0) {
+        if ((summary.totalClaims > 0 || summary.inActiveClaimCount>0) ) {
 
           if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');

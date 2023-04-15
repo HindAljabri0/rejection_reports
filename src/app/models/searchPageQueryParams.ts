@@ -35,6 +35,7 @@ export class SearchPageQueryParams {
     status?: number;
     page?: number;
     size?: number;
+    statuses?:string[];
     netAmount? : string;
     static fromParams(params: Params): SearchPageQueryParams {
         let pageParams: SearchPageQueryParams = new SearchPageQueryParams();
@@ -52,6 +53,7 @@ export class SearchPageQueryParams {
         pageParams.claimTypes = params.claimTypes;
         pageParams.organizationId = params.organizationId;
         pageParams.batchId = params.batchId;
+        pageParams.statuses=params.statuses;
         pageParams.requestBundleId = params.requestBundleId;
         pageParams.uploadId = params.uploadId;
         pageParams.caseTypes = params.caseTypes;
@@ -82,6 +84,7 @@ export class SearchPageQueryParams {
 
         criteria.batchId = this.batchId;
         criteria.requestBundleId = this.requestBundleId;
+        criteria.statuses = this.statuses;
         criteria.caseTypes = this.caseTypes;
         criteria.claimRefNo = this.claimRefNo;
         criteria.fromDate = this.from;

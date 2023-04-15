@@ -24,6 +24,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
     { key: 'memberId', label: 'Member ID' },
     { key: 'payer&date', label: 'Payer' },
+    { key: 'status&date', label: 'Statuses' },
     { key: 'tpa&date', label: 'TPA' },
     { key: 'batchId', label: 'Batch ID' },
     { key: 'invoiceNo', label: 'Invoice No.' },
@@ -37,6 +38,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
     { key: 'memberId', label: 'Member ID' },
     { key: 'payer&date', label: 'Payer' },
+    { key: 'status&date', label: 'Statuses' },
     { key: 'batchId', label: 'Batch ID' },
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
@@ -45,8 +47,21 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   ];
 
-  selectedSearchMode = 'claimRefNo';
 
+  statusList: { value: string, name: string }[] = [
+    { value: 'queued', name: 'Queued' },
+    // { value: 'Processing Complete', name: 'Processing Complete' },
+    { value: 'error', name: 'Error' },
+    // { value: 'Partial Processing', name: 'Partial Processing' },
+    { value: 'approved', name: 'Approved' },
+    { value: 'rejected', name: 'Rejected' },
+    { value: 'partial', name: 'Partially Approved' },
+    { value: 'not-required', name: 'Not Required' },
+    { value: 'pended', name: 'Pended' },
+    { value: 'cancelled', name: 'Cancelled' }
+  ];
+
+  selectedSearchMode = 'claimRefNo';
   payers: { id: number, name: string }[] = [];
   nphiesPayers: { id: number, name: string }[] = [];
   tpas: { id: number, name: string }[] = [];
@@ -71,8 +86,10 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   selectedPayer: { id: number, name: string };
   selectedTpa: { id: number, name: string };
+  selectedStatus= null;
   payerHasError = false;
   tpaHasError = false;
+  statusesHasError=false;
   fromDateControl: FormControl = new FormControl();
   fromDateHasError = false;
   toDateControl: FormControl = new FormControl();
@@ -133,6 +150,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.fromDateControl = new FormControl();
     this.toDateControl = new FormControl();
     this.selectedClaimType = null;
+    this.selectedStatus=null;
+  
   }
 
   onNphiesPayerSelected(event) {
@@ -151,13 +170,17 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   search(isWassel: boolean) {
 
-    if (this.selectedSearchMode == 'payer&date' || this.selectedSearchMode == 'tpa&date') {
+    if (this.selectedSearchMode == 'payer&date' || this.selectedSearchMode == 'tpa&date' ||this.selectedSearchMode == 'status&date') {
       if (this.selectedSearchMode == 'payer&date' && this.selectedPayer == null) {
         this.payerHasError = true;
         return;
       }
       if (this.selectedSearchMode == 'tpa&date' && this.selectedTpa == null) {
         this.tpaHasError = true;
+        return;
+      }
+      if (this.selectedSearchMode == 'status&date' && this.selectedStatus == null) {
+        this.statusesHasError = true;
         return;
       }
       this.payerHasError = false;
@@ -173,23 +196,25 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.toDateHasError = false;
       let routes = [this.commen.providerId, 'claims'];
       let queryParams = {
-        payerId: this.selectedSearchMode == 'tpa&date' ? null : this.selectedPayer.id,
+        payerId: this.selectedSearchMode == 'tpa&date'|| this.selectedSearchMode == 'status&date'  ? null : this.selectedPayer.id,
         organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
         from: this.fromDateControl.value.format('DD-MM-yyyy'),
         to: this.toDateControl.value.format('DD-MM-yyyy'),
         caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
-        claimTypes: null
+        claimTypes: null,
+        statuses:null
+
       }
       if (!isWassel) {
         routes.push('nphies-search-claim')
-
         queryParams = {
-          payerId: this.selectedSearchMode == 'tpa&date' ? null : this.selectedPayer.id,
+          payerId: this.selectedSearchMode == 'tpa&date'|| this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
           organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
           caseTypes: null,
-          claimTypes: this.selectedClaimType != null ? this.selectedClaimType : null
+          claimTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
+          statuses:this.selectedStatus!=null?[this.selectedStatus.value]:null
         }
       }
       this.router.navigate(routes, {
