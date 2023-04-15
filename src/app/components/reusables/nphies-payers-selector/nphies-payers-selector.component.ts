@@ -31,6 +31,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
 
   payerName = '';
   duplicatePayer = false;
+  
+  
 
   organizations: {
     id: string
@@ -133,13 +135,14 @@ export class NphiesPayersSelectorComponent implements OnInit {
             console.log(organizationNphiesIdValue + 'organizationNphiesIdValue');
           }
         } else {
-          this.duplicatePayer = false;
+         
           console.log(event.value + 'duplicatePayer')
-          // if (event.value.split(':').length > 1) {
-          //   organizationNphiesIdValue = event.value.split(':')[0];
             payerNphiesIdValue = event.value;
-          // organizationNphiesIdValue
-            //event.value.split(':')[1];
+       if( this.duplicatePayer){
+        console.log(event.value + 'duplicatePayer')
+       this.duplicatePayer = false;
+       this.selectPayer(event)
+       }
           // console.log(payerNphiesIdValue + 'payerNphiesIdValue')
           // console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
           // this.organizations.forEach(x => {
