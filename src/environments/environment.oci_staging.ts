@@ -1,5 +1,5 @@
 const host = 'https://stg-eclaims.waseel.com/api';
-const apiDotHost = 'https://api.stg-eclaims.waseel.com';
+
 export const environment = {
     name: 'oci_staging',
     production: true,
@@ -9,10 +9,10 @@ export const environment = {
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
-    NotificationServiceHost: `${apiDotHost}/notifications`,
+    NotificationServiceHost: `${host}/notifications`,
     authenticationHost: `${host}/oauth`,
     adminServiceHost: `${host}/admin`,
-    auditTrailServiceHost: `${apiDotHost}/audit`,
+    auditTrailServiceHost: `${host}/audit`,
     settingsServiceHost: `${host}/settings`,
     claimInquireServiceHost: `${host}/claim-inquiry`,
     validationServiceHost: `${host}/validate`,
@@ -26,15 +26,15 @@ export const environment = {
     providerNphiesSearch: `${host}/provider-nphies-search`,
     providerNphiesApproval: `${host}/approvals`,
     nphiesClaimUploader: `${host}/upload-v2`,
-    claimsDownloadsService: `${apiDotHost}/downloads`,
+    claimsDownloadsService: `${host}/downloads`,
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
     claimReviewService: `${host}/review`,
     nphiesConfigurationService: `${host}/nphies-configurations`,
     tawuniyaGssReport: `${host}/gss-report`,
-    nphiesClaimDownload: `${apiDotHost}/nphiesDownloads`,
+    nphiesClaimDownload: `${host}/nphiesDownloads`,
     nphiesApprovalInquiry: `${host}/nphies-approval-inquiry`,
-    nphiesDownloadApprovleEligibility: `${apiDotHost}/nphiesApprovalEligibilityDownloads`,
+    nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`,
     providerNphiesClaim:`${host}/nphies-claim`,
     nphiesClaimLinkAttachment: `${host}/nphies-claim-attachment-link`,
     eclaimsTicketManagement: `${host}/eclaims-ticket-management`,
