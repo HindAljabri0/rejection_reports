@@ -51,7 +51,8 @@ export interface UserPrivileges {
       canAccessConvertPreAuthToClaim: boolean,
       canAccessPrepareClaim: boolean,
       canAccessConvertClaim: boolean,
-      canSwitchGroupProvider: boolean
+      canSwitchGroupProvider: boolean,
+      isHeadOffice: boolean,
     }
   };
 }
@@ -112,7 +113,8 @@ export const initState: MainState = {
         canAccessConvertPreAuthToClaim: false,
         canAccessPrepareClaim: false,
         canAccessConvertClaim: false,
-        canSwitchGroupProvider: false
+        canSwitchGroupProvider: false,
+        isHeadOffice : false,
       }
     }
   }
@@ -175,6 +177,7 @@ const _mainReducer = createReducer(
           canAccessPrepareClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.71')),
           canAccessConvertClaim: providerId != '101' && (AuthService.hasPrivilegeSubString(providerId, '101', '25.72')),
           canSwitchGroupProvider: providerId != '101' && (AuthService.hasPrivilegeSubString(parentProviderId, '101', '32.0')),
+          isHeadOffice: providerId != '101' && AuthService.isProviderHeadOffice(),
         }
       }
     };

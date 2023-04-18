@@ -1996,6 +1996,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
+            if(error.error.errors.length > 0){
+              error.error.errors = [];
+            }
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
             if (this.pageMode === 'EDIT') {
               this.ngOnInit();
@@ -3170,7 +3173,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     
     // this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.responseId).subscribe((event: any) => {
+    this.providerNphiesSearchService.getClaimCommunications(this.sharedServices.providerId, this.responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         this.communications = event.body.communicationList;
         // this.sharedServices.loadingChanged.next(false);

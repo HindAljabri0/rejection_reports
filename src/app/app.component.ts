@@ -2,11 +2,12 @@ import { AuthService } from './services/authService/authService.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { Subject } from 'rxjs';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd,NavigationStart} from '@angular/router';
 import { takeUntil, filter } from 'rxjs/operators';
 import { VersionCheckService } from './services/versionCheckService/version-check.service';
 import { environment } from 'src/environments/environment';
 import { SharedServices } from './services/shared.services';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 declare const gtag: Function;
 
@@ -51,6 +52,29 @@ export class AppComponent implements OnInit, OnDestroy {
     localStorage.setItem('lastVisitedPath', location.pathname.replace('/en/', '').replace('/ar/', ''));
     this.versionCheckService.initVersionCheck(environment.versionCheckURL + (location.pathname.includes('/en') ? '/en' : '/ar'));
     setInterval(() => this.authService.loggedIn, 1000 * 60);
+    
+    this.authService.refreshTokenForSSO().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.authService.isUserNameUpdated.subscribe(updated => {
+          if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {
+            const lastVisitedPath = localStorage.getItem('lastVisitedPath');
+            if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
+              this.router.navigate(lastVisitedPath.split('/'));
+            } else {
+              this.router.navigate(['/']);
+            }
+          }
+        });
+        this.authService.setTokens(event.body);
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (this.authService.loggedIn && errorEvent.status == 400)
+          this.authService.logout();
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
   }
 
   /** Add Google Analytics Script Dynamically */
