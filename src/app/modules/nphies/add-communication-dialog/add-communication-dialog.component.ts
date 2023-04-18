@@ -233,7 +233,7 @@ export class AddCommunicationDialogComponent implements OnInit {
             this.fetchCommunications.emit(true);
           } else {
             this.sharedServices.loadingChanged.next(false);
-            this.dialogRef.close(true);
+            //this.dialogRef.close(true);
           }
         }
       }
@@ -248,9 +248,9 @@ export class AddCommunicationDialogComponent implements OnInit {
             this.dialogService.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
           }
         } else if (error.status === 404) {
-          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK');
+          this.dialogService.showMessage('Error', error.error, 'alert', true, 'OK', null, true);
         } else if (error.status === 500) {
-          this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.dialogService.showMessage('Error', error.error.message, 'alert', true, 'OK', null, true);
         } else if (error.status === 503) {
           const errors: any[] = [];
           if (error.error.errors) {
@@ -259,7 +259,7 @@ export class AddCommunicationDialogComponent implements OnInit {
             });
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
           } else {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', null, true);
           }
         }
         this.sharedServices.loadingChanged.next(false);
