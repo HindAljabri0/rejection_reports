@@ -219,7 +219,7 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
-  getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel , isearchByStatus:boolean) {
+  getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel) {
     let requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claims?`;
     if (claimSearchCriteriaModel.payerIds != null) {
       requestURL += `&payerIds=${claimSearchCriteriaModel.payerIds}`;
@@ -265,16 +265,10 @@ export class ProviderNphiesSearchService {
 
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
-     
-    }
-    if (claimSearchCriteriaModel.statuses != null &&  isearchByStatus!=null &&isearchByStatus ) {
-      requestURL += `&statuses=${claimSearchCriteriaModel.statuses}`;
     }
 
     // tslint:disable-next-line:max-line-length
-    if(  isearchByStatus==null ){
     requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
-    }
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
