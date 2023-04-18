@@ -1,4 +1,4 @@
-const host = 'https://stg-eclaims.waseel.com/api';
+const host = 'https://api.stg-eclaims.waseel.com/api';
 
 export const environment = {
     name: 'oci_staging',
