@@ -1996,6 +1996,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
+            if(error.error.errors.length > 0){
+              error.error.errors = [];
+            }
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
             if (this.pageMode === 'EDIT') {
               this.ngOnInit();
