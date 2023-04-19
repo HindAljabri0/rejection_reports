@@ -14,4 +14,6 @@ export class EligibilityRequestModel {
   validation: boolean;
   transfer: boolean;
   destinationId: string;
+  isEmergency:boolean;
 }
+

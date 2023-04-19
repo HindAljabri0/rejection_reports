@@ -31,6 +31,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
 
   payerName = '';
   duplicatePayer = false;
+  
+  
 
   organizations: {
     id: string
@@ -93,6 +95,8 @@ export class NphiesPayersSelectorComponent implements OnInit {
     } else if (this.insurancePayer) {
       if (this.tpaNphiesId) {
         this.insurancePayer = this.tpaNphiesId + ':' + this.insurancePayer;
+        console.log(this.insurancePayer + "this.tpaNphiesId + ':' + this.insurancePayer;");
+        
       } else {
         if (this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).length > 1) {
           this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).forEach(x => {
@@ -110,9 +114,11 @@ export class NphiesPayersSelectorComponent implements OnInit {
   }
 
   selectPayer(event) {
+  
     if (event.value) {
       let payerNphiesIdValue = '';
       let organizationNphiesIdValue = '';
+    
       if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
         if (event.value.split(':').length > 1) {
           organizationNphiesIdValue = event.value.split(':')[0];
@@ -123,6 +129,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
           if (event.value.split(':').length > 1) {
             organizationNphiesIdValue = event.value.split(':')[0];
             payerNphiesIdValue = event.value;
+            console.log(organizationNphiesIdValue + 'organizationNphiesIdValue');
           }
         } else {
           this.duplicatePayer = false;
@@ -140,7 +147,6 @@ export class NphiesPayersSelectorComponent implements OnInit {
         // });
         }
       }
-
       this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
     } else {
       this.selectionChange.emit({ value: '' });
