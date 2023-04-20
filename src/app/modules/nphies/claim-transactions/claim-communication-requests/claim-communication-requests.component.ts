@@ -4,11 +4,11 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { CommunicationRequest } from 'src/app/models/communication-request';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateClaimNphiesComponent } from '../../create-claim-nphies/create-claim-nphies.component';
+import { ClaimTransactionService } from '../claim-transaction.service';
 
 @Component({
   selector: 'app-claim-communication-requests',
@@ -40,7 +40,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
     public routeActive: ActivatedRoute,
     private sharedServices: SharedServices,
     private dialogService: DialogService,
-    private providerNphiesSearchService: ProviderNphiesSearchService,
+    private claimTransactionService: ClaimTransactionService,
   ) { }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
   getCommunicationRequests() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId, 'claim', this.page, this.pageSize).subscribe((event: any) => {
+    this.claimTransactionService.getCommunicationRequests(this.sharedServices.providerId, this.page, this.pageSize).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -142,7 +142,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
   }
 
   readAllNotification() {
-    this.communicationRequests.forEach(x=>x.notificationStatus = 'read');
+    this.communicationRequests.forEach(x => x.notificationStatus = 'read');
     this.sharedServices.unReadClaimComunicationRequestCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "claim-communication-request-notification");
   }

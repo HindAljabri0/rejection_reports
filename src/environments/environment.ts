@@ -34,7 +34,7 @@ export const environment = {
     providerNphiesApproval: `${host}:8025`,
     providerNphiesClaim: `${host}:8102`,
     nphiesClaimUploader: `${host}:8088`,
-    claimsDownloadsService: `${host}:8052`,
+    claimsDownloadsService: `${host}:8052/downloads`,
     nphiesPollManagement: `${host}:9991`,
     contractManagementService: `${host}:8099`,
     claimReviewService: `${host}:8100`,
@@ -45,6 +45,7 @@ export const environment = {
     nphiesDownloadApprovleEligibility: `${host}:8055/nphiesApprovalEligibilityDownloads`,
     nphiesClaimLinkAttachment: `${host}:8094`,
     eclaimsTicketManagement: `${host}:8100`,
+    providerNphiesClaimsSearch: `${host}:8091`,
 
 };
 

@@ -1,10 +1,11 @@
 const host = 'https://api.dr-eclaims.waseel.com';
+
 export const environment = {
     name: 'oci_qa',
     production: true,
     GA_TRACKING_ID: 'G-J17HY3QXBF',
     showFreshChat: true,
-    versionCheckURL: `https://dr-eclaims.waseel.com`,
+    versionCheckURL: `https://dr-eclaims.waseel.com/api`,
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
@@ -37,4 +38,5 @@ export const environment = {
     providerNphiesClaim:`${host}/nphies-claim`,
     nphiesClaimLinkAttachment: `${host}/nphies-claim-attachment-link`,
     eclaimsTicketManagement: `${host}/eclaims-ticket-management`,
+    providerNphiesClaimsSearch: `${host}/provider-nphies-claim-search`,
 };

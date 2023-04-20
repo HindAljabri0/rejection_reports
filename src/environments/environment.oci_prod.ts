@@ -1,4 +1,5 @@
 const host = 'https://api.eclaims.waseel.com';
+// const apiDotHost = 'https://api.eclaims.waseel.com';
 export const environment = {
     name: 'oci_prod',
     production: true,
@@ -37,4 +38,5 @@ export const environment = {
     providerNphiesClaim:`${host}/nphies-claim`,
     nphiesClaimLinkAttachment: `${host}/nphies-claim-attachment-link`,
     eclaimsTicketManagement: `${host}/eclaims-ticket-management`,
+    providerNphiesClaimsSearch: `${host}/provider-nphies-claim-search`
 };

@@ -14,7 +14,11 @@ export class EclaimsTicketManagementService {
     const request = new HttpRequest('POST', environment.eclaimsTicketManagement + requestUrl, body);
     return this.http.request(request);
   }
-
+  sendTicketReply(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/ticket/reply/create`;
+    const request = new HttpRequest('POST', environment.eclaimsTicketManagement + requestUrl, body);
+    return this.http.request(request);
+  }
   fetchEclaimsTicketSummary(providerId: string, queryString: string, status: string, pageIndex: number, pageSize: number) {
     const requestUrl = `/providers/${providerId}/ticket?query=${queryString}&status=${status}&page=${pageIndex}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);

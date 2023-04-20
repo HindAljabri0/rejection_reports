@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { checkAlerts, evaluateUserPrivileges } from 'src/app/store/mainStore.actions';
@@ -56,7 +56,6 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
-
   logout(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
     let demoDoneValue;
@@ -95,7 +94,7 @@ export class AuthService {
       window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
     }
     promise.then(() => location.reload());
-  }
+}
 
   logoutWithToken(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
@@ -233,6 +232,7 @@ export class AuthService {
           localStorage.setItem('auth_username', event.body['username']);
           localStorage.setItem('provider_name', event.body['providerName']);
           localStorage.setItem('organizationId', event.body['organizationId']);
+          localStorage.setItem('isHeadOffice',event.body['isHeadOffice']);
           const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
@@ -330,4 +330,15 @@ export class AuthService {
     }
   } 
 
+  static isProviderHeadOffice(){
+    const isHeadOfficeData = localStorage.getItem("isHeadOffice");
+    const providerId = localStorage.getItem('provider_id');
+    let headOfficePrivileges = this.hasPrivilegeSubString(providerId, '101', '33.0');
+    let hasClaimPrivileges = this.hasPrivilegeSubString(providerId, '101', '25.3') || this.hasPrivilegeSubString(providerId, '101', '25.0');
+    let isHeadOffice = false;
+    if(isHeadOfficeData === "1" && headOfficePrivileges && hasClaimPrivileges){
+      isHeadOffice = true;
+    }
+    return isHeadOffice;
+  }
 }

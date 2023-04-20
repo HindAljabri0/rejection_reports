@@ -17,6 +17,8 @@ export class CreateProviderComponent implements OnInit {
   providerInfoForm: FormGroup;
   submitted = false;
   error: string;
+
+  certificateTypes=[{value:'0',text:"own certificate"},{value:'1',text:"Waseel certificate"}];
   selectedProvider: string;
   providers: any[] = [];
   providerInf: any;
@@ -27,6 +29,7 @@ export class CreateProviderComponent implements OnInit {
   providerNameEnglishControl = new FormControl();
   providerNameArabicControl = new FormControl();
   providerController = new FormControl();
+  certificateTypeControl=new FormControl();
   constructor(private superAdmin: SuperAdminService, private dialogService: DialogService, public commen: SharedServices, private providerNphiesSearchService: ProviderNphiesSearchService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -52,12 +55,13 @@ export class CreateProviderComponent implements OnInit {
       providerNphiesIdControl: ['', Validators.required],
       providerNameEnglishControl: ['', Validators.required],
       providerNameArabicControl: ['', Validators.required],
+      certificateTypeControl:['', Validators.required]
     });
 
   }
 
   addProvider() {
-
+console.log(this.providerInfoForm.controls.certificateTypeControl.value)
     this.submitted = true;
     if (this.providerInfoForm.valid) {
       this.commen.loadingChanged.next(true);
@@ -66,6 +70,7 @@ export class CreateProviderComponent implements OnInit {
         "arabicName": this.providerInfoForm.controls.providerNameArabicControl.value.trim(),
         "englistName": this.providerInfoForm.controls.providerNameEnglishControl.value.trim(),
         "nphiesId": this.providerInfoForm.controls.providerNphiesIdControl.value,
+        "waseel_associated_provider": this.providerInfoForm.controls.certificateTypeControl.value!='1'?false:true,
       }
       this.providerNphiesSearchService.addNewProvider(this.commen.providerId, this.providerInfo).subscribe(event => {
 
@@ -82,6 +87,7 @@ export class CreateProviderComponent implements OnInit {
             this.providerInfoForm.controls.providerNameArabicControl.setValue('');
             this.providerInfoForm.controls.providerNameEnglishControl.setValue('');
             this.providerInfoForm.controls.providerNphiesIdControl.setValue('');
+            this.providerInfoForm.controls.certificateTypeControl.setValue('');
             this.submitted = false;
           }
 
@@ -115,6 +121,8 @@ export class CreateProviderComponent implements OnInit {
       this.providerInfoForm.controls.providerNameArabicControl.setValue(this.providerInf.providerArabicNameNphies!=null?this.providerInf.providerArabicNameNphies:this.providerInf.providerArabicName);
       this.providerInfoForm.controls.providerNameEnglishControl.setValue(this.providerInf.providerEnglishNameNphies!=null?this.providerInf.providerEnglishNameNphies:this.providerInf.providerEnglishName);
       this.providerInfoForm.controls.providerNphiesIdControl.setValue(this.providerInf.nphies_ID!=null?this.providerInf.nphies_ID:'');
+      this.providerInfoForm.controls.certificateTypeControl.setValue(this.providerInf.waseelAssociatedProvider!=null?this.providerInf.waseelAssociatedProvider:'');
+
 
 
     } else {

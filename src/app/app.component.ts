@@ -2,11 +2,12 @@ import { AuthService } from './services/authService/authService.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { Subject } from 'rxjs';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd,NavigationStart} from '@angular/router';
 import { takeUntil, filter } from 'rxjs/operators';
 import { VersionCheckService } from './services/versionCheckService/version-check.service';
 import { environment } from 'src/environments/environment';
 import { SharedServices } from './services/shared.services';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 declare const gtag: Function;
 

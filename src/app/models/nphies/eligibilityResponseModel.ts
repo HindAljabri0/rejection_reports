@@ -1,3 +1,4 @@
+import { log } from "console";
 import { ResponseCoverageModel } from "./responseCoverageModel";
 import { ResponseItemModel } from "./responseItemModel";
 
@@ -17,6 +18,7 @@ export class EligibilityResponseModel {
   disposition: string;
   transfer: boolean;
   isNewBorn: boolean;
+  isEmergency: boolean;
   noCoverageFoundReason: string;
   serviceDate: Date;
   payerId: string;
@@ -59,3 +61,4 @@ export class EligibilityResponseModel {
 
 
 }
+
