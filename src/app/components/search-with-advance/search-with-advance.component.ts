@@ -200,7 +200,7 @@ export class SearchWithAdvanceComponent implements OnInit {
         to: this.toDateControl.value.format('DD-MM-yyyy'),
         caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
         claimTypes: null,
-        status:null
+        claimStatus:null
       }
       if (!isWassel) {
         routes.push('nphies-search-claim')
@@ -212,7 +212,7 @@ export class SearchWithAdvanceComponent implements OnInit {
           to: this.toDateControl.value.format('DD-MM-yyyy'),
           caseTypes: null,
           claimTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
-          status:this.selectedStatus!=null?this.selectedStatus.value:null
+          claimStatus:this.selectedStatus!=null?this.selectedStatus.value:null
         }
       }
       this.router.navigate(routes, {
