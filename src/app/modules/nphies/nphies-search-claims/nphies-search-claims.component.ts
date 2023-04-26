@@ -324,6 +324,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
         }
         paidIsDone = true;
+        console.log(this.isInvalidStatus(status) + '1234')
       } else if (this.isInvalidStatus(status)) {
         if (!invalidIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
