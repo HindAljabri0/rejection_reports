@@ -283,7 +283,7 @@ export class ProviderNphiesSearchService {
 
 
     // tslint:disable-next-line:max-line-length
-    requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
+    requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') &&  !isSearchByStatus? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
     const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);
   }
