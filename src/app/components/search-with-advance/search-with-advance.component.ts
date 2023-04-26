@@ -50,10 +50,12 @@ export class SearchWithAdvanceComponent implements OnInit {
   statusList: { value: string, name: string }[] = [
     { value: 'Accepted', name: 'Ready For Submission' },
     { value: 'NotAccepted', name: 'Validation Errors' },
-    { value: 'queued', name: 'Queued' },
-    { value: 'error', name: 'Error' },
+    { value: 'queued', name: 'Queued By NPHIES' },
+    { value: 'error', name: 'Rejected By NPHIES' },
+    { value: 'FailedNphies', name: 'Failed By NPHIES' },
+    { value: 'Failed', name: 'Failed' },
     { value: 'approved', name: 'Approved' },
-    { value: 'rejected', name: 'Rejected' },
+    { value: 'rejected', name: 'Rejected By Payer' },
     { value: 'partial', name: 'Partially Approved' },
     { value: 'pended', name: 'Pended' },
     { value: 'cancelled', name: 'Cancelled' }
