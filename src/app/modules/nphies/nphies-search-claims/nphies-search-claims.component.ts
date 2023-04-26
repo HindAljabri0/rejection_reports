@@ -157,7 +157,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   claimList: ClaimListModel = new ClaimListModel();
 
   claimDialogRef: MatDialogRef<any, any>;
-
+  isSearchByStatus=false;
   isGenerateAttachment = false;
   userPrivileges: UserPrivileges = initState.userPrivileges;
   payersList = [];
@@ -248,15 +248,17 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
-        statuses: ['All']
+        statuses: this.params.claimStatus!=null?[this.params.claimStatus]:['All']
       }));
     }).unsubscribe();
     if (this.params.hasNoQueryParams()) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+    console.log(this.params.claimStatus)
+    this.isSearchByStatus =this.params.claimStatus!=null;
     this.showValidationTab = false;
-    const statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
+    const statusCode = await this.getSummaryOfStatus(this.isSearchByStatus?[this.params.claimStatus]:[ClaimStatus.ALL]);
     if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
       const statuses = this.summaries[0].statuses;
       statuses.sort((s1, s2) => {
@@ -382,9 +384,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
-    this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
 
-    event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
+    this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
+console.log(this.isSearchByStatus)
+    event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel, this.isSearchByStatus
 
     ).toPromise().catch(error => {
       this.commen.loadingChanged.next(false);
@@ -494,7 +497,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   getClaimTransactions(key?: number, page?: number) {
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
-    this.claimSearchCriteriaModel.statuses = key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
+    this.claimSearchCriteriaModel.statuses =this.isSearchByStatus?this.claimSearchCriteriaModel.statuses:key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
     this.claimSearchCriteriaModel.page = this.pageIndex;
     this.claimSearchCriteriaModel.pageSize = this.pageSize;
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
@@ -514,7 +517,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
     //alert(JSON.stringify(this.claimSearchCriteriaModel));
-    this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
+    this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel, this.isSearchByStatus
     ).subscribe((event) => {
 
       if (event instanceof HttpResponse) {
