@@ -134,6 +134,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   isSubmit = false;
   isDeleteBtnVisible = true;
   status: any = 1;
+  selectedstatus:string[];
   isAllCards = false;
   length = 0;
   pageSize = 100;
@@ -257,6 +258,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     console.log(this.params.claimStatus)
     this.isSearchByStatus =this.params.claimStatus!=null;
+    if(this.isSearchByStatus){
+      this.selectedstatus=[this.params.claimStatus];    }
     this.showValidationTab = false;
     const statusCode = await this.getSummaryOfStatus(this.isSearchByStatus?[this.params.claimStatus]:[ClaimStatus.ALL]);
     if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
@@ -324,6 +327,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
         }
         paidIsDone = true;
+        console.log(this.isInvalidStatus(status) + '1234')
       } else if (this.isInvalidStatus(status)) {
         if (!invalidIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
@@ -1899,7 +1903,7 @@ console.log(this.isSearchByStatus)
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId,this.selectedstatus
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
