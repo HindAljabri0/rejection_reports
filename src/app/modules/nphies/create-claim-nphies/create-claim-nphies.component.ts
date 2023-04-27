@@ -1574,7 +1574,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
       this.model.transfer = this.FormNphiesClaim.controls.isReferral.value;
       this.model.referralName = this.FormNphiesClaim.controls.ReferralName.value;
-
+      this.model.providerId=this.otherDataModel.providerId;
       this.model.beneficiary = {};
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
