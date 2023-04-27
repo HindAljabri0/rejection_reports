@@ -688,7 +688,8 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     organizationId?: string,
     attachmentStatus?: string,
-    requestBundleId?: string) {
+    requestBundleId?: string,
+    statuses?: string[]) {
       let requestURL = `/providers/${providerId}/claims/generate/attchment?`;
 
       if (provderClaimReferenceNumber) {
@@ -751,6 +752,9 @@ export class ProviderNphiesApprovalService {
       }
       if (netAmount) {
         requestURL += `&netAmount=${netAmount}`;
+      }
+      if (statuses) {
+        requestURL += `&statuses=${statuses}`;
       }
   
       const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
