@@ -463,10 +463,10 @@
                       </button>
                     </td>
                     <td class="text-center">
-                      <button mat-icon-button  *ngIf="claim.communicationCount && claim.communicationsRequestCount">
+                      <button mat-icon-button  *ngIf="claim.communicationCount || claim.communicationsRequestCount">
                         <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
                         <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
-                        <span matTooltip="Communications Request">{{claim.communicationsRequestCount}}</span>
+                        <span matTooltip="Communications Request"> {{claim.communicationsRequestCount}}</span>
                       </button>
                   
                     </td>
