@@ -259,7 +259,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     console.log(this.params.claimStatus)
     this.isSearchByStatus =this.params.claimStatus!=null;
     if(this.isSearchByStatus){
-      this.selectedstatus=[this.params.claimStatus];    }
+      this.selectedstatus=[this.params.claimStatus.toLowerCase()];    }
     this.showValidationTab = false;
     const statusCode = await this.getSummaryOfStatus(this.isSearchByStatus?[this.params.claimStatus]:[ClaimStatus.ALL]);
     if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {

@@ -367,6 +367,9 @@
                   <th
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                   </th>
+                  <th
+                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -459,6 +462,14 @@
                         <mat-icon class="size-21">attach_file</mat-icon>
                       </button>
                     </td>
+                    <td class="text-center">
+                      <button mat-icon-button  *ngIf="claim.communicationCount && claim.communicationsRequestCount">
+                        <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
+                        <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                        <span matTooltip="Communications Request">{{claim.communicationsRequestCount}}</span>
+                      </button>
+                  
+                    </td>
 
                     <td class="actions">
                       <ng-container *ngIf="claim.claimId && 
@@ -469,7 +480,7 @@
                                                 || claimIsActivable(claim.status,claim.isActive)
                                                 || claimIsInActivable(claim.status,claim.isActive)
                                                 )">
-                        <mat-menu #moreMenu="matMenu" xPosition="before">
+                        <mat-menu style="margin-left: 2px;margin-right: 2px;" #moreMenu="matMenu" xPosition="before">
                           <ng-container
                             *ngIf="claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
