@@ -256,7 +256,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
-    console.log(this.params.claimStatus)
+
     this.isSearchByStatus =this.params.claimStatus!=null;
     if(this.isSearchByStatus){
       this.selectedstatus=[this.params.claimStatus.toLowerCase()];    }
@@ -1906,7 +1906,7 @@ console.log(this.isSearchByStatus)
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId,this.selectedstatus
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
+        if (event.body['status'] == 'Success' || event.body['status'] == 'Success') {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
