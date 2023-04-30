@@ -28,7 +28,7 @@ export class ApprovalJsonResponseComponent implements OnInit {
   GetJsonResponses() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.approvalRequestId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.approvalRequestId,this.sharedServices.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.transactions = event.body;

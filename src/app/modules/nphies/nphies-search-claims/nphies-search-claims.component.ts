@@ -26,7 +26,7 @@ import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID } from 'src/app/services/shared.services';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
@@ -581,7 +581,7 @@ console.log(this.isSearchByStatus)
         if (this.params.claimId != null && this.claimDialogRef == null) {
           const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
           if (index != -1) {
-            this.showClaim(this.claims[index].status, this.params.claimId, this.params.claimResponseId, (this.params.editMode != null && this.params.editMode == 'true'));
+            this.showClaim(this.claims[index].status, this.params.claimId, this.params.claimResponseId, false,(this.params.editMode != null && this.params.editMode == 'true'),this.claims[index].providerId);
             this.params.claimId = null;
             this.params.editMode = null;
           }
@@ -800,9 +800,10 @@ console.log(this.isSearchByStatus)
   }
 
 
-  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false) {
+  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false,providerId:string) {
     localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
-
+    localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
+    console.log("claim provider Id = "+providerId);
     this.params.claimId = claimId;
     this.params.claimResponseId = claimResponseId;
     if (edit) {
@@ -817,7 +818,7 @@ console.log(this.isSearchByStatus)
 
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
-      autoFocus: false, data: { claimId }
+      autoFocus: false, data: { claimId:claimId , providerId: providerId }
     });
     this.claimDialogRef.afterClosed().subscribe(result => {
       this.claimDialogRef = null;
@@ -1327,10 +1328,11 @@ console.log(this.isSearchByStatus)
   // }
 
 
-  checkStatus(responseId: number) {
+  checkStatus(responseId: number,claimProviderId:string) {
     this.commen.loadingChanged.next(true);
     const model: any = {};
     model.approvalResponseId = responseId;
+    model.claimProviderId =claimProviderId;
     this.providerNphiesApprovalService.statusCheck(this.commen.providerId, model).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -1381,13 +1383,14 @@ console.log(this.isSearchByStatus)
     });
   }
 
-  openReasonModal(requestId: number, responseId: number, reqType: string) {
+  openReasonModal(requestId: number, responseId: number, reqType: string,claimProviderId:string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       approvalRequestId: requestId,
       approvalResponseId: responseId,
-      type: reqType
+      type: reqType,
+      claimProviderId:claimProviderId
     };
 
     const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
@@ -1473,7 +1476,7 @@ console.log(this.isSearchByStatus)
         }
       });
   }
-  deleteClaim(claimId: string, refNumber: string) {
+  deleteClaim(claimId: string, refNumber: string,claimProviderId:string) {
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Claim?',
         `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
@@ -1482,7 +1485,7 @@ console.log(this.isSearchByStatus)
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
-          this.providerNphiesApprovalService.deleteClaimById(this.providerId, claimId).subscribe(event => {
+          this.providerNphiesApprovalService.deleteClaimById(this.providerId, claimId,claimProviderId).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               this.dialogService.openMessageDialog(new MessageDialogData('',
