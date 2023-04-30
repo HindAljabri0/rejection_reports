@@ -6,7 +6,7 @@ import { nationalities } from 'src/app/claim-module-components/store/claim.reduc
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
@@ -2266,7 +2266,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   getClaimDetails() {
     this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId).subscribe(event => {
+    let claimProviderId=localStorage.getItem(NPIHES_CLAIM_PROVIDER_ID);
+    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId,claimProviderId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -2319,13 +2320,14 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0].name : '';
     }
-
+    this.otherDataModel.providerId = response.providerId;
     this.otherDataModel.cancelStatus = response.cancelStatus;
     this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
     this.otherDataModel.cancelErrors = response.cancelErrors;
 
     this.otherDataModel.inquiryErrors = response.inquiryErrors;
     this.otherDataModel.inquiryStatus = response.inquiryStatus;
+    
 
     this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
@@ -3150,6 +3152,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       claimResponseId: this.responseId,
+      claimProviderId:this.otherDataModel.providerId,
       // tslint:disable-next-line:radix
       communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
       items: this.Items

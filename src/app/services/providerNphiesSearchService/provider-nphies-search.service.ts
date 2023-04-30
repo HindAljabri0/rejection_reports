@@ -221,8 +221,12 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
   getClaimCommunications(providerId: string, responseId: number) {
-    const requestUrl = `/providers/${providerId}/claims/communications?responseId=${responseId}`;
-    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestUrl);
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let requestURL = `/providers/${providerId}/claims/communications?responseId=${responseId}`;
+    if (isHeadOffice) {
+      requestURL = ` /head-office/${providerId}/claims/communications?responseId=${responseId}`;
+    }
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);
   }
   getClaimSummary(claimSearchCriteriaModel: ClaimSearchCriteriaModel , isSearchByStatus?:boolean) {

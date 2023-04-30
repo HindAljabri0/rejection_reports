@@ -72,7 +72,7 @@ export class NphiesClaimUploaderService {
       requestUrl = `/head-office/${providerId}/claims/update`;
     }
     
-    const request = new HttpRequest('PUT', environment.providerNphiesClaim + requestUrl, body);
+    const request = new HttpRequest(isHeadOffice ? 'POST':'PUT', environment.providerNphiesClaim + requestUrl, body);
     return this.http.request(request);
   }
 
