@@ -92,7 +92,7 @@ export class FeedbackDialogComponent implements OnInit {
    
 
     if (this.feedback.isSuggestionValid && this.feedback.isOverallSatisfactionValid && this.feedback.isRecommendToFriend) {
-      console.debug(`PID: ${this.feedback.providerId}`);
+      
       this._feedbackservice.addFeedback(this.feedback).subscribe({
         next: data => {
           catchError(error => {
