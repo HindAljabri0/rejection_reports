@@ -8,23 +8,21 @@
     </div>
     <div class="question-container">
         <!-- Q1 -->
-        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">ما تقييمك لمدى رضاك
-            عن خدمات وصيل؟* </p>
-        <p class="question" style=" font-weight:300; margin-top: 0;">How would you rate your overall satisfaction with
-            Waseel services?*</p>
+        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">كيف تقيّم تجربتك العامة مع خدمات وصيل؟ *</p>
+        <p class="question" style=" font-weight:300; margin-top: 0;">How would you rate your overall experience with Waseel services? *</p>
         <app-feedback-rating class="rating-component" (newRating)="setOverallQRating($event)"></app-feedback-rating>
     </div>
     <div class="question-container">
         <!-- Q2 -->
-        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">ما احتمال ان تنصح زملائك او اصدقائك بوصيل؟*</p>
-        <p class="question" style="font-weight: 300;  margin-top: 0;">How likely are you to recommend Waseel to a friend or colleague?*
+        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">مدى احتمالية أن توصي بخدماتنا للآخرين؟ *</p>
+        <p class="question" style="font-weight: 300;  margin-top: 0;">How likely are you to recommend our products to others? *
         </p>
         <app-feedback-rating class="rating-component" (newRating)="setRecommendQRating($event)"></app-feedback-rating>
     </div>
     <div class="sugg-container">
         <!-- Suggestion -->
-        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">اقتراحاتك وارائك مصدر الهامنا</p>
-        <p class="sugg" style="margin: 0 0 10px;" style="font-weight: 300;">Additional comments/suggestions</p>
+        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">يُرجى مشاركتنا كيف يمكننا تحسين تجربتك؟</p>
+        <p class="sugg" style="margin: 0 0 10px;" style="font-weight: 300;">Please share with us how can we improve your experience?</p>
         <div class="form-group multiline-answer">
             <textarea class="form-control feedback-area" id="exampleFormControlTextarea1"
                 placeholder="Tell us what you think . . ." rows="5" [(ngModel)]="feedback.suggestion"></textarea>
