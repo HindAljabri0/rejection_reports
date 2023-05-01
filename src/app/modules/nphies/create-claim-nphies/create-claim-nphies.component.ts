@@ -6,7 +6,7 @@ import { nationalities } from 'src/app/claim-module-components/store/claim.reduc
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID, NPHIES_PROVIDER_ID_KEYS } from 'src/app/services/shared.services';
 import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
@@ -274,9 +274,11 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   InitClaimPagenation() {
+    console.log("ProviderId's = "+localStorage.getItem(NPHIES_PROVIDER_ID_KEYS));
     this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
     if (localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY)) {
       const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
+
       this.paginationControl.searchTabCurrentResults = Array.from(data);
       this.paginationControl.size = data.length;
       this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + '');
@@ -444,6 +446,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       // this.cancel();
       localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, '0');
       this.claimId = + this.paginationControl.searchTabCurrentResults[0];
+
+      let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
+      let providerId = providerIds[0];
+      localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
+
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
       this.resetURL(this.claimId.toString());
 
@@ -459,6 +466,10 @@ export class CreateClaimNphiesComponent implements OnInit {
       localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex - 1) + '');
       this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1];
 
+      let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
+      let providerId = providerIds[this.paginationControl.currentIndex - 1];
+      localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
+
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
       this.resetURL(this.claimId.toString());
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
@@ -471,8 +482,12 @@ export class CreateClaimNphiesComponent implements OnInit {
     if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size) {
 
       localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex + 1) + '');
-
+      
       this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1];
+
+      let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
+      let providerId = providerIds[this.paginationControl.currentIndex + 1];
+      localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
 
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
       this.resetURL(this.claimId.toString());
@@ -486,6 +501,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     // this.cancel();
     localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.size - 1) + '');
     this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1];
+
+    let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
+    let providerId = providerIds[this.paginationControl.size - 1];
+    localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
 
     this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
     this.resetURL(this.claimId.toString());
@@ -1574,8 +1593,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.isNewBorn = this.FormNphiesClaim.controls.isNewBorn.value;
       this.model.transfer = this.FormNphiesClaim.controls.isReferral.value;
       this.model.referralName = this.FormNphiesClaim.controls.ReferralName.value;
-      this.model.providerId=this.otherDataModel.providerId;
-      this.model.claimId=this.claimId;
+      this.model.providerId = this.otherDataModel.providerId;
+      this.model.claimId = this.claimId;
       this.model.beneficiary = {};
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
@@ -1768,7 +1787,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         accidentModel.city = this.FormNphiesClaim.controls.city.value;
         accidentModel.state = this.FormNphiesClaim.controls.state.value;
         accidentModel.country = this.FormNphiesClaim.controls.country.value;
-        accidentModel.date = this.FormNphiesClaim.controls.date.value? this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.date.value)).utc(), 'yyyy-MM-dd') : null;
+        accidentModel.date = this.FormNphiesClaim.controls.date.value ? this.datePipe.transform(moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.date.value)).utc(), 'yyyy-MM-dd') : null;
         this.model.accident = accidentModel;
       }
       this.model.careTeam = this.CareTeams.map(x => {
@@ -1997,7 +2016,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
-            if(error.error.errors.length > 0){
+            if (error.error.errors.length > 0) {
               error.error.errors = [];
             }
             this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors, true);
@@ -2267,8 +2286,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   getClaimDetails() {
     this.sharedServices.loadingChanged.next(true);
-    let claimProviderId=localStorage.getItem(NPIHES_CLAIM_PROVIDER_ID);
-    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId,claimProviderId).subscribe(event => {
+    let claimProviderId = localStorage.getItem(NPIHES_CLAIM_PROVIDER_ID);
+    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, claimProviderId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -2328,7 +2347,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel.inquiryErrors = response.inquiryErrors;
     this.otherDataModel.inquiryStatus = response.inquiryStatus;
-    
+
 
     this.otherDataModel.claimResourceId = response.claimResourceId;
     this.otherDataModel.paymentReconciliationDetails = response.paymentReconciliationDetails;
@@ -3153,7 +3172,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       claimResponseId: this.responseId,
-      claimProviderId:this.otherDataModel.providerId,
+      claimProviderId: this.otherDataModel.providerId,
       // tslint:disable-next-line:radix
       communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
       items: this.Items
@@ -3175,7 +3194,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   getCommunications() {
-    
+
     // this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.getClaimCommunications(this.sharedServices.providerId, this.responseId).subscribe((event: any) => {
@@ -3417,7 +3436,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   getProviderTypeConfiguration() {
     this.sharedServices.loadingChanged.next(true);
-    this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId,).subscribe(event => {
+    this.dbMapping.getProviderTypeConfiguration(this.sharedServices.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         const data: any = event.body;
         if (data && data.details) {
@@ -3472,7 +3491,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   createRelatedClaim() {
     this.sharedService.loadingChanged.next(true);
-    this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString(),this.otherDataModel.providerId).subscribe((event) => {
+    this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString(), this.otherDataModel.providerId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.status == 200) {
           this.dialogService.openMessageDialog(

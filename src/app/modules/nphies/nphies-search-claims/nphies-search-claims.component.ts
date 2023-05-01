@@ -26,7 +26,7 @@ import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID, NPHIES_PROVIDER_ID_KEYS } from 'src/app/services/shared.services';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
@@ -110,6 +110,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   allCheckBoxIsIndeterminate: boolean;
   allCheckBoxIsChecked: boolean;
   PageclaimIds: string[];
+  PageclaimProviderIds: string[];
   paginatorPagesNumbers: number[];
   manualPage = null;
 
@@ -182,6 +183,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   ngOnDestroy(): void {
     
     localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
+    localStorage.removeItem(NPHIES_PROVIDER_ID_KEYS);
+    
     localStorage.removeItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY);
     this.routerSubscription.unsubscribe();
   }
@@ -607,9 +610,13 @@ console.log(this.isSearchByStatus)
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
       this.PageclaimIds = this.claims.map(claim => claim.claimId);
+      this.PageclaimProviderIds = this.claims.map(claim => claim.providerId);
       localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, this.PageclaimIds.join(','));
+      localStorage.setItem(NPHIES_PROVIDER_ID_KEYS, this.PageclaimProviderIds.join(','));
+      
 
     } else {
+      localStorage.removeItem(NPHIES_PROVIDER_ID_KEYS);
       localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
     }
   }

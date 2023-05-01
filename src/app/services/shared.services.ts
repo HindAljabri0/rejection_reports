@@ -806,5 +806,6 @@ export class SharedServices {
 export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
 export const NPIHES_CLAIM_PROVIDER_ID = 'nphies_claim_provider_id';
 export const NPHIES_SEARCH_TAB_RESULTS_KEY = 'nphies_search_tab_result';
+export const NPHIES_PROVIDER_ID_KEYS = 'nphies_provider_id_keys';
 export const NPHIES_CURRENT_INDEX_KEY = 'CURRENT_PAGE_INDEX';
 export const NPHIES_CURRENT_SEARCH_PARAMS_KEY = 'NPHIES_CURRENT_SEARCH_PARAMS';
