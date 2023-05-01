@@ -2164,9 +2164,9 @@ console.log(this.isSearchByStatus)
     });
   }
 
-  createRelatedClaim(claimId: string) {
+  createRelatedClaim(claimId: string,claimProviderId:string) {
     this.commen.loadingChanged.next(true);
-    this.providerNphiesApprovalService.relatedClaim(this.commen.providerId, claimId).subscribe((event) => {
+    this.providerNphiesApprovalService.relatedClaim(this.commen.providerId, claimId,claimProviderId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.status == 200) {
           this.dialogService.openMessageDialog(

@@ -234,7 +234,7 @@ export class AddCommunicationDialogComponent implements OnInit {
             this.fetchCommunications.emit(true);
           } else {
             this.sharedServices.loadingChanged.next(false);
-            //this.dialogRef.close(true);
+            this.dialogRef.close(true);
           }
         }
       }

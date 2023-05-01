@@ -974,12 +974,15 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  relatedClaim(providerId: string, claimId: string) {
-    let requestUrl = `/providers/${providerId}/claims/partial/resubmit?`;
-    if (claimId) {
-      requestUrl += `claimId=${claimId}`;
+  relatedClaim(providerId: string, claimId: string,claimProviderId:string) {
+    let requestUrl = `/providers/${providerId}/claims/partial/resubmit?claimId=${claimId}`;
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, {});
+    if (isHeadOffice) {
+      requestUrl = `/head-office/${providerId}/claims/branch/partial/resubmit`;
+      request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, {claimId: claimId,claimProviderId:claimProviderId });
     }
-    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, {});
+    
     return this.http.request(request);
   }
 

@@ -485,7 +485,7 @@
                             *ngIf="claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
-                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId)"
+                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId,claim.providerId)"
                               *ngIf="claim.status === 'partial'">
                               <mat-icon class="material-icons-outlined">edit</mat-icon>
                               <span>Create Related Claim</span>
