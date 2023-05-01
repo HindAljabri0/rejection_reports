@@ -224,7 +224,7 @@ export class ProviderNphiesSearchService {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/claims/communications?responseId=${responseId}`;
     if (isHeadOffice) {
-      requestURL = ` /head-office/${providerId}/claims/communications?responseId=${responseId}`;
+      requestURL = `/head-office/${providerId}/claims/communications?responseId=${responseId}`;
     }
     const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);

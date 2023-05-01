@@ -1575,6 +1575,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.transfer = this.FormNphiesClaim.controls.isReferral.value;
       this.model.referralName = this.FormNphiesClaim.controls.ReferralName.value;
       this.model.providerId=this.otherDataModel.providerId;
+      this.model.claimId=this.claimId;
       this.model.beneficiary = {};
       this.model.beneficiary.firstName = this.FormNphiesClaim.controls.firstName.value;
       this.model.beneficiary.secondName = this.FormNphiesClaim.controls.middleName.value;
@@ -3471,7 +3472,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   createRelatedClaim() {
     this.sharedService.loadingChanged.next(true);
-    this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString()).subscribe((event) => {
+    this.providerNphiesApprovalService.relatedClaim(this.sharedService.providerId, this.claimId.toString(),this.otherDataModel.providerId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.status == 200) {
           this.dialogService.openMessageDialog(
