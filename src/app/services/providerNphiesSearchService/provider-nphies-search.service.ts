@@ -94,7 +94,7 @@ export class ProviderNphiesSearchService {
       requestURL += `tpaNphiesId=${tpaNphiesId}&`;
     }
     const isHeadOffice = AuthService.isProviderHeadOffice();
-    if(!isHeadOffice && localStorage.getItem("headOfficeProviderId")){
+    if(!isHeadOffice && localStorage.getItem("headOfficeProviderId") && localStorage.getItem("headOfficeProviderId")!=null){
       let headOfficeProviderId=localStorage.getItem("headOfficeProviderId");
       requestURL += `headOfficeProviderId=${headOfficeProviderId}&`;
     }
