@@ -93,7 +93,11 @@ export class ProviderNphiesSearchService {
     if (tpaNphiesId && tpaNphiesId.trim().length > 0) {
       requestURL += `tpaNphiesId=${tpaNphiesId}&`;
     }
-
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    if(!isHeadOffice && localStorage.getItem("headOfficeProviderId")){
+      let headOfficeProviderId=localStorage.getItem("headOfficeProviderId");
+      requestURL += `headOfficeProviderId=${headOfficeProviderId}&`;
+    }
     if (pageNumber) {
       requestURL += `pageNumber=${pageNumber}&`;
     }
