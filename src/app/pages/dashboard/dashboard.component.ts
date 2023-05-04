@@ -210,6 +210,8 @@ export class DashboardComponent implements OnInit {
             
         } else if (this.userPrivileges.WaseelPrivileges.isPAM) {
             console.debug("The feedback is not enabled for admins!");
+        }else{
+            console.log("The feedback is not enabled for this user!");
         }
     }
 

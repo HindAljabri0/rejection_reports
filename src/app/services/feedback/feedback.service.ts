@@ -20,8 +20,6 @@ export class FeedbackService {
 
 
     addFeedback(feedback: FeedbackClass): Observable<FeedbackClass> {
-        const body = JSON.stringify(feedback);
-        console.info(body);
         return this.http.post<FeedbackClass>(this.feedbackServiceUrl + `/${feedback.providerId}/create`, feedback)
     }
 
