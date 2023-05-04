@@ -101,9 +101,9 @@
             color="primary">Inquire
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
             
-          <!--button *ngIf="showUploadAttachment === true" mat-flat-button color="primary"
+          <button *ngIf="showUploadAttachment === true" mat-flat-button color="primary"
             (click)="openChooseAttachmentDialog()">Upload
-            Attachments {{selectedClaims.length==0?"":" ("+this.selectedClaims.length+")"}}</button-->
+            Attachments {{selectedClaims.length==0?"":" ("+this.selectedClaims.length+")"}}</button>
 
           <button *ngIf="showRevalidate === true" (click)="revalidateClaimsByCriteria()" mat-flat-button
             color="primary">Revalidate
@@ -367,6 +367,9 @@
                   <th
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                   </th>
+                  <th
+                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -378,39 +381,39 @@
                         [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)">
                       </mat-checkbox>
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
                       <span class="text-monospace">{{claim.providerClaimNumber}}</span>
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
                       {{claim.drName}}</td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
                       <span class="text-monospace">{{claim.memberId}}</span>
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
                       <span class="text-monospace">{{claim.nationalId}}</span>
 
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)" class="row-click">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
                       <span class="text-monospace">{{claim.patientFileNumber}}</span>
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)"
                       class="row-click text-nowrap">
                       {{claim.claimDate | date: 'dd-MM-yyyy'}}
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)"
                       class="row-click text-nowrap">
                       {{claim.netAmount}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
                     </td>
 
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)"
                       class="text-center row-click">
                       <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                     </td>
                     <td *ngIf="showColumns(selectedCardKey,claim.status)" class="actions text-left text-wrap">
                       <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
                         <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2"
-                          (click)="checkStatus(claim.claimResponseId)">
+                          (click)="checkStatus(claim.claimResponseId,claim.providerId)">
                           <mat-icon>refresh</mat-icon>
                         </button>
                         <span *ngIf="!claim.processingStatus" class="pl-1">Check Status</span>
@@ -419,7 +422,7 @@
                     </td>
 
                     <td *ngIf="showGenerateAttachment === true && isGenerateAttachment && selectedCardKey != 0"
-                      (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                      (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)"
                       class="text-center row-click">
                       <mat-icon *ngIf="claim.attachmentStatus === 'Success'"
                         class="material-icons-outlined text-success">check_circle</mat-icon>
@@ -431,7 +434,7 @@
                         class="text-danger">error_outline</mat-icon>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId)"
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)"
                       class="text-center row-click" *ngIf="isPBMValidationVisible && selectedCardKey != 0">
                       <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='approved'"
                         class="material-icons-outlined size-21 text-success"
@@ -459,6 +462,14 @@
                         <mat-icon class="size-21">attach_file</mat-icon>
                       </button>
                     </td>
+                    <td class="text-center">
+                      <button mat-icon-button  *ngIf="claim.communicationCount || claim.communicationsRequestCount">
+                        <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
+                        <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                        <span matTooltip="Communications Request"> {{claim.communicationsRequestCount}}</span>
+                      </button>
+                  
+                    </td>
 
                     <td class="actions">
                       <ng-container *ngIf="claim.claimId && 
@@ -469,19 +480,19 @@
                                                 || claimIsActivable(claim.status,claim.isActive)
                                                 || claimIsInActivable(claim.status,claim.isActive)
                                                 )">
-                        <mat-menu #moreMenu="matMenu" xPosition="before">
+                        <mat-menu style="margin-left: 2px;margin-right: 2px;" #moreMenu="matMenu" xPosition="before">
                           <ng-container
                             *ngIf="claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)">
                             <!--button mat-menu-item><span>Re-Use</span></button-->
 
-                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId)"
+                            <button mat-menu-item (click)="createRelatedClaim(claim.claimId,claim.providerId)"
                               *ngIf="claim.status === 'partial'">
                               <mat-icon class="material-icons-outlined">edit</mat-icon>
                               <span>Create Related Claim</span>
                             </button>
 
                             <button mat-menu-item *ngIf="(claim.isActive || claim.isActive == null)"
-                              (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel')">
+                              (click)="openReasonModal(claim.claimId, claim.claimResponseId, 'cancel',claim.providerId)">
                               <mat-icon class="material-icons-outlined">close</mat-icon>
                               <span>Cancel</span>
                             </button>
@@ -489,13 +500,13 @@
                             <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
                           </ng-container>
                           <button mat-menu-item *ngIf="claimIsDeletable(claim.status,claim.canDelete)"
-                            (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
+                            (click)="deleteClaim(claim.claimId, claim.providerClaimNumber,claim.providerId)">
                             <mat-icon class="material-icons-outlined">delete </mat-icon>
                             <span>Delete</span>
                           </button>
 
                           <button mat-menu-item *ngIf="claimIsEditable(claim.status) && (claim.isActive == null || claim.isActive)"
-                            (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false)">
+                            (click)="showClaim(claim.status, claim.claimId, claim.claimResponseId, true,false,claim.providerId)">
                             <mat-icon class="material-icons-outlined">edit</mat-icon>
                             <span>Edit Claim</span>
                           </button>

@@ -27,8 +27,9 @@ export class JsonResponseComponent implements OnInit {
 
   GetJsonResponses() {
     this.sharedServices.loadingChanged.next(true);
+   
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.claimId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.claimId,this.otherDataModel.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.transactions = event.body;
@@ -50,7 +51,7 @@ export class JsonResponseComponent implements OnInit {
     model.transactionId = transactionId;
     model.pollTransactionId = pollTransactionId;
     model.transactionType = transactionType;
-
+    model.claimProviderId = this.otherDataModel.providerId;
     // tslint:disable-next-line:max-line-length
     this.providerNphiesApprovalService.getJSON(this.sharedServices.providerId, model).subscribe((event: any) => {
       if (event instanceof HttpResponse) {

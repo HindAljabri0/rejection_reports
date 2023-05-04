@@ -195,6 +195,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
     model.claimResponseId = this.data.claimResponseId;
+    model.claimProviderId =  this.data.claimProviderId;
     if (this.data.communicationRequestId) {
       model.communicationRequestId = this.data.communicationRequestId;
     }
@@ -233,7 +234,7 @@ export class AddCommunicationDialogComponent implements OnInit {
             this.fetchCommunications.emit(true);
           } else {
             this.sharedServices.loadingChanged.next(false);
-            //this.dialogRef.close(true);
+            this.dialogRef.close(true);
           }
         }
       }

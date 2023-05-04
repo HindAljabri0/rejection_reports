@@ -4,7 +4,7 @@ import { ClaimCriteriaModel } from "./ClaimCriteriaModel";
 
 export class SearchPageQueryParams {
 
-
+    
     claimId?: string;
     claimResponseId?: string;
     editMode?: string;
@@ -36,6 +36,8 @@ export class SearchPageQueryParams {
     page?: number;
     size?: number;
     netAmount? : string;
+    claimStatus?:string;
+
     static fromParams(params: Params): SearchPageQueryParams {
         let pageParams: SearchPageQueryParams = new SearchPageQueryParams();
 
@@ -73,6 +75,7 @@ export class SearchPageQueryParams {
         pageParams.filter_memberId = params.filter_memberId;
         pageParams.filter_netAmount = params.filter_netAmount;
         pageParams.filter_patientFileNo = params.filter_patientFileNo;
+        pageParams.claimStatus= params.claimStatus;
         
         return pageParams;
     }

@@ -14,6 +14,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { NphiesPayersSelectorComponent } from 'src/app/components/reusables/nphies-payers-selector/nphies-payers-selector.component';
+import { AuthService } from 'src/app/services/authService/authService.service';
 
 @Component({
   selector: 'app-pricelist',
@@ -43,7 +44,9 @@ export class PricelistComponent implements OnInit {
   priceListModel: PaginatedResult<PriceListModel>;
   priceLists = [];
   payersList = [];
-
+  isHeadOffice=false;
+  headOfficeProviderId;
+  providerId;
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -101,6 +104,10 @@ export class PricelistComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isHeadOffice = AuthService.isProviderHeadOffice();
+    this.headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
+    this.providerId=localStorage.getItem("providerId");
+    console.log("isHeadOffice = "+AuthService.isProviderHeadOffice() + " headOfficeProviderId = "+this.headOfficeProviderId);
   }
 
   getPayerList(isFromUrl: boolean = false) {
