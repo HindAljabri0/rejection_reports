@@ -224,7 +224,7 @@ export class AuthService {
               localStorage.setItem(key, currentValue + '|' + value);
             }
           });
-          console.log("Body = "+JSON.stringify(event.body));
+          
           localStorage.setItem('cchi_id', event.body['cchiId']);          
           localStorage.setItem('parentProviderId', event.body['parentProviderId']);
           localStorage.setItem('provider_id', event.body['providerId']);
@@ -233,7 +233,7 @@ export class AuthService {
           localStorage.setItem('provider_name', event.body['providerName']);
           localStorage.setItem('organizationId', event.body['organizationId']);
           localStorage.setItem('isHeadOffice',event.body['isHeadOffice']);
-          localStorage.setItem('headOfficeProviderId',event.body['headOfficeProviderId']);
+          localStorage.setItem('headOfficeProviderId',event.body['headOfficeProviderId']!=null ? event.body['headOfficeProviderId']:'');
           const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
