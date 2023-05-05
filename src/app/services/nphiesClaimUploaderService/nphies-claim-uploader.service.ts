@@ -66,8 +66,13 @@ export class NphiesClaimUploaderService {
   }
 
   updateNphiesClaim(providerId: string, claimId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/claims/${claimId}`;
-    const request = new HttpRequest('PUT', environment.providerNphiesClaim + requestUrl, body);
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let requestUrl = `/providers/${providerId}/claims/${claimId}`;
+    if(isHeadOffice){
+      requestUrl = `/head-office/${providerId}/claims/update`;
+    }
+    
+    const request = new HttpRequest(isHeadOffice ? 'POST':'PUT', environment.providerNphiesClaim + requestUrl, body);
     return this.http.request(request);
   }
 

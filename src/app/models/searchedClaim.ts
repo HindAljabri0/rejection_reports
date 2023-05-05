@@ -5,6 +5,7 @@ export class SearchedClaim extends Paginateable {
   processingStatus: string;
   claimId: string;
   providerClaimNumber: string;
+  providerId: string;
   drName: string;
   policyNumber: string;
   memberId: string;
@@ -35,6 +36,9 @@ export class SearchedClaim extends Paginateable {
   attachmentStatus: string;
   inquiryDesc: string;
   attachmentCount:number;
+  communicationCount:number;
+  communicationsRequestCount:number;
+
 
   constructor(body: {}) {
     super(body);
@@ -53,6 +57,7 @@ export class SearchedClaim extends Paginateable {
       this.drName = body['drName'];
       this.providerClaimNumber = body['providerClaimNumber'];
       this.status = body['status'];
+      this.providerId = body['providerId'];
       this.canDelete = body['canDelete'];
       this.statusDetail = body['statusDetail'];
       this.unitOfNetAmount = body['unitOfNetAmount'];
@@ -73,6 +78,8 @@ export class SearchedClaim extends Paginateable {
       this.inquiryDesc = body['inquiryDesc'];
       this.isActive = body['isActive'];
       this.attachmentCount=body['attachmentCount'];
+      this.communicationCount = body['communicationCount'];
+      this.communicationsRequestCount=body['communicationsRequestCount'];
     }
   }
 }
