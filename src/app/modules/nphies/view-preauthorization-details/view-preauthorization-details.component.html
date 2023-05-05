@@ -152,6 +152,14 @@
                                   </span>
                                 </div>
                               </td>
+                              <td style="text-align: right;">
+                                <div class="ml-auto action-btns">
+                                  <button *ngIf="reply.error" type="button" class="action-btn mr-1"
+                                    matTooltip="{{reply.communicationErrors}}">
+                                    <mat-icon class="text-danger">error_outline</mat-icon>
+                                  </button>
+                                </div>
+                              </td>
                             </tr>
                             <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                               <td class="px-0">
