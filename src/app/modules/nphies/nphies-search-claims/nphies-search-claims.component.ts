@@ -26,7 +26,7 @@ import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
-import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY } from 'src/app/services/shared.services';
+import { NPHIES_SEARCH_TAB_RESULTS_KEY, NPHIES_CURRENT_INDEX_KEY, SharedServices, NPHIES_CURRENT_SEARCH_PARAMS_KEY, NPIHES_CLAIM_PROVIDER_ID, NPHIES_PROVIDER_ID_KEYS } from 'src/app/services/shared.services';
 import { setSearchCriteria, storeClaims } from 'src/app/pages/searchClaimsPage/store/search.actions';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { CreateClaimNphiesComponent } from '../create-claim-nphies/create-claim-nphies.component';
@@ -110,6 +110,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   allCheckBoxIsIndeterminate: boolean;
   allCheckBoxIsChecked: boolean;
   PageclaimIds: string[];
+  PageclaimProviderIds: string[];
   paginatorPagesNumbers: number[];
   manualPage = null;
 
@@ -134,6 +135,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   isSubmit = false;
   isDeleteBtnVisible = true;
   status: any = 1;
+  selectedstatus:string[];
   isAllCards = false;
   length = 0;
   pageSize = 100;
@@ -157,7 +159,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   claimList: ClaimListModel = new ClaimListModel();
 
   claimDialogRef: MatDialogRef<any, any>;
-
+  isSearchByStatus=false;
   isGenerateAttachment = false;
   userPrivileges: UserPrivileges = initState.userPrivileges;
   payersList = [];
@@ -181,6 +183,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   ngOnDestroy(): void {
     
     localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
+    localStorage.removeItem(NPHIES_PROVIDER_ID_KEYS);
+    
     localStorage.removeItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY);
     this.routerSubscription.unsubscribe();
   }
@@ -248,15 +252,19 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
-        statuses: ['All']
+        statuses: this.params.claimStatus!=null?[this.params.claimStatus]:['All']
       }));
     }).unsubscribe();
     if (this.params.hasNoQueryParams()) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+
+    this.isSearchByStatus =this.params.claimStatus!=null;
+    if(this.isSearchByStatus){
+      this.selectedstatus=[this.params.claimStatus.toLowerCase()];    }
     this.showValidationTab = false;
-    const statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
+    const statusCode = await this.getSummaryOfStatus(this.isSearchByStatus?[this.params.claimStatus]:[ClaimStatus.ALL]);
     if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
       const statuses = this.summaries[0].statuses;
       statuses.sort((s1, s2) => {
@@ -322,6 +330,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
           await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
         }
         paidIsDone = true;
+        console.log(this.isInvalidStatus(status) + '1234')
       } else if (this.isInvalidStatus(status)) {
         if (!invalidIsDone) {
           await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
@@ -382,9 +391,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
-    this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
 
-    event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel
+    this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
+console.log(this.isSearchByStatus)
+    event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel, this.isSearchByStatus
 
     ).toPromise().catch(error => {
       this.commen.loadingChanged.next(false);
@@ -494,7 +504,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   getClaimTransactions(key?: number, page?: number) {
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
-    this.claimSearchCriteriaModel.statuses = key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
+    this.claimSearchCriteriaModel.statuses =this.isSearchByStatus?this.claimSearchCriteriaModel.statuses:key != 0 ? this.summaries[key].statuses.filter(status => status != 'all') : null;
     this.claimSearchCriteriaModel.page = this.pageIndex;
     this.claimSearchCriteriaModel.pageSize = this.pageSize;
     this.claimSearchCriteriaModel.payerIds = this.params.payerId;
@@ -514,7 +524,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
     //alert(JSON.stringify(this.claimSearchCriteriaModel));
-    this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel
+    this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel, this.isSearchByStatus
     ).subscribe((event) => {
 
       if (event instanceof HttpResponse) {
@@ -574,7 +584,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (this.params.claimId != null && this.claimDialogRef == null) {
           const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
           if (index != -1) {
-            this.showClaim(this.claims[index].status, this.params.claimId, this.params.claimResponseId, (this.params.editMode != null && this.params.editMode == 'true'));
+            this.showClaim(this.claims[index].status, this.params.claimId, this.params.claimResponseId, false,(this.params.editMode != null && this.params.editMode == 'true'),this.claims[index].providerId);
             this.params.claimId = null;
             this.params.editMode = null;
           }
@@ -600,9 +610,13 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
       this.PageclaimIds = this.claims.map(claim => claim.claimId);
+      this.PageclaimProviderIds = this.claims.map(claim => claim.providerId);
       localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, this.PageclaimIds.join(','));
+      localStorage.setItem(NPHIES_PROVIDER_ID_KEYS, this.PageclaimProviderIds.join(','));
+      
 
     } else {
+      localStorage.removeItem(NPHIES_PROVIDER_ID_KEYS);
       localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);
     }
   }
@@ -793,9 +807,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   }
 
 
-  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false) {
+  showClaim(claimStatus: string, claimId: string, claimResponseId: string, edit: boolean = false, ReSubmit: boolean = false,providerId:string) {
     localStorage.setItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY, JSON.stringify(this.params));
-
+    localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
+    console.log("claim provider Id = "+providerId);
     this.params.claimId = claimId;
     this.params.claimResponseId = claimResponseId;
     if (edit) {
@@ -810,7 +825,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     this.claimDialogRef = this.dialog.open(CreateClaimNphiesComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
-      autoFocus: false, data: { claimId }
+      autoFocus: false, data: { claimId:claimId , providerId: providerId }
     });
     this.claimDialogRef.afterClosed().subscribe(result => {
       this.claimDialogRef = null;
@@ -1320,10 +1335,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   // }
 
 
-  checkStatus(responseId: number) {
+  checkStatus(responseId: number,claimProviderId:string) {
     this.commen.loadingChanged.next(true);
     const model: any = {};
     model.approvalResponseId = responseId;
+    model.claimProviderId =claimProviderId;
     this.providerNphiesApprovalService.statusCheck(this.commen.providerId, model).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -1374,13 +1390,14 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-  openReasonModal(requestId: number, responseId: number, reqType: string) {
+  openReasonModal(requestId: number, responseId: number, reqType: string,claimProviderId:string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       approvalRequestId: requestId,
       approvalResponseId: responseId,
-      type: reqType
+      type: reqType,
+      claimProviderId:claimProviderId
     };
 
     const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
@@ -1466,7 +1483,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
       });
   }
-  deleteClaim(claimId: string, refNumber: string) {
+  deleteClaim(claimId: string, refNumber: string,claimProviderId:string) {
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Claim?',
         `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
@@ -1475,7 +1492,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
-          this.providerNphiesApprovalService.deleteClaimById(this.providerId, claimId).subscribe(event => {
+          this.providerNphiesApprovalService.deleteClaimById(this.providerId, claimId,claimProviderId).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               this.dialogService.openMessageDialog(new MessageDialogData('',
@@ -1531,7 +1548,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     return ['queued','pended','rejected'].includes(status.trim().toLowerCase())  && (isActive==null || isActive) && this.userPrivileges.WaseelPrivileges.isPAM;;
   }
   get showCancelAll() {
-    return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['pended', 'approved', 'partial', 'queued', 'rejected', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   get showInquireAll() {
@@ -1896,10 +1913,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId,this.selectedstatus
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        if (event.body['staus'] == 'Success' || event.body['status'] == 'Success') {
+        if (event.body['status'] == 'Success' || event.body['status'] == 'Success') {
           this.dialogService.openMessageDialog(
             new MessageDialogData('Success', event.body['message'], false)
           ).subscribe(result => {
@@ -2154,9 +2171,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     });
   }
 
-  createRelatedClaim(claimId: string) {
+  createRelatedClaim(claimId: string,claimProviderId:string) {
     this.commen.loadingChanged.next(true);
-    this.providerNphiesApprovalService.relatedClaim(this.commen.providerId, claimId).subscribe((event) => {
+    this.providerNphiesApprovalService.relatedClaim(this.commen.providerId, claimId,claimProviderId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.status == 200) {
           this.dialogService.openMessageDialog(

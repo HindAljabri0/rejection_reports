@@ -59,7 +59,7 @@ export class CancelReasonModalComponent implements OnInit {
       model.approvalRequestId = this.data.approvalRequestId;
       // model.approvalResponseId  = this.data.approvalResponseId;
       model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
-
+      model.claimProviderId=this.data.claimProviderId;
       let action: any;
       if (this.data.type === 'cancel') {
         action = this.providerNphiesApprovalService.cancelApprovalRequest(this.sharedServices.providerId, model);

@@ -233,6 +233,7 @@ export class AuthService {
           localStorage.setItem('provider_name', event.body['providerName']);
           localStorage.setItem('organizationId', event.body['organizationId']);
           localStorage.setItem('isHeadOffice',event.body['isHeadOffice']);
+          localStorage.setItem('headOfficeProviderId',event.body['headOfficeProviderId']!=null ? event.body['headOfficeProviderId']:'');
           const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
