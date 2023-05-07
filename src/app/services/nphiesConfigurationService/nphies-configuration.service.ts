@@ -3,6 +3,7 @@ import { HttpClient, HttpEvent, HttpRequest, HttpResponse, HttpEventType, HttpEr
 import { environment } from 'src/environments/environment';
 import { Observable, Subject } from 'rxjs';
 import { SinglePhysician } from 'src/app/models/nphies/SinglePhysicianModel';
+import { AuthService } from '../authService/authService.service';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,8 @@ export class NphiesConfigurationService {
     return this.http.request(request);
   }
   getPriceList(providerId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/pricelist/criteria?page=${body.page}&size=${body.size}`;
+    let requestUrl = `/providers/${providerId}/pricelist/criteria?page=${body.page}&size=${body.size}&`;
+    
     delete body.page;
     delete body.size;
     const request = new HttpRequest('POST', environment.nphiesConfigurationService + requestUrl, body);
