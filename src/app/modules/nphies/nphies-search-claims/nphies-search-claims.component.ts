@@ -109,7 +109,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   selectedClaimsCountOfPage = 0;
   allCheckBoxIsIndeterminate: boolean;
   allCheckBoxIsChecked: boolean;
-  PageclaimIds: string[];
+  PageclaimIds: any[] = [];
   PageclaimProviderIds: string[];
   paginatorPagesNumbers: number[];
   manualPage = null;
@@ -609,9 +609,15 @@ console.log(this.isSearchByStatus)
 
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
-      this.PageclaimIds = this.claims.map(claim => claim.claimId);
+      this.claims.forEach(element => {
+        //console.log("claim id = "+element.claimId + " providerId = "+element.providerId );
+        let data = {claimId: element.claimId, providerId: element.providerId,responseId:element.claimResponseId };
+        this.PageclaimIds.push(data);
+      });
+      console.log(this.PageclaimIds);
+      //.map(claim => claim.claimId);
       this.PageclaimProviderIds = this.claims.map(claim => claim.providerId);
-      localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, this.PageclaimIds.join(','));
+      localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, JSON.stringify(this.PageclaimIds));
       localStorage.setItem(NPHIES_PROVIDER_ID_KEYS, this.PageclaimProviderIds.join(','));
       
 
