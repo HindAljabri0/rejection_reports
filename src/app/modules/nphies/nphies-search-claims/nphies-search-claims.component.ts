@@ -1554,7 +1554,7 @@ console.log(this.isSearchByStatus)
     return ['queued','pended','rejected'].includes(status.trim().toLowerCase())  && (isActive==null || isActive) && this.userPrivileges.WaseelPrivileges.isPAM;;
   }
   get showCancelAll() {
-    return ['pended', 'approved', 'partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['pended', 'approved', 'partial', 'queued', 'rejected', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   get showInquireAll() {
