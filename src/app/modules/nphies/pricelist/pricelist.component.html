@@ -83,17 +83,19 @@
             <td class="row-click" (click)="RedirectToDetails(p.payerNphiesId, p.uploadedDate, p.priceListId)">
               {{p.uploadedDate | date:'dd-MM-yyyy hh:mm aa'}}</td>
             <td class="actions">
-              <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #actionsMenu xPosition="before">
-                <ng-template matMenuContent>
-                  <button mat-menu-item type="button" (click)="DeletePriceList(p.priceListId)">
-                    <mat-icon class="material-icons-outlined">delete</mat-icon>
-                    <span>Delete</span>
-                  </button>
-                </ng-template>
-              </mat-menu>
+              <ng-container *ngIf="!(!isHeadOffice && headOfficeProviderId!='' && headOfficeProviderId != providerId)">
+                <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #actionsMenu xPosition="before">
+                  <ng-template matMenuContent>
+                    <button mat-menu-item type="button" (click)="DeletePriceList(p.priceListId)">
+                      <mat-icon class="material-icons-outlined">delete</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </ng-template>
+                </mat-menu>
+              </ng-container>
             </td>
           </tr>
         </tbody>
@@ -124,6 +126,8 @@
   </div>
 </div>
 
+
 <button mat-fab color="primary" [disabled]="!isHeadOffice && headOfficeProviderId!='' && headOfficeProviderId != providerId"  (click)="openUploadPricelistDialog()" class="page-fab">
+
   <mat-icon class="material-icons-outlined">file_upload</mat-icon>
 </button>

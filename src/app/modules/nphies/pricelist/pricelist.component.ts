@@ -23,7 +23,7 @@ import { AuthService } from 'src/app/services/authService/authService.service';
 })
 export class PricelistComponent implements OnInit {
 
-  @ViewChild('tpaPayers', {static: false}) tpaPayers: NphiesPayersSelectorComponent;
+  @ViewChild('tpaPayers', { static: false }) tpaPayers: NphiesPayersSelectorComponent;
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
@@ -44,7 +44,7 @@ export class PricelistComponent implements OnInit {
   priceListModel: PaginatedResult<PriceListModel>;
   priceLists = [];
   payersList = [];
-  isHeadOffice=false;
+  isHeadOffice = false;
   headOfficeProviderId;
   providerId;
   constructor(
@@ -106,8 +106,8 @@ export class PricelistComponent implements OnInit {
   ngOnInit() {
     this.isHeadOffice = AuthService.isProviderHeadOffice();
     this.headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
-    this.providerId=localStorage.getItem("providerId");
-    console.log("isHeadOffice = "+AuthService.isProviderHeadOffice() + " headOfficeProviderId = "+this.headOfficeProviderId);
+    this.providerId = localStorage.getItem("providerId");
+    //console.log("isHeadOffice = " + AuthService.isProviderHeadOffice() + " headOfficeProviderId = " + this.headOfficeProviderId);
   }
 
   getPayerList(isFromUrl: boolean = false) {
@@ -241,7 +241,13 @@ export class PricelistComponent implements OnInit {
 
       model.page = this.page;
       model.size = this.pageSize;
+      const isHeadOffice = AuthService.isProviderHeadOffice();
+      let headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
+      //console.log("print the value ="+headOfficeProviderId);
 
+      if (!isHeadOffice && headOfficeProviderId) {
+        model.headOfficeProviderId = headOfficeProviderId;
+      }
       this.editURL(model.fromDate, model.toDate);
       this.nphiesConfigurationService.getPriceList(this.sharedService.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
@@ -376,7 +382,7 @@ export class PricelistComponent implements OnInit {
       });
   }
 
-  updateFromDate(){
+  updateFromDate() {
     this.FormPriceList.controls.uploadToDate.setValue('');
   }
 }
