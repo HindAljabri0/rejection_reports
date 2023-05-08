@@ -229,7 +229,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   paginationControl: {
     currentIndex: number;
     size: number;
-    searchTabCurrentResults: string[];
+    searchTabCurrentResults: any[];
   };
   hasErrorClaimInfo = false;
 
@@ -274,14 +274,17 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   InitClaimPagenation() {
-    console.log("ProviderId's = "+localStorage.getItem(NPHIES_PROVIDER_ID_KEYS));
+    //console.log("ProviderId's = "+localStorage.getItem(NPHIES_PROVIDER_ID_KEYS));
     this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
     if (localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY)) {
-      const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY).split(',');
-
-      this.paginationControl.searchTabCurrentResults = Array.from(data);
-      this.paginationControl.size = data.length;
-      this.paginationControl.currentIndex = data.findIndex(z => z === this.claimId + '');
+      const data = localStorage.getItem(NPHIES_SEARCH_TAB_RESULTS_KEY);//.split(',');
+      
+      this.paginationControl.searchTabCurrentResults = JSON.parse(data);
+      //console.log(this.paginationControl.searchTabCurrentResults);
+      //console.log("current row = "+this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex].claimId);
+      this.paginationControl.size = this.paginationControl.searchTabCurrentResults.length;
+      this.paginationControl.currentIndex = this.paginationControl.searchTabCurrentResults.findIndex(z => z.claimId == this.claimId + '');
+      //console.log("current index = "+this.paginationControl.currentIndex);
     }
 
   }
@@ -310,10 +313,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
     }
 
-    if (this.activatedRoute.snapshot.queryParams.claimResponseId) {
+    /*if (this.activatedRoute.snapshot.queryParams.claimResponseId) {
       // tslint:disable-next-line:radix
       this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
-    }
+      console.log("in init this.responseId = "+this.responseId);
+    }*/
 
     this.getPayees();
     this.InitClaimPagenation();
@@ -444,8 +448,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   goToFirstPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex !== 0) {
       // this.cancel();
+      this.paginationControl.currentIndex = 0;
       localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, '0');
-      this.claimId = + this.paginationControl.searchTabCurrentResults[0];
+      this.claimId = + this.paginationControl.searchTabCurrentResults[0].claimId;
+      this.responseId = + this.paginationControl.searchTabCurrentResults[0].responseId;
 
       let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
       let providerId = providerIds[0];
@@ -463,13 +469,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   goToPrePage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex !== 0) {
       // this.cancel();
-      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex - 1) + '');
-      this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1];
+      this.paginationControl.currentIndex = this.paginationControl.currentIndex - 1;
+      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex ) + '');
+      this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex ].claimId;
+      this.responseId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex ].responseId;
 
       let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
-      let providerId = providerIds[this.paginationControl.currentIndex - 1];
+      let providerId = providerIds[this.paginationControl.currentIndex ];
       localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
-
+      //console.log("claim Id = "+this.claimId + " response Id= "+this.responseId+" current index"+(this.paginationControl.currentIndex ));
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
       this.resetURL(this.claimId.toString());
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
@@ -480,15 +488,15 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   goToNextPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size) {
-
-      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex + 1) + '');
+      this.paginationControl.currentIndex = this.paginationControl.currentIndex + 1;
+      localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex) + '');
       
-      this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1];
-
+      this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex].claimId;
+      this.responseId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex].responseId;
       let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
-      let providerId = providerIds[this.paginationControl.currentIndex + 1];
+      let providerId = providerIds[this.paginationControl.currentIndex];
       localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
-
+      //console.log("claim Id = "+this.claimId + " response Id= "+this.responseId+" current index"+(this.paginationControl.currentIndex));
       this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
       this.resetURL(this.claimId.toString());
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
@@ -499,15 +507,19 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   goToLastPage() {
     // this.cancel();
-    localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.size - 1) + '');
-    this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1];
+    this.paginationControl.currentIndex = this.paginationControl.size-1;
+    //console.log("claim Id = "+this.claimId + " response Id= "+this.responseId+" current index"+(this.paginationControl.currentIndex ));
+    localStorage.setItem(NPHIES_CURRENT_INDEX_KEY, (this.paginationControl.currentIndex ) + '');
+    this.claimId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex ].claimId;
+    this.responseId = + this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex].responseId;
 
     let providerIds = Array.from(localStorage.getItem(NPHIES_PROVIDER_ID_KEYS).split(','));
-    let providerId = providerIds[this.paginationControl.size - 1];
+    let providerId = providerIds[this.paginationControl.currentIndex];
     localStorage.setItem(NPIHES_CLAIM_PROVIDER_ID,providerId);
 
     this.params = JSON.parse(localStorage.getItem(NPHIES_CURRENT_SEARCH_PARAMS_KEY));
     this.resetURL(this.claimId.toString());
+
     // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
     // this.location.go(this.location.path().replace('#edit', ''));
     this.ngOnInit();
@@ -520,7 +532,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     } else {
       delete this.params.claimId;
     }
-
+    if (this.responseId) {
+      this.params.claimResponseId = this.responseId + "";
+    } else {
+      delete this.params.claimResponseId;
+    }
     this.router.navigate([], {
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, reSubmitMode: null, size: null },
@@ -534,7 +550,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
-    console.log("$event = " + $event);
+    //console.log("$event = " + $event);
   }
   getPayees() {
     this.sharedServices.loadingChanged.next(true);
@@ -553,6 +569,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
           } else if (this.claimId && !urlHasEditMode) {
             this.pageMode = 'VIEW';
+            //console.log("this.responseId = "+this.responseId);
             if (this.responseId) {
               this.getCommunications();
             }
@@ -1213,7 +1230,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     let hasError = false;
     if (this.CareTeams.length !== 0) {
       this.CareTeams.forEach(element => {
-        console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
+        //console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
         if (element.physicianCode == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
           element.error = "Please Select Valid Practitioner";
           hasError = true;
@@ -1856,7 +1873,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           ++index;
         });
         this.model.visionPrescription.lensSpecifications = lens_model;
-        console.log("on save - > " + JSON.stringify(lens_model));
+        //console.log("on save - > " + JSON.stringify(lens_model));
       }
 
       this.model.items = this.Items.map(x => {
@@ -1971,7 +1988,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.claimEncounter = encounterModel;
       }
 
-      console.log('Model', this.model);
+      //console.log('Model', this.model);
 
       let requestObservable: Observable<HttpEvent<any>>;
       if (this.pageMode == 'CREATE') {
@@ -1981,7 +1998,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         requestObservable = this.nphiesClaimUploaderService.updateNphiesClaim(
           this.sharedServices.providerId, `${this.claimId}`, this.model
         );
-        console.log('Model EDIT', this.model);
+        //console.log('Model EDIT', this.model);
       }
 
       requestObservable.subscribe(event => {
@@ -2340,6 +2357,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0].name : '';
     }
+    //this.responseId = response.claimResponseId;
     this.otherDataModel.providerId = response.providerId;
     this.otherDataModel.cancelStatus = response.cancelStatus;
     this.otherDataModel.cancelResponseReason = response.cancelResponseReason;
@@ -3086,7 +3104,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
         let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
         row = row == null ? {} : row;
-        console.log("Row = " + JSON.stringify(row));
+        //console.log("Row = " + JSON.stringify(row));
         let result = leftList[i];
 
         if (result != null) {
