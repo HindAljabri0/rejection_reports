@@ -107,7 +107,7 @@ export class PricelistComponent implements OnInit {
     this.isHeadOffice = AuthService.isProviderHeadOffice();
     this.headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
     this.providerId = localStorage.getItem("providerId");
-    console.log("isHeadOffice = " + AuthService.isProviderHeadOffice() + " headOfficeProviderId = " + this.headOfficeProviderId);
+    //console.log("isHeadOffice = " + AuthService.isProviderHeadOffice() + " headOfficeProviderId = " + this.headOfficeProviderId);
   }
 
   getPayerList(isFromUrl: boolean = false) {
