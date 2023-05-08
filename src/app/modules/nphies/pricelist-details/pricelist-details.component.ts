@@ -13,6 +13,7 @@ import { AddPricelistDialogComponent } from './add-pricelist-dialog/add-pricelis
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
+import { AuthService } from 'src/app/services/authService/authService.service';
 
 @Component({
   selector: 'app-pricelist-details',
@@ -40,7 +41,9 @@ export class PricelistDetailsComponent implements OnInit {
   priceDetails = [];
 
   priceList = [];
-
+  isHeadOffice;
+  headOfficeProviderId;
+  providerId;
   constructor(
     private dialog: MatDialog,
     private activateRoute: ActivatedRoute,
@@ -60,6 +63,9 @@ export class PricelistDetailsComponent implements OnInit {
   ngOnInit() {
     this.getPayerList();
     this.searchItems();
+    this.isHeadOffice = AuthService.isProviderHeadOffice();
+    this.headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
+    this.providerId = localStorage.getItem("providerId");
   }
 
   updateManualPage(index) {
