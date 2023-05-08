@@ -313,11 +313,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
     }
 
-    /*if (this.activatedRoute.snapshot.queryParams.claimResponseId) {
+    if (this.activatedRoute.snapshot.queryParams.claimResponseId && !this.responseId) {
       // tslint:disable-next-line:radix
       this.responseId = parseInt(this.activatedRoute.snapshot.queryParams.claimResponseId);
       console.log("in init this.responseId = "+this.responseId);
-    }*/
+    }
 
     this.getPayees();
     this.InitClaimPagenation();
