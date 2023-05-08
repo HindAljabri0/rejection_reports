@@ -95,7 +95,7 @@ export class ProviderNphiesSearchService {
     }
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let headOfficeProviderId=localStorage.getItem("headOfficeProviderId");
-    console.log("print the value ="+headOfficeProviderId);
+    //console.log("print the value ="+headOfficeProviderId);
     
     if(!isHeadOffice && headOfficeProviderId){
       requestURL += `headOfficeProviderId=${headOfficeProviderId}&`;
@@ -128,6 +128,13 @@ export class ProviderNphiesSearchService {
     }
     if (pageSize) {
       requestURL += `pageSize=${pageSize}&`;
+    }
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let headOfficeProviderId=localStorage.getItem("headOfficeProviderId");
+    //console.log("print the value ="+headOfficeProviderId);
+    
+    if(!isHeadOffice && headOfficeProviderId){
+      requestURL += `headOfficeProviderId=${headOfficeProviderId}&`;
     }
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
