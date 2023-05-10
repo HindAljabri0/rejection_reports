@@ -463,6 +463,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // this.location.go(this.location.path().replace('#edit', ''));
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       this.ngOnInit();
+      this.selectedTab = 0;
     }
   }
 
@@ -483,6 +484,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       // this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
+      this.selectedTab = 0;
     }
   }
 
@@ -502,6 +504,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       // this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
+      this.selectedTab = 0;
     }
   }
 
@@ -523,6 +526,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
     // this.location.go(this.location.path().replace('#edit', ''));
     this.ngOnInit();
+    this.selectedTab = 0;
   }
 
   resetURL(claimId: string = '') {
