@@ -203,7 +203,7 @@ export class ClaimEffects {
         withLatestFrom(this.store.select(getClaim)),
         withLatestFrom(this.store.select(getRetrievedClaimId)),
         withLatestFrom(this.store.select(getRetrievedClaimProps)),
-        map(values => ({ claim: values[0][0][1], id: values[0][1], currentStatus: values[1]?.statusCode? values[1].statusCode:''})),
+        map(values => ({ claim: values[0][0][1], id: values[0][1], currentStatus: values[1]? values[1].statusCode:''})),
         switchMap(values => this.claimService.saveChangesToExistingClaim(values.claim, this.sharedServices.providerId, values.id).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
