@@ -57,7 +57,7 @@
             <ng-container *ngFor="let organization of organizations">
               <h5 *ngIf="organization.code != '-1'" class="menu-opt-group  text-right">
                 {{organization.display}}<br>{{organization.displayAlt}}</h5>
-              <mat-option *ngFor="let payer of organization.subList" [value]="payer.code">
+              <mat-option *ngFor="let payer of organization.subList" [value]="organization.code +':'+ payer.code">
                 {{payer.display}}<br>{{payer.displayAlt}}</mat-option>
 
             </ng-container>

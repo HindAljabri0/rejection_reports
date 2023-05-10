@@ -135,10 +135,11 @@ export class PricelistComponent implements OnInit {
   }
 
   selectPayer(event) {
+    console.log(JSON.stringify(event.value));
     if (event.value) {
       this.FormPriceList.patchValue({
         payerNphiesId: event.value.payerNphiesId,
-        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+        tpaNphiesId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId
         // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
       });
     } else {
@@ -148,7 +149,6 @@ export class PricelistComponent implements OnInit {
         // destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
       });
     }
-
   }
 
   updateManualPage(index) {
