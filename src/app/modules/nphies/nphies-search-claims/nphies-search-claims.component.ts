@@ -609,12 +609,13 @@ console.log(this.isSearchByStatus)
 
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
+      this.PageclaimIds = [];
       this.claims.forEach(element => {
         //console.log("claim id = "+element.claimId + " providerId = "+element.providerId );
         let data = {claimId: element.claimId, providerId: element.providerId,responseId:element.claimResponseId };
         this.PageclaimIds.push(data);
       });
-      console.log(this.PageclaimIds);
+      //console.log("how many items = "+JSON.stringify(this.PageclaimIds));
       //.map(claim => claim.claimId);
       this.PageclaimProviderIds = this.claims.map(claim => claim.providerId);
       localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, JSON.stringify(this.PageclaimIds));
