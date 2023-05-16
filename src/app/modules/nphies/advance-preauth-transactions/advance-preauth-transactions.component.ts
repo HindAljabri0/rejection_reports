@@ -61,7 +61,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     provClaimNo: [''],
     destinationId: [''],
     type: [''],
-    RequestBundleId: ['']
+    ResponseBundleId: ['']
   });
 
   statusList = [
@@ -242,8 +242,8 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       if (this.FormAdvancePreAuthTransaction.controls.type.value) {
         model.type = this.FormAdvancePreAuthTransaction.controls.type.value;
       }
-      if (this.FormAdvancePreAuthTransaction.controls.RequestBundleId.value) {
-        model.requestBundleId = this.FormAdvancePreAuthTransaction.controls.RequestBundleId.value;
+      if (this.FormAdvancePreAuthTransaction.controls.ResponseBundleId.value) {
+        model.ResponseBundleId = this.FormAdvancePreAuthTransaction.controls.ResponseBundleId.value;
       }
 
 
