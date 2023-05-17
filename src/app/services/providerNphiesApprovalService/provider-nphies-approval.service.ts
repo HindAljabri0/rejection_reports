@@ -287,10 +287,10 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  cancelApprovalRequest(providerId: string, body: any) {
+  cancelApprovalRequest(providerId: string, body: any,isApproval=false) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/approval/cancel/request`;
-    if (isHeadOffice) {
+    if (isHeadOffice && !isApproval) {
       requestURL = `/head-office/${providerId}/claims/cancel/request`;
     }
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
@@ -332,11 +332,11 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  statusCheck(providerId: string, body: any) {
+  statusCheck(providerId: string, body: any,isApproval = false) {
     
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/approval/checkstatus`;
-    if (isHeadOffice) {
+    if (isHeadOffice && !isApproval) {
       requestURL = `/head-office/${providerId}/claims/branch/checkstatus`;
     }
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
@@ -677,11 +677,11 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getJSONTransactions(providerId: string, _claimId: number,_claimProviderId:string) {
+  getJSONTransactions(providerId: string, _claimId: number,_claimProviderId:string,isApproval = false) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestUrl = `/providers/${providerId}/claims/view/jsons/${_claimId}`;
     let request= new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
-    if (isHeadOffice) {
+    if (isHeadOffice && !isApproval) {
       requestUrl = `/head-office/${providerId}/claims/branch/view/jsons`;
       request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl,{ claimId : _claimId,claimProviderId : _claimProviderId});
     }
@@ -689,10 +689,10 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getJSON(providerId: string, body: any) {
+  getJSON(providerId: string, body: any,isApproval = false) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestUrl = `/providers/${providerId}/claims/transactionlog/json`;
-    if (isHeadOffice) {
+    if (isHeadOffice && !isApproval) {
       requestUrl = `/head-office/${providerId}/claims/branch/transactionlog/json`;
     }
     

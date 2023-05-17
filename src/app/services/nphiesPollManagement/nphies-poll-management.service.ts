@@ -10,11 +10,11 @@ export class NphiesPollManagementService {
 
   constructor(private http: HttpClient) { }
 
-  sendCommunication(providerId: string, body: any) {
+  sendCommunication(providerId: string, body: any,isApproval = false) {
     
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/communication`;
-    if (isHeadOffice) {
+    if (isHeadOffice && !isApproval) {
       requestURL = `/head-office/${providerId}/claims/communication`;
     }
     const request = new HttpRequest('POST', environment.nphiesPollManagement + requestURL, body);
