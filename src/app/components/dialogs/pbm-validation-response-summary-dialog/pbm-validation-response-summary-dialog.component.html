@@ -1,0 +1,59 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">PBM Validation Response Summary</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+        <div class="col-md-6">
+            <div class="form-group form-group-static">
+                <div class="control-label">Request ID</div>
+                <p class="form-control-static text-primary">6d5a7179-fe9d-4d61-8cb2-1cd721e546cd</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group form-group-static">
+                <div class="control-label">Response Status</div>
+                <p class="form-control-static text-danger">Rejected by PBM</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="primary-grid claim-view-table">
+        <thead>
+            <tr>
+                <th>Service Code</th>
+                <th>Service Description </th>
+                <th>Status</th>
+                <th>Requested Qty.</th>
+                <th>Rejection Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>4165854</td>
+                <td>Lorem ipsum</td>
+                <td class="semibold text-success">Approved</td>
+                <td>1</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>98784632</td>
+                <td>Lorem ipsum</td>
+                <td class="semibold text-danger">Rejected</td>
+                <td>5</td>
+                <td>Lorem Ipsum</td>
+            </tr>
+            <tr>
+                <td>7895963</td>
+                <td>Lorem ipsum</td>
+                <td class="semibold text-success">Approved</td>
+                <td>3</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="text-right p-14">
+    <button mat-button type="button" color="primary" (click)="closeDialog()">Close</button>
+</div>

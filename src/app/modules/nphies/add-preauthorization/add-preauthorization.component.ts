@@ -27,6 +27,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
+import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -378,17 +379,17 @@ export class AddPreauthorizationComponent implements OnInit {
     if (lensSpecifications) {
       let leftList = lensSpecifications.filter(f => f.eye == 'left');
       let rightList = lensSpecifications.filter(f => f.eye == 'right');
-      let SequenceList=rightList.map(x=>x.sequence);
+      let SequenceList = rightList.map(x => x.sequence);
       //console.log("Left List - > "+JSON.stringify(leftList));
       //console.log("Right List - > "+JSON.stringify(rightList));
       for (var i = 0; i < leftList.length; i++) {
-        
+
         let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
         row = row == null ? {} : row;
         //console.log("Row = " + JSON.stringify(row));
         let result = leftList[i];
-        
-        if (result!=null) {
+
+        if (result != null) {
           //console.log("result = " + JSON.stringify(result));
           row.left_sphere = result.sphere;
           row.left_cylinder = result.cylinder;
@@ -2425,5 +2426,11 @@ export class AddPreauthorizationComponent implements OnInit {
       }
       this.sharedServices.loadingChanged.next(false);
     });
+  }
+
+  openPbmValidationResponseSummaryDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    const dialogRef = this.dialog.open(PbmValidationResponseSummaryDialogComponent, dialogConfig);
   }
 }
