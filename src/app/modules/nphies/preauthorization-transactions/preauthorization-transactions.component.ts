@@ -426,7 +426,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     dialogConfig.data = {
       approvalRequestId: requestId,
       approvalResponseId: responseId,
-      type: reqType
+      type: reqType,
+      isApproval:true
     };
 
     const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
@@ -548,7 +549,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
     model.approvalResponseId = responseId;
-    this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model).subscribe(event => {
+    this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model,true).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

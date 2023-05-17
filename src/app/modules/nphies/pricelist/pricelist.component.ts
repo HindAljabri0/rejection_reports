@@ -238,7 +238,9 @@ export class PricelistComponent implements OnInit {
       if (this.FormPriceList.controls.tpaNphiesId.value) {
         model.tpaNphiesId = this.FormPriceList.controls.tpaNphiesId.value;
       }
-
+      if(model.tpaNphiesId == model.payerNphiesId){
+        delete model.tpaNphiesId;
+      }
       model.page = this.page;
       model.size = this.pageSize;
       const isHeadOffice = AuthService.isProviderHeadOffice();
