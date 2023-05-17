@@ -28,7 +28,8 @@ export class ApprovalJsonResponseComponent implements OnInit {
   GetJsonResponses() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.approvalRequestId,this.sharedServices.providerId).subscribe((event: any) => {
+    //console.log("isapproval = "+this.otherDataModel.isApproval);
+    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.approvalRequestId,this.sharedServices.providerId,this.otherDataModel.isApproval).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.transactions = event.body;
@@ -52,7 +53,7 @@ export class ApprovalJsonResponseComponent implements OnInit {
     model.transactionType = transactionType;
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSON(this.sharedServices.providerId, model).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getJSON(this.sharedServices.providerId, model,this.otherDataModel.isApproval).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const json = event.body;
