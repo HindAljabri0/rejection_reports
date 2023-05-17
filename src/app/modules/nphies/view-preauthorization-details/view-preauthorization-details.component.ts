@@ -31,7 +31,7 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     if (this.data.detailsModel.communicationId) {
       this.selectedTab = 1;
     }
-    
+    this.data.detailsModel.isApproval=true;
     this.getCommunications();
   }
 
@@ -43,7 +43,8 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
       claimResponseId: this.data.detailsModel.approvalResponseId,
       // tslint:disable-next-line:radix
       communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
-      items: this.data.detailsModel.items
+      items: this.data.detailsModel.items,
+      isApproval:true
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
