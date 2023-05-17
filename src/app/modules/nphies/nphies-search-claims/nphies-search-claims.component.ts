@@ -1347,7 +1347,7 @@ console.log(this.isSearchByStatus)
     const model: any = {};
     model.approvalResponseId = responseId;
     model.claimProviderId =claimProviderId;
-    this.providerNphiesApprovalService.statusCheck(this.commen.providerId, model).subscribe(event => {
+    this.providerNphiesApprovalService.claimStatusCheck(this.commen.providerId, model).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

@@ -29,7 +29,7 @@ export class JsonResponseComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
    
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getJSONTransactions(this.sharedServices.providerId, this.otherDataModel.claimId,this.otherDataModel.providerId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getClaimJSONTransactions(this.sharedServices.providerId, this.otherDataModel.claimId,this.otherDataModel.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           this.transactions = event.body;
