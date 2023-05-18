@@ -16,6 +16,11 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+  sendApprovalPBMRequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/pbm-validation`;
+    const request = new HttpRequest('POST', environment.nphiesApprovalPBM + requestUrl, body);
+    return this.http.request(request);
+  }
   LinkAttachments(providerId: string,
     folderName: string,
     isReplace: boolean,

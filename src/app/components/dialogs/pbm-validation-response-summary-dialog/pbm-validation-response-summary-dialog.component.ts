@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit,Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-pbm-validation-response-summary-dialog',
@@ -9,10 +9,12 @@ import { MatDialogRef } from '@angular/material';
 export class PbmValidationResponseSummaryDialogComponent implements OnInit {
 
   constructor(
-    private dialogRef: MatDialogRef<PbmValidationResponseSummaryDialogComponent>
+    private dialogRef: MatDialogRef<PbmValidationResponseSummaryDialogComponent>, @Inject(MAT_DIALOG_DATA) public data
   ) { }
-
+  pbmResult:any;  
   ngOnInit() {
+    this.pbmResult = this.data.PBM_result;
+    console.log("the data in the dailog"+JSON.stringify(this.pbmResult));
   }
 
   closeDialog() {

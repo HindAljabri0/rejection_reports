@@ -28,6 +28,7 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
+import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -209,6 +210,8 @@ export class AddPreauthorizationComponent implements OnInit {
   defualtPageMode = "";
   selectedDefaultPlan = null;
   providerType = "";
+  isPBMValidationVisible =false;
+  Pbm_result:any;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -219,6 +222,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private superAdminService: SuperAdminService,
+    private adminService:AdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dbMapping: DbMappingService
@@ -229,6 +233,7 @@ export class AddPreauthorizationComponent implements OnInit {
   ngOnInit() {
     this.getPayees();
     this.getTPA();
+    this.getPBMValidation();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -239,6 +244,17 @@ export class AddPreauthorizationComponent implements OnInit {
       this.defualtPageMode = "CREATE"
     }
     this.getProviderTypeConfiguration();
+  }
+  getPBMValidation() {
+    this.adminService.checkIfNphiesPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isPBMValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
   }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
@@ -1647,7 +1663,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(isPbmvalidation=false) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
       const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
@@ -2117,11 +2133,15 @@ export class AddPreauthorizationComponent implements OnInit {
 
       console.log('Model', this.model);
       this.sharedServices.loadingChanged.next(true);
-      this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
+      let requestOb = this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model);
+      if(isPbmvalidation){
+        requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
+      }
+      requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
-          if (event.status === 200) {
+          if (event.status === 200 && !isPbmvalidation) {
             const body: any = event.body;
-            if (body.status === 'OK') {
+            if (body.status === 'OK' ) {
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
 
@@ -2152,6 +2172,12 @@ export class AddPreauthorizationComponent implements OnInit {
                 }
               }
             }
+          }else if(event.status === 200 && isPbmvalidation){
+            const body: any = event.body;
+
+            this.sharedServices.loadingChanged.next(false);
+            this.Pbm_result=body;
+            this.openPbmValidationResponseSummaryDialog(body);
           }
         }
       }, error => {
@@ -2428,9 +2454,13 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-  openPbmValidationResponseSummaryDialog() {
+  openPbmValidationResponseSummaryDialog(body) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.data = {
+      PBM_result:body
+    };
     const dialogRef = this.dialog.open(PbmValidationResponseSummaryDialogComponent, dialogConfig);
   }
+  
 }
