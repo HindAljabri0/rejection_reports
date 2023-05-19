@@ -74,7 +74,9 @@ export class NphiesPayersSelectorComponent implements OnInit {
 
   // For extracted claims which has invalid destination Id
   setDestinationId() {
+    
     if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
+      
       if (this.Form.controls.insurancePlanTpaNphiesId.value) {
         this.Form.controls.destinationId.setValue(this.Form.controls.insurancePlanTpaNphiesId.value);
       } else {
@@ -93,9 +95,10 @@ export class NphiesPayersSelectorComponent implements OnInit {
       // });
 
     } else if (this.insurancePayer) {
+      
       if (this.tpaNphiesId) {
         this.insurancePayer = this.tpaNphiesId + ':' + this.insurancePayer;
-        console.log(this.insurancePayer + "this.tpaNphiesId + ':' + this.insurancePayer;");
+      
         
       } else {
         if (this.organizations.filter(x => x.subList.find(y => y.code === this.insurancePayer)).length > 1) {
@@ -114,31 +117,33 @@ export class NphiesPayersSelectorComponent implements OnInit {
   }
 
   selectPayer(event) {
-  
+    
     if (event.value) {
       let payerNphiesIdValue = '';
       let organizationNphiesIdValue = '';
-    
+      //console.log("event.value "+JSON.stringify(event.value));
       if (this.Form && this.Form.controls.insurancePlanPayerId && this.Form.controls.insurancePlanPayerId.value) {
         if (event.value.split(':').length > 1) {
           organizationNphiesIdValue = event.value.split(':')[0];
-          payerNphiesIdValue = event.value;
+          payerNphiesIdValue = event.value.split(':')[1];
         }
       } else {
+        
         if (this.tpaNphiesId) {
           if (event.value.split(':').length > 1) {
             organizationNphiesIdValue = event.value.split(':')[0];
-            payerNphiesIdValue = event.value;
-            console.log(organizationNphiesIdValue + 'organizationNphiesIdValue');
+            payerNphiesIdValue = event.value.split(':')[1];
+            
           }
         } else {
+
           this.duplicatePayer = false;
           if (event.value.split(':').length > 1) {
             organizationNphiesIdValue = event.value.split(':')[0];
             payerNphiesIdValue =event.value.split(':')[1];
           }
-          console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
-          console.log(payerNphiesIdValue + 'payerNphiesIdValue')
+          //console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
+          //console.log(payerNphiesIdValue + 'payerNphiesIdValue')
         // console.log(organizationNphiesIdValue + 'organizationNphiesIdValue')
         // this.organizations.forEach(x => {
         //   if (x.subList.find(y => y.code === payerNphiesIdValue)) {
