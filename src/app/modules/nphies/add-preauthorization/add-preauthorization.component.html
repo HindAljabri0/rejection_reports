@@ -828,13 +828,13 @@
         <hr class="hr spaced" />
 
         <div class="form-group text-right btn-list">
-          <button type="submit" mat-button color="primary" (click)="openPbmValidationResponseSummaryDialog()">
+          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)">
             <span>PBM Response</span>
           </button>
-          <button type="submit" mat-flat-button color="primary">
+          <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)">
             <span>Request PBM</span>
           </button>
-          <button type="submit" mat-flat-button color="primary">
+          <button type="submit" mat-flat-button color="primary" >
             <span>Request Authorization</span>
           </button>
         </div>

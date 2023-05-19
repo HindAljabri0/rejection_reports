@@ -7,13 +7,16 @@
         <div class="col-md-6">
             <div class="form-group form-group-static">
                 <div class="control-label">Request ID</div>
-                <p class="form-control-static text-primary">6d5a7179-fe9d-4d61-8cb2-1cd721e546cd</p>
+                <p class="form-control-static text-primary">{{ pbmResult.clientRequestId }}</p>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group form-group-static">
                 <div class="control-label">Response Status</div>
-                <p class="form-control-static text-danger">Rejected by PBM</p>
+
+                <p class="form-control-static text-danger" *ngIf="pbmResult.status !='APPROVED'">{{ pbmResult.status }}</p>
+                <p class="form-control-static text-success" *ngIf="pbmResult.status =='APPROVED'">{{ pbmResult.status }}</p>
+                
             </div>
         </div>
     </div>
@@ -30,27 +33,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>4165854</td>
-                <td>Lorem ipsum</td>
-                <td class="semibold text-success">Approved</td>
-                <td>1</td>
+
+            <tr *ngFor="let row of pbmResult.results">
+                <td>{{row.serviceCode}}</td>
+                <td>{{row.serviceDescription}}</td>
+                <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
+                <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>
+                <td>{{ row.requestedQuantity }}</td>
                 <td>-</td>
             </tr>
-            <tr>
-                <td>98784632</td>
-                <td>Lorem ipsum</td>
-                <td class="semibold text-danger">Rejected</td>
-                <td>5</td>
-                <td>Lorem Ipsum</td>
-            </tr>
-            <tr>
-                <td>7895963</td>
-                <td>Lorem ipsum</td>
-                <td class="semibold text-success">Approved</td>
-                <td>3</td>
-                <td>-</td>
-            </tr>
+           
+
         </tbody>
     </table>
 </div>
