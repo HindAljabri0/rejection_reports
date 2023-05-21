@@ -35,7 +35,7 @@
         <tbody>
 
             <tr *ngFor="let row of pbmResult.results">
-                <td>{{row.serviceCode}}</td>
+                <td>{{row.standardCode}}</td>
                 <td>{{row.serviceDescription}}</td>
                 <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
                 <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>

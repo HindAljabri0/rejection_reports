@@ -828,7 +828,7 @@
         <hr class="hr spaced" />
 
         <div class="form-group text-right btn-list">
-          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)">
+          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)">
             <span>PBM Response</span>
           </button>
           <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)">

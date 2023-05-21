@@ -155,5 +155,6 @@ export const ICD10_RESTRICTION_KEY = 'ICD10Validation';
 export const SFDA_RESTRICTION_KEY = 'sfdaRestriction';
 export const PBM_RESTRICTION_KEY = 'pbmValidation';
 export const NPHIES_PBM_RESTRICTION_KEY = 'NphiesPbmValidation';
+export const NPHIES_PBM_APPROVAL_KEY = 'NphiesApprovalPbmValidation';
 export const NET_AMOUNT_RESTRICTION_KEY = 'netAmountValidation';
 export const PROVIDER_TYPE_CONFIGURATION_KEY = 'providerTypeConfiguration';
