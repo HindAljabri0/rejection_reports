@@ -30,6 +30,7 @@ import { DbMappingService } from 'src/app/services/administration/dbMappingServi
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 
+
 @Component({
   selector: 'app-add-preauthorization',
   templateUrl: './add-preauthorization.component.html',
@@ -2453,7 +2454,6 @@ export class AddPreauthorizationComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
     });
   }
-
   openPbmValidationResponseSummaryDialog(body) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
