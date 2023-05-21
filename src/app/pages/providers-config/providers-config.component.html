@@ -705,6 +705,20 @@
             </div>
           </div>
         </div>
+        <div class="provider-config-container">
+          <div class="row small-gutter">
+            <div class="col-6">
+              <div class="form-group form-group-static">                
+                <p class="form-control-static">NPHIES Approval PBM</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group pt-2">
+                <mat-slide-toggle color="primary" [(ngModel)]="newNphiesPBMValidationSettings['101']">Enable</mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </div>
       </ng-container>          
       <div *ngIf="componentLoading.pbmConfiguration || componentLoading.nphiesPbmConfiguration" class="inline-loader">
         <mat-spinner diameter="48"></mat-spinner>
