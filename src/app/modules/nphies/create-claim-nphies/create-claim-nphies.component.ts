@@ -1503,6 +1503,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(" value = "+this.FormNphiesClaim.controls.dateOrdered.value);
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE') {
       const providerTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0].name;
