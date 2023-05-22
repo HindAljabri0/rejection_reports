@@ -40,7 +40,12 @@
                 <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
                 <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>
                 <td>{{ row.requestedQuantity }}</td>
-                <td>-</td>
+                <td>
+                    <ng-container *ngFor="let error of row.errors;let i=index">
+                        <span class="abbr" matTooltip="{{error.description}}">{{ error.code }}</span>
+                        <ng-container *ngIf="i!=row.errors.length-1">, </ng-container>
+                      </ng-container>
+                </td>
             </tr>
            
 
