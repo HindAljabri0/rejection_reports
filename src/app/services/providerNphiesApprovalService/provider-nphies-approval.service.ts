@@ -16,6 +16,11 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+  sendApprovalPBMRequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/pbm-validation`;
+    const request = new HttpRequest('POST', environment.nphiesApprovalPBM + requestUrl, body);
+    return this.http.request(request);
+  }
   LinkAttachments(providerId: string,
     folderName: string,
     isReplace: boolean,
@@ -100,16 +105,16 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
-  deleteClaimById(providerId: string, claimId: string,claimProviderId:string) {
+  deleteClaimById(providerId: string, claimId: string, claimProviderId: string) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/remove/${claimId}`;
     if (isHeadOffice) {
       requestURL = `/head-office/${providerId}/remove?claimId=${claimId}&claimProviderId=${claimProviderId}`;
     }
-    const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
+    const request = new HttpRequest('DELETE', environment.providerNphiesClaim + requestURL);
     return this.http.request(request);
   }
   replicateClaimById(providerId: string, claimId: string) {
@@ -222,7 +227,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string) {
-    
+
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/remove/criteria?`;
     if (isHeadOffice) {
@@ -277,7 +282,7 @@ export class ProviderNphiesApprovalService {
     if (netAmount) {
       requestURL += `&netAmount=${netAmount}`;
     }
-    const request = new HttpRequest('DELETE', environment.providerNphiesApproval + requestURL);
+    const request = new HttpRequest('DELETE', environment.providerNphiesClaim + requestURL);
     return this.http.request(request);
   }
 
@@ -287,14 +292,20 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  cancelApprovalRequest(providerId: string, body: any,isApproval=false) {
-    const isHeadOffice = AuthService.isProviderHeadOffice();
-    let requestURL = `/providers/${providerId}/approval/cancel/request`;
-    if (isHeadOffice && !isApproval) {
-      requestURL = `/head-office/${providerId}/claims/cancel/request`;
+  cancelApprovalRequest(providerId: string, body: any, isApproval = false) {
+    if (isApproval) {
+      let requestURL = `/providers/${providerId}/approval/cancel/request`;
+      const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+      return this.http.request(request);
+    } else {
+      const isHeadOffice = AuthService.isProviderHeadOffice();
+      let requestURL = `/providers/${providerId}/claims/cancel/request`;
+      if (isHeadOffice) {
+        requestURL = `/head-office/${providerId}/claims/cancel/request`;
+      }
+      const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, body);
+      return this.http.request(request);
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
-    return this.http.request(request);
   }
 
   nullifyApprovalRequest(providerId: string, body: any) {
@@ -318,28 +329,34 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getNphisClaimDetails(providerId: string, _claimId: number,_claimProviderId:string) {
+  getNphisClaimDetails(providerId: string, _claimId: number, _claimProviderId: string) {
     let requestUrl = `/providers/${providerId}/claims/${_claimId}`;
     const isHeadOffice = AuthService.isProviderHeadOffice();
-    let request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    let request = new HttpRequest('GET', environment.providerNphiesClaim + requestUrl);
     if (isHeadOffice) {
       requestUrl = `/head-office/${providerId}/claims/branch/claim/detail`;
-      request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl,{claimId:_claimId,claimProviderId:_claimProviderId});
+      request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, { claimId: _claimId, claimProviderId: _claimProviderId });
     }
-    
+
     //http://localhost:8025/head-office/1649/claims/branch/claim/detail
-    
+
     return this.http.request(request);
   }
 
-  statusCheck(providerId: string, body: any,isApproval = false) {
-    
-    const isHeadOffice = AuthService.isProviderHeadOffice();
+  statusCheck(providerId: string, body: any, isApproval = false) {
     let requestURL = `/providers/${providerId}/approval/checkstatus`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+    return this.http.request(request);
+  }
+
+  claimStatusCheck(providerId: string, body: any, isApproval = false) {
+
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let requestURL = `/providers/${providerId}/claims/checkstatus`;
     if (isHeadOffice && !isApproval) {
       requestURL = `/head-office/${providerId}/claims/branch/checkstatus`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, body);
     return this.http.request(request);
   }
 
@@ -470,7 +487,7 @@ export class ProviderNphiesApprovalService {
       requestURL += `&netAmount=${netAmount}`;
     }
 
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
 
@@ -564,7 +581,7 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
 
@@ -664,7 +681,7 @@ export class ProviderNphiesApprovalService {
     if (netAmount) {
       requestURL += `&netAmount=${netAmount}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
 
@@ -677,27 +694,38 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getJSONTransactions(providerId: string, _claimId: number,_claimProviderId:string,isApproval = false) {
-    const isHeadOffice = AuthService.isProviderHeadOffice();
-    let requestUrl = `/providers/${providerId}/claims/view/jsons/${_claimId}`;
-    let request= new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
-    if (isHeadOffice && !isApproval) {
-      requestUrl = `/head-office/${providerId}/claims/branch/view/jsons`;
-      request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl,{ claimId : _claimId,claimProviderId : _claimProviderId});
-    }
-    
+  getJSONTransactions(providerId: string, _claimId: number, _claimProviderId: string, isApproval = false) {
+    let requestUrl = `/providers/${providerId}/approval/view/jsons/${_claimId}`;
+    let request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
 
-  getJSON(providerId: string, body: any,isApproval = false) {
+  getClaimJSONTransactions(providerId: string, _claimId: number, _claimProviderId: string, isApproval = false) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
-    let requestUrl = `/providers/${providerId}/claims/transactionlog/json`;
+    let requestUrl = `/providers/${providerId}/claims/view/jsons/${_claimId}`;
+    let request = new HttpRequest('GET', environment.providerNphiesClaim + requestUrl);
     if (isHeadOffice && !isApproval) {
-      requestUrl = `/head-office/${providerId}/claims/branch/transactionlog/json`;
+      requestUrl = `/head-office/${providerId}/claims/branch/view/jsons`;
+      request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, { claimId: _claimId, claimProviderId: _claimProviderId });
     }
-    
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
+  }
+
+
+  getJSON(providerId: string, body: any, isApproval = false) {
+    if(isApproval){
+      let requestUrl = `/providers/${providerId}/approval/transactionlog/json`;
+      const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+      return this.http.request(request);
+    }else{
+      const isHeadOffice = AuthService.isProviderHeadOffice();
+      let requestUrl = `/providers/${providerId}/claims/transactionlog/json`;
+      if (isHeadOffice && !isApproval) {
+        requestUrl = `/head-office/${providerId}/claims/branch/transactionlog/json`;
+      }
+      const request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, body);
+      return this.http.request(request);
+    }
   }
 
   approvalToPrepareSave(providerId: string, body: any) {
@@ -802,7 +830,7 @@ export class ProviderNphiesApprovalService {
       requestURL += `&netAmount=${netAmount}`;
     }
 
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
 
@@ -884,7 +912,7 @@ export class ProviderNphiesApprovalService {
       requestURL += `&netAmount=${netAmount}`;
     }
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
-    const httpRequest = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {}, { headers });
+    const httpRequest = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {}, { headers });
     return this.http.request(httpRequest);
   }
 
@@ -970,19 +998,19 @@ export class ProviderNphiesApprovalService {
     if (netAmount) {
       requestURL += `&netAmount=${netAmount}`;
     }
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
 
-  relatedClaim(providerId: string, claimId: string,claimProviderId:string) {
+  relatedClaim(providerId: string, claimId: string, claimProviderId: string) {
     let requestUrl = `/providers/${providerId}/claims/partial/resubmit?claimId=${claimId}`;
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, {});
     if (isHeadOffice) {
       requestUrl = `/head-office/${providerId}/claims/branch/partial/resubmit`;
-      request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, {claimId: claimId,claimProviderId:claimProviderId });
+      request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, { claimId: claimId, claimProviderId: claimProviderId });
     }
-    
+
     return this.http.request(request);
   }
 
@@ -1070,7 +1098,7 @@ export class ProviderNphiesApprovalService {
       requestURL += `&netAmount=${filter_netAmount}`;
     }
 
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, {});
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
   cancelPreviousClaim(providerId: string, body: any) {
