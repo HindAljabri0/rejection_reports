@@ -1765,19 +1765,20 @@ console.log(this.isSearchByStatus)
                     false))
                   .subscribe(afterColse => {
                     const uploadId = this.params.uploadId;
-
-                    if (this.selectedClaims.length == this.summaries[0].totalClaims) {
+                    console.log("in after close");
+                    /*if (this.selectedClaims.length == this.summaries[0].totalClaims) {
                       this.router.navigate(['/nphies/uploads']);
                     } else {
                       this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
                         queryParams: { uploadId }
                       }).then(() => {
                         window.location.reload();
-                      });
-                      /*this.selectedCardKey=0;
+                      });*/
+                      
+                      this.selectedCardKey=0;
                       this.resetURL();
-                      location.reload();*/
-                    }
+                      location.reload();
+                    //}
                   });
               } else if (status === 'AlreadySumitted') {
                 this.dialogService.openMessageDialog(
