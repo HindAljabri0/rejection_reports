@@ -18,39 +18,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-click" (click)="openViewNotificationDialog()">NPHIES Scheduled Maintenance</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">NPHIES schedules maintenance during 15th Fe...</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">Al Ameen Medical Polycli...</td>
-                        <td class="text-nowrap row-click" (click)="openViewNotificationDialog()">01/01/2023 - 01/03/2023</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Delete">
-                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" (click)="openViewNotificationDialog()">New Feature Launching on 27th Feb</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">We are targeting to launch new features durin...</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">JABAL RAM DENTAL CARE - KH...</td>
-                        <td class="text-nowrap row-click" (click)="openViewNotificationDialog()">14/01/2023 - 30/01/2023</td>
-                        <td class="actions">
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Delete">
-                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" (click)="openViewNotificationDialog()">Renewal Arriving</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">We found that your renewal is arriving on 14th F...</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">Shifa Al Khobar Poluclin...</td>
-                        <td class="text-nowrap row-click" (click)="openViewNotificationDialog()">02/02/2023 - 05/02/2023</td>
+                    <tr *ngFor='let Announcement of Announcements'>
+                        <td class="row-click" (click)="openViewNotificationDialog()">{{Announcement.subject}}</td>
+                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">{{Announcement.descreption}}</td>
+                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">{{Announcement.providerId}}</td>
+                        <td class="text-nowrap row-click" (click)="openViewNotificationDialog()">{{Announcement.startDate | date:'MM/dd/yyyy'}} -{{Announcement.endDate| date:'MM/dd/yyyy'}} </td>
                         <td class="actions">
                             <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
                                 <mat-icon>refresh</mat-icon>
