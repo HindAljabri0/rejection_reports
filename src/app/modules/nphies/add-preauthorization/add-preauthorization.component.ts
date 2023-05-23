@@ -1735,7 +1735,13 @@ export class AddPreauthorizationComponent implements OnInit {
       }
     }
 
-
+    if (isPbmvalidation) {
+      let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
+      if (weightValidtation == 0) {
+        this.dialogService.showMessage('Error', 'please add vital sing wieght to complete PBM request', 'alert', true, 'OK');
+        return;
+      }
+    }
     if (this.FormPreAuthorization.valid) {
 
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
@@ -2374,7 +2380,7 @@ export class AddPreauthorizationComponent implements OnInit {
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
 
-    if (nameTPA.display != 'None') {
+    if (nameTPA && nameTPA.display != 'None') {
       return nameTPA.display;
     }
     else {
