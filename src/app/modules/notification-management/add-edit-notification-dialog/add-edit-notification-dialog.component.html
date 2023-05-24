@@ -1,3 +1,5 @@
+
+<form [formGroup]="announcementForm">
 <div class="primary-dialog-header has-border">
     <h5 class="primary-dialog-title">Add Notification</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
@@ -5,18 +7,18 @@
 <div class="primary-dialog-body pb-0">
     <div class="form-group">
         <label class="control-label">Subject</label>
-        <input type="text" class="form-control" placeholder="Enter notification subject" />
+        <input type="text" class="form-control" placeholder="Enter notification subject"  formControlName="subjectControl"/>
     </div>
     <div class="form-group">
         <label class="control-label">Description</label>
-        <textarea class="form-control" placeholder="Enter notification description"></textarea>
+        <textarea class="form-control" placeholder="Enter notification description" formControlName="descriptionControl"></textarea>
     </div>
     <div class="row small-gutter">
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">Start Date</label>
                 <div class="date-picker">
-                    <input type="text" [matDatepicker]="startDate" class="form-control" placeholder="Select start date" />
+                    <input type="text" [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDateControl" />
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                     <mat-datepicker #startDate></mat-datepicker>
                 </div>
@@ -26,7 +28,7 @@
             <div class="form-group">
                 <label class="control-label">End Date</label>
                 <div class="date-picker">
-                    <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date" />
+                    <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date" formControlName="endDateControl" />
                     <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
                     <mat-datepicker #endDate></mat-datepicker>
                 </div>
@@ -57,7 +59,7 @@
 </div>
 <hr class="hr mb-14">
 <div class="form-group px-14">
-    <input type="text" class="form-control search-box" placeholder="Search provider here..." />
+    <input type="text" class="form-control search-box" placeholder="Search provider here..." formControlName="providersControl" />
 </div>
 
 <hr class="hr">
@@ -72,6 +74,7 @@
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary">Save</button>
+        <button mat-flat-button color="primary" (click)="saveAnnouncement()">Save</button>
     </div>
 </div>
+</form>
