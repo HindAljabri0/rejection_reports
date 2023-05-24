@@ -202,6 +202,9 @@ export class AuditTrailComponent implements OnInit {
     } else if (log.eventType == 'ClaimManipulation') {
       console.log('Inside ClaimManipulation' + JSON.stringify(log.newClaimData));
       json = log.newClaimData;
+    } else if (log.eventType == 'NphiesApprovalPbmValidationAuditLogType') {
+      console.log('Inside pbm validation' + JSON.stringify(log.pbmValidationData));
+      json = log.pbmValidationData;
     }
 
     this.dialog.open(JsonViewDialogComponent, {
