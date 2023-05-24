@@ -1,3 +1,4 @@
+import { F } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -15,8 +16,12 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class AddEditNotificationDialogComponent implements OnInit {
 
+
+  fileName: string = '';
+  fileType: string = '';
+  fileData = '';
   pipe = new DatePipe("en-US")
-  announcement: AnnouncementNotification={
+  announcement: AnnouncementNotification = {
     userName: '',
     subject: '',
     descreption: '',
@@ -24,6 +29,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     endDate: '',
     attachments: []
   };
+  isCreatedAnnouncement = false;
   constructor(private dialogRef: MatDialogRef<AddEditNotificationDialogComponent>,
     private notificationsService: NotificationsService,
     public sharedServices: SharedServices) { }
@@ -40,8 +46,9 @@ export class AddEditNotificationDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    console.log(this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), "MM/dd/yyyy"))
-    this.dialogRef.close();
+    this.dialogRef.close(
+      this.isCreatedAnnouncement
+    );
   }
 
 
@@ -50,31 +57,49 @@ export class AddEditNotificationDialogComponent implements OnInit {
     this.announcement.subject = this.announcementForm.controls.subjectControl.value;
     this.announcement.descreption = this.announcementForm.controls.descriptionControl.value;
     this.announcement.startDate = this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), "yyyy-MM-dd");
-    this.announcement.endDate = this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), "yyyy-MM-dd");
+    this.announcement.endDate = this.pipe.transform(new Date(this.announcementForm.controls.endDateControl.value), "yyyy-MM-dd");
     this.announcement.attachments = [{
-      attachment: null,
-      attachmentName: 'test',
-      attachmentType: "test2"
+      attachment: this.fileData,
+      attachmentName: this.fileName,
+      attachmentType: this.fileType
     }]
 
   }
 
-  saveAnnouncement(){
+  saveAnnouncement() {
     this.sharedServices.loadingChanged.next(true);
     this.setData();
-    this.notificationsService.createAnnouncement(this.announcement).subscribe(event=>{
-      
-        let response =event;
+    this.notificationsService.createAnnouncement(this.announcement).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        let response = event;
         console.log(response)
         this.sharedServices.loadingChanged.next(false);
-         this.closeDialog();
-        
-       
-      
-    },error=>{
+        this.isCreatedAnnouncement = true;
+        this.closeDialog();
+
+      }
+
+    }, error => {
       console.log(error)
       this.sharedServices.loadingChanged.next(false);
     })
 
+  }
+  onFileSelected(event) {
+
+    const files: File = event.target.files[0];
+    if (files) {
+      let reader = new FileReader();
+      reader.readAsDataURL(files as Blob);
+      reader.onload = () => {
+        this.fileData = reader.result as string;
+        console.log(reader.result as string)
+      }
+
+      let splitFileName = files.name.split(".");
+      this.fileType = splitFileName[1];
+      this.fileName = splitFileName[0];
+
+    }
   }
 }

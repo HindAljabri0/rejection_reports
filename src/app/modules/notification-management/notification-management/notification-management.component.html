@@ -2,7 +2,8 @@
     <div class="block-header">
         <p class="align-self-center">Notifications</p>
         <div class="ml-auto my-n2 mr-n1">
-            <button type="button" mat-flat-button color="primary" (click)="openAddCreateNotificationDialog()">Create New</button>
+            <button type="button" mat-flat-button color="primary" (click)="openAddCreateNotificationDialog()">Create
+                New</button>
         </div>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
@@ -19,15 +20,21 @@
                 </thead>
                 <tbody>
                     <tr *ngFor='let Announcement of Announcements'>
-                        <td class="row-click" (click)="openViewNotificationDialog()">{{Announcement.subject}}</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">{{Announcement.descreption}}</td>
-                        <td class="text-clip row-click" (click)="openViewNotificationDialog()">{{Announcement.providerId}}</td>
-                        <td class="text-nowrap row-click" (click)="openViewNotificationDialog()">{{Announcement.startDate | date:'MM/dd/yyyy'}} -{{Announcement.endDate| date:'MM/dd/yyyy'}} </td>
+                        <td class="row-click" (click)="openViewNotificationDialog(Announcement.id)">
+                            {{Announcement.subject}}</td>
+                        <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
+                            {{Announcement.descreption}}</td>
+                        <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
+                            {{Announcement.providerId}}</td>
+                        <td class="text-nowrap row-click" (click)="openViewNotificationDialog(Announcement.id)">
+                            {{Announcement.startDate | date:'MM/dd/yyyy'}} -{{Announcement.endDate| date:'MM/dd/yyyy'}}
+                        </td>
                         <td class="actions">
                             <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
                                 <mat-icon>refresh</mat-icon>
                             </button>
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Delete">
+                            <button type="button" mat-icon-button class="text-primary" matTooltip="Delete"
+                                (click)="deleteAnnouncements(Announcement.id)">
                                 <mat-icon class="material-icons-outlined">delete</mat-icon>
                             </button>
                         </td>

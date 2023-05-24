@@ -51,7 +51,7 @@
                     <div class="content">
                         <mat-icon>add</mat-icon>
                     </div>
-                    <input type="file" class="file-upload-control" />
+                    <input type="file" class="file-upload-control"  (change)="onFileSelected($event)" />
                 </div>
             </li>
         </ul>
