@@ -89,13 +89,13 @@
                         <td class="actions">
                             <mat-menu #actionsMenu xPosition="before">
                                 <ng-template matMenuContent>
-                                    <button mat-menu-item *ngIf="log.newClaimData != null || log.beneficiaryJSON != null || log.eligibilityData != null || log.preAuthData !=null || log.claimData !=null" (click)="viewJSON(log.objectId, log)">View JSON</button>
+                                    <button mat-menu-item *ngIf="log.newClaimData != null || log.pbmValidationData!=null || log.beneficiaryJSON != null || log.eligibilityData != null || log.preAuthData !=null || log.claimData !=null" (click)="viewJSON(log.objectId, log)">View JSON</button>
                                     <button mat-menu-item *ngIf="log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse'" (click)="viewXml(log)">View
                                         XML</button>
                                 </ng-template>
                             </mat-menu>
                             <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
-                                *ngIf="log.newClaimData != null || log.beneficiaryJSON != null || log.eligibilityData != null || log.preAuthData !=null || log.claimData !=null || (log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse')">
+                                *ngIf="log.newClaimData != null|| log.pbmValidationData!=null || log.beneficiaryJSON != null || log.eligibilityData != null || log.preAuthData !=null || log.claimData !=null || (log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse')">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>

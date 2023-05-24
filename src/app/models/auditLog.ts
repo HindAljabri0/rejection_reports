@@ -13,7 +13,8 @@ export class AuditLog {
   eligibilityData?:string;
   preAuthData?:string;
   claimData?:string;
-
+  pbmValidationData?:string;
+  
   deserialize(input: any): this {
     Object.assign(this, input);
     this.eventTimeStamp = new Date(this.eventTimeStamp);
