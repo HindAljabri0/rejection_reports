@@ -29,6 +29,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 
 @Component({
@@ -1738,7 +1739,9 @@ export class AddPreauthorizationComponent implements OnInit {
     if (isPbmvalidation) {
       let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
       if (weightValidtation == 0) {
-        this.dialogService.showMessage('Error', 'please add vital sing wieght to complete PBM request', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'please add vital sing wieght to complete PBM request', 'alert', true, 'OK', null, true);
+        
+        //hasError = true;
         return;
       }
     }
