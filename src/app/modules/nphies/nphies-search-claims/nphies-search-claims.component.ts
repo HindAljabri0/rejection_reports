@@ -1758,7 +1758,7 @@ console.log(this.isSearchByStatus)
 
               this.commen.loadingChanged.next(false);
               const status = event.body['status'];
-              if (status === 'Deleted') {
+              if (status === 'DELETED') {
                 this.dialogService.openMessageDialog(
                   new MessageDialogData('',
                     event.body['message'],

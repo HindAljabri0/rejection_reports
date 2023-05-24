@@ -1,14 +1,13 @@
 <div class="primary-dialog-header has-border">
   <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization :
     {{data.detailsModel.claimResourceId}}</h5>&nbsp;&nbsp;
-  <div class="ml-auto left-block">
-    <h5 *ngIf="data && data.detailsModel && data.detailsModel.providertransactionlogId"
-      class="primary-dialog-title ml-0">Transaction :
-      {{data.detailsModel.providertransactionlogId}}</h5>
 
-    
-  </div>
-  <button type="button" (click)="closeDialog()" class="dialog-close ml-0" matRipple></button>
+    <div class="ml-auto left-block">
+      <h5 *ngIf="data && data.detailsModel && data.detailsModel.providertransactionlogId"
+        class="primary-dialog-title ml-0">Transaction :
+        {{data.detailsModel.providertransactionlogId}}</h5>
+    </div>
+    <button type="button" (click)="closeDialog()" class="dialog-close ml-0" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
   <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="selectedTab">
