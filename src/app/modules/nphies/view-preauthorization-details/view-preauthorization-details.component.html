@@ -1,10 +1,13 @@
 <div class="primary-dialog-header has-border">
   <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization :
     {{data.detailsModel.claimResourceId}}</h5>&nbsp;&nbsp;
-  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction :
-    {{data.detailsModel.providertransactionlogId}}</h5>
 
-  <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
+    <div class="ml-auto left-block">
+      <h5 *ngIf="data && data.detailsModel && data.detailsModel.providertransactionlogId"
+        class="primary-dialog-title ml-0">Transaction :
+        {{data.detailsModel.providertransactionlogId}}</h5>
+    </div>
+    <button type="button" (click)="closeDialog()" class="dialog-close ml-0" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
   <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="selectedTab">
@@ -25,7 +28,8 @@
       </ng-template>
       <div class="communication-wrapper">
         <h5 class="form-title px-14 py-0 mb-0">
-          <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true" (click)="openAddCommunicationDialog()">
+          <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
+            (click)="openAddCommunicationDialog()">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Communication</span>
           </button>
@@ -54,11 +58,13 @@
                               </div>
                             </td>
                           </tr>
-                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                  <button type="button"
+                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -76,11 +82,13 @@
                               </div>
                             </td>
                           </tr>
-                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                  <button type="button"
+                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -106,15 +114,18 @@
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
                 <div class="ml-auto action-btns">
-                  <button *ngIf="communication.error" type="button" class="action-btn mr-1" matTooltip="{{communication.communicationErrors}}">
+                  <button *ngIf="communication.error" type="button" class="action-btn mr-1"
+                    matTooltip="{{communication.communicationErrors}}">
                     <mat-icon class="text-danger">error_outline</mat-icon>
                   </button>
-                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
-                    [matMenuTriggerFor]="notesMenu">
+                  <button
+                    *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                    type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
                     <mat-icon class="text-primary">text_snippet</mat-icon>
                     <span>Notes</span>
                   </button>
-                  <button type="button" class="action-btn" (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                  <button type="button" class="action-btn"
+                    (click)="openAddCommunicationDialog(communication.communicationRequestId)">
                     <mat-icon class="text-primary">reply</mat-icon>
                     <span>Reply</span>
                   </button>
@@ -161,11 +172,13 @@
                                 </div>
                               </td>
                             </tr>
-                            <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                            <tr
+                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
-                                    <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                    <button type="button"
+                                      (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                       <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                       <span>{{payload.attachmentName}}</span>
                                     </button>
@@ -183,11 +196,13 @@
                                 </div>
                               </td>
                             </tr>
-                            <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                            <tr
+                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                               <td class="px-0">
                                 <ul class="inline-attachments no-space">
                                   <li>
-                                    <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                    <button type="button"
+                                      (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                       <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                       <span>{{payload.attachmentName}}</span>
                                     </button>
@@ -238,11 +253,13 @@
                               </div>
                             </td>
                           </tr>
-                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                  <button type="button"
+                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -260,11 +277,13 @@
                               </div>
                             </td>
                           </tr>
-                          <tr *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                          <tr
+                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
                             <td class="px-0">
                               <ul class="inline-attachments no-space">
                                 <li>
-                                  <button type="button" (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                  <button type="button"
+                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
                                     <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                     <span>{{payload.attachmentName}}</span>
                                   </button>
@@ -287,15 +306,18 @@
                     </table>
                   </div>
                   <span>
-                    Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}
+                    Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                    {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}
                   </span>
                 </div>
                 <div class="ml-auto action-btns">
-                  <button *ngIf="communication.error" type="button" class="action-btn mr-1" matTooltip="{{communication.communicationErrors}}">
+                  <button *ngIf="communication.error" type="button" class="action-btn mr-1"
+                    matTooltip="{{communication.communicationErrors}}">
                     <mat-icon class="text-danger">error_outline</mat-icon>
                   </button>
-                  <button *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0" type="button" class="action-btn mr-1"
-                    [matMenuTriggerFor]="notesMenu">
+                  <button
+                    *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                    type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
                     <mat-icon class="text-primary">text_snippet</mat-icon>
                     <span>Notes</span>
                   </button>
@@ -328,7 +350,7 @@
   <div class="btn-list text-right">
     <!-- <button mat-flat-button color="primary">Progress to Encounter</button> -->
     <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="data.detailsModel.outcome !== 'Error'">
-        {{getType()}}
+      {{getType()}}
     </button>
     <button
       *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial'  || data.detailsModel.status === 'not-required'"

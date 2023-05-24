@@ -609,12 +609,13 @@ console.log(this.isSearchByStatus)
 
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
+      this.PageclaimIds = [];
       this.claims.forEach(element => {
         //console.log("claim id = "+element.claimId + " providerId = "+element.providerId );
         let data = {claimId: element.claimId, providerId: element.providerId,responseId:element.claimResponseId };
         this.PageclaimIds.push(data);
       });
-      console.log(this.PageclaimIds);
+      //console.log("how many items = "+JSON.stringify(this.PageclaimIds));
       //.map(claim => claim.claimId);
       this.PageclaimProviderIds = this.claims.map(claim => claim.providerId);
       localStorage.setItem(NPHIES_SEARCH_TAB_RESULTS_KEY, JSON.stringify(this.PageclaimIds));
@@ -1346,7 +1347,7 @@ console.log(this.isSearchByStatus)
     const model: any = {};
     model.approvalResponseId = responseId;
     model.claimProviderId =claimProviderId;
-    this.providerNphiesApprovalService.statusCheck(this.commen.providerId, model).subscribe(event => {
+    this.providerNphiesApprovalService.claimStatusCheck(this.commen.providerId, model).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -1757,26 +1758,27 @@ console.log(this.isSearchByStatus)
 
               this.commen.loadingChanged.next(false);
               const status = event.body['status'];
-              if (status === 'Deleted') {
+              if (status === 'DELETED') {
                 this.dialogService.openMessageDialog(
                   new MessageDialogData('',
                     event.body['message'],
                     false))
                   .subscribe(afterColse => {
                     const uploadId = this.params.uploadId;
-
-                    if (this.selectedClaims.length == this.summaries[0].totalClaims) {
+                    console.log("in after close");
+                    /*if (this.selectedClaims.length == this.summaries[0].totalClaims) {
                       this.router.navigate(['/nphies/uploads']);
                     } else {
                       this.router.navigate([this.commen.providerId, 'claims', 'nphies-search-claim'], {
                         queryParams: { uploadId }
                       }).then(() => {
                         window.location.reload();
-                      });
-                      /*this.selectedCardKey=0;
+                      });*/
+                      
+                      this.selectedCardKey=0;
                       this.resetURL();
-                      location.reload();*/
-                    }
+                      location.reload();
+                    //}
                   });
               } else if (status === 'AlreadySumitted') {
                 this.dialogService.openMessageDialog(

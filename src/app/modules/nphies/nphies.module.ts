@@ -85,6 +85,7 @@ import { TwoDigitDecimaNumberDirective } from './two-digit-decima-number';
 import { AdvancePreauthTransactionsComponent } from './advance-preauth-transactions/advance-preauth-transactions.component';
 import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
 import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
+import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 
 @NgModule({
   declarations: [
@@ -145,7 +146,8 @@ import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-uploa
     SwitchGroupProviderComponent,
     TwoDigitDecimaNumberDirective,
     AdvancePreauthTransactionsComponent,
-    AttachmentsReportComponent
+    AttachmentsReportComponent,
+    PbmValidationResponseSummaryDialogComponent
   ],
   imports: [
     CommonModule,
@@ -187,7 +189,8 @@ import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-uploa
     DaysOfSupplyUploadComponent,
     MedicationDaysUploadComponent,
     AddMedicationSupplyDialogComponent,
-    ViewPrintPreviewDialogComponent
+    ViewPrintPreviewDialogComponent,
+    PbmValidationResponseSummaryDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent

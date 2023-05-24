@@ -27,6 +27,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
+import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
+import { AdminService } from 'src/app/services/adminService/admin.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -208,6 +212,8 @@ export class AddPreauthorizationComponent implements OnInit {
   defualtPageMode = "";
   selectedDefaultPlan = null;
   providerType = "";
+  isPBMValidationVisible =false;
+  Pbm_result:any;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -218,6 +224,7 @@ export class AddPreauthorizationComponent implements OnInit {
     private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private superAdminService: SuperAdminService,
+    private adminService:AdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dbMapping: DbMappingService
@@ -228,6 +235,7 @@ export class AddPreauthorizationComponent implements OnInit {
   ngOnInit() {
     this.getPayees();
     this.getTPA();
+    this.getPBMValidation();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -238,6 +246,17 @@ export class AddPreauthorizationComponent implements OnInit {
       this.defualtPageMode = "CREATE"
     }
     this.getProviderTypeConfiguration();
+  }
+  getPBMValidation() {
+    this.adminService.checkIfNphiesApprovalPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isPBMValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
   }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
@@ -378,17 +397,17 @@ export class AddPreauthorizationComponent implements OnInit {
     if (lensSpecifications) {
       let leftList = lensSpecifications.filter(f => f.eye == 'left');
       let rightList = lensSpecifications.filter(f => f.eye == 'right');
-      let SequenceList=rightList.map(x=>x.sequence);
+      let SequenceList = rightList.map(x => x.sequence);
       //console.log("Left List - > "+JSON.stringify(leftList));
       //console.log("Right List - > "+JSON.stringify(rightList));
       for (var i = 0; i < leftList.length; i++) {
-        
+
         let row = rightList.filter(f => f.product == leftList[i].product && f.sequence == SequenceList[i])[0];
         row = row == null ? {} : row;
         //console.log("Row = " + JSON.stringify(row));
         let result = leftList[i];
-        
-        if (result!=null) {
+
+        if (result != null) {
           //console.log("result = " + JSON.stringify(result));
           row.left_sphere = result.sphere;
           row.left_cylinder = result.cylinder;
@@ -1646,7 +1665,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(isPbmvalidation=false) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
       const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
@@ -1717,7 +1736,15 @@ export class AddPreauthorizationComponent implements OnInit {
       }
     }
 
-
+    if (isPbmvalidation) {
+      let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
+      if (weightValidtation == 0) {
+        this.dialogService.showMessage('Error', 'please add vital sing wieght to complete PBM request', 'alert', true, 'OK', null, true);
+        
+        //hasError = true;
+        return;
+      }
+    }
     if (this.FormPreAuthorization.valid) {
 
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
@@ -2116,11 +2143,15 @@ export class AddPreauthorizationComponent implements OnInit {
 
       console.log('Model', this.model);
       this.sharedServices.loadingChanged.next(true);
-      this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
+      let requestOb = this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model);
+      if(isPbmvalidation){
+        requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
+      }
+      requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
-          if (event.status === 200) {
+          if (event.status === 200 && !isPbmvalidation) {
             const body: any = event.body;
-            if (body.status === 'OK') {
+            if (body.status === 'OK' ) {
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
 
@@ -2151,6 +2182,12 @@ export class AddPreauthorizationComponent implements OnInit {
                 }
               }
             }
+          }else if(event.status === 200 && isPbmvalidation){
+            const body: any = event.body;
+
+            this.sharedServices.loadingChanged.next(false);
+            this.Pbm_result=body;
+            this.openPbmValidationResponseSummaryDialog(body);
           }
         }
       }, error => {
@@ -2346,7 +2383,7 @@ export class AddPreauthorizationComponent implements OnInit {
   getTPAName(TPAId: string) {
     const nameTPA = this.AllTPA.find(val => val.code === TPAId);
 
-    if (nameTPA.display != 'None') {
+    if (nameTPA && nameTPA.display != 'None') {
       return nameTPA.display;
     }
     else {
@@ -2426,4 +2463,13 @@ export class AddPreauthorizationComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
     });
   }
+  openPbmValidationResponseSummaryDialog(body) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.data = {
+      PBM_result:body
+    };
+    const dialogRef = this.dialog.open(PbmValidationResponseSummaryDialogComponent, dialogConfig);
+  }
+  
 }

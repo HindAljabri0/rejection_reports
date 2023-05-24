@@ -463,6 +463,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // this.location.go(this.location.path().replace('#edit', ''));
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       this.ngOnInit();
+      this.selectedTab = 0;
     }
   }
 
@@ -483,6 +484,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       // this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
+      this.selectedTab = 0;
     }
   }
 
@@ -502,6 +504,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
       // this.location.go(this.location.path().replace('#edit', ''));
       this.ngOnInit();
+      this.selectedTab = 0;
     }
   }
 
@@ -523,6 +526,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     // console.log("Next Claim Id = " + this.claimId + " current Index = " + (this.paginationControl.currentIndex));
     // this.location.go(this.location.path().replace('#edit', ''));
     this.ngOnInit();
+    this.selectedTab = 0;
   }
 
   resetURL(claimId: string = '') {
@@ -1499,6 +1503,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
+    //console.log(" value = "+this.FormNphiesClaim.controls.dateOrdered.value);
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE') {
       const providerTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0].name;
@@ -2576,7 +2581,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
     this.FormNphiesClaim.controls.preAuthResponseUrl.setValue(response.preAuthorizationInfo.preAuthResponseUrl);
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
-    this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(response.preAuthorizationInfo.dateOrdered));
     if (response.preAuthorizationInfo.accountingPeriod) {
       this.FormNphiesClaim.controls.accountingPeriod.setValue(response.preAuthorizationInfo.accountingPeriod);
     }
