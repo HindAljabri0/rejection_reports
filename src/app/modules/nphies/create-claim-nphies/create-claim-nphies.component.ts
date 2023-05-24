@@ -1503,7 +1503,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(" value = "+this.FormNphiesClaim.controls.dateOrdered.value);
+    //console.log(" value = "+this.FormNphiesClaim.controls.dateOrdered.value);
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormNphiesClaim.controls.type.value.value !== this.providerType && this.pageMode === 'CREATE') {
       const providerTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0].name;
@@ -2581,7 +2581,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
     this.FormNphiesClaim.controls.preAuthResponseUrl.setValue(response.preAuthorizationInfo.preAuthResponseUrl);
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
-    this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(response.preAuthorizationInfo.dateOrdered));
     if (response.preAuthorizationInfo.accountingPeriod) {
       this.FormNphiesClaim.controls.accountingPeriod.setValue(response.preAuthorizationInfo.accountingPeriod);
     }
