@@ -26,14 +26,17 @@ export class JsonViewDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(JSON.stringify(this.data.tabs));
     this.data.tabs = this.data.tabs.filter(tabData => {
       if (typeof (tabData.json) === 'object') {
+        console.log("It's Object");
         if (tabData.json != null && JSON.stringify(tabData.json).trim().length > 0) {
           return true;
         } else {
           return false;
         }
       } else if (typeof (tabData.json) === 'string') {
+        console.log("It's string");
         if (tabData.json != null && tabData.json.trim().length > 0) {
           return true;
         } else {
@@ -43,7 +46,9 @@ export class JsonViewDialogComponent implements OnInit {
     }).map(tabData => {
       if (typeof (tabData.json) === 'string') {
         tabData.json = this.getAsObject(tabData.json);
+        
       }
+      console.log(JSON.stringify(tabData));
       return tabData;
     });
   }
