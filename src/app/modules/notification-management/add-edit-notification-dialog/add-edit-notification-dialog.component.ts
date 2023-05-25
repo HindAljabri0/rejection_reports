@@ -89,6 +89,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
 
     const files: File = event.target.files[0];
     if (files) {
+      console.log(files)
       let reader = new FileReader();
       reader.readAsDataURL(files as Blob);
       reader.onload = () => {
@@ -97,8 +98,9 @@ export class AddEditNotificationDialogComponent implements OnInit {
       }
 
       let splitFileName = files.name.split(".");
-      this.fileType = splitFileName[1];
-      this.fileName = splitFileName[0];
+      this.fileType = files.type;
+      this.fileName = files.name ;
+      console.log( this.fileType)
 
     }
   }
