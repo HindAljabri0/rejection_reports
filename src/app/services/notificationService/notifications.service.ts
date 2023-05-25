@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, BehaviorSubject, Subscriber, Subject } from 'rxjs';
 import { EventSourcePolyfill } from 'ng-event-source';
+import { AnnouncementNotification } from 'src/app/models/announcementNotification';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +18,19 @@ export class NotificationsService {
 
   constructor(private httpClient: HttpClient, private zone: NgZone) { }
 
-  getNotifications(providerId: string, type:string, page: number, pageSize: number) {
+  getNotifications(providerId: string, type: string, page: number, pageSize: number) {
     const requestUrl = `/providers/${providerId}/${type}?page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl);
     return this.httpClient.request(request);
   }
 
-  getNotificationsCount(providerId: string, type:string, status: string) {
+  getNotificationsCount(providerId: string, type: string, status: string) {
     const requestUrl = `/providers/${providerId}/${type}/count/${status}`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl);
     return this.httpClient.request(request);
   }
 
-  getNotificationsCountByWeek(providerId: string, type:string, status: string) {
+  getNotificationsCountByWeek(providerId: string, type: string, status: string) {
     const requestUrl = `/providers/${providerId}/${type}/count/by-week`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl);
     return this.httpClient.request(request);
@@ -91,6 +92,19 @@ export class NotificationsService {
       delete this.eventSources[topic];
       delete this.observers[topic];
     }
+  }
+
+  getAllAnnouncements() {
+    const requestUrl = `/announcement`;
+    const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl, {});
+    return this.httpClient.request(request);
+  }
+
+  createAnnouncement(announcement: AnnouncementNotification) {
+    const requestUrl = `/announcement/create`;
+    let body = announcement;
+    const request = new HttpRequest('POST', environment.NotificationServiceHost + requestUrl, body);
+    return this.httpClient.request(request);
   }
 
 }
