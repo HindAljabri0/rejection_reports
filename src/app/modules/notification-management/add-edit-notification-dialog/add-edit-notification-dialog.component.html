@@ -1,80 +1,84 @@
-
 <form [formGroup]="announcementForm">
-<div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add Notification</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
-</div>
-<div class="primary-dialog-body pb-0">
-    <div class="form-group">
-        <label class="control-label">Subject</label>
-        <input type="text" class="form-control" placeholder="Enter notification subject"  formControlName="subjectControl"/>
+    <div class="primary-dialog-header has-border">
+        <h5 class="primary-dialog-title">Add Notification</h5>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
-    <div class="form-group">
-        <label class="control-label">Description</label>
-        <textarea class="form-control" placeholder="Enter notification description" formControlName="descriptionControl"></textarea>
-    </div>
-    <div class="row small-gutter">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label">Start Date</label>
-                <div class="date-picker">
-                    <input type="text" [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDateControl" />
-                    <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
-                    <mat-datepicker #startDate></mat-datepicker>
-                </div>
-            </div>
+    <div class="primary-dialog-body pb-0">
+        <div class="form-group">
+            <label class="control-label">Subject</label>
+            <input type="text" class="form-control" placeholder="Enter notification subject"
+                formControlName="subjectControl" />
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label">End Date</label>
-                <div class="date-picker">
-                    <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date" formControlName="endDateControl" />
-                    <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
-                    <mat-datepicker #endDate></mat-datepicker>
-                </div>
-            </div>
+        <div class="form-group">
+            <label class="control-label">Description</label>
+            <textarea class="form-control" placeholder="Enter notification description"
+                formControlName="descriptionControl"></textarea>
         </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label">Attachments</label>
-        <ul class="attachment-list lg">
-            <li matTooltip="Report-4594.pdf">
-                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                <span>Report-4594.pdf</span>
-                <button class="close-btn">
-                    <mat-icon>close</mat-icon>
-                </button>
-            </li>
-            <li matTooltip="Add Attachments" class="add-block">
-                <div class="file-upload-wrapper">
-                    <div class="content">
-                        <mat-icon>add</mat-icon>
+        <div class="row small-gutter">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Start Date</label>
+                    <div class="date-picker">
+                        <input type="text" [matDatepicker]="startDate" class="form-control"
+                            placeholder="Select start date" formControlName="startDateControl" />
+                        <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker>
                     </div>
-                    <input type="file" class="file-upload-control" />
                 </div>
-            </li>
-        </ul>
-    </div>
-</div>
-<hr class="hr mb-14">
-<div class="form-group px-14">
-    <input type="text" class="form-control search-box" placeholder="Search provider here..." formControlName="providersControl" />
-</div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">End Date</label>
+                    <div class="date-picker">
+                        <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date"
+                            formControlName="endDateControl" />
+                        <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                        <mat-datepicker #endDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<hr class="hr">
-<div class="checkbox-list">
-    <mat-checkbox color="primary">1123 | SSH | Saad Specialist Hospital</mat-checkbox>
-    <mat-checkbox color="primary">721 | RAF | Al Rafie Hospital</mat-checkbox>
-    <mat-checkbox color="primary">1021 | AMP | Al Ameen Medical Polyclinic</mat-checkbox>
-    <mat-checkbox color="primary">3413 | DAWNI | DAWENI MEDICAL COMPANY -KHAMIS</mat-checkbox>
-    <mat-checkbox color="primary">3439 | CSDC | Celebrity Smile Dental Clinic</mat-checkbox>
-    <mat-checkbox color="primary">3118 | FPC | Faisal polyclinic</mat-checkbox>
-</div>
-<div class="primary-dialog-footer has-border">
-    <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary" (click)="saveAnnouncement()">Save</button>
+        <div class="form-group">
+            <label class="control-label">Attachments</label>
+            <ul class="attachment-list lg">
+                <li *ngFor="let attachment of attachments" [matTooltip]='attachment.attachmentName'>
+                    <img [src]="checkfileType(attachment.attachmentName )" alt="PDF" />
+                    <span>{{attachment.attachmentName}}</span>
+                    <button class="close-btn" (click)="deleteAttachment(attachment.id)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </li>
+                <li matTooltip="Add Attachments" class="add-block">
+                    <div class="file-upload-wrapper">
+                        <div class="content">
+                            <mat-icon>add</mat-icon>
+                        </div>
+                        <input type="file" class="file-upload-control" (change)="onFileSelected($event)" />
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+    <hr class="hr mb-14">
+    <div class="form-group px-14">
+        <input type="text" class="form-control search-box" placeholder="Search provider here..."
+            formControlName="providersControl" />
+    </div>
+
+    <hr class="hr">
+    <div class="checkbox-list">
+        <mat-checkbox color="primary">1123 | SSH | Saad Specialist Hospital</mat-checkbox>
+        <mat-checkbox color="primary">721 | RAF | Al Rafie Hospital</mat-checkbox>
+        <mat-checkbox color="primary">1021 | AMP | Al Ameen Medical Polyclinic</mat-checkbox>
+        <mat-checkbox color="primary">3413 | DAWNI | DAWENI MEDICAL COMPANY -KHAMIS</mat-checkbox>
+        <mat-checkbox color="primary">3439 | CSDC | Celebrity Smile Dental Clinic</mat-checkbox>
+        <mat-checkbox color="primary">3118 | FPC | Faisal polyclinic</mat-checkbox>
+    </div>
+    <div class="primary-dialog-footer has-border">
+        <div class="btn-list text-right">
+            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="saveAnnouncement()">Save</button>
+        </div>
+    </div>
 </form>
