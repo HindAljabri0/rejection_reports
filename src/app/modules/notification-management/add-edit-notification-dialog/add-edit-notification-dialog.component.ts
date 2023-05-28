@@ -102,6 +102,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     this.indixOfelement = this.indixOfelement + 1;
     console.log(this.indixOfelement);
     const files: File = event.target.files[0];
+    console.log(new Blob([files]))
     if (files) {
       let reader = new FileReader();
       reader.readAsDataURL(files);

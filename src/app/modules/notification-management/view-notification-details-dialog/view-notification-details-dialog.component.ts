@@ -38,25 +38,26 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    
+
     this.dialogRef.close();
   }
-  
-  downloadFile(data:string,fileType:string){
-    console.log(fileType)
-    var blob = new Blob([data], { type:fileType });
-    console.log(blob)
-    var fileURL = window.URL.createObjectURL(blob);
-   // window.URL.createObjectURL(blob);
-    let tab = window.open(fileURL);
-   //tab.location.href = fileURL;
- 
+
+  openFile(attachmentContent: string, fileType: string, fileName: string) {
+    let blob = this.convertBase64ToBlob(attachmentContent, fileType);
+    var fileURL = URL.createObjectURL(blob);
+    window.URL.createObjectURL(blob);
   }
 
+
+  convertBase64ToBlob(Base64: string, contentType: string) {
+    const byteArray = new Uint8Array(atob(Base64).split('').map((char) => char.charCodeAt(0)));
+    return new Blob([byteArray], { type: contentType });
+  }
+
+
   checkfileType(fileName: string) {
-    let fileExtension  = fileName.split(".")[1];
+    let fileExtension = fileName.split(".")[1];
     let src = './assets/file-types/'
-    console.log(fileExtension.toUpperCase())
     switch (fileExtension.toUpperCase()) {
       case "PDF":
         return src + "ic-pdf.svg"
@@ -67,7 +68,7 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
       case "ZIP":
         return src + "ic-zip.svg"
       case "XLSX":
-        return src + "ic-csv.svg"
+        return src + "ic-xls.svg"
       default:
         return src
     }
