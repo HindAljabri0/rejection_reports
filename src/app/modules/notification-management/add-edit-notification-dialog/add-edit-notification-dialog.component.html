@@ -65,15 +65,14 @@
         <input type="text" class="form-control search-box" placeholder="Search provider here..."
             formControlName="providersControl" />
     </div>
-
     <hr class="hr">
-    <div class="checkbox-list">
-        <mat-checkbox color="primary">1123 | SSH | Saad Specialist Hospital</mat-checkbox>
-        <mat-checkbox color="primary">721 | RAF | Al Rafie Hospital</mat-checkbox>
-        <mat-checkbox color="primary">1021 | AMP | Al Ameen Medical Polyclinic</mat-checkbox>
+    <div class="checkbox-list" *ngFor="let provider of providers">
+        <!-- <mat-checkbox color="primary">1123 | SSH | Saad Specialist Hospital</mat-checkbox> -->
+        <mat-checkbox color="primary">{{provider.switchAccountId}}| {{provider.code}} | {{provider.name}}</mat-checkbox>
+        <!-- <mat-checkbox color="primary">1021 | AMP | Al Ameen Medical Polyclinic</mat-checkbox>
         <mat-checkbox color="primary">3413 | DAWNI | DAWENI MEDICAL COMPANY -KHAMIS</mat-checkbox>
         <mat-checkbox color="primary">3439 | CSDC | Celebrity Smile Dental Clinic</mat-checkbox>
-        <mat-checkbox color="primary">3118 | FPC | Faisal polyclinic</mat-checkbox>
+        <mat-checkbox color="primary">3118 | FPC | Faisal polyclinic</mat-checkbox> -->
     </div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">

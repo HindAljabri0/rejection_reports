@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { error } from 'console';
 import { AnnouncementNotification } from 'src/app/models/announcementNotification';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -25,10 +26,14 @@ export class AddEditNotificationDialogComponent implements OnInit {
     endDate: '',
     attachments: []
   };
+  providers :any [];
   attachments: any[] = [];
+  error:string;
+  
   indixOfelement = 0;
   isCreatedAnnouncement = false;
   constructor(private dialogRef: MatDialogRef<AddEditNotificationDialogComponent>,
+    private superAdmin: SuperAdminService,
     private notificationsService: NotificationsService,
     public sharedServices: SharedServices) { }
 
@@ -41,6 +46,22 @@ export class AddEditNotificationDialogComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
+    this.superAdmin.getProviders().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.providers = event.body;
+      //    this.filteredProviders = this.providers;
+  
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      this.error = 'could not load providers, please try again later.';
+      console.log(error);
+    });
+
   }
 
   closeDialog() {
@@ -126,7 +147,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
   deleteAttachment(indexElement) {
     console.log(indexElement)
     this.attachments.forEach((attachment, index) => {
-      if (attachment.id == indexElement)  this.attachments.splice(index,1)
+      if (attachment.id == indexElement) this.attachments.splice(index, 1)
     })
   }
 }
