@@ -12,10 +12,10 @@ import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHa
 @Component(
   {
     selector: 'app-feedback-dialog',
-    templateUrl:'./feedback-dialog.component.html',
+    templateUrl: './feedback-dialog.component.html',
     styles: [
-             '.\feedback-dialog.component.css',
-           ]
+      '.\feedback-dialog.component.css',
+    ]
   }
 )
 
@@ -33,7 +33,7 @@ export class FeedbackDialogComponent implements OnInit {
     private authService: AuthService,
     public dialogRef: MatDialogRef<FeedbackDialogComponent>,
     private dialogService: DialogService,
-    private requestExceptionHandler: HttpRequestExceptionHandler, 
+    private requestExceptionHandler: HttpRequestExceptionHandler,
 
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -48,7 +48,7 @@ export class FeedbackDialogComponent implements OnInit {
     /**
      * Get the authorized user data and set it to the local variables.
      */
-    
+
     this.userName = this.authService.getUserName();
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
@@ -56,12 +56,12 @@ export class FeedbackDialogComponent implements OnInit {
   }
 
   setOverallQRating(newRating: number): void {
-    
+
     if (this.isRating(newRating)) {
-        this.feedback.overallSatisfaction = newRating;
-        
-        this.feedback.isOverallSatisfactionValid = true;
-    }else{
+      this.feedback.overallSatisfaction = newRating;
+
+      this.feedback.isOverallSatisfactionValid = true;
+    } else {
       this.feedback.isOverallSatisfactionValid = false;
     }
   }
@@ -69,30 +69,31 @@ export class FeedbackDialogComponent implements OnInit {
   setRecommendQRating(newRating: number): void {
     if (this.isRating(newRating)) {
       this.feedback.recommendToFriend = newRating;
-     
+
       this.feedback.isRecommendToFriend = true;
-    }else{
+    } else {
       this.feedback.isRecommendToFriend = false;
     }
   }
 
   setSuggestion(): void {
     if (this.feedback.suggestion != null && this.feedback.suggestion.length > 5000) {
-      
+
       this.dialogService.showMessage('Suggestion is to long', 'The suggestion should not exceed 5000 characters.', 'alert', true, 'OK', null, true);
       this.feedback.isSuggestionValid = false;
-    }else{
+    } else {
       this.feedback.isSuggestionValid = true;
     }
   }
 
 
   submit() {
+    this.setOverallQRating(0); // set the Overall question to 0 as a default value as it will not be withen this month feedbacks Qs!
     this.setSuggestion();
-   
+
 
     if (this.feedback.isSuggestionValid && this.feedback.isOverallSatisfactionValid && this.feedback.isRecommendToFriend) {
-      
+
       this._feedbackservice.addFeedback(this.feedback).subscribe({
         next: data => {
           catchError(error => {
@@ -101,12 +102,12 @@ export class FeedbackDialogComponent implements OnInit {
               try {
                 errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
                 console.error('Add feedback service error message:\n' + errorMsg);
-               } catch(error) { }
+              } catch (error) { }
             } else {
               try {
                 errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
                 console.error('Add feedback service error message:\n' + errorMsg);
-               } catch(error) { }
+              } catch (error) { }
             }
 
             return throwError(errorMsg);
@@ -117,7 +118,7 @@ export class FeedbackDialogComponent implements OnInit {
       this.dialogService.showMessage('Thank you for your feedback', 'We appreciate your feedback and will take it into consideration.', 'success', true, 'OK', null, true);
       this.dialogRef.close();
 
-    }else if(!this.feedback.isOverallSatisfactionValid || !this.feedback.isRecommendToFriend){
+    } else if (!this.feedback.isOverallSatisfactionValid || !this.feedback.isRecommendToFriend) {
       //one of the required fields not filled.
       this.dialogService.showMessage('Required Fields', 'The first two questions are mendatory', 'alert', true, 'OK', null, true);
     }
