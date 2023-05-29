@@ -29,6 +29,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 
 @Component({
