@@ -1738,7 +1738,7 @@ export class AddPreauthorizationComponent implements OnInit {
     if (isPbmvalidation) {
       let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
       if (weightValidtation == 0) {
-        this.dialogService.showMessage('Error', 'please add vital sing wieght to complete PBM request', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'please add vital sign weight to complete PBM request', 'alert', true, 'OK');
         return;
       }
     }
