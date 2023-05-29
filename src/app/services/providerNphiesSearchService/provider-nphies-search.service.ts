@@ -542,6 +542,14 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  getTpaNphies() {
+    const requestURL = '/tpa/fetch';
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
+    return this.http.request(request);
+  }
+
+
+
 
 
   /* getSupptingInfoPrintingFom(key: string, data:any) {
