@@ -66,6 +66,8 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   selectedSearchMode = 'claimRefNo';
   tpaMode = '';
+  waseelTpaId = null;
+  nphiesTpaId = null;
 
 
   payers: { id: number, name: string }[] = [];
@@ -93,7 +95,6 @@ export class SearchWithAdvanceComponent implements OnInit {
   searchControl: FormControl = new FormControl();
 
   selectedPayer: { id: number, name: string };
-  // selectedTpa: { id: number, name: string };
   selectedTpa: any;
   selectedStatus: { value: number, name: string };
   payerHasError = false;
@@ -124,13 +125,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   ngOnInit() {
     this.payers = this.commen.getPayersList();
-    this.providerNphiesSearchService.getTpaNphies().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.NphiesTpas = event.body as any[];
-      }
-    }, error => {
-      console.log(error)
-    })
+    this.getNphiesTpa();
     this.waseelTpas = this.commen.getTPAsList();
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
@@ -213,7 +208,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       let routes = [this.commen.providerId, 'claims'];
       let queryParams = {
         payerId: this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
-        organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
+        organizationId: this.waseelTpaId != null ? this.waseelTpaId : null,
         from: this.fromDateControl.value.format('DD-MM-yyyy'),
         to: this.toDateControl.value.format('DD-MM-yyyy'),
         caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
@@ -225,7 +220,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
         queryParams = {
           payerId: this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
-          organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
+          organizationId: this.nphiesTpaId != null ? this.nphiesTpaId : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
           caseTypes: null,
@@ -259,14 +254,25 @@ export class SearchWithAdvanceComponent implements OnInit {
         },
         fragment: 'reload'
       });
-
-
     }
   }
 
+  getNphiesTpa() {
+    this.providerNphiesSearchService.getTpaNphies().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.NphiesTpas = event.body as any[];
+      }
+    }, error => {
+      console.log(error)
+    })
+  }
   SelectTpa(tpa: any, searchMode) {
-    this.tpaMode=searchMode;
-    console.log(searchMode)
+    this.tpaMode = searchMode;
+    if (searchMode == 'tpa_N') {
+      this.nphiesTpaId = tpa.nphiesId;
+    } else {
+      this.waseelTpaId = tpa.id;
+    }
     return tpa;
 
   }
