@@ -10,6 +10,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Payer } from 'src/app/models/nphies/payer';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { error } from 'console';
 
 
 
@@ -38,6 +39,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
     { key: 'memberId', label: 'Member ID' },
     { key: 'payer&date', label: 'Payer' },
+    { key: 'tpa&date', label: 'TPA' },
     { key: 'status&date', label: 'Status' },
     { key: 'batchId', label: 'Batch ID' },
     { key: 'invoiceNo', label: 'Invoice No.' },
@@ -63,10 +65,14 @@ export class SearchWithAdvanceComponent implements OnInit {
   ];
 
   selectedSearchMode = 'claimRefNo';
+  tpaMode = '';
+
 
   payers: { id: number, name: string }[] = [];
   nphiesPayers: { id: number, name: string }[] = [];
-  tpas: { id: number, name: string }[] = [];
+  waseelTpas: { id: number, name: string }[] = [];
+  NphiesTpas: any[] = [];
+
 
   casetypes: { value: string, name: string }[] = [
     { value: 'OUTPATIENT,INPATIENT', name: 'Any' },
@@ -87,7 +93,8 @@ export class SearchWithAdvanceComponent implements OnInit {
   searchControl: FormControl = new FormControl();
 
   selectedPayer: { id: number, name: string };
-  selectedTpa: { id: number, name: string };
+  // selectedTpa: { id: number, name: string };
+  selectedTpa: any;
   selectedStatus: { value: number, name: string };
   payerHasError = false;
   tpaHasError = false;
@@ -104,6 +111,7 @@ export class SearchWithAdvanceComponent implements OnInit {
   constructor(
     private router: Router,
     private routeActive: ActivatedRoute,
+    private providerNphiesSearchService: ProviderNphiesSearchService,
     private commen: SharedServices,
     private sharedDataService: SharedDataService,
     private authService: AuthService) {
@@ -116,7 +124,14 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   ngOnInit() {
     this.payers = this.commen.getPayersList();
-    this.tpas = this.commen.getTPAsList();
+    this.providerNphiesSearchService.getTpaNphies().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.NphiesTpas = event.body as any[];
+      }
+    }, error => {
+      console.log(error)
+    })
+    this.waseelTpas = this.commen.getTPAsList();
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -149,7 +164,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.searchControl.setValue('');
     this.selectedPayer = null;
     this.selectedTpa = null;
-    this.selectedStatus=null;
+    this.selectedStatus = null;
     this.fromDateControl = new FormControl();
     this.toDateControl = new FormControl();
     this.selectedClaimType = null;
@@ -203,19 +218,19 @@ export class SearchWithAdvanceComponent implements OnInit {
         to: this.toDateControl.value.format('DD-MM-yyyy'),
         caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
         claimTypes: null,
-        claimStatus:null
+        claimStatus: null
       }
       if (!isWassel) {
         routes.push('nphies-search-claim')
 
         queryParams = {
-          payerId: this.selectedSearchMode == 'tpa&date' ||  this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
+          payerId: this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
           organizationId: this.selectedTpa != null ? this.selectedTpa.id : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
           caseTypes: null,
           claimTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
-          claimStatus:this.selectedStatus!=null?this.selectedStatus.value:null
+          claimStatus: this.selectedStatus != null ? this.selectedStatus.value : null
         }
       }
       this.router.navigate(routes, {
@@ -249,7 +264,12 @@ export class SearchWithAdvanceComponent implements OnInit {
     }
   }
 
+  SelectTpa(tpa: any, searchMode) {
+    this.tpaMode=searchMode;
+    console.log(searchMode)
+    return tpa;
 
+  }
 
 
   toggleSearch() {

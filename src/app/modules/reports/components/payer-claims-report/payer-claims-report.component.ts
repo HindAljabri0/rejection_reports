@@ -132,7 +132,7 @@ export class PayerClaimsReportComponent implements OnInit {
 
     updateFilter() {
         // tslint:disable-next-line:max-line-length
-        this.filteredProviders = this.providers.filter(provider => `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.PayerClaimsReportForm.controls.providerId.value.toLowerCase())
+        this.filteredProviders = this.providers.filter(provider => `${provider.switchAccountId} | ${provider.cchiId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.PayerClaimsReportForm.controls.providerId.value.toLowerCase())
         );
     }
 

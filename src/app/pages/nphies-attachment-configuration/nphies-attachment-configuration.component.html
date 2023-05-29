@@ -14,9 +14,9 @@
                     <mat-icon matSuffix>search</mat-icon>
                     <mat-autocomplete autoActiveFirstOption #auto>
                         <mat-option *ngFor="let provider of filteredProviders"
-                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                            [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | ' + provider.cchiId"
                             (click)="selectProvider();">
-                            {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                            {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} | {{provider.cchiId}}
                         </mat-option>
                         <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
                             {{errors.providersError}}

@@ -16,7 +16,8 @@ import { SharedServices } from 'src/app/services/shared.services';
   styles: []
 })
 export class AddEditNotificationDialogComponent implements OnInit {
-
+  selectedProvider: string;
+  // providerController: FormControl = new FormControl();
   pipe = new DatePipe("en-US")
   announcement: AnnouncementNotification = {
     userName: '',
@@ -26,10 +27,12 @@ export class AddEditNotificationDialogComponent implements OnInit {
     endDate: '',
     attachments: []
   };
-  providers :any [];
+  providers: any[];
   attachments: any[] = [];
-  error:string;
-  
+  error: string;
+  filteredProviders: any[] = [];
+  selectedProviders: any[] = [];
+
   indixOfelement = 0;
   isCreatedAnnouncement = false;
   constructor(private dialogRef: MatDialogRef<AddEditNotificationDialogComponent>,
@@ -51,8 +54,8 @@ export class AddEditNotificationDialogComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.providers = event.body;
-      //    this.filteredProviders = this.providers;
-  
+          this.filteredProviders = this.providers;
+
           this.sharedServices.loadingChanged.next(false);
         }
       }
@@ -70,7 +73,21 @@ export class AddEditNotificationDialogComponent implements OnInit {
     );
   }
 
+  selectProvider(provider: any = null) {
+    // if (providerId !== null) {
+    //   this.selectedProvider = providerId;
+    // } else {
+    //const provider = this.announcementForm.controls.providerController;
 
+    this.announcementForm.controls.providersControl.setValue('');
+    console.log(this.isProviderSelected(provider.switchAccountId))
+    if (!this.isProviderSelected(provider.switchAccountId))
+      this.selectedProviders.push(provider);
+    // console.log(provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | ' + provider.cchiId);
+    //.value.split('|')[0].trim();
+    //this.selectedProvider = providerId;
+    //  }
+  }
   setData() {
     this.announcement.providerId = this.announcementForm.controls.providersControl.value;
     this.announcement.subject = this.announcementForm.controls.subjectControl.value;
@@ -80,6 +97,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     this.announcement.attachments = this.attachments;
 
   }
+
 
   saveAnnouncement() {
     this.sharedServices.loadingChanged.next(true);
@@ -143,11 +161,34 @@ export class AddEditNotificationDialogComponent implements OnInit {
 
     }
   }
+  get isLoading() {
+    return this.sharedServices.loading;
+  }
 
+  updateFilter() {
+    this.filteredProviders = this.providers.filter(provider =>
+      `${provider.switchAccountId} | ${provider.cchiId} | ${provider.code} | ${provider.name}`.toLowerCase()
+        .includes(this.announcementForm.controls.providersControl.value.toLowerCase())
+    );
+  }
   deleteAttachment(indexElement) {
     console.log(indexElement)
     this.attachments.forEach((attachment, index) => {
       if (attachment.id == indexElement) this.attachments.splice(index, 1)
     })
+  }
+
+  isProviderSelected(providerId: string) {
+    let isaProviderThere = false;
+    this.selectedProviders.forEach(provider => {
+      console.log(provider)
+      console.log(provider.switchAccountId)
+      if (provider.switchAccountId === providerId) {
+        isaProviderThere = true;
+        return;
+      }
+
+    });
+    return isaProviderThere;
   }
 }
