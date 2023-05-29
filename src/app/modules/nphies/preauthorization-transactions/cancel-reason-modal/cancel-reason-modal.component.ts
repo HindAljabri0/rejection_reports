@@ -150,7 +150,7 @@ export class CancelReasonModalComponent implements OnInit {
           this.data.cancelData.selectedClaims, this.data.cancelData.uploadId, this.data.cancelData.claimRefNo, this.data.cancelData.to,
           this.data.cancelData.payerIds, this.data.cancelData.batchId, this.data.cancelData.memberId, this.data.cancelData.invoiceNo,
           this.data.cancelData.patientFileNo, this.data.cancelData.from,this.data.cancelData.claimTypes,this.data.cancelData.netAmount, this.data.cancelData.nationalId, this.data.cancelData.statuses,
-          this.data.cancelData.organizationId, this.data.cancelData.requestBundleId);
+          this.data.cancelData.organizationId, this.data.cancelData.requestBundleId,this.data.cancelData.isRelatedClaim);
       } else if (this.data.cancelType === 'selected') {
         action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
           this.data.cancelData.selectedClaims);

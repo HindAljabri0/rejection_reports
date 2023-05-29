@@ -61,7 +61,7 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
       this.data.uploadData.selectedClaims, this.data.uploadData.uploadId, this.data.uploadData.claimRefNo, this.data.uploadData.to,
       this.data.uploadData.payerIds, this.data.uploadData.batchId, this.data.uploadData.memberId, this.data.uploadData.invoiceNo,
       this.data.uploadData.patientFileNo, this.data.uploadData.from, this.data.uploadData.claimTypes, this.data.uploadData.netAmount,
-      this.data.uploadData.nationalId, this.data.uploadData.statuses, this.data.uploadData.organizationId, this.data.uploadData.requestBundleId
+      this.data.uploadData.nationalId, this.data.uploadData.statuses, this.data.uploadData.organizationId, this.data.uploadData.requestBundleId,this.data.uploadData.isRelatedClaim
     ).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {

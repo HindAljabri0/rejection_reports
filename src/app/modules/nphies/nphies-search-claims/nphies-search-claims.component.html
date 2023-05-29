@@ -301,9 +301,9 @@
                     Status</th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    <div class="column-header-action">
+                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)">
                       <span>Is Related?</span>
-                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="isRelatedFilter">
+                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="isRelatedFilter" (click)="checkReloadedFilter()">
                         <mat-icon>filter_list_outline</mat-icon>
                       </button>
 
@@ -312,18 +312,18 @@
                           <div (click)="$event.stopPropagation()">
                             <div class="form-group">
                               <label class="control-label">Is Related?</label>
-                              <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="0">
-                                  <mat-option value="0">All</mat-option>
-                                  <mat-option value="1">Yes</mat-option>
-                                  <mat-option value="2">No</mat-option>
+                              <mat-form-field class="form-control custom-select-control" >
+                                <mat-select  [(ngModel)]="claimList.isRelatedClaim" (ngModelChange)="onIsRelatedSelection()">
+                                  <mat-option value=''>All</mat-option>
+                                  <mat-option value='true'>Yes</mat-option>
+                                  <mat-option value='false'>No</mat-option>
                                 </mat-select>
                               </mat-form-field>
                             </div>
                           </div>
                           <div class="btn-list text-right">
-                            <button mat-flat-button>Clear</button>
-                            <button mat-flat-button color="primary">Filter</button>
+                            <button mat-flat-button (click)="clearFilters('isRelatedClaim')">Clear</button>
+                            <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.ISREALTED)">Filter</button>
                           </div>
                         </div>
                       </mat-menu>
