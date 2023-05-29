@@ -150,6 +150,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     { key: 'NATIONALID', value: 'nationalId' },
     { key: 'PATIENTFILENO', value: 'patientFileNO' },
     { key: 'CLAIMNET', value: 'netAmount' },
+    { key: 'ISRELATEDCLAIM', value: 'isRelatedClaim' },
     //{ key: 'BATCHNUM', value: 'batchNo' },
   ];
   appliedFilters: any = [];
@@ -252,6 +253,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
+        isRelatedClaim:this.params.isRelatedClaim,
+
         statuses: this.params.claimStatus!=null?[this.params.claimStatus]:['All']
       }));
     }).unsubscribe();
@@ -516,6 +519,7 @@ console.log(this.isSearchByStatus)
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo || this.params.filter_patientFileNo;
     this.claimSearchCriteriaModel.memberId = this.params.filter_memberId || this.params.memberId;
+    this.claimSearchCriteriaModel.isRelatedClaim = this.params.filter_isRelatedClaim || this.params.isRelatedClaim;
 
     this.claimSearchCriteriaModel.documentId = this.params.nationalId || this.params.filter_nationalId;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
@@ -523,7 +527,7 @@ console.log(this.isSearchByStatus)
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
-    //alert(JSON.stringify(this.claimSearchCriteriaModel));
+    console.log(JSON.stringify(this.claimSearchCriteriaModel));
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel, this.isSearchByStatus
     ).subscribe((event) => {
 
@@ -691,6 +695,7 @@ console.log(this.isSearchByStatus)
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId, status
+      , this.params.isRelatedClaim
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -731,6 +736,7 @@ console.log(this.isSearchByStatus)
     this.params.nationalId = this.params.filter_nationalId ? this.params.filter_nationalId : this.params.nationalId;
     this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate : this.params.from;
     this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
+    this.params.isRelatedClaim  = this.params.filter_isRelatedClaim ? this.params.filter_isRelatedClaim : this.params.isRelatedClaim;
   }
   get hasData() {
     this.extraNumbers = new Array();
@@ -1076,6 +1082,7 @@ console.log(this.isSearchByStatus)
     const data = {
       key: filterKey.key,
     };
+    //console.log(JSON.stringify(this.claimList));
     switch (key) {
       case ClaimListFilterSelection.MEMBERID:
         this.params.filter_memberId = this.claimList.memberID;
@@ -1102,9 +1109,12 @@ console.log(this.isSearchByStatus)
       case ClaimListFilterSelection.BATCHNUM:
         this.params.filter_batchNum = this.claimList.batchNo;
         break;
+      case ClaimListFilterSelection.ISREALTED:
+        this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
+        break;
     }
 
-
+    console.log("this.params = "+JSON.stringify(this.params));
     this.appliedFilters.push(data);
     this.pageIndex = 0;
     this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
@@ -1121,6 +1131,7 @@ console.log(this.isSearchByStatus)
       this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
+    this.params.filter_isRelatedClaim = ClaimListFilterSelection.ISREALTED ? this.claimList.isRelatedClaim : this.params.filter_isRelatedClaim;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
     
   }
@@ -1166,6 +1177,10 @@ console.log(this.isSearchByStatus)
             this.params.filter_batchNum = this.claimList.batchNo;
             delete this.params.filter_batchNum;
             break;
+          case ClaimListFilterSelection.ISREALTED:
+            this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
+            delete this.params.filter_isRelatedClaim;
+            break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
       } else {
@@ -1177,7 +1192,9 @@ console.log(this.isSearchByStatus)
     this.pageIndex = 0;
     this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
   }
-
+  onIsRelatedSelection(){
+      console.log("value = "+this.claimList.isRelatedClaim);
+  }
   checkAppliedFilter(name: string) {
     const data = this.appliedFilters.find(ele => ele.key === name);
     return data !== null && data !== undefined && this.appliedFilters.length > 0 ? 'action-active' : '';
@@ -1214,6 +1231,9 @@ console.log(this.isSearchByStatus)
     }
     if (this.params.filter_netAmount != null && this.params.filter_netAmount !== '' && this.params.filter_netAmount !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMNET);
+    }
+    if (this.params.filter_isRelatedClaim != null && this.params.filter_isRelatedClaim !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.ISREALTED);
     }
     if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
@@ -1259,6 +1279,9 @@ console.log(this.isSearchByStatus)
     }
     if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
       this.setReloadedInputFilters('batchNo', this.params.filter_batchNum);
+    }
+    if (this.params.filter_isRelatedClaim != null  && this.params.filter_isRelatedClaim !== undefined) {
+      this.setReloadedInputFilters('isRelatedClaim', this.params.filter_isRelatedClaim +"");
     }
   }
 
@@ -1611,6 +1634,7 @@ console.log(this.isSearchByStatus)
       model.payerIds = payerIds;
       model.batchId = this.params.batchId;
       model.memberId = this.params.memberId;
+      model.isRelatedClaim=this.params.isRelatedClaim;
       model.invoiceNo = this.params.invoiceNo;
       model.patientFileNo = this.params.patientFileNo;
       model.netAmount = this.params.netAmount,
@@ -1752,7 +1776,8 @@ console.log(this.isSearchByStatus)
           this.providerNphiesApprovalService.deleteClaimByCriteria(this.providerId, this.selectedClaims,
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-            this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId
+            this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId,
+             status, this.params.requestBundleId,this.params.isRelatedClaim 
           ).subscribe(event => {
             if (event instanceof HttpResponse) {
 
@@ -1832,6 +1857,7 @@ console.log(this.isSearchByStatus)
     model.payerIds = payerIds;
     model.batchId = this.params.batchId;
     model.memberId = this.params.memberId;
+    model.isRelated = this.params.isRelatedClaim;
     model.invoiceNo = this.params.invoiceNo;
     model.patientFileNo = this.params.patientFileNo;
     model.from = this.params.from;
@@ -1848,7 +1874,9 @@ console.log(this.isSearchByStatus)
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from, model.claimTypes, model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId);
+        model.patientFileNo, model.from, model.claimTypes, model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId,
+        this.params.isRelatedClaim
+        );
     } else {
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims);
     }
@@ -1921,7 +1949,9 @@ console.log(this.isSearchByStatus)
     this.providerNphiesApprovalService.generateAttachment(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, attachmentStatus, this.params.requestBundleId,this.selectedstatus
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId,
+       attachmentStatus, this.params.requestBundleId,this.selectedstatus,
+       this.params.isRelatedClaim 
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Success' || event.body['status'] == 'Success') {
@@ -2023,7 +2053,9 @@ console.log(this.isSearchByStatus)
     this.providerNphiesApprovalService.PBMValidation(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId).subscribe(event => {
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId,
+       this.params.organizationId, status, this.params.requestBundleId,
+       this.params.isRelatedClaim ).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
           if (event.body['status'] === 'Success') {
@@ -2089,7 +2121,8 @@ console.log(this.isSearchByStatus)
     this.providerNphiesApprovalService.moveToReadyState(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, status, this.params.requestBundleId
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, 
+      this.params.organizationId, status, this.params.requestBundleId,this.params.isRelatedClaim 
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -2231,6 +2264,7 @@ console.log(this.isSearchByStatus)
     model.payerIds = payerIds;
     model.batchId = this.params.batchId;
     model.memberId = this.params.memberId;
+    model.isRelatedClaim =this.params.isRelatedClaim;
     model.invoiceNo = this.params.invoiceNo;
     model.patientFileNo = this.params.patientFileNo;
     model.from = this.params.from;
@@ -2246,7 +2280,7 @@ console.log(this.isSearchByStatus)
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
         model.patientFileNo, model.from, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId
-        , this.params.filter_netAmount);
+        , this.params.filter_netAmount,this.params.isRelatedClaim );
     } else {
       action = this.providerNphiesApprovalService.revalidateClaims(model.providerId, model.selectedClaims);
     }
@@ -2317,6 +2351,7 @@ console.log(this.isSearchByStatus)
     model.payer = this.filterpayer;
     model.batchId = this.params.batchId;
     model.memberId = this.params.memberId;
+    model.isRelatedClaim=this.params.isRelatedClaim;
     model.invoiceNo = this.params.invoiceNo;
     model.patientFileNo = this.params.patientFileNo;
     model.netAmount = this.params.netAmount,
