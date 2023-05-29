@@ -45,7 +45,7 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
   openFile(attachmentContent: string, fileType: string, fileName: string) {
     let blob = this.convertBase64ToBlob(attachmentContent, fileType);
     var fileURL = URL.createObjectURL(blob);
-    window.URL.createObjectURL(blob);
+    window.open(fileURL)
   }
 
 
@@ -74,4 +74,6 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
     }
 
   }
+
+ 
 }
