@@ -262,7 +262,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
-
+console.log(this.params.organizationId);
     this.isSearchByStatus =this.params.claimStatus!=null;
     if(this.isSearchByStatus){
       this.selectedstatus=[this.params.claimStatus.toLowerCase()];    }

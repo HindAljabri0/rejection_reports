@@ -107,7 +107,7 @@ console.log(this.providerInfoForm.controls.certificateTypeControl.value)
   }
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.providerId} | ${provider.providerCode} | ${provider.providerEnglishName}`.toLowerCase()
+      `${provider.providerId} | ${provider.cchi_ID} |${provider.providerCode} | ${provider.providerEnglishName}`.toLowerCase()
         .includes(this.providerInfoForm.controls.providerController.value.toLowerCase())
     );
   }

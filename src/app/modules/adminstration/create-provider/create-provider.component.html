@@ -15,9 +15,9 @@
                             (input)="updateFilter()" (keyup.enter)="selectProvider()" [readonly]="isLoading">
                         <mat-autocomplete autoActiveFirstOption #auto>
                             <mat-option *ngFor="let provider of filteredProviders"
-                                [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName"
+                                [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName + ' | ' + provider.cchi_ID "
                                 (click)="selectProvider(provider.providerId)">
-                                {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}}
+                                {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}} | {{provider.cchi_ID}}
 
                             </mat-option>
                             <mat-option *ngIf="error!= null && error != '' && !isLoading">
