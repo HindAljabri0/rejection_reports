@@ -83,13 +83,12 @@
     </div> -->
     <hr class="hr">
     <div style="overflow-x: auto; ;  max-height: 250px;">
-    <div class="checkbox-list" *ngFor="let provider of selectedProviders">
-        <!-- <mat-checkbox color="primary">1123 | SSH | Saad Specialist Hospital</mat-checkbox> -->
-        <mat-checkbox  checked ="true" color="primary" >{{provider.switchAccountId}}| {{provider.code}} | {{provider.name}}</mat-checkbox>
-        <!-- <mat-checkbox color="primary">1021 | AMP | Al Ameen Medical Polyclinic</mat-checkbox>
-        <mat-checkbox color="primary">3413 | DAWNI | DAWENI MEDICAL COMPANY -KHAMIS</mat-checkbox>
-        <mat-checkbox color="primary">3439 | CSDC | Celebrity Smile Dental Clinic</mat-checkbox>
-        <mat-checkbox color="primary">3118 | FPC | Faisal polyclinic</mat-checkbox> -->
+    <div class="checkbox-list" >
+        <mat-checkbox color="primary" (change)="selectedAllProviders(!isSelectedAll)">All Provider</mat-checkbox> 
+        <div *ngFor="let provider of selectedProviders">
+            <mat-checkbox *ngIf='provider!=null' (change)="removeProviders(provider.switchAccountId)" checked ="true" color="primary" >{{provider.switchAccountId}}| {{provider.code}} | {{provider.name}}</mat-checkbox>
+        </div>
+
     </div>
 </div>
     <div class="primary-dialog-footer has-border">
