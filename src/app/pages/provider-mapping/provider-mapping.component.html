@@ -16,7 +16,7 @@
             <mat-autocomplete autoActiveFirstOption #auto>
                 <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' +provider.name+' | '+ provider.cchiId"
                     (click)="selectProvider(provider.switchAccountId)">
-                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} | {{provider.cchiId}}
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} (CCH ID: {{provider.cchiId}})
                 </mat-option>
             </mat-autocomplete>
         </div>
