@@ -8,9 +8,9 @@
             <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..." [formControl]="providerController" (input)="updateFilter()"
                 (keyup.enter)="selectProvider()" [readonly]="isLoading">
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' ( CCHI ID:'+ provider.cchiId +')'"
                     (click)="selectProvider(provider.switchAccountId)">
-                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} (CCH ID: {{provider.cchiId}})
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} (CCHI ID: {{provider.cchiId}})
                 </mat-option>
                 <mat-option *ngIf="error!= null && error != '' && !isLoading">
                     {{error}}
