@@ -32,7 +32,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
   error: string;
   filteredProviders: any[] = [];
   selectedProviders: any[] = [];
-
+  isSelectedAll = false;
   indixOfelement = 0;
   isCreatedAnnouncement = false;
   constructor(private dialogRef: MatDialogRef<AddEditNotificationDialogComponent>,
@@ -87,6 +87,24 @@ export class AddEditNotificationDialogComponent implements OnInit {
     //.value.split('|')[0].trim();
     //this.selectedProvider = providerId;
     //  }
+  }
+
+  selectedAllProviders(ischecked) {
+    //this.isSelectedAll = !ischecked;
+    console.log(ischecked)
+    if (ischecked) {
+      this.selectedProviders = [];
+      this.selectedProviders = this.providers;
+    } else {
+      this.selectedProviders = [];
+    }
+
+  }
+  removeProviders(providerId) {
+    //  console.log(providerId)
+    this.selectedProviders.forEach((provider, index) => {
+      if (provider.switchAccountId == providerId) this.selectedProviders.splice(index, 1);
+    });
   }
   setData() {
     this.announcement.providerId = this.announcementForm.controls.providersControl.value;

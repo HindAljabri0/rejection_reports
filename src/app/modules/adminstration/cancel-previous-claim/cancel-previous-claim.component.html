@@ -14,7 +14,7 @@
               <mat-autocomplete autoActiveFirstOption #auto>
                 <mat-option *ngFor="let provider of filteredProviders" [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName + ' | ' + provider.cchi_ID"
                   (click)="selectProvider(provider.providerId ,provider.cchi_ID, provider.providerCode)">
-                  {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}} | {{provider.cchi_ID}}
+                  {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}} (CCH ID: {{provider.cchi_ID}})
                 </mat-option>
               </mat-autocomplete>
               <div *ngIf="submitted && CancellClaimForm.get('providerId').hasError('required')">
