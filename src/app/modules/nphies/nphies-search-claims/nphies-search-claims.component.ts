@@ -1589,6 +1589,9 @@ console.log(this.isSearchByStatus)
   get showGenerateAttachment() {
     return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
+  get showIsRelated() {
+    return ['partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
   get showUploadAttachment() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());

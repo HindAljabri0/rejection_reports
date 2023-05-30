@@ -301,7 +301,7 @@
                     Status</th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)">
+                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)"  *ngIf="showIsRelated === true">
                       <span>Is Related?</span>
                       <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="isRelatedFilter" (click)="checkReloadedFilter()">
                         <mat-icon>filter_list_outline</mat-icon>
@@ -396,10 +396,10 @@
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="text-center row-click">
                       <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                     </td>
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
-                      <div class="d-flex align-items-center">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
+                      <div class="d-flex align-items-center" *ngIf="claim.isRelatedClaim">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
-                        <span>Yes</span>
+                        <span >Yes</span>
                       </div>
                     </td>
 
