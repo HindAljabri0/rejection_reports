@@ -41,6 +41,7 @@ import { SettingsService } from 'src/app/services/settingsService/settings.servi
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { ChooseAttachmentUploadDialogComponent } from '../choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nphies-search-claims',
@@ -165,7 +166,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   userPrivileges: UserPrivileges = initState.userPrivileges;
   payersList = [];
   filterpayer: any;
-
+  envProd=false;
+  
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -218,7 +220,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.resetURL();
     });
     this.submittionErrors = new Map();
-
+    this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
   }
 
   ngAfterViewChecked() {

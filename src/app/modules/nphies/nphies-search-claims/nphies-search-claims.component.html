@@ -88,7 +88,7 @@
           <button *ngIf="showInquireAll === true" (click)="inquireClaimByCriteria()" mat-flat-button color="primary">Inquire
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
 
-          <button *ngIf="showUploadAttachment === true" mat-flat-button color="primary" (click)="openChooseAttachmentDialog()">Upload
+          <button *ngIf="showUploadAttachment === true && !envProd" mat-flat-button color="primary" (click)="openChooseAttachmentDialog()">Upload
             Attachments {{selectedClaims.length==0?"":" ("+this.selectedClaims.length+")"}}</button>
 
           <button *ngIf="showRevalidate === true" (click)="revalidateClaimsByCriteria()" mat-flat-button color="primary">Revalidate
@@ -300,9 +300,9 @@
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Status</th>
                   <th
-                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)"  *ngIf="showIsRelated === true">
-                      <span>Is Related?</span>
+                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}" *ngIf="showIsRelated === true">
+                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)"  >
+                      <span>Has Related?</span>
                       <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="isRelatedFilter" (click)="checkReloadedFilter()">
                         <mat-icon>filter_list_outline</mat-icon>
                       </button>
@@ -399,7 +399,7 @@
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
                       <div class="d-flex align-items-center" *ngIf="claim.isRelatedClaim">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
-                        <span >Yes</span>
+                        <span>Yes</span>
                       </div>
                     </td>
 
