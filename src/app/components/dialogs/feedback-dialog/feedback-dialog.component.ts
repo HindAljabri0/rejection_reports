@@ -120,7 +120,7 @@ export class FeedbackDialogComponent implements OnInit {
 
     } else if (!this.feedback.isOverallSatisfactionValid || !this.feedback.isRecommendToFriend) {
       //one of the required fields not filled.
-      this.dialogService.showMessage('Required Fields', 'The first two questions are mendatory', 'alert', true, 'OK', null, true);
+      this.dialogService.showMessage('Required Fields', 'The first question is mendatory', 'alert', true, 'OK', null, true);
     }
   }
 
@@ -152,4 +152,3 @@ export class FeedbackDialogComponent implements OnInit {
     return submitted;
   }
 }
-
