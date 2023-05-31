@@ -12,15 +12,14 @@
               <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto" formControlName="providerId" (input)="updateFilter()"
                 (keyup.enter)="selectProvider()" placeholder="Select provider">
               <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName + ' | ' + provider.cchi_ID"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.providerId + ' | ' + provider.providerCode + ' | ' + provider.providerEnglishName + ' | CCHI ID: '+ provider.cchi_ID"
                   (click)="selectProvider(provider.providerId ,provider.cchi_ID, provider.providerCode)">
-                  {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}} | {{provider.cchi_ID}}
+                  {{provider.providerId}} | {{provider.providerCode}} | {{provider.providerEnglishName}} | CCHI ID: {{provider.cchi_ID}}
                 </mat-option>
               </mat-autocomplete>
               <div *ngIf="submitted && CancellClaimForm.get('providerId').hasError('required')">
                 <span class="error-text">Please select a Provider</span>
               </div>
-             
             </div>
         </div>
         <div class="col-md">

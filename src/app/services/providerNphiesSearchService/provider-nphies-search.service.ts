@@ -368,6 +368,9 @@ export class ProviderNphiesSearchService {
     if (isSearchByStatus!=null && isSearchByStatus) {
       requestURL += `&statuses=${claimSearchCriteriaModel.statuses.toString()}`;
     }
+    if (claimSearchCriteriaModel.isRelatedClaim !=null) {
+      requestURL += `&isRelatedClaim=${claimSearchCriteriaModel.isRelatedClaim}`;
+    }
 
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !isSearchByStatus  ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
@@ -541,6 +544,14 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+
+  getTpaNphies() {
+    const requestURL = '/tpa/fetch';
+    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
+    return this.http.request(request);
+  }
+
+
 
 
 
