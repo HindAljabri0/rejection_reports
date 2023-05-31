@@ -174,8 +174,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     } else {
       this.selectedTpa = this.selectedPayer;
       // this.selectedTpa = null;
-    }
-
+    }    
   }
 
 
@@ -208,7 +207,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       let routes = [this.commen.providerId, 'claims'];
       let queryParams = {
         payerId: this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
-        organizationId: this.waseelTpaId != null ? this.waseelTpaId : null,
+        organizationId: this.selectedSearchMode == 'tpa&date' && this.waseelTpaId != null ? this.waseelTpaId : null,
         from: this.fromDateControl.value.format('DD-MM-yyyy'),
         to: this.toDateControl.value.format('DD-MM-yyyy'),
         caseTypes: this.selectedClaimType != null ? this.selectedClaimType : null,
@@ -220,7 +219,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
         queryParams = {
           payerId: this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
-          organizationId: this.nphiesTpaId != null ? this.nphiesTpaId : null,
+          organizationId: this.selectedSearchMode == 'tpa&date' && this.nphiesTpaId != null ? this.nphiesTpaId : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
           caseTypes: null,
