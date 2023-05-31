@@ -254,10 +254,10 @@
               {{FormNphiesClaim.controls.ReferralName.value ? FormNphiesClaim.controls.ReferralName.value : '-'}}</p>
           </div>
         </div>
-        <div class="col-4 col-xxl-3">
+        <div class="col-4 col-xxl-3" *ngIf="otherDataModel.isRelated">
           <div class="form-group form-group-static">
-            <div class="control-label">Is Related?</div>
-            <p class="form-control-static">Yes</p>
+            <div class="control-label">Has Related?</div>
+            <p class="form-control-static">{{otherDataModel.isRelated ? 'Yes' : 'No'}}</p>
           </div>
         </div>
       </div>
