@@ -12,7 +12,7 @@
             <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto" formControlName="providerId" (input)="updateFilter()"
               (keyup.enter)="selectProvider()" placeholder="Select provider">
             <mat-autocomplete autoActiveFirstOption #auto>
-              <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name +  ' ( CCHI ID:'+ provider.cchiId +')'"
+              <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name +  ' (CCHI ID: '+ provider.cchiId +')'"
                 (click)="selectProvider(provider.switchAccountId)">
                 {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} (CCHI ID: {{provider.cchiId}})
               </mat-option>
