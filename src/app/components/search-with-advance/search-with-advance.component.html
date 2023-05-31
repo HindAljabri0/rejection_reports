@@ -94,7 +94,7 @@
 <mat-menu #payersMenu class="header-search-menu">
     <h5 *ngIf="payers.length > 0" class="menu-opt-group">Waseel</h5>
     <button *ngFor="let payer of payers"
-        (click)="selectedPayer = payer; selectedPayerType = 'W'; selectedClaimType=null; selectedTpa = null"
+        (click)="selectedPayer = payer; selectedSearchMode = 'payer&date'; tpaMode =''; selectedPayerType = 'W'; selectedClaimType=null; selectedTpa = null"
         mat-menu-item>
         <span>{{payer.name}}</span>
     </button>
