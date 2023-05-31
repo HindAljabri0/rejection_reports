@@ -38,6 +38,7 @@ export class SearchedClaim extends Paginateable {
   attachmentCount:number;
   communicationCount:number;
   communicationsRequestCount:number;
+  isRelatedClaim:boolean;
 
 
   constructor(body: {}) {
@@ -80,6 +81,7 @@ export class SearchedClaim extends Paginateable {
       this.attachmentCount=body['attachmentCount'];
       this.communicationCount = body['communicationCount'];
       this.communicationsRequestCount=body['communicationsRequestCount'];
+      this.isRelatedClaim = body['isRelatedClaim'];
     }
   }
 }
