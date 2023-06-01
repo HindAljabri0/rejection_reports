@@ -107,4 +107,15 @@ export class NotificationsService {
     return this.httpClient.request(request);
   }
 
+  deleteAnnouncement(announcementId: string) {
+    const requestUrl = `/announcement/announcementId/${announcementId}`;
+    const request = new HttpRequest('DELETE', environment.NotificationServiceHost + requestUrl);
+    return this.httpClient.request(request);
+  }
+
+  getAnnouncement(announcementId: string) {
+    const requestUrl = `/announcement/announcementId/${announcementId}`;
+    const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl, {});
+    return this.httpClient.request(request);
+  }
 }

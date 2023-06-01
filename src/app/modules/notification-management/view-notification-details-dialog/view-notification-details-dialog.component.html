@@ -5,28 +5,31 @@
 <div class="primary-dialog-body pb-0">
     <div class="form-group form-group-static">
         <label class="control-label">Subject</label>
-        <p class="form-control-static">NPHIES Scheduled Maintenance</p>
+        <p class="form-control-static">{{Announcement.subject}}</p>
     </div>
     <div class="form-group form-group-static">
         <label class="control-label">Description</label>
-        <p class="form-control-static">NPHIES schedules maintenance during 15th February 2023 - 29th February 2023. So plan your work accordingly.</p>
+        <p class="form-control-static">{{Announcement.descreption}}</p>
     </div>
     <div class="form-group form-group-static">
         <label class="control-label">Duration</label>
-        <p class="form-control-static">01/01/2023 - 01/03/2023</p>
+        <p class="form-control-static"> {{Announcement.startDate | date:'MM/dd/yyyy'}} - {{Announcement.endDate|
+            date:'MM/dd/yyyy'}}</p>
     </div>
     <div class="form-group">
         <label class="control-label">Attachments</label>
-        <ul class="attachment-list lg">
-            <li matTooltip="Report-4594.pdf">
-                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                <span>Report-4594.pdf</span>
+        <ul class="attachment-list lg" *ngFor="let attachment of Announcement.attachments">
+            <li [matTooltip]="attachment.attachmentName">
+                <img [src]="checkfileType(attachment.attachmentName)" [alt]="attachment.attachmentType"
+                    (click)="openFile(attachment.attachment,attachment.attachmentType,attachment.attachmentName)" />
+                <span>{{attachment.attachmentName + attachment.attachmentType}}</span>
             </li>
         </ul>
     </div>
 </div>
 <hr class="hr">
 <div class="checkbox-list">
+    <p>{{Announcement.providerId}}</p>
     <p>1123 | SSH | Saad Specialist Hospital</p>
     <p>721 | RAF | Al Rafie Hospital</p>
     <p>1021 | AMP | Al Ameen Medical Polyclinic</p>

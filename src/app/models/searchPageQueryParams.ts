@@ -32,11 +32,13 @@ export class SearchPageQueryParams {
     filter_nationalId?: string;
     filter_claimDate?: string;
     filter_netAmount?: string;
+    filter_isRelatedClaim? :boolean;
     status?: number;
     page?: number;
     size?: number;
     netAmount? : string;
     claimStatus?:string;
+    isRelatedClaim? :boolean;
 
     static fromParams(params: Params): SearchPageQueryParams {
         let pageParams: SearchPageQueryParams = new SearchPageQueryParams();
@@ -76,7 +78,7 @@ export class SearchPageQueryParams {
         pageParams.filter_netAmount = params.filter_netAmount;
         pageParams.filter_patientFileNo = params.filter_patientFileNo;
         pageParams.claimStatus= params.claimStatus;
-        
+        pageParams.isRelatedClaim  = params.filter_isRelatedClaim;
         return pageParams;
     }
 
@@ -103,6 +105,7 @@ export class SearchPageQueryParams {
         criteria.drname = this.filter_drName;
         criteria.nationalId = this.filter_nationalId || this.nationalId;
         criteria.netAmount = this.filter_netAmount;
+        //criteria.isRelated=this.filter_isRelated;
 
         criteria.statuses = statuses;
         criteria.page = `${this.page}`;

@@ -75,7 +75,10 @@ export class CertificateConfigurationComponent implements OnInit {
     event.target.value = '';
   }
   updateFilter() {
-    this.filteredProviders = this.providers.filter(provider => `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase()));
+    this.filteredProviders = this.providers.filter(provider =>
+      `${provider.switchAccountId} | ${provider.cchiId} | ${provider.code} | ${provider.name}`.toLowerCase()
+        .includes(this.providerController.value.toLowerCase())
+    );
     this.selectedProvider = this.providerController.value === '' ? undefined : this.selectedProvider;
   }
   // close(result?) {
