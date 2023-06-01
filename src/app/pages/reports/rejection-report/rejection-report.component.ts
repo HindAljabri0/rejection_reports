@@ -243,6 +243,8 @@ export class RejectionReportComponent implements OnInit {
 
           if (this.rejectedClaims.length == 0) {
             this.errorMessage = 'No Results Found';
+            this.page = 0;
+            this.pageSize = 10;
           }
           this.commen.loadingChanged.next(false);
         }
