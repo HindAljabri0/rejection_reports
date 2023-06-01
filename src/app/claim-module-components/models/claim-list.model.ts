@@ -7,4 +7,5 @@ export class ClaimListModel {
     claimDate: any;
     netAmount: string;
     batchNo: string;
+    isRelatedClaim:boolean;
 }

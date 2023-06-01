@@ -109,7 +109,7 @@ export class NphiesAttachmentConfigurationComponent implements OnInit {
 
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase()
+      `${provider.switchAccountId} | ${provider.cchiId} | ${provider.code} | ${provider.name}`.toLowerCase()
         .includes(this.providerController.value.toLowerCase())
     );
   }
