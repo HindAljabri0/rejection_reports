@@ -13,7 +13,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class ViewNotificationDetailsDialogComponent implements OnInit {
   Announcement: any = {};
-  providerIds: string[] = []
+  providerIds: any[] = []
   selectedProviders: any[] = []
   providersInfo: any[] = []
 
@@ -40,7 +40,7 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
         if (!this.isSelectedAllProvider()) {
           this.providerIds.forEach(providerId => {
             this.providersInfo.forEach(provider => {
-              if (providerId == provider.switchAccountId) {
+              if (providerId.id == provider.switchAccountId) {
                 this.selectedProviders.push(provider)
               }
             })
