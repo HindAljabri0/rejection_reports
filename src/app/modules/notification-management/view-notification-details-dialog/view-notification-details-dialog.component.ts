@@ -13,7 +13,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class ViewNotificationDetailsDialogComponent implements OnInit {
   Announcement: any = {};
-  providerIds: any[] = []
+  providerIds: string[] = []
   selectedProviders: any[] = []
   providersInfo: any[] = []
 
@@ -34,22 +34,24 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
     this.notificationsService.getAnnouncement(this.data.announcementId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.Announcement = event.body as any;
-        this.providerIds = JSON.parse(this.Announcement.providerId);
-        console.log(this.providerIds);
+        this.Announcement.providerId=  this.Announcement.providerId.replace('{id:', '')
+        this.Announcement.providerId=  this.Announcement.providerId.replace('}', '')
+        this.Announcement.providerId=  this.Announcement.providerId.replace('[', '')
+        this.Announcement.providerId=  this.Announcement.providerId.replace('[', '')
+        this.providerIds = this.Announcement.providerId.split(',')
+        //JSON.parse(this.Announcement.providerId);
+        console.log(this.providerIds[0]+ "oooooooooooooooooooooooo");
         console.log(this.isSelectedAllProvider());
         if (!this.isSelectedAllProvider()) {
           this.providerIds.forEach(providerId => {
             this.providersInfo.forEach(provider => {
-              if (providerId.id == provider.switchAccountId) {
+              if (providerId == provider.switchAccountId) {
                 this.selectedProviders.push(provider)
               }
             })
 
           })
         }
-
-
-
         this.sharedServices.loadingChanged.next(false);
       }
 

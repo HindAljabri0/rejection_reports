@@ -4,20 +4,23 @@
         <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
-        <div class="form-group">
-            <label class="control-label">Subject</label>
+       
+        <div class="form-group" [class.has-error]="hasError('subjectControl')!=null" [matTooltip]="hasError('subjectControl')" >
+          
+            <label class="control-label">Subject<span class="asterisk">*</span></label>
             <input type="text" class="form-control" placeholder="Enter notification subject"
-                formControlName="subjectControl" />
+                formControlName="subjectControl"  required/>
         </div>
-        <div class="form-group">
-            <label class="control-label">Description</label>
+    
+        <div class="form-group" [class.has-error]="hasError('descriptionControl')!=null" [matTooltip]="hasError('descriptionControl')">
+            <label class="control-label">Description<span class="asterisk">*</span></label>
             <textarea class="form-control" placeholder="Enter notification description"
-                formControlName="descriptionControl"></textarea>
+                formControlName="descriptionControl" required></textarea>
         </div>
         <div class="row small-gutter">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Start Date</label>
+                    <label class="control-label">Start Date<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input type="text" [matDatepicker]="startDate" class="form-control"
                             placeholder="Select start date" formControlName="startDateControl" />
@@ -28,7 +31,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">End Date</label>
+                    <label class="control-label">End Date<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date"
                             formControlName="endDateControl" />
@@ -63,8 +66,8 @@
     </div>
     <hr class="hr mb-14">
     <div class="block-body">
-        <div class="form-group mb-0">
-            <label class="control-label">Select Provider</label>
+        <div class="form-group mb-0" [class.has-error]="hasError('providersControl')!=null" [matTooltip]="hasError('providersControl')">
+            <label class="control-label">Select Provider<span class="asterisk">*</span></label>
             <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..."
                 formControlName="providersControl" (input)="updateFilter()" (keyup.enter)="selectProvider()"
                 [readonly]="isLoading">
@@ -92,12 +95,12 @@
     <hr class="hr">
     <div style="overflow-x: auto; ;  max-height: 250px;">
         <div class="checkbox-list">
-
-            <mat-checkbox color="primary" *ngIf="allProviders" [checked]="!allProviders">All
+         
+            <mat-checkbox color="primary" *ngIf="allProviders" [checked]="allProviders" (change)="cancelSelectedProviders('All')">All
                 Provider</mat-checkbox>
-            <mat-checkbox color="primary" *ngIf="allWaseelProviders" [checked]="!allWaseelProviders">All
+            <mat-checkbox color="primary" *ngIf="allWaseelProviders" [checked]="allWaseelProviders"  (change)="cancelSelectedProviders('Waseel')">All
                 Waseel Provider</mat-checkbox>
-            <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="!allNphiesProviders">All
+            <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="allNphiesProviders" (change)="cancelSelectedProviders('NPHIES')">All
                 NPHIES Provider</mat-checkbox>
             <div *ngFor="let provider of selectedProviders">
                 <mat-checkbox (change)="cancelSelectedProviders(provider.switchAccountId)" checked="true"

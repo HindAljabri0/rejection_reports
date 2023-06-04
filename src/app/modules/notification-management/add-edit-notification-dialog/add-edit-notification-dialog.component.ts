@@ -2,7 +2,7 @@ import { F } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { error } from 'console';
 import { AnnouncementNotification } from 'src/app/models/announcementNotification';
@@ -29,6 +29,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     endDate: '',
     attachments: []
   };
+  submit = false;
   allProviders = false;
   allNphiesProviders = false;
   allWaseelProviders = false;
@@ -50,10 +51,18 @@ export class AddEditNotificationDialogComponent implements OnInit {
     private dialogService: DialogService) { }
 
   announcementForm = new FormGroup({
-    subjectControl: new FormControl(''),
-    descriptionControl: new FormControl(''),
-    startDateControl: new FormControl(''),
-    endDateControl: new FormControl(''),
+    subjectControl: new FormControl('', [
+      Validators.required
+    ]),
+    descriptionControl: new FormControl('', [
+      Validators.required
+    ]),
+    startDateControl: new FormControl('', [
+      Validators.required
+    ]),
+    endDateControl: new FormControl('', [
+      Validators.required
+    ]),
     providersControl: new FormControl('')
   });
 
@@ -126,6 +135,10 @@ export class AddEditNotificationDialogComponent implements OnInit {
 
 
   cancelSelectedProviders(providerId) {
+    this.allProviders = false;
+    this.allNphiesProviders = false;
+    this.allWaseelProviders = false;
+
     this.selectedProviders.forEach((provider, index) => {
       if (provider.switchAccountId == providerId) this.selectedProviders.splice(index, 1);
     });
@@ -150,39 +163,57 @@ export class AddEditNotificationDialogComponent implements OnInit {
   }
 
 
-  saveAnnouncement() {
-    this.sharedServices.loadingChanged.next(true);
-    this.setData();
-    this.notificationsService.createAnnouncement(this.announcement).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status == 201 || event.status) {
+  hasError(controlsName: string) {
+    switch (controlsName) {
+      case "subjectControl":
+        return this.announcementForm.controls.subjectControl.invalid && this.submit ? "it should add a subject." : null
+      case "descriptionControl":
+        return this.announcementForm.controls.descriptionControl.invalid && this.submit ? "it should add a description." : null
+      case "providersControl":
+        return this.selectedProviders.length == 0 && this.submit && !this.allProviders &&
+          !this.allNphiesProviders && !this.allWaseelProviders ? "it should at least add one provider." : null
+    }
 
+
+
+  }
+  saveAnnouncement() {
+    this.submit = true;
+    console.log(this.announcementForm.valid)
+    if (this.announcementForm.valid) {
+      this.sharedServices.loadingChanged.next(true);
+      this.setData();
+      this.notificationsService.createAnnouncement(this.announcement).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          if (event.status == 201 || event.status) {
+
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: `Announcement has been created`,
+              isError: false
+            });
+
+            let response = event;
+            console.log(response)
+            this.sharedServices.loadingChanged.next(false);
+            this.isCreatedAnnouncement = true;
+            this.closeDialog();
+
+          }
+        }
+
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog({
             title: '',
-            message: `Announcement has been created`,
-            isError: false
+            message: error.message,
+            isError: true
           });
-
-          let response = event;
-          console.log(response)
           this.sharedServices.loadingChanged.next(false);
-          this.isCreatedAnnouncement = true;
-          this.closeDialog();
-
         }
-      }
 
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog({
-          title: '',
-          message: error.message,
-          isError: true
-        });
-        this.sharedServices.loadingChanged.next(false);
-      }
-
-    })
+      })
+    }
 
   }
 
