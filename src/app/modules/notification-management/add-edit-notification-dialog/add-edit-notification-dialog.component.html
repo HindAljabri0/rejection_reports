@@ -43,13 +43,14 @@
             <label class="control-label">Attachments</label>
             <ul class="attachment-list lg">
                 <li *ngFor="let attachment of attachments" [matTooltip]='attachment.attachmentName'>
-                    <img [src]="checkfileType(attachment.attachmentName )" alt="PDF" />
+                    <img [src]="checkfileType(attachment.attachmentName)" alt="PDF" />
                     <span>{{attachment.attachmentName}}</span>
                     <button class="close-btn" (click)="deleteAttachment(attachment.id)">
                         <mat-icon>close</mat-icon>
                     </button>
                 </li>
-                <li matTooltip="Add Attachments" class="add-block">
+                <li matTooltip="Add Attachments and should be the type of files one these  types [PDF, XLS, CSV, ZIP, XLSX, XLSX]"
+                    class="add-block">
                     <div class="file-upload-wrapper">
                         <div class="content">
                             <mat-icon>add</mat-icon>
@@ -64,10 +65,21 @@
     <div class="block-body">
         <div class="form-group mb-0">
             <label class="control-label">Select Provider</label>
-            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..." formControlName="providersControl" (input)="updateFilter()"
-                (keyup.enter)="selectProvider()" [readonly]="isLoading">
+            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..."
+                formControlName="providersControl" (input)="updateFilter()" (keyup.enter)="selectProvider()"
+                [readonly]="isLoading">
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
+                <mat-option value="All providers" (click)='selectProvider("All")'>
+                    All providers
+                </mat-option>
+                <mat-option value="All NPHIES providers" (click)='selectProvider("NPHIES")'>
+                    All NPHIES providers
+                </mat-option>
+                <mat-option value="All Waseel providers" (click)='selectProvider("Waseel")'>
+                    All Waseel providers
+                </mat-option>
+                <mat-option *ngFor="let provider of filteredProviders"
+                    [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
                     (click)="selectProvider(provider)">
                     {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} | {{provider.cchiId}}
                 </mat-option>
@@ -77,20 +89,23 @@
             </mat-autocomplete>
         </div>
     </div>
-    <!-- <div class="form-group px-14">
-        <input type="text" class="form-control search-box" placeholder="Search provider here..."
-            formControlName="providersControl" />
-    </div> -->
     <hr class="hr">
     <div style="overflow-x: auto; ;  max-height: 250px;">
-    <div class="checkbox-list" >
-        <mat-checkbox color="primary" (change)="selectedAllProviders(!isSelectedAll)">All Provider</mat-checkbox> 
-        <div *ngFor="let provider of selectedProviders">
-            <mat-checkbox *ngIf='provider!=null' (change)="removeProviders(provider.switchAccountId)" checked ="true" color="primary" >{{provider.switchAccountId}}| {{provider.code}} | {{provider.name}}</mat-checkbox>
-        </div>
+        <div class="checkbox-list">
 
+            <mat-checkbox color="primary" *ngIf="allProviders" [checked]="!allProviders">All
+                Provider</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allWaseelProviders" [checked]="!allWaseelProviders">All
+                Waseel Provider</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="!allNphiesProviders">All
+                NPHIES Provider</mat-checkbox>
+            <div *ngFor="let provider of selectedProviders">
+                <mat-checkbox (change)="cancelSelectedProviders(provider.switchAccountId)" checked="true"
+                    color="primary">{{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}</mat-checkbox>
+            </div>
+
+        </div>
     </div>
-</div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button mat-button (click)="closeDialog()">Cancel</button>
