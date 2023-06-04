@@ -67,49 +67,12 @@ export class MainStoreEffects {
             if (event instanceof HttpResponse) {
               const body: string[] = [];
               if (event.body && event.body[0] && event.body[0].indexOf('been a while since your') > -1) {
-                
-              }
-              if (event.body && event.body[0]) {
                 body.push(event.body[0]);
+                this.dialogService.showAlerts(body)
               }
-              body.push("<span class='bold text-danger'>Public IP is changed to 141.147.136.15 from 10th March 12:00 AM. Please whitelist this IP to allow outgoing traffic from Desktop Application for Waseel and Waseel-Connect, in case if you have any firewalls configured.</span>");
-              this.settingsService.checkCertificateExpiry(providerId).subscribe((event: any) => {
-                if (event instanceof HttpResponse) {
-                  if (event.body && event.body.message) {
-                    if (event.body.message.indexOf('Your Provider Certificate is expiring') > -1) {
-                      body.push(event.body.message.replace("Provider Certificate is expiring", '<span class="bold text-danger">Provider Certificate is expiring</span>'));
-                    }
-                    else if (event.body.message.indexOf('Your Provider Certificate has expired') > -1) {
-                      body.push(event.body.message.replace("Provider Certificate has expired", '<span class="bold text-danger">Provider Certificate has expired</span>'));
-                    }
-                    else {
-                      body.push(event.body.message);
-                    }
-                  }
-                  this.dialogService.showAlerts(body);
-                  localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
-                }
-              });
             }
           }, error => {
-            this.settingsService.checkCertificateExpiry(providerId).subscribe((event: any) => {
-              if (event instanceof HttpResponse) {
-                const body: string[] = [];
-                if (event.body && event.body.message) {
-                  if (event.body.message.indexOf('Your Provider Certificate is expiring') > -1) {
-                    body.push(event.body.message.replace("Provider Certificate is expiring", '<span class="bold text-danger">Provider Certificate is expiring</span>'));
-                  }
-                  else if (event.body.message.indexOf('Your Provider Certificate has expired') > -1) {
-                    body.push(event.body.message.replace("Provider Certificate has expired", '<span class="bold text-danger">Provider Certificate has expired</span>'));
-                  }
-                  else {
-                    body.push(event.body.message);
-                  }
-                }
-                this.dialogService.showAlerts(body);
-                localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
-              }
-            });
+            console.log(error)
           });
         } else {
           const lastDateAlertAppeared = localStorage.getItem(`lastDateUpcomingAlertAppeared:${providerId}`);
