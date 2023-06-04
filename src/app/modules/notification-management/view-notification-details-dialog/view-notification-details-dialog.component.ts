@@ -34,7 +34,7 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
     this.notificationsService.getAnnouncement(this.data.announcementId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.Announcement = event.body as any;
-        this.providerIds = this.Announcement.providerId;
+        this.providerIds = JSON.parse(this.Announcement.providerId);
         console.log(this.providerIds);
         console.log(this.isSelectedAllProvider());
         if (!this.isSelectedAllProvider()) {
