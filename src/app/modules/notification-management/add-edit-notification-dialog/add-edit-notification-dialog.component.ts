@@ -1,9 +1,9 @@
 import { F } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { error } from 'console';
 import { AnnouncementNotification } from 'src/app/models/announcementNotification';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
@@ -45,6 +45,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
   isCreatedAnnouncement = false;
   constructor(private dialogRef: MatDialogRef<AddEditNotificationDialogComponent>,
     private superAdmin: SuperAdminService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private notificationsService: NotificationsService,
     public sharedServices: SharedServices,
     public authService: AuthService,
@@ -68,22 +69,8 @@ export class AddEditNotificationDialogComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.authService.getUserName())
-    this.sharedServices.loadingChanged.next(true);
-    this.superAdmin.getProviders().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body instanceof Array) {
-          this.providers = event.body;
-          this.filteredProviders = this.providers;
-
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }
-    }, error => {
-      this.sharedServices.loadingChanged.next(false);
-      this.error = 'could not load providers, please try again later.';
-      console.log(error);
-    });
-
+    this.providers = this.data.providersInfo;
+    this.filteredProviders = this.providers;
   }
 
   closeDialog() {
@@ -99,7 +86,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allProviders = true;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
-        this.selectedProviders=[];
+        this.selectedProviders = [];
         this.announcementForm.controls.providersControl.setValue('');
         this.SelectedPrividerType = 'All'
         return
@@ -108,7 +95,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = true;
         this.allWaseelProviders = false;
         this.announcementForm.controls.providersControl.setValue('');
-        this.selectedProviders=[];
+        this.selectedProviders = [];
         this.SelectedPrividerType = 'NPHIES'
         return
 
@@ -117,6 +104,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = false;
         this.allWaseelProviders = true;
         this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders = [];
         this.SelectedPrividerType = 'Waseel'
         return
       default:
@@ -124,7 +112,6 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
         this.SelectedPrividerType = null
-        this.selectedProviders=[];
         this.announcementForm.controls.providersControl.setValue('');
         console.log(this.isProviderSelected(provider.switchAccountId))
         if (!this.isProviderSelected(provider.switchAccountId)) {
@@ -169,12 +156,16 @@ export class AddEditNotificationDialogComponent implements OnInit {
   hasError(controlsName: string) {
     switch (controlsName) {
       case "subjectControl":
-        return this.announcementForm.controls.subjectControl.invalid && this.submit ? "it should add a subject." : null
+        return this.announcementForm.controls.subjectControl.invalid && this.submit ? "It Should Add a Subject." : null
       case "descriptionControl":
-        return this.announcementForm.controls.descriptionControl.invalid && this.submit ? "it should add a description." : null
+        return this.announcementForm.controls.descriptionControl.invalid && this.submit ? "It Should Add a Description." : null
       case "providersControl":
         return this.selectedProviders.length == 0 && this.submit && !this.allProviders &&
-          !this.allNphiesProviders && !this.allWaseelProviders ? "it should at least add one provider." : null
+          !this.allNphiesProviders && !this.allWaseelProviders ? "It Should At least Add One Provider." : null
+      case "startDateControl":
+        return this.announcementForm.controls.startDateControl.invalid && this.submit ? "Please Select Start Date" : null
+      case "endDateControl":
+        return this.announcementForm.controls.endDateControl.invalid && this.submit ? "Please Select End Date" : null
     }
 
 

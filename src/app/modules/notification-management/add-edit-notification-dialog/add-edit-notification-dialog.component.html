@@ -19,7 +19,7 @@
         </div>
         <div class="row small-gutter">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group"  [class.has-error]="hasError('startDateControl')!=null" [matTooltip]="hasError('startDateControl')">
                     <label class="control-label">Start Date<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input type="text" [matDatepicker]="startDate" class="form-control"
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group" [class.has-error]="hasError('endDateControl')!=null" [matTooltip]="hasError('endDateControl')">
                     <label class="control-label">End Date<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date"
