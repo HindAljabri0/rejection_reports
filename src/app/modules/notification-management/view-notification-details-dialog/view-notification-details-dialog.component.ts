@@ -13,7 +13,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class ViewNotificationDetailsDialogComponent implements OnInit {
   Announcement: any = {};
-  providerIds: any[] = []
+  providerIds: string[] = []
   selectedProviders: any[] = []
   providersInfo: any[] = []
 
@@ -27,29 +27,25 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.sharedServices.loadingChanged.next(true);
     this.providersInfo = this.data.providersInfo;
 
     this.notificationsService.getAnnouncement(this.data.announcementId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.Announcement = event.body as any;
-        this.providerIds = JSON.parse(this.Announcement.providerId);
-        console.log(this.providerIds);
+        this.providerIds = this.Announcement.providerId.replace(/id:|}|{|\[|]/gi, '').split(',');
+        console.log(this.providerIds[0]);
         console.log(this.isSelectedAllProvider());
         if (!this.isSelectedAllProvider()) {
           this.providerIds.forEach(providerId => {
             this.providersInfo.forEach(provider => {
-              if (providerId.id == provider.switchAccountId) {
+              if (providerId == provider.switchAccountId) {
                 this.selectedProviders.push(provider)
               }
             })
 
           })
         }
-
-
-
         this.sharedServices.loadingChanged.next(false);
       }
 
@@ -61,7 +57,7 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
 
   }
   isSelectedAllProvider() {
-    return (this.providerIds[0] == 'All' || this.providerIds[0] == 'NPHIES' || this.providerIds[0] == 'Wassel');
+    return (this.providerIds[0] == 'ALL' || this.providerIds[0] == 'NPHIES' || this.providerIds[0] == 'WASEEL');
   }
 
   closeDialog() {

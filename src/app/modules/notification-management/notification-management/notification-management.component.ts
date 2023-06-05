@@ -37,7 +37,10 @@ export class NotificationManagementComponent implements OnInit {
   openAddCreateNotificationDialog() {
     const dialogRef = this.dialog.open(AddEditNotificationDialogComponent, {
       panelClass: ['primary-dialog'],
-      autoFocus: false
+      autoFocus: false,
+      data:{
+        providersInfo: this.providersInfo
+      }
     }).afterClosed().subscribe(data => {
       if (data) {
         this.getAllAnnouncements();
@@ -86,27 +89,33 @@ export class NotificationManagementComponent implements OnInit {
     }))
 
   }
+
+  convertProvidersfromStringToList(providerIds: string) {
+    return providerIds.replace(/id:|}|{|\[|]/gi, '').split(',').toString();
+  }
   getAllAnnouncements() {
-   this.sharedServices.loadingChanged.next(true);
+    this.sharedServices.loadingChanged.next(true);
     this.notificationsService.getAllAnnouncements().subscribe(event => {
       if (event instanceof HttpResponse) {
         this.Announcements = null;
         this.Announcements = event.body as any[];
-        console.log(this.Announcements)
-        if (this.providersInfo.length == 0){
-          this.getProviders();
-      } else {
-        this.sharedServices.loadingChanged.next(false);
-      }
 
-   } }, (error => {
+        console.log(this.Announcements)
+        if (this.providersInfo.length == 0) {
+          this.getProviders();
+        } else {
+          this.sharedServices.loadingChanged.next(false);
+        }
+
+      }
+    }, (error => {
       console.log(error)
       this.sharedServices.loadingChanged.next(false);
     }))
   }
 
   getProviders() {
-  //  this.sharedServices.loadingChanged.next(true);
+    //  this.sharedServices.loadingChanged.next(true);
     this.superAdmin.getProviders().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {

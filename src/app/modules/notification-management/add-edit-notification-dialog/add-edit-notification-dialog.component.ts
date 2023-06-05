@@ -1,9 +1,9 @@
 import { F } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { error } from 'console';
 import { AnnouncementNotification } from 'src/app/models/announcementNotification';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
@@ -29,6 +29,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     endDate: '',
     attachments: []
   };
+  submit = false;
   allProviders = false;
   allNphiesProviders = false;
   allWaseelProviders = false;
@@ -44,37 +45,32 @@ export class AddEditNotificationDialogComponent implements OnInit {
   isCreatedAnnouncement = false;
   constructor(private dialogRef: MatDialogRef<AddEditNotificationDialogComponent>,
     private superAdmin: SuperAdminService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private notificationsService: NotificationsService,
     public sharedServices: SharedServices,
     public authService: AuthService,
     private dialogService: DialogService) { }
 
   announcementForm = new FormGroup({
-    subjectControl: new FormControl(''),
-    descriptionControl: new FormControl(''),
-    startDateControl: new FormControl(''),
-    endDateControl: new FormControl(''),
+    subjectControl: new FormControl('', [
+      Validators.required
+    ]),
+    descriptionControl: new FormControl('', [
+      Validators.required
+    ]),
+    startDateControl: new FormControl('', [
+      Validators.required
+    ]),
+    endDateControl: new FormControl('', [
+      Validators.required
+    ]),
     providersControl: new FormControl('')
   });
 
   ngOnInit() {
     console.log(this.authService.getUserName())
-    this.sharedServices.loadingChanged.next(true);
-    this.superAdmin.getProviders().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body instanceof Array) {
-          this.providers = event.body;
-          this.filteredProviders = this.providers;
-
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }
-    }, error => {
-      this.sharedServices.loadingChanged.next(false);
-      this.error = 'could not load providers, please try again later.';
-      console.log(error);
-    });
-
+    this.providers = this.data.providersInfo;
+    this.filteredProviders = this.providers;
   }
 
   closeDialog() {
@@ -90,6 +86,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allProviders = true;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
+        this.selectedProviders = [];
         this.announcementForm.controls.providersControl.setValue('');
         this.SelectedPrividerType = 'All'
         return
@@ -98,6 +95,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = true;
         this.allWaseelProviders = false;
         this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders = [];
         this.SelectedPrividerType = 'NPHIES'
         return
 
@@ -106,7 +104,8 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = false;
         this.allWaseelProviders = true;
         this.announcementForm.controls.providersControl.setValue('');
-        this.SelectedPrividerType = 'Wassel'
+        this.selectedProviders = [];
+        this.SelectedPrividerType = 'Waseel'
         return
       default:
         this.allProviders = false;
@@ -126,6 +125,10 @@ export class AddEditNotificationDialogComponent implements OnInit {
 
 
   cancelSelectedProviders(providerId) {
+    this.allProviders = false;
+    this.allNphiesProviders = false;
+    this.allWaseelProviders = false;
+
     this.selectedProviders.forEach((provider, index) => {
       if (provider.switchAccountId == providerId) this.selectedProviders.splice(index, 1);
     });
@@ -139,7 +142,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     })
     console.log(this.providerIds)
 
-    this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType] : this.providerIds;
+    this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
     this.announcement.userName = this.authService.getAuthUsername();
     this.announcement.subject = this.announcementForm.controls.subjectControl.value;
     this.announcement.descreption = this.announcementForm.controls.descriptionControl.value;
@@ -150,39 +153,61 @@ export class AddEditNotificationDialogComponent implements OnInit {
   }
 
 
-  saveAnnouncement() {
-    this.sharedServices.loadingChanged.next(true);
-    this.setData();
-    this.notificationsService.createAnnouncement(this.announcement).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status == 201 || event.status) {
+  hasError(controlsName: string) {
+    switch (controlsName) {
+      case "subjectControl":
+        return this.announcementForm.controls.subjectControl.invalid && this.submit ? "It Should Add a Subject." : null
+      case "descriptionControl":
+        return this.announcementForm.controls.descriptionControl.invalid && this.submit ? "It Should Add a Description." : null
+      case "providersControl":
+        return this.selectedProviders.length == 0 && this.submit && !this.allProviders &&
+          !this.allNphiesProviders && !this.allWaseelProviders ? "It Should At least Add One Provider." : null
+      case "startDateControl":
+        return this.announcementForm.controls.startDateControl.invalid && this.submit ? "Please Select Start Date" : null
+      case "endDateControl":
+        return this.announcementForm.controls.endDateControl.invalid && this.submit ? "Please Select End Date" : null
+    }
 
+
+
+  }
+  saveAnnouncement() {
+    this.submit = true;
+    console.log(this.announcementForm.valid)
+    if (this.announcementForm.valid) {
+      this.sharedServices.loadingChanged.next(true);
+      this.setData();
+      this.notificationsService.createAnnouncement(this.announcement).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          if (event.status == 201 || event.status) {
+
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: `Announcement has been created`,
+              isError: false
+            });
+
+            let response = event;
+            console.log(response)
+            this.sharedServices.loadingChanged.next(false);
+            this.isCreatedAnnouncement = true;
+            this.closeDialog();
+
+          }
+        }
+
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog({
             title: '',
-            message: `Announcement has been created`,
-            isError: false
+            message: error.message,
+            isError: true
           });
-
-          let response = event;
-          console.log(response)
           this.sharedServices.loadingChanged.next(false);
-          this.isCreatedAnnouncement = true;
-          this.closeDialog();
-
         }
-      }
 
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog({
-          title: '',
-          message: error.message,
-          isError: true
-        });
-        this.sharedServices.loadingChanged.next(false);
-      }
-
-    })
+      })
+    }
 
   }
 
