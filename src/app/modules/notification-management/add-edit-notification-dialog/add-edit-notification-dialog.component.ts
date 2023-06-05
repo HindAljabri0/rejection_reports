@@ -99,6 +99,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allProviders = true;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
+        this.selectedProviders=[];
         this.announcementForm.controls.providersControl.setValue('');
         this.SelectedPrividerType = 'All'
         return
@@ -107,6 +108,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = true;
         this.allWaseelProviders = false;
         this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders=[];
         this.SelectedPrividerType = 'NPHIES'
         return
 
@@ -115,13 +117,14 @@ export class AddEditNotificationDialogComponent implements OnInit {
         this.allNphiesProviders = false;
         this.allWaseelProviders = true;
         this.announcementForm.controls.providersControl.setValue('');
-        this.SelectedPrividerType = 'Wassel'
+        this.SelectedPrividerType = 'Waseel'
         return
       default:
         this.allProviders = false;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
         this.SelectedPrividerType = null
+        this.selectedProviders=[];
         this.announcementForm.controls.providersControl.setValue('');
         console.log(this.isProviderSelected(provider.switchAccountId))
         if (!this.isProviderSelected(provider.switchAccountId)) {
@@ -152,7 +155,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     })
     console.log(this.providerIds)
 
-    this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType] : this.providerIds;
+    this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
     this.announcement.userName = this.authService.getAuthUsername();
     this.announcement.subject = this.announcementForm.controls.subjectControl.value;
     this.announcement.descreption = this.announcementForm.controls.descriptionControl.value;
