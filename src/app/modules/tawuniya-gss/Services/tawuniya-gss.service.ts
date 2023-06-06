@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GssReportResponse, VatInformation } from '../models/InitiateResponse.model';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,11 @@ export class TawuniyaGssService {
   gssReportResponse: GssReportResponse
   // vatInformation: VatInformation
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private sharedService: SharedServices
+  ) {
+
   }
 
   generateReportInitiate(lossMonth: string) {
@@ -36,7 +41,7 @@ export class TawuniyaGssService {
   }
 
   getVatInformation() {
-    if(!this.gssReportResponse){
+    if (!this.gssReportResponse) {
       return;
     }
     return this.gssReportResponse.vatInformation;
@@ -48,8 +53,8 @@ export class TawuniyaGssService {
     this.http.get<VatInformation>(environment.tawuniyaGssReport + requestUrl).subscribe(vatInformation => {
       sub.next(vatInformation)
       // this.vatInformation = vatInformation
-      if(this.gssReportResponse){
-        this.gssReportResponse.vatInformation =  vatInformation
+      if (this.gssReportResponse) {
+        this.gssReportResponse.vatInformation = vatInformation
       }
     }, error => {
       sub.error(error);
@@ -66,7 +71,7 @@ export class TawuniyaGssService {
 
   submitVatInfoRequest(formData: FormData) {
     let sub = new Subject<VatInformation>();
-    
+
     const requestUrl = "/gss/vat-info/" + localStorage.getItem('provider_id');
     this.http.post<VatInformation>(environment.tawuniyaGssReport + requestUrl, formData).subscribe(vatInformation => {
       sub.next(vatInformation)
@@ -110,7 +115,7 @@ export class TawuniyaGssService {
 
   getVatNoByProviderId() {
     const requestUrl = '/gss/vat-no/';
-    return this.http.get<{ vatNo: string}>(environment.tawuniyaGssReport + requestUrl, { params: { "provider-id": localStorage.getItem('provider_id') } });
+    return this.http.get<{ vatNo: string }>(environment.tawuniyaGssReport + requestUrl, { params: { "provider-id": localStorage.getItem('provider_id') } });
   }
 
   resetModels() {
@@ -118,29 +123,33 @@ export class TawuniyaGssService {
     // this.vatInformation = null
   }
 
-  isGssProcessable(lossMonth:string, status: string){
+  isGssProcessable(lossMonth: string, status: string) {
     let isNewOrRejected = status.toLowerCase() === 'new' || status.toLowerCase() === 'rejected';
     return isNewOrRejected && this.isLossMonthWithinPreviousTwoMonths(lossMonth);
   }
 
-  isLossMonthWithinPreviousTwoMonths(lossMonth: string): boolean{
+  isLossMonthWithinPreviousTwoMonths(lossMonth: string): boolean {
     let numberOfAllowedMonth = 2
-		let currentMonth: number = new Date().getMonth() + 1;
-		let currentYear = new Date().getFullYear();
+    let currentMonth: number = new Date().getMonth() + 1;
+    let currentYear = new Date().getFullYear();
 
-		let date: string[] = lossMonth.split('-');
-		let requestedMonth: number = +date[1];
-		let requestedYear: number = +date[0];
+    let date: string[] = lossMonth.split('-');
+    let requestedMonth: number = +date[1];
+    let requestedYear: number = +date[0];
 
-		let monthCount: number = currentMonth - requestedMonth < 0 ? (currentMonth - requestedMonth + 12)
-				: currentMonth - requestedMonth;
-		let yearCount: number = currentMonth - requestedMonth < 0 ? currentYear - 1 : currentYear;
-		return monthCount <= numberOfAllowedMonth && monthCount > 0 && requestedYear == yearCount;
+    let monthCount: number = currentMonth - requestedMonth < 0 ? (currentMonth - requestedMonth + 12)
+      : currentMonth - requestedMonth;
+    let yearCount: number = currentMonth - requestedMonth < 0 ? currentYear - 1 : currentYear;
+    return monthCount <= numberOfAllowedMonth && monthCount > 0 && requestedYear == yearCount;
   }
 
+  isAnnouncementUpdateAvailable(announcementNumber: string) {
+    const requestUrl = '/gss/announcement/update/' + this.sharedService.providerId + '/check?announcementNumber=' + announcementNumber;
+    return this.http.post(environment.tawuniyaGssReport + requestUrl, {});
+  }
 
-  // getVatInfoByGssRefNo(gssRefNo: string){
-  //   const requestUrl = '/gss/vat-info';
-  //   return this.http.get<any>(environment.tawuniyaGssReport + requestUrl, {params: {"gss-ref-no": gssRefNo}});
-  // }
+  updateAnnouncement(announcementNumber: string) {
+    const requestUrl = '/gss/announcement/update/' + this.sharedService.providerId + '/acknoledge?announcementNumber=' + announcementNumber;
+    return this.http.post(environment.tawuniyaGssReport + requestUrl, {});
+  }
 }

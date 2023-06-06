@@ -163,18 +163,23 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.fromDateControl = new FormControl();
     this.toDateControl = new FormControl();
     this.selectedClaimType = null;
+    this.nphiesTpaId = null;
   }
 
   onNphiesPayerSelected(event) {
+
+    console.log(event)
     this.selectedPayerType = 'N';
-    this.selectedClaimType = null;
     this.selectedPayer = { id: event.payer.code, name: event.payer.display };
+    console.log(this.selectedPayer)
     if (event.organization.code != '-1') {
       this.selectedTpa = { id: event.organization.code, name: event.organization.display };
+      this.nphiesTpaId = this.selectedTpa.id
     } else {
       this.selectedTpa = this.selectedPayer;
+      this.nphiesTpaId = this.selectedPayer.id;
       // this.selectedTpa = null;
-    }    
+    }
   }
 
 
@@ -219,7 +224,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
         queryParams = {
           payerId: this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date' ? null : this.selectedPayer.id,
-          organizationId: this.selectedSearchMode == 'tpa&date' && this.nphiesTpaId != null ? this.nphiesTpaId : null,
+          organizationId: (this.selectedSearchMode == 'tpa&date' && this.nphiesTpaId != null) || this.nphiesTpaId != null ? this.nphiesTpaId : null,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
           caseTypes: null,
