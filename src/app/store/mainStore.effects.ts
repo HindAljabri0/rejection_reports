@@ -69,6 +69,7 @@ export class MainStoreEffects {
               if (event.body && event.body[0] && event.body[0].indexOf('been a while since your') > -1) {
                 body.push(event.body[0]);
                 this.dialogService.showAlerts(body)
+                localStorage.setItem(`lastDateAlertAppeared:${providerId}`, yearMonthDay);
               }
             }
           }, error => {
