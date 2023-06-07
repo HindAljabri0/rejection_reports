@@ -20,7 +20,7 @@ import { NphiesAttachmentConfigurationComponent } from 'src/app/pages/nphies-att
 import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-previous-claim.component';
 import { FeedbackSurveyComponent } from './feedback-survey/feedback-survey.component';
 import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedback-survey-details.component';
-// import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-provider/feedback-survey-select-provider.component';
+import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-provider/feedback-survey-select-provider.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedba
     CancelPreviousClaimComponent,
     FeedbackSurveyComponent,
     FeedbackSurveyDetailsComponent,
-    // FeedbackSurveySelectProviderComponent
+    FeedbackSurveySelectProviderComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -69,7 +69,7 @@ import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedba
   ],
   entryComponents: [
     AddProviderContractDialogComponent,
-    // FeedbackSurveySelectProviderComponent
+    FeedbackSurveySelectProviderComponent
   ]
 })
 export class AdminstrationModule { }

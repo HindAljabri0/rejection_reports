@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { FeedbackSurveySelectProviderComponent } from '../feedback-survey-select-provider/feedback-survey-select-provider.component';
 
 @Component({
   selector: 'app-feedback-survey-details',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedbackSurveyDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit() {
+  }
+
+  openSelectProviderDialog() {
+    const dialogRef = this.dialog.open(FeedbackSurveySelectProviderComponent, {
+      panelClass: ['primary-dialog']
+    });
   }
 
 }

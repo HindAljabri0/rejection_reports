@@ -232,7 +232,8 @@
                         <mat-datepicker #endDatePicker></mat-datepicker>
                     </div>
                 </div>
-                <button mat-stroked-button class="btn-block multiline" color="primary">All Provider Selected<br />(Click here to select only few)</button>
+                <button mat-stroked-button class="btn-block multiline" (click)="openSelectProviderDialog()" color="primary">All Provider Selected<br />(Click here to select only
+                    few)</button>
 
                 <div class="form-group">
                     <label class="control-label">Question (English)</label>

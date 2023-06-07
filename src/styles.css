@@ -1460,7 +1460,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .checkbox-list .mat-checkbox{display: block;border-bottom: 1px solid #e1e1e1;}
 .checkbox-list .mat-checkbox-layout{display: flex;padding: 10px 16px 10px 8px;}
 .checkbox-list .mat-checkbox .mat-checkbox-inner-container{margin-left: 8px;}
-.checkbox-list p{padding: 13px 16px;border-bottom: 1px solid #e1e1e1;}
+.checkbox-list p{padding: 13px 16px;border-bottom: 1px solid #e1e1e1;display: flex;align-items: center;}
+.checkbox-list p .mat-icon-button{margin: -10px;margin-left: auto;} 
 .checkbox-list .mat-checkbox:last-child,.checkbox-list p:last-child{border-bottom: 0;}
 
 /* bootstrap tabs
