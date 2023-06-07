@@ -1,6 +1,3 @@
-
-
-
 <div class="feedback-dialog">
     <div class="icon-container">
         <img src="./assets/ic-feedback-dialog.svg" alt="Feedback" class="dialog-icon" />
@@ -11,15 +8,15 @@
         <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">مدى احتمالية أن توصي بمنتجاتنا للاخرين؟ *</p>
         <p class="question" style="font-weight: 300;  margin-top: 0;">How likely are you to recommend our services to others? *
         </p>
-        <app-feedback-rating class="rating-component" (newRating)="setRecommendQRating($event)"></app-feedback-rating>
+        <feedback-rating class="rating-component" (newRating)="setRecommendQRating($event)"></feedback-rating>
     </div>
     <div class="sugg-container">
         <!-- Suggestion -->
         <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">يُرجى مشاركتنا كيف يمكننا تحسين تجربتك؟</p>
         <p class="sugg" style="margin: 0 0 10px;" style="font-weight: 300;">Please share with us how can we improve your experience?</p>
         <div class="form-group multiline-answer">
-            <textarea class="form-control feedback-area" id="exampleFormControlTextarea1"
-                placeholder="Tell us what you think . . ." rows="5" [(ngModel)]="feedback.suggestion"></textarea>
+            <textarea class="form-control feedback-area" id="exampleFormControlTextarea1" placeholder="Tell us what you think . . ." rows="5"
+                [(ngModel)]="feedback.suggestion"></textarea>
         </div>
 
     </div>
