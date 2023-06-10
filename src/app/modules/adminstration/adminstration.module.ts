@@ -18,6 +18,9 @@ import { CertificateConfigurationComponent } from 'src/app/pages/certificate-con
 import { CreateProviderComponent } from './create-provider/create-provider.component';
 import { NphiesAttachmentConfigurationComponent } from 'src/app/pages/nphies-attachment-configuration/nphies-attachment-configuration.component';
 import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-previous-claim.component';
+import { FeedbackSurveyComponent } from './feedback-survey/feedback-survey.component';
+import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedback-survey-details.component';
+import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-provider/feedback-survey-select-provider.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-pre
     TransactionsLogComponent,
     CreateProviderComponent,
     NphiesAttachmentConfigurationComponent,
-    CancelPreviousClaimComponent
+    CancelPreviousClaimComponent,
+    FeedbackSurveyComponent,
+    FeedbackSurveyDetailsComponent,
+    FeedbackSurveySelectProviderComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -45,7 +51,9 @@ import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-pre
       { path: 'config/providerCertificate', component: CertificateConfigurationComponent },
       { path: 'config/createProvider', component: CreateProviderComponent },
       { path: 'config/nphies-attachment-configuration', component: NphiesAttachmentConfigurationComponent },
-      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent }
+      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent },
+      { path: 'config/feedback-survey', component: FeedbackSurveyComponent },
+      { path: 'config/feedback-survey-details', component: FeedbackSurveyDetailsComponent }
     ]),
     CommonModule,
     MaterialModule,
@@ -60,7 +68,8 @@ import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-pre
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
   ],
   entryComponents: [
-    AddProviderContractDialogComponent
+    AddProviderContractDialogComponent,
+    FeedbackSurveySelectProviderComponent
   ]
 })
 export class AdminstrationModule { }

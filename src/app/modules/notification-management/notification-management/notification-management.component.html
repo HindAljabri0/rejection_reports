@@ -12,8 +12,9 @@
                 <thead>
                     <tr>
                         <th class="long-text">Subject.</th>
+                        <th class="long-text">User Name.</th>
                         <th>Description </th>
-                        <th>Targeted Providers</th>
+                        <!-- <th>Targeted Providers</th> -->
                         <th>Duration</th>
                         <th width="10"></th>
                     </tr>
@@ -23,16 +24,18 @@
                         <td class="row-click" (click)="openViewNotificationDialog(Announcement.id)">
                             {{Announcement.subject}}</td>
                         <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
-                            {{Announcement.descreption}}</td>
+                            {{Announcement.userName}}</td>
                         <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
-                            {{Announcement.providerId}}</td>
+                            {{Announcement.descreption}}</td>
+                        <!-- <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
+                            {{convertProvidersfromStringToList(Announcement.providerId)}}</td> -->
                         <td class="text-nowrap row-click" (click)="openViewNotificationDialog(Announcement.id)">
                             {{Announcement.startDate | date:'MM/dd/yyyy'}} -{{Announcement.endDate| date:'MM/dd/yyyy'}}
                         </td>
                         <td class="actions">
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
+                            <!-- <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
                                 <mat-icon>refresh</mat-icon>
-                            </button>
+                            </button> -->
                             <button type="button" mat-icon-button class="text-primary" matTooltip="Delete"
                                 (click)="deleteAnnouncements(Announcement.id)">
                                 <mat-icon class="material-icons-outlined">delete</mat-icon>
