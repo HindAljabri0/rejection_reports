@@ -37,7 +37,7 @@
                                 <mat-icon>refresh</mat-icon>
                             </button> -->
                             <button type="button" mat-icon-button class="text-primary" matTooltip="Delete"
-                                (click)="deleteAnnouncements(Announcement.id)">
+                                (click)="dialogConfirtToDelete(Announcement.id)">
                                 <mat-icon class="material-icons-outlined">delete</mat-icon>
                             </button>
                         </td>
@@ -46,4 +46,11 @@
             </table>
         </div>
     </ng-scrollbar>
+    <div class="pagination-header">
+        <div class="material-paginator">
+            <mat-paginator [length]="totalPages" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="handlePageChange($event)">
+            </mat-paginator>
+        </div>
+    </div>
 </div>

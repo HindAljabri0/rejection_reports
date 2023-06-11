@@ -238,8 +238,8 @@ export class RejectionReportComponent implements OnInit {
           const pages = Math.ceil((this.rejectionReportSummary.totalElements / this.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.rejectionReportSummary.number;
-          this.page = this.rejectionReportSummary.number;
-          this.pageSize = this.rejectionReportSummary.numberOfElements;
+        //  this.page = this.rejectionReportSummary.number;
+         // this.pageSize = this.rejectionReportSummary.numberOfElements;
 
           if (this.rejectedClaims.length == 0) {
             this.errorMessage = 'No Results Found';
