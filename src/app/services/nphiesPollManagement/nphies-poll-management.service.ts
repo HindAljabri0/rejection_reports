@@ -13,17 +13,20 @@ export class NphiesPollManagementService {
   sendCommunication(providerId: string, body: any,isApproval = false) {
     
     const isHeadOffice = AuthService.isProviderHeadOffice();
-    let requestURL = `/providers/${providerId}/communication`;
-    if (isHeadOffice && !isApproval) {
-      requestURL = `/head-office/${providerId}/claims/communication`;
+    let requestURL = environment.nphiesPollClaimManagement + `/providers/${providerId}/claim/communication`;
+    
+    if(isApproval){
+      requestURL = environment.nphiesPollApprovalManagement + `/providers/${providerId}/approval/communication`;
+    }else if(isHeadOffice && !isApproval){
+      requestURL =environment.nphiesPollClaimManagement + `/head-office/${providerId}/claim/communication`;
     }
-    const request = new HttpRequest('POST', environment.nphiesPollManagement + requestURL, body);
+    const request = new HttpRequest('POST', requestURL, body);
     return this.http.request(request);
   }
 
   senPaymentNotice(providerId: string, body: any){
     const requestUrl = `/providers/${providerId}/paymentNotice/save?reconciliationId=${body.reconciliationId}`;
-    const request = new HttpRequest('POST', environment.nphiesPollManagement + requestUrl, null);
+    const request = new HttpRequest('POST', environment.nphiesPollClaimManagement + requestUrl, null);
     return this.http.request(request);
   }
 }
