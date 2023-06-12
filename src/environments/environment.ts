@@ -47,6 +47,8 @@ export const environment = {
     eclaimsTicketManagement: `${host}:8100`,
     providerNphiesClaimsSearch: `${host}:8091`,
     nphiesApprovalPBM: `${host}:8096`,
+    nphiesPollApprovalManagement: `${host}:8093`,
+    nphiesPollClaimManagement: `${host}:8097`
 };
 
 /*
