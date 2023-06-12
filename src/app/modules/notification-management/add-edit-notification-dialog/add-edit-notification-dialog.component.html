@@ -52,7 +52,8 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </li>
-                <li matTooltip="Add Attachments and should be the type of files one these  types [PDF, XLS, CSV, ZIP, XLSX, XLSX]"
+                <li *ngIf="attachments.length<10" matTooltip="Add Attachments and should be the type of files one these  types [PDF, XLS, CSV, ZIP, XLSX, XLSX,JPG,PNG] 
+                and should maximum size file 10MB"
                     class="add-block">
                     <div class="file-upload-wrapper">
                         <div class="content">
