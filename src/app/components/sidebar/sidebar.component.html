@@ -422,6 +422,19 @@
       </mat-accordion>
 
 
+      <div class="list-title">
+        <hr>
+      </div>
+      <div class="list-title primary">
+        CDM
+      </div>
+      <ul class="nav-list">
+        <li>
+          <a routerLink="/cdm/chronic-patients" routerLinkActive="is-active">
+            <span class="text">Chronic Patients</span>
+          </a>
+        </li>
+      </ul>
 
       <ul class="nav-list">
         <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation">

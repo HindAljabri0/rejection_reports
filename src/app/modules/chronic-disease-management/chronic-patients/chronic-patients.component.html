@@ -1,0 +1,145 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Chronic Patients</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Member ID</label>
+                    <input placeholder="Enter member ID" class="form-control" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Policy Number <span class="asterisk">*</span></label>
+                    <input placeholder="Enter policy number" class="form-control" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Diagnosis Name <span class="asterisk">*</span></label>
+                    <input placeholder="Enter diagnosis name" class="form-control" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">City <span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select city</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Region <span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select region</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="submit" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination-header">
+        <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" matTooltip="Download">
+            <img src="./assets/ic-download.svg" />
+        </button>
+    </div>
+
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+        <div class="fixed-height fixed-height-sm">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Member ID</th>
+                        <th>Patient Name</th>
+                        <th>Phone No.</th>
+                        <th>Diagnosis Code</th>
+                        <th>Policy No.</th>
+                        <th>City</th>
+                        <th>Region</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-click" (click)="openChronicPatientDetails()">62514398</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">44490650</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Jamil Al Qasimi</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">14906261</td>
+                        <td>N17</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">14906261</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Diriyah</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Diriyah</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Male</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">47 years</td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" (click)="openChronicPatientDetails()">98395996</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">47634529</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Bassem Saber</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">98111200</td>
+                        <td>N17, N18, N20, <a href="#" class="primary-link" (click)="$event.preventDefault()" [matMenuTriggerFor]="diagnosisListMenu">more</a></td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">98111200</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Jeddah</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Jeddah</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Male</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">28 years</td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" (click)="openChronicPatientDetails()">99192090</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">40111389</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Aseel Bakathir</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">62343862</td>
+                        <td>N05</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">62343862</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Layla</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Layla</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">Female</td>
+                        <td class="row-click" (click)="openChronicPatientDetails()">32 years</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+
+    <mat-menu #diagnosisListMenu class="primary-menu diagnosis-list" xPosition="before">
+        <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Diagnosis Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>N17</td>
+                    <td>Acute kidney failure</td>
+                </tr>
+                <tr>
+                    <td>N18</td>
+                    <td>Chronic kidney disease (CKD)</td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-menu>
+</div>
