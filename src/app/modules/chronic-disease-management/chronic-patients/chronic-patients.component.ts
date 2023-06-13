@@ -14,7 +14,6 @@ export class ChronicPatientsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.openChronicPatientDetails();
   }
 
   openChronicPatientDetails() {
