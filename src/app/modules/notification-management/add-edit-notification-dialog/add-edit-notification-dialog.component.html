@@ -4,23 +4,20 @@
         <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
-       
-        <div class="form-group" [class.has-error]="hasError('subjectControl')!=null" [matTooltip]="hasError('subjectControl')" >
-          
-            <label class="control-label">Subject<span class="asterisk">*</span></label>
+        <div class="form-group">
+            <label class="control-label">Subject</label>
             <input type="text" class="form-control" placeholder="Enter notification subject"
-                formControlName="subjectControl"  required/>
+                formControlName="subjectControl" />
         </div>
-    
-        <div class="form-group" [class.has-error]="hasError('descriptionControl')!=null" [matTooltip]="hasError('descriptionControl')">
-            <label class="control-label">Description<span class="asterisk">*</span></label>
+        <div class="form-group">
+            <label class="control-label">Description</label>
             <textarea class="form-control" placeholder="Enter notification description"
-                formControlName="descriptionControl" required></textarea>
+                formControlName="descriptionControl"></textarea>
         </div>
         <div class="row small-gutter">
             <div class="col-md-6">
-                <div class="form-group"  [class.has-error]="hasError('startDateControl')!=null" [matTooltip]="hasError('startDateControl')">
-                    <label class="control-label">Start Date<span class="asterisk">*</span></label>
+                <div class="form-group">
+                    <label class="control-label">Start Date</label>
                     <div class="date-picker">
                         <input type="text" [matDatepicker]="startDate" class="form-control"
                             placeholder="Select start date" formControlName="startDateControl" />
@@ -30,8 +27,8 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group" [class.has-error]="hasError('endDateControl')!=null" [matTooltip]="hasError('endDateControl')">
-                    <label class="control-label">End Date<span class="asterisk">*</span></label>
+                <div class="form-group">
+                    <label class="control-label">End Date</label>
                     <div class="date-picker">
                         <input type="text" [matDatepicker]="endDate" class="form-control" placeholder="Select end date"
                             formControlName="endDateControl" />
@@ -46,15 +43,13 @@
             <label class="control-label">Attachments</label>
             <ul class="attachment-list lg">
                 <li *ngFor="let attachment of attachments" [matTooltip]='attachment.attachmentName'>
-                    <img [src]="checkfileType(attachment.attachmentName)" alt="PDF" />
+                    <img [src]="checkfileType(attachment.attachmentName )" alt="PDF" />
                     <span>{{attachment.attachmentName}}</span>
                     <button class="close-btn" (click)="deleteAttachment(attachment.id)">
                         <mat-icon>close</mat-icon>
                     </button>
                 </li>
-                <li *ngIf="attachments.length<10" matTooltip="Add Attachments and should be the type of files one these  types [PDF, XLS, CSV, ZIP, XLSX, XLSX,JPG,PNG] 
-                and should maximum size file 10MB"
-                    class="add-block">
+                <li matTooltip="Add Attachments" class="add-block">
                     <div class="file-upload-wrapper">
                         <div class="content">
                             <mat-icon>add</mat-icon>
@@ -67,23 +62,12 @@
     </div>
     <hr class="hr mb-14">
     <div class="block-body">
-        <div class="form-group mb-0" [class.has-error]="hasError('providersControl')!=null" [matTooltip]="hasError('providersControl')">
-            <label class="control-label">Select Provider<span class="asterisk">*</span></label>
-            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..."
-                formControlName="providersControl" (input)="updateFilter()" (keyup.enter)="selectProvider()"
-                [readonly]="isLoading">
+        <div class="form-group mb-0">
+            <label class="control-label">Select Provider</label>
+            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..." formControlName="providersControl" (input)="updateFilter()"
+                (keyup.enter)="selectProvider()" [readonly]="isLoading">
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option value="All providers" (click)='selectProvider("All")'>
-                    All providers
-                </mat-option>
-                <mat-option value="All NPHIES providers" (click)='selectProvider("NPHIES")'>
-                    All NPHIES providers
-                </mat-option>
-                <mat-option value="All Waseel providers" (click)='selectProvider("Waseel")'>
-                    All Waseel providers
-                </mat-option>
-                <mat-option *ngFor="let provider of filteredProviders"
-                    [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
                     (click)="selectProvider(provider)">
                     {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} | {{provider.cchiId}}
                 </mat-option>
@@ -93,23 +77,20 @@
             </mat-autocomplete>
         </div>
     </div>
+    <!-- <div class="form-group px-14">
+        <input type="text" class="form-control search-box" placeholder="Search provider here..."
+            formControlName="providersControl" />
+    </div> -->
     <hr class="hr">
     <div style="overflow-x: auto; ;  max-height: 250px;">
-        <div class="checkbox-list">
-         
-            <mat-checkbox color="primary" *ngIf="allProviders" [checked]="allProviders" (change)="cancelSelectedProviders('All')">All
-                Provider</mat-checkbox>
-            <mat-checkbox color="primary" *ngIf="allWaseelProviders" [checked]="allWaseelProviders"  (change)="cancelSelectedProviders('Waseel')">All
-                Waseel Provider</mat-checkbox>
-            <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="allNphiesProviders" (change)="cancelSelectedProviders('NPHIES')">All
-                NPHIES Provider</mat-checkbox>
-            <div *ngFor="let provider of selectedProviders">
-                <mat-checkbox (change)="cancelSelectedProviders(provider.switchAccountId)" checked="true"
-                    color="primary">{{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}</mat-checkbox>
-            </div>
-
+    <div class="checkbox-list" >
+        <mat-checkbox color="primary" (change)="selectedAllProviders(!isSelectedAll)">All Provider</mat-checkbox> 
+        <div *ngFor="let provider of selectedProviders">
+            <mat-checkbox *ngIf='provider!=null' (change)="removeProviders(provider.switchAccountId)" checked ="true" color="primary" >{{provider.switchAccountId}}| {{provider.code}} | {{provider.name}}</mat-checkbox>
         </div>
+
     </div>
+</div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button mat-button (click)="closeDialog()">Cancel</button>

@@ -94,8 +94,8 @@ export class NotificationsService {
     }
   }
 
-  getAllAnnouncements(page: Number, pageSize: Number) {
-    const requestUrl = `/announcement?page=${page}&pageSize=${pageSize}`;
+  getAllAnnouncements() {
+    const requestUrl = `/announcement`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl, {});
     return this.httpClient.request(request);
   }

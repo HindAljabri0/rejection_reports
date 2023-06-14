@@ -16,10 +16,10 @@
         <p class="form-control-static"> {{Announcement.startDate | date:'MM/dd/yyyy'}} - {{Announcement.endDate|
             date:'MM/dd/yyyy'}}</p>
     </div>
-    <div class="form-group" *ngIf="Announcement.attachments!=null  && Announcement.attachments.length>0" >
+    <div class="form-group">
         <label class="control-label">Attachments</label>
-        <ul class="attachment-list lg" >
-            <li *ngFor="let attachment of Announcement.attachments" [matTooltip]="attachment.attachmentName">
+        <ul class="attachment-list lg" *ngFor="let attachment of Announcement.attachments">
+            <li [matTooltip]="attachment.attachmentName">
                 <img [src]="checkfileType(attachment.attachmentName)" [alt]="attachment.attachmentType"
                     (click)="openFile(attachment.attachment,attachment.attachmentType,attachment.attachmentName)" />
                 <span>{{attachment.attachmentName + attachment.attachmentType}}</span>
@@ -29,7 +29,15 @@
 </div>
 <hr class="hr">
 <div class="checkbox-list">
-    <p *ngIf="isSelectedAllProvider()">{{providerIds[0]}} Providers</p>
-    <p *ngFor="let provider of selectedProviders">{{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
-    </p>
+    <p>{{Announcement.providerId}}</p>
+    <p>1123 | SSH | Saad Specialist Hospital</p>
+    <p>721 | RAF | Al Rafie Hospital</p>
+    <p>1021 | AMP | Al Ameen Medical Polyclinic</p>
+    <p>3413 | DAWNI | DAWENI MEDICAL COMPANY -KHAMIS</p>
+    <p>3439 | CSDC | Celebrity Smile Dental Clinic</p>
+    <p>3118 | FPC | Faisal polyclinic</p>
+    <p>2261 | GANAH | AlGanah Medical Clinic</p>
+    <p>1492 | SWDC | Smile World Specialist Dental Center</p>
+    <p>1477 | AMW | Dr.Asser M.Wagdi Polyclinic</p>
+    <p>662 | MLH | Al Mulhim Polyclinic</p>
 </div>
