@@ -437,6 +437,8 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .primary-menu.primary-menu-items .mat-menu-item{white-space: normal;}
 .primary-menu .menu-title{color: #707070;padding: 4px 10px;}
 .primary-menu .mat-menu-item .title{font-size: 16px;line-height: 22px;display: block;font-weight: 500;}
+.primary-menu.diagnosis-list .mat-menu-panel{max-width: 460px;}
+.primary-menu.diagnosis-list .mat-menu-content{padding: 0;}
 .form-menu .mat-menu-content,.form-menu .mat-menu-content:not(:empty){padding: 0;}
 .form-menu.mat-menu-panel{min-height: auto;color: #333;max-width: none;min-width: 320px;}
 .form-menu .menu-title{padding: 14px;font-weight: 600;font-size: 16px;line-height: 22px;}

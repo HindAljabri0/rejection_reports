@@ -109,6 +109,11 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
                         canActivate: [RouteCanActiveService]
                     },
                     {
+                        path: 'cdm',
+                        loadChildren: () => import('./chronic-disease-management/chronic-disease-management.module').then(m => m.ChronicDiseaseManagementModule),
+                        canActivate: [RouteCanActiveService]
+                    },
+                    {
                         path: 'notification-management',
                         loadChildren: () => import('./notification-management/notification-management.module').then(m => m.NotificationManagementModule),
                         canActivate: [RouteCanActiveService]
