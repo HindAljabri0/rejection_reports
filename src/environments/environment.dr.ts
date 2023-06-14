@@ -38,4 +38,6 @@ export const environment = {
     providerNphiesClaim:`${host}/nphies-claim`,
     nphiesClaimLinkAttachment: `${host}/nphies-claim-attachment-link`,
     eclaimsTicketManagement: `${host}/eclaims-ticket-management`,
+    nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
+    nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`
 };
