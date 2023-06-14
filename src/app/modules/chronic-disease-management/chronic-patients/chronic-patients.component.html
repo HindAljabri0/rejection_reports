@@ -6,12 +6,6 @@
         <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Member ID</label>
-                    <input placeholder="Enter member ID" class="form-control" />
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
                     <label class="control-label">Policy Number <span class="asterisk">*</span></label>
                     <input placeholder="Enter policy number" class="form-control" />
                 </div>
@@ -19,12 +13,19 @@
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
                     <label class="control-label">Diagnosis Name <span class="asterisk">*</span></label>
-                    <input placeholder="Enter diagnosis name" class="form-control" />
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select diagnosis</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">City <span class="asterisk">*</span></label>
+                    <label class="control-label">City</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="">
                             <mat-option value="">Select city</mat-option>
@@ -37,7 +38,7 @@
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Region <span class="asterisk">*</span></label>
+                    <label class="control-label">Region</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="">
                             <mat-option value="">Select region</mat-option>
@@ -50,8 +51,14 @@
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
+                    <label class="control-label">Member ID</label>
+                    <input placeholder="Enter member ID" class="form-control" />
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
                     <label class="control-label">&nbsp;</label>
-                    <button type="submit" mat-flat-button color="primary">Search</button>
+                    <button type="submit" mat-flat-button color="primary">Inquiry</button>
                 </div>
             </div>
         </div>
