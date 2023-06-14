@@ -13,7 +13,9 @@ import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHa
   {
     selector: 'app-feedback-dialog',
     templateUrl: './feedback-dialog.component.html',
-    styles: []
+    styles: [
+      '.\feedback-dialog.component.css',
+    ]
   }
 )
 

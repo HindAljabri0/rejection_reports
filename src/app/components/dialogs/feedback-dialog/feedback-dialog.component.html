@@ -1,127 +1,30 @@
+
+
+
 <div class="feedback-dialog">
-    <div class="header-block">
-        <h2>Share your feedback</h2>
-        <p>Your feed back matters us most, it gives us opportunity to refine ourselves.</p>
+    <div class="icon-container">
+        <img src="./assets/ic-feedback-dialog.svg" alt="Feedback" class="dialog-icon" />
+        <h4 style="font-weight: 800; font-size: 20px;" class="text-primary">Your Voice Matters<br><br></h4>
     </div>
-
-    <ul class="feedback-questions">
-        <li>
-            <div class="question-body">
-                <span class="que-no">Question 1</span>
-                <p class="que">
-                    How likely are you to recommend our services to others? <span class="asterisk">*</span>
-                    <span class="text-arabic text-left d-block">ما مدى احتمالية أن توصي بخدماتنا للآخرين؟</span>
-                </p>
-                <feedback-rating [rating]="0"></feedback-rating>
-            </div>
-        </li>
-        <li>
-            <div class="question-body">
-                <span class="que-no">Question 2</span>
-                <p class="que">
-                    Which product you are using? <span class="asterisk">*</span>
-                    <span class="text-arabic text-left d-block">ما المنتج الذي تستخدمه؟</span>
-                </p>
-                <div class="checkbox-group inline row">
-                    <div class="col-6">
-                        <mat-checkbox color="primary">Waseel Connect <span class="text-arabic text-grey">(عربي)</span></mat-checkbox>
-                    </div>
-                    <div class="col-6">
-                        <mat-checkbox color="primary">Dawy <span class="text-arabic text-grey">(عربي)</span></mat-checkbox>
-                    </div>
-                    <div class="col-6">
-                        <mat-checkbox color="primary">Communication Portal <span class="text-arabic text-grey">(عربي)</span></mat-checkbox>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="question-body">
-                <span class="que-no">Question 3</span>
-                <p class="que">
-                    Which product you are using? <span class="asterisk">*</span>
-                    <span class="text-arabic text-left d-block">ما المنتج الذي تستخدمه؟</span>
-                </p>
-                <mat-radio-group class="radio-group inline row">
-                    <div class="col-6">
-                        <mat-radio-button value="1" color="primary">Waseel Connect <span class="text-arabic text-grey">(عربي)</span></mat-radio-button>
-                    </div>
-                    <div class="col-6">
-                        <mat-radio-button value="2" color="primary">Dawy <span class="text-arabic text-grey">(عربي)</span></mat-radio-button>
-                    </div>
-                    <div class="col-6">
-                        <mat-radio-button value="3" color="primary">Communication Portal <span class="text-arabic text-grey">(عربي)</span></mat-radio-button>
-                    </div>
-                </mat-radio-group>
-            </div>
-        </li>
-        <li>
-            <div class="question-body">
-                <span class="que-no">Question 4</span>
-                <p class="que">
-                    Which product you are using? <span class="asterisk">*</span>
-                    <span class="text-arabic text-left d-block">ما المنتج الذي تستخدمه؟</span>
-                </p>
-                <div class="row">
-                    <div class="col-8">
-                        <div class="form-group">
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="0">
-                                    <mat-option value="0">Select product</mat-option>
-                                    <mat-option value="1">Waseel Connect <span class="text-arabic text-grey">(عربي)</span></mat-option>
-                                    <mat-option value="2">Dawy <span class="text-arabic text-grey">(عربي)</span></mat-option>
-                                    <mat-option value="3">Communication Portal <span class="text-arabic text-grey">(عربي)</span></mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="question-body">
-                <span class="que-no">Question 5</span>
-                <p class="que">
-                    Please share with us how can we improve your experience?
-                    <span class="text-arabic text-left d-block">يرجى مشاركتنا كيف يمكننا تحسين تجربتك؟</span>
-                </p>
-                <div class="form-group">
-                    <textarea class="form-control" placeholder="Type here..." rows=" 5"></textarea>
-                </div>
-            </div>
-        </li>
-    </ul>
-
-    <div class="row">
-        <div class="col-auto">
-            <button type="button" (click)="close()" mat-flat-button>Cancel</button>
+    <div class="question-container">
+        <!-- Q1 -->
+        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">مدى احتمالية أن توصي بمنتجاتنا للاخرين؟ *</p>
+        <p class="question" style="font-weight: 300;  margin-top: 0;">How likely are you to recommend our services to others? *
+        </p>
+        <app-feedback-rating class="rating-component" (newRating)="setRecommendQRating($event)"></app-feedback-rating>
+    </div>
+    <div class="sugg-container">
+        <!-- Suggestion -->
+        <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">يُرجى مشاركتنا كيف يمكننا تحسين تجربتك؟</p>
+        <p class="sugg" style="margin: 0 0 10px;" style="font-weight: 300;">Please share with us how can we improve your experience?</p>
+        <div class="form-group multiline-answer">
+            <textarea class="form-control feedback-area" id="exampleFormControlTextarea1"
+                placeholder="Tell us what you think . . ." rows="5" [(ngModel)]="feedback.suggestion"></textarea>
         </div>
-        <div class="col-auto ml-auto">
-            <button type="button" mat-flat-button color="primary">Submit Feedback</button>
-        </div>
+
+    </div>
+    <div class="btn-list">
+        <button mat-flat-button (click)="close()">Cancel</button>
+        <button mat-flat-button color="primary" (click)="submit()">Submit Feedback</button>
     </div>
 </div>
-
-<!-- ================================================= -->
-<!-- =================   OLD CODE   ================== -->
-<!-- ================================================= -->
-
-<!-- <div class="question-container">
-    <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">مدى احتمالية أن توصي بمنتجاتنا للاخرين؟ *</p>
-    <p class="question" style="font-weight: 300;  margin-top: 0;">How likely are you to recommend our services to others? *
-    </p>
-    <feedback-rating class="rating-component" (newRating)="setRecommendQRating($event)"></feedback-rating>
-</div>
-<div class="sugg-container">
-    <p class="question" style=" font-weight: 600; margin-bottom: 0; padding-bottom: 0; font-size: large;" dir="rtl">يُرجى مشاركتنا كيف يمكننا تحسين تجربتك؟</p>
-    <p class="sugg" style="margin: 0 0 10px;" style="font-weight: 300;">Please share with us how can we improve your experience?</p>
-    <div class="form-group multiline-answer">
-        <textarea class="form-control feedback-area" id="exampleFormControlTextarea1" placeholder="Tell us what you think . . ." rows="5"
-            [(ngModel)]="feedback.suggestion"></textarea>
-    </div>
-
-</div>
-<div class="btn-list">
-    <button mat-flat-button (click)="close()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="submit()">Submit Feedback</button>
-</div> -->
