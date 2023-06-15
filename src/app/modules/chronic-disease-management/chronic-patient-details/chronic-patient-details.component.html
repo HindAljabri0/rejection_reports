@@ -1,5 +1,5 @@
 <div class="primary-dialog-header has-border align-items-center">
-    <h5 class="primary-dialog-title semibold">62514398 - Jamil Al Qasimi</h5>
+    <h5 class="primary-dialog-title semibold"> {{ dataModel.patientInfo.patientId}} - {{dataModel.patientInfo.patientName }}</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close ml-auto" matRipple></button>
 </div>
 <div class="primary-dialog-body no-footer">
@@ -7,61 +7,64 @@
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Patient ID</div>
-                <p class="form-control-static">62514398</p>
+                <p class="form-control-static">{{dataModel.patientInfo.patientId}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Patient Name</div>
-                <p class="form-control-static">Jamil Al Qasimi</p>
+                <p class="form-control-static">{{ dataModel.patientInfo.patientName }}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Member ID</div>
-                <p class="form-control-static">44490650</p>
+                <p class="form-control-static">{{dataModel.patientInfo.memberCode}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Phone No.</div>
-                <p class="form-control-static">44490650658</p>
+                <p class="form-control-static">{{dataModel.patientInfo.contactNumber}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Policy No.</div>
-                <p class="form-control-static">14906261</p>
+                <p class="form-control-static">{{dataModel.patientInfo.policyNumber}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Policy Name</div>
-                <p class="form-control-static">Lorem Ipsum</p>
+                <p class="form-control-static">{{dataModel.patientInfo.policyName}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Policy Duration</div>
-                <p class="form-control-static">21/12/2022 - 20/12/2023</p>
+                <p class="form-control-static"> {{dataModel.patientInfo.policyStartDate | date:
+                    'dd-MM-yyyy'}} - {{dataModel.patientInfo.policyEndDate | date:
+                    'dd-MM-yyyy'}} </p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Gender</div>
-                <p class="form-control-static">Male</p>
+                <p class="form-control-static">{{dataModel.patientInfo.gender}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Date of Birth</div>
-                <p class="form-control-static">03/12/1978</p>
+                <p class="form-control-static">{{dataModel.patientInfo.dob | date:
+                    'dd-MM-yyyy'}}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Age</div>
-                <p class="form-control-static">47 years</p>
+                <p class="form-control-static">{{dataModel.patientInfo.age}}</p>
             </div>
         </div>
     </div>
@@ -83,22 +86,23 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody *ngFor="let approval of dataModel.approvals; let index">
                 <tr>
-                    <td class="text-primary row-click" width="10" (click)="toggleRow(0)">
-                        <mat-icon *ngIf="currentDetailsOpen!=0" class="size-21">add_circle_outline</mat-icon>
-                        <mat-icon *ngIf="currentDetailsOpen==0" class="size-21">remove_circle_outline</mat-icon>
+                    <td class="text-primary row-click" width="10" (click)="toggleRow(index)">
+                        <mat-icon *ngIf="currentDetailsOpen!=index" class="size-21">add_circle_outline</mat-icon>
+                        <mat-icon *ngIf="currentDetailsOpen==index" class="size-21">remove_circle_outline</mat-icon>
                     </td>
-                    <td class="row-click" (click)="toggleRow(0)">62514398</td>
-                    <td class="row-click" (click)="toggleRow(0)">22/02/2023</td>
-                    <td class="row-click" (click)="toggleRow(0)">Dallah Hospital</td>
-                    <td class="row-click" (click)="toggleRow(0)">Riyadh</td>
-                    <td class="row-click" (click)="toggleRow(0)">Riyadh</td>
+                    <td class="row-click" (click)="toggleRow(index)">{{approval.approvalNumber}}</td>
+                    <td class="row-click" (click)="toggleRow(index)">{{approval.approvalDate  | date:
+                        'dd-MM-yyyy'}}</td>
+                    <td class="row-click" (click)="toggleRow(index)">{{approval.providerName}}</td>
+                    <td class="row-click" (click)="toggleRow(index)">{{approval.city}}</td>
+                    <td class="row-click" (click)="toggleRow(index)">{{approval.region}}</td>
                     <td>
-                        <a href="#" class="primary-link">View Prescription</a>
+                        <a href="{{approval.prescriptionUrl}}" class="primary-link">View Prescription</a>
                     </td>
                 </tr>
-                <tr *ngIf="currentDetailsOpen==0">
+                <tr *ngIf="currentDetailsOpen==index">
                     <td></td>
                     <td colspan="6">
                         <p class="semibold pb-8">Diagnosis</p>
@@ -111,13 +115,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>N17</td>
-                                        <td>Acute kidney failure</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N18</td>
-                                        <td>Chronic kidney disease (CKD)</td>
+                                    <tr *ngFor="let diagnose of approval.diagnosis">
+                                        <th>{{diagnose.diagnosisCode}}</th>
+                                        <th>{{diagnose.diagnosisDescription}}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -135,155 +135,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>ORENCIA 250MG POWDER FOR SOLUTION FOR INFUSION</td>
-                                        <td>6-78-10</td>
-                                        <td>Every 4 hour</td>
-                                        <td>10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ORELOX 100MG TABLETS</td>
-                                        <td>21-37-10</td>
-                                        <td>Daily after dinner</td>
-                                        <td>24</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="text-primary row-click" width="10" (click)="toggleRow(1)">
-                        <mat-icon *ngIf="currentDetailsOpen!=1" class="size-21">add_circle_outline</mat-icon>
-                        <mat-icon *ngIf="currentDetailsOpen==1" class="size-21">remove_circle_outline</mat-icon>
-                    </td>
-                    <td class="row-click" (click)="toggleRow(1)">14906261</td>
-                    <td class="row-click" (click)="toggleRow(1)">05/04/2023</td>
-                    <td class="row-click" (click)="toggleRow(1)">Abha Hospital</td>
-                    <td class="row-click" (click)="toggleRow(1)">Jeddah</td>
-                    <td class="row-click" (click)="toggleRow(1)">Jeddah</td>
-                    <td>
-                        <a href="#" class="primary-link">View Prescription</a>
-                    </td>
-                </tr>
-                <tr *ngIf="currentDetailsOpen==1">
-                    <td></td>
-                    <td colspan="6">
-                        <p class="semibold pb-8">Diagnosis</p>
-                        <div class="table-responsive">
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                                <thead>
-                                    <tr>
-                                        <th>Diagnosis Code</th>
-                                        <th>Diagnosis Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>N17</td>
-                                        <td>Acute kidney failure</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N18</td>
-                                        <td>Chronic kidney disease (CKD)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <br />
-                        <p class="semibold pb-8">Prescribed Medications</p>
-                        <div class="table-responsive">
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                                <thead>
-                                    <tr>
-                                        <th>Medication Name</th>
-                                        <th>Medication Code</th>
-                                        <th>Doses</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>ORENCIA 250MG POWDER FOR SOLUTION FOR INFUSION</td>
-                                        <td>6-78-10</td>
-                                        <td>Every 4 hour</td>
-                                        <td>10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ORELOX 100MG TABLETS</td>
-                                        <td>21-37-10</td>
-                                        <td>Daily after dinner</td>
-                                        <td>24</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="text-primary row-click" width="10" (click)="toggleRow(2)">
-                        <mat-icon *ngIf="currentDetailsOpen!=2" class="size-21">add_circle_outline</mat-icon>
-                        <mat-icon *ngIf="currentDetailsOpen==2" class="size-21">remove_circle_outline</mat-icon>
-                    </td>
-                    <td class="row-click" (click)="toggleRow(2)">14906261</td>
-                    <td class="row-click" (click)="toggleRow(2)">05/04/2023</td>
-                    <td class="row-click" (click)="toggleRow(2)">Abha Hospital</td>
-                    <td class="row-click" (click)="toggleRow(2)">Jeddah</td>
-                    <td class="row-click" (click)="toggleRow(2)">Jeddah</td>
-                    <td>
-                        <a href="#" class="primary-link">View Prescription</a>
-                    </td>
-                </tr>
-                <tr *ngIf="currentDetailsOpen==2">
-                    <td></td>
-                    <td colspan="6">
-                        <p class="semibold pb-8">Diagnosis</p>
-                        <div class="table-responsive">
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                                <thead>
-                                    <tr>
-                                        <th>Diagnosis Code</th>
-                                        <th>Diagnosis Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>N17</td>
-                                        <td>Acute kidney failure</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N18</td>
-                                        <td>Chronic kidney disease (CKD)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <br />
-                        <p class="semibold pb-8">Prescribed Medications</p>
-                        <div class="table-responsive">
-                            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                                <thead>
-                                    <tr>
-                                        <th>Medication Name</th>
-                                        <th>Medication Code</th>
-                                        <th>Doses</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>ORENCIA 250MG POWDER FOR SOLUTION FOR INFUSION</td>
-                                        <td>6-78-10</td>
-                                        <td>Every 4 hour</td>
-                                        <td>10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ORELOX 100MG TABLETS</td>
-                                        <td>21-37-10</td>
-                                        <td>Daily after dinner</td>
-                                        <td>24</td>
+                                    <tr *ngFor="let med of approval.medications">
+                                        <td>{{med.tradeName}}</td>
+                                        <td>{{med.code}}</td>
+                                        <td>{{med.dose}}</td>
+                                        <td>{{med.quantity}}</td>
                                     </tr>
                                 </tbody>
                             </table>

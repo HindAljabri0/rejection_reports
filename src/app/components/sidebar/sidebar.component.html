@@ -435,7 +435,9 @@
           </a>
         </li>
       </ul>
-
+      <div class="list-title">
+        <hr>
+      </div>
       <ul class="nav-list">
         <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation">
           <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">

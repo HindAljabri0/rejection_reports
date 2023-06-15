@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { CdmService } from 'src/app/services/cdmService/cdm.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-chronic-patient-details',
@@ -7,16 +10,37 @@ import { MatDialogRef } from '@angular/material';
   styles: []
 })
 export class ChronicPatientDetailsComponent implements OnInit {
-
+ 
   currentDetailsOpen = -1;
-
+  dataModel:any=null;
   constructor(
-    private dialogRef: MatDialogRef<ChronicPatientDetailsComponent>
+    @Inject(MAT_DIALOG_DATA) public data,
+    private dialogRef: MatDialogRef<ChronicPatientDetailsComponent>,
+    private cdmService:CdmService,
+    private sharedServices:SharedServices
   ) { }
 
   ngOnInit() {
+    console.log("patientId = "+JSON.stringify(this.data));
+    this.getData(this.data.patientId);
   }
+  getData(patientId) {
+    this.cdmService.getPatientApproval(this.sharedServices.providerId, patientId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        console.log(event.body);
+        if (event.body != null)
+          this.dataModel = event.body;
+      }
+    }
+      , err => {
 
+        if (err instanceof HttpErrorResponse) {
+          console.log(err.message)
+          this.dataModel = null;
+        }
+      });
+  }
+  
   closeDialog() {
     this.dialogRef.close();
   }

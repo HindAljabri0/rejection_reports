@@ -41,5 +41,6 @@ export const environment = {
     providerNphiesClaimsSearch: `${host}/provider-nphies-claim-search`,
     nphiesApprovalPBM:`${host}/nphies-approval-pbm-validation`,
     nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
-nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`
+    nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
+    chronicDiseaseManagement: `${host}/chronic-disease-management`
 };
