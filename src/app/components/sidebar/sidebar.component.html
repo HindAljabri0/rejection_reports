@@ -125,7 +125,7 @@
               <mat-panel-title i18n="@@denialManagement">Denial Management</mat-panel-title>
             </mat-expansion-panel-header>
             <ul class="nav-list">
-              <li i18n="@@uploadRejectionReport">
+              <li i18n="@@uploadRejectionReport" *ngIf="!envProd && !envStaging">
                 <a routerLink="/reports/creditReports" routerLinkActive="is-active">
                   <img src="assets/ic-credit-report-upload.svg" alt="File Upload" class="default-icon" />
                   <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload" class="active-icon" />
