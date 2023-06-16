@@ -332,7 +332,7 @@
                   </th>
 
                   <th
-                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                  *ngIf="showIsRelated === true" class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action">
                       <span>Reissued?</span>
                       <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="reissuedFilter" (click)="checkReloadedFilter()">
@@ -436,8 +436,8 @@
                       </div>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click">
-                      <div class="d-flex align-items-center">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
+                      <div class="d-flex align-items-center" *ngIf="claim.reissueReason === true">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
                         <span>Yes</span>
                       </div>
