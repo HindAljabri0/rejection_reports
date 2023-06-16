@@ -100,6 +100,7 @@ import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-di
 import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
 import { ChooseAttachmentUploadDialogComponent } from './modules/nphies/choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { HttpRequestExceptionHandler } from './components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
+import { AnnountmentDialogComponent } from './components/annountment-dialog/annountment-dialog.component';
 
 
 
@@ -170,7 +171,8 @@ import { HttpRequestExceptionHandler } from './components/reusables/feedbackExce
         NphiesClaimSummaryComponent,
         AlertDialogComponent,
         UpcomingFeatureDialogComponent,
-        ChooseAttachmentUploadDialogComponent
+        ChooseAttachmentUploadDialogComponent,
+        AnnountmentDialogComponent
     ],
     imports: [
         AppRoutingModule,
@@ -250,7 +252,8 @@ import { HttpRequestExceptionHandler } from './components/reusables/feedbackExce
         ConfirmationAlertDialogComponent,
         CertificateConfigurationModelComponent,
         UpcomingFeatureDialogComponent,
-        ChooseAttachmentUploadDialogComponent
+        ChooseAttachmentUploadDialogComponent,
+        AnnountmentDialogComponent
     ],
 })
 export class AppModule { }
