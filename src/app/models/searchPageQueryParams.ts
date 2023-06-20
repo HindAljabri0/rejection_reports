@@ -33,12 +33,14 @@ export class SearchPageQueryParams {
     filter_claimDate?: string;
     filter_netAmount?: string;
     filter_isRelatedClaim? :boolean;
+    filter_reissueReason? : boolean;
     status?: number;
     page?: number;
     size?: number;
     netAmount? : string;
     claimStatus?:string;
     isRelatedClaim? :boolean;
+    reissueReason?: boolean;
 
     static fromParams(params: Params): SearchPageQueryParams {
         let pageParams: SearchPageQueryParams = new SearchPageQueryParams();
