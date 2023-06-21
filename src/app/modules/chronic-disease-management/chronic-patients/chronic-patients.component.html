@@ -19,9 +19,23 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="" formControlName="diagnosis">
                                 <mat-option value="">Select diagnosis</mat-option>
-                                <mat-option *ngFor="let din of Diagnosis"
-                                [value]="din.Codes">
-                                {{din.Name}}</mat-option>
+                                <mat-option *ngFor="let din of diagnosisList"
+                                [value]="din.codes">
+                                {{din.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group" [class.has-error]="regionError?.trim().length > 0"
+                        [matTooltip]="regionError">
+                        <label class="control-label">Region</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="region" (selectionChange)="selectedRegion = $event.value;filterCities()">
+                                <mat-option value="">Select Region</mat-option>
+                                <mat-option *ngFor="let region of Regions"
+                                [value]="region.Code">
+                                {{region.Name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -33,27 +47,14 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="" formControlName="city">
                                 <mat-option value="">Select City</mat-option>
-                                <mat-option *ngFor="let city of Cities"
+                                <mat-option *ngFor="let city of filterdCities"
                                 [value]="city.Code">
                                 {{city.Name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group" [class.has-error]="regionError?.trim().length > 0"
-                        [matTooltip]="regionError">
-                        <label class="control-label">Region</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" formControlName="region">
-                                <mat-option value="">Select Region</mat-option>
-                                <mat-option *ngFor="let region of Regions"
-                                [value]="region.Code">
-                                {{region.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
+                
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">Member ID</label>

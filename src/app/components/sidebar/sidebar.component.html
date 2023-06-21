@@ -422,20 +422,20 @@
       </mat-accordion>
 
 
-      <div class="list-title">
+      <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
         <hr>
       </div>
-      <div class="list-title primary">
+      <div class="list-title primary" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
         CDM
       </div>
-      <ul class="nav-list">
+      <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
         <li>
           <a routerLink="/cdm/chronic-patients" routerLinkActive="is-active">
             <span class="text">Chronic Patients</span>
           </a>
         </li>
       </ul>
-      <div class="list-title">
+      <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
         <hr>
       </div>
       <ul class="nav-list">
