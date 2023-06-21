@@ -152,6 +152,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     { key: 'PATIENTFILENO', value: 'patientFileNO' },
     { key: 'CLAIMNET', value: 'netAmount' },
     { key: 'ISRELATEDCLAIM', value: 'isRelatedClaim' },
+    { key: 'ISREISSUED', value: 'reissueReason' },
     //{ key: 'BATCHNUM', value: 'batchNo' },
   ];
   appliedFilters: any = [];
@@ -256,6 +257,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
         isRelatedClaim:this.params.isRelatedClaim,
+        reissueReason:this.params.reissueReason,
 
         statuses: this.params.claimStatus!=null?[this.params.claimStatus]:['All']
       }));
@@ -1079,7 +1081,7 @@ console.log(this.isSearchByStatus)
       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
     }
   }
-  searchClaimBased(key: string) {
+  searchClaimBased(key: string) {    
     const filterKey = this.allFilters.find(ele => ele.key === key);
     const data = {
       key: filterKey.key,
@@ -1114,8 +1116,11 @@ console.log(this.isSearchByStatus)
       case ClaimListFilterSelection.ISREALTED:
         this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
         break;
+      case ClaimListFilterSelection.ISREISSUED:
+        this.params.filter_reissueReason = this.claimList.reissueReason;
+        break;
     }
-
+    
     console.log("this.params = "+JSON.stringify(this.params));
     this.appliedFilters.push(data);
     this.pageIndex = 0;
@@ -1135,7 +1140,8 @@ console.log(this.isSearchByStatus)
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_isRelatedClaim = ClaimListFilterSelection.ISREALTED ? this.claimList.isRelatedClaim : this.params.filter_isRelatedClaim;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
-    
+    this.params.filter_reissueReason = ClaimListFilterSelection.ISREISSUED ? this.claimList.reissueReason : this.params.filter_reissueReason;
+
   }
 
   clearFilters(name: string, key = false) {
@@ -1182,6 +1188,10 @@ console.log(this.isSearchByStatus)
           case ClaimListFilterSelection.ISREALTED:
             this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
             delete this.params.filter_isRelatedClaim;
+            break;
+             case ClaimListFilterSelection.ISREISSUED:
+            this.params.filter_reissueReason = this.claimList.reissueReason;
+            delete this.params.filter_reissueReason;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1240,6 +1250,9 @@ console.log(this.isSearchByStatus)
     if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
     }
+    if (this.params.filter_reissueReason != null && this.params.filter_reissueReason !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.ISREISSUED);
+    }
   }
 
   setReloadedFilters(key: string) {
@@ -1284,6 +1297,9 @@ console.log(this.isSearchByStatus)
     }
     if (this.params.filter_isRelatedClaim != null  && this.params.filter_isRelatedClaim !== undefined) {
       this.setReloadedInputFilters('isRelatedClaim', this.params.filter_isRelatedClaim +"");
+    }
+    if (this.params.filter_reissueReason != null  && this.params.filter_reissueReason !== undefined) {
+      this.setReloadedInputFilters('reissueReason', this.params.filter_reissueReason + '');
     }
   }
 
@@ -1650,6 +1666,7 @@ console.log(this.isSearchByStatus)
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
+      model.reissueReason = this.params.reissueReason;
 
       dialogConfig.data = {
         cancelData: model,
