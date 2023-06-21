@@ -230,7 +230,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   async fetchData() {
     this.commen.searchIsOpenChange.next(true);
-    this.claims = new Array();
+    this.claims = new Array();  
     this.summaries = new Array();
     this.commen.loadingChanged.next(true);
     this.selectedClaims = new Array();
@@ -397,6 +397,7 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
+    this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
 
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
@@ -531,6 +532,7 @@ console.log(this.isSearchByStatus)
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
+    this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
     console.log(JSON.stringify(this.claimSearchCriteriaModel));
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel, this.isSearchByStatus
     ).subscribe((event) => {
@@ -1117,7 +1119,7 @@ console.log(this.isSearchByStatus)
         this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
         break;
       case ClaimListFilterSelection.ISREISSUED:
-        this.params.filter_reissueReason = this.claimList.reissueReason;
+        this.params.reissueReason = this.claimList.reissueReason;
         break;
     }
     
@@ -1140,7 +1142,7 @@ console.log(this.isSearchByStatus)
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_isRelatedClaim = ClaimListFilterSelection.ISREALTED ? this.claimList.isRelatedClaim : this.params.filter_isRelatedClaim;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
-    this.params.filter_reissueReason = ClaimListFilterSelection.ISREISSUED ? this.claimList.reissueReason : this.params.filter_reissueReason;
+    this.params.reissueReason = ClaimListFilterSelection.ISREISSUED ? this.claimList.reissueReason : this.params.reissueReason;
 
   }
 
@@ -1190,8 +1192,8 @@ console.log(this.isSearchByStatus)
             delete this.params.filter_isRelatedClaim;
             break;
              case ClaimListFilterSelection.ISREISSUED:
-            this.params.filter_reissueReason = this.claimList.reissueReason;
-            delete this.params.filter_reissueReason;
+            this.params.reissueReason = this.claimList.reissueReason;
+            delete this.params.reissueReason;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1250,7 +1252,7 @@ console.log(this.isSearchByStatus)
     if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
     }
-    if (this.params.filter_reissueReason != null && this.params.filter_reissueReason !== undefined) {
+    if (this.params.reissueReason != null && this.params.reissueReason !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.ISREISSUED);
     }
   }
@@ -1298,8 +1300,8 @@ console.log(this.isSearchByStatus)
     if (this.params.filter_isRelatedClaim != null  && this.params.filter_isRelatedClaim !== undefined) {
       this.setReloadedInputFilters('isRelatedClaim', this.params.filter_isRelatedClaim +"");
     }
-    if (this.params.filter_reissueReason != null  && this.params.filter_reissueReason !== undefined) {
-      this.setReloadedInputFilters('reissueReason', this.params.filter_reissueReason + '');
+    if (this.params.reissueReason != null  && this.params.reissueReason !== undefined) {
+      this.setReloadedInputFilters('reissueReason', this.params.reissueReason + '');
     }
   }
 
@@ -1609,6 +1611,9 @@ console.log(this.isSearchByStatus)
   }
   get showIsRelated() {
     return ['partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+  get showIsReisssued() {
+     return ['partial', 'rejected', 'invalid', 'approved'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
   get showUploadAttachment() {
     // tslint:disable-next-line:max-line-length

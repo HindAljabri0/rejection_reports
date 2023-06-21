@@ -15,6 +15,9 @@ export interface UserPrivileges {
     }
   };
   ProviderPrivileges: {
+    chronicDisease: {
+      isCDM: false
+    },
     Contract_Bill: {
       isAdmin: false,
       canAccessContract: false,
@@ -43,7 +46,7 @@ export interface UserPrivileges {
       canAccessClaim: boolean,
       canAccessBeneficiary: boolean,
       canAccessPaymentReconciliation: boolean,
-      canAccessConfigurations:boolean,
+      canAccessConfigurations: boolean,
       canAccessPriceList: boolean,
       canAccessPhysician: boolean,
       canAccessDaysOfSupply: boolean,
@@ -72,11 +75,14 @@ export const initState: MainState = {
         scrubbing: {
           isAdmin: false,
           isCoder: false,
-        isDoctor: false
+          isDoctor: false
         }
       }
     },
     ProviderPrivileges: {
+      chronicDisease: {
+        isCDM: false,
+      },
       Contract_Bill: {
         isAdmin: false,
         canAccessContract: false,
@@ -105,16 +111,16 @@ export const initState: MainState = {
         canAccessClaim: false,
         canAccessBeneficiary: false,
         canAccessPaymentReconciliation: false,
-        canAccessConfigurations:false,
+        canAccessConfigurations: false,
         canAccessPriceList: false,
         canAccessPhysician: false,
-        canAccessDaysOfSupply:false,
-        canAccessCodeMapping:false,
+        canAccessDaysOfSupply: false,
+        canAccessCodeMapping: false,
         canAccessConvertPreAuthToClaim: false,
         canAccessPrepareClaim: false,
         canAccessConvertClaim: false,
         canSwitchGroupProvider: false,
-        isHeadOffice : false,
+        isHeadOffice: false,
       }
     }
   }
@@ -124,7 +130,7 @@ const _mainReducer = createReducer(
   initState,
   on(actions.hideHeaderAndSideMenu, (state) => ({ ...state, headerAndSideMenuIsHidden: true })),
   on(actions.showHeaderAndSideMenu, (state) => ({ ...state, headerAndSideMenuIsHidden: false })),
-  on(actions.evaluateUserPrivileges, (state) => {    
+  on(actions.evaluateUserPrivileges, (state) => {
     const parentProviderId = localStorage.getItem('parentProviderId');
     const providerId = localStorage.getItem('provider_id');
     const payerIds = AuthService.getPayersList().map(payer => `${payer.id}`);
@@ -141,6 +147,9 @@ const _mainReducer = createReducer(
         }
       },
       ProviderPrivileges: {
+        chronicDisease: {
+          isCDM: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '90')
+        },
         Contract_Bill: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),
           canAccessContract: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),

@@ -32,8 +32,7 @@ export class SearchPageQueryParams {
     filter_nationalId?: string;
     filter_claimDate?: string;
     filter_netAmount?: string;
-    filter_isRelatedClaim? :boolean;
-    filter_reissueReason? : boolean;
+    filter_isRelatedClaim? :boolean;  
     status?: number;
     page?: number;
     size?: number;
@@ -81,6 +80,7 @@ export class SearchPageQueryParams {
         pageParams.filter_patientFileNo = params.filter_patientFileNo;
         pageParams.claimStatus= params.claimStatus;
         pageParams.isRelatedClaim  = params.filter_isRelatedClaim;
+        pageParams.reissueReason = params.reissueReason;
         return pageParams;
     }
 
