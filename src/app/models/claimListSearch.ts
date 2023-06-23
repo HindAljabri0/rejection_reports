@@ -7,5 +7,6 @@ export enum ClaimListFilterSelection {
     CLAIMREFNO = 'CLAIMREFNO',
     CLAIMNET = 'CLAIMNET',
     ISREALTED = 'ISRELATEDCLAIM',
-    BATCHNUM = 'BATCHNUM'
+    BATCHNUM = 'BATCHNUM',
+    ISREISSUED = 'ISREISSUED'
 }
