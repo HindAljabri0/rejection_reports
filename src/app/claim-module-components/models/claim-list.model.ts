@@ -8,4 +8,5 @@ export class ClaimListModel {
     netAmount: string;
     batchNo: string;
     isRelatedClaim:boolean;
+    reissueReason: boolean;
 }

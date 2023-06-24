@@ -331,8 +331,8 @@
                     </div>
                   </th>
 
-                  <th
-                  *ngIf="showIsRelated === true" class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                  <th 
+                  *ngIf="showIsReisssued === true" class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action">
                       <span>Reissued?</span>
                       <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="reissuedFilter" (click)="checkReloadedFilter()">
@@ -345,7 +345,7 @@
                             <div class="form-group">
                               <label class="control-label">Reissued?</label>
                               <mat-form-field class="form-control custom-select-control">
-                                <mat-select>
+                                <mat-select  [(ngModel)]="claimList.reissueReason" >
                                   <mat-option value=''>All</mat-option>
                                   <mat-option value='true'>Yes</mat-option>
                                   <mat-option value='false'>No</mat-option>
@@ -354,8 +354,8 @@
                             </div>
                           </div>
                           <div class="btn-list text-right">
-                            <button mat-flat-button>Clear</button>
-                            <button mat-flat-button color="primary">Filter</button>
+                            <button mat-flat-button (click)="clearFilters('reissueReason')">Clear</button>
+                            <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.ISREISSUED)">Filter</button>
                           </div>
                         </div>
                       </mat-menu>
@@ -429,7 +429,7 @@
                       <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsReisssued === true">
                       <div class="d-flex align-items-center" *ngIf="claim.isRelatedClaim">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
                         <span>Yes</span>

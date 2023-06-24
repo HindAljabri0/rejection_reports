@@ -1,0 +1,414 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add Item</h5>
+    <h5 class="primary-dialog-title">Edit Item</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="form-group flex-grow-1">
+
+        <input type="text" class="form-control search-box" placeholder="Search for item by standard code, standard description, internal code or internal description"
+            [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
+            <mat-option>
+                <span>Option 1</span>
+                <span class="strength text-medium-grey">Option 1 strength</span>
+                <span class="text-primary non-standard-code">non standard code (non standard description)</span>
+            </mat-option>
+
+            <mat-option>
+                <div class="mat-option-loader">
+                    <mat-spinner diameter="24"></mat-spinner>
+                    <span>Searching</span>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
+
+    </div>
+    <hr class="hr mb-3">
+    <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Prescribed Medication</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Prescribed Medication </mat-option>
+                        <mat-option value="GTIN Code">GTIN Code</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">GTIN Code</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select GTIN Code</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Non Standard Code</label>
+                <input class="form-control" placeholder="Enter non standard code">
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Non Standard Description</label>
+                <input class="form-control" placeholder="Enter non standard description">
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Absence of Scientific Code</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select</mat-option>
+                        <mat-option>Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Body Site</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Body Site</mat-option>
+                        <mat-option>Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Sub Site</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Sub Site</mat-option>
+                        <mat-option>Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Authored On</label>
+                <div class="date-picker">
+                    <input [owlDateTime]="authoredOn" class="form-control" placeholder="Select authored on">
+                    <mat-datepicker-toggle [owlDateTimeTrigger]="authoredOn"></mat-datepicker-toggle>
+                    <owl-date-time #authoredOn></owl-date-time>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Supporting Info</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select Supporting Info">
+                        <mat-option>
+                            <ngx-mat-select-search placeholderLabel="Search Item" showToggleAllCheckbox="true" noEntriesFoundLabel="No supporting info found">
+                            </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option value="">Select supporting info</mat-option>
+                        <mat-option value="Option 1">
+                            item sequence - item categoryName - item code
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Diagnosis</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select Care Team">
+                        <mat-option>
+                            <ngx-mat-select-search placeholderLabel="Search Item" showToggleAllCheckbox="true" noEntriesFoundLabel="No diagnosis found">
+                            </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option value="">Select diagnosis</mat-option>
+                        <mat-option value="Option 1">
+                            item diagnosisCode - item diagnosisDescription
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Care Teams<span class="asterisk">*</span></label>
+
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select Care Team">
+                        <mat-option>
+                            <ngx-mat-select-search placeholderLabel="Search Item" showToggleAllCheckbox="true" noEntriesFoundLabel="No care team found">
+                            </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option value="">Select Care Team</mat-option>
+                        <mat-option value="Option 1">
+                            item practitionerName - item practitionerRole - item careTeamRole - item speciality
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Is Package?</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select">
+                        <mat-option value="">Select</mat-option>
+                        <mat-option value="Yes">Yes</mat-option>
+                        <mat-option value="No">No</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Strength</label>
+                <input class="form-control" placeholder="Enter Strength">
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Quantity <span class="asterisk">*</span></label>
+                <div class="row extra-small-gutter">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Enter quantity" appTwoDigitDecimaNumber>
+                    </div>
+                    <div class="col-auto">
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="">
+                                <mat-option value="">Code<span>*</span></mat-option>
+                                <mat-option value="{unit}">Unit</mat-option>
+                                <mat-option value="{package}">Package</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <h5 class="form-title pt-2">Dosage</h5>
+
+    <div class="row small-gutter">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Note</label>
+                <input class="form-control" placeholder="Enter Note">
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Patient Instruction</label>
+                <input class="form-control" placeholder="Enter Patient Instruction">
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Route</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select route">
+                        <mat-option value="">Select route</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Dose Type</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select dose type">
+                        <mat-option value="">Select dose type</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Dose Range</label>
+                <div class="row small-gutter">
+                    <div class="col-6">
+                        <input class="form-control" placeholder="Min">
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" placeholder="Max">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Dose Unit</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select dose unit">
+                        <mat-option value="">Select dose unit</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Rate Type</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select rate type">
+                        <mat-option value="">Select rate type</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Rate Ratio</label>
+                <div class="row small-gutter">
+                    <div class="col-6">
+                        <input class="form-control" placeholder="Numerator">
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" placeholder="Denominator">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Rate Unit</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select multiple placeholder="Select rate unit">
+                        <mat-option value="">Select rate unit</mat-option>
+                        <mat-option value="Option 1">Option 1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="form-title pt-2">Dosage Timing</h5>
+
+    <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Start Date</label>
+                <div class="date-picker">
+                    <input [owlDateTime]="dosageTimingStartDate" class="form-control" placeholder="Select date">
+                    <mat-datepicker-toggle [owlDateTimeTrigger]="dosageTimingStartDate"></mat-datepicker-toggle>
+                    <owl-date-time #dosageTimingStartDate></owl-date-time>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">End Date</label>
+                <div class="date-picker">
+                    <input [owlDateTime]="dosageTimingEndDate" class="form-control" placeholder="Select date">
+                    <mat-datepicker-toggle [owlDateTimeTrigger]="dosageTimingEndDate"></mat-datepicker-toggle>
+                    <owl-date-time #dosageTimingEndDate></owl-date-time>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Refill</label>
+                <input class="form-control" placeholder="Enter Refill">
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Duration</label>
+                <div class="row extra-small-gutter">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Enter duration">
+                    </div>
+                    <div class="col-auto">
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="days">
+                                <mat-option value="days">Days</mat-option>
+                                <mat-option value="months">Months</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Frequency</label>
+                <div class="row extra-small-gutter">
+                    <div class="col-auto">
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="BID">
+                                <mat-option value="BID">BID</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Enter frequency">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Period</label>
+                <div class="row extra-small-gutter">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Enter period">
+                    </div>
+                    <div class="col-auto">
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="days">
+                                <mat-option value="days">Days</mat-option>
+                                <mat-option value="months">Months</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button type="button" mat-button (click)="closeDialog()">Close</button>
+        <button type="submit" mat-flat-button color="primary">
+            <span>Add</span>
+            <span>Save</span>
+        </button>
+    </div>
+</div>

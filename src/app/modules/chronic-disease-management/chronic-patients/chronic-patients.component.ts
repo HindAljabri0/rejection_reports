@@ -5,6 +5,8 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { CdmService } from 'src/app/services/cdmService/cdm.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { SettingsService } from 'src/app/services/settingsService/settings.service';
 
 @Component({
   selector: 'app-chronic-patients',
@@ -26,26 +28,17 @@ export class ChronicPatientsComponent implements OnInit {
   thereIsError: boolean = false;
 
   Regions: { Code: string, Name: string }[] = [
-    { Code: 'east', Name: 'East' },
-    { Code: 'west', Name: 'West' },
-    { Code: 'south', Name: 'South' },
-    { Code: 'center', Name: 'Center' },
-    { Code: 'north', Name: 'North' }
+    { Code: 'East', Name: 'East' },
+    { Code: 'West', Name: 'West' },
+    { Code: 'South', Name: 'South' },
+    { Code: 'Center', Name: 'Center' },
+    { Code: 'North', Name: 'North' }
   ];
-  Cities: { Code: string, Name: string }[] = [
-    { Code: 'Ar Rass', Name: 'Ar Rass' },
-    { Code: 'Arar', Name: 'Arar' },
-    { Code: 'Bisha', Name: 'Bisha' },
-    { Code: 'Dammam', Name: 'Dammam' },
-    { Code: 'Riyadh', Name: 'Riyadh' }
-  ];
-
-  Diagnosis: { Codes: string[], Name: string }[] = [
-    { Codes: ['G20.0', ' U80.1'], Name: 'hypertension' },
-    { Codes: ['G20.7', ' U80.1'], Name: 'Thyroiditis' },
-    { Codes: ['G20.9', ' U80.1'], Name: "Parkinson's disease" },
-    { Codes: ['E78.2'], Name: 'Mixed hyperlipidaemia' },
-  ];
+  Cities: { Code: string,Region:string, Name: string }[] = this.sharedData.Cities;
+  filterdCities: { Code: string,Region:string, Name: string }[] ;
+  selectedRegion='';
+  diagnosisList = [];
+  //{ Codes: string[], Name: string }[]
   patientList: any;
   length = 100;
   pageSize = 10;
@@ -56,11 +49,32 @@ export class ChronicPatientsComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private sharedServices: SharedServices,
+    private sharedData:SharedDataService,
     private cdmService: CdmService,
+    private settingService:SettingsService,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
+    this.fetchDiagnosis();
+  }
+  
+  fetchDiagnosis(){
+    this.settingService.getAllDiagnosisList().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        console.log(event.body);
+        if (event.body != null)
+          this.diagnosisList = event.body as { codes: string[], name: string }[];
+        //this.length = event.body["totalElements"]
+      }
+    }
+      , err => {
+
+        if (err instanceof HttpErrorResponse) {
+          console.log(err.message)
+          this.diagnosisList = null;
+        }
+      });
   }
   searchByCriteria() {
     this.pageIndex = 0;
@@ -79,6 +93,10 @@ export class ChronicPatientsComponent implements OnInit {
     this.diagnosis = currentRow.diagnosis;
     console.log(JSON.stringify(this.diagnosis));
   }
+  filterCities(){
+    console.log("Selected Region = "+this.selectedRegion);
+    this.filterdCities= this.Cities.filter(f => f.Region === this.selectedRegion);
+  }
   getData() {
     const model: any = {};
     this.thereIsError=false;
@@ -95,9 +113,8 @@ export class ChronicPatientsComponent implements OnInit {
     }
     if (this.cdmForm.controls.city.value) {
       model.city = this.cdmForm.controls.city.value;
-    } else {
-      this.cityError = 'Please select city';
-      this.thereIsError = true;
+    } else{
+      model.city =null;
     }
     if (this.cdmForm.controls.region.value) {
       model.region = this.cdmForm.controls.region.value;
@@ -107,6 +124,8 @@ export class ChronicPatientsComponent implements OnInit {
     }
     if (this.cdmForm.controls.diagnosis.value) {
       model.diagnosis = this.cdmForm.controls.diagnosis.value;
+      model.diagnosis = JSON.parse(model.diagnosis);
+      //odel.diagnosis = model.diagnosis.split(',');
     } else {
       this.diagnosisError = 'Please select diagnosis';
       this.thereIsError = true;
