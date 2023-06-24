@@ -101,20 +101,5 @@ export class ViewNotificationDetailsDialogComponent implements OnInit {
     }
 
   }
-  // getProviders(){
-
-  //   this.superAdmin.getProviders().subscribe(event => {
-  //     if (event instanceof HttpResponse) {
-  //       if (event.body instanceof Array) {
-  //         this.providersInfo = event.body;
-  //         this.sharedServices.loadingChanged.next(false);
-  //       }
-  //     }
-  //   }, error => {
-  //     this.sharedServices.loadingChanged.next(false);
-  //     this.error = 'could not load providers, please try again later.';
-  //     console.log(error);
-  //   });
-  // }
 
 }

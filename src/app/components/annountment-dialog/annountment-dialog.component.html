@@ -2,32 +2,31 @@
     <h5 class="primary-dialog-title">Important Announcements</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<ul class="announcement-list">
+<ul class="announcement-list" *ngFor="let Announcement of Announcements">
     <li>
         <div class="head-block">
-            <h3>NPHIES Scheduled Maintenance</h3>
-            <span class="text-grey">21 January 2023 12:54 PM</span>
+            <h3>{{Announcement.subject}}</h3>
+            <span class="text-grey"> {{Announcement.startDate|
+                date:'MM/dd/yyyy'}} - {{Announcement.endDate|
+                date:'MM/dd/yyyy'}}</span>
         </div>
-        <div class="content">Installer. At dishonourable little energetic months with the exerted the can of to to him to monstrous it and more called few if away, hundreds
-            travelling each in me.
-            Systems ahead than the empire to with friends on frequency lane. On class. Country, by acknowledge in of found. Phase and have of they feel from competitive the arm a
-            hat these, as me. As do aged is attentive understood. That completely keep forest into origin breakfasts. A chooses that constructing yourself move it with expect,
-            means, school. Is origin it big chest then school, Mr. Of although of indulged in.</div>
-        <ul class="inline-attachments no-space">
+        <div class="content">{{Announcement.descreption}} .</div>
+        <ul class="inline-attachments no-space" *ngFor="let attachment of Announcement.attachments">
             <li>
-                <button type="button">
-                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                    <span>report.pdf</span>
+                <button type="button" (click)="openFile(attachment.attachment,attachment.attachmentType)">
+                    <img [src]="checkfileType(attachment.attachmentName)" />
+                    <span>{{attachment.attachmentName}}</span>
                 </button>
             </li>
         </ul>
     </li>
-    <li>
+    <hr class="hr">
+    <!-- <li>
         <div class="head-block">
             <h3>New Feature Launching on 27th Feb</h3>
             <span class="text-grey">18 January 2023 1:01 PM</span>
         </div>
         <div class="content">Not similar must to and the to concise happened but could us, even must briefs here's cut her. The what the to designer of because specially times,
             sight devoting distribution house. Deceleration contact focus mountains, with because bed simple, that like. The get felt the people myself.</div>
-    </li>
+    </li> -->
 </ul>
