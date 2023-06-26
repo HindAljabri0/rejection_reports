@@ -6,6 +6,8 @@
                 New</button>
         </div>
     </div>
+
+    <div *ngIf="Announcements.length>0">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
@@ -53,4 +55,6 @@
             </mat-paginator>
         </div>
     </div>
+    </div>
+    <app-empty-state *ngIf="Announcements.length=== 0" message='No Announcements found!'></app-empty-state>
 </div>

@@ -16,9 +16,9 @@
         <p class="form-control-static"> {{Announcement.startDate | date:'MM/dd/yyyy'}} - {{Announcement.endDate|
             date:'MM/dd/yyyy'}}</p>
     </div>
-    <div class="form-group" *ngIf="Announcement.attachments!=null  && Announcement.attachments.length>0" >
+    <div class="form-group" *ngIf="Announcement.attachments!=null  && Announcement.attachments.length>0">
         <label class="control-label">Attachments</label>
-        <ul class="attachment-list lg" >
+        <ul class="attachment-list lg">
             <li *ngFor="let attachment of Announcement.attachments" [matTooltip]="attachment.attachmentName">
                 <img [src]="checkfileType(attachment.attachmentName)" [alt]="attachment.attachmentType"
                     (click)="openFile(attachment.attachment,attachment.attachmentType,attachment.attachmentName)" />
