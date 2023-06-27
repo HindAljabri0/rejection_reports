@@ -743,6 +743,7 @@ console.log(this.isSearchByStatus)
     this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate : this.params.from;
     this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
     this.params.isRelatedClaim  = this.params.filter_isRelatedClaim ? this.params.filter_isRelatedClaim : this.params.isRelatedClaim;
+    this.params.reissueReason  = this.params.reissueReason ? this.params.reissueReason : this.params.reissueReason;
   }
   get hasData() {
     this.extraNumbers = new Array();

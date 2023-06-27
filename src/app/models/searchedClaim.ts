@@ -39,6 +39,8 @@ export class SearchedClaim extends Paginateable {
   communicationCount:number;
   communicationsRequestCount:number;
   isRelatedClaim:boolean;
+  reissueReason: boolean;
+
 
 
   constructor(body: {}) {
