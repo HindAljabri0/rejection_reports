@@ -429,15 +429,15 @@
                       <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsReisssued === true">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
                       <div class="d-flex align-items-center" *ngIf="claim.isRelatedClaim">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
                         <span>Yes</span>
                       </div>
                     </td>
 
-                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
-                      <div class="d-flex align-items-center" *ngIf="claim.reissueReason === true">
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsReisssued === true">
+                      <div class="d-flex align-items-center" *ngIf="claim.body.reissueReason === true">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
                         <span>Yes</span>
                       </div>
