@@ -89,6 +89,7 @@ import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/
 import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
 import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
+import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/a
     PbmValidationResponseSummaryDialogComponent,
     AddPrescriptionComponent,
     PrescriptionTransactionsComponent,
-    AddEditPrescriptionItemComponent
+    AddEditPrescriptionItemComponent,
+    ViewPrescriptionDetailsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -197,7 +199,8 @@ import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/a
     AddMedicationSupplyDialogComponent,
     ViewPrintPreviewDialogComponent,
     PbmValidationResponseSummaryDialogComponent,
-    AddEditPrescriptionItemComponent
+    AddEditPrescriptionItemComponent,
+    ViewPrescriptionDetailsDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent
