@@ -91,7 +91,7 @@ export class HeaderComponent implements OnInit {
     ngOnInit() {
         console.log(this.sharedServices.providerId)
         if (this.sharedServices.providerId != '101') {
-            // this.getAnnouncements();
+            this.getAnnouncements();
         }
         this.getAlertMessage();
         if (environment.showFreshChat) {
@@ -100,6 +100,8 @@ export class HeaderComponent implements OnInit {
         }
 
         this.getUserData();
+
+
 
 
 
