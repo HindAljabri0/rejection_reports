@@ -260,6 +260,12 @@
             <p class="form-control-static">{{otherDataModel.isRelated ? 'Yes' : 'No'}}</p>
           </div>
         </div>
+        <div class="col-4 col-xxl-3" *ngIf="otherDataModel.reissueReason">
+          <div class="form-group form-group-static">
+            <div class="control-label">Reissued</div>
+            <p class="form-control-static">{{otherDataModel.reissueReason ? 'Yes' : 'No'}}</p>
+          </div>
+        </div>
       </div>
     </mat-tab>
 
