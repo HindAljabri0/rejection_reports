@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadRequest } from 'src/app/models/downloadRequest';
-import { MatMenuTrigger } from '@angular/material';
+import { MatDialog, MatMenuTrigger } from '@angular/material';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
+import { AnnountmentDialogComponent } from '../annountment-dialog/annountment-dialog.component';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class HeaderComponent implements OnInit {
 
     @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
+
     constructor(
         private sharedServices: SharedServices,
         public router: Router,
@@ -55,7 +57,9 @@ export class HeaderComponent implements OnInit {
         private downloadService: DownloadService,
         private notificationService: NotificationsService,
         private reportsService: ReportsService,
-        private store: Store
+        private store: Store,
+        private dialog: MatDialog,
+        private notificationsService: NotificationsService
     ) {
         this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
             this.setNewNotificationIndecater(count > 0);
@@ -85,6 +89,10 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.sharedServices.providerId)
+        if (this.sharedServices.providerId != '101') {
+            this.getAnnouncements();
+        }
         this.getAlertMessage();
         if (environment.showFreshChat) {
             this.showWhatsAppSupport = true;
@@ -92,6 +100,11 @@ export class HeaderComponent implements OnInit {
         }
 
         this.getUserData();
+
+
+
+
+
 
         //to check why they put this in here
         /*if (//!this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin &&
@@ -251,16 +264,17 @@ export class HeaderComponent implements OnInit {
     getAlertMessage() {
         this.settingsService.getAlert().subscribe(event => {
             if (event instanceof HttpResponse) {
-                    this.alertMessage = event.body['message'] as String;
-                    this.startDateAlert = new Date(event.body['startDate']).getTime();
-                    this.endDateAlert = new Date(event.body['endDate']).getTime();
+                this.alertMessage = event.body['message'] as String;
+                this.startDateAlert = new Date(event.body['startDate']).getTime();
+                this.endDateAlert = new Date(event.body['endDate']).getTime();
             }
         }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
                 console.log(errorEvent.error);
             }
-          });
+        });
     }
+
 
     get isShowAlert() {
         var dateToday = new Date().getTime();
@@ -269,12 +283,38 @@ export class HeaderComponent implements OnInit {
         //  console.log(this.startDateAlert);
         //console.log(this.endDateAlert);
         let alert = this.startDateAlert <= dateToday && this.endDateAlert >= dateToday;
-        if(alert){
+        if (alert) {
             this.showGlobalNotificationVisible();
-        }else{
+        } else {
             this.hideGlobalNotificationVisible();
         }
 
         return alert;
     }
+
+    getAnnouncements() {
+        console.log(this.sharedServices.providerId)
+        let AnnouncementsInfo = [];
+
+        this.notificationsService.getAnnouncementsByProvider(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+
+                AnnouncementsInfo = event.body["content"];
+                if (AnnouncementsInfo.length > 0) {
+                    this.dialog.open(AnnountmentDialogComponent, {
+
+                        panelClass: ['primary-dialog'],
+                        data: { AnnouncementsInfo: AnnouncementsInfo },
+                        autoFocus: false
+
+                    })
+                }
+            }
+        }, error => {
+            console.log(error.message)
+        })
+    }
+
+
 }
+

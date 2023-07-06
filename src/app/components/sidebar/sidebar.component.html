@@ -314,6 +314,23 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
+                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Prescription Verification</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li>
+                            <a routerLink="/nphies/add-prescription" routerLinkActive="is-active">
+                                <span class="text">Prescription Request</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/nphies/prescription-transactions" routerLinkActive="is-active">
+                                <span class="text">Prescription Transactions</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
                 <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -558,7 +575,7 @@
 
             <ng-container
                 *ngIf="userPrivileges.WaseelPrivileges.isPAM && (userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege || (userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder))">
-                <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || hasAnyNphiesPrivilege">
+                <div class="list-title">
                     <hr>
                 </div>
                 <div class="list-title primary">
