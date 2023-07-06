@@ -1611,11 +1611,26 @@ console.log(this.isSearchByStatus)
     return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
   get showIsRelated() {
-    return ['partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    this.routeActive.queryParams.subscribe(value => {
+      this.params = SearchPageQueryParams.fromParams(value);
+    }).unsubscribe();
+    if (this.params.status === 0) {
+      return false;
+    } else {
+      return ['partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+     }
   }
   get showIsReisssued() {
-     return ['partial', 'rejected', 'invalid', 'approved'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    this.routeActive.queryParams.subscribe(value => {
+      this.params = SearchPageQueryParams.fromParams(value);
+    }).unsubscribe();
+    if (this.params.status === 0) {
+      return false;
+    } else {
+      return ['partial', 'rejected', 'invalid', 'approved'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase())
+    }
   }
+
   get showUploadAttachment() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
