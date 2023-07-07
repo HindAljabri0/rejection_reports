@@ -2359,7 +2359,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel = {};
 
-    this.otherDataModel.reIssueReason = response.reIssueReason;
+    this.otherDataModel.reIssueReason = response.reIssueReason;   
     if (this.otherDataModel.reIssueReason) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0].name : '';
@@ -2399,7 +2399,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.otherDataModel.previousClaimIdentifiers = response.previousClaimIdentifiers;
     this.otherDataModel.isActive = response.isActive;
     this.otherDataModel.isRelated = response.isRelatedClaim;
-    this.otherDataModel.reissueReason = response.reissueReason;
+    this.otherDataModel.reissueReason = response.reIssueReason;
     this.FormNphiesClaim.controls.isNewBorn.setValue(response.isNewBorn);
     this.FormNphiesClaim.controls.isReferral.setValue(response.isReferral);
     this.FormNphiesClaim.controls.ReferralName.setValue(response.referralName);
