@@ -260,18 +260,6 @@
             <p class="form-control-static">{{otherDataModel.isRelated ? 'Yes' : 'No'}}</p>
           </div>
         </div>
-        <div class="col-4 col-xxl-3" *ngIf="otherDataModel.reissueReason">
-          <div class="form-group form-group-static">
-            <div class="control-label">Reissued</div>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'correction'">Reissue has been requested due to a needed Error correction</p>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'adjudication'">Reissue has been requested due to a needed Additional adjudication</p>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'miscalculation'">Reissue has been requested due to a needed Miscalculation correction</p>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'benefit'">Reissue has been requested due to a needed Benefit processing correction</p>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'audit'">Reissue has been requested due to a needed Audit</p>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'cancel'">Reissue has been requested to cancel a previous issued response</p>
-            <p class="form-control-static" *ngIf="otherDataModel.reissueReason === 'other'">Reissue has been requested due to a needed Other</p>
-          </div>
-        </div>
       </div>
     </mat-tab>
 
