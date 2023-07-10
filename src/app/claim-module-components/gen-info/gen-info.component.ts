@@ -397,6 +397,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
             this.nationalIdController.enable();
             this.approvalNumController.enable();
             this.planTypeController.enable();
+            this.physicianIdController.enable();
+            this.physicianNameController.enable();
         } else {
             this.memberIdController.disable();
             this.accCodeController.disable();
@@ -404,6 +406,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
             this.nationalIdController.disable();
             this.approvalNumController.disable();
             this.planTypeController.disable();
+            this.physicianIdController.disable();
+            this.physicianNameController.disable();
         }
         if (enableForNulls) {
             if (this.isControlNull(this.memberIdController)) {
@@ -428,20 +432,20 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
         this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
         this.departmentEditable = allowEdit;
-        if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == ''))) {
-            this.physicianNameController.enable();
-        } else {
-            this.physicianNameController.disable();
-        }
-        if (enableForNulls) {
-            if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
-                this.physicianIdController.disable();
-            } else {
-                this.physicianIdController.enable();
-            }
-        } else {
-            this.physicianIdController.disable();
-        }
+        // if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == ''))) {
+        //     this.physicianNameController.enable();
+        // } else {
+        //     this.physicianNameController.disable();
+        // }
+        // if (enableForNulls) {
+        //     if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
+        //         this.physicianIdController.disable();
+        //     } else {
+        //         this.physicianIdController.enable();
+        //     }
+        // } else {
+        //     this.physicianIdController.disable();
+        // }
     }
     // this.claimDateController.value
     updateClaim(field: string) {
