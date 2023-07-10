@@ -466,6 +466,30 @@
 					</context>
 				</context-group>
 			</trans-unit>
+			<trans-unit id="feedbackSurvey" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					Feedback Survey
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					الغاء مطالبه سابقه
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						595
+					</context>
+				</context-group>
+			</trans-unit>
 			<trans-unit id="cleanClaimProgress" datatype="html">
 				<source>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
