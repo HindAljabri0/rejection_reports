@@ -459,7 +459,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .brand-header{background-color: #3060aa;color: #fff;position: fixed;top: 0;left: 0;right: 0;display: flex;box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);z-index: 10;}
 .brand-header .logo-wrapper{width: 240px;align-self: center;-ms-flex-item-align: center;text-align: center;;}
 .brand-header .logo{padding: 8px 16px;display: inline-block;vertical-align: top;}
-.brand-header .logo>img{display: block;height: 52px;width: 74px;}
+.brand-header .logo>img{display: block;height: 40px;width: 118px;}
 .brand-header .right-block{margin-left: auto;display: flex;align-items: center;}
 .brand-header .right-block>div,.brand-header .right-block>button,.brand-header .right-block>.language-switch{margin-right: 4px;}
 .brand-header .right-block>div:last-child,.brand-header .right-block>button:last-child,.brand-header .right-block>.language-switch:last-child{margin-right: 0;}
@@ -976,7 +976,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-wrapper>.left-block{display: flex;flex-direction: column;padding: 48px 16px 40px;}
 .login-wrapper .right-block{background-color: rgba(48, 96, 170,0.08);padding: 24px 22px;color: #3060aa;display: flex;flex-direction: column;}
 .login-wrapper .upper-art,.login-wrapper .lower-art{display: block;width: 100%;margin: 0 auto;max-height: 132px;}
-.login-wrapper .logo{display: block;margin: 0 auto 56px;width: 164px;height: 110px;}
+.login-wrapper .logo{display: block;margin: 0 auto 56px;height: 64px;width: 190px;}
 .login-wrapper .right-block .middle{padding: 56px 0 48px;margin: auto 0;}
 .login-wrapper .login-contact{display: flex;justify-content: center;}
 .login-wrapper .login-contact li:not(:last-child){padding-right: 65px;position: relative;}
@@ -1007,21 +1007,21 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-language-switch{position: absolute;top: 16px;right: calc(50% + 16px);}
 .login-wrapper .right-block.ramadan-poster{padding-top: 0;}
 .ramadan-poster .artwork{width: 494px;height: 601px;display: block;margin: 0 auto 54px;max-width: 100%;}
-.ramadan-poster .logo,.login-wrapper.eid-fitr .logo{display: block;height: 80px;width: 113px;margin: 0 auto 24px;}
+.ramadan-poster .logo,.login-wrapper.eid-fitr .logo{display: block;height: 72px;margin: 0 auto 24px;}
 .ramadan-poster .contact,.login-wrapper.eid-fitr .contact{font-size: 20px;line-height: 30px;opacity: 0.72;font-weight: 500;color: #3060AA;text-align: center;}
 .login-wrapper.eid-fitr{border-color:#1D3A66;}
 .login-wrapper.eid-fitr .right-block{background: rgb(14,29,51);background: -moz-linear-gradient(top,  rgba(14,29,51,1) 0%, rgba(29,58,102,1) 62%);background: -webkit-linear-gradient(top,  rgba(14,29,51,1) 0%,rgba(29,58,102,1) 62%);background: linear-gradient(to bottom,  rgba(14,29,51,1) 0%,rgba(29,58,102,1) 62%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e1d33', endColorstr='#1d3a66',GradientType=0 );padding: 0;padding-top: 64px;position: relative;}
 .login-wrapper.eid-fitr .top-artwork,.login-wrapper.eid-fitr .text-artwork,.login-wrapper.eid-fitr .bottom-artwork{display: block;margin: 0 auto;max-width: 960px;width: 100%;}
 .login-wrapper.eid-fitr .top-artwork{position: absolute;top: 0;left: 50%;width:calc(100% - 40px);transform: translateX(-50%);}
 .login-wrapper.eid-fitr .text-artwork{max-width: 279px;margin: auto auto 20px;}
-.login-wrapper.eid-fitr .contact{color: #C6DEFF;}
+.login-wrapper.eid-fitr .contact{color: #C6DEFF;margin-bottom: 16px;}
 .login-wrapper.eid-adha .right-block{position: relative;padding-top: 0;}
 .login-wrapper.eid-adha .left-top-art,.login-wrapper.eid-adha .right-top-art{position: absolute;top: 0;height: 220px;width: 220px;display: block;z-index: 0;}
 .login-wrapper.eid-adha .left-top-art{left: 0;}
 .login-wrapper.eid-adha .right-top-art{right: 0;}
 .login-wrapper.eid-adha .center-art{display: block;margin: 0 auto 38px;width: 589px;height: 559px;max-width: 100%;position: relative;z-index: 1;}
 .login-wrapper.eid-adha .text{display: block;width: 254px;height: 96px;margin: 0 auto 38px;}
-.login-wrapper.eid-adha .logo{display: block;margin: 0 auto 24px;width: 90px;height: 64px;}
+.login-wrapper.eid-adha .logo{display: block;margin: 0 auto 24px;height: 40px;}
 .login-wrapper.eid-adha .bottom-section{display: flex;justify-content: space-around;text-align: center;}
 .login-wrapper.eid-adha .bottom-section span,.login-wrapper.eid-adha .bottom-section p{font-size: 16px;line-height: 24px;color: #3060aa;display: block;}
 .login-wrapper.eid-adha .bottom-section span{font-weight: 600;}
@@ -2075,7 +2075,7 @@ angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-s
     .login-wrapper .right-block{padding: 16px;}
     .login-wrapper .right-block .middle{padding: 32px 0 24px;}
     .login-wrapper .right-block h2{padding-bottom: 24px;font-size: 24px;line-height: 32px;}
-    .login-wrapper .logo{max-height: 80px;margin-bottom: 16px;}
+    .login-wrapper .logo{max-height: 64px;margin-bottom: 24px;}
     .login-wrapper .login-contact li:not(:last-child){padding-right: 33px;}
     .login-wrapper .login-contact li:not(:last-child):after{right: 16px;}
     .login-wrapper>.left-block{max-width: 40%;flex-basis: 40%;}
