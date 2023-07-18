@@ -17,11 +17,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Client Satisfaction Survey</td>
-                        <td>23/05/2023 - 24/06/2023</td>
+                    <tr *ngFor="let survey of content.content">
+                        <td>{{survey.name}}</td>
+                        <td>{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.startDate | date: 'dd/MM/yyyy'}}</td>
                         <td class="text-center">
-                            <mat-slide-toggle [checked]="true" color="primary"></mat-slide-toggle>
+                            <mat-slide-toggle [checked]="survey.isActive" color="primary"></mat-slide-toggle>
                         </td>
                         <td class="actions">
                             <button mat-icon-button matTooltip="Duplicate" class="text-primary" routerLink="/administration/config/feedback-survey-details">
@@ -32,36 +32,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>test QA</td>
-                        <td>12/02/2023 - 13/08/2023</td>
-                        <td class="text-center">
-                            <mat-slide-toggle color="primary"></mat-slide-toggle>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Duplicate" class="text-primary" routerLink="/administration/config/feedback-survey-details">
-                                <mat-icon>content_copy</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Preview Survey" class="text-primary" (click)="openPreviewDialog()">
-                                <mat-icon class="material-icons-outlined">visibility</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Pagination Survey Test</td>
-                        <td>16/04/2023 - 26/04/2023</td>
-                        <td class="text-center">
-                            <mat-slide-toggle [checked]="true" color="primary"></mat-slide-toggle>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Duplicate" class="text-primary" routerLink="/administration/config/feedback-survey-details">
-                                <mat-icon>content_copy</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Preview Survey" class="text-primary" (click)="openPreviewDialog()">
-                                <mat-icon class="material-icons-outlined">visibility</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
+                 
                 </tbody>
             </table>
         </div>

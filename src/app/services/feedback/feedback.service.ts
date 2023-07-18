@@ -28,6 +28,11 @@ export class FeedbackService {
         const httpRequest = new HttpRequest('GET', requestUrl);
         return this.http.request(httpRequest);
     }
+    getSurvey() {
+        const Url = `${environment.NotificationServiceHost}/survey/all`;
+        const httpRequest = new HttpRequest('GET', Url);
+        return this.http.request(httpRequest);
+    }
 
 
 
