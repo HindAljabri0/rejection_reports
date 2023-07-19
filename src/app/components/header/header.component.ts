@@ -90,8 +90,9 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         console.log(this.sharedServices.providerId)
-        if (this.sharedServices.providerId != '101') {
+        if (this.sharedServices.providerId != '101' && localStorage.getItem('hasDisplayedAnnouncementDialogue') != "true") {
             this.getAnnouncements();
+            localStorage.setItem('hasDisplayedAnnouncementDialogue', "true");
         }
         this.getAlertMessage();
         if (environment.showFreshChat) {
