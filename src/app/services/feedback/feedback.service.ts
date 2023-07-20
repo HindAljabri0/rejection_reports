@@ -4,6 +4,7 @@ import { Observable } from "rxjs/";
 import { environment } from "src/environments/environment";
 import { __values } from "tslib";
 import { FeedbackClass } from "../../components/dialogs/feedback-dialog/feedback.model.component";
+import { FeedbackDate } from "src/app/modules/adminstration/feedback-select-date/feedback-date.model";
 
 
 
@@ -33,6 +34,14 @@ export class FeedbackService {
         const httpRequest = new HttpRequest('GET', Url);
         return this.http.request(httpRequest);
     }
+  
+    postSurveyDate(feedback: FeedbackDate): Observable<FeedbackDate> {
+        return this.http.post<FeedbackDate>(`${environment.NotificationServiceHost}/survey/${feedback.surveyId}/manage-survey`, feedback)
+    }
+    postSurvey(feedback: FeedbackDate): Observable<FeedbackDate> {
+        return this.http.post<FeedbackDate>(`${environment.NotificationServiceHost}/survey/create-survey`, feedback)
+    }
+ 
 
 
 

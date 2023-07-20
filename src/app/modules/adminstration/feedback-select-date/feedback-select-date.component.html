@@ -1,0 +1,86 @@
+<form [formGroup]="announcementForm">
+    <div class="primary-dialog-header has-border">
+        <h5 class="primary-dialog-title">Add Date</h5>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+    </div>
+    <div class="primary-dialog-body pb-0">     
+      
+        <div class="row small-gutter">
+            <div class="col-md-6">
+                <div class="form-group"  [class.has-error]="hasError('startDateControl')!=null" [matTooltip]="hasError('startDateControl')">
+                    <label class="control-label">Start Date<span class="asterisk">*</span></label>
+                    <div class="date-picker">
+                        <input type="text" [matDatepicker]="startDate" class="form-control"
+                            placeholder="Select start date" formControlName="startDateControl" />
+                        <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null" [matTooltip]="hasError('closeDateControl')">
+                    <label class="control-label">End Date<span class="asterisk">*</span></label>
+                    <div class="date-picker">
+                        <input type="text" [matDatepicker]="closeDate" class="form-control" placeholder="Select end date"
+                            formControlName="closeDateControl" />
+                        <mat-datepicker-toggle [for]="closeDate"></mat-datepicker-toggle>
+                        <mat-datepicker #closeDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    <hr class="hr mb-14">
+    <div class="block-body">
+        <div class="form-group mb-0" [class.has-error]="hasError('providersControl')!=null" [matTooltip]="hasError('providersControl')">
+            <label class="control-label">Select Provider<span class="asterisk">*</span></label>
+            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..."
+                formControlName="providersControl" (input)="updateFilter()" (keyup.enter)="selectProvider()"
+                [readonly]="isLoading">
+            <mat-autocomplete autoActiveFirstOption #auto>
+                <mat-option value="All providers" (click)='selectProvider("All")'>
+                    All providers
+                </mat-option>
+                <mat-option value="All NPHIES providers" (click)='selectProvider("NPHIES")'>
+                    All NPHIES providers
+                </mat-option>
+                <mat-option value="All Waseel providers" (click)='selectProvider("Waseel")'>
+                    All Waseel providers
+                </mat-option>
+                <mat-option *ngFor="let provider of filteredProviders"
+                    [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
+                    (click)="selectProvider(provider)">
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}} | {{provider.cchiId}}
+                </mat-option>
+                <mat-option *ngIf="error!= null && error != '' && !isLoading">
+                    {{error}}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+    </div>
+    <hr class="hr">
+    <div style="overflow-x: auto; ;  max-height: 250px;">
+        <div class="checkbox-list">
+         
+            <mat-checkbox color="primary" *ngIf="allProviders" [checked]="allProviders" (change)="cancelSelectedProviders('All')">All
+                Provider</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allWaseelProviders" [checked]="allWaseelProviders"  (change)="cancelSelectedProviders('Waseel')">All
+                Waseel Provider</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="allNphiesProviders" (change)="cancelSelectedProviders('NPHIES')">All
+                NPHIES Provider</mat-checkbox>
+            <div *ngFor="let provider of selectedProviders">
+                <mat-checkbox (change)="cancelSelectedProviders(provider.switchAccountId)" checked="true"
+                    color="primary">{{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}</mat-checkbox>
+            </div>
+
+        </div>
+    </div>
+    <div class="primary-dialog-footer has-border">
+        <div class="btn-list text-right">
+            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="saveAnnouncement()">Save</button>
+        </div>
+    </div>
+</form>

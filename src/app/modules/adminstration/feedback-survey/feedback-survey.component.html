@@ -17,17 +17,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let survey of content.content">
+                    <tr *ngFor="let survey of content.content" >
                         <td>{{survey.name}}</td>
-                        <td>{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.startDate | date: 'dd/MM/yyyy'}}</td>
+                        <td (click)="openPreviewDialog(survey.surveyId)">{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
                         <td class="text-center">
                             <mat-slide-toggle [checked]="survey.isActive" color="primary"></mat-slide-toggle>
                         </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Duplicate" class="text-primary" routerLink="/administration/config/feedback-survey-details">
+                        <td class="actions" (click) ="getChecked(survey)">
+                            <button mat-icon-button matTooltip="Duplicate" class="text-primary" >
                                 <mat-icon>content_copy</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Preview Survey" class="text-primary" (click)="openPreviewDialog()">
+                            <button mat-icon-button matTooltip="Preview Survey" class="text-primary" >
                                 <mat-icon class="material-icons-outlined">visibility</mat-icon>
                             </button>
                         </td>
