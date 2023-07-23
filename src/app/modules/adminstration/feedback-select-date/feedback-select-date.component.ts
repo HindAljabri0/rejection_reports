@@ -69,11 +69,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   });
 
   ngOnInit() {
-    console.log(this.authService.getUserName());
-    this.providers = this.data.surveyId;
+    this.providers = this.data.providersInfo;
     this.surveyId = this.data.surveyId;
-    console.log(  this.providers,"sjkksk")
     this.filteredProviders = this.providers;
+    console.log(this.filteredProviders,"filteredProviders")
   }
 
   closeDialog() {
@@ -180,7 +179,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
             this.sharedServices.loadingChanged.next(false);
             this.dialogService.openMessageDialog({
               title: '',
-              message: `Date Range has been created`,
+              message: `Provider and date has been selected`,
               isError: false
             });
 

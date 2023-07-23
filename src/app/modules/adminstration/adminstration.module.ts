@@ -22,6 +22,7 @@ import { FeedbackSurveyComponent } from './feedback-survey/feedback-survey.compo
 import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedback-survey-details.component';
 import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-provider/feedback-survey-select-provider.component';
 import { AddFeedbackDateDialogComponent } from './feedback-select-date/feedback-select-date.component';
+import { FeedbackPreviewComponent } from './feedback-preview/feedback.preview.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { AddFeedbackDateDialogComponent } from './feedback-select-date/feedback-
     FeedbackSurveyComponent,
     FeedbackSurveyDetailsComponent,
     FeedbackSurveySelectProviderComponent,
-    AddFeedbackDateDialogComponent
+    AddFeedbackDateDialogComponent,
+    FeedbackPreviewComponent
   ],
   imports: [
     RouterModule.forChild([

@@ -1,4 +1,4 @@
-<div class="animate__animated animate__faster animate__fadeIn block-card">
+<div class="animate__animated animate__faster animate__fadeIn block-card"*ngIf="surveyFlag" >
     <div class="block-header">
         <p class="align-self-center">Feedback Surveys</p>
         <div class="ml-auto my-n2 mr-n2">
@@ -23,11 +23,11 @@
                         <td class="text-center">
                             <mat-slide-toggle [checked]="survey.isActive" color="primary"></mat-slide-toggle>
                         </td>
-                        <td class="actions" (click) ="getChecked(survey)">
-                            <button mat-icon-button matTooltip="Duplicate" class="text-primary" >
+                        <td class="actions" >
+                            <button mat-icon-button matTooltip="Duplicate" class="text-primary" (click) ="getChecked(survey)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Preview Survey" class="text-primary" >
+                            <button (click) ="preview(survey)" mat-icon-button matTooltip="Preview Survey" class="text-primary" >
                                 <mat-icon class="material-icons-outlined">visibility</mat-icon>
                             </button>
                         </td>
@@ -38,3 +38,5 @@
         </div>
     </ng-scrollbar>
 </div>
+
+
