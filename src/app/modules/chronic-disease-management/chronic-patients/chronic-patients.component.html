@@ -20,8 +20,8 @@
                             <mat-select value="" formControlName="diagnosis">
                                 <mat-option value="">Select diagnosis</mat-option>
                                 <mat-option *ngFor="let din of diagnosisList"
-                                [value]="din.codes">
-                                {{din.name}}</mat-option>
+                                [value]="din.diagnosisCode">
+                                {{din.diagnosisDescription}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -29,18 +29,18 @@
                 <div class="col-4 col-xxl-3">
                     <div class="form-group" [class.has-error]="regionError?.trim().length > 0"
                         [matTooltip]="regionError">
-                        <label class="control-label">Region</label>
+                        <label class="control-label">Region <span class="asterisk">*</span></label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" formControlName="region" (selectionChange)="selectedRegion = $event.value;filterCities()">
+                            <mat-select value="" formControlName="region" >
                                 <mat-option value="">Select Region</mat-option>
-                                <mat-option *ngFor="let region of Regions"
-                                [value]="region.Code">
-                                {{region.Name}}</mat-option>
+                                <mat-option *ngFor="let region of regions"
+                                [value]="region.regionCode">
+                                {{region.regionDescription}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="col-4 col-xxl-3">
+                <!--div class="col-4 col-xxl-3">
                     <div class="form-group" [class.has-error]="cityError?.trim().length > 0"
                         [matTooltip]="cityError">
                         <label class="control-label">City</label>
@@ -53,7 +53,7 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                </div>
+                </div-->
                 
                 <div class="col-4 col-xxl-3">
                     <div class="form-group">
@@ -82,13 +82,13 @@
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th>Patient ID</th>
+                        <th>IQAMA/NATIONAL ID</th>
                         <th>Member ID</th>
                         <th>Patient Name</th>
                         <th>Phone No.</th>
                         <th>Diagnosis Code</th>
                         <th>Policy No.</th>
-                        <th>City</th>
+                        
                         <th>Region</th>
                         <th>Gender</th>
                         <th>Age</th>
@@ -104,7 +104,7 @@
                                 [matMenuTriggerFor]="diagnosisListMenu"><mat-icon
                                     class="material-icons-outlined">info</mat-icon></a></td>
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.policyNumber }}</td>
-                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.city }}</td>
+                        
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.region }}</td>
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.gender }}</td>
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.age }}</td>
