@@ -4,7 +4,7 @@
     <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
       <div class="block-header">
         <p>Request Pre Authorization</p>
-        <mat-slide-toggle *ngIf="!claimReuseId" formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
+        <mat-slide-toggle  formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
         </mat-slide-toggle>
 
       </div>
