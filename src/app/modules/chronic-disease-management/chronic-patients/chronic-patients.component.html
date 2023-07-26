@@ -94,7 +94,7 @@
                         <th>Age</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="patientList!=null">
                     <tr *ngFor="let row of patientList">
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.patientId }}</td>
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.memberCode }}</td>
@@ -108,6 +108,11 @@
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.region }}</td>
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.gender }}</td>
                         <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.age }}</td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="patientList==null">
+                    <tr class="text-center">
+                        <th colspan="9">No Data Found </th> 
                     </tr>
                 </tbody>
             </table>

@@ -28,7 +28,7 @@ export class ChronicPatientDetailsComponent implements OnInit {
   getData() {
     let model:any = {};
     model.policyNumber = this.data.policyNumber;
-    model.region ="1"; //this.data.policyNumber;
+    model.region = this.data.ResionCode != null ?this.data.ResionCode : '0';
     model.diagnosis = this.data.diagnosis.map(p=> p.diagnosisCode);
     model.memberCode=this.data.memberCode;
     console.log("model = "+JSON.stringify(model));

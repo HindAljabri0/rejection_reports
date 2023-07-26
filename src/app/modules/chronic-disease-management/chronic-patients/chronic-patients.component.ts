@@ -29,7 +29,7 @@ export class ChronicPatientsComponent implements OnInit {
   regionError: string;
   diagnosisError: string;
   thereIsError: boolean = false;
-  detailTopActionIcon: string;
+  detailTopActionIcon: string="ic-download.svg";
 
   regions: { regionCode: string, regionDescription: string }[] = [];
   Cities: { Code: string, Region: string, Name: string }[] = this.sharedData.Cities;
@@ -150,7 +150,7 @@ export class ChronicPatientsComponent implements OnInit {
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.memberId.value) {
-      model.memberId = this.cdmForm.controls.memberId.value;
+      model.memberCode = this.cdmForm.controls.memberId.value;
     }
     if (!this.thereIsError) {
       this.sharedServices.loadingChanged.next(true);
@@ -220,7 +220,7 @@ export class ChronicPatientsComponent implements OnInit {
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.memberId.value) {
-      model.memberId = this.cdmForm.controls.memberId.value;
+      model.memberCode = this.cdmForm.controls.memberId.value;
     }
     if (!this.thereIsError) {
       event = this.cdmService.downloadExcelsheet(this.sharedServices.providerId, model);
