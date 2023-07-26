@@ -1,36 +1,37 @@
-import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
-import { Component, HostListener, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material";
-import { FeedbackDialogComponent } from "src/app/components/dialogs/feedback-dialog/feedback-dialog.component";
-import { FeedbackService } from "src/app/services/feedback/feedback.service";
-import { AddFeedbackDateDialogComponent } from "../feedback-select-date/feedback-select-date.component";
-import { FeedbackDate } from "../feedback-select-date/feedback-date.model";
-import { DialogService } from "src/app/services/dialogsService/dialog.service";
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { FeedbackDialogComponent } from 'src/app/components/dialogs/feedback-dialog/feedback-dialog.component';
+import { FeedbackService } from 'src/app/services/feedback/feedback.service';
+import { AddFeedbackDateDialogComponent } from '../feedback-select-date/feedback-select-date.component';
+import { FeedbackDate } from '../feedback-select-date/feedback-date.model';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
-import { SuperAdminService } from "src/app/services/administration/superAdminService/super-admin.service";
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 
 @Component({
-  selector: "app-feedback-survey",
-  templateUrl: "./feedback-survey.component.html",
+  selector: 'app-feedback-survey',
+  templateUrl: './feedback-survey.component.html',
   styles: [],
 })
 export class FeedbackSurveyComponent implements OnInit {
-
-
   constructor(
     // tslint:disable-next-line:variable-name
     private dialog: MatDialog,
-    private _feedbackservice: FeedbackService,
+    private feedbackservice: FeedbackService,
     private dialogService: DialogService,
     public authService: AuthService,
-    private superAdmin: SuperAdminService,
+    private superAdmin: SuperAdminService
   ) {}
   AccessToken: any;
-  surveyFlag: boolean = true;
+  surveyFlag = true;
   surveyName: any;
   sharedServices: any;
   token: string;
   duplicateCounter = 0;
+  pageSizeOptions = [5, 10, 25, 100];
+  page = 0;
+  pageSize = 10;
   error = '';
   content: any;
   providersInfo: any[] = [];
@@ -43,24 +44,22 @@ export class FeedbackSurveyComponent implements OnInit {
   }
 
   ngOnInit() {
-   this.getSurvey();
-   this.getUserData();
-   this.getProviders();
+    this.getSurvey();
+    this.getUserData();
+    this.getProviders();
   }
 
-
-  
-  
   getUserData() {
     this.authService.evaluateUserPrivileges();
     this.AccessToken = this.authService.getAccessToken();
   }
-  preview(survey){
+  preview(survey) {
     this.surveyFlag = false;
-  
+
     const iframe = document.getElementById('myIframe');
     if (!iframe) {
       // Create the iframe element
+      // tslint:disable-next-line:no-shadowed-variable
       const iframe = document.createElement('iframe');
       iframe.id = 'myIframe';
       iframe.src = 'http://localhost:5000/preview';
@@ -70,23 +69,21 @@ export class FeedbackSurveyComponent implements OnInit {
       // Add the iframe to the desired container or the document's body
       document.body.appendChild(iframe);
       const token = this.authService.getAccessToken();
+      const user = this.authService.getAuthUsername();
       // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
       iframe.onload = function() {
         const authorizationData = {
           token,
-          Title: survey
+          Title: survey,
+          userName: user,
         };
         iframe.contentWindow.postMessage(authorizationData, iframe.src);
-        console.log('The iframe content has been loaded.');
-
-    
       };
     }
-
   }
 
   getSurvey() {
-    this._feedbackservice.getSurvey().subscribe((event) => {
+    this.feedbackservice.getSurvey().subscribe((event) => {
       if (event instanceof HttpResponse) {
         console.log(event.body);
         this.content = event.body;
@@ -96,18 +93,21 @@ export class FeedbackSurveyComponent implements OnInit {
 
   getProviders() {
     //  this.sharedServices.loadingChanged.next(true);
-    this.superAdmin.getProviders().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body instanceof Array) {
-          this.providersInfo = event.body;
-          this.sharedServices.loadingChanged.next(false);
+    this.superAdmin.getProviders().subscribe(
+      (event) => {
+        if (event instanceof HttpResponse) {
+          if (event.body instanceof Array) {
+            this.providersInfo = event.body;
+            this.sharedServices.loadingChanged.next(false);
+          }
         }
+      },
+      (error) => {
+        this.sharedServices.loadingChanged.next(false);
+        this.error = 'could not load providers, please try again later.';
+        console.log(error);
       }
-    }, error => {
-      this.sharedServices.loadingChanged.next(false);
-      this.error = 'could not load providers, please try again later.';
-      console.log(error);
-    });
+    );
   }
 
   getChecked(survey: any) {
@@ -119,19 +119,20 @@ export class FeedbackSurveyComponent implements OnInit {
       startDate: undefined,
       closeDate: undefined,
       providerIds: undefined,
+      isActive: undefined,
     };
 
-    this._feedbackservice.postSurvey(postData).subscribe(
+    this.feedbackservice.postSurvey(postData).subscribe(
       (event) => {
         if (event) {
-            const response = event;
-            this.dialogService.openMessageDialog({
-              title: '',
-              message: `Survey Cloned Successfully`,
-              isError: false
-            });
-            this.getSurvey();
-            console.log(response);          
+          const response = event;
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `Survey Cloned Successfully`,
+            isError: false,
+          });
+          this.getSurvey();
+          console.log(response);
         }
       },
       (error) => {
@@ -144,12 +145,13 @@ export class FeedbackSurveyComponent implements OnInit {
 
   openPreviewDialog(value: any) {
     const dialogRef = this.dialog.open(AddFeedbackDateDialogComponent, {
-     
       data: {
-        surveyId: value,
+        surveyId: value.surveyId,
         providersInfo: this.providersInfo,
+        status: value.isActive,
+        details: value,
       },
-      panelClass: ["primary-dialog", "dialog-lg"],
+      panelClass: ['primary-dialog', 'dialog-lg'],
     });
   }
 }

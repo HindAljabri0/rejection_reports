@@ -19,9 +19,9 @@
                 <tbody>
                     <tr *ngFor="let survey of content.content" >
                         <td>{{survey.name}}</td>
-                        <td (click)="openPreviewDialog(survey.surveyId)">{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
+                        <td (click)="openPreviewDialog(survey)">{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
                         <td class="text-center">
-                            <mat-slide-toggle [checked]="survey.isActive" color="primary"></mat-slide-toggle>
+                            <mat-slide-toggle [checked]="survey.isActive" [disabled]="true"  color="primary"></mat-slide-toggle>
                         </td>
                         <td class="actions" >
                             <button mat-icon-button matTooltip="Duplicate" class="text-primary" (click) ="getChecked(survey)">
@@ -37,6 +37,12 @@
             </table>
         </div>
     </ng-scrollbar>
+    <mat-paginator
+  [length]="content.content.length"
+  [pageSize]="10"
+  
+></mat-paginator>
+
 </div>
 
 

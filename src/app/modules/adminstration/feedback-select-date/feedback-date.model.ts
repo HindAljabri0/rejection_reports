@@ -5,4 +5,5 @@ export class FeedbackDate {
   surveyId: any;
   content: any;
   surveyName: any;
+  isActive: any;
 }

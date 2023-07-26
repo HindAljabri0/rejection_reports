@@ -24,14 +24,16 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   pipe = new DatePipe('en-US');
   announcement: FeedbackDate = {
     providerIds: [],
-    
- 
+
+
     startDate: '',
     closeDate: '',
-    surveyId:'',
-    content:'',
-    surveyName:''
-  
+    surveyId: '',
+    content: '',
+    surveyName: '',
+    isActive: '',
+
+
   };
   submit = false;
   allProviders = false;
@@ -48,6 +50,8 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   indixOfelement = 0;
   isCreatedAnnouncement = false;
   surveyId: any;
+  isActive: any;
+  details: any;
   constructor(private dialogRef: MatDialogRef<AddFeedbackDateDialogComponent>,
               private superAdmin: SuperAdminService,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -58,21 +62,26 @@ export class AddFeedbackDateDialogComponent implements OnInit {
               private _feedbackservice: FeedbackService) { }
 
   announcementForm = new FormGroup({
-   
+
     startDateControl: new FormControl('', [
       Validators.required
     ]),
     closeDateControl: new FormControl('', [
       Validators.required
     ]),
-    providersControl: new FormControl('')
+    providersControl: new FormControl(''),
+    status: new FormControl(''),
   });
 
   ngOnInit() {
     this.providers = this.data.providersInfo;
     this.surveyId = this.data.surveyId;
+    this.isActive = this.data.status;
     this.filteredProviders = this.providers;
-    console.log(this.filteredProviders,"filteredProviders")
+    this.announcementForm.controls.status.setValue(this.data.details.isActive);
+    this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
+    this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));
+    this.announcementForm.controls.providerIds.setValue(this.data.details.providerId);
   }
 
   closeDialog() {
@@ -142,14 +151,12 @@ export class AddFeedbackDateDialogComponent implements OnInit {
       this.providerIds.push(provide.switchAccountId);
 
     });
-    console.log(this.providerIds);
-
     this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
 
     this.announcement.startDate = this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), 'yyyy-MM-dd hh:mm:ss');
     this.announcement.closeDate = this.pipe.transform(new Date(this.announcementForm.controls.closeDateControl.value), 'yyyy-MM-dd hh:mm:ss');
     this.announcement.surveyId = this.surveyId;
-
+    this.announcement.isActive = this.announcementForm.controls.status.value;
   }
 
 
@@ -163,18 +170,13 @@ export class AddFeedbackDateDialogComponent implements OnInit {
       case 'closeDateControl':
         return this.announcementForm.controls.closeDateControl.invalid && this.submit ? 'Please Select End Date' : null;
     }
-
-
-
   }
   saveAnnouncement() {
     this.submit = true;
-    console.log(this.announcementForm);
     if (this.announcementForm) {
       this.sharedServices.loadingChanged.next(true);
       this.setData();
-      this._feedbackservice.postSurveyDate(this.announcement).subscribe(event => {     
-         
+      this._feedbackservice.updateSurvey(this.announcement).subscribe(event => {
           if (event) {
             this.sharedServices.loadingChanged.next(false);
             this.dialogService.openMessageDialog({
@@ -182,14 +184,8 @@ export class AddFeedbackDateDialogComponent implements OnInit {
               message: `Provider and date has been selected`,
               isError: false
             });
-
-            const response = event;
-            console.log(response);
-           
-           
-
           }
-        
+
 
       }, error => {
         if (error instanceof HttpErrorResponse) {
@@ -206,7 +202,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
 
   }
 
- 
+
   get isLoading() {
     return this.sharedServices.loading;
   }
@@ -217,12 +213,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         .includes(this.announcementForm.controls.providersControl.value.toLowerCase())
     );
   }
- 
+
   isProviderSelected(providerId: string) {
     let isaProviderThere = false;
     this.selectedProviders.forEach(provider => {
-      console.log(provider);
-      console.log(provider.switchAccountId);
       if (provider.switchAccountId === providerId) {
         isaProviderThere = true;
         return;
