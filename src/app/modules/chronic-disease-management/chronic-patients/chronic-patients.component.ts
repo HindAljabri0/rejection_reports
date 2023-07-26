@@ -9,6 +9,7 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { F } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-chronic-patients',
@@ -18,7 +19,7 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 export class ChronicPatientsComponent implements OnInit {
   cdmForm: FormGroup = this.formBuilder.group({
     policyNumber: [''],
-    city: [''],
+    //city: [''],
     region: [''],
     diagnosis: [''],
     memberId: ['']
@@ -28,15 +29,9 @@ export class ChronicPatientsComponent implements OnInit {
   regionError: string;
   diagnosisError: string;
   thereIsError: boolean = false;
-  detailTopActionIcon: string;
+  detailTopActionIcon: string="ic-download.svg";
 
-  Regions: { Code: string, Name: string }[] = [
-    { Code: 'East', Name: 'East' },
-    { Code: 'West', Name: 'West' },
-    { Code: 'South', Name: 'South' },
-    { Code: 'Center', Name: 'Center' },
-    { Code: 'North', Name: 'North' }
-  ];
+  regions: { regionCode: string, regionDescription: string }[] = [];
   Cities: { Code: string, Region: string, Name: string }[] = this.sharedData.Cities;
   filterdCities: { Code: string, Region: string, Name: string }[];
   selectedRegion = '';
@@ -61,14 +56,15 @@ export class ChronicPatientsComponent implements OnInit {
 
   ngOnInit() {
     this.fetchDiagnosis();
+    this.fetchRegions();
   }
 
   fetchDiagnosis() {
-    this.settingService.getAllDiagnosisList().subscribe(event => {
+    this.cdmService.getDiagnosisList().subscribe(event => {
       if (event instanceof HttpResponse) {
         console.log(event.body);
         if (event.body != null)
-          this.diagnosisList = event.body as { codes: string[], name: string }[];
+          this.diagnosisList = event.body["diagnosis"] as { diagnosisCode: string, diagnosisDescription: string }[];
         //this.length = event.body["totalElements"]
       }
     }
@@ -77,6 +73,23 @@ export class ChronicPatientsComponent implements OnInit {
         if (err instanceof HttpErrorResponse) {
           console.log(err.message)
           this.diagnosisList = null;
+        }
+      });
+  }
+  fetchRegions() {
+    this.cdmService.getRegionsList().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        console.log(event.body);
+        if (event.body != null)
+          this.regions = event.body["regions"] as { regionCode: string, regionDescription: string }[];
+        //this.length = event.body["totalElements"]
+      }
+    }
+      , err => {
+
+        if (err instanceof HttpErrorResponse) {
+          console.log(err.message)
+          this.regions = null;
         }
       });
   }
@@ -97,10 +110,12 @@ export class ChronicPatientsComponent implements OnInit {
     this.diagnosis = currentRow.diagnosis;
     console.log(JSON.stringify(this.diagnosis));
   }
+  /*
+  (selectionChange)="selectedRegion = $event.value;filterCities()"
   filterCities() {
     console.log("Selected Region = " + this.selectedRegion);
     this.filterdCities = this.Cities.filter(f => f.Region === this.selectedRegion);
-  }
+  }*/
   getData() {
     const model: any = {};
     this.thereIsError = false;
@@ -115,11 +130,11 @@ export class ChronicPatientsComponent implements OnInit {
       this.policyError = 'Please fill policy number';
       this.thereIsError = true;
     }
-    if (this.cdmForm.controls.city.value) {
+    /*if (this.cdmForm.controls.city.value) {
       model.city = this.cdmForm.controls.city.value;
     } else {
       model.city = null;
-    }
+    }*/
     if (this.cdmForm.controls.region.value) {
       model.region = this.cdmForm.controls.region.value;
     } else {
@@ -127,23 +142,25 @@ export class ChronicPatientsComponent implements OnInit {
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.diagnosis.value) {
-      model.diagnosis = this.cdmForm.controls.diagnosis.value;
-      model.diagnosis = JSON.parse(model.diagnosis);
-      //odel.diagnosis = model.diagnosis.split(',');
+      //model.diagnosis = this.cdmForm.controls.diagnosis.value;
+      //model.diagnosis = JSON.parse(model.diagnosis);
+      model.diagnosis = Array.from(this.cdmForm.controls.diagnosis.value);
     } else {
       this.diagnosisError = 'Please select diagnosis';
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.memberId.value) {
-      model.memberId = this.cdmForm.controls.memberId.value;
+      model.memberCode = this.cdmForm.controls.memberId.value;
     }
     if (!this.thereIsError) {
+      this.sharedServices.loadingChanged.next(true);
       this.cdmService.getPatientList(this.sharedServices.providerId, model, this.pageIndex, this.pageSize).subscribe(event => {
         if (event instanceof HttpResponse) {
-          console.log(event.body);
+          //console.log(event.body);
           if (event.body != null)
             this.patientList = event.body["patients"];
           this.length = event.body["totalElements"];
+          this.sharedServices.loadingChanged.next(false);
           //this.length = event.body["totalElements"]
         }
       }
@@ -152,15 +169,20 @@ export class ChronicPatientsComponent implements OnInit {
           if (err instanceof HttpErrorResponse) {
             console.log(err.message)
             this.patientList = null;
+            this.sharedServices.loadingChanged.next(false);
           }
         });
     }
   }
   openChronicPatientDetails(_patientId) {
+    let row={};
+    if(this.patientList !=null){
+      row=this.patientList.filter(f => f.patientId == _patientId)[0];
+    }
     const dialogRef = this.dialog.open(ChronicPatientDetailsComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false,
-      data: { patientId: _patientId }
+      data: row
     });
   }
   async downloadSheetFormat() {
@@ -178,11 +200,11 @@ export class ChronicPatientsComponent implements OnInit {
       this.policyError = 'Please fill policy number';
       this.thereIsError = true;
     }
-    if (this.cdmForm.controls.city.value) {
+    /*if (this.cdmForm.controls.city.value) {
       model.city = this.cdmForm.controls.city.value;
     } else {
       model.city = null;
-    }
+    }*/
     if (this.cdmForm.controls.region.value) {
       model.region = this.cdmForm.controls.region.value;
     } else {
@@ -198,7 +220,7 @@ export class ChronicPatientsComponent implements OnInit {
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.memberId.value) {
-      model.memberId = this.cdmForm.controls.memberId.value;
+      model.memberCode = this.cdmForm.controls.memberId.value;
     }
     if (!this.thereIsError) {
       event = this.cdmService.downloadExcelsheet(this.sharedServices.providerId, model);

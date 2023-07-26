@@ -14,9 +14,20 @@ export class CdmService {
     const request = new HttpRequest('POST', environment.chronicDiseaseManagement + requestUrl, body);
     return this.http.request(request);
   }
-  getPatientApproval(providerId: string, _patientId: string) {
+  getPatientApproval(providerId: string, model: any) {
     const requestUrl = `/cdm/providers/${providerId}/detail`;
-    const request = new HttpRequest('POST', environment.chronicDiseaseManagement + requestUrl, { patientId: _patientId });
+    const request = new HttpRequest('POST', environment.chronicDiseaseManagement + requestUrl, model);
+    return this.http.request(request);
+  }
+  getDiagnosisList() {
+    const requestUrl = `/cdm/lov/diagnosis`;
+    const request = new HttpRequest('GET', environment.chronicDiseaseManagement + requestUrl, { });
+    return this.http.request(request);
+  }
+
+  getRegionsList() {
+    const requestUrl = `/cdm/lov/regions`;
+    const request = new HttpRequest('GET', environment.chronicDiseaseManagement + requestUrl, { });
     return this.http.request(request);
   }
   downloadExcelsheet(providerId: string, model: any) {

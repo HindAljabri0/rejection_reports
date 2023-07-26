@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { forEach } from 'jszip';
 import { CdmService } from 'src/app/services/cdmService/cdm.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -21,11 +22,17 @@ export class ChronicPatientDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("patientId = "+JSON.stringify(this.data));
-    this.getData(this.data.patientId);
+    //console.log("data = "+JSON.stringify(this.data));
+    this.getData();
   }
-  getData(patientId) {
-    this.cdmService.getPatientApproval(this.sharedServices.providerId, patientId).subscribe(event => {
+  getData() {
+    let model:any = {};
+    model.policyNumber = this.data.policyNumber;
+    model.region = this.data.ResionCode != null ?this.data.ResionCode : '0';
+    model.diagnosis = this.data.diagnosis.map(p=> p.diagnosisCode);
+    model.memberCode=this.data.memberCode;
+    console.log("model = "+JSON.stringify(model));
+    this.cdmService.getPatientApproval(this.sharedServices.providerId, model).subscribe(event => {
       if (event instanceof HttpResponse) {
         console.log(event.body);
         if (event.body != null)
