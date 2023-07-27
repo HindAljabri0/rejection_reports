@@ -212,6 +212,7 @@ export class AuthService {
           || element['authority'].split('|')[1] == '25.72'
           || element['authority'].split('|')[1] == '31.0'
           || element['authority'].split('|')[1] == '32.0'
+          || element['authority'].split('|')[1] == '90.0'
         );
         if (hasClaimPrivileges) {
           authorities.forEach(element => {
@@ -233,6 +234,7 @@ export class AuthService {
           localStorage.setItem('provider_name', event.body['providerName']);
           localStorage.setItem('organizationId', event.body['organizationId']);
           localStorage.setItem('isHeadOffice',event.body['isHeadOffice']);
+          localStorage.setItem('hasDisplayedAnnouncementDialogue',"false");
           localStorage.setItem('headOfficeProviderId',event.body['headOfficeProviderId']!=null ? event.body['headOfficeProviderId']:'');
           const payers = event.body['payers'];
           let payersStr = '';

@@ -24,6 +24,8 @@ import { MedicationDaysUploadComponent } from './medication-days-upload/medicati
 import { SwitchGroupProviderComponent } from './switch-group-provider/switch-group-provider.component';
 import { AdvancePreauthTransactionsComponent } from './advance-preauth-transactions/advance-preauth-transactions.component';
 import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
+import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
+import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -34,6 +36,8 @@ const routes: Routes = [
   { path: 'beneficiary/add', component: BeneficiaryComponent },
   { path: 'add-preauthorization', component: AddPreauthorizationComponent },
   { path: 'preauthorization-transactions', component: PreauthorizationTransactionsComponent },
+  { path: 'add-prescription', component: AddPrescriptionComponent },
+  { path: 'prescription-transactions', component: PrescriptionTransactionsComponent },
   { path: 'advance-preauth-transactions', component: AdvancePreauthTransactionsComponent },
   { path: 'insurance-plans', component: InsurancePlanComponent },
   { path: 'payment-reconciliation', component: PaymentReconciliationComponent },

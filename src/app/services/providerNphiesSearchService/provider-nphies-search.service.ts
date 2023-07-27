@@ -371,10 +371,14 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.isRelatedClaim !=null) {
       requestURL += `&isRelatedClaim=${claimSearchCriteriaModel.isRelatedClaim}`;
     }
+    if (claimSearchCriteriaModel.reissueReason != null) {
+      requestURL += `&reissueReason=${claimSearchCriteriaModel.reissueReason}`;
+    }
+
 
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !isSearchByStatus  ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '') + '&page=' + claimSearchCriteriaModel.page + '&size=' + claimSearchCriteriaModel.pageSize;
-    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
+        const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);
   }
 

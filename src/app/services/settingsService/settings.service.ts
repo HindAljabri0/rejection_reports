@@ -11,6 +11,12 @@ export class SettingsService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getAllDiagnosisList() {
+    const requestUrl = `/chronic-desease/fetch`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestUrl);
+    return this.httpClient.request(request);
+  }
+
   getProviderMappingsWithCategories(providerId: string) {
     const requestUrl = `/providers/${providerId}/map-values?withCat=true`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestUrl);

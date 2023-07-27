@@ -299,6 +299,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     } else {
       // this.IsDiagnosisRequired = true;
       this.pageMode = 'CREATE';
+      this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
       this.isLoading = false;
 
     }
@@ -337,7 +338,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     //   this.disableControls();
     //   this.getClaimDetails();
     // }    
-    this.FormNphiesClaim.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
+  
     this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.fragment === 'CommunicationRequest') {
@@ -1762,6 +1763,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       if (this.FormNphiesClaim.controls.preAuthOfflineDate.value) {
         preAuthorizationModel.preAuthOfflineDate = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.preAuthOfflineDate.value)).utc();
       //  preAuthorizationModel.eligibilityOfflineDate = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.eligibilityOfflineDate.value)).utc();
+        
       }
       // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
       preAuthorizationModel.episodeId = this.FormNphiesClaim.controls.episodeId.value;
@@ -2357,7 +2359,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel = {};
 
-    this.otherDataModel.reIssueReason = response.reIssueReason;
+    this.otherDataModel.reIssueReason = response.reIssueReason;   
     if (this.otherDataModel.reIssueReason) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0].name : '';

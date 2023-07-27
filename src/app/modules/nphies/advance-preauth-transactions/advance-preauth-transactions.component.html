@@ -110,7 +110,8 @@
         </button>
     </div-->
 
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true"
+        *ngIf="transactionModel && transactions.length > 0">
         <div class="fixed-height fixed-height-sm">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
@@ -156,6 +157,27 @@
                                 [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
                                 | titlecase}}</span>
                         </td>
+                        <td class="actions">
+                            <ng-container *ngIf="transaction.status != 'cancelled'">
+                                <mat-menu #moreMenu="matMenu" xPosition="before">
+                                    <button mat-menu-item
+                                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial'  || transaction.status === 'not-required'"
+                                        (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                                        <mat-icon class="material-icons-outlined">replay</mat-icon>
+                                        <span>Follow Up/Add Related</span>
+                                    </button>
+                                    <button mat-menu-item
+                                        (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')">
+                                        <mat-icon class="material-icons-outlined">close</mat-icon>
+                                        <span>Cancel</span>
+                                    </button>
+                                </mat-menu>
+                                <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu"
+                                    *ngIf="transaction.status !== 'Error'">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                            </ng-container>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -168,17 +190,17 @@
 
     <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
         <div class="form-group page-select">
-          <label class="control-label">Go to page: </label>
-          <mat-form-field class="form-control custom-select-control">
-            <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-              <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+            <label class="control-label">Go to page: </label>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         <div class="material-paginator">
-          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-            (page)="paginatorAction($event)">
-          </mat-paginator>
+            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+                (page)="paginatorAction($event)">
+            </mat-paginator>
         </div>
-      </div>
+    </div>
 </div>

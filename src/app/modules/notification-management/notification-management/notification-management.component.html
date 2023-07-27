@@ -6,14 +6,17 @@
                 New</button>
         </div>
     </div>
+
+    <div *ngIf="Announcements.length>0">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
                         <th class="long-text">Subject.</th>
+                        <th class="long-text">User Name.</th>
                         <th>Description </th>
-                        <th>Targeted Providers</th>
+                        <!-- <th>Targeted Providers</th> -->
                         <th>Duration</th>
                         <th width="10"></th>
                     </tr>
@@ -23,18 +26,20 @@
                         <td class="row-click" (click)="openViewNotificationDialog(Announcement.id)">
                             {{Announcement.subject}}</td>
                         <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
-                            {{Announcement.descreption}}</td>
+                            {{Announcement.userName}}</td>
                         <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
-                            {{Announcement.providerId}}</td>
+                            {{Announcement.descreption}}</td>
+                        <!-- <td class="text-clip row-click" (click)="openViewNotificationDialog(Announcement.id)">
+                            {{convertProvidersfromStringToList(Announcement.providerId)}}</td> -->
                         <td class="text-nowrap row-click" (click)="openViewNotificationDialog(Announcement.id)">
                             {{Announcement.startDate | date:'MM/dd/yyyy'}} -{{Announcement.endDate| date:'MM/dd/yyyy'}}
                         </td>
                         <td class="actions">
-                            <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
+                            <!-- <button type="button" mat-icon-button class="text-primary" matTooltip="Resend Notification">
                                 <mat-icon>refresh</mat-icon>
-                            </button>
+                            </button> -->
                             <button type="button" mat-icon-button class="text-primary" matTooltip="Delete"
-                                (click)="deleteAnnouncements(Announcement.id)">
+                                (click)="dialogConfirtToDelete(Announcement.id)">
                                 <mat-icon class="material-icons-outlined">delete</mat-icon>
                             </button>
                         </td>
@@ -43,4 +48,13 @@
             </table>
         </div>
     </ng-scrollbar>
+    <div class="pagination-header">
+        <div class="material-paginator">
+            <mat-paginator [length]="totalPages" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="handlePageChange($event)">
+            </mat-paginator>
+        </div>
+    </div>
+    </div>
+    <app-empty-state *ngIf="Announcements.length=== 0" message='No Announcements found!'></app-empty-state>
 </div>

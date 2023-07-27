@@ -1,0 +1,703 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Prescription Request</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="form-title pt-0">
+            <h5>Beneficary Info</h5>
+        </div>
+        <div class="form-group">
+            <div class="checkbox-group inline">
+                <mat-checkbox color="primary">New born?</mat-checkbox>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="form-group flex-grow-1">
+                <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary<span class="asterisk">*</span></label>
+                <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option>Option 1</mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="form-group flex-grow-1">
+                <label class="control-label">Select a Subscriber<span class="asterisk">*</span></label>
+                <input type="text" class="form-control search-box" placeholder="Search for subscriber by name or document ID..." [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option>Option 1</mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="form-group pl-3 pr-3">
+                <label class="control-label">&nbsp;</label>
+                <span class="pt-2 d-block semibold">OR</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Subscriber</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Insurance Plan</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+
+        <h5 class="form-title">Pre Authorization Info</h5>
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
+                    <div class="date-picker">
+                        <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered">
+                        <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
+                        <owl-date-time #dateOrderedCtrl></owl-date-time>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Type<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Type</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Sub Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Sub Type</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Eligibility Response Identifier (Value)</label>
+                    <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)">
+                </div>
+            </div>
+
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Eligibility Response Identifier (URL)</label>
+                    <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)">
+                </div>
+            </div>
+
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Offline Eligibility ID</label>
+                    <input class="form-control" placeholder="Enter Offline Eligibility ID">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Offline Eligibility Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date">
+                        <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                        <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Related Preauthorization Reference No(s).
+                        <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
+                            info</mat-icon>
+                    </label>
+                    <tag-input [placeholder]="'Enter Related Preauthorization Reference No(s)'" [addOnBlur]="true">
+                    </tag-input>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Referring Provider</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Item" noEntriesFoundLabel="No Referring Provider found">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option value="">Select Referring Provider</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Other Referring Provider</label>
+                    <input class="form-control" placeholder="Enter Referring Provider Name" />
+                </div>
+            </div>
+
+        </div>
+
+        <h4>Care team component goes here</h4>
+
+        <h4>Diagnosis component goes here</h4>
+
+        <h5 class="form-title">
+            <span>Supporting Info</span>
+        </h5>
+        <h4>Supporting info component goes here</h4>
+
+        <h5 class="form-title">
+            Accident
+            <mat-slide-toggle class="ml-2" color="primary">
+            </mat-slide-toggle>
+        </h5>
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Accident Type<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Accident Type</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Street Name</label>
+                    <input placeholder="Enter street name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">City</label>
+                    <input placeholder="Enter city" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">State/Province</label>
+                    <input placeholder="Enter state/province" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Country</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option value="">Select Country</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Date<span class="asterisk">*</span></label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date">
+                        <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
+                        <mat-datepicker #accidentDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="form-title">
+            <span>Items<span class="asterisk">*</span></span>
+            <div class="ml-auto">
+                <button type="button" class="btn-icon btn-primary" (click)="openAddEditPrescriptionDialog()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </h5>
+
+        <div class="table-responsive">
+            <table class="primary-grid claim-view-table">
+                <thead>
+                    <tr>
+                        <th width="10"></th>
+                        <th>Type</th>
+                        <th>Code - Description</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-primary text-center row-click" width="10">
+                            <mat-icon class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click">1</td>
+                        <td class="row-click">item itemCode - item itemDescription</td>
+                        <td class="actions">
+                            <mat-menu #itemsActionsMenu xPosition="before">
+                                <ng-template matMenuContent>
+                                    <button mat-menu-item type="button">
+                                        <mat-icon class="material-icons-outlined">add</mat-icon>
+                                        <span>Add Details</span>
+                                    </button>
+                                    <button mat-menu-item type="button">
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button mat-menu-item type="button">
+                                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </ng-template>
+                            </mat-menu>
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div class="box mb-2">
+                                <h5 class="align-self-center medium pb-2">Item Info</h5>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Prescribed Medication</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">GTIN Code</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Non Standard Code</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Non Standard Desc.</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Absence of Scientific Code</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Body Site</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Sub Site</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Authored On</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Supporting Info</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Diagnosis</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Care Teams</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Is Package?</td>
+                                                    <td>
+                                                        <span>Yes</span>
+                                                        <span>No</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Strength</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Quantity</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box mb-2">
+                                <h5 class="align-self-center medium pb-2">Dosage Info</h5>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Note</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Patient Instruction</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Route</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Dose Type</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Dose Range</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Dose Unit</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Rate Type</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Rate Ratio</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Rate Unit</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box mb-2">
+                                <h5 class="align-self-center medium pb-2">Dosage Timing</h5>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Start Date</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">End Date</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Refill</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Duration</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="inline-label-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label">Frequency</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">Period</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                <table class="primary-grid claim-view-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="10"></th>
+                                            <th>Type</th>
+                                            <th>Code - Description</th>
+                                            <th width="10"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-primary text-center row-click" width="10">
+                                                <mat-icon class="size-21">add_circle_outline</mat-icon>
+                                                <mat-icon class="size-21">remove_circle_outline</mat-icon>
+                                            </td>
+                                            <td class="row-click">1</td>
+                                            <td class="row-click">item itemCode - item itemDescription</td>
+                                            <td class="actions">
+                                                <mat-menu #itemsActionsMenu xPosition="before">
+                                                    <ng-template matMenuContent>
+                                                        <button mat-menu-item type="button">
+                                                            <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                                            <span>Edit</span>
+                                                        </button>
+                                                        <button mat-menu-item type="button">
+                                                            <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                    </ng-template>
+                                                </mat-menu>
+                                                <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="box mb-2">
+                                                    <h5 class="align-self-center medium pb-2">Item Detail Info</h5>
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Prescribed Medication</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">GTIN Code</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Non Standard Code</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Non Standard Desc.</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Absence of Scientific Code</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Strength</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Quantity</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="box mb-2">
+                                                    <h5 class="align-self-center medium pb-2">Dosage Info</h5>
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Note</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Patient Instruction</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Route</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Dose Type</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Dose Range</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Dose Unit</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Rate Type</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Rate Ratio</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Rate Unit</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="box">
+                                                    <h5 class="align-self-center medium pb-2">Dosage Timing</h5>
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Start Date</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">End Date</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Refill</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Duration</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table class="inline-label-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="label">Frequency</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="label">Period</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-empty-state message='No Item found!'>
+        </app-empty-state>
+        <app-empty-state message='Item required!'>
+        </app-empty-state>
+
+
+        <hr class="hr spaced" />
+
+        <div class="form-group text-right btn-list">
+            <button type="submit" mat-flat-button color="primary">
+                <span>Request Prescription</span>
+            </button>
+        </div>
+
+    </div>
+</div>
