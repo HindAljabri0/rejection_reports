@@ -314,7 +314,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
+                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin && !envStaging && !envProd">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Prescription Verification</mat-panel-title>
                     </mat-expansion-panel-header>
