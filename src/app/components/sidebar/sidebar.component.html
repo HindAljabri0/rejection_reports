@@ -456,7 +456,7 @@
         </li>
       </ul>
       
-      <ul class="nav-list">
+      <!--ul class="nav-list">
         <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation">
           <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
             <span class="text">Payment Reconciliation</span>
@@ -464,7 +464,7 @@
           </a>
           <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>
-      </ul>
+      </ul-->
 
       <!-- <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin && !envStaging && !envProd ">
         <li>
@@ -473,7 +473,7 @@
           </a>
         </li>
       </ul> -->
-      <mat-accordion>
+      <!--mat-accordion>
         <mat-expansion-panel hideToggle
           *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isAdmin ||userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
           <mat-expansion-panel-header>
@@ -487,7 +487,7 @@
             <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
               <a routerLink="/nphies/configurations" routerLinkActive="is-active">
                 <!-- <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
-              <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" /> -->
+              <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" /> 
                 <span class="text">Code Mapping</span>
               </a>
             </li>
@@ -510,7 +510,7 @@
             </li>
           </ul>
         </mat-expansion-panel>
-      </mat-accordion>
+      </mat-accordion-->
 
             <ng-container *ngIf="userPrivileges.ProviderPrivileges.Contract_Bill.isAdmin || userPrivileges.ProviderPrivileges.Contract_Bill.canAccessContract">
                 <div class="list-title">
