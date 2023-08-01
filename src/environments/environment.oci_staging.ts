@@ -43,5 +43,5 @@ export const environment = {
     nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
     chronicDiseaseManagement: `${host}/chronic-disease-management`,
-    feedbacksurveyUrl: `feedback.${host}-eclaims.waseel.com/en/`,
+    feedbacksurveyUrl: `https://feedback.dr-eclaims.waseel.com/en/`,
 };
