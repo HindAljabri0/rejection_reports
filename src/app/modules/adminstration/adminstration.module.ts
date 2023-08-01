@@ -21,6 +21,8 @@ import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-pre
 import { FeedbackSurveyComponent } from './feedback-survey/feedback-survey.component';
 import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedback-survey-details.component';
 import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-provider/feedback-survey-select-provider.component';
+import { AddFeedbackDateDialogComponent } from './feedback-select-date/feedback-select-date.component';
+import { FeedbackPreviewComponent } from './feedback-preview/feedback.preview.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-
     CancelPreviousClaimComponent,
     FeedbackSurveyComponent,
     FeedbackSurveyDetailsComponent,
-    FeedbackSurveySelectProviderComponent
+    FeedbackSurveySelectProviderComponent,
+    AddFeedbackDateDialogComponent,
+    FeedbackPreviewComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -69,7 +73,8 @@ import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-
   ],
   entryComponents: [
     AddProviderContractDialogComponent,
-    FeedbackSurveySelectProviderComponent
+    FeedbackSurveySelectProviderComponent,
+    AddFeedbackDateDialogComponent
   ]
 })
 export class AdminstrationModule { }

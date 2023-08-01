@@ -4,11 +4,11 @@ import { AuthService } from 'src/app/services/authService/authService.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-feedback-survey-details',
-  templateUrl: './feedback-survey-details.component.html',
+  selector: 'app-feedback-preview',
+  templateUrl: './feedback-preview.component.html',
   styles: [],
 })
-export class FeedbackSurveyDetailsComponent implements OnInit {
+export class FeedbackPreviewComponent implements OnInit {
   AccessToken: string;
   feedbacksurveyUrl: string;
 
@@ -22,7 +22,7 @@ export class FeedbackSurveyDetailsComponent implements OnInit {
   constructor(public authService: AuthService) {}
   ngOnInit(): void {
     this.getUserData();
-    this.feedbacksurveyUrl = environment.feedbacksurveyUrl;
+    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';
   }
 
   getUserData() {
