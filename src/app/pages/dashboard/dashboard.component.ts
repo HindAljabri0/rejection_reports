@@ -24,6 +24,7 @@ import { HttpRequestExceptionHandler } from 'src/app/components/reusables/feedba
 export class DashboardComponent implements OnInit {
 
     submitted: boolean = false;
+
     dashboardTour: GuidedTour = {
         tourId: '1',
         skipCallback: (stepNumber) => {
@@ -198,13 +199,17 @@ export class DashboardComponent implements OnInit {
         let userName = this.commen.authService.getAuthUsername();
 
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
-        
+       
         if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM ) {
 
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
             dialogConfig.autoFocus = true;
             dialogConfig.disableClose= true;
+            dialogConfig.data = {
+                providerId: ProviderId,
+                username: userName,
+            }
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
 
             

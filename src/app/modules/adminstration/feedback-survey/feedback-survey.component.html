@@ -1,4 +1,7 @@
-<div class="animate__animated animate__faster animate__fadeIn block-card"*ngIf="surveyFlag" >
+<div class="float-right"  *ngIf="!surveyFlag">
+    <button type="button" (click)="reloadPage()" mat-flat-button color="primary">Back</button>
+</div>
+<div class="animate__animated animate__faster animate__fadeIn block-card" *ngIf="surveyFlag" >
     <div class="block-header">
         <p class="align-self-center">Feedback Surveys</p>
         <div class="ml-auto my-n2 mr-n2">
@@ -19,7 +22,7 @@
                 <tbody>
                     <tr *ngFor="let survey of content.content" >
                         <td>{{survey.name}}</td>
-                        <td (click)="openPreviewDialog(survey)">{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
+                        <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.startDate | date: 'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
                         <td class="text-center">
                             <mat-slide-toggle [checked]="survey.isActive" [disabled]="true"  color="primary"></mat-slide-toggle>
                         </td>
@@ -37,12 +40,13 @@
             </table>
         </div>
     </ng-scrollbar>
-    <mat-paginator
-  [length]="content.content.length"
-  [pageSize]="10"
-  
-></mat-paginator>
-
+    <div class="pagination-header">
+        <div class="material-paginator">
+            <mat-paginator [length]="totalPages" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="handlePageChange($event)">
+            </mat-paginator>
+        </div>
+    </div>
 </div>
 
 

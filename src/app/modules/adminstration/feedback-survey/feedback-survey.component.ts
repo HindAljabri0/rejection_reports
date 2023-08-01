@@ -8,13 +8,16 @@ import { FeedbackDate } from '../feedback-select-date/feedback-date.model';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-feedback-survey',
   templateUrl: './feedback-survey.component.html',
-  styles: [],
+  styleUrls: ['./feedback-survey.component.css'] 
 })
 export class FeedbackSurveyComponent implements OnInit {
+  totalPages: any;
+  Surveypage: any[];
   constructor(
     // tslint:disable-next-line:variable-name
     private dialog: MatDialog,
@@ -38,7 +41,7 @@ export class FeedbackSurveyComponent implements OnInit {
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'http://localhost:5000/') {
+    if (event.origin !== environment.feedbacksurveyUrl) {
       return; // Only accept messages from the specific origin
     }
   }
@@ -53,6 +56,9 @@ export class FeedbackSurveyComponent implements OnInit {
     this.authService.evaluateUserPrivileges();
     this.AccessToken = this.authService.getAccessToken();
   }
+  reloadPage() {
+    window.location.reload();
+  }
   preview(survey) {
     this.surveyFlag = false;
 
@@ -62,7 +68,7 @@ export class FeedbackSurveyComponent implements OnInit {
       // tslint:disable-next-line:no-shadowed-variable
       const iframe = document.createElement('iframe');
       iframe.id = 'myIframe';
-      iframe.src = 'http://localhost:5000/preview';
+      iframe.src = environment.feedbacksurveyUrl + '/preview';
       iframe.width = '100%'; // Set the width to 400 pixels
       iframe.height = '600px'; // Set the height to 300 pixels
 
@@ -83,10 +89,11 @@ export class FeedbackSurveyComponent implements OnInit {
   }
 
   getSurvey() {
-    this.feedbackservice.getSurvey().subscribe((event) => {
+    this.feedbackservice.getSurvey(this.page, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
         console.log(event.body);
         this.content = event.body;
+        this.totalPages = this.content.content.length;
       }
     });
   }
@@ -154,4 +161,11 @@ export class FeedbackSurveyComponent implements OnInit {
       panelClass: ['primary-dialog', 'dialog-lg'],
     });
   }
+  handlePageChange(event) {
+    console.log(event.pageIndex)
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getSurvey();
+  }
 }
+

@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 
 import { AuthService } from 'src/app/services/authService/authService.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-feedback-survey-details',
@@ -9,10 +10,11 @@ import { AuthService } from 'src/app/services/authService/authService.service';
 })
 export class FeedbackSurveyDetailsComponent implements OnInit {
   AccessToken: string;
+  feedbacksurveyUrl: string;
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'http://localhost:5000/') {
+    if (event.origin !== environment.feedbacksurveyUrl) {
       return; // Only accept messages from the specific origin
     }
   }
@@ -20,6 +22,7 @@ export class FeedbackSurveyDetailsComponent implements OnInit {
   constructor(public authService: AuthService) {}
   ngOnInit(): void {
     this.getUserData();
+    this.feedbacksurveyUrl = environment.feedbacksurveyUrl;
   }
 
   getUserData() {
