@@ -1,15 +1,15 @@
 <div class="primary-dialog-header has-border align-items-center">
-    <h5 class="primary-dialog-title semibold"> {{ dataModel.patientInfo.patientId}} - {{dataModel.patientInfo.patientName }}</h5>
+    <h5 class="primary-dialog-title semibold"> {{this.data.patientId}} - {{dataModel.patientInfo.patientName }}</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close ml-auto" matRipple></button>
 </div>
 <div class="primary-dialog-body no-footer">
     <div class="row small-gutter">
-        <div class="col-4 col-xxl-3">
+        <!--div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Patient ID</div>
                 <p class="form-control-static">{{dataModel.patientInfo.patientId}}</p>
             </div>
-        </div>
+        </div-->
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Patient Name</div>
@@ -43,9 +43,8 @@
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Policy Duration</div>
-                <p class="form-control-static"> {{dataModel.patientInfo.policyStartDate | date:
-                    'dd-MM-yyyy'}} - {{dataModel.patientInfo.policyEndDate | date:
-                    'dd-MM-yyyy'}} </p>
+                <p class="form-control-static"> {{dataModel.patientInfo.policyStartDate }} /
+                    {{dataModel.patientInfo.policyEndDate }} </p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -57,8 +56,7 @@
         <div class="col-4 col-xxl-3">
             <div class="form-group form-group-static">
                 <div class="control-label">Date of Birth</div>
-                <p class="form-control-static">{{dataModel.patientInfo.dob | date:
-                    'dd-MM-yyyy'}}</p>
+                <p class="form-control-static">{{dataModel.patientInfo.dob }}</p>
             </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -78,28 +76,31 @@
             <thead>
                 <tr>
                     <th width="10"></th>
+                    <th>MRN</th>
                     <th>Approval No.</th>
                     <th>Approval Date</th>
                     <th>Provider Name</th>
-                    <th>City</th>
                     <th>Region</th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody *ngFor="let approval of dataModel.approvals; let index">
+            <tbody *ngFor="let approval of dataModel.approvals; let index;">
                 <tr>
                     <td class="text-primary row-click" width="10" (click)="toggleRow(index)">
                         <mat-icon *ngIf="currentDetailsOpen!=index" class="size-21">add_circle_outline</mat-icon>
                         <mat-icon *ngIf="currentDetailsOpen==index" class="size-21">remove_circle_outline</mat-icon>
                     </td>
+                    <td class="row-click" (click)="toggleRow(index)">{{dataModel.patientInfo.patientId}}</td>
                     <td class="row-click" (click)="toggleRow(index)">{{approval.approvalNumber}}</td>
-                    <td class="row-click" (click)="toggleRow(index)">{{approval.approvalDate  | date:
+                    <td class="row-click" (click)="toggleRow(index)">{{approval.approvalDate | date:
                         'dd-MM-yyyy'}}</td>
                     <td class="row-click" (click)="toggleRow(index)">{{approval.providerName}}</td>
-                    <td class="row-click" (click)="toggleRow(index)">{{approval.city}}</td>
+
                     <td class="row-click" (click)="toggleRow(index)">{{approval.region}}</td>
                     <td>
-                        <a href="{{approval.prescriptionUrl}}" class="primary-link">View Prescription</a>
+                        <span *ngFor="let url of approval.prescriptionUrl; let i;" >
+                            <a href={{url}} class="primary-link">View Prescription </a>
+                        </span>
                     </td>
                 </tr>
                 <tr *ngIf="currentDetailsOpen==index">
@@ -114,10 +115,15 @@
                                         <th>Diagnosis Name</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="approval.diagnosis != null">
                                     <tr *ngFor="let diagnose of approval.diagnosis">
                                         <th>{{diagnose.diagnosisCode}}</th>
                                         <th>{{diagnose.diagnosisDescription}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="approval.diagnosis == null">
+                                    <tr class="text-center">
+                                        <th colspan="2">No Diagnosis Found </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -134,12 +140,17 @@
                                         <th>Quantity</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="approval.medications!=null">
                                     <tr *ngFor="let med of approval.medications">
                                         <td>{{med.tradeName}}</td>
                                         <td>{{med.code}}</td>
                                         <td>{{med.dose}}</td>
                                         <td>{{med.quantity}}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="approval.medications==null">
+                                    <tr class="text-center">
+                                        <th colspan="4">No Medications Found </th>
                                     </tr>
                                 </tbody>
                             </table>
