@@ -50,7 +50,7 @@ export const environment = {
     nphiesPollApprovalManagement: `${host}:8093`,
     nphiesPollClaimManagement: `${host}:8097`,
     chronicDiseaseManagement: `${host}:8199`,
-    feedbacksurveyUrl: `feedback.${host}-eclaims.waseel.com/en/`,
+    feedbacksurveyUrl: `https://feedback.dr-eclaims.waseel.com/en/`,
 };
 
 /*
