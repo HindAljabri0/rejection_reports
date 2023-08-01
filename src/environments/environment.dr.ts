@@ -40,6 +40,5 @@ export const environment = {
     eclaimsTicketManagement: `${host}/eclaims-ticket-management`,
     nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
-    chronicDiseaseManagement: `${host}/chronic-disease-management`,
-    feedbacksurveyUrl: `https://feedback.dr-eclaims.waseel.com/en/`,
+    chronicDiseaseManagement: `${host}/chronic-disease-management`,   
 };

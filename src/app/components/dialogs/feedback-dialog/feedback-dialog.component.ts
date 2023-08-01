@@ -27,7 +27,6 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required = true;
   AccessToken: string;
-  feedbacksurveyUrl: string;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -40,16 +39,13 @@ export class FeedbackDialogComponent implements OnInit {
   ) { }
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    console.log(event, 'aaa');
-    if (event.origin !== environment.feedbacksurveyUrl) {
-      console.log(event, 'aabbbbba');
+    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en') {
       return; // Only accept messages from the specific origin
     }
   }
 
   ngOnInit(): void {
     this.getUserData();
-    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';
   }
 
 

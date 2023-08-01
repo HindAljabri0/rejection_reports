@@ -10,11 +10,10 @@ import { environment } from 'src/environments/environment';
 })
 export class FeedbackPreviewComponent implements OnInit {
   AccessToken: string;
-  feedbacksurveyUrl: string;
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== environment.feedbacksurveyUrl) {
+    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en') {
       return; // Only accept messages from the specific origin
     }
   }
@@ -22,7 +21,6 @@ export class FeedbackPreviewComponent implements OnInit {
   constructor(public authService: AuthService) {}
   ngOnInit(): void {
     this.getUserData();
-    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';
   }
 
   getUserData() {

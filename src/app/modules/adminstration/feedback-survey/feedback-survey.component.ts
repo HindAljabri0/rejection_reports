@@ -8,7 +8,7 @@ import { FeedbackDate } from '../feedback-select-date/feedback-date.model';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
-import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-feedback-survey',
@@ -41,7 +41,7 @@ export class FeedbackSurveyComponent implements OnInit {
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== environment.feedbacksurveyUrl) {
+    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en/preview') {
       return; // Only accept messages from the specific origin
     }
   }
@@ -68,7 +68,7 @@ export class FeedbackSurveyComponent implements OnInit {
       // tslint:disable-next-line:no-shadowed-variable
       const iframe = document.createElement('iframe');
       iframe.id = 'myIframe';
-      iframe.src = environment.feedbacksurveyUrl + '/preview';
+      iframe.src = 'https://feedback.dr-eclaims.waseel.com/en/preview';
       iframe.width = '100%'; // Set the width to 400 pixels
       iframe.height = '600px'; // Set the height to 300 pixels
 
