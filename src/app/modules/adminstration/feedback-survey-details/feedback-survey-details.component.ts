@@ -13,7 +13,7 @@ export class FeedbackSurveyDetailsComponent implements OnInit {
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en') {
+    if (event.origin !== 'https://dr-eclaims.waseel.com/en/') {
       return; // Only accept messages from the specific origin
     }
   }
