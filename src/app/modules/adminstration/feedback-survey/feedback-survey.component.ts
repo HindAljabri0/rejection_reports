@@ -93,7 +93,7 @@ export class FeedbackSurveyComponent implements OnInit {
       if (event instanceof HttpResponse) {
         console.log(event.body);
         this.content = event.body;
-        this.totalPages = this.content.content.length;
+        this.totalPages = event.body["totalElements"] as string;
       }
     });
   }
