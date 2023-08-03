@@ -18,6 +18,7 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 export class FeedbackSurveyComponent implements OnInit {
   totalPages: any;
   Surveypage: any[];
+  surveyEditFlag = true;
   constructor(
     // tslint:disable-next-line:variable-name
     private dialog: MatDialog,
@@ -118,37 +119,29 @@ export class FeedbackSurveyComponent implements OnInit {
   }
 
   getChecked(survey: any) {
-    this.duplicateCounter++;
-    const postData: FeedbackDate = {
-      surveyName: survey.name + 'copy(${this.duplicateCounter})',
-      content: survey.content,
-      surveyId: undefined,
-      startDate: undefined,
-      closeDate: undefined,
-      providerIds: undefined,
-      isActive: undefined,
-    };
-
-    this.feedbackservice.postSurvey(postData).subscribe(
-      (event) => {
-        if (event) {
-          const response = event;
-          this.dialogService.openMessageDialog({
-            title: '',
-            message: `Survey Cloned Successfully`,
-            isError: false,
-          });
-          this.getSurvey();
-          console.log(response);
-        }
-      },
-      (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }
-    );
-  }
+    this.surveyEditFlag = false;
+    
+       // tslint:disable-next-line:no-shadowed-variable
+       const iframe = document.createElement('iframe');
+       iframe.id = 'myIframe';
+       iframe.src = 'https://feedback.dr-eclaims.waseel.com/en/edit';
+       iframe.width = '100%'; // Set the width to 400 pixels
+       iframe.height = '600px'; // Set the height to 300 pixels
+ 
+       // Add the iframe to the desired container or the document's body
+       document.body.appendChild(iframe);
+       const token = this.authService.getAccessToken();
+       const user = this.authService.getAuthUsername();
+       // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
+       iframe.onload = function() {
+         const authorizationData = {
+           token,
+           Title: survey,
+           userName: user,
+         };
+         iframe.contentWindow.postMessage(authorizationData, iframe.src);
+       };
+     }
 
   openPreviewDialog(value: any) {
     const dialogRef = this.dialog.open(AddFeedbackDateDialogComponent, {

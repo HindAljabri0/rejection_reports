@@ -1,7 +1,7 @@
-<div class="float-right"  *ngIf="!surveyFlag">
+<div class="float-right"  *ngIf="!surveyFlag || !surveyEditFlag">
     <button type="button" (click)="reloadPage()" mat-flat-button color="primary">Back</button>
 </div>
-<div class="animate__animated animate__faster animate__fadeIn block-card" *ngIf="surveyFlag" >
+<div class="animate__animated animate__faster animate__fadeIn block-card" *ngIf="surveyFlag || surveyEditFlag" >
     <div class="block-header">
         <p class="align-self-center">Feedback Surveys</p>
         <div class="ml-auto my-n2 mr-n2">
