@@ -79,8 +79,16 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     this.isActive = this.data.status;
     this.filteredProviders = this.providers;
     this.announcementForm.controls.status.setValue(this.data.details.isActive);
-    this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
-    this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));
+    if (this.data.details.startDate === null ) {
+      this.announcementForm.controls.startDateControl.setValue(new Date());  
+    }
+    if (this.data.details.closeDate === null ) {    
+      this.announcementForm.controls.closeDateControl.setValue(new Date());   
+    }
+    else {
+      this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
+      this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));  
+    }      
     this.announcementForm.controls.providerIds.setValue(this.data.details.providerId);
   }
 
