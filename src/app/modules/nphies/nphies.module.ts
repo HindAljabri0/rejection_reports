@@ -86,6 +86,10 @@ import { AdvancePreauthTransactionsComponent } from './advance-preauth-transacti
 import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
 import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
+import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
+import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
+import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
+import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -147,7 +151,11 @@ import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/
     TwoDigitDecimaNumberDirective,
     AdvancePreauthTransactionsComponent,
     AttachmentsReportComponent,
-    PbmValidationResponseSummaryDialogComponent
+    PbmValidationResponseSummaryDialogComponent,
+    AddPrescriptionComponent,
+    PrescriptionTransactionsComponent,
+    AddEditPrescriptionItemComponent,
+    ViewPrescriptionDetailsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -190,7 +198,9 @@ import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/
     MedicationDaysUploadComponent,
     AddMedicationSupplyDialogComponent,
     ViewPrintPreviewDialogComponent,
-    PbmValidationResponseSummaryDialogComponent
+    PbmValidationResponseSummaryDialogComponent,
+    AddEditPrescriptionItemComponent,
+    ViewPrescriptionDetailsDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent

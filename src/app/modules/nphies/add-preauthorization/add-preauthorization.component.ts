@@ -233,12 +233,15 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+   
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
+      this.FormPreAuthorization.controls.transfer.setValue(this.data.transfer)
       this.getRefferalProviders();
       this.defualtPageMode = "";
     } else {
@@ -246,6 +249,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.defualtPageMode = "CREATE"
     }
     this.getProviderTypeConfiguration();
+   
   }
   getPBMValidation() {
     this.adminService.checkIfNphiesApprovalPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
@@ -579,6 +583,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   getRefferalProviders() {
+    this.sharedServices.loadingChanged.next(true);
     this.IsRefferalProviderLoading = true;
     this.FormPreAuthorization.controls.referral.disable();
     this.superAdminService.getProviders().subscribe(event => {
@@ -597,10 +602,12 @@ export class AddPreauthorizationComponent implements OnInit {
           .subscribe(() => {
             this.filterRefferalProviders();
           });
+          this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
       if (err instanceof HttpErrorResponse) {
         console.log('Error getting referrals');
+        this.sharedServices.loadingChanged.next(false);
       }
     });
   }
@@ -1787,9 +1794,10 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model = {};
       if (this.claimReuseId) {
         this.model.claimReuseId = this.claimReuseId;
-      } else {
-        this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
       }
+     
+        this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
+      
 
       if (this.FormPreAuthorization.controls.otherReferral.value) {
         this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
@@ -2234,7 +2242,10 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
   getTransactionDetails(requestId = null, responseId = null) {
+
+
     this.sharedServices.loadingChanged.next(true);
+
     // tslint:disable-next-line:max-line-length
     this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {

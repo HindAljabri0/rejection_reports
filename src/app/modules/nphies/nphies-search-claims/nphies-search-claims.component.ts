@@ -152,6 +152,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     { key: 'PATIENTFILENO', value: 'patientFileNO' },
     { key: 'CLAIMNET', value: 'netAmount' },
     { key: 'ISRELATEDCLAIM', value: 'isRelatedClaim' },
+    { key: 'ISREISSUED', value: 'reissueReason' },
     //{ key: 'BATCHNUM', value: 'batchNo' },
   ];
   appliedFilters: any = [];
@@ -229,7 +230,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
   async fetchData() {
     this.commen.searchIsOpenChange.next(true);
-    this.claims = new Array();
+    this.claims = new Array();  
     this.summaries = new Array();
     this.commen.loadingChanged.next(true);
     this.selectedClaims = new Array();
@@ -256,6 +257,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
         isRelatedClaim:this.params.isRelatedClaim,
+        reissueReason:this.params.reissueReason,
 
         statuses: this.params.claimStatus!=null?[this.params.claimStatus]:['All']
       }));
@@ -395,6 +397,7 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
+    this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
 
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
@@ -529,6 +532,7 @@ console.log(this.isSearchByStatus)
     this.claimSearchCriteriaModel.toDate = this.params.to;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
+    this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
     console.log(JSON.stringify(this.claimSearchCriteriaModel));
     this.providerNphiesSearchService.getClaimResults(this.claimSearchCriteriaModel, this.isSearchByStatus
     ).subscribe((event) => {
@@ -739,6 +743,7 @@ console.log(this.isSearchByStatus)
     this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate : this.params.from;
     this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
     this.params.isRelatedClaim  = this.params.filter_isRelatedClaim ? this.params.filter_isRelatedClaim : this.params.isRelatedClaim;
+    this.params.reissueReason  = this.params.reissueReason ? this.params.reissueReason : this.params.reissueReason;
   }
   get hasData() {
     this.extraNumbers = new Array();
@@ -1079,7 +1084,7 @@ console.log(this.isSearchByStatus)
       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
     }
   }
-  searchClaimBased(key: string) {
+  searchClaimBased(key: string) {    
     const filterKey = this.allFilters.find(ele => ele.key === key);
     const data = {
       key: filterKey.key,
@@ -1114,8 +1119,11 @@ console.log(this.isSearchByStatus)
       case ClaimListFilterSelection.ISREALTED:
         this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
         break;
+      case ClaimListFilterSelection.ISREISSUED:
+        this.params.reissueReason = this.claimList.reissueReason;
+        break;
     }
-
+    
     console.log("this.params = "+JSON.stringify(this.params));
     this.appliedFilters.push(data);
     this.pageIndex = 0;
@@ -1135,7 +1143,8 @@ console.log(this.isSearchByStatus)
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_isRelatedClaim = ClaimListFilterSelection.ISREALTED ? this.claimList.isRelatedClaim : this.params.filter_isRelatedClaim;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
-    
+    this.params.reissueReason = ClaimListFilterSelection.ISREISSUED ? this.claimList.reissueReason : this.params.reissueReason;
+
   }
 
   clearFilters(name: string, key = false) {
@@ -1182,6 +1191,10 @@ console.log(this.isSearchByStatus)
           case ClaimListFilterSelection.ISREALTED:
             this.params.filter_isRelatedClaim = this.claimList.isRelatedClaim;
             delete this.params.filter_isRelatedClaim;
+            break;
+             case ClaimListFilterSelection.ISREISSUED:
+            this.params.reissueReason = this.claimList.reissueReason;
+            delete this.params.reissueReason;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1240,6 +1253,9 @@ console.log(this.isSearchByStatus)
     if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
     }
+    if (this.params.reissueReason != null && this.params.reissueReason !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.ISREISSUED);
+    }
   }
 
   setReloadedFilters(key: string) {
@@ -1284,6 +1300,9 @@ console.log(this.isSearchByStatus)
     }
     if (this.params.filter_isRelatedClaim != null  && this.params.filter_isRelatedClaim !== undefined) {
       this.setReloadedInputFilters('isRelatedClaim', this.params.filter_isRelatedClaim +"");
+    }
+    if (this.params.reissueReason != null  && this.params.reissueReason !== undefined) {
+      this.setReloadedInputFilters('reissueReason', this.params.reissueReason + '');
     }
   }
 
@@ -1592,8 +1611,26 @@ console.log(this.isSearchByStatus)
     return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
   get showIsRelated() {
-    return ['partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    this.routeActive.queryParams.subscribe(value => {
+      this.params = SearchPageQueryParams.fromParams(value);
+    }).unsubscribe();
+    if (this.params.status === 0) {
+      return false;
+    } else {
+      return ['partial'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+     }
   }
+  get showIsReisssued() {
+    this.routeActive.queryParams.subscribe(value => {
+      this.params = SearchPageQueryParams.fromParams(value);
+    }).unsubscribe();
+    if (this.params.status === 0) {
+      return false;
+    } else {
+      return ['partial', 'rejected', 'invalid', 'approved'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase())
+    }
+  }
+
   get showUploadAttachment() {
     // tslint:disable-next-line:max-line-length
     return ['accepted', 'notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
@@ -1650,6 +1687,7 @@ console.log(this.isSearchByStatus)
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
+      model.reissueReason = this.params.reissueReason;
 
       dialogConfig.data = {
         cancelData: model,

@@ -2358,7 +2358,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel = {};
 
-    this.otherDataModel.reIssueReason = response.reIssueReason;
+    this.otherDataModel.reIssueReason = response.reIssueReason;   
     if (this.otherDataModel.reIssueReason) {
       // tslint:disable-next-line:max-line-length
       this.otherDataModel.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.otherDataModel.reIssueReason)[0].name : '';

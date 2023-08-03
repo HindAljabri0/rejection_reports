@@ -118,4 +118,11 @@ export class NotificationsService {
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl, {});
     return this.httpClient.request(request);
   }
+
+  getAnnouncementsByProvider(providerId: string) {
+    const requestUrl = `/announcement/providerId/${providerId}`;
+    const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl, {});
+    return this.httpClient.request(request);
+  }
+
 }
