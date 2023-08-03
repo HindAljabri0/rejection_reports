@@ -17,6 +17,12 @@ import { instances } from 'chart.js';
 export class NotificationManagementComponent implements OnInit {
 
   Announcements: any[] = [];
+  providersInfo: any[] = [];
+  totalPages = "0";
+  pageSizeOptions = [5, 10, 25, 100];
+  page = 0;
+  pageSize = 10;
+  error = '';
 
   constructor(
     private dialog: MatDialog,
@@ -80,5 +86,11 @@ export class NotificationManagementComponent implements OnInit {
       console.log(error)
       this.sharedServices.loadingChanged.next(false);
     }))
+  }
+  handlePageChange(event) {
+    console.log(event.pageIndex)
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getAllAnnouncements();
   }
 }
