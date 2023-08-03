@@ -611,7 +611,7 @@
                                     <span class="text">Cancel Previous Claim - NPHIES</span>
                                 </a>
                             </li>
-                            <li i18n="@@feedbackSurvey">
+                            <li *ngIf="!envStaging && !envProd" i18n="@@feedbackSurvey">
                                 <a routerLink="/administration/config/feedback-survey" routerLinkActive="is-active" #feedbackSurvey="routerLinkActive">
                                     <span class="text">Feedback Surveys</span>
                                 </a>
