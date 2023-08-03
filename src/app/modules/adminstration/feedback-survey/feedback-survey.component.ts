@@ -18,7 +18,6 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 export class FeedbackSurveyComponent implements OnInit {
   totalPages: any;
   Surveypage: any[];
-  surveyEditFlag = true;
   constructor(
     // tslint:disable-next-line:variable-name
     private dialog: MatDialog,
@@ -119,7 +118,7 @@ export class FeedbackSurveyComponent implements OnInit {
   }
 
   getChecked(survey: any) {
-    this.surveyEditFlag = false;
+    this.surveyFlag = false;
     
        // tslint:disable-next-line:no-shadowed-variable
        const iframe = document.createElement('iframe');
