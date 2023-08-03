@@ -782,7 +782,7 @@
                         </a>
                     </li>
 
-                    <li *ngIf="!envProd && !envStaging && userPrivileges.WaseelPrivileges.RCM.isAdmin">
+                    <li *ngIf="!envProd  && userPrivileges.WaseelPrivileges.isPAM">
                         <a routerLink="/notification-management" routerLinkActive="is-active">
                             <span class="text">Announcement</span>
                         </a>
