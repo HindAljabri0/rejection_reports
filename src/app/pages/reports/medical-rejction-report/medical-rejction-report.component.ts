@@ -159,14 +159,16 @@ export class MedicalRejctionReportComponent implements OnInit {
           const body = JSON.parse(event.body);
           this.medicalRejectionReportSummary = new PaginatedResult(body, RejectionSummary);
           this.medicalRejectedClaims = this.medicalRejectionReportSummary.content;
-          const pages = Math.ceil((this.medicalRejectionReportSummary.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.medicalRejectionReportSummary.totalElements / this.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.medicalRejectionReportSummary.number;
-          this.paginator.pageIndex = this.medicalRejectionReportSummary.number;
-          this.paginator.pageSize = this.medicalRejectionReportSummary.numberOfElements;
+          //this.paginator.pageIndex = this.medicalRejectionReportSummary.number;
+          //this.paginator.pageSize = this.medicalRejectionReportSummary.numberOfElements;
 
           if (this.medicalRejectedClaims.length == 0) {
             this.errorMessage = 'No Results Found';
+            this.page = 0;
+            this.pageSize = 10;
           }
           this.commen.loadingChanged.next(false);
         }
