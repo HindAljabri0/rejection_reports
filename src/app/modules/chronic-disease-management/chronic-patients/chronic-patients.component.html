@@ -1,0 +1,149 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Chronic Patients</p>
+    </div>
+    <div class="block-filter-panel">
+        <form [formGroup]="cdmForm" (ngSubmit)="searchByCriteria()">
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group" [class.has-error]="policyError?.trim().length > 0"
+                        [matTooltip]="policyError">
+                        <label class="control-label">Policy Number <span class="asterisk">*</span></label>
+                        <input placeholder="Enter policy number" class="form-control" formControlName="policyNumber" />
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group" [class.has-error]="diagnosisError?.trim().length > 0"
+                        [matTooltip]="diagnosisError">
+                        <label class="control-label">Diagnosis Name <span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="diagnosis">
+                                <mat-option value="">Select diagnosis</mat-option>
+                                <mat-option *ngFor="let din of diagnosisList"
+                                [value]="din.diagnosisCode">
+                                {{din.diagnosisDescription}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group" [class.has-error]="regionError?.trim().length > 0"
+                        [matTooltip]="regionError">
+                        <label class="control-label">Region <span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="region" >
+                                <mat-option value="">Select Region</mat-option>
+                                <mat-option *ngFor="let region of regions"
+                                [value]="region.regionCode">
+                                {{region.regionDescription}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--div class="col-4 col-xxl-3">
+                    <div class="form-group" [class.has-error]="cityError?.trim().length > 0"
+                        [matTooltip]="cityError">
+                        <label class="control-label">City</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="city">
+                                <mat-option value="">Select City</mat-option>
+                                <mat-option *ngFor="let city of filterdCities"
+                                [value]="city.Code">
+                                {{city.Name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div-->
+                
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Member ID</label>
+                        <input placeholder="Enter member ID" class="form-control" formControlName="memberId" />
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <button type="submit" mat-flat-button color="primary">Inquiry</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="pagination-header">
+        <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
+            <img src="./assets/{{detailTopActionIcon}}" />
+        </button>
+    </div>
+
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" >
+        <div class="fixed-height fixed-height-sm">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>IQAMA/NATIONAL ID</th>
+                        <th>Member ID</th>
+                        <th>Patient Name</th>
+                        <th>Phone No.</th>
+                        <th>Diagnosis Code</th>
+                        <th>Policy No.</th>
+                        
+                        <th>Region</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="patientList!=null">
+                    <tr *ngFor="let row of patientList">
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.patientId }}</td>
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.memberCode }}</td>
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.patientName }}</td>
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.contactNumber }}</td>
+                        <td><a href="#" class="primary-link" (click)="$event.preventDefault();showDiagnosisList(row.patientId);"
+                                [matMenuTriggerFor]="diagnosisListMenu"><mat-icon
+                                    class="material-icons-outlined">info</mat-icon></a></td>
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.policyNumber }}</td>
+                        
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.region }}</td>
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.gender }}</td>
+                        <td class="row-click" (click)="openChronicPatientDetails(row.patientId)">{{ row.age }}</td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="patientList==null">
+                    <tr class="text-center">
+                        <th colspan="9">No Data Found </th> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <app-empty-state *ngIf="patientList && patientList.length == 0" message='No Data found!'>
+    </app-empty-state>
+    <div class="block-footer sticky" *ngIf="patientList && patientList.length > 0">
+        <div class="left-block">
+            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
+                [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex"
+                aria-label="Select page">
+            </mat-paginator>
+        </div>
+    </div>
+
+    <mat-menu #diagnosisListMenu class="primary-menu diagnosis-list" xPosition="before">
+        <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Diagnosis Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let diagnose of diagnosis">
+                    <th>{{diagnose.diagnosisCode}}</th>
+                    <th>{{diagnose.diagnosisDescription}}</th>
+                </tr>
+            </tbody>
+        </table>
+    </mat-menu>
+
+</div>

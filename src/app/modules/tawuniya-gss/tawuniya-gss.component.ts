@@ -59,9 +59,7 @@ export class TawuniyaGssComponent implements OnInit {
   showDialogAndSaveResponse() {
     this.dialogService.openMessageDialog({
       title: '',
-
       message: '<div style="font-size:16px;line-height:22px;color:#222"><img src="./assets/tawuniya-logo.svg" class="d-block mb-4" height="48" width="162" /><span class="medium">Dear Respected Providers,</span>\n\nIn the spirit of enhancing the communication process by Tawuniya with its partners of healthcare providers, it encourages all providers to use the Providers Portal that has been released recently. Which includes the following services:\n\n<ul class="unordered-list"><li>Contracting</li><li>Medical Services</li><li>Update of Provider Information</li><li>Meeting Requests</li><li>Announcements and Circulars</li><li>Provider Performance</li><li>Display rejection reports and respond</li></ul>\nAlso, kindly be informed that the Rejection Report Service will be available through the providers’ portal, and it will be disabled in the current one effective <span class="semibold text-primary">15-06-2023</span>.\n\nYou can access the provider portal from <a class="primary-link semibold" target="_blank" href="' + this.getUrlLink() + '">here</a></div>',
-
       isError: false,
       withButtons: true,
       confirmButtonText: 'Acknowledge',

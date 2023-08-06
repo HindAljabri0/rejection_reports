@@ -437,6 +437,8 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .primary-menu.primary-menu-items .mat-menu-item{white-space: normal;}
 .primary-menu .menu-title{color: #707070;padding: 4px 10px;}
 .primary-menu .mat-menu-item .title{font-size: 16px;line-height: 22px;display: block;font-weight: 500;}
+.primary-menu.diagnosis-list .mat-menu-panel{max-width: 460px;}
+.primary-menu.diagnosis-list .mat-menu-content{padding: 0;}
 .form-menu .mat-menu-content,.form-menu .mat-menu-content:not(:empty){padding: 0;}
 .form-menu.mat-menu-panel{min-height: auto;color: #333;max-width: none;min-width: 320px;}
 .form-menu .menu-title{padding: 14px;font-weight: 600;font-size: 16px;line-height: 22px;}
@@ -1975,6 +1977,14 @@ angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-s
 .feedback-rating .label{margin-right: 16px;color: #707070;}
 .feedback-rating li:last-child{margin-right: 0;}
 .feedback-rating .label:last-child{margin-left: 8px;}
+
+/* announcement list
+--------------------------------------------------------------------------------------------------------*/
+.announcement-list >li{padding: 14px;border-bottom: 1px solid #e1e1e1;}
+.announcement-list >li:last-child{border-bottom: 0;}
+.announcement-list .head-block{padding-bottom: 14px;}
+.announcement-list .head-block h3{padding-bottom: 4px;}
+.announcement-list .content:not(:last-child){padding-bottom: 14px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

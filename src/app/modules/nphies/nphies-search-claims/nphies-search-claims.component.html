@@ -300,8 +300,9 @@
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     Status</th>
                   <th
-                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}" *ngIf="showIsRelated === true">
-                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)"  >
+                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}"
+                    *ngIf="showIsRelated === true">
+                    <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.ISREALTED)">
                       <span>Has Related?</span>
                       <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="isRelatedFilter" (click)="checkReloadedFilter()">
                         <mat-icon>filter_list_outline</mat-icon>
@@ -311,9 +312,9 @@
                         <div class="menu-body">
                           <div (click)="$event.stopPropagation()">
                             <div class="form-group">
-                              <label class="control-label">Is Related?</label>
-                              <mat-form-field class="form-control custom-select-control" >
-                                <mat-select  [(ngModel)]="claimList.isRelatedClaim" (ngModelChange)="onIsRelatedSelection()">
+                              <label class="control-label">Has Related?</label>
+                              <mat-form-field class="form-control custom-select-control">
+                                <mat-select [(ngModel)]="claimList.isRelatedClaim" (ngModelChange)="onIsRelatedSelection()">
                                   <mat-option value=''>All</mat-option>
                                   <mat-option value='true'>Yes</mat-option>
                                   <mat-option value='false'>No</mat-option>
@@ -329,6 +330,38 @@
                       </mat-menu>
                     </div>
                   </th>
+
+                  <th 
+                  *ngIf="showIsReisssued === true" class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    <div class="column-header-action">
+                      <span>Reissued?</span>
+                      <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="reissuedFilter" (click)="checkReloadedFilter()">
+                        <mat-icon>filter_list_outline</mat-icon>
+                      </button>
+
+                      <mat-menu #reissuedFilter="matMenu" xPosition="before" class="filter-menu">
+                        <div class="menu-body">
+                          <div (click)="$event.stopPropagation()">
+                            <div class="form-group">
+                              <label class="control-label">Reissued?</label>
+                              <mat-form-field class="form-control custom-select-control">
+                                <mat-select  [(ngModel)]="claimList.reissueReason" >
+                                  <mat-option value=''>All</mat-option>
+                                  <mat-option value='true'>Yes</mat-option>
+                                  <mat-option value='false'>No</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="btn-list text-right">
+                            <button mat-flat-button (click)="clearFilters('reissueReason')">Clear</button>
+                            <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.ISREISSUED)">Filter</button>
+                          </div>
+                        </div>
+                      </mat-menu>
+                    </div>
+                  </th>
+
                   <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
                     class="text-nowrap text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <span class="inline-text pr-1">Processing Status</span>
@@ -392,12 +425,19 @@
                       {{claim.netAmount}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
                     </td>
 
-
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="text-center row-click">
                       <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                     </td>
+
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsRelated === true">
                       <div class="d-flex align-items-center" *ngIf="claim.isRelatedClaim">
+                        <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                        <span>Yes</span>
+                      </div>
+                    </td>
+
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click" *ngIf="showIsReisssued === true">
+                      <div class="d-flex align-items-center" *ngIf="claim.body.reissueReason === true">
                         <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
                         <span>Yes</span>
                       </div>

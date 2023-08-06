@@ -39,6 +39,7 @@ export interface SearchCriteria {
     nationalId?:string;
     requestBundleId?:string;
     isRelatedClaim?:boolean;
+    reissueReason?: boolean;
 }
 
 

@@ -21,13 +21,13 @@ export class AddEditNotificationDialogComponent implements OnInit {
   selectedProvider: string;
   pipe = new DatePipe("en-US")
   announcement: AnnouncementNotification = {
-    providerIds: [],
+    providerId: [''],
     userName: '',
     subject: '',
     descreption: '',
     startDate: '',
     endDate: '',
-    attachments: []
+    attachments: [],
   };
   submit = false;
   allProviders = false;
@@ -142,7 +142,7 @@ export class AddEditNotificationDialogComponent implements OnInit {
     })
     console.log(this.providerIds)
 
-    this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
+    this.announcement.providerId = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
     this.announcement.userName = this.authService.getAuthUsername();
     this.announcement.subject = this.announcementForm.controls.subjectControl.value;
     this.announcement.descreption = this.announcementForm.controls.descriptionControl.value;
@@ -238,8 +238,10 @@ export class AddEditNotificationDialogComponent implements OnInit {
     this.indixOfelement = this.indixOfelement + 1;
     console.log(this.indixOfelement);
     const files: File = event.target.files[0];
+    const fileSizeMB = files.size / 1024 / 1024;
+    console.log(fileSizeMB)
     console.log(new Blob([files]))
-    if (this.checkfileType(files.name) !== 'unKnown') {
+    if (this.checkfileType(files.name) !== 'unKnown' && fileSizeMB < 11) {
       if (files) {
         let reader = new FileReader();
         reader.readAsDataURL(files);

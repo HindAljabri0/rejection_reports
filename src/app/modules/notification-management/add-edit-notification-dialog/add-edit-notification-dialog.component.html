@@ -9,13 +9,13 @@
           
             <label class="control-label">Subject<span class="asterisk">*</span></label>
             <input type="text" class="form-control" placeholder="Enter notification subject"
-                formControlName="subjectControl"  required/>
+                formControlName="subjectControl" maxlength="250" required/>
         </div>
     
         <div class="form-group" [class.has-error]="hasError('descriptionControl')!=null" [matTooltip]="hasError('descriptionControl')">
             <label class="control-label">Description<span class="asterisk">*</span></label>
             <textarea class="form-control" placeholder="Enter notification description"
-                formControlName="descriptionControl" required></textarea>
+                formControlName="descriptionControl" maxlength="600" required></textarea>
         </div>
         <div class="row small-gutter">
             <div class="col-md-6">
@@ -52,7 +52,8 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </li>
-                <li matTooltip="Add Attachments and should be the type of files one these  types [PDF, XLS, CSV, ZIP, XLSX, XLSX]"
+                <li *ngIf="attachments.length<10" matTooltip="Add Attachments and should be the type of files one these  types [PDF, XLS, CSV, ZIP, XLSX, XLSX,JPG,PNG] 
+                and should maximum size file 10MB"
                     class="add-block">
                     <div class="file-upload-wrapper">
                         <div class="content">

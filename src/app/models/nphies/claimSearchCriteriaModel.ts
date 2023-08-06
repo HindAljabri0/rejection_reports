@@ -20,4 +20,5 @@ export class ClaimSearchCriteriaModel {
   organizationId?: string;
   requestBundleId?: string;
   isRelatedClaim?:boolean;
+  reissueReason?: boolean;
 }

@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -8,12 +8,15 @@ import { FeedbackClass } from './feedback.model.component';
 import { FeedbackService } from '../../../services/feedback/feedback.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
+import { environment } from 'src/environments/environment';
 
 @Component(
   {
     selector: 'app-feedback-dialog',
     templateUrl: './feedback-dialog.component.html',
-    styles: []
+    styles: [
+      '.\feedback-dialog.component.css',
+    ]
   }
 )
 
@@ -24,7 +27,8 @@ export class FeedbackDialogComponent implements OnInit {
   userName: string;
   authUsername: string;
   providerName: string;
-  required: boolean = true
+  required = true;
+  AccessToken: string;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -35,7 +39,12 @@ export class FeedbackDialogComponent implements OnInit {
 
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
-
+  @HostListener('window:message', ['$event'])
+  receiveMessage(event: MessageEvent) {
+    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en') {
+      return; // Only accept messages from the specific origin
+    }
+  }
 
   ngOnInit(): void {
     this.getUserData();
@@ -51,102 +60,123 @@ export class FeedbackDialogComponent implements OnInit {
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
     this.feedback.providerId = this.authService.getProviderId();
+
   }
 
-  setOverallQRating(newRating: number): void {
+  // setOverallQRating(newRating: number): void {
 
-    if (this.isRating(newRating)) {
-      this.feedback.overallSatisfaction = newRating;
+  //   if (this.isRating(newRating)) {
+  //     this.feedback.overallSatisfaction = newRating;
 
-      this.feedback.isOverallSatisfactionValid = true;
-    } else {
-      this.feedback.isOverallSatisfactionValid = false;
-    }
+  //     this.feedback.isOverallSatisfactionValid = true;
+  //   } else {
+  //     this.feedback.isOverallSatisfactionValid = false;
+  //   }
+  // }
+
+  // setRecommendQRating(newRating: number): void {
+  //   if (this.isRating(newRating)) {
+  //     this.feedback.recommendToFriend = newRating;
+
+  //     this.feedback.isRecommendToFriend = true;
+  //   } else {
+  //     this.feedback.isRecommendToFriend = false;
+  //   }
+  // }
+
+  // setSuggestion(): void {
+  //   if (this.feedback.suggestion != null && this.feedback.suggestion.length > 5000) {
+
+  //     this.dialogService.showMessage('Suggestion is to long', 'The suggestion should not exceed 5000 characters.', 'alert', true, 'OK', null, true);
+  //     this.feedback.isSuggestionValid = false;
+  //   } else {
+  //     this.feedback.isSuggestionValid = true;
+  //   }
+  // }
+
+  onIframeLoad(event: Event) {
+    console.log(event, 'ksksksk');
+    const iframe: HTMLIFrameElement = event.target as HTMLIFrameElement;
+    const token = this.authService.getAccessToken();
+    const providerId = this.authService.getProviderId();
+    // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
+
+    const authorizationData = {
+        token,
+        providerId,
+       username: this.feedback.userName
+
+      };
+    console.log(authorizationData, 'sss');
+    iframe.contentWindow.postMessage(authorizationData, iframe.src);
+
+    // Send authorization data to the iframe
+
+
   }
 
-  setRecommendQRating(newRating: number): void {
-    if (this.isRating(newRating)) {
-      this.feedback.recommendToFriend = newRating;
-
-      this.feedback.isRecommendToFriend = true;
-    } else {
-      this.feedback.isRecommendToFriend = false;
-    }
-  }
-
-  setSuggestion(): void {
-    if (this.feedback.suggestion != null && this.feedback.suggestion.length > 5000) {
-
-      this.dialogService.showMessage('Suggestion is to long', 'The suggestion should not exceed 5000 characters.', 'alert', true, 'OK', null, true);
-      this.feedback.isSuggestionValid = false;
-    } else {
-      this.feedback.isSuggestionValid = true;
-    }
-  }
+  // submit() {
+  //   this.setOverallQRating(0); // set the Overall question to 0 as a default value as it will not be withen this month feedbacks Qs!
+  //   this.setSuggestion();
 
 
-  submit() {
-    this.setOverallQRating(0); // set the Overall question to 0 as a default value as it will not be withen this month feedbacks Qs!
-    this.setSuggestion();
+  //   if (this.feedback.isSuggestionValid && this.feedback.isOverallSatisfactionValid && this.feedback.isRecommendToFriend) {
 
+  //     this._feedbackservice.addFeedback(this.feedback).subscribe({
+  //       next: data => {
+  //         catchError(error => {
+  //           let errorMsg: string;
+  //           if (error.error instanceof ErrorEvent) {
+  //             try {
+  //               errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
+  //               console.error('Add feedback service error message:\n' + errorMsg);
+  //             } catch (error) { }
+  //           } else {
+  //             try {
+  //               errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
+  //               console.error('Add feedback service error message:\n' + errorMsg);
+  //             } catch (error) { }
+  //           }
 
-    if (this.feedback.isSuggestionValid && this.feedback.isOverallSatisfactionValid && this.feedback.isRecommendToFriend) {
+  //           return throwError(errorMsg);
+  //         })
+  //       }
+  //     })
+  //     //Feedback submitted Successfully
+  //     this.dialogService.showMessage('Thank you for your feedback', 'We appreciate your feedback and will take it into consideration.', 'success', true, 'OK', null, true);
+  //     this.dialogRef.close();
 
-      this._feedbackservice.addFeedback(this.feedback).subscribe({
-        next: data => {
-          catchError(error => {
-            let errorMsg: string;
-            if (error.error instanceof ErrorEvent) {
-              try {
-                errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
-                console.error('Add feedback service error message:\n' + errorMsg);
-              } catch (error) { }
-            } else {
-              try {
-                errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
-                console.error('Add feedback service error message:\n' + errorMsg);
-              } catch (error) { }
-            }
-
-            return throwError(errorMsg);
-          })
-        }
-      })
-      //Feedback submitted Successfully
-      this.dialogService.showMessage('Thank you for your feedback', 'We appreciate your feedback and will take it into consideration.', 'success', true, 'OK', null, true);
-      this.dialogRef.close();
-
-    } else if (!this.feedback.isOverallSatisfactionValid || !this.feedback.isRecommendToFriend) {
-      //one of the required fields not filled.
-      this.dialogService.showMessage('Required Fields', 'The first question is mendatory', 'alert', true, 'OK', null, true);
-    }
-  }
+  //   } else if (!this.feedback.isOverallSatisfactionValid || !this.feedback.isRecommendToFriend) {
+  //     //one of the required fields not filled.
+  //     this.dialogService.showMessage('Required Fields', 'The first question is mendatory', 'alert', true, 'OK', null, true);
+  //   }
+  // }
 
   close() {
     this.dialogRef.close();
   }
 
 
-  //--------------------------Validation section--------------------------
-  isRating(num: number): Boolean {
-    if (num == null) {
-      return false;
-    }
-    return true
-  }
+  // //--------------------------Validation section--------------------------
+  // isRating(num: number): Boolean {
+  //   if (num == null) {
+  //     return false;
+  //   }
+  //   return true
+  // }
 
-  isSubmitted(providerId: string, userName: string): Boolean {
-    let submitted: Boolean = true;
+  // isSubmitted(providerId: string, userName: string): Boolean {
+  //   let submitted: Boolean = true;
 
-    this._feedbackservice.UserFeedbackable(providerId, userName).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const body = event.body;
-        if (body instanceof Boolean) {
-          submitted = body;
-        }
-      }
-    });
+  //   this._feedbackservice.UserFeedbackable(providerId, userName).subscribe((event: any) => {
+  //     if (event instanceof HttpResponse) {
+  //       const body = event.body;
+  //       if (body instanceof Boolean) {
+  //         submitted = body;
+  //       }
+  //     }
+  //   });
 
-    return submitted;
-  }
+  //   return submitted;
+  // }
 }

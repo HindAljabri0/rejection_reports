@@ -1,32 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { FeedbackSurveySelectProviderComponent } from '../feedback-survey-select-provider/feedback-survey-select-provider.component';
-import { FeedbackDialogComponent } from 'src/app/components/dialogs/feedback-dialog/feedback-dialog.component';
+import { Component, OnInit, HostListener } from '@angular/core';
+
+import { AuthService } from 'src/app/services/authService/authService.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-feedback-survey-details',
   templateUrl: './feedback-survey-details.component.html',
-  styles: []
+  styles: [],
 })
 export class FeedbackSurveyDetailsComponent implements OnInit {
+  AccessToken: string; 
 
-  constructor(
-    private dialog: MatDialog
-  ) { }
-
-  ngOnInit() {
+  @HostListener('window:message', ['$event'])
+  receiveMessage(event: MessageEvent) {
+    if (event.origin !== 'https://dr-eclaims.waseel.com/en/') {
+      return; // Only accept messages from the specific origin
+    }
   }
 
-  openSelectProviderDialog() {
-    const dialogRef = this.dialog.open(FeedbackSurveySelectProviderComponent, {
-      panelClass: ['primary-dialog']
-    });
+  constructor(public authService: AuthService) {}
+  ngOnInit(): void {
+    this.getUserData();
+
   }
 
-  openPreviewDialog() {
-    const dialogRef = this.dialog.open(FeedbackDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-lg']
-    });
+  getUserData() {
+    this.authService.evaluateUserPrivileges();
+    this.AccessToken = this.authService.getAccessToken();
   }
+  onIframeLoad(event: Event) {
+    const iframe: HTMLIFrameElement = event.target as HTMLIFrameElement;
 
+    // Send authorization data to the iframe
+    const authorizationData = {
+      token: this.AccessToken,
+    };
+    iframe.contentWindow.postMessage(authorizationData, iframe.src);
+  }
 }

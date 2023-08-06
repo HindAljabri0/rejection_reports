@@ -320,7 +320,8 @@ export class EligibilityTransactionsComponent implements OnInit {
             this.detailTopActionIcon = 'ic-download.svg';
           }
         });
-    }}
+    }
+  }
 
   editURL(fromDate?: string, toDate?: string) {
     let path = '/nphies/eligibility-transactions?';
