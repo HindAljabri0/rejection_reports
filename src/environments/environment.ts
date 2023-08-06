@@ -49,7 +49,7 @@ export const environment = {
     nphiesApprovalPBM: `${host}:8096`,
     nphiesPollApprovalManagement: `${host}:8093`,
     nphiesPollClaimManagement: `${host}:8097`,
-    chronicDiseaseManagement: `${host}:8199`
+    chronicDiseaseManagement: `${host}:8199`,    
 };
 
 /*

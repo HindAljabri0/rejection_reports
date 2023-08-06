@@ -21,6 +21,8 @@ import { CancelPreviousClaimComponent } from './cancel-previous-claim/cancel-pre
 import { FeedbackSurveyComponent } from './feedback-survey/feedback-survey.component';
 import { FeedbackSurveyDetailsComponent } from './feedback-survey-details/feedback-survey-details.component';
 import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-provider/feedback-survey-select-provider.component';
+import { AddFeedbackDateDialogComponent } from './feedback-select-date/feedback-select-date.component';
+import { FeedbackPreviewComponent } from './feedback-preview/feedback.preview.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-
     CancelPreviousClaimComponent,
     FeedbackSurveyComponent,
     FeedbackSurveyDetailsComponent,
-    FeedbackSurveySelectProviderComponent
+    FeedbackSurveySelectProviderComponent,
+    AddFeedbackDateDialogComponent,
+    FeedbackPreviewComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -51,9 +55,7 @@ import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-
       { path: 'config/providerCertificate', component: CertificateConfigurationComponent },
       { path: 'config/createProvider', component: CreateProviderComponent },
       { path: 'config/nphies-attachment-configuration', component: NphiesAttachmentConfigurationComponent },
-      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent },
-      { path: 'config/feedback-survey', component: FeedbackSurveyComponent },
-      { path: 'config/feedback-survey-details', component: FeedbackSurveyDetailsComponent }
+      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent }
     ]),
     CommonModule,
     MaterialModule,
@@ -69,7 +71,8 @@ import { FeedbackSurveySelectProviderComponent } from './feedback-survey-select-
   ],
   entryComponents: [
     AddProviderContractDialogComponent,
-    FeedbackSurveySelectProviderComponent
+    FeedbackSurveySelectProviderComponent,
+    AddFeedbackDateDialogComponent
   ]
 })
 export class AdminstrationModule { }
