@@ -451,12 +451,16 @@
       </ul>
       
       <ul class="nav-list">
-        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation">
-          <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
+        <li
+          *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation">
+          <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive"
+            routerLinkActive="is-active">
             <span class="text">Payment Reconciliation</span>
-            <span *ngIf="RecentReconciliations > 0" class="alert-marker ml-auto alert-count">{{RecentReconciliations}}</span>
+            <span *ngIf="RecentReconciliations > 0"
+              class="alert-marker ml-auto alert-count">{{RecentReconciliations}}</span>
           </a>
-          <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
+          <a routerLink="/nphies/payment-reconciliation-details" class="d-none"
+            #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
         </li>
       </ul>
 
@@ -478,7 +482,8 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <ul class="nav-list">
-            <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
+            <li
+              *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessCodeMapping || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
               <a routerLink="/nphies/configurations" routerLinkActive="is-active">
                 <!-- <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
               <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" /> -->
@@ -497,7 +502,8 @@
                 <span class="text">Price List</span>
               </a>
             </li>
-            <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
+            <li
+              *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessDaysOfSupply || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
               <a routerLink="/nphies/days-of-supply-upload" routerLinkActive="is-active">
                 <span class="text">Medication Days of Supply</span>
               </a>
@@ -782,7 +788,7 @@
                         </a>
                     </li>
 
-                    <li *ngIf="!envProd && !envStaging && userPrivileges.WaseelPrivileges.RCM.isAdmin">
+                    <li *ngIf="!envProd  && userPrivileges.WaseelPrivileges.isPAM">
                         <a routerLink="/notification-management" routerLinkActive="is-active">
                             <span class="text">Announcement</span>
                         </a>
