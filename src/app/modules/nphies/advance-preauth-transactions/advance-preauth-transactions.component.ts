@@ -19,6 +19,7 @@ import { PreAuthorizationTransaction } from 'src/app/models/pre-authorization-tr
 import { HttpErrorResponse, HttpResponse, HttpEvent } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
+import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 
 @Component({
   selector: 'app-advance-preauth-transactions',
@@ -243,7 +244,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         model.type = this.FormAdvancePreAuthTransaction.controls.type.value;
       }
       if (this.FormAdvancePreAuthTransaction.controls.ResponseBundleId.value) {
-        model.ResponseBundleId = this.FormAdvancePreAuthTransaction.controls.ResponseBundleId.value;
+        model.responseBundleId = this.FormAdvancePreAuthTransaction.controls.ResponseBundleId.value;
       }
 
 
@@ -282,7 +283,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
   }
 
   editURL(fromDate?: string, toDate?: string) {
-    let path = '/nphies/preauthorization-transactions?';
+    let path = '/nphies/advance-preauth-transactions?';
 
     if (this.FormAdvancePreAuthTransaction.controls.fromDate.value) {
       path += `fromDate=${this.datePipe.transform(this.FormAdvancePreAuthTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
@@ -453,7 +454,24 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
   }
+  openReasonModal(requestId: number, responseId: number, reqType: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      approvalRequestId: requestId,
+      approvalResponseId: responseId,
+      type: reqType,
+      isApproval:true
+    };
 
+    const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.onSubmit();
+      }
+    });
+  }
   OpenReuseApprovalModal(requestId: number, responseId: number) {
     this.sharedServices.loadingChanged.next(true);
 

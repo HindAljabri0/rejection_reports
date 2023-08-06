@@ -1,5 +1,5 @@
 export class AnnouncementNotification {
-    providerId?: string;
+    providerId?: string[];
     userName: string;
     subject: string;
     descreption: string;
