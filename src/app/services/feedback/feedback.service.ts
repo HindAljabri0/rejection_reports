@@ -53,6 +53,12 @@ export class FeedbackService {
     postSurvey(feedback: FeedbackDate): Observable<FeedbackDate> {
         return this.http.post<FeedbackDate>(`${environment.NotificationServiceHost}/survey/create-survey`, feedback);
     }
+    
+    UserFeedback(providerId, userName) {
+        let requestUrl = this.feedbackServiceUrl + `/survey/${providerId}/view`;
+        const httpRequest = new HttpRequest('GET', requestUrl);
+        return this.http.request(httpRequest);
+    }
 
 
 
