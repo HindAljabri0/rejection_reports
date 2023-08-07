@@ -1,5 +1,5 @@
 const host = 'http://gateway.okd.waseel.com';
-const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/'
+const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/';
 export const environment = {
     name: 'qa',
     production: true,
