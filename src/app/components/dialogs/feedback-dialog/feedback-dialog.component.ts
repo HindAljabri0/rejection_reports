@@ -14,9 +14,7 @@ import { environment } from 'src/environments/environment';
   {
     selector: 'app-feedback-dialog',
     templateUrl: './feedback-dialog.component.html',
-    styles: [
-      '.\feedback-dialog.component.css',
-    ]
+    styles: []
   }
 )
 
