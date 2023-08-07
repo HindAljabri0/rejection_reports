@@ -17,13 +17,15 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 })
 export class SearchBeneficiaryComponent implements OnInit {
   beneficiaries: BeneficiarySearch[];
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService,private downloadService: DownloadService) { }
+  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService, private downloadService: DownloadService) { }
 
   length = 100;
   pageSize = 10;
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100];
   showFirstLastButtons = true;
+  payerId=null;
+  tpa=null;
 
 
   nameController: FormControl = new FormControl();
@@ -47,7 +49,7 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   ngOnInit() {
 
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null, 0, 10).subscribe(event => {
+    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null,null,null, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.beneficiaries = [];
@@ -67,11 +69,18 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   }
 
+  selectPayer(event) {
+
+    this.payerId = event.value.payerNphiesId,
+      this.tpa = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+
+  }
+
   searchByCriteria() {
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
       this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
-      this.fileIdController.value, this.contactNoController.value, this.pageIndex, this.pageSize).subscribe(event => {
+      this.fileIdController.value, this.contactNoController.value, this.payerId, this.tpa, this.pageIndex, this.pageSize).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.body != null && event.body instanceof Array)
             this.beneficiaries = [];

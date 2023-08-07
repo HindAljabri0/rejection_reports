@@ -98,6 +98,7 @@ import { MultiSheetFileUploadComponent } from './modules/nphies/upload-claim/mul
 import { NphiesClaimUploaderService } from './services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-dialog.component';
 import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-feature-dialog/upcoming-feature-dialog.component';
+import { FeedbackDialogComponent } from './components/dialogs/feedback-dialog/feedback-dialog.component';
 import { ChooseAttachmentUploadDialogComponent } from './modules/nphies/choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { HttpRequestExceptionHandler } from './components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 import { AnnountmentDialogComponent } from './components/annountment-dialog/annountment-dialog.component';
