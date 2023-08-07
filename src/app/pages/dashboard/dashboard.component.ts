@@ -200,7 +200,7 @@ export class DashboardComponent implements OnInit {
 
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
        
-        if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM ) {
+        if (feedbackable) {
 
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit {
     async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
         
-        const event = await this._feedbackservice.UserFeedbackable(privderId, userName).pipe(
+        const event = await this._feedbackservice.UserFeedback(privderId, userName).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             catchError(error => {
                 let errorMsg: string;
@@ -251,7 +251,7 @@ export class DashboardComponent implements OnInit {
         ).toPromise();
         if (event instanceof HttpResponse) {
             const body = event.body;
-            feedbackable = body;
+            feedbackable = body;           
             if (body instanceof Boolean ) {
                 feedbackable = body;
             }
