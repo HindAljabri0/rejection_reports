@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-feedback-survey-details',
@@ -9,18 +10,23 @@ import { environment } from 'src/environments/environment';
   styles: [],
 })
 export class FeedbackSurveyDetailsComponent implements OnInit {
-  AccessToken: string; 
+  AccessToken: string;
+  feedbacksurveyUrl: string;
+  iframeSrc: SafeResourceUrl;
 
   @HostListener('window:message', ['$event'])
-  receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'https://dr-eclaims.waseel.com/en/') {
+  receiveMessage(event: MessageEvent) {   
+    if (event.origin !== environment.versionCheckURL) {
       return; // Only accept messages from the specific origin
     }
   }
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService,private sanitizer: DomSanitizer) { 
+    this.feedbacksurveyUrl = environment.feedbacksurveyUrl;
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.feedbacksurveyUrl);
+  }
   ngOnInit(): void {
-    this.getUserData();
+    this.getUserData();   
 
   }
 
