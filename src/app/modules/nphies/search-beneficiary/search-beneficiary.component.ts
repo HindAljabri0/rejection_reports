@@ -24,6 +24,8 @@ export class SearchBeneficiaryComponent implements OnInit {
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100];
   showFirstLastButtons = true;
+  payerId=null;
+  tpa=null;
 
 
   nameController: FormControl = new FormControl();
@@ -70,12 +72,20 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   }
 
+  selectPayer(event) {
+
+    this.payerId = event.value.payerNphiesId,
+      this.tpa = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+
+  }
+
+
   searchByCriteria() {
     this.sharedServices.loadingChanged.next(true)
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
       this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
-      this.fileIdController.value, this.contactNoController.value, this.pageIndex, this.pageSize).subscribe(event => {
+      this.fileIdController.value, this.contactNoController.value,  this.payerId, this.tpa,this.pageIndex, this.pageSize).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.body != null && event.body instanceof Array)
             this.beneficiaries = [];
