@@ -55,7 +55,9 @@ import { FeedbackPreviewComponent } from './feedback-preview/feedback.preview.co
       { path: 'config/providerCertificate', component: CertificateConfigurationComponent },
       { path: 'config/createProvider', component: CreateProviderComponent },
       { path: 'config/nphies-attachment-configuration', component: NphiesAttachmentConfigurationComponent },
-      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent }
+      { path: 'config/cancelPreviousClaim', component: CancelPreviousClaimComponent },
+      { path: 'config/feedback-survey', component: FeedbackSurveyComponent },
+      { path: 'config/feedback-survey-details', component: FeedbackSurveyDetailsComponent }
     ]),
     CommonModule,
     MaterialModule,

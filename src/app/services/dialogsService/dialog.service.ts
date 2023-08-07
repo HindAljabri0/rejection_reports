@@ -45,6 +45,18 @@ export class DialogService {
     });
     return dialogRef.afterClosed();
   }
+  openFeedbackDialog(dialogData: MessageDialogData) {
+    this.closeAll();
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      panelClass: ['primary-dialog', dialogData.isError ? 'error-dialog' : (!dialogData.withButtons ? 'success-dialog' : '')],
+      data: dialogData,
+    });
+    dialogRef.afterClosed().subscribe(value => {
+      location.reload();
+    });
+ 
+ 
+  }
   openConfirmAdminDeleteDialog(): Observable<any> {
     this.closeAll();
     const dialogRef = this.dialog.open(ConfirmAdminDeleteDialogComponent);
