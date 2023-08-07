@@ -1,4 +1,5 @@
 const host = 'https://api.eclaims.waseel.com';
+const hostFeedback = 'https://feedback.eclaims.waseel.com/en/';
 // const apiDotHost = 'https://api.eclaims.waseel.com';
 export const environment = {
     name: 'oci_prod',
@@ -43,4 +44,5 @@ export const environment = {
     nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
     chronicDiseaseManagement: `${host}/chronic-disease-management`,
+    feedbacksurveyUrl: `${hostFeedback}`,
 };
