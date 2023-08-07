@@ -1,8 +1,7 @@
-
 <button mat-icon-button class="close-button float-right" (click)="close()">
   <mat-icon>close</mat-icon>
 </button>
 
-<iframe src="https://feedback.dr-eclaims.waseel.com/en" style="width: 100%; height: 600px;" (load)="onIframeLoad($event)"></iframe>
+<iframe [src]="feedbacksurveyUrl" style="width: 100%; height: 600px;"
+  (load)="onIframeLoad($event)"></iframe>
 <!-- <iframe id="myIframe" [src]="iframeSrc"></iframe> -->
-

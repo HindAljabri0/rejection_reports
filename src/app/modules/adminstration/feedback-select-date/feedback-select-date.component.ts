@@ -53,13 +53,13 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   isActive: any;
   details: any;
   constructor(private dialogRef: MatDialogRef<AddFeedbackDateDialogComponent>,
-              private superAdmin: SuperAdminService,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private notificationsService: NotificationsService,
-              public sharedServices: SharedServices,
-              public authService: AuthService,
-              private dialogService: DialogService,
-              private _feedbackservice: FeedbackService) { }
+    private superAdmin: SuperAdminService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private notificationsService: NotificationsService,
+    public sharedServices: SharedServices,
+    public authService: AuthService,
+    private dialogService: DialogService,
+    private _feedbackservice: FeedbackService) { }
 
   announcementForm = new FormGroup({
 
@@ -79,16 +79,16 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     this.isActive = this.data.status;
     this.filteredProviders = this.providers;
     this.announcementForm.controls.status.setValue(this.data.details.isActive);
-    if (this.data.details.startDate === null ) {
-      this.announcementForm.controls.startDateControl.setValue(new Date());  
+    if (this.data.details.startDate === null) {
+      this.announcementForm.controls.startDateControl.setValue(new Date());
     }
-    if (this.data.details.closeDate === null ) {    
-      this.announcementForm.controls.closeDateControl.setValue(new Date());   
+    if (this.data.details.closeDate === null) {
+      this.announcementForm.controls.closeDateControl.setValue(new Date());
     }
     else {
       this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
-      this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));  
-    }      
+      this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));
+    }
     this.announcementForm.controls.providerIds.setValue(this.data.details.providerId);
   }
 
@@ -99,7 +99,6 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   }
 
   selectProvider(provider: any = null) {
-    console.log(provider);
     switch (provider) {
       case 'All':
         this.allProviders = true;
@@ -132,7 +131,6 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.allWaseelProviders = false;
         this.SelectedPrividerType = null;
         this.announcementForm.controls.providersControl.setValue('');
-        console.log(this.isProviderSelected(provider.switchAccountId));
         if (!this.isProviderSelected(provider.switchAccountId)) {
           this.selectedProviders.push(provider);
         }
@@ -147,30 +145,23 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     this.allProviders = false;
     this.allNphiesProviders = false;
     this.allWaseelProviders = false;
-
     this.selectedProviders.forEach((provider, index) => {
       if (provider.switchAccountId === providerId) { this.selectedProviders.splice(index, 1); }
     });
   }
   setData() {
-
-    console.log(this.selectedProviders);
     this.selectedProviders.forEach(provide => {
       this.providerIds.push(provide.switchAccountId);
-
     });
     this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
-
     this.announcement.startDate = this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), 'yyyy-MM-dd hh:mm:ss');
     this.announcement.closeDate = this.pipe.transform(new Date(this.announcementForm.controls.closeDateControl.value), 'yyyy-MM-dd hh:mm:ss');
     this.announcement.surveyId = this.surveyId;
     this.announcement.isActive = this.announcementForm.controls.status.value;
   }
-
-
   hasError(controlsName: string) {
     switch (controlsName) {
-    case 'providersControl':
+      case 'providersControl':
         return this.selectedProviders.length === 0 && this.submit && !this.allProviders &&
           !this.allNphiesProviders && !this.allWaseelProviders ? 'It Should At least Add One Provider.' : null;
       case 'startDateControl':
@@ -185,15 +176,14 @@ export class AddFeedbackDateDialogComponent implements OnInit {
       this.sharedServices.loadingChanged.next(true);
       this.setData();
       this._feedbackservice.updateSurvey(this.announcement).subscribe(event => {
-          if (event) {
-            this.sharedServices.loadingChanged.next(false);
-            this.dialogService.openMessageDialog({
-              title: '',
-              message: `Provider and date has been selected`,
-              isError: false
-            });
-          }
-
+        if (event instanceof HttpResponse) {       
+          this.sharedServices.loadingChanged.next(false);
+          this.dialogService.openFeedbackDialog({
+            title: '',
+            message: `Provider and date has been selected`,
+            isError: false
+          }); 
+        }
 
       }, error => {
         if (error instanceof HttpErrorResponse) {

@@ -27,6 +27,7 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required = true;
   AccessToken: string;
+  feedbacksurveyUrl: string;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -39,13 +40,14 @@ export class FeedbackDialogComponent implements OnInit {
   ) { }
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en') {
+    if (event.origin !== environment.feedbacksurveyUrl) {
       return; // Only accept messages from the specific origin
     }
   }
 
   ngOnInit(): void {
     this.getUserData();
+    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';
   }
 
 
@@ -100,11 +102,11 @@ export class FeedbackDialogComponent implements OnInit {
     // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
 
     const authorizationData = {
-        token,
-        providerId,
-       username: this.feedback.userName
+      token,
+      providerId,
+      username: this.feedback.userName
 
-      };
+    };
     console.log(authorizationData, 'sss');
     iframe.contentWindow.postMessage(authorizationData, iframe.src);
 
