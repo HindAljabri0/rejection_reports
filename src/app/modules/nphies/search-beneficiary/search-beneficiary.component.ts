@@ -48,7 +48,7 @@ export class SearchBeneficiaryComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.sharedServices.loadingChanged.next(true)
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null,null,null, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
@@ -56,13 +56,14 @@ export class SearchBeneficiaryComponent implements OnInit {
 
         this.beneficiaries = event.body["content"] as BeneficiarySearch[];
         this.length = event.body["totalElements"]
+        this.sharedServices.loadingChanged.next(false)
       }
     }
       , err => {
 
         if (err instanceof HttpErrorResponse) {
           console.log(err.message)
-
+          this.sharedServices.loadingChanged.next(false)
 
         }
       });
@@ -77,6 +78,7 @@ export class SearchBeneficiaryComponent implements OnInit {
   }
 
   searchByCriteria() {
+    this.sharedServices.loadingChanged.next(true)
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
       this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
@@ -86,12 +88,14 @@ export class SearchBeneficiaryComponent implements OnInit {
             this.beneficiaries = [];
           this.beneficiaries = event.body["content"] as BeneficiarySearch[];
           this.length = event.body["totalElements"]
+          this.sharedServices.loadingChanged.next(false)
         }
       }
         , err => {
 
           if (err instanceof HttpErrorResponse) {
             console.log(err.message)
+            this.sharedServices.loadingChanged.next(false)
 
 
           }
