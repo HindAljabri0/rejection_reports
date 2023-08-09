@@ -43,7 +43,7 @@ export class FeedbackDialogComponent implements OnInit {
   ) {  this.getUserData(); }
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== environment.versionCheckURL) {
+    if (event.origin !== environment.feedbacksurveyUrl) {
       return; // Only accept messages from the specific origin
     }
   }

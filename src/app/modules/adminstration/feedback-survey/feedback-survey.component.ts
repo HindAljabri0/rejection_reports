@@ -51,6 +51,10 @@ export class FeedbackSurveyComponent implements OnInit {
     this.getSurvey();
     this.getUserData();
     this.getProviders();
+     window.addEventListener('popstate', this.onBackButtonClicked.bind(this));
+  }
+  onBackButtonClicked(event: PopStateEvent): void {   
+    document.getElementById('myIframe').style.display = 'none'
   }
 
   getUserData() {
@@ -92,7 +96,7 @@ export class FeedbackSurveyComponent implements OnInit {
   getSurvey() {
     this.feedbackservice.getSurvey(this.page, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        this.content = event.body;
+        this.content = event.body;       
         this.totalPages = event.body["totalElements"] as string;
       }
     }, errorEvent => {
