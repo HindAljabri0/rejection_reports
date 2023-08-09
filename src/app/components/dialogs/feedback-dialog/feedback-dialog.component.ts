@@ -9,6 +9,7 @@ import { FeedbackService } from '../../../services/feedback/feedback.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component(
   {
@@ -28,6 +29,7 @@ export class FeedbackDialogComponent implements OnInit {
   required = true;
   AccessToken: string;
   feedbacksurveyUrl: string;
+  iframeSrc: SafeResourceUrl;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -35,9 +37,10 @@ export class FeedbackDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<FeedbackDialogComponent>,
     private dialogService: DialogService,
     private requestExceptionHandler: HttpRequestExceptionHandler,
+    private sanitizer: DomSanitizer,
 
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {  this.getUserData(); }
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
     if (event.origin !== environment.feedbacksurveyUrl) {
@@ -45,9 +48,9 @@ export class FeedbackDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.getUserData();
-    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';
+  ngOnInit(): void {  
+    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';   
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.feedbacksurveyUrl);
   }
 
 
@@ -55,12 +58,10 @@ export class FeedbackDialogComponent implements OnInit {
     /**
      * Get the authorized user data and set it to the local variables.
      */
-
     this.userName = this.authService.getUserName();
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
     this.feedback.providerId = this.authService.getProviderId();
-
   }
 
   // setOverallQRating(newRating: number): void {
