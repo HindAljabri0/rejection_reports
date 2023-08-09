@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit {
     async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
         
-        const event = await this._feedbackservice.UserFeedbackable(privderId, userName).pipe(
+        const event = await this._feedbackservice.getSurveyId(privderId,0,10).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             catchError(error => {
                 let errorMsg: string;
@@ -249,7 +249,7 @@ export class DashboardComponent implements OnInit {
                 return errorMsg;
             })
         ).toPromise();
-        if (event instanceof HttpResponse) {
+        if (event instanceof HttpResponse) {          
             const body = event.body;
             feedbackable = body;           
             if (body instanceof Boolean ) {
