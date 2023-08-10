@@ -14,6 +14,7 @@
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
+                        <th>survey Id</th>
                         <th>Survey Name</th>
                         <th>Duration</th>
                         <th class="text-center">Active</th>
@@ -22,6 +23,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let survey of content.content">
+                        <td>{{survey.surveyId}}</td>
                         <td>{{survey.name}}</td>
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.startDate | date:
                             'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>

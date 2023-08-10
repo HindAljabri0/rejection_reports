@@ -10,6 +10,7 @@ import { FeedbackService } from '../../../services/feedback/feedback.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component(
   {
@@ -38,7 +39,7 @@ export class FeedbackDialogComponent implements OnInit {
     private requestExceptionHandler: HttpRequestExceptionHandler,
     private sanitizer : DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {  this.getUserData(); }
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
     if (event.origin !== environment.feedbacksurveyUrl) {
@@ -58,12 +59,10 @@ export class FeedbackDialogComponent implements OnInit {
     /**
      * Get the authorized user data and set it to the local variables.
      */
-
     this.userName = this.authService.getUserName();
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
     this.feedback.providerId = this.authService.getProviderId();
-
   }
 
   // setOverallQRating(newRating: number): void {

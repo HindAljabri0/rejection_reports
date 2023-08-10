@@ -88,8 +88,8 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     else {
       this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
       this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));
-    }
-    this.announcementForm.controls.providerIds.setValue(this.data.details.providerId);
+    } 
+    this.announcementForm.controls.providersControl.setValue(this.data.details.providerId);
   }
 
   closeDialog() {
