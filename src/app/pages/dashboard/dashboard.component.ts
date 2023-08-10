@@ -228,6 +228,7 @@ export class DashboardComponent implements OnInit {
 
     async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
+
         let survey:any;
         const surveyObj = await this._feedbackservice.getSurveyId(this.authService.getProviderId(), 0, 1).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse)).toPromise();
@@ -237,6 +238,7 @@ export class DashboardComponent implements OnInit {
             console.log("Survey Body = "+JSON.stringify(survey.content[0]));
         }
         const event = await this._feedbackservice.UserFeedbackable(survey.content[0].surveyId, userName).pipe(
+
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             catchError(error => {
                 let errorMsg: string;
@@ -257,7 +259,7 @@ export class DashboardComponent implements OnInit {
                 return errorMsg;
             })
         ).toPromise();
-        if (event instanceof HttpResponse) {
+        if (event instanceof HttpResponse) {          
             const body = event.body;
             feedbackable = body;
             if (body instanceof Boolean) {
