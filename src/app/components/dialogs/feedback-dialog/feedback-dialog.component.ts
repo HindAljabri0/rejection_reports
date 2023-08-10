@@ -28,8 +28,7 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required = true;
   AccessToken: string;
-  feedbacksurveyUrl: string;
-  iframeSrc: SafeResourceUrl;
+  feedbacksurveyUrl: any;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -37,8 +36,7 @@ export class FeedbackDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<FeedbackDialogComponent>,
     private dialogService: DialogService,
     private requestExceptionHandler: HttpRequestExceptionHandler,
-    private sanitizer: DomSanitizer,
-
+    private sanitizer : DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {  this.getUserData(); }
   @HostListener('window:message', ['$event'])
@@ -48,11 +46,13 @@ export class FeedbackDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {  
-    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';   
-    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.feedbacksurveyUrl);
+  ngOnInit(): void {
+    this.getUserData();
+    this.feedbacksurveyUrl = this.getSanitizedURL();
   }
-
+  getSanitizedURL() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(environment.feedbacksurveyUrl + '/preview');
+  }
 
   getUserData() {
     /**
