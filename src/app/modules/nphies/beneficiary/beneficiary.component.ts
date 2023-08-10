@@ -370,7 +370,6 @@ export class BeneficiaryComponent implements OnInit {
   isNull(value: string) {
     return value == null ? '_' : value;
   }
- v =false;
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
     this.insurancePlans = [];
