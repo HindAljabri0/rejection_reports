@@ -370,7 +370,7 @@ export class BeneficiaryComponent implements OnInit {
   isNull(value: string) {
     return value == null ? '_' : value;
   }
-
+ v =false;
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
     this.insurancePlans = [];
@@ -408,6 +408,13 @@ export class BeneficiaryComponent implements OnInit {
     this.selectedVisaType = beneficiaryinfo.visaType;
 
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
+     if (insurancePlans.payerNphiesId=='7000911508'){
+      if(this.systemTypeFormControl.value=='5'){
+              insurancePlans.tpaNphiesId='7001599658';
+      }else{
+        insurancePlans.tpaNphiesId='-1';
+      }}
+      
       this.insurancePlans.push(
         {
           isPrimary: insurancePlans.isPrimary,
