@@ -1,4 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { throwError } from 'rxjs';
@@ -27,7 +28,7 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required = true;
   AccessToken: string;
-  feedbacksurveyUrl: string;
+  feedbacksurveyUrl: any;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -35,7 +36,7 @@ export class FeedbackDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<FeedbackDialogComponent>,
     private dialogService: DialogService,
     private requestExceptionHandler: HttpRequestExceptionHandler,
-
+    private sanitizer : DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
   @HostListener('window:message', ['$event'])
@@ -47,9 +48,11 @@ export class FeedbackDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserData();
-    this.feedbacksurveyUrl = environment.feedbacksurveyUrl + '/preview';
+    this.feedbacksurveyUrl = this.getSanitizedURL();
   }
-
+  getSanitizedURL() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(environment.feedbacksurveyUrl + '/preview');
+  }
 
   getUserData() {
     /**
