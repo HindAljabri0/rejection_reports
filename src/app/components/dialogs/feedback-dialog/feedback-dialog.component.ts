@@ -15,7 +15,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   {
     selector: 'app-feedback-dialog',
     templateUrl: './feedback-dialog.component.html',
-    styles: []
+    styleUrls: ['./feedback-dialog.component.css'],
   }
 )
 
@@ -29,6 +29,7 @@ export class FeedbackDialogComponent implements OnInit {
   required = true;
   AccessToken: string;
   feedbacksurveyUrl: any;
+  isLoading: boolean;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -47,6 +48,7 @@ export class FeedbackDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true; // Show the spinner
     this.getUserData();
     this.feedbacksurveyUrl = this.getSanitizedURL();
   }
@@ -108,11 +110,8 @@ export class FeedbackDialogComponent implements OnInit {
       username: this.feedback.userName
 
     };
-    console.log(authorizationData, 'sss');
+    this.isLoading = false; // Show the spinner  
     iframe.contentWindow.postMessage(authorizationData, iframe.src);
-
-    // Send authorization data to the iframe
-
 
   }
 
