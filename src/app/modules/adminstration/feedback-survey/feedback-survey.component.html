@@ -23,8 +23,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let survey of content.content">
-                        <td>{{survey.surveyId}}</td>
-                        <td>{{survey.name}}</td>
+                        <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.surveyId}}</td>
+                        <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.name}}</td>
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.startDate | date:
                             'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
                         <td class="text-center">
