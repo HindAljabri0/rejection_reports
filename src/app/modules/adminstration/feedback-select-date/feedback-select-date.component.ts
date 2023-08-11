@@ -22,6 +22,15 @@ import { FeedbackDate } from './feedback-date.model';
 export class AddFeedbackDateDialogComponent implements OnInit {
   selectedProvider: string;
   pipe = new DatePipe('en-US');
+  public minDate: moment.Moment;
+  public maxDate: moment.Moment;
+  public stepHour = 1;
+  public stepMinute = 1;
+  public stepSecond = 1;
+  public enableMeridian = false;
+  public showSpinners = true;
+  public showSeconds = false;
+  public touchUi = false;
   announcement: FeedbackDate = {
     providerIds: [],
 
@@ -31,7 +40,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     surveyId: '',
     content: '',
     surveyName: '',
-    isActive: '',
+    isActive: '',    
 
 
   };
@@ -152,10 +161,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   setData() {
     this.selectedProviders.forEach(provide => {
       this.providerIds.push(provide.switchAccountId);
-    });
+    });   
     this.announcement.providerIds = this.SelectedPrividerType != null ? [this.SelectedPrividerType.toLocaleUpperCase()] : this.providerIds;
-    this.announcement.startDate = this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), 'yyyy-MM-dd hh:mm:ss');
-    this.announcement.closeDate = this.pipe.transform(new Date(this.announcementForm.controls.closeDateControl.value), 'yyyy-MM-dd hh:mm:ss');
+    this.announcement.startDate = this.pipe.transform(new Date(this.announcementForm.controls.startDateControl.value), 'yyyy-MM-dd HH:mm:ss');
+    this.announcement.closeDate = this.pipe.transform(new Date(this.announcementForm.controls.closeDateControl.value), 'yyyy-MM-dd HH:mm:ss');
     this.announcement.surveyId = this.surveyId;
     this.announcement.isActive = this.announcementForm.controls.status.value;
   }
