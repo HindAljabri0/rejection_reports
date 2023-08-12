@@ -47,7 +47,8 @@ export class BeneficiaryComponent implements OnInit {
   fullName = '';
   providerId = '';
   IdPlaceholder = "Enter national ID or Iqama";
-
+  tawuniyaNphiesId='7000911508';
+  totalCareNphiesId='7001599658';
   beneficiaryId: string;
   nationalities = nationalities;
   Beneficiaries: BeneficiarySearch[];
@@ -407,9 +408,9 @@ export class BeneficiaryComponent implements OnInit {
     this.selectedVisaType = beneficiaryinfo.visaType;
 
     for (const insurancePlans of beneficiaryinfo.insurancePlans) {
-     if (insurancePlans.payerNphiesId=='7000911508'){
+     if (insurancePlans.payerNphiesId==this.tawuniyaNphiesId){
       if(this.systemTypeFormControl.value=='5'){
-              insurancePlans.tpaNphiesId='7001599658';
+              insurancePlans.tpaNphiesId=this.totalCareNphiesId;
       }else{
         insurancePlans.tpaNphiesId='-1';
       }}
