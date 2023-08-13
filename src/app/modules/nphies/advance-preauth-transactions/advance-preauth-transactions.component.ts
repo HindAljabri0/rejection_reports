@@ -130,7 +130,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
 
       if (params.documentId != null) {
         // tslint:disable-next-line:radix
-        this.FormAdvancePreAuthTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+        this.FormAdvancePreAuthTransaction.controls.documentId.patchValue(params.documentId);
       }
 
       if (params.beneficiaryName != null) {
@@ -222,7 +222,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       if (this.FormAdvancePreAuthTransaction.controls.beneficiaryName.value && this.FormAdvancePreAuthTransaction.controls.beneficiaryId.value && this.FormAdvancePreAuthTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormAdvancePreAuthTransaction.controls.documentId.value, 10);
+        model.documentId =this.FormAdvancePreAuthTransaction.controls.documentId.value+"";
       }
 
       if (this.FormAdvancePreAuthTransaction.controls.status.value) {
@@ -362,7 +362,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     this.FormAdvancePreAuthTransaction.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
-      documentId: beneficiary.documentId
+      documentId: beneficiary.documentId +""
     });
   }
   openDetailsDialog(requestId, responseId) {
