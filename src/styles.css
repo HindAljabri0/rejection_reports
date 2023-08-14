@@ -336,6 +336,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .search-box-wrapper .form-control{padding-right: 40px;}
 .search-box-wrapper .mat-icon-button{position: absolute;right: 0;top: 0;}
 .feedback-iframe{width: 100%;display: block;height: 520px;}
+.admin-feedback-iframe{height: calc(100vh - 96px);width: 100%;display: block;border-radius: 8px;min-height: 480px;}
 
 /* attachment count
 --------------------------------------------------------------------------------------------------------*/
