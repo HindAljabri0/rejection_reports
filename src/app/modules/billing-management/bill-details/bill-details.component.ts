@@ -504,7 +504,7 @@ export class BillDetailsComponent implements OnInit {
 
     getBeneList() {
         this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(
-            this.sharedServices.providerId, null, null, null, null, null, 0, 10
+            this.sharedServices.providerId, null, null, null, null, null,null, null, 0, 10
         ).subscribe(event => {
             if (event instanceof HttpResponse) {
                 if (event.body != null && event.body instanceof Array) {
