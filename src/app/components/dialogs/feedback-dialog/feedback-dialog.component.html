@@ -1,5 +1,11 @@
-<iframe [src]="feedbacksurveyUrl" class="feedback-iframe" (load)="onIframeLoad($event)"></iframe>
-<!-- <iframe id="myIframe" [src]="iframeSrc"></iframe> -->
+
+<button mat-icon-button class="close-button float-right" (click)="close()">
+  <mat-icon>close</mat-icon>
+</button>
+<div class="spinner-container" *ngIf="isLoading">
+  <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
+</div>
+
 
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">

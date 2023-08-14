@@ -8,6 +8,20 @@
         <div class="row small-gutter">
             <div class="col-md-6">
                 <div class="form-group" [class.has-error]="hasError('startDateControl')!=null"
+                [matTooltip]="hasError('startDateControl')">
+                <mat-form-field>
+                    <mat-label>Start Date<span class="asterisk">*</span></mat-label>
+                    <input matInput [ngxMatDatetimePicker]="picker"  placeholder="Choose a date" formControlName="startDateControl"
+                      [min]="minDate" [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                      [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+                       [enableMeridian]="enableMeridian">
+                    </ngx-mat-datetime-picker>
+                  </mat-form-field>
+                  </div>
+
+                <!-- <div class="form-group" [class.has-error]="hasError('startDateControl')!=null"
                     [matTooltip]="hasError('startDateControl')">
                     <label class="control-label">Start Date<span class="asterisk">*</span></label>
                     <div class="date-picker">
@@ -16,9 +30,24 @@
                         <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                         <mat-datepicker #startDate></mat-datepicker>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="col-md-6">
+                <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null"
+                [matTooltip]="hasError('closeDateControl')">
+                <mat-form-field>
+                    <mat-label>Close Date <span class="asterisk">*</span></mat-label>
+                    <input matInput [ngxMatDatetimePicker]="closeDate"  placeholder="Choose a date" formControlName="closeDateControl"
+                      [min]="minDate" [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="closeDate"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #closeDate [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                      [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+                       [enableMeridian]="enableMeridian">
+                    </ngx-mat-datetime-picker>
+                  </mat-form-field>
+                  </div>
+             
+<!--                 
                 <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null"
                     [matTooltip]="hasError('closeDateControl')">
                     <label class="control-label">End Date<span class="asterisk">*</span></label>
@@ -28,7 +57,7 @@
                         <mat-datepicker-toggle [for]="closeDate"></mat-datepicker-toggle>
                         <mat-datepicker #closeDate></mat-datepicker>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="col-md-6">
