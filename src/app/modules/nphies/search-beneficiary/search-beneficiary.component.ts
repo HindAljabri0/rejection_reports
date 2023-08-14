@@ -17,7 +17,7 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 })
 export class SearchBeneficiaryComponent implements OnInit {
   beneficiaries: BeneficiarySearch[];
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService, private downloadService: DownloadService) { }
+  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService,private downloadService: DownloadService) { }
 
   length = 100;
   pageSize = 10;
@@ -49,20 +49,23 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   ngOnInit() {
 
+    this.sharedServices.loadingChanged.next(true)
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null,null,null, 0, 10).subscribe(event => {
+
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.beneficiaries = [];
 
         this.beneficiaries = event.body["content"] as BeneficiarySearch[];
         this.length = event.body["totalElements"]
+        this.sharedServices.loadingChanged.next(false)
       }
     }
       , err => {
 
         if (err instanceof HttpErrorResponse) {
           console.log(err.message)
-
+          this.sharedServices.loadingChanged.next(false)
 
         }
       });
@@ -76,22 +79,26 @@ export class SearchBeneficiaryComponent implements OnInit {
 
   }
 
+
   searchByCriteria() {
+    this.sharedServices.loadingChanged.next(true)
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
       this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
-      this.fileIdController.value, this.contactNoController.value, this.payerId, this.tpa, this.pageIndex, this.pageSize).subscribe(event => {
+      this.fileIdController.value, this.contactNoController.value,  this.payerId, this.tpa,this.pageIndex, this.pageSize).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.body != null && event.body instanceof Array)
             this.beneficiaries = [];
           this.beneficiaries = event.body["content"] as BeneficiarySearch[];
           this.length = event.body["totalElements"]
+          this.sharedServices.loadingChanged.next(false)
         }
       }
         , err => {
 
           if (err instanceof HttpErrorResponse) {
             console.log(err.message)
+            this.sharedServices.loadingChanged.next(false)
 
 
           }

@@ -1,4 +1,5 @@
 const host = 'http://gateway.okd.waseel.com';
+const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/';
 export const environment = {
     name: 'qa',
     production: true,
@@ -43,5 +44,6 @@ export const environment = {
     nphiesApprovalPBM:`${host}/nphies-approval-pbm-validation`,
     nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
-    chronicDiseaseManagement: `${host}/chronic-disease-management`,
+    chronicDiseaseManagement: `${host}/chronic-disease-management`,   
+    feedbacksurveyUrl: `${hostFeedback}`,
 };

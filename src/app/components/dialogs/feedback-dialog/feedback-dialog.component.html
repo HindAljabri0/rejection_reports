@@ -2,7 +2,13 @@
 <button mat-icon-button class="close-button float-right" (click)="close()">
   <mat-icon>close</mat-icon>
 </button>
+<div class="spinner-container" *ngIf="isLoading">
+  <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
+</div>
 
-<iframe src="https://feedback.dr-eclaims.waseel.com/en" style="width: 100%; height: 600px;" (load)="onIframeLoad($event)"></iframe>
-<!-- <iframe id="myIframe" [src]="iframeSrc"></iframe> -->
 
+<div class="primary-dialog-footer has-border">
+  <div class="btn-list text-right">
+    <button mat-flat-button color="primary" (click)="close()">Close</button>
+  </div>
+</div>

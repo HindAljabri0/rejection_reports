@@ -27,7 +27,8 @@ import {
   DateAdapter,
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
-  MatTabsModule
+  MatTabsModule,
+ 
 } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -36,6 +37,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 // https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -85,7 +87,10 @@ export const MY_FORMATS = {
     OverlayModule,
     MatSnackBarModule,
     MatTabsModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule
   ],
   providers: [
     {

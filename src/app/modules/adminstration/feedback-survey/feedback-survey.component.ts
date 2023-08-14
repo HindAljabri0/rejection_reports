@@ -8,12 +8,13 @@ import { FeedbackDate } from '../feedback-select-date/feedback-date.model';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
   selector: 'app-feedback-survey',
   templateUrl: './feedback-survey.component.html',
-  styleUrls: ['./feedback-survey.component.css'] 
+  styleUrls: ['./feedback-survey.component.css']
 })
 export class FeedbackSurveyComponent implements OnInit {
   totalPages: any;
@@ -25,7 +26,7 @@ export class FeedbackSurveyComponent implements OnInit {
     private dialogService: DialogService,
     public authService: AuthService,
     private superAdmin: SuperAdminService
-  ) {}
+  ) { }
   AccessToken: any;
   surveyFlag = true;
   surveyName: any;
@@ -41,7 +42,7 @@ export class FeedbackSurveyComponent implements OnInit {
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en/preview') {
+    if (event.origin !== environment.feedbacksurveyUrl) {
       return; // Only accept messages from the specific origin
     }
   }
@@ -50,6 +51,10 @@ export class FeedbackSurveyComponent implements OnInit {
     this.getSurvey();
     this.getUserData();
     this.getProviders();
+     window.addEventListener('popstate', this.onBackButtonClicked.bind(this));
+  }
+  onBackButtonClicked(event: PopStateEvent): void {   
+    document.getElementById('myIframe').style.display = 'none'
   }
 
   getUserData() {
@@ -68,7 +73,7 @@ export class FeedbackSurveyComponent implements OnInit {
       // tslint:disable-next-line:no-shadowed-variable
       const iframe = document.createElement('iframe');
       iframe.id = 'myIframe';
-      iframe.src = 'https://feedback.dr-eclaims.waseel.com/en/preview';
+      iframe.src = environment.feedbacksurveyUrl + '/preview';
       iframe.width = '100%'; // Set the width to 400 pixels
       iframe.height = '600px'; // Set the height to 300 pixels
 
@@ -77,7 +82,7 @@ export class FeedbackSurveyComponent implements OnInit {
       const token = this.authService.getAccessToken();
       const user = this.authService.getAuthUsername();
       // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
-      iframe.onload = function() {
+      iframe.onload = function () {
         const authorizationData = {
           token,
           Title: survey,
@@ -91,56 +96,56 @@ export class FeedbackSurveyComponent implements OnInit {
   getSurvey() {
     this.feedbackservice.getSurvey(this.page, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        console.log(event.body);
-        this.content = event.body;
+        this.content = event.body;       
         this.totalPages = event.body["totalElements"] as string;
       }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+      }
     });
+
   }
 
   getProviders() {
-    //  this.sharedServices.loadingChanged.next(true);
+
     this.superAdmin.getProviders().subscribe(
       (event) => {
         if (event instanceof HttpResponse) {
           if (event.body instanceof Array) {
             this.providersInfo = event.body;
-            this.sharedServices.loadingChanged.next(false);
           }
         }
       },
       (error) => {
-        this.sharedServices.loadingChanged.next(false);
         this.error = 'could not load providers, please try again later.';
-        console.log(error);
       }
     );
   }
 
   getChecked(survey: any) {
     this.surveyFlag = false;
-    
-       // tslint:disable-next-line:no-shadowed-variable
-       const iframe = document.createElement('iframe');
-       iframe.id = 'myIframe';
-       iframe.src = 'https://feedback.dr-eclaims.waseel.com/en/edit';
-       iframe.width = '100%'; // Set the width to 400 pixels
-       iframe.height = '600px'; // Set the height to 300 pixels
- 
-       // Add the iframe to the desired container or the document's body
-       document.body.appendChild(iframe);
-       const token = this.authService.getAccessToken();
-       const user = this.authService.getAuthUsername();
-       // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
-       iframe.onload = function() {
-         const authorizationData = {
-           token,
-           Title: survey,
-           userName: user,
-         };
-         iframe.contentWindow.postMessage(authorizationData, iframe.src);
-       };
-     }
+
+    // tslint:disable-next-line:no-shadowed-variable
+    const iframe = document.createElement('iframe');
+    iframe.id = 'myIframe';
+    iframe.src = environment.feedbacksurveyUrl + '/edit';
+    iframe.width = '100%'; // Set the width to 400 pixels
+    iframe.height = '600px'; // Set the height to 300 pixels
+
+    // Add the iframe to the desired container or the document's body
+    document.body.appendChild(iframe);
+    const token = this.authService.getAccessToken();
+    const user = this.authService.getAuthUsername();
+    // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
+    iframe.onload = function () {
+      const authorizationData = {
+        token,
+        Title: survey,
+        userName: user,
+      };
+      iframe.contentWindow.postMessage(authorizationData, iframe.src);
+    };
+  }
 
   openPreviewDialog(value: any) {
     const dialogRef = this.dialog.open(AddFeedbackDateDialogComponent, {
@@ -154,7 +159,6 @@ export class FeedbackSurveyComponent implements OnInit {
     });
   }
   handlePageChange(event) {
-    console.log(event.pageIndex)
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getSurvey();
