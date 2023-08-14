@@ -26,7 +26,7 @@ export class ProviderNphiesSearchService {
   }
   NphisBeneficiarySearchByCriteria(
     providerId: string, nationality: string, fullName: string, memberCardId: string, fileId: string,
-    contactNumber: string, page: number, size: number) {
+    contactNumber: string, payerId: string, tpa: string , page: number, size: number) {
 
     let requestURL = `/providers/${providerId}/beneficiaries/criteria?`;
 
@@ -44,6 +44,12 @@ export class ProviderNphiesSearchService {
     }
     if (fileId != null && fileId.trim().length > 0) {
       requestURL += `fileId=${fileId}&`;
+    }
+    if (payerId != null && payerId.trim().length > 0) {
+      requestURL += `payerId=${payerId}&`;
+    }
+    if (tpa != null && tpa.trim().length > 0) {
+      requestURL += `tpa=${tpa}&`;
     }
     if (page != null) {
       requestURL += `page=${page}&`;

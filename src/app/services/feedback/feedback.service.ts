@@ -25,8 +25,8 @@ export class FeedbackService {
         return this.http.post<FeedbackClass>(this.feedbackServiceUrl + `/${feedback.providerId}/create`, feedback);
     }
 
-    UserFeedbackable(providerId, userName) {
-        const requestUrl = this.feedbackServiceUrl + `/${providerId}/${userName}/feedback`;
+    UserFeedbackable(surveyId, userName) {
+        const requestUrl = `${environment.NotificationServiceHost}/survey-response/${surveyId}/${userName}`;
         const httpRequest = new HttpRequest('GET', requestUrl);
         return this.http.request(httpRequest);
     }

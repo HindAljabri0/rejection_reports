@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { catchError, filter } from 'rxjs/operators';
 import { HttpRequestExceptionHandler } from 'src/app/components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
+import { getProviderId } from 'src/app/modules/claim-review/store/claimReview.reducer';
 
 @Component({
     selector: 'app-dashboard',
@@ -199,23 +200,23 @@ export class DashboardComponent implements OnInit {
         let userName = this.commen.authService.getAuthUsername();
 
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
-       
-        if (feedbackable && !this.userPrivileges.WaseelPrivileges.isPAM ) {
+
+        if (feedbackable) {
 
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = ['primary-dialog', , 'dialog-lg'];
             dialogConfig.autoFocus = true;
-            dialogConfig.disableClose= true;
+            dialogConfig.disableClose = true;
             dialogConfig.data = {
                 providerId: ProviderId,
                 username: userName,
             }
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
 
-            
+
         } else if (this.userPrivileges.WaseelPrivileges.isPAM) {
             console.debug("The feedback is not enabled for admins!");
-        }else{
+        } else {
             console.log("The feedback is not enabled for this user!");
         }
     }
@@ -227,8 +228,17 @@ export class DashboardComponent implements OnInit {
 
     async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
-        
-        const event = await this._feedbackservice.UserFeedbackable(privderId, userName).pipe(
+
+        let survey:any;
+        const surveyObj = await this._feedbackservice.getSurveyId(this.authService.getProviderId(), 0, 1).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse)).toPromise();
+        if (surveyObj instanceof HttpResponse) {
+            const body = surveyObj.body;
+            survey = body;
+            console.log("Survey Body = "+JSON.stringify(survey.content[0]));
+        }
+        const event = await this._feedbackservice.UserFeedbackable(survey.content[0].surveyId, userName).pipe(
+
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             catchError(error => {
                 let errorMsg: string;
@@ -249,14 +259,14 @@ export class DashboardComponent implements OnInit {
                 return errorMsg;
             })
         ).toPromise();
-        if (event instanceof HttpResponse) {
+        if (event instanceof HttpResponse) {          
             const body = event.body;
             feedbackable = body;
-            if (body instanceof Boolean ) {
+            if (body instanceof Boolean) {
                 feedbackable = body;
             }
         }
-        
+
         return feedbackable;
     }
 

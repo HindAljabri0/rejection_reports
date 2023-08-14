@@ -9,12 +9,13 @@ import { FeedbackService } from '../../../services/feedback/feedback.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { HttpRequestExceptionHandler } from '../../reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component(
   {
     selector: 'app-feedback-dialog',
     templateUrl: './feedback-dialog.component.html',
-    styles: []
+    styleUrls: ['./feedback-dialog.component.css'],
   }
 )
 
@@ -27,6 +28,8 @@ export class FeedbackDialogComponent implements OnInit {
   providerName: string;
   required = true;
   AccessToken: string;
+  feedbacksurveyUrl: any;
+  isLoading: boolean;
 
   constructor(
     private _feedbackservice: FeedbackService,
@@ -34,31 +37,33 @@ export class FeedbackDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<FeedbackDialogComponent>,
     private dialogService: DialogService,
     private requestExceptionHandler: HttpRequestExceptionHandler,
-
+    private sanitizer : DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {  this.getUserData(); }
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent) {
-    if (event.origin !== 'https://feedback.dr-eclaims.waseel.com/en') {
+    if (event.origin !== environment.feedbacksurveyUrl) {
       return; // Only accept messages from the specific origin
     }
   }
 
   ngOnInit(): void {
+    this.isLoading = true; // Show the spinner
     this.getUserData();
+    this.feedbacksurveyUrl = this.getSanitizedURL();
   }
-
+  getSanitizedURL() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(environment.feedbacksurveyUrl + '/preview');
+  }
 
   getUserData() {
     /**
      * Get the authorized user data and set it to the local variables.
      */
-
     this.userName = this.authService.getUserName();
     this.feedback.userName = this.authService.getAuthUsername();
     this.providerName = this.authService.getProviderName();
     this.feedback.providerId = this.authService.getProviderId();
-
   }
 
   // setOverallQRating(newRating: number): void {
@@ -100,16 +105,13 @@ export class FeedbackDialogComponent implements OnInit {
     // Optionally, you can add an onload event to the iframe to perform actions once it's loaded
 
     const authorizationData = {
-        token,
-        providerId,
-       username: this.feedback.userName
+      token,
+      providerId,
+      username: this.feedback.userName
 
-      };
-    console.log(authorizationData, 'sss');
+    };
+    this.isLoading = false; // Show the spinner  
     iframe.contentWindow.postMessage(authorizationData, iframe.src);
-
-    // Send authorization data to the iframe
-
 
   }
 

@@ -5,6 +5,7 @@
 
 let host = 'http://localhost';
 host = 'http://localhost';
+const hostFeedback = 'http://localhost';
 
 export const environment = {
     name: `dev`,
@@ -50,6 +51,7 @@ export const environment = {
     nphiesPollApprovalManagement: `${host}:8093`,
     nphiesPollClaimManagement: `${host}:8097`,
     chronicDiseaseManagement: `${host}:8199`,    
+    feedbacksurveyUrl: `${hostFeedback}:5000/en`,  
 };
 
 /*
