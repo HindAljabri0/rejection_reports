@@ -93,12 +93,25 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     }
     if (this.data.details.closeDate === null) {
       this.announcementForm.controls.closeDateControl.setValue(new Date());
-    }
-    else {
+    }  
+    else {     
+      const providerString = this.data.details.providerId;
+      const providerWithoutBrackets = providerString.slice(1, -1);
+      const providerLists = providerWithoutBrackets.split(',').map(item => item.trim());
+
+      providerLists.forEach(provide => {
+      this.providerIds.push(provide);
+      });   
       this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
       this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));
-    } 
-    this.announcementForm.controls.providersControl.setValue(this.data.details.providerId);
+      this.announcementForm.controls.providersControl.setValue( this.providerIds);
+      if(this.data.details.providerId){
+        this.announcementForm.get('closeDateControl').disable();
+        this.announcementForm.get('startDateControl').disable();
+        this.announcementForm.get('providersControl').disable();
+  
+      }
+    }    
   }
 
   closeDialog() {
@@ -158,7 +171,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
       if (provider.switchAccountId === providerId) { this.selectedProviders.splice(index, 1); }
     });
   }
-  setData() {
+  setData() {   
     this.selectedProviders.forEach(provide => {
       this.providerIds.push(provide.switchAccountId);
     });   
@@ -198,7 +211,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         if (error instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog({
             title: '',
-            message: error.message,
+            message: 'Save Failed',
             isError: true
           });
           this.sharedServices.loadingChanged.next(false);

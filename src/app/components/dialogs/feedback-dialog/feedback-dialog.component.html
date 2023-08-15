@@ -5,7 +5,8 @@
 <div class="spinner-container" *ngIf="isLoading">
   <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
 </div>
-
+<iframe [src]="feedbacksurveyUrl" class="feedback-iframe" 
+  (load)="onIframeLoad($event)"></iframe>
 
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">
