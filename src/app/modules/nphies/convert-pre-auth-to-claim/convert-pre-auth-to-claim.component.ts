@@ -549,7 +549,7 @@ export class ConvertPreAuthToClaimComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400) {
-          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+          this.dialogService.showMessage(error.error.message!=null?error.error.message:error.error, '', 'alert', true, 'OK', error.error.errors);
           this.selectedApprovals = [];
         } else if (error.status === 404) {
           const errors: any[] = [];
