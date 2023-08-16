@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   loginWithToken(iamToken: string) {
-    const requestURL = '/authenticateIdentityToken';
+    const requestURL = '/sso/authenticate';
     // this.amp.setUserContext({
     //   'username': username,
     //   'id': username
