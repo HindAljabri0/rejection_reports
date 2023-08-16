@@ -55,7 +55,15 @@ export class AuthService {
     const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
     return this.httpClient.request(request);
   }
-
+  refreshTokenForSSO() {
+    const requestURL = '/sso/refresh?oldUserName=' + this.getAuthUsername();
+    const body: {} = {
+      'access_token': this.getAccessToken(),
+      'refresh_token': this.getRefreshToken()
+    };
+    const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
+    return this.httpClient.request(request);
+  }
   logout(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
     let demoDoneValue;
