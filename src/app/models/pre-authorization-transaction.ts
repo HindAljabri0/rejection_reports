@@ -16,7 +16,8 @@ export class PreAuthorizationTransaction extends Paginateable{
   preAuthRefNo: string;
   provClaimNo: string;
   claimType: string;
-
+  communicationCount:number;
+  communicationsRequestCount:number;
   inquiryStatus: string;
 
   constructor(body: {}) {
@@ -38,5 +39,7 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.provClaimNo = body['provClaimNo'];
     this.claimType = body['claimType'];
     this.inquiryStatus = body['inquiryStatus'];
+    this.communicationCount = body['communicationCount'];
+    this.communicationsRequestCount = body['communicationsRequestCount'];
   }
 }
