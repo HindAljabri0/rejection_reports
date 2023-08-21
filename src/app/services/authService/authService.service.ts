@@ -127,11 +127,11 @@ export class AuthService {
         localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
     let promise: Promise<boolean>;
     if (expired != null && expired) {
-      promise = this.router.navigate(['loginWithToken'], { queryParams: { expired } });
+      promise = this.router.navigate(['login'], { queryParams: { expired } });
     } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
-      promise = this.router.navigate(['loginWithToken'], { queryParams: { hasClaimPrivileges } });
+      promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges } });
     } else {
-      promise = this.router.navigate(['loginWithToken']);
+      promise = this.router.navigate(['login']);
     }
 
     if (demoDoneValue) {
