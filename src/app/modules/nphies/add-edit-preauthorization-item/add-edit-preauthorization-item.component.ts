@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
@@ -17,7 +17,8 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
   styles: []
 })
 export class AddEditPreauthorizationItemComponent implements OnInit {
-
+  @ViewChild('reasonSelect', { static: true }) reasonSelect: ElementRef;
+  @ViewChild('otherInput', { static: true }) otherInput: ElementRef;
   @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
   itemList: any = [];
   // tslint:disable-next-line:max-line-length
@@ -66,14 +67,17 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // IsTaxApplied: [false],
     searchQuery: [''],
     drugSelectionReason: [''],
-    prescribedDrugCode: ['']
+    prescribedDrugCode: [''],
+    pharmacySubstitute: [''],
   });
-
+  showTextInput = false;
+  otherReason = '';
   isSubmitted = false;
   typeListSearchResult = [];
   SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
   medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+  pharmacySubstituteList  = this.sharedDataService.pharmacySubstituteList;
   prescribedMedicationList: any;
   bodySiteList = [];
   subSiteList = [];
@@ -176,7 +180,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
         discountPercent: this.data.item.discountPercent,
-        // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
+        // (this.data.item.discount * 100) / (this.data.medicationReasonListitem.quantity * this.data.item.unitPrice)
         // dp = d * 100 / (qty * up)
         factor: this.data.item.factor ? this.data.item.factor : 1,
         taxPercent: this.data.item.taxPercent,
@@ -252,6 +256,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           this.filterSupportingInfo();
         });
     }
+    
 
     if (this.data.careTeams) {
       this.filteredCareTeam.next(this.data.careTeams.slice());
@@ -275,6 +280,19 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.factor.setValue(1);
       this.FormItem.controls.factor.disable();
     }
+  } onReasonSelectionChange(select: MatSelect): void {
+    const selectedValue = select.value;
+    this.showTextInput = selectedValue === 'other';
+
+    if (this.showTextInput) {
+      setTimeout(() => {
+        this.otherInput.nativeElement.focus();
+      });
+    }
+  }
+  openDropdown(event: Event): void {
+    event.stopPropagation();
+    this.reasonSelect.nativeElement.open();
   }
 
   setTypes(type) {

@@ -346,14 +346,21 @@ export class SharedDataService {
   ];
 
   itemMedicationReasonList = [
-    { value: 'patient-request', name: '	Requested by patient' },
     { value: 'generic', name: 'Generic' },
-    { value: 'innovative-noGeneric', name: 'Innovative without Generic' },
-    { value: 'physician-request', name: 'Requested by physician' },
-    { value: 'drug-pharmacyUnavailable', name: 'Out of pharmacy stock' },
-    { value: 'drug-marketUnavailable', name: 'Drug market unavailability' },
-    { value: 'Irreplaceable-drug', name: 'SFDA Irreplaceable drug' }
+    { value: 'patient-request', name: '	Patient request' },
+    { value: 'innovative-noGeneric', name: 'Innovative noGeneric' },
+    { value: 'physician-approval', name: 'Physician-request with approval' },
+    { value: 'physician-no-approval', name: 'Physician-request without approval' },
+    { value: 'drug-pharmacyUnavailable', name: 'Drug-pharmacyUnavailable' },
+    { value: 'drug-nationallyUnavailable', name: 'Drug-nationallyUnavailable' },
+    { value: 'Irreplaceable', name: 'SFDA Irreplaceable drugs' }
   ];
+  pharmacySubstituteList = [
+    { value: 'strength-not-available', name: 'Strength not available at pharmacy store' },
+    { value: 'form-not-available', name: 'Dosage form not available' },
+    { value: 'Irreplaceable', name: '	SFDA Irreplaceable drugs' },
+    { value: 'Others', name: 'Others : specify' }
+    ];
 
 
   cancelReasonList = [
