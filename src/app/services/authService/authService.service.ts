@@ -125,14 +125,14 @@ export class AuthService {
     this.toKeepStorageValues.filter(storageValue =>
       storageValue.value != null).forEach((storageValue) =>
         localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
-    /*let promise: Promise<boolean>;
+    let promise: Promise<boolean>;
     if (expired != null && expired) {
       promise = this.router.navigate(['loginWithToken'], { queryParams: { expired } });
     } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
       promise = this.router.navigate(['loginWithToken'], { queryParams: { hasClaimPrivileges } });
     } else {
       promise = this.router.navigate(['loginWithToken']);
-    }*/
+    }
 
     if (demoDoneValue) {
       window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
@@ -141,7 +141,7 @@ export class AuthService {
     if (upcomingFeatureDoneValue) {
       window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
     }
-    //promise.then(() => location.reload());
+    promise.then(() => location.reload());
   }
 
   public get loggedIn(): boolean {
