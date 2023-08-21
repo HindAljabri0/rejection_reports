@@ -1,14 +1,18 @@
-<div class="animate__animated animate__faster animate__fadeIn block-card">
+<div class="animate__animated animate__faster animate__fadeIn block-card" id="requestName">
   <ng-container *ngIf="!showDetails">
+    
+
     <div class="block-header">
+
       <p>Request Eligibility</p>
 
+
       <mat-slide-toggle *ngIf="!claimReuseId" color="primary"
-      [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-auto"
+      [disabled]="detailsModel && detailsModel.sendEligibilityRequest"  color="primary" id="emergency" class="ml-auto"
       (change)="onChangeIsEmergencyState(isEmergency)" [checked]="isEmergency">Emergency</mat-slide-toggle>
       
       <mat-slide-toggle *ngIf="!claimReuseId" color="primary"
-        [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" class="ml-3"
+        [disabled]="detailsModel && detailsModel.sendEligibilityRequest" color="primary" id="referral" class="ml-3"
         (change)="onChangeState(transfer)" [checked]="transfer">Referral</mat-slide-toggle>
 
 
@@ -17,14 +21,15 @@
     <div class="block-filter-panel">
       <div class="form-group">
         <div class="checkbox-group inline">
-          <mat-checkbox color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">New born?
+          <mat-checkbox  id="newbornChkbox
+          " color="primary" (change)="onNewBornChangeState(isNewBorn)" [checked]="isNewBorn">New born?
           </mat-checkbox>
         </div>
       </div>
       <div class="d-flex">
         <div class="form-group flex-grow-1">
           <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
-          <input type="text" class="form-control search-box"
+          <input type="text" id="beneficiariesSearchController" class="form-control search-box"
             placeholder="Search for beneficiary by name or document ID..." [formControl]="beneficiarySearchController"
             [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
@@ -48,7 +53,7 @@
       <div *ngIf="isNewBorn" class="d-flex">
         <div class="form-group flex-grow-1"  [ngClass]="{'has-error' : IsSubscriberRequired && ((subscriberSearchController.touched) && subscriberSearchController.hasError('required'))}">
           <label class="control-label">Select a Subscriber <span *ngIf="IsSubscriberRequired" class="asterisk">*</span></label>
-          <input type="text" class="form-control search-box"
+          <input type="text" id="subscriberSearchController" class="form-control search-box"
             placeholder="Search for subscriber by name or document ID..." [formControl]="subscriberSearchController"
             [matAutocomplete]="auto2" (keyup)="searchBeneficiaries(true)">
           <mat-autocomplete #auto2="matAutocomplete">
@@ -89,9 +94,9 @@
         <div class="col-4">
           <div class="form-group" [class.has-error]="serviceDateError?.trim().length > 0"
             [matTooltip]="serviceDateError">
-            <label class="control-label">Service Date<span class="asterisk">*</span></label>
+            <label  class="control-label">Service Date<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date"
+              <input id="serviceDate" [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date"
                 [formControl]="serviceDateControl">
               <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
               <mat-datepicker #serviceDate></mat-datepicker>
@@ -102,7 +107,7 @@
           <div class="form-group" [class.has-error]="endDateError?.trim().length > 0" [matTooltip]="endDateError">
             <label class="control-label">To Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date"
+              <input  id="toDate" [matDatepicker]="toDate" class="form-control" placeholder="Select to date"
                 [formControl]="endDateControl">
               <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
               <mat-datepicker #toDate></mat-datepicker>
@@ -118,13 +123,13 @@
           <mat-radio-group [(ngModel)]="purposeRadioButton">
             <mat-radio-button value="1" color="primary" [checked]="purposeRadioButton == '1'">
             </mat-radio-button>
-            <mat-checkbox color="primary" [checked]="isBenefits" (change)="isBenefits = $event.checked"
+            <mat-checkbox id="isBenefits" color="primary" [checked]="isBenefits" (change)="isBenefits = $event.checked"
               [disabled]="purposeRadioButton != '1'">
               Benefits</mat-checkbox>
-            <mat-checkbox color="primary" [checked]="isValidation" (change)="isValidation = $event.checked"
+            <mat-checkbox id="isValidation" color="primary" [checked]="isValidation" (change)="isValidation = $event.checked"
               [disabled]="purposeRadioButton != '1'">
               Validation</mat-checkbox>
-            <mat-radio-button value="2" color="primary" [checked]="purposeRadioButton == '2'" [disabled]="isNewBorn">Discovery
+            <mat-radio-button value="2"  id="isDiscovery" color="primary"[checked]="purposeRadioButton == '2'" [disabled]="isNewBorn">Discovery
             </mat-radio-button>
           </mat-radio-group>
           <!--
@@ -137,9 +142,9 @@
         <div class="col-4" *ngIf="purposeRadioButton == '1'">
           <div class="form-group" [class.has-error]="selectedPlanIdError?.trim().length > 0"
             [matTooltip]="selectedPlanIdError">
-            <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+            <label  class="control-label">Insurance Plan<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
+              <mat-select id="insurancePlan" [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
                 <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
                   {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
                   ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
@@ -160,7 +165,7 @@
     </div>
     <div class="block-footer" *ngIf="selectedBeneficiary != null">
       <div class="right-block">
-        <button type="button" mat-flat-button color="primary" (click)="sendRequest()">Request
+        <button id="requestEligibilty" type="button" mat-flat-button color="primary" (click)="sendRequest()">Request
           Eligibility</button>
       </div>
     </div>
