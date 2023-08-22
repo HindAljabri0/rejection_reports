@@ -210,7 +210,6 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   }
   saveAnnouncement() {
     this.submit = true;
-    console.log(this.announcementForm.hasError('dateRange'),"lsksklslksll")
     if(this.announcementForm.hasError('dateRange')){
       this.dialogService.openMessageDialog({
         title: '',
