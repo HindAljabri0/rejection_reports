@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, Inject, ViewChild,Renderer2, ElementRef} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
@@ -66,9 +66,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     invoiceNo: [''],
     // IsTaxApplied: [false],
     searchQuery: [''],
-    drugSelectionReason: [''],
-    prescribedDrugCode: [''],
+    pharmacistSelectionReason: ['',Validators.required],
+    prescribedDrugCode: ['',Validators.required],
     pharmacySubstitute: [''],
+    pharmacistSubstitute: [''],
+    reasonPharmacistSubSitute: [''],
   });
   showTextInput = false;
   otherReason = '';
@@ -77,7 +79,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   SearchRequest;
   typeList = this.sharedDataService.itemTypeList;
   medicationReasonList = this.sharedDataService.itemMedicationReasonList;
-  pharmacySubstituteList  = this.sharedDataService.pharmacySubstituteList;
+  pharmacySubstituteList = this.sharedDataService.pharmacySubstituteList;
   prescribedMedicationList: any;
   bodySiteList = [];
   subSiteList = [];
@@ -91,6 +93,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   today: Date;
   loadSearchItem = false;
+  renderer: any;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -180,7 +183,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
         discountPercent: this.data.item.discountPercent,
-        // (this.data.item.discount * 100) / (this.data.medicationReasonListitem.quantity * this.data.item.unitPrice)
+        // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
         // dp = d * 100 / (qty * up)
         factor: this.data.item.factor ? this.data.item.factor : 1,
         taxPercent: this.data.item.taxPercent,
@@ -192,8 +195,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
         endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
         invoiceNo: this.data.item.invoiceNo,
-        drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
-
+        pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
+        pharmacySubstitute: this.data.item.pharmacySubstitute,
+        reasonPharmacistSubSitute: this.data.item.reasonPharmacistSubSitute,
       });
 
       if (this.data.careTeams) {
@@ -257,7 +261,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
     
-
     if (this.data.careTeams) {
       this.filteredCareTeam.next(this.data.careTeams.slice());
       this.FormItem.controls.careTeamFilter.valueChanges
@@ -280,7 +283,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.factor.setValue(1);
       this.FormItem.controls.factor.disable();
     }
-  } onReasonSelectionChange(select: MatSelect): void {
+  } 
+  onReasonSelectionChange(select: MatSelect): void {
     const selectedValue = select.value;
     this.showTextInput = selectedValue === 'other';
 
@@ -293,6 +297,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   openDropdown(event: Event): void {
     event.stopPropagation();
     this.reasonSelect.nativeElement.open();
+  }
+  onSelectOption() {
+    if (this.FormItem.controls.pharmacySubstitute.value === 'Others') {
+      setTimeout(() => {
+        this.renderer.selectRootElement(this.otherInput.nativeElement).focus();
+      });
+    }
   }
 
   setTypes(type) {
@@ -902,7 +913,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       model.endDate = this.FormItem.controls.endDate.value; //this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
       model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
-
+      model.pharmacySubstitute = this.FormItem.controls.pharmacySubstitute.value;
+      model.reasonPharmacistSubSitute = this.FormItem.controls.reasonPharmacistSubSitute.value;
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
         model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
       }
@@ -920,9 +932,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
       model.itemDetails = [];
       if (this.data.type === "pharmacy") {
-        model.drugSelectionReason = this.FormItem.controls.drugSelectionReason.value.value;
+        model.pharmacistSelectionReason = this.FormItem.controls.pharmacistSelectionReason.value.value;
         model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
-        model.drugSelectionReasonName = this.FormItem.controls.drugSelectionReason.value.name;
+        model.pharmacistSelectionReasonName = this.FormItem.controls.pharmacistSelectionReason.value.name;
       }
       // console.log("item model = " + JSON.stringify(model));
       this.dialogRef.close(model);

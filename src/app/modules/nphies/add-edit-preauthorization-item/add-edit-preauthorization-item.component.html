@@ -286,12 +286,15 @@
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('drugSelectionReason').touched) && FormItem.get('drugSelectionReason').hasError('required')}">
           <label class="control-label">Pharmacist Selection Reason<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="drugSelectionReason">
+            <mat-select formControlName="pharmacistSelectionReason">
               <mat-option value="">Select pharmacist reason</mat-option>
               <mat-option *ngFor="let medication of medicationReasonList" [value]="medication">{{medication.name}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
+      </div>
+      <div *ngIf="(isSubmitted || FormItem.get('pharmacistSelectionReason').touched) && FormItem.get('unitPrice').hasError('required')">
+        <span class="error-text">Please select the parmacist selection reason</span>
       </div>
 
       <div class="col-4 col-lg-6" *ngIf="data.type === 'pharmacy'">
@@ -315,6 +318,9 @@
         </mat-form-field>
       </div> 
     </div>
+    <div *ngIf="(isSubmitted || FormItem.get('prescribedDrugCode').touched) && FormItem.get('unitPrice').hasError('required')">
+      <span class="error-text">Please select the prescribed medication</span>
+    </div>
     <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
       <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('drugSelectionReason').touched) && FormItem.get('drugSelectionReason').hasError('required')}">
         <label class="control-label">Pharmacist Substitute Reason</label>
@@ -323,13 +329,17 @@
             <mat-option value="">Select substitute reason</mat-option>
             <mat-option *ngFor="let medication of pharmacySubstituteList" [value]="medication.value">{{medication.name}}</mat-option>
             {{FormItem.controls.pharmacySubstitute.value }}
-            <mat-option *ngIf="FormItem.controls.pharmacySubstitute.value === 'Others'" [value]="'other'">
-              <mat-form-field>
-                <input matInput #otherInput placeholder="Other reason" [(ngModel)]="otherReason" name="otherReason" required (click)="openDropdown($event)">
-              </mat-form-field>
-            </mat-option>
+            
           </mat-select>
         </mat-form-field>
+      </div>
+     
+      <div>
+        <div *ngIf="FormItem.controls.pharmacySubstitute.value === 'Others'" >
+          <mat-form-field>
+            <input matInput formControlName = "reasonPharmacistSubSitute" placeholder="Other reason" >
+          </mat-form-field>
+        </div>
       </div>
     </div>
 

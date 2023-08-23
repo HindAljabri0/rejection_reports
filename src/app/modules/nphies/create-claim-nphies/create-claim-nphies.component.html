@@ -792,7 +792,7 @@
                               <td>{{item.factor}}</td>
                             </tr>
                             <tr>
-                              <td class="label">Medication Selection Reason </td>
+                              <td class="label">Pharmacist Selection Reason </td>
                               <td>{{item.drugSelectionReasonName ?
                                 item.drugSelectionReasonName:"-"}}</td>
                             </tr>
@@ -800,6 +800,16 @@
                               <td class="label">Prescribed Medication </td>
                               <td>{{item.prescribedDrugCode ?
                                 item.prescribedDrugCode:"-"}}</td>
+                            </tr>
+                            <tr>
+                              <td class="label">Pharmacist Substitute Reason </td>
+                              <td>{{item.pharmacySubstitute ?
+                                item.pharmacySubstitute:"-"}}</td>
+                            </tr>
+                            <tr>
+                              <td *ngIf="item.reasonPharmacistSubSitute" class="label">Others </td>
+                              <td>{{item.reasonPharmacistSubSitute ?
+                                item.reasonPharmacistSubSitute:"-"}}</td>
                             </tr>
                             <tr>
                               <td class="label">Supporting Info</td>
@@ -2422,7 +2432,7 @@
                                   <td>{{item.factor}}</td>
                                 </tr>
                                 <tr>
-                                  <td class="label">Medication Selection Reason </td>
+                                  <td class="label">Pharmacist Selection Reason </td>
                                   <td>{{item.drugSelectionReason ?
                                     item.drugSelectionReason:"-"}}</td>
                                 </tr>
@@ -2430,6 +2440,16 @@
                                   <td class="label">Prescribed Medication </td>
                                   <td>{{item.prescribedDrugCode ?
                                     item.prescribedDrugCode:"-"}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Pharmacist Substitute Reason </td>
+                                  <td>{{item.pharmacySubstitute ?
+                                    item.pharmacySubstitute:"-"}}</td>
+                                </tr>
+                                <tr>
+                                  <td *ngIf="item.reasonPharmacistSubSitute" class="label">Others </td>
+                                  <td>{{item.reasonPharmacistSubSitute ?
+                                    item.reasonPharmacistSubSitute:"-"}}</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Supporting Info</td>
