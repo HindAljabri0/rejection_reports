@@ -200,7 +200,7 @@
               <ng-container>
                 <!-- <mat-option value="">Select Care Team</mat-option> -->
                 <mat-option *ngFor="let item of filteredSupportingInfo  | async" [value]="item">
-                  {{item.sequence}} - {{item.categoryName}} <span *ngIf="item.code">- {{item.code}}</span>
+                  {{item.sequence}} - {{item.categoryName}} {{item.categoryName=="Days Supply"?' ( '+item.value+' d)':""}} <span *ngIf="item.code">- {{item.code}}</span>
                 </mat-option>
               </ng-container>
             </mat-select>
