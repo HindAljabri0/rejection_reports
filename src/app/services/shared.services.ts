@@ -48,9 +48,15 @@ export class SharedServices {
 
   unReadProcessedCount = 0;
   unReadProcessedCountChange: Subject<number> = new Subject();
+  
+  unReadProcessedApaCount = 0;
+  unReadProcessedApaCountChange: Subject<number> = new Subject();
 
   unReadComunicationRequestCount = 0;
   unReadComunicationRequestCountChange: Subject<number> = new Subject();
+
+  unReadApaComunicationRequestCount = 0;
+  unReadApaComunicationRequestCountChange: Subject<number> = new Subject();
 
   unReadRecentCount = 0;
   unReadRecentCountChange: Subject<number> = new Subject();
@@ -158,6 +164,9 @@ export class SharedServices {
     this.unReadComunicationRequestCountChange.subscribe(value => {
       this.unReadComunicationRequestCount = value;
     });
+    this.unReadApaComunicationRequestCountChange.subscribe(value => {
+      this.unReadApaComunicationRequestCount = value;
+    });
     this.unReadRecentCountChange.subscribe(value => {
       this.unReadRecentCount = value;
     });
@@ -258,6 +267,21 @@ export class SharedServices {
       }
     });
   }
+  getProcessedApaCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'advanced-approval-notifications', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadProcessedApaCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadProcessedApaCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
 
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
@@ -271,6 +295,21 @@ export class SharedServices {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+  getApaCommunicationRequestCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'advance-approval-communication-request-notification', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadApaComunicationRequestCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadApaComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
   }

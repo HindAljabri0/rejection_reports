@@ -90,6 +90,7 @@ import { AddPrescriptionComponent } from './add-prescription/add-prescription.co
 import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
 import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
 import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
+import { ApaCommunicationRequestsComponent } from './advance-preauth-transactions/apa-communication-requests/apa-communication-requests.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +156,8 @@ import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-deta
     AddPrescriptionComponent,
     PrescriptionTransactionsComponent,
     AddEditPrescriptionItemComponent,
-    ViewPrescriptionDetailsDialogComponent
+    ViewPrescriptionDetailsDialogComponent,
+    ApaCommunicationRequestsComponent
   ],
   imports: [
     CommonModule,

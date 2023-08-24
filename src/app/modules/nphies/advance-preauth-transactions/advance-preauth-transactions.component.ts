@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ViewPreauthorizationDetailsComponent } from '../view-preauthorization-details/view-preauthorization-details.component';
 import { ProcessedTransactionsComponent } from '../preauthorization-transactions/processed-transactions/processed-transactions.component';
-import { CommunicationRequestsComponent } from '../preauthorization-transactions/communication-requests/communication-requests.component';
 import { ReuseApprovalModalComponent } from '../preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -20,7 +19,7 @@ import { HttpErrorResponse, HttpResponse, HttpEvent } from '@angular/common/http
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
-
+import { ApaCommunicationRequestsComponent } from './apa-communication-requests/apa-communication-requests.component';
 @Component({
   selector: 'app-advance-preauth-transactions',
   templateUrl: './advance-preauth-transactions.component.html',
@@ -33,22 +32,20 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   @ViewChild('processedTransactions', { static: false }) processedTransactions: ProcessedTransactionsComponent;
-  @ViewChild('communicationRequests', { static: false }) communicationRequests: CommunicationRequestsComponent;
+  @ViewChild('communicationRequests', { static: false }) communicationRequests: ApaCommunicationRequestsComponent;
   paginatorPagesNumbers: number[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
-
+  communicationCount:number;
+  communicationsRequestCount:number;
   payersList = [];
   isSubmitted = false;
   detailTopActionIcon = 'ic-download.svg';
   transactionModel: PaginatedResult<PreAuthorizationTransaction>;
-
   typeList = this.sharedDataService.claimTypeList;
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
-
   transactions = [];
-
   FormAdvancePreAuthTransaction: FormGroup = this.formBuilder.group({
     fromDate: [''],
     toDate: [''],
@@ -77,6 +74,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     { value: 'pended', name: 'Pended' },
     { value: 'cancelled', name: 'Cancelled' }
   ];
+  data: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -158,7 +156,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         this.FormAdvancePreAuthTransaction.controls.provClaimNo.patchValue(params.provClaimNo);
       }
 
-      if (params.page != null) {
+           if (params.page != null) {
         this.page = Number.parseInt(params.page, 10);
       } else {
         this.page = 0;
@@ -440,6 +438,19 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     });
   }
 
+  readNotification() {
+    if (this.data.notificationStatus === 'unread') {
+      const notificationId: string = this.data.notificationId;
+      if (this.data.communicationId) {
+        this.sharedServices.unReadApaComunicationRequestCount = this.sharedServices.unReadApaComunicationRequestCount - 1;
+      } else {
+        this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
+      }
+      if (notificationId) {
+        this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+      }
+    }
+  }
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
@@ -520,6 +531,14 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       }
     });
   }
+  openDetailsDialogCR(event) {  
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId, event.notificationStatus);
+  }
+  tabChange($event) {   
+   if ($event && $event.index === 1) {
+      this.communicationRequests.getCommunicationRequests();
+    }
+  }
 
   updateManualPage(index) {
     this.manualPage = index;
@@ -543,6 +562,9 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
   paginationChange(event) {
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+  get NewComunicationRequests() {
+    return this.sharedServices.unReadApaComunicationRequestCount;
   }
   get paginatorLength() {
     if (this.transactionModel != null) {

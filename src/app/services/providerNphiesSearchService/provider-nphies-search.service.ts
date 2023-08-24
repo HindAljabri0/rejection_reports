@@ -234,6 +234,18 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  getApaRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 10;
+    }
+    const requestUrl = `/providers/${providerId}/advance/preauth/communication-requests?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+
   getCommunications(providerId: string, responseId: number) {
     const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);

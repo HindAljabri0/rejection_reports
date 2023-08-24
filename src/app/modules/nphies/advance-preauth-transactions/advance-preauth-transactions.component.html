@@ -2,6 +2,11 @@
     <div class="block-header">
         <p>Advance Preauthorization Transactions</p>
     </div>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="tabChange($event)">
+        <mat-tab>
+    <ng-template mat-tab-label>
+        <span>Requests</span>
+      </ng-template>
     <div class="block-filter-panel">
         <form [formGroup]="FormAdvancePreAuthTransaction" (ngSubmit)="onSubmit()">
             <div class="row small-gutter">
@@ -125,6 +130,7 @@
                         <!-- <th>Provider Claim No</th> -->
                         <th>Status</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,6 +163,13 @@
                                 [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
                                 | titlecase}}</span>
                         </td>
+                        <td class="text-center">
+                            <button mat-icon-button *ngIf="transaction.communicationCount || transaction.communicationsRequestCount">
+                              <span matTooltip="Number of Communications">{{transaction.communicationCount}}</span>
+                              <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                              <span matTooltip="Communications Request"> {{transaction.communicationsRequestCount}}</span>
+                            </button>
+                          </td>
                         <td class="actions">
                             <ng-container *ngIf="transaction.status != 'cancelled'">
                                 <mat-menu #moreMenu="matMenu" xPosition="before">
@@ -203,4 +216,16 @@
             </mat-paginator>
         </div>
     </div>
+    </mat-tab>
+    <mat-tab>
+    <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Communication Request</span>
+          <span *ngIf="NewComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewComunicationRequests}}</span>
+        </div>
+      </ng-template>
+      <app-apa-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
+      </app-apa-communication-requests>
+    </mat-tab>
+  </mat-tab-group>
 </div>
