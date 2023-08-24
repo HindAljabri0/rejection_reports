@@ -121,7 +121,9 @@ export class HeaderComponent implements OnInit {
             this.sharedServices.getClaimCommunicationRequestCount();
         }*/
         this.sharedServices.getProcessedCount();
+        this.sharedServices.getProcessedApaCount();
         this.sharedServices.getCommunicationRequestCount();
+        this.sharedServices.getApaCommunicationRequestCount();
         this.sharedServices.getRecentReconciliationCount();
         this.sharedServices.getClaimProcessedCount();
         this.sharedServices.getClaimCommunicationRequestCount();
@@ -215,9 +217,15 @@ export class HeaderComponent implements OnInit {
             if (splitedValue[0] === 'approval-notifications') {
                 this.sharedServices.getProcessedCount();
             }
+            if (splitedValue[0] === 'advanced-approval-notifications') {
+                this.sharedServices.getProcessedApaCount();
+            }
 
             if (splitedValue[0] === 'approval-communication-request-notification') {
                 this.sharedServices.getCommunicationRequestCount();
+            }
+            if (splitedValue[0] === 'advanced-approval-communication-request-notification') {
+                this.sharedServices.getApaCommunicationRequestCount();
             }
 
             if (splitedValue[0] === 'payment-reconciliation-notification') {
