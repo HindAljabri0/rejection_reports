@@ -51,12 +51,12 @@ export class SidebarComponent implements OnInit {
         return transCount;
     }
 
-    get NewComunicationRequests() {
+    get NewAPAComunicationRequests() {
         return this.sharedServices.unReadApaComunicationRequestCount;
       }
 
     get TotalPreAuthTransactions(){
-        const transCount = this.NewAuthTransactions + this.NewComunicationRequests;
+        const transCount = this.NewAuthTransactions + this.NewAPAComunicationRequests;
         return transCount;
      }
     get RecentReconciliations() {

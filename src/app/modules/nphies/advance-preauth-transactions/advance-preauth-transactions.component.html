@@ -221,7 +221,7 @@
     <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication Request</span>
-          <span *ngIf="NewComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewComunicationRequests}}</span>
+          <span *ngIf="NewAPAComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewAPAComunicationRequests}}</span>
         </div>
       </ng-template>
       <app-apa-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">

@@ -563,8 +563,8 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
   }
-  get NewComunicationRequests() {
-    return this.sharedServices.unReadApaComunicationRequestCount;
+  get NewAPAComunicationRequests() {
+     return this.sharedServices.unReadApaComunicationRequestCount;
   }
   get paginatorLength() {
     if (this.transactionModel != null) {

@@ -101,7 +101,7 @@ export class AuthService {
     if (upcomingFeatureDoneValue) {
       window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
     }
-    promise.then(() => location.reload());
+    // promise.then(() => location.reload());
 }
 
 
