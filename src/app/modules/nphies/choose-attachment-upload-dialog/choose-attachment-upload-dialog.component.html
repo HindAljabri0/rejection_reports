@@ -9,7 +9,9 @@
             <div class="col-6" *ngIf="this.data.uploadData.statuses">
                 <div class="form-group">
                     <label class="control-label">Status</label>
-                    <span class="form-control-static">{{this.data.uploadData.statuses == 'accepted' ? 'Ready For Submission' : (this.data.uploadData.statuses == 'notaccepted' ? 'Validation Error' : '-')}}</span>
+                    <span class="form-control-static">{{this.data.uploadData.statuses == 'accepted' ? 'Ready For
+                        Submission' : (this.data.uploadData.statuses == 'notaccepted' ? 'Validation Error' :
+                        '-')}}</span>
                 </div>
             </div>
             <div class="col-6" *ngIf="this.data.uploadData.selectedClaims.length > 0">
@@ -30,11 +32,12 @@
                     <span class="form-control-static">{{this.data.uploadData.from}} / {{this.data.uploadData.to}}</span>
                 </div>
             </div>
-            
+
             <div class="col-12" *ngIf="this.data.uploadData.payerIds!=''">
                 <div class="form-group">
                     <label class="control-label">Payer</label>
-                    <span class="form-control-static">{{this.data.uploadData.payer[0].englistName}} - {{this.data.uploadData.payer[0].arabicName}}</span>
+                    <span class="form-control-static">{{this.data.uploadData.payer[0].englistName}} -
+                        {{this.data.uploadData.payer[0].arabicName}}</span>
                 </div>
             </div>
             <div class="col-6" *ngIf="this.data.uploadData.claimRefNo">
@@ -77,26 +80,27 @@
         </div>
     </div>
     <h5 class="medium pb-8">Select Attachment Folder</h5>
-    <div class="form-group">
-        <mat-form-field class="form-control custom-select-control">
-            <mat-select value="" (selectionChange)="folderName = $event.value" [class.has-error]="folderNamerror?.trim().length > 0"
-                [matTooltip]="folderNamerror">
-                <mat-option value="" >Select Folder Name</mat-option>
-                <mat-option *ngFor="let folder of folders" value="{{folder}}">{{folder}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-</div>
-<div class="primary-dialog-footer has-border">
-    <div class="d-flex align-items-center">
-        <button mat-icon-button class="text-primary">
-            <mat-icon class="material-icons-outlined"
-                matTooltip="Replace action will delete old attachments from the claim and it will place new attachments. Add New action will keep old attachments as it is, and will append new attachments.">info</mat-icon>
-        </button>
-        <div class="btn-list text-right ml-auto">
-            <button mat-button (click)="closeDialog()">Cancel</button>
-            <button mat-flat-button color="primary" (click)="StartJob(true);">Replace</button>
-            <button mat-flat-button color="primary" (click)="StartJob(false);">Add new</button>
+    <div class="block-body">
+        <div class="form-group mb-0">
+            <label class="control-label">Select Folder Name</label>
+            <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search Folder here..."
+                [matAutocomplete]="auto" [formControl]="folderNameControl" (input)="updateFilter()">
+            <mat-autocomplete autoActiveFirstOption #auto>
+                <mat-option *ngFor="let folder of filteredFolder" value="{{folder}}"
+                    (click)="selectFolder(folder)">{{folder}}</mat-option>
+            </mat-autocomplete>
         </div>
     </div>
-</div>
+    <div class="primary-dialog-footer has-border">
+        <div class="d-flex align-items-center">
+            <button mat-icon-button class="text-primary">
+                <mat-icon class="material-icons-outlined"
+                    matTooltip="Replace action will delete old attachments from the claim and it will place new attachments. Add New action will keep old attachments as it is, and will append new attachments.">info</mat-icon>
+            </button>
+            <div class="btn-list text-right ml-auto">
+                <button mat-button (click)="closeDialog()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="StartJob(true);">Replace</button>
+                <button mat-flat-button color="primary" (click)="StartJob(false);">Add new</button>
+            </div>
+        </div>
+    </div>
