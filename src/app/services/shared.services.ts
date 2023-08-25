@@ -300,7 +300,7 @@ export class SharedServices {
   }
   getApaCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'advance-approval-communication-request-notification', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'advanced-approval-communication-request-notification', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
