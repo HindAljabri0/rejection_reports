@@ -93,7 +93,12 @@ export class AuthService {
     } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
       promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges } });
     } else {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('expires_in');
+      localStorage.removeItem('organizationId');
       promise = this.router.navigate(['login']);
+
     }
 
     if (demoDoneValue) {
@@ -106,8 +111,7 @@ export class AuthService {
   
     try {
       const result = await promise;  
-      promise.then(() => location.reload());
-      console.log('Navigation completed:', result);
+     // promise.then(() => location.reload());
       
     } catch (error) {
       console.error('Navigation error:', error);
