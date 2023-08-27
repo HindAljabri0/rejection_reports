@@ -64,7 +64,9 @@ export class AuthService {
     const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
     return this.httpClient.request(request);
   }
-  logout(expired?: boolean, hasClaimPrivileges?: boolean) {
+
+
+  async logout(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
     let demoDoneValue;
     if (window.localStorage.getItem('onboarding-demo-done')) {
@@ -101,8 +103,19 @@ export class AuthService {
     if (upcomingFeatureDoneValue) {
       window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
     }
-    // promise.then(() => location.reload());
-}
+  
+    try {
+      const result = await promise;  
+      promise.then(() => location.reload());
+      console.log('Navigation completed:', result);
+      
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  }
+
+
+ 
 
 
   public get loggedIn(): boolean {
