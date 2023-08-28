@@ -91,6 +91,12 @@ import { PrescriptionTransactionsComponent } from './prescription-transactions/p
 import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
 import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
 import { ApaCommunicationRequestsComponent } from './advance-preauth-transactions/apa-communication-requests/apa-communication-requests.component';
+import { PrescriptionCancelReasonModalComponent } from './prescription-transactions/prescription-cancel-reason-modal/prescription-cancel-reason-modal.component';
+import { PrescriptionCommunicationRequestsComponent } from './prescription-transactions/prescription-communication-requests/prescription-communication-requests.component';
+import { PrescriptionProcessedTransactionsComponent } from './prescription-transactions/prescription-processed-transactions/prescription-processed-transactions.component';
+import { PrescriptionReuseApprovalModalComponent } from './prescription-transactions/prescription-reuse-approval-modal/prescription-reuse-approval-modal.component';
+import { ViewPrescriptionDetailsComponent } from './view-prescription-detail/view-prescription-details.component';
+
 
 @NgModule({
   declarations: [
@@ -157,7 +163,12 @@ import { ApaCommunicationRequestsComponent } from './advance-preauth-transaction
     PrescriptionTransactionsComponent,
     AddEditPrescriptionItemComponent,
     ViewPrescriptionDetailsDialogComponent,
-    ApaCommunicationRequestsComponent
+    ApaCommunicationRequestsComponent,
+    PrescriptionCancelReasonModalComponent,
+    PrescriptionCommunicationRequestsComponent,
+    PrescriptionProcessedTransactionsComponent,
+    PrescriptionReuseApprovalModalComponent,
+    ViewPrescriptionDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -202,7 +213,9 @@ import { ApaCommunicationRequestsComponent } from './advance-preauth-transaction
     ViewPrintPreviewDialogComponent,
     PbmValidationResponseSummaryDialogComponent,
     AddEditPrescriptionItemComponent,
-    ViewPrescriptionDetailsDialogComponent
+    ViewPrescriptionDetailsDialogComponent,
+    PrescriptionCancelReasonModalComponent,
+    PrescriptionReuseApprovalModalComponent
   ],
   exports: [
     ApiErrorsDialogComponent
