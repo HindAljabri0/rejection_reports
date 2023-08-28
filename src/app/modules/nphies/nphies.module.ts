@@ -96,6 +96,12 @@ import { PrescriptionCommunicationRequestsComponent } from './prescription-trans
 import { PrescriptionProcessedTransactionsComponent } from './prescription-transactions/prescription-processed-transactions/prescription-processed-transactions.component';
 import { PrescriptionReuseApprovalModalComponent } from './prescription-transactions/prescription-reuse-approval-modal/prescription-reuse-approval-modal.component';
 import { ViewPrescriptionDetailsComponent } from './view-prescription-detail/view-prescription-details.component';
+import { PrescriptionAddEditCareTeamModalComponent } from './add-prescription/prescription-add-edit-care-team-modal/prescription-add-edit-care-team-modal.component';
+import { PrescriptionAddEditDiagnosisModalComponent } from './add-prescription/prescription-add-edit-diagnosis-modal/prescription-add-edit-diagnosis-modal.component';
+import { PrescriptionAddEditSupportingInfoModalComponent } from './add-prescription/prescription-add-edit-supporting-info-modal/prescription-add-edit-supporting-info-modal.component';
+import { PrescriptionAddEditVisionLensSpecificationsComponent } from './add-prescription/prescription-add-edit-vision-lens-specifications/prescription-add-edit-vision-lens-specifications.component';
+import { PrescriptionManageSupportingInfoComponent } from './add-prescription/prescription-manage-supporting-info/prescription-manage-supporting-info.component';
+import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
 
 
 @NgModule({
@@ -168,7 +174,13 @@ import { ViewPrescriptionDetailsComponent } from './view-prescription-detail/vie
     PrescriptionCommunicationRequestsComponent,
     PrescriptionProcessedTransactionsComponent,
     PrescriptionReuseApprovalModalComponent,
-    ViewPrescriptionDetailsComponent
+    ViewPrescriptionDetailsComponent,
+    PrescriptionAddEditCareTeamModalComponent,
+    PrescriptionAddEditDiagnosisModalComponent,
+    PrescriptionAddEditSupportingInfoModalComponent,
+    PrescriptionAddEditVisionLensSpecificationsComponent,
+    PrescriptionManageSupportingInfoComponent,
+    PrescriptionDetailsComponent
   ],
   imports: [
     CommonModule,
