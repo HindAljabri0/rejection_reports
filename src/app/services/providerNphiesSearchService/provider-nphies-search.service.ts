@@ -11,7 +11,7 @@ import { AuthService } from '../authService/authService.service';
   providedIn: 'root'
 })
 export class ProviderNphiesSearchService {
-
+ 
   constructor(private http: HttpClient) { }
 
   getSpecialityList(providerId: string) {
@@ -221,6 +221,18 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
+  getApaProcessedTransaction(providerId: string, claimType: string, page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 10;
+    }
+    const requestUrl = `/providers/${providerId}/advance/preauth/processed?claimType=${claimType}&page=${page}&pageSize=${pageSize}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
+
 
   getCommunicationRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
     if (page == null) {

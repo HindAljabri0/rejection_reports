@@ -184,30 +184,43 @@
             <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Pre Authorization transactions found!'>
             </app-empty-state>
 
-            <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
-                <div class="form-group page-select">
-                    <label class="control-label">Go to page: </label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-                            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="material-paginator">
-                    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
-                    </mat-paginator>
-                </div>
-            </div>
-        </mat-tab>
+    <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
+        <div class="form-group page-select">
+            <label class="control-label">Go to page: </label>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="material-paginator">
+            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+                (page)="paginatorAction($event)">
+            </mat-paginator>
+        </div>
+    </div>
+    </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <div class="d-flex align-items-center">
-                    <span>Communication Request</span>
-                    <span *ngIf="NewAPAComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewAPAComunicationRequests}}</span>
-                </div>
+              <div class="d-flex align-items-center">
+                <span>Processed</span>
+                <span *ngIf="NewAPAProcessed > 0" class="alert-marker ml-2 alert-count">{{NewAPAProcessed}}</span>
+              </div>
             </ng-template>
-            <app-apa-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
-            </app-apa-communication-requests>
-        </mat-tab>
-    </mat-tab-group>
+      
+            <app-apa-processed-transactions #apaProcessedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
+            </app-apa-processed-transactions>
+      
+          </mat-tab>
+          <mat-tab>
+    <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Communication Request</span>
+          <span *ngIf="NewAPAComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewAPAComunicationRequests}}</span>
+        </div>
+      </ng-template>
+      <app-apa-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
+      </app-apa-communication-requests>
+    </mat-tab>
+  </mat-tab-group>
 </div>
